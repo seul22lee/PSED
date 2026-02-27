@@ -1,0 +1,71 @@
+// Experimental Structure
+digraph {
+	rankdir=TB
+	ROOT [label=Paper]
+	PROCESS [label=ProcessContext]
+	ROOT -> PROCESS
+	PC_deposition_method [label="deposition_method
+Atomic Layer Deposition (ALD)"]
+	PROCESS -> PC_deposition_method
+	PC_precursor [label="precursor
+(tert-butylimido)-tris(diethylamido)-niobium (TBTDEN)"]
+	PROCESS -> PC_precursor
+	PC_plasma [label="plasma
+Inductively Coupled Plasma (ICP) source"]
+	PROCESS -> PC_plasma
+	PC_substrate_temperature_C [label="substrate_temperature_C
+380"]
+	PROCESS -> PC_substrate_temperature_C
+	PC_substrate_type [label="substrate_type
+(100) silicon with 300 nm thermal oxide"]
+	PROCESS -> PC_substrate_type
+	PC_notes [label="notes
+Oxford Instruments OpAL ALD system, nitrogen glovebox, (100) silicon with 300 nm thermal oxide"]
+	PROCESS -> PC_notes
+	S1 [label="S1
+Deposition thickness and etch-stop Al2O3 layer thickness variation"]
+	ROOT -> S1
+	S1_1 [label=S1_1]
+	S1 -> S1_1
+	S1_1_deposition_thickness [label="deposition_thickness = 6 nm"]
+	S1_1 -> S1_1_deposition_thickness
+	S1_1_etch_stop_layer_thickness [label="etch_stop_layer_thickness = 20 nm"]
+	S1_1 -> S1_1_etch_stop_layer_thickness
+	S1_1_M0 [label="Tc = 0.01 %"]
+	S1_1 -> S1_1_M0
+	S1_2 [label=S1_2]
+	S1 -> S1_2
+	S1_2_deposition_thickness [label="deposition_thickness = 20 nm"]
+	S1_2 -> S1_2_deposition_thickness
+	S1_2_etch_stop_layer_thickness [label="etch_stop_layer_thickness = 0 nm"]
+	S1_2 -> S1_2_etch_stop_layer_thickness
+	S1_2_M0 [label="Tc = 0.01 %"]
+	S1_2 -> S1_2_M0
+	S2 [label="S2
+Substrate position variation"]
+	ROOT -> S2
+	S2_1 [label=S2_1]
+	S2 -> S2_1
+	S2_1_x_position [label="x_position = 0 mm"]
+	S2_1 -> S2_1_x_position
+	S2_1_y_position [label="y_position = 0 mm"]
+	S2_1 -> S2_1_y_position
+	S2_1_M0 [label="Tc = 0.01 %"]
+	S2_1 -> S2_1_M0
+	S2_2 [label=S2_2]
+	S2 -> S2_2
+	S2_2_x_position [label="x_position = 40 mm"]
+	S2_2 -> S2_2_x_position
+	S2_2_y_position [label="y_position = 0 mm"]
+	S2_2 -> S2_2_y_position
+	S2_2_M0 [label="Tc = 0.01 %"]
+	S2_2 -> S2_2_M0
+	S2_3 [label=S2_3]
+	S2 -> S2_3
+	S2_3_x_position [label="x_position = 60 mm"]
+	S2_3 -> S2_3_x_position
+	S2_3_y_position [label="y_position = 0 mm"]
+	S2_3 -> S2_3_y_position
+	S2_3_M0 [label="Tc = 0.01 %"]
+	S2_3 -> S2_3_M0
+}

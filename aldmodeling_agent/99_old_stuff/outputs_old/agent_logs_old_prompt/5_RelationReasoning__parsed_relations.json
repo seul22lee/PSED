@@ -1,0 +1,86 @@
+[
+  {
+    "source": "RT",
+    "target": "pA",
+    "relation_type": "depends_on",
+    "description": "RT appears in the equation for the collision rate related to pA."
+  },
+  {
+    "source": "pA",
+    "target": "zA",
+    "relation_type": "depends_on",
+    "description": "zA is derived based on the ratio of v^2 and A."
+  },
+  {
+    "source": "q",
+    "target": "h",
+    "relation_type": "depends_on",
+    "description": "The desorption rate f_des depends on q, h, and Pd."
+  },
+  {
+    "source": "g",
+    "target": "dh",
+    "relation_type": "depends_on",
+    "description": "The rate of change of h (dh/dt) is governed by g."
+  },
+  {
+    "source": "g",
+    "target": "q",
+    "relation_type": "causal",
+    "description": "g is defined as the difference between f_ads and f_des."
+  },
+  {
+    "source": "h",
+    "target": "K",
+    "relation_type": "depends_on",
+    "description": "K is defined in terms of h_eq, q, and pA."
+  },
+  {
+    "source": "g",
+    "target": "C",
+    "relation_type": "derived_from",
+    "description": "s is derived based on the relationship involving g and K across cycles."
+  },
+  {
+    "source": "pA",
+    "target": "x",
+    "relation_type": "causal",
+    "description": "The rate of change of pA involves both spatial and temporal derivatives."
+  },
+  {
+    "source": "xp",
+    "target": "x",
+    "relation_type": "causal",
+    "description": "xp is defined based on the overall diffusion process in the channel."
+  },
+  {
+    "source": "A",
+    "target": "Dh",
+    "relation_type": "derived_from",
+    "description": "D is given as a function of the equilibrium constant K and A."
+  },
+  {
+    "source": "M",
+    "target": "q",
+    "relation_type": "depends_on",
+    "description": "M links the quantities involved in the calculation of q."
+  },
+  {
+    "source": "h",
+    "target": "t",
+    "relation_type": "depends_on",
+    "description": "h is dependent on time through an integral expression involving q, pA, and Pd."
+  },
+  {
+    "source": "X",
+    "target": "Z",
+    "relation_type": "depends_on",
+    "description": "The relationship defines variables as part of the force calculation."
+  },
+  {
+    "source": "D",
+    "target": "x",
+    "relation_type": "causal",
+    "description": "D results from the real-time distance description in the channel."
+  }
+]

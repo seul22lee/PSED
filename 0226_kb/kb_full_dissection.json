@@ -1,0 +1,103 @@
+{
+  "paper_title": "Wafer-level uniformity of atomic-layer-deposited niobium nitride thin films for quantum devices",
+  "experiment_blocks": [
+    {
+      "experiment_id": "1",
+      "objective": "investigate large-area uniformity of thin ALD-NbN films",
+      "l1_process_context": {
+        "pressure": "8.3 mTorr",
+        "temperature": "380°C"
+      },
+      "l2_physical_entity": {
+        "material": "NbN",
+        "thickness": "6 nm"
+      },
+      "l3_independent_variable_name": "wafer position",
+      "points": [
+        {
+          "label": "center",
+          "l3_value": "0 mm",
+          "l4_measurements": {
+            "critical temperature": "10.3 K",
+            "switching current": "5.7 MA/cm^2"
+          },
+          "l5_derived": {
+            "uniformity": "high"
+          }
+        },
+        {
+          "label": "2-in edge",
+          "l3_value": "40 mm",
+          "l4_measurements": {
+            "critical temperature": "10.2 K",
+            "switching current": "5.5 MA/cm^2"
+          },
+          "l5_derived": {
+            "uniformity": "high"
+          }
+        }
+      ],
+      "l6_interpretations": [
+        "uniformity of superconducting thin films"
+      ],
+      "source_anchors": [
+        "Table II",
+        "Figure 3"
+      ]
+    },
+    {
+      "experiment_id": "2",
+      "objective": "evaluate changes of crystallinity and lattice parameter",
+      "l1_process_context": {
+        "pressure": "8.3 mTorr",
+        "temperature": "380°C"
+      },
+      "l2_physical_entity": {
+        "material": "NbN",
+        "thickness": "20 nm"
+      },
+      "l3_independent_variable_name": "wafer position",
+      "points": [
+        {
+          "label": "center",
+          "l3_value": "0 mm",
+          "l4_measurements": {
+            "FWHM": "1.02°",
+            "peak position": "35.49°"
+          },
+          "l5_derived": {
+            "crystallinity": "high"
+          }
+        },
+        {
+          "label": "4-in edge",
+          "l3_value": "80 mm",
+          "l4_measurements": {
+            "FWHM": "0.96°",
+            "peak position": "36.08°"
+          },
+          "l5_derived": {
+            "crystallinity": "high"
+          }
+        }
+      ],
+      "l6_interpretations": [
+        "crystallinity and lattice parameter"
+      ],
+      "source_anchors": [
+        "Table I",
+        "Figure 4"
+      ]
+    }
+  ],
+  "comparison_blocks": [
+    {
+      "comparison_id": "1",
+      "source_experiments": [
+        "1",
+        "2"
+      ],
+      "logic": "compare uniformity of superconducting thin films at different wafer positions"
+    }
+  ]
+}

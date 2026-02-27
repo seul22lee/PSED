@@ -1,0 +1,468 @@
+This model describes how an ALD precursor A transports into a high‑aspect‑ratio feature and reacts with the surface until saturation. It couples:
+
+- Gas‑phase and Knudsen diffusion → effective diffusion \(D_{\text{eff}}\)
+- Langmuir‑type adsorption/desorption → coverage \(\theta(t,x)\)
+- A penetration front \(x_s(t)\) that separates reacted from unreacted regions
+- Geometric effects via \(H, W,\) and the hydraulic diameter \(h\)
+
+I’ll walk through each part and link the variables using the given dependency chains.
+
+---
+
+## 1. Gas‑phase diffusion, Knudsen diffusion, and \(D_{\text{eff}}\)
+
+### 1.1 Molecular (gas‑phase) diffusion \(D_A\)
+
+Molecular diffusion arises from gas–phase collisions (A–A and A–B). It is built from:
+
+1. **Molecular thermal speed**
+\[
+v_A = \left(\frac{8RT}{\pi M_A}\right)^{1/2}
+\]
+- Depends on **molar mass** \(M_A\) and **temperature** \(T\).
+- \(M_A \uparrow \Rightarrow v_A \downarrow\), \(T \uparrow \Rightarrow v_A \uparrow\).
+
+2. **Collision term \(z_A\)** (dimension of time; effectively a “collision parameter”):
+\[
+z_A = \frac{\pi}{4} (d_A + d_B)^2 
+\left[ \frac{8RT}{\pi} \left( \frac{1}{M_A} + \frac{1}{M_B} \right) \right]^{1/2} 
+\frac{p_B}{RT} 
++ \tau (d_A)^2 
+\left[ \frac{16RT}{\pi M_A} \right]^{1/2} 
+\frac{p_A}{RT}
+\]
+- Depends on molecular diameters \(d_A,d_B\), molar masses \(M_A,M_B\), pressures \(p_A,p_B\), and a factor \(\tau\).
+- Encodes the effect of **binary** and **self‑collisions** on diffusion.
+
+3. **Molecular diffusion coefficient**
+\[
+D_A = \frac{3\pi}{16}\,v_A^2\,z_A
+\]
+Dependency chain:
+\[
+M_A, T, d_A, d_B, p_A, p_B, \tau \;\rightarrow\; v_A, z_A \;\rightarrow\; D_A
+\]
+
+Physically: higher \(T\) or lower \(M_A\) increases \(v_A\), and depending on collision environment (through \(z_A\)) you get a larger/smaller \(D_A\).
+
+---
+
+### 1.2 Knudsen diffusion \(D_{Kn}\)
+
+In narrow features where molecule–wall collisions dominate, Knudsen diffusion is important. It is set by the **hydraulic diameter** \(h\) and molecular speed:
+
+1. **Hydraulic diameter of a rectangular channel**
+\[
+h = \frac{1}{2} \frac{H W}{H+W}
+\]
+- Geometry only: depends on **height** \(H\) and **width** \(W\).
+- For a narrow, tall trench, \(h \approx \tfrac{1}{2}\min(H,W)\).
+
+2. **Knudsen diffusion coefficient**
+\[
+D_{Kn} = h \left(\frac{8RT}{9\pi M_A}\right)^{1/2}
+\]
+
+Dependency chain:
+\[
+H, W \rightarrow h \rightarrow D_{Kn}
+\]
+plus \(M_A, T\) for the thermal speed factor.
+
+Interpretation: making the trench narrower (smaller \(H\) or \(W\) → smaller \(h\)) reduces \(D_{Kn}\), i.e. transport is more restricted by wall collisions.
+
+---
+
+### 1.3 Effective diffusion \(D_{\text{eff}}\)
+
+In real ALD conditions, both molecular and Knudsen mechanisms act. They combine as **resistances in series**:
+
+\[
+D_{\text{eff}} = \frac{1}{\dfrac{1}{D_A}+\dfrac{1}{D_{Kn}}}
+\]
+
+- If \(D_A \gg D_{Kn}\), then \(D_{\text{eff}} \approx D_{Kn}\) (Knudsen‑limited).
+- If \(D_{Kn} \gg D_A\), then \(D_{\text{eff}} \approx D_A\) (molecular‑diffusion‑limited).
+
+Key chain:
+\[
+M_A,T,d_A,\ldots \rightarrow D_A,\; H,W \rightarrow h \rightarrow D_{Kn}
+\quad\Rightarrow\quad D_{\text{eff}}(M_A,T,d_A,H,W,\ldots)
+\]
+
+---
+
+### 1.4 Molecular size \(d_A\) and its role
+
+\(d_A\) is not taken as an arbitrary parameter; it’s inferred from material properties:
+
+1. From kinetic theory:
+\[
+d_A \approx \sqrt{\frac{5}{16 \pi N_0} \sqrt{\frac{M_A R T}{\pi}}}
+\]
+
+2. From condensed‑phase density:
+\[
+d_A \approx 2\left(\frac{3M_A}{4\pi\rho N_0}\right)^{1/3}
+\]
+
+So:
+\[
+N_0,M_A,R,T,\rho \rightarrow d_A \rightarrow z_A \rightarrow D_A \rightarrow D_{\text{eff}}
+\]
+
+This connects macroscopic quantities (molar mass, density) to transport through an effective hard‑sphere diameter.
+
+---
+
+## 2. Transport equation for precursor pressure \(p_A(x,t)\)
+
+The 1D model along the feature depth \(x\) is:
+
+\[
+\frac{\partial p_A}{\partial t} = D_{\text{eff}}\frac{\partial^2 p_A}{\partial x^2} 
+- g\frac{4RT}{h\,N_0}
+\]
+
+- **Diffusion term**: \(D_{\text{eff}}\partial^2 p_A/\partial x^2\) accounts for gas‑phase transport along \(x\).
+- **Sink term**: \(g\,4RT/(hN_0)\) couples to surface reaction:
+  - \(g = f_{\text{ads}} - f_{\text{des}}\) is the **net adsorption flux** per unit area.
+  - The factor \(4RT/(hN_0)\) converts surface flux (mol/m²s) on the walls into an effective **volumetric consumption** (Pa/s) in the channel of hydraulic diameter \(h\).
+
+Dependency chain:
+\[
+D_{\text{eff}}, g, h, N_0,R,T \rightarrow \partial p_A/\partial t
+\]
+
+### Quasi‑steady (diffusion dominated) approximation
+
+If transport adjusts much faster than surface coverage changes, we often set:
+
+\[
+D_{\text{eff}}\frac{\partial^2 p_A}{\partial x^2} \approx 0
+\]
+
+→ yields a **linear** pressure profile in the region where A is present:
+
+\[
+p_A(x,t) = p_{A0}\left(1-\frac{x}{x_s}\right), \quad x < x_s
+\]
+
+- \(p_{A0}\): inlet pressure at \(x=0\)
+- \(x_s\): **penetration depth** (front position) where \(p_A \to 0\) or effectively no A beyond.
+
+So:
+\[
+D_{\text{eff}}, x_s \rightarrow p_A(x)
+\]
+
+The physical picture: gas diffuses in, gets consumed by adsorption, and a moving front \(x_s(t)\) marks the limit of significant coverage growth during a half‑cycle.
+
+---
+
+## 3. Diffusive flux \(F(x,t)\)
+
+The molar flow of A through a cross‑section:
+
+\[
+F(x,t) = - H W \frac{D_{\mathrm{eff}}}{k_B T} \frac{d p_A}{d x}
+\]
+
+Using the linear profile,
+\[
+p_A(x) = p_{A0}\left(1-\frac{x}{x_s}\right) \Rightarrow \frac{d p_A}{d x} = -\frac{p_{A0}}{x_s}
+\]
+so
+\[
+F(x,t) \approx H W \frac{D_{\mathrm{eff}}}{k_B T} \frac{p_{A0}}{x_s}
+\]
+
+(Your compact expression has \(\rho_A\) but conceptually it’s the same scaling: \(F \propto HW D_{\text{eff}} / x_s\).)
+
+- **Scales with geometry** via cross‑section \(HW\).
+- **Scales inversely with penetration depth** \(x_s\): the deeper the front, the smaller the gradient \(|dp_A/dx|\), so for a fixed inlet pressure you get lower flux per length.
+
+Dependency chain:
+\[
+H,W,D_{\text{eff}},T,x_s\rightarrow F(x,t)
+\]
+
+---
+
+## 4. Langmuir‑type adsorption, desorption, and coverage \(\theta\)
+
+### 4.1 Adsorption flux \(f_{\text{ads}}\)
+
+\[
+f_{\text{ads}} = (1-\theta)\frac{c N_0 p_A}{\sqrt{2\pi M_A RT}}
+\]
+
+- \(p_A\): local gas‑phase partial pressure.
+- \(c\): **sticking probability** (fraction of collisions that stick).
+- \((1-\theta)\): fraction of free sites.
+- Denominator: proportional to mean molecular velocity → flux of impinging molecules.
+
+Dependencies:
+\[
+p_A, \theta, c, N_0, M_A, R, T \rightarrow f_{\text{ads}}
+\]
+
+Behavior:
+- Increases with \(p_A\) and \(c\).
+- Decreases as surface fills (\(\theta\to 1\)).
+- Temperature: higher \(T\) increases molecular flux (tends to increase \(f_{\text{ads}}\)), but in a more complete model it can also reduce sticking or increase desorption; here \(c\) is taken constant.
+
+---
+
+### 4.2 Site capacity \(q\) and desorption flux \(f_{\text{des}}\)
+
+The **site density per area**:
+
+\[
+q = \frac{b_{\text{film}}\,\rho\,g P C_{\text{sat}}}{b_A\,M}\,N_0
+\]
+
+Here \(q\) ties material/film parameters to how many A‑sites per m² exist. Important dependencies:
+\[
+\rho, g, b_A, M, N_0 \rightarrow q
+\]
+(plus the thickness per cycle, stoichiometric factor, etc., encoded in \(b_{\text{film}}, gP, C_{\text{sat}}\).)
+
+Desorption is taken as a simple proportional law:
+
+\[
+f_{\text{des}} = q P_0 d_s
+\]
+
+- \(P_0d_s\) is an effective desorption attempt rate times probability.
+- Scales linearly with \(q\): more sites → more potential desorption.
+
+Dependencies:
+\[
+q \rightarrow f_{\text{des}}
+\]
+
+---
+
+### 4.3 Net adsorption \(g\) and coverage evolution
+
+Net rate:
+\[
+g = f_{\text{ads}} - f_{\text{des}}
+\]
+
+Coverage dynamics:
+\[
+\frac{d\theta}{dt} = \frac{g}{q}
+\]
+
+Chain:
+\[
+p_A,\theta,c,N_0,M_A,R,T \rightarrow f_{\text{ads}}
+\]
+\[
+q \rightarrow f_{\text{des}}
+\]
+\[
+f_{\text{ads}},f_{\text{des}} \rightarrow g \rightarrow \frac{d\theta}{dt}
+\]
+
+Interpretation:
+
+- When \(f_{\text{ads}} > f_{\text{des}}\): \(g>0\) → \(\theta\) increases toward saturation.
+- When \(f_{\text{ads}} = f_{\text{des}}\): \(g=0\) → \(\theta\) has reached a local equilibrium \(\theta_{\text{eq}}\).
+- \(q\) rescales how a given flux \(g\) translates into a change in fractional coverage: larger \(q\) (more sites per area) → slower change of \(\theta\) for the same flux.
+
+---
+
+### 4.4 Equilibrium and Langmuir constant \(K\)
+
+At equilibrium, \(g=0\):
+\[
+f_{\text{ads}}(\theta_{\text{eq}},p_A) = f_{\text{des}}(\theta_{\text{eq}})
+\]
+
+From the Langmuir form you get:
+\[
+K = \frac{\theta_{\text{eq}}/p_A}{1-\theta_{\text{eq}}}
+\]
+
+In terms of microscopic parameters:
+\[
+Q = \frac{N_0}{\sqrt{2\pi M_A RT}}
+\]
+\[
+K = \frac{c Q}{q P_0 d_s}
+\]
+
+So:
+\[
+N_0,M_A,R,T \rightarrow Q
+\]
+\[
+c,Q,q,P_0,d_s \rightarrow K
+\]
+
+And via \(\theta_{\text{eq}}\):
+\[
+K, p_A \rightarrow \theta_{\text{eq}}
+\]
+
+Physically: large \(K\) (large \(c\), small \(qP_0d_s\)) means strong adsorption: high \(\theta_{\text{eq}}\) even at small \(p_A\). Small \(K\) means weak adsorption.
+
+---
+
+## 5. Penetration depth \(x_s\) and saturation profile
+
+### 5.1 Definition and role of \(x_s\)
+
+\(x_s\) is the **saturation (or reaction) front position**:
+
+- For \(x < x_s\): gas A penetrates, \(p_A(x) > 0\), and \(\theta(x,t)\) can grow.
+- For \(x > x_s\): essentially no gas A, \(p_A \approx 0\), and \(\theta\) remains at its previous value (for that cycle).
+
+The pressure profile for \(x < x_s\):
+\[
+p_A(x,t) = p_{A0}\left(1-\frac{x}{x_s}\right)
+\]
+
+Thus:
+\[
+D_{\text{eff}}, x_s, p_{A0} \rightarrow p_A(x)
+\]
+\[
+p_A(x) \rightarrow f_{\text{ads}}(x) \rightarrow g(x) \rightarrow \theta(x,t)
+\]
+
+### 5.2 How \(x_s\) emerges
+
+While not explicitly written as an ODE for \(x_s\) here, conceptually:
+
+1. The integrated consumption of A by adsorption up to \(x_s\) must match the incoming diffusive flux \(F(0)\) over the exposure time.
+2. The faster the surfaces saturate (larger \(g\) and smaller \(q\) → faster \(\theta \to \theta_{\text{eq}}\)), the **shorter** the penetration for a given pulse time.
+3. Larger \(D_{\text{eff}}\) allows gas to penetrate deeper before being fully consumed, giving a larger \(x_s\).
+
+So:
+\[
+D_{\text{eff}},c,K,q,\text{pulse time} \;\Rightarrow\; x_s
+\]
+
+In practice: higher \(D_{\text{eff}}\) or longer pulse → deeper \(x_s\); stronger adsorption (larger \(K\) or \(c\)) or larger capacity \(q\) → more rapid consumption per length, so \(x_s\) grows more slowly with time.
+
+---
+
+## 6. Geometry: \(H, W, h\) and aspect ratio
+
+Geometry enters in several ways:
+
+1. **Hydraulic diameter for Knudsen diffusion**
+   - \(h = \frac{1}{2}\frac{HW}{H+W}\)
+   - Narrower dimension reduces \(h\), decreases \(D_{Kn}\), and thus can limit \(D_{\text{eff}}\).
+
+2. **Cross‑section scaling of flux**
+   - \(F \propto H W D_{\text{eff}} / x_s\)
+   - Larger cross‑section \(HW\) allows more total molar flow given the same gradient.
+
+3. **Reaction sink term**
+   - The volumetric sink in the PDE is \(g \cdot 4RT / (h N_0)\).
+   - Smaller \(h\) (narrower channels) → stronger effective sink per unit volume, because surfaces are closer and dominate the volume.
+
+If the feature length is \(L\):
+
+- The **aspect ratio** is \(\text{AR} = L/\min(H,W)\).
+- For high AR, getting \(x_s \approx L\) (full penetration) becomes difficult because:
+  - Diffusion path is long.
+  - Walls are close (small \(h\)), enhancing Knudsen resistance and sink strength.
+
+So high AR + narrow \(H\) or \(W\) → small \(D_{\text{eff}}\), strong sink → \(x_s \ll L\) unless pulses are long or pressure is high.
+
+---
+
+## 7. Distinguishing key symbols
+
+To clarify the specific meanings:
+
+- \(D_A\): **Molecular diffusion coefficient** (gas‑phase, collision‑limited).
+- \(D_{Kn}\): **Knudsen diffusion coefficient** (wall‑collision‑limited).
+- \(D_{\text{eff}}\): **Effective diffusion coefficient**, combining both:
+  \[
+  \frac{1}{D_{\text{eff}}} = \frac{1}{D_A} + \frac{1}{D_{Kn}}
+  \]
+
+- \(g\): **Net adsorption rate per area**:
+  \[
+  g = f_{\text{ads}} - f_{\text{des}}
+  \]
+  Appears:
+  - In surface coverage evolution (\(d\theta/dt = g/q\)).
+  - As a sink in the gas‑phase diffusion equation.
+
+- \(g_{pc}\) (often used in literature but not explicitly in your list) typically denotes **growth per cycle** (thickness). In your equations, this role is encoded in the composite factors in \(q\). If you see \(g\) multiplied by film factors, that’s a mapping from surface coverage to film thickness.
+
+- \(K\): **Langmuir equilibrium constant**:
+  \[
+  K = \frac{\theta_{\text{eq}}/p_A}{1-\theta_{\text{eq}}}
+  = \frac{c Q}{q P_0 d_s}
+  \]
+  Links macroscopic equilibrium behavior to microscopic adsorption/desorption parameters.
+
+- \(Q\): **Kinetic prefactor**:
+  \[
+  Q = \frac{N_0}{\sqrt{2\pi M_A RT}}
+  \]
+  Essentially the collision flux normalization that appears in adsorption.
+
+- \(q\): **Site density per area** (max number of A species per unit area). Converts **molecular flux** \(g\) to **coverage rate** \(d\theta/dt\).
+
+---
+
+## 8. Putting it all together: coupling and influence chains
+
+To summarize how everything interacts:
+
+1. **Transport side**
+   - \(M_A, T, d_A, H, W \rightarrow D_A, D_{Kn} \rightarrow D_{\text{eff}}\)
+   - \(D_{\text{eff}}\) and geometry define how quickly and how far gas can diffuse:
+     \[
+     D_{\text{eff}}, H, W \rightarrow F(x,t), \quad D_{\text{eff}},g,h \rightarrow \partial p_A/\partial t
+     \]
+
+2. **Surface kinetics side**
+   - Material & film parameters:
+     \[
+     \rho, g_{\text{film}}, b_A, M, N_0 \rightarrow q
+     \]
+   - Gas and surface parameters:
+     \[
+     c, M_A, T, p_A, \theta \rightarrow f_{\text{ads}}
+     \]
+     \[
+     q,P_0,d_s \rightarrow f_{\text{des}}
+     \]
+   - Then:
+     \[
+     f_{\text{ads}}, f_{\text{des}} \rightarrow g \rightarrow d\theta/dt
+     \]
+
+3. **Equilibrium thermodynamics**
+   - From microscopic:
+     \[
+     N_0,M_A,R,T \rightarrow Q,\quad c,Q,q,P_0,d_s \rightarrow K
+     \]
+   - From macroscopic equilibrium:
+     \[
+     K, p_A \rightarrow \theta_{\text{eq}}
+     \]
+
+4. **Penetration depth and saturation**
+   - \(p_A(x)\) is shaped by \(D_{\text{eff}}\) and \(x_s\).
+   - \(p_A(x)\) feeds into local \(f_{\text{ads}}(x)\), \(g(x)\), and thus \(\theta(x,t)\).
+   - The condition that the incoming flux is balanced by integrated consumption in the accessible domain sets \(x_s(t)\), hence the final penetration depth for a given pulse.
+
+Overall:
+
+- Stronger diffusion (large \(D_{\text{eff}}\)), higher pressure \(p_{A0}\), and longer pulse → larger \(x_s\) and more uniform coverage.
+- Stronger adsorption (large \(K\), large \(c\)) or larger site capacity \(q\) → more rapid uptake per unit length → gas is depleted shallower → smaller \(x_s\) for a given pulse, i.e. stronger front‑like behavior.
+- Narrower geometry (small \(H,W\)) → smaller \(h\), smaller \(D_{Kn}\), thus smaller \(D_{\text{eff}}\) and larger effective reaction sink → lower penetration and stronger gradients.
+
+This is how the model simultaneously captures gas‑phase/Knudsen transport, Langmuir adsorption/desorption, penetration depth, and geometry effects in ALD growth in high‑aspect‑ratio structures.
