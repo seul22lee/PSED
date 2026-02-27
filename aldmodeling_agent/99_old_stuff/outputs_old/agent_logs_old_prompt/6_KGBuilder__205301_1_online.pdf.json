@@ -1,0 +1,982 @@
+{
+  "nodes": [
+    {
+      "id": "RT",
+      "type": "variable",
+      "label": "RT",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "1",
+          "10"
+        ]
+      }
+    },
+    {
+      "id": "v",
+      "type": "variable",
+      "label": "v",
+      "metadata": {
+        "definition": "Velocity of gas front (m/s)",
+        "units": null,
+        "source_equations": [
+          "3",
+          "40"
+        ]
+      }
+    },
+    {
+      "id": "A",
+      "type": "variable",
+      "label": "A",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "3",
+          "11",
+          "21",
+          "29"
+        ]
+      }
+    },
+    {
+      "id": "q",
+      "type": "variable",
+      "label": "q",
+      "metadata": {
+        "definition": "þ Pd 205301-5 Ylilammi, Ylivaara, and Puurunen J. Appl. Phys. 123, 205301 (2018) The analytical solution is (integrations from 0 to t) h tð Þ ¼ e\u0002Ð",
+        "units": null,
+        "source_equations": [
+          "9",
+          "12",
+          "32",
+          "44"
+        ]
+      }
+    },
+    {
+      "id": "p",
+      "type": "variable",
+      "label": "p",
+      "metadata": {
+        "definition": "; we get the penetration depth at pulse length tp, when W \u0005 H ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ",
+        "units": "44",
+        "source_equations": [
+          "9",
+          "11",
+          "22",
+          "43",
+          "44",
+          "46"
+        ]
+      }
+    },
+    {
+      "id": "c",
+      "type": "variable",
+      "label": "c",
+      "metadata": {
+        "definition": "K (Pa\u00021) gpcsat (pm) rms thickness error (nm)",
+        "units": null,
+        "source_equations": [
+          "9",
+          "11",
+          "41"
+        ]
+      }
+    },
+    {
+      "id": "M",
+      "type": "variable",
+      "label": "M",
+      "metadata": {
+        "definition": "N0: q ¼ bfilm",
+        "units": "9",
+        "source_equations": [
+          "9"
+        ]
+      }
+    },
+    {
+      "id": "h",
+      "type": "variable",
+      "label": "h",
+      "metadata": {
+        "definition": "@pA @t ¼ Deff",
+        "units": null,
+        "source_equations": [
+          "11",
+          "12",
+          "31",
+          "32",
+          "36",
+          "37"
+        ]
+      }
+    },
+    {
+      "id": "K",
+      "type": "variable",
+      "label": "K",
+      "metadata": {
+        "definition": "Adsorption equilibrium constant (1/Pa)",
+        "units": null,
+        "source_equations": [
+          "13"
+        ]
+      }
+    },
+    {
+      "id": "pA",
+      "type": "variable",
+      "label": "pA",
+      "metadata": {
+        "definition": "Partial pressure of reactant A (Pa)",
+        "units": null,
+        "source_equations": [
+          "13",
+          "17",
+          "32"
+        ]
+      }
+    },
+    {
+      "id": "cQ",
+      "type": "variable",
+      "label": "cQ",
+      "metadata": {
+        "definition": "q pAþPd \u0007 \b dtdt: Because typically we need to solve Eq. (31) more than 10 000 times in ﬁtting the result of one growth experiment, it is the major time consuming step in the analysis. Numerical integration of Eq. (32) is too slow. In this work, Eq. (31) is solved by the 4th order Runge-Kutta method (Arfken, 1970). It is self-initiated and easily stable. Often, 100 time points (time step, e.g., 1 ms) are enough for accurate results. However, sometimes this does not guarantee convergence and then we need to increase the number of time points. In Figs. 2 and 3, this approximate model is compared with the numerical solution of the differential equations. Both models give practically identical results. V. THICKNESS PROFILE AND THE PENETRATION",
+        "units": "32",
+        "source_equations": [
+          "13",
+          "32"
+        ]
+      }
+    },
+    {
+      "id": "Q",
+      "type": "variable",
+      "label": "Q",
+      "metadata": {
+        "definition": "Collision rate at unit pressure (m\u00022 s\u00021 Pa\u00021)",
+        "units": null,
+        "source_equations": [
+          "14"
+        ]
+      }
+    },
+    {
+      "id": "MART",
+      "type": "variable",
+      "label": "MART",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "14",
+          "43",
+          "44"
+        ]
+      }
+    },
+    {
+      "id": "g",
+      "type": "variable",
+      "label": "g",
+      "metadata": {
+        "definition": "Viscosity of gas (Pa s)",
+        "units": null,
+        "source_equations": [
+          "15"
+        ]
+      }
+    },
+    {
+      "id": "dh",
+      "type": "variable",
+      "label": "dh",
+      "metadata": {
+        "definition": "dt ¼ g q : 04 December 2025 23:11:22 During the reactant pulse, the net adsorption rate is always positive so that the question whether the adsorption is revers- ible or irreversible is not important for this model. Both cases are covered by the Langmuir model; in the latter case, Pd ¼ 0. Experiments show that better ﬁt, especially in the case of TiO2 is obtained if Pd > 0. Although the Langmuir model is used in this analysis, the actual reaction mechanism may be much more complicated. IV. APPROXIMATE SOLUTION TO THE DIFFUSION",
+        "units": "16",
+        "source_equations": [
+          "16"
+        ]
+      }
+    },
+    {
+      "id": "dt",
+      "type": "variable",
+      "label": "dt",
+      "metadata": {
+        "definition": "ð cQ q pAe Ð",
+        "units": null,
+        "source_equations": [
+          "16",
+          "32",
+          "39",
+          "40"
+        ]
+      }
+    },
+    {
+      "id": "x",
+      "type": "variable",
+      "label": "x",
+      "metadata": {
+        "definition": "Distance from the beginning of the channel (m)",
+        "units": null,
+        "source_equations": [
+          "17",
+          "18",
+          "25",
+          "26",
+          "29",
+          "31",
+          "36",
+          "37"
+        ]
+      }
+    },
+    {
+      "id": "Dt",
+      "type": "variable",
+      "label": "Dt",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "19",
+          "22",
+          "24"
+        ]
+      }
+    },
+    {
+      "id": "C",
+      "type": "variable",
+      "label": "C",
+      "metadata": {
+        "definition": "A: ¼ 2qW x þ",
+        "units": "21",
+        "source_equations": [
+          "21",
+          "44"
+        ]
+      }
+    },
+    {
+      "id": "ln",
+      "type": "variable",
+      "label": "ln",
+      "metadata": {
+        "definition": "1 KpA0 þ 1",
+        "units": null,
+        "source_equations": [
+          "23"
+        ]
+      }
+    },
+    {
+      "id": "a",
+      "type": "variable",
+      "label": "a",
+      "metadata": {
+        "definition": "Aspect ratio",
+        "units": null,
+        "source_equations": [
+          "23",
+          "41"
+        ]
+      }
+    },
+    {
+      "id": "D",
+      "type": "variable",
+      "label": "D",
+      "metadata": {
+        "definition": "x \u0002 xt ð Þ 2xs xt \u0002 xs ð Þ2 \u0004",
+        "units": null,
+        "source_equations": [
+          "27"
+        ]
+      }
+    },
+    {
+      "id": "s",
+      "type": "variable",
+      "label": "s",
+      "metadata": {
+        "definition": "ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ",
+        "units": null,
+        "source_equations": [
+          "30",
+          "37"
+        ]
+      }
+    },
+    {
+      "id": "t",
+      "type": "variable",
+      "label": "t",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "31",
+          "32",
+          "35",
+          "43"
+        ]
+      }
+    },
+    {
+      "id": "Pd",
+      "type": "variable",
+      "label": "Pd",
+      "metadata": {
+        "definition": "Desorption probability in unit time (1/s)",
+        "units": null,
+        "source_equations": [
+          "32"
+        ]
+      }
+    },
+    {
+      "id": "Ds",
+      "type": "variable",
+      "label": "Ds",
+      "metadata": {
+        "definition": "jds=dxj ; where Ds is the error in ﬁlm thickness and ds/dx is the slope of the ﬁlm thickness vs. location at the point of measure- ment. The maximum value of the slope is at the point of half ﬁlm thickness and determining xp at this point gives the best FIG. 2. Comparison of the development of reactant pressure distributions in time. Lines indicate the approximate model and circles the fully numerical solution of the growth equations. Parameter values used: H¼ 0.5lm, W ¼ 0.1 mm, pA0¼ 100 Pa, MA¼ 0.0749 kg/mol, dA ¼ 591 pm, MB ¼ 0.028 kg/ mol, dB ¼ 374 pm, pB ¼ 300 Pa, q ¼ 5 \u0006 1018 m\u00022, T ¼ 500 K, K ¼ 100 Pa\u00021, c ¼ 0.01, and gpcsat ¼ 106 pm. The locations of points xt and xs of the 0.1s pulse are marked. FIG. 3. Development of the surface coverage with time. Circles represent the fully numerical solution of differential equations and lines the result of the approximate model. Parameter values used: H ¼ 0.5lm, W ¼ 0.1 mm, pA0 ¼ 100 Pa, MA ¼ 0.0749 kg/mol, dA ¼ 591 pm, MB ¼ 0.028kg/mol, dB ¼ 374 pm, pB ¼ 300 Pa, q ¼ 5 \u0006 1018 m\u00022, T ¼ 500 K, K¼ 100 Pa\u00021, c ¼ 0.01, and gpcsat ¼ 106 pm. accuracy. Therefore, we deﬁne the half-thickness penetration xp of the ﬁlm growth, so that the ﬁlm thickness is 50% of thickness s(0) at the beginning of the channel, or by solving xp in the equation 04 December 2025 23:11:22 s xp ð Þ ¼ s 0 ð Þ 2 : The ﬁlm grows on both the top and bottom surfaces of the channel. If the thickness growth of the ﬁlm in one complete growth cycle is gpc, the free height of the channel after N cycles is H N ð Þ ¼ H 0 ð Þ \u0002 2N gpc: Because the ﬁlm growth thickness depends on location x, the channel height also varies with location. This complicates the analysis because the diffusion constant now depends on location. This problem is circumvented by assuming that the channel height is constant in the whole channel and it is updated to the value in the beginning of the channel after each pulse. Thus, in the model, the channel in the tail region is narrower than in reality, so the model predicts slightly too steep thinning of the ﬁlm. However, this is a good assump- tion when the ﬁlm is thin compared to the gap height H and when the ﬁlm does not grow much beyond the point xp. In the last step, we add the contributions hi in the surface coverage of all the N cycles and compute the ﬁnal thickness distribution s(x) h x ð Þ ¼",
+        "units": "35",
+        "source_equations": [
+          "33"
+        ]
+      }
+    },
+    {
+      "id": "dx",
+      "type": "variable",
+      "label": "dx",
+      "metadata": {
+        "definition": "dt ¼",
+        "units": null,
+        "source_equations": [
+          "33",
+          "38",
+          "40"
+        ]
+      }
+    },
+    {
+      "id": "xp",
+      "type": "variable",
+      "label": "xp",
+      "metadata": {
+        "definition": "Half-thickness penetration depth (m)",
+        "units": null,
+        "source_equations": [
+          "34"
+        ]
+      }
+    },
+    {
+      "id": "F",
+      "type": "variable",
+      "label": "F",
+      "metadata": {
+        "definition": "2qW ¼",
+        "units": null,
+        "source_equations": [
+          "39",
+          "40"
+        ]
+      }
+    },
+    {
+      "id": "b",
+      "type": "variable",
+      "label": "b",
+      "metadata": {
+        "definition": "Number of metal atoms in a molecule",
+        "units": null,
+        "source_equations": [
+          "41"
+        ]
+      }
+    },
+    {
+      "id": "gpc",
+      "type": "variable",
+      "label": "gpc",
+      "metadata": {
+        "definition": "Film growth per cycle (m)",
+        "units": null,
+        "source_equations": [
+          "46"
+        ]
+      }
+    },
+    {
+      "id": "Eq1",
+      "type": "equation",
+      "label": "Equation 1",
+      "metadata": {
+        "latex": "\\( 1 = 2 p_A RT \\)",
+        "raw": "\u0004\n\u00051=2 pA\nRT ;"
+      }
+    },
+    {
+      "id": "Eq2",
+      "type": "equation",
+      "label": "Equation 2",
+      "metadata": {
+        "latex": "\\frac{1}{2} = 0.5",
+        "raw": "\u0002\n\u00031=2\n:"
+      }
+    },
+    {
+      "id": "Eq3",
+      "type": "equation",
+      "label": "Equation 3",
+      "metadata": {
+        "latex": "\\frac{v^2}{A} = z_A",
+        "raw": "v2\nA\nzA\n:"
+      }
+    },
+    {
+      "id": "Eq4",
+      "type": "equation",
+      "label": "Equation 4",
+      "metadata": {
+        "latex": "\\frac{1}{2}",
+        "raw": "\u0002\n\u00031=2\n;"
+      }
+    },
+    {
+      "id": "Eq5",
+      "type": "equation",
+      "label": "Equation 5",
+      "metadata": {
+        "latex": "\\text{No mathematical content provided to reconstruct.}",
+        "raw": ""
+      }
+    },
+    {
+      "id": "Eq6",
+      "type": "equation",
+      "label": "Equation 6",
+      "metadata": {
+        "latex": "\\text{No mathematical content provided.}",
+        "raw": ":"
+      }
+    },
+    {
+      "id": "Eq7",
+      "type": "equation",
+      "label": "Equation 7",
+      "metadata": {
+        "latex": "```latex\n```",
+        "raw": ":"
+      }
+    },
+    {
+      "id": "Eq8",
+      "type": "equation",
+      "label": "Equation 8",
+      "metadata": {
+        "latex": "\\frac{1}{3} = 0.333...",
+        "raw": "\u0002\n\u00031=3\n:"
+      }
+    },
+    {
+      "id": "Eq9",
+      "type": "equation",
+      "label": "Equation 9",
+      "metadata": {
+        "latex": "\\( q = \\frac{g_{p, c, sat}}{M N_0} \\)",
+        "raw": "q gpcsat\nM\nN0:"
+      }
+    },
+    {
+      "id": "Eq10",
+      "type": "equation",
+      "label": "Equation 10",
+      "metadata": {
+        "latex": "\\frac{RT}{N_0}",
+        "raw": "RT\nN0\n;"
+      }
+    },
+    {
+      "id": "Eq11",
+      "type": "equation",
+      "label": "Equation 11",
+      "metadata": {
+        "latex": "\\[\nf_{\\text{ads}} = \\frac{1}{h} c N_0 p A \\sqrt{\\frac{2}{p M_{\\text{ART}}}}\n\\]",
+        "raw": "fads ¼ 1 \u0002 h\nð\nÞ\ncN0pA\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\n;"
+      }
+    },
+    {
+      "id": "Eq12",
+      "type": "equation",
+      "label": "Equation 12",
+      "metadata": {
+        "latex": "f_{des} = q h P_{d}",
+        "raw": "fdes ¼ qhPd;"
+      }
+    },
+    {
+      "id": "Eq13",
+      "type": "equation",
+      "label": "Equation 13",
+      "metadata": {
+        "latex": "\\[ K = \\frac{h_{eq}}{pA} - \\frac{cQ}{qP_{d}} \\]",
+        "raw": "K ¼ heq=pA\n1 \u0002 heq\n¼ cQ\nqPd\n;"
+      }
+    },
+    {
+      "id": "Eq14",
+      "type": "equation",
+      "label": "Equation 14",
+      "metadata": {
+        "latex": "Q = \\frac{N_0}{\\sqrt{2 \\pi MART}}",
+        "raw": "Q ¼\nN0\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\n:"
+      }
+    },
+    {
+      "id": "Eq15",
+      "type": "equation",
+      "label": "Equation 15",
+      "metadata": {
+        "latex": "\\[ g = f_{\\text{ads}} - f_{\\text{des}} \\]",
+        "raw": "g ¼ fads \u0002 fdes"
+      }
+    },
+    {
+      "id": "Eq16",
+      "type": "equation",
+      "label": "Equation 16",
+      "metadata": {
+        "latex": "\\frac{dh}{dt} = gq",
+        "raw": "dh\ndt ¼ g\nq :"
+      }
+    },
+    {
+      "id": "Eq17",
+      "type": "equation",
+      "label": "Equation 17",
+      "metadata": {
+        "latex": "\\frac{\\partial^2 pA}{\\partial x^2} = 0",
+        "raw": "@2pA x; t\nð\nÞ\n@x2\n\u0004 0:"
+      }
+    },
+    {
+      "id": "Eq18",
+      "type": "equation",
+      "label": "Equation 18",
+      "metadata": {
+        "latex": "x < x_t",
+        "raw": "\u0002\n\u0003\n;\nx < xt;"
+      }
+    },
+    {
+      "id": "Eq19",
+      "type": "equation",
+      "label": "Equation 19",
+      "metadata": {
+        "latex": "\\( x_s = \\sqrt{Dt} \\)",
+        "raw": "xs ¼\nﬃﬃﬃﬃﬃ\nDt\np\n:"
+      }
+    },
+    {
+      "id": "Eq20",
+      "type": "equation",
+      "label": "Equation 20",
+      "metadata": {
+        "latex": "\\( x_s \\)",
+        "raw": "1\nxs\n:"
+      }
+    },
+    {
+      "id": "Eq21",
+      "type": "equation",
+      "label": "Equation 21",
+      "metadata": {
+        "latex": "C = A",
+        "raw": "C\nA:"
+      }
+    },
+    {
+      "id": "Eq22",
+      "type": "equation",
+      "label": "Equation 22",
+      "metadata": {
+        "latex": "\\sqrt{\\frac{Dt}{p}}",
+        "raw": "\u0002\n\u0003\nﬃﬃﬃﬃﬃ\nDt\np\n:"
+      }
+    },
+    {
+      "id": "Eq23",
+      "type": "equation",
+      "label": "Equation 23",
+      "metadata": {
+        "latex": "\\frac{1}{2} = 3x^2 - 4y_1 + \\sqrt{z} + \\exp\\left(\\ln(a)\\right)",
+        "raw": "\u0002\n\u0003 :"
+      }
+    },
+    {
+      "id": "Eq24",
+      "type": "equation",
+      "label": "Equation 24",
+      "metadata": {
+        "latex": "\\[\nx_s = \\sqrt{Dt}\n\\]",
+        "raw": "xs ¼\nﬃﬃﬃﬃﬃ\nDt\np\n:"
+      }
+    },
+    {
+      "id": "Eq25",
+      "type": "equation",
+      "label": "Equation 25",
+      "metadata": {
+        "latex": "\\[\np_t \\exp\\left(x \\cdot (x_t - x_s)\\right) \\cdot (x_t - x_s) \\cdot \\left\\langle \\cdots \\right\\rangle^2\n\\]",
+        "raw": "pt exp x \u0002 xt\nxt \u0002 xs\nxt \u0002 xs\nð\nÞ2\n:"
+      }
+    },
+    {
+      "id": "Eq26",
+      "type": "equation",
+      "label": "Equation 26",
+      "metadata": {
+        "latex": "\\frac{\\exp(x - x_t)}{x_t - x_s} = \\frac{4RT}{hN_0 qhP_d}",
+        "raw": "\u0006 exp x \u0002 xt\nxt \u0002 xs\nþ 4RT\nhN0\nqhPd:"
+      }
+    },
+    {
+      "id": "Eq27",
+      "type": "equation",
+      "label": "Equation 27",
+      "metadata": {
+        "latex": "\\[\nD = \\frac{D_{eff}(x_t - x_s)^2}{4RThN_0cQ}\n\\]",
+        "raw": "D\nx \u0002 xt\nð\nÞ\n2xs xt \u0002 xs\nð\nÞ2 \u0004\nDeff\nxt \u0002 xs\nð\nÞ2 \u0002 4RT\nhN0\ncQ:"
+      }
+    },
+    {
+      "id": "Eq28",
+      "type": "equation",
+      "label": "Equation 28",
+      "metadata": {
+        "latex": "x_t = 0 \\text{; otherwise}",
+        "raw": "xt ¼ 0; otherwise:"
+      }
+    },
+    {
+      "id": "Eq29",
+      "type": "equation",
+      "label": "Equation 29",
+      "metadata": {
+        "latex": "\\begin{equation}\nh_{eq}(x) = \\frac{K_p A(x)}{1 + K_p A(x)}\n\\end{equation}",
+        "raw": "heq x\nð Þ ¼\nKpA x\nð Þ\n1 þ KpA x\nð Þ :"
+      }
+    },
+    {
+      "id": "Eq30",
+      "type": "equation",
+      "label": "Equation 30",
+      "metadata": {
+        "latex": "s = \\frac{qK}{2cQ}",
+        "raw": "s ¼ qK\n2cQ :"
+      }
+    },
+    {
+      "id": "Eq31",
+      "type": "equation",
+      "label": "Equation 31",
+      "metadata": {
+        "latex": "h(x, t)",
+        "raw": "\u0002\n\u0003\nh x; t\nð\nÞ:"
+      }
+    },
+    {
+      "id": "Eq32",
+      "type": "equation",
+      "label": "Equation 32",
+      "metadata": {
+        "latex": "\\begin{equation}\nh(t) = e^{- \\int_{cQ}^{q} pA + Pd \\, dt} \\left( cQ \\cdot q \\cdot pAe^{- \\int_{cQ}^{q} pA + Pd \\, dt} \\, dt \\, dt \\right)\n\\end{equation}",
+        "raw": "h tð Þ ¼ e\u0002Ð\ncQ\nq pAþPd\n\u0007\n\b\ndt\nð cQ\nq pAe\nÐ\ncQ\nq pAþPd\n\u0007\n\b\ndtdt:"
+      }
+    },
+    {
+      "id": "Eq33",
+      "type": "equation",
+      "label": "Equation 33",
+      "metadata": {
+        "latex": "\\frac{Dxp}{Ds} = \\left| \\frac{ds}{dx} \\right|",
+        "raw": "Dxp ¼\nDs\njds=dxj ;"
+      }
+    },
+    {
+      "id": "Eq34",
+      "type": "equation",
+      "label": "Equation 34",
+      "metadata": {
+        "latex": "\\[ s_{xp} = s_{0}^2 \\]",
+        "raw": "s xp\nð\nÞ ¼ s 0\nð Þ\n2 :"
+      }
+    },
+    {
+      "id": "Eq35",
+      "type": "equation",
+      "label": "Equation 35",
+      "metadata": {
+        "latex": "H_N(t) = H_0(t) - 2N g_{pc}",
+        "raw": "H N\nð Þ ¼ H 0\nð Þ \u0002 2N gpc:"
+      }
+    },
+    {
+      "id": "Eq36",
+      "type": "equation",
+      "label": "Equation 36",
+      "metadata": {
+        "latex": "\\sum_{i=1}^{h} x(i)",
+        "raw": "i¼1\nhi x\nð Þ;"
+      }
+    },
+    {
+      "id": "Eq37",
+      "type": "equation",
+      "label": "Equation 37",
+      "metadata": {
+        "latex": "s(x) = h(x) g_{pcsat}",
+        "raw": "s x\nð Þ ¼ h x\nð Þgpcsat:"
+      }
+    },
+    {
+      "id": "Eq38",
+      "type": "equation",
+      "label": "Equation 38",
+      "metadata": {
+        "latex": "\\begin{equation}\ndN = 2qW \\, dx\n\\end{equation}",
+        "raw": "dN ¼ 2qWdx:"
+      }
+    },
+    {
+      "id": "Eq39",
+      "type": "equation",
+      "label": "Equation 39",
+      "metadata": {
+        "latex": "dN = F dt",
+        "raw": "dN ¼ Fdt:"
+      }
+    },
+    {
+      "id": "Eq40",
+      "type": "equation",
+      "label": "Equation 40",
+      "metadata": {
+        "latex": "\\[\nv = \\frac{dx}{dt} = \\frac{F}{2qW}\n\\]",
+        "raw": "v ¼ dx\ndt ¼\nF\n2qW :"
+      }
+    },
+    {
+      "id": "Eq41",
+      "type": "equation",
+      "label": "Equation 41",
+      "metadata": {
+        "latex": "a - b = c",
+        "raw": "\u0002\n\u0003 ;"
+      }
+    },
+    {
+      "id": "Eq42",
+      "type": "equation",
+      "label": "Equation 42",
+      "metadata": {
+        "latex": "```latex\n- :\n```",
+        "raw": "\u0002\n\u0003 :"
+      }
+    },
+    {
+      "id": "Eq43",
+      "type": "equation",
+      "label": "Equation 43",
+      "metadata": {
+        "latex": "\\frac{HpA_0N_0}{2q} \\sqrt{\\frac{2p}{MART}} p t",
+        "raw": "\u0002\n\u0003\n¼\nHpA0N0\n2q\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\nt:"
+      }
+    },
+    {
+      "id": "Eq44",
+      "type": "equation",
+      "label": "Equation 44",
+      "metadata": {
+        "latex": "\\[\nC = \\frac{p A_0 N_0}{2 q} \\sqrt{\\frac{2 p}{MART}}\n\\]",
+        "raw": "C ¼\npA0N0\n2q\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\n;"
+      }
+    },
+    {
+      "id": "Eq45",
+      "type": "equation",
+      "label": "Equation 45",
+      "metadata": {
+        "latex": "0.375",
+        "raw": "0:375\n:"
+      }
+    },
+    {
+      "id": "Eq46",
+      "type": "equation",
+      "label": "Equation 46",
+      "metadata": {
+        "latex": "\\begin{equation}\ng_{pc} = 1 + K_{p}A_{gpc}\n\\end{equation}",
+        "raw": "gpcsat ¼ 1 þ KpA\nKpA\ngpc;"
+      }
+    },
+    {
+      "id": "zA",
+      "type": "variable",
+      "label": "zA",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "Dh",
+      "type": "variable",
+      "label": "Dh",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "X",
+      "type": "variable",
+      "label": "X",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "Z",
+      "type": "variable",
+      "label": "Z",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "RT",
+      "target": "pA",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "RT appears in the equation for the collision rate related to pA."
+      }
+    },
+    {
+      "source": "pA",
+      "target": "zA",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "zA is derived based on the ratio of v^2 and A."
+      }
+    },
+    {
+      "source": "q",
+      "target": "h",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "The desorption rate f_des depends on q, h, and Pd."
+      }
+    },
+    {
+      "source": "g",
+      "target": "dh",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "The rate of change of h (dh/dt) is governed by g."
+      }
+    },
+    {
+      "source": "g",
+      "target": "q",
+      "relation": "causal",
+      "metadata": {
+        "description": "g is defined as the difference between f_ads and f_des."
+      }
+    },
+    {
+      "source": "h",
+      "target": "K",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "K is defined in terms of h_eq, q, and pA."
+      }
+    },
+    {
+      "source": "g",
+      "target": "C",
+      "relation": "derived_from",
+      "metadata": {
+        "description": "s is derived based on the relationship involving g and K across cycles."
+      }
+    },
+    {
+      "source": "pA",
+      "target": "x",
+      "relation": "causal",
+      "metadata": {
+        "description": "The rate of change of pA involves both spatial and temporal derivatives."
+      }
+    },
+    {
+      "source": "xp",
+      "target": "x",
+      "relation": "causal",
+      "metadata": {
+        "description": "xp is defined based on the overall diffusion process in the channel."
+      }
+    },
+    {
+      "source": "A",
+      "target": "Dh",
+      "relation": "derived_from",
+      "metadata": {
+        "description": "D is given as a function of the equilibrium constant K and A."
+      }
+    },
+    {
+      "source": "M",
+      "target": "q",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "M links the quantities involved in the calculation of q."
+      }
+    },
+    {
+      "source": "h",
+      "target": "t",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "h is dependent on time through an integral expression involving q, pA, and Pd."
+      }
+    },
+    {
+      "source": "X",
+      "target": "Z",
+      "relation": "depends_on",
+      "metadata": {
+        "description": "The relationship defines variables as part of the force calculation."
+      }
+    },
+    {
+      "source": "D",
+      "target": "x",
+      "relation": "causal",
+      "metadata": {
+        "description": "D results from the real-time distance description in the channel."
+      }
+    }
+  ]
+}
