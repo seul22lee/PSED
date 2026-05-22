@@ -1,0 +1,241 @@
+{
+  "geometry_model": {
+    "feature_definition": {
+      "feature_type": "LHAR_channel",
+      "dimensionality": "1D"
+    },
+    "geometry_parameters": {
+      "feature_height": {
+        "canonical_name": "feature_height",
+        "paper_symbol": "H",
+        "physical_meaning": "channel height",
+        "units": "m",
+        "definition": "vertical dimension of the channel",
+        "equation_context": "Eq. (3), Eq. (8), Eq. (13), Table 1",
+        "annotation": {
+          "evidence": "S00050, S00086, S00115, S00140, S00166, S00167, S00181, S00198, S00199, S00200, S00206, S00207, S00217, S00231, S00239, S00260, S00268, S00273, S00274, S00279, S00280, S00294, S00303, S00307, S00308, S00387, S00388, S00389, S00396, S00412, S00498, S00499, S00505, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_width": {
+        "canonical_name": "feature_width",
+        "paper_symbol": "W",
+        "physical_meaning": "width of the channel",
+        "units": "m",
+        "definition": "",
+        "equation_context": "Eq. (8)",
+        "annotation": {
+          "evidence": "S00115, S00525",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_depth": {
+        "canonical_name": "feature_depth",
+        "paper_symbol": "L",
+        "physical_meaning": "channel length",
+        "units": "m",
+        "definition": "length of the channel",
+        "equation_context": "Eq. (3)",
+        "annotation": {
+          "evidence": "S00086, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "pore_radius": {
+        "canonical_name": "pore_radius",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_length": {
+        "canonical_name": "feature_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "derived_parameters": {
+      "aspect_ratio": {
+        "canonical_name": "aspect_ratio",
+        "paper_symbol": "AR",
+        "physical_meaning": "high-aspect-ratio",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00019, S00020, S00051",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "equivalent_aspect_ratio": {
+        "canonical_name": "equivalent_aspect_ratio",
+        "paper_symbol": "EAR",
+        "physical_meaning": "hole-equivalent aspect ratio",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00098",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "h",
+        "physical_meaning": "hydraulic diameter of the lateral high aspect ratio structure",
+        "units": "m",
+        "definition": "related to the height H and width W of the channel by Eq. (8)",
+        "equation_context": "Eq. (8), Eq. (1), Eq. (13)",
+        "annotation": {
+          "evidence": "S00114, S00115, S00116, S00132, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "cross_section_area": {
+        "canonical_name": "cross_section_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_volume": {
+        "canonical_name": "feature_volume",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m3",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_evolution": {
+      "evolving_geometry": false,
+      "evolution_equation": ""
+    },
+    "coordinate_system": {
+      "coordinate_type": "cartesian",
+      "spatial_variable": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "x",
+        "physical_meaning": "distance from the channel entrance",
+        "units": "m",
+        "definition": "physical distance",
+        "equation_context": "Eq. (1), Eq. (18), Eq. (19), Eq. (22), Eq. (23), Eq. (24)",
+        "annotation": {
+          "evidence": "S00114, S00143, S00167, S00168, S00202, S00203, S00204, S00269, S00271, S00388, S00499, S00526",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_assumptions": {
+      "constant_geometry": true,
+      "symmetric_geometry": null,
+      "uniform_cross_section": null
+    },
+    "transport_interface": {
+      "characteristic_length": {
+        "canonical_name": "characteristic_length",
+        "paper_symbol": "D",
+        "physical_meaning": "characteristic limiting feature size",
+        "units": "m",
+        "definition": "The hydraulic diameter h is taken to represent the characteristic limiting feature size D in calculating the Knudsen number.",
+        "equation_context": "Eq. (1), Eq. (2)",
+        "annotation": {
+          "evidence": "S00055, S00062, S00116, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_length": {
+        "canonical_name": "diffusion_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "reaction_interface": {
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "active_surface_area": {
+        "canonical_name": "active_surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "source_reference": {
+      "paper_title": "Simulated conformality of atomic layer deposition in lateral channels: the impact of the Knudsen number on the saturation profile characteristics †",
+      "equation_location": "Eq. (8) for hydraulic diameter, Eq. (1) for Knudsen number definition",
+      "notes": "The model used is by Ylilammi et al. (S00092, S00101)."
+    }
+  }
+}
