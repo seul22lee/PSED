@@ -1,0 +1,277 @@
+{
+  "transport_model": {
+    "equation_structure": {
+      "form": "diffusion_reaction",
+      "spatial_dimension": "1D",
+      "time_dependence": "transient",
+      "reaction_coupling": {
+        "sink_term_present": true,
+        "coupling_variable": {
+          "canonical_name": "surface_coverage",
+          "paper_symbol": "θ",
+          "physical_meaning": "fraction of occupied surface sites",
+          "units": "dimensionless",
+          "definition": "Fraction of surface sites occupied by adsorbed precursor molecules, as per Langmuir adsorption.",
+          "equation_context": "adsorption loss term in the diffusion-reaction equation",
+          "annotation": {
+            "evidence": "E00007, S0102, S0113",
+            "confidence": "high",
+            "uncertainty_note": "Symbol 'θ' is used in the reaction sink term, and the model assumes Langmuir adsorption, implying 'θ' represents surface coverage."
+          }
+        }
+      },
+      "convection_term": {
+        "present": false,
+        "velocity_variable": {
+          "canonical_name": "gas_velocity",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        }
+      }
+    },
+    "transport_variable": {
+      "canonical_name": "gas_phase_partial_pressure",
+      "paper_symbol": "p_A",
+      "physical_meaning": "partial pressure of reactant A",
+      "units": "Pa",
+      "definition": "Gas-phase partial pressure of the precursor reactant A inside the channel.",
+      "equation_context": "governing diffusion-reaction equation",
+      "annotation": {
+        "evidence": "E00007, S0114, S0143, S0515",
+        "confidence": "high",
+        "uncertainty_note": ""
+      }
+    },
+    "diffusion_model": {
+      "type": "bosanquet_diffusion",
+      "equation": "D_eff = (1/D_A + 1/D_Kn)^(-1)",
+      "coefficients": {
+        "molecular_diffusion_coefficient": {
+          "canonical_name": "molecular_diffusion_coefficient",
+          "paper_symbol": "D_A",
+          "physical_meaning": "molecular diffusion coefficient",
+          "units": "m2/s",
+          "definition": "Diffusion coefficient describing molecule-molecule interactions in the gas phase.",
+          "equation_context": "Bosanquet relation (Eq. 12), molecular diffusion coefficient equation (Eq. 14)",
+          "annotation": {
+            "evidence": "E00012, E00014, S0129, S0130, S0134, S0223, S0514",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "knudsen_diffusion_coefficient": {
+          "canonical_name": "knudsen_diffusion_coefficient",
+          "paper_symbol": "D_Kn",
+          "physical_meaning": "Knudsen diffusion coefficient",
+          "units": "m2/s",
+          "definition": "Diffusion coefficient describing molecule-wall interactions, dominating at low pressures.",
+          "equation_context": "Bosanquet relation (Eq. 12), Knudsen diffusion coefficient equation (Eq. 13)",
+          "annotation": {
+            "evidence": "E00012, E00013, S0129, S0132, S0223, S0514",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "effective_diffusion_coefficient": {
+          "canonical_name": "effective_diffusion_coefficient",
+          "paper_symbol": "D_eff",
+          "physical_meaning": "effective diffusion coefficient",
+          "units": "m2/s",
+          "definition": "Combined diffusion coefficient accounting for both molecular and Knudsen diffusion, used in the transport equation.",
+          "equation_context": "governing diffusion-reaction equation (Eq. 7), Bosanquet relation (Eq. 12)",
+          "annotation": {
+            "evidence": "E00007, E00012, S0114, S0129, S0131, S0223, S0514",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "dependencies": [
+        "temperature",
+        "pressure",
+        "pore_radius",
+        "molecular_mass"
+      ]
+    },
+    "related_variables": {
+      "spatial_coordinate": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "x",
+        "physical_meaning": "distance from the channel entrance",
+        "units": "m",
+        "definition": "Axial coordinate along the length of the lateral high-aspect-ratio channel.",
+        "equation_context": "governing diffusion-reaction equation",
+        "annotation": {
+          "evidence": "E00007, S0114, S0526",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "time": {
+        "canonical_name": "time",
+        "paper_symbol": "t",
+        "physical_meaning": "time",
+        "units": "s",
+        "definition": "Temporal coordinate, representing exposure time or pulse time.",
+        "equation_context": "governing diffusion-reaction equation",
+        "annotation": {
+          "evidence": "E00007, S0140, S0167, S0515",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_coefficient": {
+        "canonical_name": "effective_diffusion_coefficient",
+        "paper_symbol": "D_eff",
+        "physical_meaning": "effective diffusion coefficient",
+        "units": "m2/s",
+        "definition": "The effective diffusion coefficient used in Fick's second law of diffusion.",
+        "equation_context": "governing diffusion-reaction equation",
+        "annotation": {
+          "evidence": "E00007, S0114",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "regime_indicators": {
+      "knudsen_number": {
+        "canonical_name": "knudsen_number",
+        "paper_symbol": "Kn",
+        "physical_meaning": "ratio of mean free path to characteristic length",
+        "units": "dimensionless",
+        "definition": "Kn = l / D, where l is the mean free path and D is the characteristic limiting feature size.",
+        "equation_context": "regime classification",
+        "annotation": {
+          "evidence": "S0042, S0055, S0116, S0514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "mean_free_path": {
+        "canonical_name": "mean_free_path",
+        "paper_symbol": "l",
+        "physical_meaning": "mean free path of gas molecules",
+        "units": "m",
+        "definition": "Average distance a molecule travels between collisions.",
+        "equation_context": "Knudsen number definition (S0055), mean free path equations (Eq. 1, Eq. 4)",
+        "annotation": {
+          "evidence": "E00001, E00004, S0055, S0063, S0105, S0514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "pressure": {
+        "canonical_name": "pressure",
+        "paper_symbol": "p",
+        "physical_meaning": "total pressure or partial pressure",
+        "units": "Pa",
+        "definition": "Total gas pressure or partial pressure of reactant/inert gas, influencing mean free path and molecular diffusion.",
+        "equation_context": "mean free path equation (Eq. 1, Eq. 4), molecular diffusion coefficient (Eq. 14, Eq. 16)",
+        "annotation": {
+          "evidence": "E00001, E00004, E00016, S0064, S0107, S0227, S0463, S0515",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_coupling": {
+      "feature_type": "LHAR_channel",
+      "geometry_parameters": {
+        "height": {
+          "canonical_name": "height",
+          "paper_symbol": "H",
+          "physical_meaning": "height of the channel",
+          "units": "m",
+          "definition": "The height of the lateral high-aspect-ratio channel.",
+          "equation_context": "Thiele modulus (Eq. 9), dimensionless distance (Eq. 17), Knudsen diffusion coefficient (Eq. 13)",
+          "annotation": {
+            "evidence": "E00013, E00017, S0086, S0140, S0167, S0514",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "width": {
+          "canonical_name": "width",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "depth": {
+          "canonical_name": "depth",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "radius": {
+          "canonical_name": "radius",
+          "paper_symbol": "D",
+          "physical_meaning": "characteristic limiting feature size",
+          "units": "m",
+          "definition": "Characteristic dimension of the feature, used in Knudsen number calculation.",
+          "equation_context": "Knudsen number definition (S0055), hydraulic diameter (S0116)",
+          "annotation": {
+            "evidence": "S0055, S0062, S0072, S0116, S0514",
+            "confidence": "high",
+            "uncertainty_note": "The paper uses 'D' for characteristic feature size, which is represented by 'h' (hydraulic diameter) in calculations."
+          }
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "h",
+        "physical_meaning": "hydraulic diameter of the channel",
+        "units": "m",
+        "definition": "Characteristic length scale of the lateral high-aspect-ratio structure, used in diffusion calculations.",
+        "equation_context": "governing diffusion-reaction equation (Eq. 7), Knudsen diffusion coefficient (Eq. 13), Knudsen number calculation (S0116)",
+        "annotation": {
+          "evidence": "E00007, E00013, S0114, S0116, S0132, S0514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "boundary_conditions": {
+      "inlet_condition": "p_A(x=0, t) = p_A0 (initial partial pressure of reactant A)",
+      "wall_condition": "adsorption flux (Langmuir adsorption) as a sink term in the bulk equation",
+      "symmetry_condition": ""
+    },
+    "assumptions": {
+      "dimensionality": "1D",
+      "isothermal": true,
+      "constant_diffusion": false,
+      "molecular_flow": false,
+      "steady_state": false
+    },
+    "solution_strategy": {
+      "type": "analytical"
+    },
+    "source_reference": {
+      "paper_title": "Simulated conformality of atomic layer deposition in lateral channels: the impact of the Knudsen number on the saturation profile characteristics †",
+      "equation_location": "Eq. (7)",
+      "notes": "The model uses an analytical approximation for the reactant gas pressure along the channel, simplifying Fick's second law into piecewise linear and exponential functions (Eq. 17, 18, 20)."
+    }
+  }
+}

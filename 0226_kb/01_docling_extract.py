@@ -1,11 +1,11 @@
 import json
 import logging
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Optional
 
 import pandas as pd
-
 from docling_core.types.doc import PictureItem, TableItem
 from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import PdfPipelineOptions
@@ -51,17 +51,65 @@ def _safe_page_nos(item: Any) -> list[int]:
     return sorted(set(page_nos))
 
 
-def _caption_text_from_item(item: Any) -> Optional[str]:
-    """
-    PictureItem/TableItem에는 caption: Optional[Union[TextItem, RefItem]] 가 있을 수 있음. :contentReference[oaicite:1]{index=1}
-    TextItem이면 .text, RefItem이면 간단히 str() fallback.
-    """
-    cap = getattr(item, "caption", None)
-    if cap is None:
+def _caption_text_from_item(item, doc):
+
+    caps = getattr(item, "captions", None)
+
+    if not caps:
         return None
+
+    cap = caps[0]
+
+    # RefItem resolve
+    if hasattr(cap, "cref"):
+
+        ref = cap.cref
+
+        for t in getattr(doc, "texts", []):
+            if getattr(t, "self_ref", None) == ref:
+                return getattr(t, "text", None)
+
     if hasattr(cap, "text"):
         return cap.text
-    return str(cap)
+
+    return None
+
+CAPTION_PATTERN = re.compile(
+    r"^(fig\.?|figure|table)\s*\d+",
+    re.IGNORECASE
+)
+
+def _find_caption_from_layout(doc, pic):
+
+    texts = getattr(doc, "texts", [])
+
+    page_nos = _safe_page_nos(pic)
+
+    pic_bbox = getattr(pic, "bbox", None)
+
+    if not pic_bbox:
+        return None
+
+    best = None
+    best_dist = 9999
+
+    for t in texts:
+
+        txt = getattr(t, "text", "").strip()
+
+        if not txt.lower().startswith(("fig", "figure")):
+            continue
+
+        if not hasattr(t, "bbox"):
+            continue
+
+        dist = abs(t.bbox.y0 - pic_bbox.y1)
+
+        if dist < best_dist and dist < 200:
+            best = txt
+            best_dist = dist
+
+    return best
 
 
 def extract_one_pdf(pdf_path: Path, out_root: Path) -> None:
@@ -77,6 +125,7 @@ def extract_one_pdf(pdf_path: Path, out_root: Path) -> None:
     pipeline_options = PdfPipelineOptions()
     pipeline_options.generate_picture_images = True
     pipeline_options.generate_page_images = False  # 지금은 텍스트/테이블/캡션만이면 False로 가볍게
+    pipeline_options.images_scale = 4
 
     converter = DocumentConverter(
         format_options={
@@ -85,8 +134,25 @@ def extract_one_pdf(pdf_path: Path, out_root: Path) -> None:
     )
 
     log.info(f"Converting: {pdf_path}")
+
     conv_res = converter.convert(pdf_path)
     doc = conv_res.document
+
+
+    # =============================
+    # DEBUG: caption 구조 확인
+    # =============================
+    print("\n===== DEBUG CAPTION STRUCTURE =====")
+
+    print("Total pictures:", len(getattr(doc, "pictures", [])))
+
+    for i, pic in enumerate(doc.pictures):
+        print(f"\nPicture {i+1}")
+        print("caption field:", pic.captions)
+
+    print("\nDoc captions count:", len(getattr(doc, "captions", [])))
+
+    print("===================================\n")
 
     # 1) full text: markdown / json
     md_path = out_dir / "document.md"
@@ -113,7 +179,7 @@ def extract_one_pdf(pdf_path: Path, out_root: Path) -> None:
                 "rows": int(df.shape[0]),
                 "cols": int(df.shape[1]),
                 "page_nos": _safe_page_nos(table),
-                "caption": _caption_text_from_item(table),
+                "caption": _caption_text_from_item(table,doc),
                 "self_ref": getattr(table, "self_ref", None),
                 "csv_path": str(csv_path),
                 "html_path": str(html_path),
@@ -128,7 +194,11 @@ def extract_one_pdf(pdf_path: Path, out_root: Path) -> None:
 
     for p_idx, pic in enumerate(getattr(doc, "pictures", []), start=1):
 
-        caption = _caption_text_from_item(pic)
+        caption = _caption_text_from_item(pic, doc)
+
+        if caption is None:
+            caption = _find_caption_from_layout(doc, pic)
+
         page_nos = _safe_page_nos(pic)
 
         image = None

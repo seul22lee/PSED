@@ -1,0 +1,214 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "Langmuir",
+      "equation": "",
+      "equation_terms": {
+        "adsorption_term": "",
+        "desorption_term": "",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "fraction of occupied adsorption sites",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00135",
+          "confidence": "medium",
+          "uncertainty_note": "Symbol not explicitly stated, but concept of surface saturation implies a coverage variable."
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_flux",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "desorption_model": {
+      "present": false,
+      "desorption_rate_expression": "",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "site_density",
+        "paper_symbol": "",
+        "physical_meaning": "adsorption site density",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00135",
+          "confidence": "medium",
+          "uncertainty_note": "Implied by surface saturation, but no specific symbol or units given."
+        }
+      },
+      "site_balance_equation": "",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "maximum fraction of occupied adsorption sites",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00135",
+          "confidence": "high",
+          "uncertainty_note": "Implied by 'saturation of the surface', normalized to 1."
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle",
+        "paper_symbol": "",
+        "physical_meaning": "film thickness deposited per ALD cycle",
+        "units": "",
+        "definition": "",
+        "annotation": {
+          "evidence": "S00097, S00315",
+          "confidence": "medium",
+          "uncertainty_note": "Concept of GPC is strongly implied by 'thickness control on monolayer-scale' and 'uniform films of smaller thickness', but no symbol or explicit relation is given."
+        }
+      },
+      "growth_rate_expression": "",
+      "surface_growth_coupling": ""
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "precursor (TBTDEN), hydrogen radicals",
+      "surface_coverage": "surface_coverage",
+      "temperature_dependence": "process temperature",
+      "pressure_dependence": "process pressure"
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": "",
+      "thiele_modulus": ""
+    },
+    "assumptions": {
+      "irreversible_adsorption": true,
+      "single_site_adsorption": null,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": null,
+      "uniform_surface": true,
+      "coverage_independent_sticking": null
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "adsorption limited by available surface sites",
+      "reaction_order": "",
+      "coverage_dependence": "reaction rate decreases as surface coverage increases"
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "",
+      "transport_reaction_coupling": ""
+    },
+    "source_reference": {
+      "paper_title": "",
+      "equation_location": "",
+      "notes": "Reaction model is primarily inferred from descriptions of ALD characteristics like 'self-limiting growth' and 'surface saturation', rather than explicit kinetic equations. Desorption is assumed false for precursor adsorption based on self-limiting nature, though purge steps for by-products are mentioned."
+    }
+  }
+}

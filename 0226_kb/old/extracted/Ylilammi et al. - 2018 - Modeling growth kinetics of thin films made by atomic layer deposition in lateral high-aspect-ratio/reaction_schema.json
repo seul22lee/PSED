@@ -1,0 +1,214 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "Langmuir",
+      "equation": "dh/dt = c * Q * p_A * (1 - h) - P_d * h",
+      "equation_terms": {
+        "adsorption_term": "c * Q * p_A * (1 - h)",
+        "desorption_term": "P_d * h",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "h",
+        "physical_meaning": "Surface coverage",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00098, S00173",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "c * Q * p_A * q * (1 - h)",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "Lumped sticking coefficient",
+        "units": "dimensionless",
+        "definition": "combines the effects of all sequential and parallel surface processes",
+        "equation_context": "adsorption_rate, reaction_equation",
+        "annotation": {
+          "evidence": "S00055, S00171, S00174, E00011, E00016, E00031",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_flux",
+        "paper_symbol": "Q * p_A",
+        "physical_meaning": "Molecular collision flux to the surface",
+        "units": "1/(m^2 s)",
+        "definition": "Product of collision rate at unit pressure (Q) and partial pressure of reactant A (p_A)",
+        "equation": "f_ads = c * (Q * p_A) * q * (1 - h)",
+        "annotation": {
+          "evidence": "S00171, S00175, E00011, E00013, E00016, E00031",
+          "confidence": "high",
+          "uncertainty_note": "`Q` is defined as collision rate at unit pressure (S00175), so the actual collision flux is `Q * p_A`."
+        }
+      }
+    },
+    "desorption_model": {
+      "present": true,
+      "desorption_rate_expression": "P_d * q * h",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "P_d",
+        "physical_meaning": "Desorption probability in unit time",
+        "units": "1/s",
+        "definition": "",
+        "equation_context": "desorption_rate, reaction_equation",
+        "annotation": {
+          "evidence": "S00079, S00173, E00012, E00016, E00031",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "site_density",
+        "paper_symbol": "q",
+        "physical_meaning": "Adsorption density of molecules in saturation",
+        "units": "1/m^2",
+        "definition": "saturation areal density of adsorbed molecules",
+        "equation_context": "adsorption_rate, desorption_rate, growth_relation",
+        "annotation": {
+          "evidence": "S00080, S00173, S00227, S00256, E00011, E00012, E00038",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "site_balance_equation": "h_occupied + h_vacant = 1 (implied by (1-h) term)",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "Maximum fraction of occupied adsorption sites",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "E00011",
+          "confidence": "medium",
+          "uncertainty_note": "Implied by the (1-h) term in the Langmuir model."
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_rate_constant",
+        "paper_symbol": "c * Q",
+        "physical_meaning": "Effective adsorption rate constant for surface coverage",
+        "units": "1/(Pa s)",
+        "definition": "Product of sticking coefficient (c) and collision rate at unit pressure (Q)",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "S00171, S00175, E00011, E00013, E00016, E00031",
+          "confidence": "high",
+          "uncertainty_note": "This is the combined rate constant for the `(1-h)` term in the `dh/dt` equation, with `p_A` as the gas phase variable. The adsorption equilibrium constant `K` (1/Pa) is also a key parameter, defined as `K = c * Q / P_d` (E00013)."
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "P_d",
+        "physical_meaning": "Desorption probability in unit time",
+        "units": "1/s",
+        "definition": "",
+        "equation_context": "desorption_rate, reaction_equation",
+        "annotation": {
+          "evidence": "S00079, S00173, E00012, E00016, E00031",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "Lumped sticking coefficient",
+        "units": "dimensionless",
+        "definition": "combines the effects of all sequential and parallel surface processes",
+        "equation_context": "adsorption_rate, reaction_equation",
+        "annotation": {
+          "evidence": "S00055, S00171, S00174, E00011, E00016, E00031",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle",
+        "paper_symbol": "gpc, gpc_sat",
+        "physical_meaning": "Film growth per cycle (gpc); Saturation growth in cycle (gpc_sat)",
+        "units": "m",
+        "definition": "gpc_sat is the equilibrium thickness of layer growth at saturation reactant exposure",
+        "annotation": {
+          "evidence": "S00066, S00067, S00155, S00227, S00239, S00303, S00304, E00046",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "growth_rate_expression": "gpc = gpc_sat * K * p_A / (1 + K * p_A)",
+      "surface_growth_coupling": "Film growth is calculated by solving the diffusion equation with surface reactions, where the growth per cycle (gpc) is related to surface coverage and saturation density."
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "p_A (partial pressure of reactant A)",
+      "surface_coverage": "h",
+      "temperature_dependence": "",
+      "pressure_dependence": "dependent on precursor partial pressure p_A"
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": "",
+      "thiele_modulus": ""
+    },
+    "assumptions": {
+      "irreversible_adsorption": false,
+      "single_site_adsorption": true,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": null,
+      "uniform_surface": null,
+      "coverage_independent_sticking": true
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "",
+      "reaction_order": "First-order with respect to available sites (1-h) and gas pressure (p_A)",
+      "coverage_dependence": "adsorption rate decreases as surface coverage (h) increases"
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "g = f_ads - f_des",
+      "transport_reaction_coupling": "The gas adsorption rate to the walls (g) acts as a sink term in the diffusion equation."
+    },
+    "source_reference": {
+      "paper_title": "Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures",
+      "equation_location": "Eq. (11), Eq. (12), Eq. (15), Eq. (16), Eq. (31), Eq. (46)",
+      "notes": "The model uses a dynamic Langmuir adsorption model. The adsorption equilibrium constant K (1/Pa) is a key parameter, defined as K = c * Q / P_d (E00013)."
+    }
+  }
+}

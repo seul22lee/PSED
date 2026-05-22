@@ -1,0 +1,226 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "reversible_Langmuir",
+      "equation": "q (dy/dt) = c Q p_A (1 - y) - P_d q y",
+      "equation_terms": {
+        "adsorption_term": "c Q p_A (1 - y)",
+        "desorption_term": "P_d q y",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "y",
+        "physical_meaning": "fraction of occupied adsorption sites / Surface coverage of the adsorbed species",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00117, S00120, S00521",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "q y",
+        "physical_meaning": "adsorbed species density",
+        "units": "m^-2",
+        "annotation": {
+          "evidence": "E00009, S00121, S00516",
+          "confidence": "high",
+          "uncertainty_note": "Derived from q (adsorption capacity) and y (surface coverage)"
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "c Q p_A (1 - y)",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "probability that a precursor molecule adsorbs upon collision",
+        "units": "dimensionless",
+        "definition": "sticking coefficient",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00047, S00121, S00140, S00399, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_flux",
+        "paper_symbol": "F",
+        "physical_meaning": "collision rate of reactant A with the surface",
+        "units": "m^-2 s^-1",
+        "definition": "collision frequency of reactant A molecules with the surface",
+        "equation": "F = p_A / sqrt(2 pi M_A R T)",
+        "annotation": {
+          "evidence": "S00127, E00011, S00141, E00016, S00517",
+          "confidence": "high",
+          "uncertainty_note": "Q is collision rate at unit pressure, so Q p_A is the collision flux F."
+        }
+      }
+    },
+    "desorption_model": {
+      "present": true,
+      "desorption_rate_expression": "P_d q y",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "P_d",
+        "physical_meaning": "desorption probability in unit time",
+        "units": "s^-1",
+        "definition": "desorption probability in unit time",
+        "equation_context": "desorption_rate",
+        "annotation": {
+          "evidence": "S00121, S00140, S00400, S00515",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "site_density",
+        "paper_symbol": "q",
+        "physical_meaning": "adsorption capacity / Adsorption density of metal M atoms",
+        "units": "m^-2",
+        "definition": "adsorption capacity (GPC expressed as areal number density)",
+        "equation_context": "reaction_equation, growth_relation",
+        "annotation": {
+          "evidence": "S00121, S00140, S00401, S00516",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "site_balance_equation": "",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "maximum fraction of occupied adsorption sites",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00117, S00201",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_rate_constant",
+        "paper_symbol": "c Q",
+        "physical_meaning": "adsorption rate constant per unit pressure",
+        "units": "m^-2 s^-1 Pa^-1",
+        "definition": "product of sticking coefficient and collision rate at unit pressure",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "E00009, S00121, S00127, S00517",
+          "confidence": "high",
+          "uncertainty_note": "The paper lists k_ads in the glossary but uses cQp_A in the rate equation. cQ is interpreted as the adsorption rate constant per unit pressure."
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "P_d q",
+        "physical_meaning": "desorption rate constant",
+        "units": "m^-2 s^-1",
+        "definition": "product of desorption probability and adsorption capacity",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "E00009, S00121, S00515, S00516",
+          "confidence": "high",
+          "uncertainty_note": "The paper lists k_des in the glossary but uses P_d q in the rate equation. P_d q is interpreted as the desorption rate constant."
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "probability that a precursor molecule adsorbs upon collision",
+        "units": "dimensionless",
+        "definition": "sticking coefficient",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00047, S00121, S00140, S00399, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle",
+        "paper_symbol": "gpcsat",
+        "physical_meaning": "thickness-based growth per cycle",
+        "units": "m",
+        "definition": "gpcsat = (q M_film) / (rho N_0)",
+        "annotation": {
+          "evidence": "S00122, E00010, S00123, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "growth_rate_expression": "",
+      "surface_growth_coupling": "Adsorption capacity q is a direct measure of the ALD GPC."
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "p_A (partial pressure of reactant A)",
+      "surface_coverage": "y",
+      "temperature_dependence": "T (temperature)",
+      "pressure_dependence": "p_A (partial pressure of reactant A)"
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": "",
+      "thiele_modulus": {
+        "canonical_name": "thiele_modulus",
+        "paper_symbol": "h_T",
+        "physical_meaning": "ratio of the reaction rate to the diffusion rate",
+        "units": "dimensionless",
+        "definition": "h_T = (L/H) * sqrt(c / D_eff)",
+        "equation_context": "E00003",
+        "annotation": {
+          "evidence": "S00081, S00083, S00084, E00003, S00086, S00514",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "assumptions": {
+      "irreversible_adsorption": false,
+      "single_site_adsorption": true,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": null,
+      "uniform_surface": null,
+      "coverage_independent_sticking": true
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "diffusion limited (h_T > 1), reaction limited (h_T < 1)",
+      "reaction_order": "",
+      "coverage_dependence": "adsorption rate is proportional to the fraction of unoccupied sites (1-y)"
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "g = c Q p_A (1 - y) - P_d q y",
+      "transport_reaction_coupling": "Net adsorption rate (g) acts as a sink term in the diffusion-reaction equation (Fick's second law of diffusion)."
+    },
+    "source_reference": {
+      "paper_title": "Ylilammi et al. (19, 21, 28) model",
+      "equation_location": "E00009",
+      "notes": "The model is referred to as the 'Ylilammi et al. model'. Glossary lists k_ads and k_des but the rate equation uses cQ and P_d q respectively."
+    }
+  }
+}
