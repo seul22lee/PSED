@@ -1,0 +1,214 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "reversible_Langmuir",
+      "equation": "",
+      "equation_terms": {
+        "adsorption_term": "",
+        "desorption_term": "",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "y",
+        "physical_meaning": "fraction of occupied adsorption sites; normalized amount of growth at channel entrance",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00102, S00530",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "lumped sticking coefficient of precursor molecules (TMA or water); probability that a precursor molecule adsorbs upon collision",
+        "units": "dimensionless",
+        "definition": "lumped sticking coefficient",
+        "equation_context": "adsorption_rate, saturation_profile_slope",
+        "annotation": {
+          "evidence": "S00050, S00055, S00075, S00103, S00451, S00494, S00495",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_flux",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "desorption_model": {
+      "present": true,
+      "desorption_rate_expression": "",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "P d",
+        "physical_meaning": "desorption probability in unit time",
+        "units": "s^-1",
+        "definition": "desorption probability in unit time",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "S00347, S00517",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "site_density",
+        "paper_symbol": "q",
+        "physical_meaning": "adsorption site density",
+        "units": "nm^-2",
+        "definition": "adsorption density of reactant A at saturation",
+        "equation_context": "growth_relation",
+        "annotation": {
+          "evidence": "S00347, S00518",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "site_balance_equation": "",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "maximum surface coverage at saturation",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00102, S00530",
+          "confidence": "medium",
+          "uncertainty_note": "Implied by normalization of surface coverage y to range 0-1."
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "P d",
+        "physical_meaning": "desorption probability in unit time",
+        "units": "s^-1",
+        "definition": "desorption probability in unit time",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "S00347, S00517",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "lumped sticking coefficient of reactants (TMA and water)",
+        "units": "dimensionless",
+        "definition": "lumped sticking coefficient",
+        "equation_context": "adsorption_model, saturation_profile_slope",
+        "annotation": {
+          "evidence": "S00050, S00075, S00347, S00409, S00494, S00495",
+          "confidence": "high",
+          "uncertainty_note": "Specific coefficients c TMA and c H2O are mentioned, but the schema only allows one entry for sticking_probability. Using 'c' as a general symbol."
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle",
+        "paper_symbol": "GPC",
+        "physical_meaning": "film thickness increase per ALD cycle",
+        "units": "nm",
+        "definition": "thickness divided by cycles",
+        "annotation": {
+          "evidence": "S00124, S00503, S00505",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "growth_rate_expression": "",
+      "surface_growth_coupling": "Film thickness (GPC) is determined by the extent of surface reactions and saturation."
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "TMA dose, water dose, water partial pressure",
+      "surface_coverage": "y",
+      "temperature_dependence": "",
+      "pressure_dependence": "dependent on precursor partial pressure (e.g., water partial pressure)"
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": "",
+      "thiele_modulus": ""
+    },
+    "assumptions": {
+      "irreversible_adsorption": false,
+      "single_site_adsorption": true,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": null,
+      "uniform_surface": null,
+      "coverage_independent_sticking": true
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "TMA-dose-limited, water-dose-limited",
+      "reaction_order": "",
+      "coverage_dependence": "adsorption rate decreases as surface coverage increases (implied by Langmuir kinetics)"
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "",
+      "transport_reaction_coupling": "Surface reaction acts as a sink for diffusing species in a diffusion-reaction model."
+    },
+    "source_reference": {
+      "paper_title": "",
+      "equation_location": "Main reaction equation (Eqn 31) is referenced from Ylilammi et al. (2018) in S00222. Sticking coefficient calculation method from Arts et al. (2016) in S00451.",
+      "notes": "The paper uses a diffusion-reaction model from Ylilammi et al. (2018) but does not explicitly state the governing surface reaction equation within the provided segments. The model incorporates reversible Langmuir adsorption kinetics."
+    }
+  }
+}

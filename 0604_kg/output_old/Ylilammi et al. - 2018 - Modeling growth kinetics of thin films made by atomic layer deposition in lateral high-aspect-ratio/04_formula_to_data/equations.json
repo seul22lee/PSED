@@ -1,0 +1,353 @@
+[
+  {
+    "lhs": [
+      {
+        "symbol": "z_A",
+        "original": "z_A"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "d_A",
+        "original": "d_A"
+      },
+      {
+        "symbol": "d_B",
+        "original": "d_B"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "M_B",
+        "original": "M_B"
+      },
+      {
+        "symbol": "p_B",
+        "original": "p_B"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "d_A",
+        "z_A"
+      ],
+      [
+        "d_B",
+        "z_A"
+      ],
+      [
+        "R",
+        "z_A"
+      ],
+      [
+        "T",
+        "z_A"
+      ],
+      [
+        "M_A",
+        "z_A"
+      ],
+      [
+        "M_B",
+        "z_A"
+      ],
+      [
+        "p_B",
+        "z_A"
+      ],
+      [
+        "p_A",
+        "z_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "d_A",
+        "target": "z_A",
+        "effect": "positive",
+        "reason": "'d_A' appears in (d_A + d_B)^2 and d_A^2, both terms are added to 'z_A'."
+      },
+      {
+        "source": "d_B",
+        "target": "z_A",
+        "effect": "positive",
+        "reason": "'d_B' appears in (d_A + d_B)^2, which is added to 'z_A'."
+      },
+      {
+        "source": "R",
+        "target": "z_A",
+        "effect": "negative",
+        "reason": "'R' appears as R^(-1/2) in both additive terms, indicating a negative influence."
+      },
+      {
+        "source": "T",
+        "target": "z_A",
+        "effect": "negative",
+        "reason": "'T' appears as T^(-1/2) in both additive terms, indicating a negative influence."
+      },
+      {
+        "source": "M_A",
+        "target": "z_A",
+        "effect": "negative",
+        "reason": "'M_A' appears as 1/M_A inside a sum in the first term and as 1/M_A^(1/2) in the second term, both contributing negatively."
+      },
+      {
+        "source": "M_B",
+        "target": "z_A",
+        "effect": "negative",
+        "reason": "'M_B' appears as 1/M_B inside a sum in the first term, contributing negatively."
+      },
+      {
+        "source": "p_B",
+        "target": "z_A",
+        "effect": "proportional",
+        "reason": "'p_B' is a direct multiplier in the first additive term."
+      },
+      {
+        "source": "p_A",
+        "target": "z_A",
+        "effect": "proportional",
+        "reason": "'p_A' is a direct multiplier in the second additive term."
+      }
+    ],
+    "equation_type": "definition",
+    "equation_role": "definition",
+    "equation_image": "equation-0001.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "v_A",
+        "original": "v_A"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "R",
+        "v_A"
+      ],
+      [
+        "T",
+        "v_A"
+      ],
+      [
+        "M_A",
+        "v_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "R",
+        "target": "v_A",
+        "effect": "proportional",
+        "reason": "v_A is proportional to R^(1/2)"
+      },
+      {
+        "source": "T",
+        "target": "v_A",
+        "effect": "proportional",
+        "reason": "v_A is proportional to T^(1/2)"
+      },
+      {
+        "source": "M_A",
+        "target": "v_A",
+        "effect": "inverse",
+        "reason": "v_A is proportional to 1/(M_A^(1/2))"
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "definition",
+    "equation_image": "equation-0002.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D_A",
+        "original": "D_A"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "v_A",
+        "original": "v_A"
+      },
+      {
+        "symbol": "z_A",
+        "original": "z_A"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "v_A",
+        "D_A"
+      ],
+      [
+        "z_A",
+        "D_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "v_A",
+        "target": "D_A",
+        "effect": "proportional",
+        "reason": "D_A is directly proportional to v_A squared, which is a direct proportionality."
+      },
+      {
+        "source": "z_A",
+        "target": "D_A",
+        "effect": "inverse",
+        "reason": "D_A is inversely proportional to z_A."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0003.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D_Kn",
+        "original": "D_Kn"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "h",
+        "original": "h"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "h",
+        "D_Kn"
+      ],
+      [
+        "R",
+        "D_Kn"
+      ],
+      [
+        "T",
+        "D_Kn"
+      ],
+      [
+        "M_A",
+        "D_Kn"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "h",
+        "target": "D_Kn",
+        "effect": "proportional",
+        "reason": "D_Kn is directly proportional to h (D_Kn = h * ...)"
+      },
+      {
+        "source": "R",
+        "target": "D_Kn",
+        "effect": "proportional",
+        "reason": "R is in the numerator of a term raised to the power of 1/2 (D_Kn ~ R^(1/2))"
+      },
+      {
+        "source": "T",
+        "target": "D_Kn",
+        "effect": "proportional",
+        "reason": "T is in the numerator of a term raised to the power of 1/2 (D_Kn ~ T^(1/2))"
+      },
+      {
+        "source": "M_A",
+        "target": "D_Kn",
+        "effect": "inverse",
+        "reason": "M_A is in the denominator of a term raised to the power of 1/2 (D_Kn ~ 1/M_A^(1/2))"
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "definition",
+    "equation_image": "equation-0004.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "h",
+        "original": "h"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "H",
+        "original": "H"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "H",
+        "h"
+      ],
+      [
+        "W",
+        "h"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "H",
+        "target": "h",
+        "effect": "positive",
+        "reason": "As H increases, 1/H decreases, causing the denominator (1/H + 1/W) to decrease, which in turn causes h to increase."
+      },
+      {
+        "source": "W",
+        "target": "h",
+        "effect": "positive",
+        "reason": "As W increases, 1/W decreases, causing the denominator (1/H + 1/W) to decrease, which in turn causes h to increase."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0005.png"
+  }
+]

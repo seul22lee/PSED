@@ -1,0 +1,317 @@
+{
+  "materials": [
+    {
+      "name": "film",
+      "role": "film",
+      "normalized_formula": "",
+      "mentioned_as": [
+        "film"
+      ]
+    },
+    {
+      "name": "precursor",
+      "role": "precursor",
+      "normalized_formula": "",
+      "mentioned_as": [
+        "precursor"
+      ]
+    },
+    {
+      "name": "coreactant",
+      "role": "reactant",
+      "normalized_formula": "",
+      "mentioned_as": [
+        "coreactant"
+      ]
+    },
+    {
+      "name": "surface",
+      "role": "surface",
+      "normalized_formula": "",
+      "mentioned_as": [
+        "surface"
+      ]
+    },
+    {
+      "name": "trimethylaluminum",
+      "role": "precursor",
+      "normalized_formula": "Al(CH3)3",
+      "mentioned_as": [
+        "Al(CH3)3"
+      ]
+    },
+    {
+      "name": "water",
+      "role": "reactant",
+      "normalized_formula": "H2O",
+      "mentioned_as": [
+        "H2O"
+      ]
+    },
+    {
+      "name": "aluminum oxide",
+      "role": "film",
+      "normalized_formula": "Al2O3",
+      "mentioned_as": [
+        "Al2O3"
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "name": "atomic layer deposition",
+      "type": "ALD",
+      "mentioned_as": [
+        "atomic layer deposition",
+        "ALD"
+      ]
+    },
+    {
+      "name": "atomic layer deposition of aluminum oxide",
+      "type": "ALD",
+      "mentioned_as": [
+        "ALD of Al2O3"
+      ]
+    }
+  ],
+  "geometry_types": [
+    {
+      "name": "high-aspect-ratio structure",
+      "category": "high_aspect_ratio",
+      "mentioned_as": [
+        "high-aspect-ratio structures"
+      ]
+    },
+    {
+      "name": "lateral high-aspect-ratio trench",
+      "category": "lhar",
+      "mentioned_as": [
+        "lateral-high-aspect-ratio trenches"
+      ]
+    },
+    {
+      "name": "3D feature",
+      "category": "unknown",
+      "mentioned_as": [
+        "3D features"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "conformality",
+      "symbol": "",
+      "role": "process_metric",
+      "unit": "",
+      "mentioned_as": [
+        "conformality"
+      ]
+    },
+    {
+      "name": "reactivity",
+      "symbol": "",
+      "role": "material_property",
+      "unit": "",
+      "mentioned_as": [
+        "reactivities"
+      ]
+    },
+    {
+      "name": "sticking probability",
+      "symbol": "",
+      "role": "material_property",
+      "unit": "",
+      "mentioned_as": [
+        "sticking probabilities"
+      ]
+    },
+    {
+      "name": "thickness profile",
+      "symbol": "",
+      "role": "measured_output",
+      "unit": "length",
+      "mentioned_as": [
+        "thickness profile",
+        "thickness profiles"
+      ]
+    },
+    {
+      "name": "leading front of thickness profile",
+      "symbol": "",
+      "role": "measured_output",
+      "unit": "length",
+      "mentioned_as": [
+        "leading front of the thickness profile"
+      ]
+    },
+    {
+      "name": "slope of the front",
+      "symbol": "",
+      "role": "measured_output",
+      "unit": "",
+      "mentioned_as": [
+        "slope of the front"
+      ]
+    },
+    {
+      "name": "set-point temperature",
+      "symbol": "Tset",
+      "role": "condition",
+      "unit": "temperature",
+      "mentioned_as": [
+        "set-point temperature",
+        "Tset"
+      ]
+    },
+    {
+      "name": "substrate temperature",
+      "symbol": "Tsub",
+      "role": "condition",
+      "unit": "temperature",
+      "mentioned_as": [
+        "substrate temperature",
+        "Tsub"
+      ]
+    },
+    {
+      "name": "soft-saturation behavior",
+      "symbol": "",
+      "role": "phenomenon",
+      "unit": "",
+      "mentioned_as": [
+        "soft-saturation behavior"
+      ]
+    },
+    {
+      "name": "H2O step",
+      "symbol": "",
+      "role": "condition",
+      "unit": "",
+      "mentioned_as": [
+        "H2O step"
+      ]
+    },
+    {
+      "name": "reduced temperature",
+      "symbol": "",
+      "role": "condition",
+      "unit": "temperature",
+      "mentioned_as": [
+        "reduced temperatures"
+      ]
+    },
+    {
+      "name": "ALD kinetics",
+      "symbol": "",
+      "role": "phenomenon",
+      "unit": "",
+      "mentioned_as": [
+        "ALD kinetics"
+      ]
+    },
+    {
+      "name": "initial sticking probability",
+      "symbol": "s0",
+      "role": "material_property",
+      "unit": "",
+      "mentioned_as": [
+        "initial sticking probabilities",
+        "s 0 value"
+      ]
+    },
+    {
+      "name": "temperature",
+      "symbol": "T",
+      "role": "condition",
+      "unit": "temperature",
+      "mentioned_as": [
+        "temperature"
+      ]
+    }
+  ],
+  "models": [],
+  "methods": [
+    {
+      "name": "sticking probability determination",
+      "method_type": "extraction",
+      "input_variables": [
+        "slope of the front"
+      ],
+      "output_variables": [
+        "sticking probability"
+      ],
+      "mentioned_as": [
+        "determine the sticking probabilities"
+      ]
+    },
+    {
+      "name": "sticking probability determination method",
+      "method_type": "extraction",
+      "input_variables": [
+        "thickness profile"
+      ],
+      "output_variables": [
+        "sticking probability"
+      ],
+      "mentioned_as": [
+        "method to directly determine sticking probabilities"
+      ]
+    },
+    {
+      "name": "literature comparison",
+      "method_type": "comparison",
+      "input_variables": [
+        "initial sticking probability"
+      ],
+      "output_variables": [],
+      "mentioned_as": [
+        "compare well with literature values"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "relationships": [
+    {
+      "source": "reactivity",
+      "relation": "affects",
+      "target": "conformality",
+      "condition": "",
+      "evidence_text": "The conformality of a film grown by atomic layer deposition (ALD) is strongly affected by the reactivities of the precursor and coreactant"
+    },
+    {
+      "source": "sticking probability",
+      "relation": "describes",
+      "target": "reactivity",
+      "condition": "",
+      "evidence_text": "reactivities of the precursor and coreactant, which can be expressed in terms of their sticking probabilities"
+    },
+    {
+      "source": "leading front of thickness profile",
+      "relation": "determines",
+      "target": "sticking probability",
+      "condition": "in high-aspect-ratio structures",
+      "evidence_text": "the leading front of the thickness profile in high-aspect-ratio structures gives direct information on the sticking probabilities"
+    },
+    {
+      "source": "soft-saturation behavior",
+      "relation": "limits",
+      "target": "conformality",
+      "condition": "during the H2O step at reduced temperatures",
+      "evidence_text": "soft-saturation behavior during the H2O step, most dominantly at reduced temperatures, which can limit the conformality of Al2O3 grown by ALD"
+    },
+    {
+      "source": "temperature",
+      "relation": "decreases",
+      "target": "initial sticking probability",
+      "condition": "for H2O",
+      "evidence_text": "The s 0 value of H2O was shown to be temperature-dependent, decreasing to (1.5 -2.3) × 10 -5 at 150 °C."
+    },
+    {
+      "source": "initial sticking probability",
+      "relation": "depends_on",
+      "target": "temperature",
+      "condition": "for H2O",
+      "evidence_text": "The s 0 value of H2O was shown to be temperature-dependent"
+    }
+  ]
+}

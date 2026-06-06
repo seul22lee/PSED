@@ -1,0 +1,214 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "Langmuir",
+      "equation": "dh/dt = (c p_A (1 - h) - P_d h) / q",
+      "equation_terms": {
+        "adsorption_term": "c p_A (1 - h)",
+        "desorption_term": "P_d h",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "h",
+        "physical_meaning": "Surface coverage",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00098, S0173, S0207, S0208, S0211, S0231",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "c p_A (1 - h)",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "Lumped sticking coefficient",
+        "units": "dimensionless",
+        "definition": "probability that a precursor molecule adsorbs upon collision; combines the effects of all sequential and parallel surface processes",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00047, S00055, S0171, S0174, S0227, S0233, S0248, S0276, S0309, S0319, S0321, S0322",
+          "confidence": "high",
+          "uncertainty_note": "The paper states 'c' is dimensionless (S00055), but in Eq. (11) 'f_ads = c p_A (1 - h)', if 'f_ads' is 1/(m^2 s) and 'p_A' is Pa, then 'c' would need units of 1/(m^2 s Pa). This implies 'p_A' in Eq. (11) implicitly includes a collision flux constant."
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_rate_at_unit_pressure",
+        "paper_symbol": "Q",
+        "physical_meaning": "collision rate at unit pressure",
+        "units": "1/(m^2 s Pa)",
+        "definition": "collision rate at unit pressure",
+        "equation": "",
+        "annotation": {
+          "evidence": "S0175, E00013, E00014",
+          "confidence": "high",
+          "uncertainty_note": "Unit inconsistency in the paper. If K (1/Pa) = c (dimensionless) * Q / P_d (1/s), then Q must be 1/(Pa s). However, if adsorption rate f_ads (1/(m^2 s)) = c (dimensionless) * Q * p_A (Pa) * (1-h), then Q must be 1/(m^2 s Pa). The latter is used for units based on physical meaning."
+        }
+      }
+    },
+    "desorption_model": {
+      "present": true,
+      "desorption_rate_expression": "P_d h",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_probability_in_unit_time",
+        "paper_symbol": "P_d",
+        "physical_meaning": "Desorption probability in unit time",
+        "units": "1/s",
+        "definition": "desorption probability in unit time",
+        "equation_context": "desorption_rate",
+        "annotation": {
+          "evidence": "S00079, S0173, S0179, S0180",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "adsorption_site_density",
+        "paper_symbol": "q",
+        "physical_meaning": "Adsorption density of molecules in saturation",
+        "units": "1/m^2",
+        "definition": "adsorption density of molecules in saturation",
+        "equation_context": "surface_coverage_definition",
+        "annotation": {
+          "evidence": "S00080, S0154, S0173, S0227, S0233, S0248, S0256, S0276",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "site_balance_equation": "",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "Maximum possible surface coverage",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S0173",
+          "confidence": "medium",
+          "uncertainty_note": "Implied by 'h is the surface coverage' and 'q the saturation adsorption density'."
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_equilibrium_constant",
+        "paper_symbol": "K",
+        "physical_meaning": "Adsorption equilibrium constant",
+        "units": "1/Pa",
+        "definition": "K = c Q / P_d (from equilibrium of adsorption and desorption rates)",
+        "equation_context": "equilibrium_relation",
+        "annotation": {
+          "evidence": "S00070, S0175, E00013, E00014, S0227, S0233, S0248, S0276, S0304, S0309, S0319, S0321, S0322",
+          "confidence": "high",
+          "uncertainty_note": "Unit inconsistency in paper's definition of Q and K, as noted in collision_flux."
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_probability_in_unit_time",
+        "paper_symbol": "P_d",
+        "physical_meaning": "Desorption probability in unit time",
+        "units": "1/s",
+        "definition": "desorption probability in unit time",
+        "equation_context": "desorption_rate",
+        "annotation": {
+          "evidence": "S00079, S0173, S0179, S0180",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "c",
+        "physical_meaning": "Lumped sticking coefficient",
+        "units": "dimensionless",
+        "definition": "probability that a precursor molecule adsorbs upon collision; combines the effects of all sequential and parallel surface processes",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00047, S00055, S0171, S0174, S0227, S0233, S0248, S0276, S0309, S0319, S0321, S0322",
+          "confidence": "high",
+          "uncertainty_note": "The paper states 'c' is dimensionless (S00055), but in Eq. (11) 'f_ads = c p_A (1 - h)', if 'f_ads' is 1/(m^2 s) and 'p_A' is Pa, then 'c' would need units of 1/(m^2 s Pa). This implies 'p_A' in Eq. (11) implicitly includes a collision flux constant."
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle_at_saturation",
+        "paper_symbol": "gpc_sat",
+        "physical_meaning": "Saturation growth in cycle; equilibrium thickness of layer growth at saturation or high reactant exposure",
+        "units": "m",
+        "definition": "equilibrium thickness of layer growth at saturation or high reactant exposure",
+        "annotation": {
+          "evidence": "S00067, S0155, S0227, S0233, S0248, S0276, S0303, S0319, S0321, S0322",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "growth_rate_expression": "",
+      "surface_growth_coupling": "Film thickness s(x) is computed from the sum of contributions h_i in surface coverage of N cycles (S0245). Adsorption density q is calculated from gpc_sat (S0155)."
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "p_A (precursor partial pressure)",
+      "surface_coverage": "h",
+      "temperature_dependence": "T is a parameter (e.g., 500K), but no explicit temperature dependence for rate constants is given in the equations.",
+      "pressure_dependence": "dependent on precursor partial pressure p_A"
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": "",
+      "thiele_modulus": ""
+    },
+    "assumptions": {
+      "irreversible_adsorption": false,
+      "single_site_adsorption": true,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": null,
+      "uniform_surface": true,
+      "coverage_independent_sticking": true
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "Adsorption can be far from equilibrium (S0210). Dynamic Langmuir adsorption model (S00044).",
+      "reaction_order": "First-order with respect to p_A and (1-h) for adsorption; first-order with respect to h for desorption.",
+      "coverage_dependence": "Adsorption rate decreases as surface coverage h increases due to the (1-h) term."
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "g = c p_A (1 - h) - P_d h",
+      "transport_reaction_coupling": "Film growth is calculated by solving the diffusion equation with surface reactions (S00045). The gas adsorption rate 'g' to the walls acts as a sink term for transport (S0168)."
+    },
+    "source_reference": {
+      "paper_title": "Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures",
+      "equation_location": "Eq. (11), Eq. (12), Eq. (15), Eq. (16), Eq. (31)",
+      "notes": "Significant unit ambiguity in the paper regarding the sticking coefficient 'c' (dimensionless vs. units of 1/(m^2 s Pa)) and collision rate at unit pressure 'Q' (1/(Pa s) vs. 1/(m^2 s Pa)) when reconciling Eq. (11), Eq. (13), and Eq. (14) with stated units. Assumed 'c' is dimensionless as stated in S00055, implying 'p_A' in Eq. (11) implicitly includes a collision flux constant."
+    }
+  }
+}

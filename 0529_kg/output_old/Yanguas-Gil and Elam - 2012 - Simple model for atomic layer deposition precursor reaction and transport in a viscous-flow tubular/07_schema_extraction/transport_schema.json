@@ -1,0 +1,276 @@
+{
+  "transport_model": {
+    "equation_structure": {
+      "form": "convection_diffusion_reaction",
+      "spatial_dimension": "1D",
+      "time_dependence": "transient",
+      "reaction_coupling": {
+        "sink_term_present": true,
+        "coupling_variable": {
+          "canonical_name": "surface_coverage",
+          "paper_symbol": "h",
+          "physical_meaning": "surface coverage",
+          "units": "dimensionless",
+          "definition": "variable representing the fraction of occupied surface sites, evolving according to Eq. (10)",
+          "equation_context": "E00012, E00013",
+          "annotation": {
+            "evidence": "S0131, E00013",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "convection_term": {
+        "present": true,
+        "velocity_variable": {
+          "canonical_name": "gas_velocity",
+          "paper_symbol": "u",
+          "physical_meaning": "axial velocity of the carrier gas",
+          "units": "m/s",
+          "definition": "axial velocity obtained from carrier gas flow and pressure (Eq. 14)",
+          "equation_context": "E00008, E00009, E00010, E00012, E00017",
+          "annotation": {
+            "evidence": "S00086, S00104, S00119, E00017",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      }
+    },
+    "transport_variable": {
+      "canonical_name": "gas_phase_number_density",
+      "paper_symbol": "x",
+      "physical_meaning": "normalized precursor number density",
+      "units": "dimensionless",
+      "definition": "x = n/n_0, where n is precursor density and n_0 is initial precursor density",
+      "equation_context": "E00012",
+      "annotation": {
+        "evidence": "S00085, S00111, E00012",
+        "confidence": "high",
+        "uncertainty_note": ""
+      }
+    },
+    "diffusion_model": {
+      "type": "molecular_diffusion",
+      "equation": "D = 0.001858 * T^(3/2) * (1/M + 1/M_0)^(1/2) / (p * r_2 * X)",
+      "coefficients": {
+        "molecular_diffusion_coefficient": {
+          "canonical_name": "molecular_diffusion_coefficient",
+          "paper_symbol": "D",
+          "physical_meaning": "molecular diffusion coefficient",
+          "units": "m2/s",
+          "definition": "diffusion coefficient determined using the Chapman-Engskop approximation",
+          "equation_context": "E00001, E00008, E00009, E00010, E00018",
+          "annotation": {
+            "evidence": "S00086, S00121, E00018",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "knudsen_diffusion_coefficient": {
+          "canonical_name": "knudsen_diffusion_coefficient",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m2/s",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "effective_diffusion_coefficient": {
+          "canonical_name": "effective_diffusion_coefficient",
+          "paper_symbol": "D",
+          "physical_meaning": "diffusion coefficient used in the transport equation",
+          "units": "m2/s",
+          "definition": "molecular diffusion coefficient, D, as calculated by Chapman-Engskop approximation",
+          "equation_context": "E00001, E00008, E00009, E00010, E00018",
+          "annotation": {
+            "evidence": "S00086, S00121, E00018",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "dependencies": [
+        "temperature",
+        "pressure",
+        "molecular_mass"
+      ]
+    },
+    "related_variables": {
+      "spatial_coordinate": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "η",
+        "physical_meaning": "normalized axial position along the tube",
+        "units": "dimensionless",
+        "definition": "η = z/L, where z is axial position and L is tube length",
+        "equation_context": "E00012",
+        "annotation": {
+          "evidence": "S00111, E00012",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "time": {
+        "canonical_name": "time",
+        "paper_symbol": "s",
+        "physical_meaning": "normalized time",
+        "units": "dimensionless",
+        "definition": "s = tD/L^2, where t is time, D is diffusion coefficient, and L is tube length",
+        "equation_context": "E00012",
+        "annotation": {
+          "evidence": "S00111, E00012",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_coefficient": {
+        "canonical_name": "molecular_diffusion_coefficient",
+        "paper_symbol": "D",
+        "physical_meaning": "molecular diffusion coefficient",
+        "units": "m2/s",
+        "definition": "molecular diffusion coefficient as defined by Chapman-Engskop approximation",
+        "equation_context": "E00001, E00008, E00009, E00010, E00018",
+        "annotation": {
+          "evidence": "S00086, S00121, E00018",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "regime_indicators": {
+      "knudsen_number": {
+        "canonical_name": "knudsen_number",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "mean_free_path": {
+        "canonical_name": "mean_free_path",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "pressure": {
+        "canonical_name": "pressure",
+        "paper_symbol": "p",
+        "physical_meaning": "carrier gas pressure",
+        "units": "Pa",
+        "definition": "carrier gas pressure, influencing diffusion coefficient and Damkoehler number",
+        "equation_context": "E00018, S00126",
+        "annotation": {
+          "evidence": "S00120, S00126, E00018",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_coupling": {
+      "feature_type": "LHAR_channel",
+      "geometry_parameters": {
+        "height": {
+          "canonical_name": "height",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "width": {
+          "canonical_name": "width",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "depth": {
+          "canonical_name": "depth",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "radius": {
+          "canonical_name": "radius",
+          "paper_symbol": "R",
+          "physical_meaning": "reactor radius",
+          "units": "m",
+          "definition": "radius of the tubular reactor",
+          "equation_context": "S00106, E00010, E00012",
+          "annotation": {
+            "evidence": "S00106, S00166",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "boundary_conditions": {
+      "inlet_condition": "x(0, s) = 1 for s <= s_0 (dose time), x(0, s) = 0 for s > s_0",
+      "wall_condition": "J_wall = n v_th β (surface reaction loss)",
+      "symmetry_condition": "x(∞, s) = 0 (zero density at infinite distance)"
+    },
+    "assumptions": {
+      "dimensionality": "1D",
+      "isothermal": true,
+      "constant_diffusion": true,
+      "molecular_flow": false,
+      "steady_state": false
+    },
+    "solution_strategy": {
+      "type": "numerical"
+    },
+    "source_reference": {
+      "paper_title": "Simple model for atomic layer deposition precursor reaction and transport in a viscous-flow tubular reactor",
+      "equation_location": "E00012",
+      "notes": "The model is a 1D radially averaged convection-diffusion-reaction equation for normalized precursor density, coupled with a surface coverage equation. It assumes fully developed, steady-state carrier gas flow, but the precursor transport is transient."
+    }
+  }
+}
