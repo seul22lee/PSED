@@ -299,46 +299,45 @@ def normalize_experiment(
 
     return exp
 
-
 def process_figure(enriched_path, out_dir, start_index):
+    print(f"  [FIGURE] {enriched_path.name}")
+    
     enriched_fig = load_json(enriched_path)
     plot_json = load_plot_data(enriched_fig)
 
-    # 03_plot_to_data 결과가 멀티패널 list인 경우, panel 정보로 올바른 패널 선택
     if isinstance(plot_json, list):
         if not plot_json:
+            print(f"    [SKIP] empty plot_json")
             return start_index
-        panel = enriched_fig.get("panel")  # 06에서 "a","b"... 또는 None
+        panel = enriched_fig.get("panel")
         if panel:
             panel_i = ord(panel) - ord("a")
             plot_json = plot_json[panel_i] if panel_i < len(plot_json) else plot_json[0]
         else:
             plot_json = plot_json[0]
-
-    # # ← 추가
-    # if isinstance(plot_json, list):
-    #     if not plot_json:
-    #         return start_index
-    #     plot_json = plot_json[0]
+        print(f"    [PANEL] panel={panel} → {plot_json.get('metadata',{}).get('title','')}")
 
     count = start_index
+    print(f"    [LLM] calling... series={[d.get('series') for d in plot_json.get('data',[])]}")
+    
     prompt = build_prompt(enriched_fig, plot_json)
-    result=run_llm(prompt)
-    experiments=result.get("experiments",[])
+    result = run_llm(prompt)
+    experiments = result.get("experiments", [])
+    print(f"    [LLM] got {len(experiments)} experiments")
 
     for exp in experiments:
-        exp_id=f"experiment-{count:05d}"
-        exp["experiment_id"]=exp_id
-        out_file=out_dir/f"{exp_id}.json"
+        exp_id = f"experiment-{count:05d}"
+        exp["experiment_id"] = exp_id
+        out_file = out_dir / f"{exp_id}.json"
         if out_file.exists():
-            count+=1
+            print(f"    [SKIP] {exp_id} already exists")
+            count += 1
             continue
-        save_json(exp,out_file)
-        print("[OK]",exp_id)
-        count+=1
+        save_json(exp, out_file)
+        print(f"    [OK] {exp_id}")
+        count += 1
 
     return count
-
 
 def process_paper(paper_dir: Path) -> None:
     enriched_dir = paper_dir / STEP["06"]

@@ -1,0 +1,346 @@
+{
+  "experiment_type": "modeling",
+  "figure": {
+    "figure_id": "figure-013",
+    "figure_index": 13,
+    "figure_no": 4,
+    "title": "Thickness profiles",
+    "series_name": "1 µm",
+    "series_index": 1
+  },
+  "variables": {
+    "independent_variables": [
+      {
+        "name": "channel height",
+        "symbol": "H",
+        "value": 1,
+        "unit": "µm",
+        "role": "varied"
+      }
+    ],
+    "controlled_variables": [
+      {
+        "name": "channel width",
+        "symbol": "W",
+        "value": 0.1,
+        "unit": "mm",
+        "role": "controlled"
+      },
+      {
+        "name": "precursor A partial pressure",
+        "symbol": "p A0",
+        "value": 100,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "name": "precursor B partial pressure",
+        "symbol": "p B",
+        "value": 300,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "name": "reactant pulse length",
+        "symbol": "t p",
+        "value": 0.1,
+        "unit": "s",
+        "role": "controlled"
+      },
+      {
+        "name": "temperature",
+        "symbol": "T",
+        "value": 500,
+        "unit": "K",
+        "role": "controlled"
+      },
+      {
+        "name": "cycles",
+        "symbol": null,
+        "value": 1000,
+        "unit": null,
+        "role": "controlled"
+      },
+      {
+        "name": "growth per cycle saturation",
+        "symbol": "gpc sat",
+        "value": 106,
+        "unit": "pm",
+        "role": "controlled"
+      }
+    ],
+    "dependent_variables": [
+      {
+        "name": "Film thickness",
+        "symbol": null,
+        "unit": "nm",
+        "role": "measured_or_calculated"
+      }
+    ]
+  },
+  "process": {
+    "process_type": "ALD",
+    "material_deposited": null,
+    "precursors": [
+      {
+        "name": "precursor A",
+        "symbol": null,
+        "partial_pressure": 100,
+        "partial_pressure_unit": "Pa",
+        "pulse_time": 0.1,
+        "pulse_time_unit": "s",
+        "molar_mass": 0.0749,
+        "molar_mass_unit": "kg/mol",
+        "molecular_diameter": 591,
+        "molecular_diameter_unit": "pm"
+      },
+      {
+        "name": "precursor B",
+        "symbol": null,
+        "partial_pressure": 300,
+        "partial_pressure_unit": "Pa",
+        "pulse_time": null,
+        "pulse_time_unit": null,
+        "molar_mass": 0.028,
+        "molar_mass_unit": "kg/mol",
+        "molecular_diameter": 374,
+        "molecular_diameter_unit": "pm"
+      }
+    ],
+    "reactant_sequence": null,
+    "cycles": 1000,
+    "temperature": 500,
+    "temperature_unit": "K",
+    "gpc_sat": 106,
+    "gpc_sat_unit": "pm"
+  },
+  "geometry": {
+    "structure_type": "channel",
+    "H": 1,
+    "H_unit": "µm",
+    "L": null,
+    "L_unit": null,
+    "W": 0.1,
+    "W_unit": "mm",
+    "pillar_layout": null,
+    "generation": null,
+    "trench_width": null,
+    "trench_width_unit": null,
+    "trench_depth": null,
+    "trench_depth_unit": null,
+    "hole_diameter": null,
+    "hole_diameter_unit": null,
+    "hole_depth": null,
+    "hole_depth_unit": null,
+    "hole_shape": null,
+    "pore_diameter": null,
+    "pore_diameter_unit": null,
+    "pore_length": null,
+    "pore_length_unit": null,
+    "porosity": null,
+    "substrate_material": null
+  },
+  "modeling": {
+    "is_model_result": true,
+    "model_name": "approximate model",
+    "adsorption_model": null,
+    "diffusion_model": null,
+    "reaction_assumption": null,
+    "parameters": [
+      {
+        "name": "surface reaction site density",
+        "symbol": "q",
+        "value": 5e-18,
+        "unit": "m^2"
+      },
+      {
+        "name": "adsorption equilibrium constant",
+        "symbol": "K",
+        "value": 100,
+        "unit": "Pa^-1"
+      },
+      {
+        "name": "sticking coefficient",
+        "symbol": "c",
+        "value": 0.01,
+        "unit": null
+      }
+    ]
+  },
+  "data": {
+    "x_label": "Location x (µm)",
+    "y_label": "Film thickness (nm)",
+    "points": [
+      [
+        0,
+        105
+      ],
+      [
+        20,
+        105
+      ],
+      [
+        40,
+        105
+      ],
+      [
+        60,
+        105
+      ],
+      [
+        80,
+        105
+      ],
+      [
+        100,
+        105
+      ],
+      [
+        120,
+        105
+      ],
+      [
+        140,
+        105
+      ],
+      [
+        160,
+        105
+      ],
+      [
+        180,
+        105
+      ],
+      [
+        190,
+        105
+      ],
+      [
+        200,
+        105
+      ],
+      [
+        205,
+        104
+      ],
+      [
+        210,
+        102
+      ],
+      [
+        215,
+        99
+      ],
+      [
+        220,
+        95
+      ],
+      [
+        225,
+        90
+      ],
+      [
+        230,
+        84
+      ],
+      [
+        235,
+        77
+      ],
+      [
+        240,
+        69
+      ],
+      [
+        245,
+        60
+      ],
+      [
+        250,
+        50
+      ],
+      [
+        255,
+        40
+      ],
+      [
+        260,
+        30
+      ],
+      [
+        265,
+        22
+      ],
+      [
+        270,
+        15
+      ],
+      [
+        275,
+        10
+      ],
+      [
+        280,
+        6
+      ],
+      [
+        285,
+        3
+      ],
+      [
+        290,
+        1.5
+      ],
+      [
+        295,
+        0.5
+      ],
+      [
+        300,
+        0.2
+      ],
+      [
+        305,
+        0.1
+      ],
+      [
+        310,
+        0
+      ],
+      [
+        315,
+        0
+      ],
+      [
+        320,
+        0
+      ]
+    ]
+  },
+  "provenance": {
+    "caption": "FIG. 4. Film thickness profiles after 1000 cycles calculated by the approximate model when the original channel heights are H ¼ 2, 1, 0.5, or 0.2 l m. Reactant pulse length t p ¼ 0.1 s. In the last case, the channel entrance is completely plugged up. Parameter values used: H ¼ 0.5 l m , W ¼ 0.1 mm, p A0 ¼ 100Pa, M A ¼ 0.0749 kg/mol, d A ¼ 591pm, M B ¼ 0.028 kg/mol, d B ¼ 374pm, p B ¼ 300Pa, q ¼ 5 /C2 10 18 m /C0 2 , T ¼ 500K, K ¼ 100Pa /C0 1 , c ¼ 0.01, and gpc sat ¼ 106pm.",
+    "paragraphs": [
+      "The resulting film thickness distributions with different channel height values are shown in Fig. 4."
+    ],
+    "evidence_notes": [
+      "experiment_type: 'modeling' from 'calculated by the approximate model' in caption.",
+      "figure.series_name: from input series data.",
+      "variables.independent_variables: 'H' from series name '1 µm' and 'original channel heights are H ¼ 2, 1, 0.5, or 0.2 l m' in caption.",
+      "variables.controlled_variables: 'W', 'p A0', 'p B', 't p', 'T', 'cycles', 'gpc sat' extracted from 'Parameter values used' and other parts of the caption.",
+      "variables.dependent_variables: 'Film thickness (nm)' from plot_metadata.y_label.",
+      "process.process_type: 'ALD' inferred from 'gpc sat' and 'cycles'.",
+      "process.precursors: 'p A0', 'M A', 'd A', 'p B', 'M B', 'd B' extracted from 'Parameter values used' in caption. 't p' for precursor A from 'Reactant pulse length t p ¼ 0.1 s'.",
+      "process.cycles: '1000 cycles' from caption.",
+      "process.temperature: 'T ¼ 500K' from caption.",
+      "process.gpc_sat: 'gpc sat ¼ 106pm' from caption.",
+      "geometry.structure_type: 'channel' from 'original channel heights' in caption.",
+      "geometry.H: 'H' value from series name '1 µm'.",
+      "geometry.W: 'W ¼ 0.1 mm' from caption.",
+      "modeling.is_model_result: true from 'calculated by the approximate model' in caption.",
+      "modeling.model_name: 'approximate model' from caption.",
+      "modeling.parameters: 'q', 'K', 'c' from 'Parameter values used' in caption.",
+      "data.x_label, data.y_label, data.points: from plot_metadata and series data."
+    ]
+  },
+  "experiment_id": "experiment-00018"
+}
