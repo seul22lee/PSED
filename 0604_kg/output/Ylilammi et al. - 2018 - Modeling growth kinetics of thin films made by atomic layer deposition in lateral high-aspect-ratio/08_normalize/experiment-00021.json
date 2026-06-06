@@ -1,0 +1,498 @@
+{
+  "experiment_type": "Modeling",
+  "figure": {
+    "figure_id": "figure-014",
+    "figure_index": 14,
+    "figure_no": 5,
+    "title": "Penetration depth",
+    "series_name": "Gordon model",
+    "series_index": 0
+  },
+  "variables": {
+    "independent_variables": [
+      {
+        "name": "Pulse length",
+        "symbol": "t_p",
+        "value": null,
+        "unit": "s",
+        "role": "varied"
+      }
+    ],
+    "controlled_variables": [
+      {
+        "name": "Height",
+        "symbol": "H",
+        "value": "0.5",
+        "unit": "µm",
+        "role": "controlled"
+      },
+      {
+        "name": "Width",
+        "symbol": "W",
+        "value": "0.1",
+        "unit": "mm",
+        "role": "controlled"
+      },
+      {
+        "name": "Temperature",
+        "symbol": "T",
+        "value": "500",
+        "unit": "K",
+        "role": "controlled"
+      },
+      {
+        "name": "Growth per cycle saturation",
+        "symbol": "gpc_sat",
+        "value": "106",
+        "unit": "pm",
+        "role": "controlled"
+      }
+    ],
+    "dependent_variables": [
+      {
+        "name": "Penetration depth",
+        "symbol": "x_p",
+        "unit": "µm",
+        "role": "measured_or_calculated"
+      }
+    ]
+  },
+  "process": {
+    "process_type": "ALD",
+    "material_deposited": null,
+    "precursors": [
+      {
+        "name": "Precursor A",
+        "symbol": null,
+        "partial_pressure": "100",
+        "partial_pressure_unit": "Pa",
+        "pulse_time": null,
+        "pulse_time_unit": null,
+        "molar_mass": "0.0749",
+        "molar_mass_unit": "kg/mol",
+        "molecular_diameter": "591",
+        "molecular_diameter_unit": "pm"
+      },
+      {
+        "name": "Precursor B",
+        "symbol": null,
+        "partial_pressure": "300",
+        "partial_pressure_unit": "Pa",
+        "pulse_time": null,
+        "pulse_time_unit": null,
+        "molar_mass": "0.028",
+        "molar_mass_unit": "kg/mol",
+        "molecular_diameter": "374",
+        "molecular_diameter_unit": "pm"
+      }
+    ],
+    "reactant_sequence": null,
+    "cycles": "one reactant pulse",
+    "temperature": "500",
+    "temperature_unit": "K",
+    "gpc_sat": "106",
+    "gpc_sat_unit": "pm"
+  },
+  "geometry": {
+    "structure_type": null,
+    "H": "0.5",
+    "H_unit": "µm",
+    "L": null,
+    "L_unit": null,
+    "W": "0.1",
+    "W_unit": "mm",
+    "pillar_layout": null,
+    "generation": null,
+    "trench_width": null,
+    "trench_width_unit": null,
+    "trench_depth": null,
+    "trench_depth_unit": null,
+    "hole_diameter": null,
+    "hole_diameter_unit": null,
+    "hole_depth": null,
+    "hole_depth_unit": null,
+    "hole_shape": null,
+    "pore_diameter": null,
+    "pore_diameter_unit": null,
+    "pore_length": null,
+    "pore_length_unit": null,
+    "porosity": null,
+    "substrate_material": null
+  },
+  "modeling": {
+    "is_model_result": true,
+    "model_name": "Gordon model",
+    "adsorption_model": null,
+    "diffusion_model": "Knudsen diffusion",
+    "reaction_assumption": null,
+    "parameters": [
+      {
+        "name": "Height",
+        "symbol": "H",
+        "value": "0.5",
+        "unit": "µm"
+      },
+      {
+        "name": "Width",
+        "symbol": "W",
+        "value": "0.1",
+        "unit": "mm"
+      },
+      {
+        "name": "Initial partial pressure of A",
+        "symbol": "p_A0",
+        "value": "100",
+        "unit": "Pa"
+      },
+      {
+        "name": "Molar mass of A",
+        "symbol": "M_A",
+        "value": "0.0749",
+        "unit": "kg/mol"
+      },
+      {
+        "name": "Molecular diameter of A",
+        "symbol": "d_A",
+        "value": "591",
+        "unit": "pm"
+      },
+      {
+        "name": "Molar mass of B",
+        "symbol": "M_B",
+        "value": "0.028",
+        "unit": "kg/mol"
+      },
+      {
+        "name": "Molecular diameter of B",
+        "symbol": "d_B",
+        "value": "374",
+        "unit": "pm"
+      },
+      {
+        "name": "Partial pressure of B",
+        "symbol": "p_B",
+        "value": "300",
+        "unit": "Pa"
+      },
+      {
+        "name": "Surface reaction probability",
+        "symbol": "q",
+        "value": "5e18",
+        "unit": "m^-2"
+      },
+      {
+        "name": "Temperature",
+        "symbol": "T",
+        "value": "500",
+        "unit": "K"
+      },
+      {
+        "name": "Adsorption constant",
+        "symbol": "K",
+        "value": "100",
+        "unit": "Pa^-1"
+      },
+      {
+        "name": "Constant",
+        "symbol": "c",
+        "value": "0.01",
+        "unit": null
+      },
+      {
+        "name": "Pulse time",
+        "symbol": "t_p",
+        "value": "0.1",
+        "unit": "s"
+      },
+      {
+        "name": "Growth per cycle saturation",
+        "symbol": "gpc_sat",
+        "value": "106",
+        "unit": "pm"
+      }
+    ]
+  },
+  "data": {
+    "x_label": "Pulse length (s)",
+    "y_label": "Penetration depth x_p (µm)",
+    "points": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.002,
+        12.0
+      ],
+      [
+        0.004,
+        20.0
+      ],
+      [
+        0.006,
+        26.0
+      ],
+      [
+        0.008,
+        30.0
+      ],
+      [
+        0.01,
+        34.0
+      ],
+      [
+        0.012,
+        38.0
+      ],
+      [
+        0.014,
+        42.0
+      ],
+      [
+        0.016,
+        45.0
+      ],
+      [
+        0.018,
+        48.0
+      ],
+      [
+        0.02,
+        51.0
+      ],
+      [
+        0.022,
+        54.0
+      ],
+      [
+        0.024,
+        57.0
+      ],
+      [
+        0.026,
+        60.0
+      ],
+      [
+        0.028,
+        62.0
+      ],
+      [
+        0.03,
+        65.0
+      ],
+      [
+        0.032,
+        67.0
+      ],
+      [
+        0.034,
+        69.0
+      ],
+      [
+        0.036,
+        71.0
+      ],
+      [
+        0.038,
+        73.0
+      ],
+      [
+        0.04,
+        75.0
+      ],
+      [
+        0.042,
+        77.0
+      ],
+      [
+        0.044,
+        79.0
+      ],
+      [
+        0.046,
+        81.0
+      ],
+      [
+        0.048,
+        83.0
+      ],
+      [
+        0.05,
+        85.0
+      ],
+      [
+        0.052,
+        86.0
+      ],
+      [
+        0.054,
+        88.0
+      ],
+      [
+        0.056,
+        90.0
+      ],
+      [
+        0.058,
+        91.0
+      ],
+      [
+        0.06,
+        93.0
+      ],
+      [
+        0.062,
+        95.0
+      ],
+      [
+        0.064,
+        96.0
+      ],
+      [
+        0.066,
+        98.0
+      ],
+      [
+        0.068,
+        99.0
+      ],
+      [
+        0.07,
+        101.0
+      ],
+      [
+        0.072,
+        102.0
+      ],
+      [
+        0.074,
+        104.0
+      ],
+      [
+        0.076,
+        105.0
+      ],
+      [
+        0.078,
+        107.0
+      ],
+      [
+        0.08,
+        108.0
+      ],
+      [
+        0.082,
+        110.0
+      ],
+      [
+        0.084,
+        111.0
+      ],
+      [
+        0.086,
+        113.0
+      ],
+      [
+        0.088,
+        114.0
+      ],
+      [
+        0.09,
+        116.0
+      ],
+      [
+        0.092,
+        117.0
+      ],
+      [
+        0.094,
+        119.0
+      ],
+      [
+        0.096,
+        120.0
+      ],
+      [
+        0.098,
+        122.0
+      ],
+      [
+        0.1,
+        123.0
+      ]
+    ]
+  },
+  "provenance": {
+    "caption": "FIG. 5. Comparison of the penetration depth given by different models in one reactant pulse. Circles represent the fully numerical solution, the solid line the analytical approximate solution and the dashed line the Gordon model. Parameter values used: H ¼ 0.5 l m , W ¼ 0.1 mm, p A0 ¼ 100Pa, M A ¼ 0.0749 kg/mol, d A ¼ 591pm, M B ¼ 0.028 kg/mol, d B ¼ 374pm, p B ¼ 300 Pa, q ¼ 5 /C2 10 18 m /C0 2 , T ¼ 500K, K ¼ 100Pa /C0 1 , c ¼ 0.01, t p ¼ 0.1 s, and gpc sat ¼ 106 pm. In the Gordon model, only the Knudsen diffusion is considered which is slightly faster than the diffusion given by the effective diffusion coefficient in Eq. (6).",
+    "paragraphs": [
+      "This is plotted in Fig. 5 for one ALD cycle and compared with the present diffusion models. Although the Gordon model in this case gives a good description of the film penetration depth, it does not give the thickness profile and it does not enable modeling of the film growth kinetics."
+    ],
+    "evidence_notes": []
+  },
+  "experiment_id": "experiment-00021",
+  "normalized": {
+    "material": null,
+    "structure_type": null,
+    "is_model_result": true,
+    "independent_variables": [
+      {
+        "original_name": "Pulse length",
+        "canonical_name": "pulse_time",
+        "symbol": "t_p",
+        "value": null,
+        "unit": "s",
+        "role": "varied"
+      }
+    ],
+    "controlled_variables": [
+      {
+        "original_name": "Height",
+        "canonical_name": "feature_height",
+        "symbol": "H",
+        "value": 500.0,
+        "unit": "nm",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Width",
+        "canonical_name": "feature_width",
+        "symbol": "W",
+        "value": 100000.0,
+        "unit": "nm",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Temperature",
+        "canonical_name": "temperature",
+        "symbol": "T",
+        "value": 226.85000000000002,
+        "unit": "°C",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Growth per cycle saturation",
+        "canonical_name": "growth_per_cycle",
+        "symbol": "gpc_sat",
+        "value": 0.106,
+        "unit": "nm",
+        "role": "controlled"
+      }
+    ],
+    "dependent_variables": [
+      {
+        "original_name": "Penetration depth",
+        "canonical_name": null,
+        "symbol": "x_p",
+        "value": null,
+        "unit": "nm",
+        "role": "measured_or_calculated"
+      }
+    ],
+    "flat_params": {
+      "feature_height": 500.0,
+      "feature_width": 100000.0,
+      "temperature": 226.85000000000002,
+      "growth_per_cycle": 0.106
+    }
+  }
+}

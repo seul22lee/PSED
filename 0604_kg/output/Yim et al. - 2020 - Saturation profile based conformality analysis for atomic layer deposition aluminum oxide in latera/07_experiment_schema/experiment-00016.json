@@ -1,45 +1,24 @@
 {
-  "experiment_type": "ALD film deposition",
+  "experiment_type": "ALD",
   "figure": {
-    "figure_id": "figure-015",
-    "figure_index": "8b",
-    "figure_no": 8,
-    "title": null,
-    "series_name": "Sample 12",
-    "series_index": 12
+    "figure_id": "figure-017f",
+    "figure_index": 17,
+    "figure_no": 9,
+    "title": "(f)",
+    "series_name": "250 cycles",
+    "series_index": 0
   },
   "variables": {
     "independent_variables": [
       {
-        "name": "Distance inside the channel",
-        "symbol": "x",
-        "value": null,
-        "unit": "µm",
-        "role": "varied"
-      },
-      {
-        "name": "sample identifier",
-        "symbol": null,
-        "value": "Sample 12",
+        "name": "cycles",
+        "symbol": "N",
+        "value": 250,
         "unit": null,
         "role": "varied"
       }
     ],
     "controlled_variables": [
-      {
-        "name": "channel height",
-        "symbol": "H",
-        "value": 500,
-        "unit": "nm",
-        "role": "controlled"
-      },
-      {
-        "name": "pillar design",
-        "symbol": null,
-        "value": "v1b",
-        "unit": null,
-        "role": "controlled"
-      },
       {
         "name": "temperature",
         "symbol": null,
@@ -48,18 +27,18 @@
         "role": "controlled"
       },
       {
-        "name": "cycles",
-        "symbol": null,
+        "name": "channel height",
+        "symbol": "H",
         "value": 500,
-        "unit": null,
+        "unit": "nm",
         "role": "controlled"
       }
     ],
     "dependent_variables": [
       {
-        "name": "Film thickness",
-        "symbol": "S",
-        "unit": "nm",
+        "name": "Normalized thickness",
+        "symbol": null,
+        "unit": "-",
         "role": "measured_or_calculated"
       }
     ]
@@ -67,48 +46,23 @@
   "process": {
     "process_type": "ALD",
     "material_deposited": "Al2O3",
-    "precursors": [
-      {
-        "name": "trimethylaluminum",
-        "symbol": "TMA",
-        "partial_pressure": null,
-        "partial_pressure_unit": null,
-        "pulse_time": null,
-        "pulse_time_unit": null,
-        "molar_mass": null,
-        "molar_mass_unit": null,
-        "molecular_diameter": null,
-        "molecular_diameter_unit": null
-      },
-      {
-        "name": "water",
-        "symbol": null,
-        "partial_pressure": null,
-        "partial_pressure_unit": null,
-        "pulse_time": null,
-        "pulse_time_unit": null,
-        "molar_mass": null,
-        "molar_mass_unit": null,
-        "molecular_diameter": null,
-        "molecular_diameter_unit": null
-      }
-    ],
+    "precursors": [],
     "reactant_sequence": null,
-    "cycles": 500,
+    "cycles": 250,
     "temperature": 300,
     "temperature_unit": "°C",
     "gpc_sat": null,
     "gpc_sat_unit": null
   },
   "geometry": {
-    "structure_type": "LHAR channel",
+    "structure_type": "rectangular LHAR channels",
     "H": 500,
     "H_unit": "nm",
     "L": null,
     "L_unit": null,
     "W": null,
     "W_unit": null,
-    "pillar_layout": "v1b",
+    "pillar_layout": null,
     "generation": null,
     "trench_width": null,
     "trench_width_unit": null,
@@ -135,241 +89,299 @@
     "parameters": []
   },
   "data": {
-    "x_label": "Distance inside the channel x (µm)",
-    "y_label": "Film thickness S (nm)",
+    "x_label": "Dimensionless distance x̃",
+    "y_label": "Normalized thickness (-)",
     "points": [
       [
-        -10.0,
-        48.0
+        0.0,
+        1.0
       ],
       [
-        0.0,
-        50.0
+        5.0,
+        1.0
       ],
       [
         10.0,
-        51.0
+        1.0
+      ],
+      [
+        15.0,
+        1.0
       ],
       [
         20.0,
-        51.0
+        1.0
+      ],
+      [
+        25.0,
+        1.0
       ],
       [
         30.0,
-        51.0
+        1.0
+      ],
+      [
+        35.0,
+        1.0
       ],
       [
         40.0,
-        51.0
+        1.0
+      ],
+      [
+        45.0,
+        1.0
       ],
       [
         50.0,
-        51.0
+        1.0
+      ],
+      [
+        55.0,
+        1.0
       ],
       [
         60.0,
-        51.0
+        1.0
+      ],
+      [
+        65.0,
+        1.0
       ],
       [
         70.0,
-        51.0
+        1.0
+      ],
+      [
+        75.0,
+        1.0
       ],
       [
         80.0,
-        51.0
+        1.0
       ],
       [
-        82.0,
-        49.0
-      ],
-      [
-        84.0,
-        46.0
-      ],
-      [
-        86.0,
-        43.0
-      ],
-      [
-        88.0,
-        40.0
+        85.0,
+        1.0
       ],
       [
         90.0,
-        37.0
+        1.0
       ],
       [
-        92.0,
-        34.0
-      ],
-      [
-        94.0,
-        31.0
-      ],
-      [
-        96.0,
-        28.0
-      ],
-      [
-        98.0,
-        25.0
+        95.0,
+        1.0
       ],
       [
         100.0,
-        22.0
+        1.0
       ],
       [
-        102.0,
-        19.0
-      ],
-      [
-        104.0,
-        16.0
-      ],
-      [
-        106.0,
-        13.0
-      ],
-      [
-        108.0,
-        10.0
+        105.0,
+        1.0
       ],
       [
         110.0,
-        7.0
+        1.0
       ],
       [
-        112.0,
-        5.0
-      ],
-      [
-        114.0,
-        3.0
-      ],
-      [
-        116.0,
-        2.0
-      ],
-      [
-        118.0,
+        115.0,
         1.0
       ],
       [
         120.0,
-        0.0
-      ],
-      [
-        122.0,
-        0.0
-      ],
-      [
-        124.0,
-        0.0
-      ],
-      [
-        126.0,
-        0.0
-      ],
-      [
-        128.0,
-        0.0
-      ],
-      [
-        130.0,
-        0.0
-      ],
-      [
-        135.0,
-        0.0
-      ],
-      [
-        140.0,
-        0.0
-      ],
-      [
-        145.0,
-        0.0
-      ],
-      [
-        150.0,
-        0.0
-      ],
-      [
-        152.0,
         1.0
       ],
       [
-        154.0,
-        2.0
+        125.0,
+        1.0
       ],
       [
-        156.0,
-        4.0
+        130.0,
+        1.0
       ],
       [
-        158.0,
-        6.0
+        135.0,
+        1.0
+      ],
+      [
+        140.0,
+        1.0
+      ],
+      [
+        145.0,
+        1.0
+      ],
+      [
+        150.0,
+        1.0
+      ],
+      [
+        155.0,
+        0.95
       ],
       [
         160.0,
-        8.0
+        0.9
       ],
       [
-        162.0,
-        10.0
-      ],
-      [
-        164.0,
-        12.0
-      ],
-      [
-        166.0,
-        10.0
-      ],
-      [
-        168.0,
-        8.0
+        165.0,
+        0.8
       ],
       [
         170.0,
-        6.0
+        0.7
       ],
       [
-        172.0,
-        4.0
-      ],
-      [
-        174.0,
-        2.0
-      ],
-      [
-        176.0,
-        0.0
-      ],
-      [
-        178.0,
-        0.0
+        175.0,
+        0.6
       ],
       [
         180.0,
+        0.5
+      ],
+      [
+        185.0,
+        0.4
+      ],
+      [
+        190.0,
+        0.3
+      ],
+      [
+        195.0,
+        0.2
+      ],
+      [
+        200.0,
+        0.1
+      ],
+      [
+        205.0,
+        0.05
+      ],
+      [
+        210.0,
+        0.0
+      ],
+      [
+        220.0,
+        0.0
+      ],
+      [
+        230.0,
+        0.0
+      ],
+      [
+        240.0,
+        0.0
+      ],
+      [
+        250.0,
+        0.0
+      ],
+      [
+        260.0,
+        0.0
+      ],
+      [
+        270.0,
+        0.0
+      ],
+      [
+        280.0,
+        0.0
+      ],
+      [
+        290.0,
+        0.0
+      ],
+      [
+        300.0,
+        0.0
+      ],
+      [
+        310.0,
+        0.0
+      ],
+      [
+        320.0,
+        0.0
+      ],
+      [
+        330.0,
+        0.0
+      ],
+      [
+        340.0,
+        0.0
+      ],
+      [
+        345.0,
+        0.02
+      ],
+      [
+        350.0,
+        0.05
+      ],
+      [
+        355.0,
+        0.02
+      ],
+      [
+        360.0,
+        0.0
+      ],
+      [
+        370.0,
+        0.0
+      ],
+      [
+        380.0,
+        0.0
+      ],
+      [
+        390.0,
+        0.0
+      ],
+      [
+        400.0,
         0.0
       ]
     ]
   },
   "provenance": {
-    "caption": "Fig. 8 Repeatability of saturation profile measurement (a) for ALD Al2O3 film grown on a LHAR channel (sample 8 in Table 1) and reproducibility of ALD runs (b) for Al2O3 films made in 500 cycles on various LHAR channels, having the same design channel height of 500 nm and pillar design of v1b. Sample details are in Table 1.",
+    "caption": "Fig. 9 Saturation profile of ALD Al2O3 coated in rectangular LHAR channels at 300 1 C. Top row, varying channel height H and constant number of cycles N of 500: (a) as-measured saturation profile, (b) scaled saturation profile, and (c) Type 1 normalized saturation profile. Sample 7, 8, and 9 (Table 1 Series C). Bottom row, varying number of cycles N and constant channel height H of 500 nm: (d) as-measured saturation profile, (e) scaled saturation profile, and (f) Type 1 normalized saturation profile. Sample 8, 10 and 11 (Table 1 Series D).",
     "paragraphs": [
-      "Fig. 8a presents the repeatability of reflectometer measurement and within-chip reproducibility demonstrated using LHAR channels with the design channel height of 500 nm and various lateral lengths L . Corresponding results for the design heights of 100 and 2000 nm are presented in Fig. S7 (ESI † ). The overlapping saturation profiles showed good measurement repeatability. The saturation profiles with different lateral lengths overlapped. This result suggests that the lateral length of the LHAR channel has no significant impact on the saturation profile measurement, at least in the studied case of Al2O3 ALD.",
-      "Fig. 8b compares results of different chips, ALD runs, and times, where the ALD parameters were kept constant. Different chips showed somewhat different film thickness and penetration depth although the same ALD sequence had been employed.",
-      "The reproducibility of the saturation profile measurement can be visualized by comparing data from fully independent measurements of the TMA-water saturation profile at 300 1 C, as done in Fig. 8b. While there is variation in the film thickness in the flat region and in the penetration depth, the overall saturation profile and the slope at PD 50% seem similar in all cases. Based on the data reported in Table 1 for samples 2, 4, 8, and 12, the standard deviation of PD 50% and the slope at PD 50% were 19.4 m mand 0.0003 nm, respectively. The standard deviation of the initial film thickness in Region IIb was 2.8 nm.",
-      "Fig. 8b compares results of different chips, ALD runs, and times, where the ALD parameters were kept constant. Different chips showed somewhat different film thickness and penetration depth although the same ALD sequence had been employed.",
-      "The reproducibility of the saturation profile measurement can be visualized by comparing data from fully independent measurements of the TMA-water saturation profile at 300 1 C, as done in Fig. 8b. While there is variation in the film thickness in the flat region and in the penetration depth, the overall saturation profile and the slope at PD 50% seem similar in all cases. Based on the data reported in Table 1 for samples 2, 4, 8, and 12, the standard deviation of PD 50% and the slope at PD 50% were 19.4 m mand 0.0003 nm, respectively. The standard deviation of the initial film thickness in Region IIb was 2.8 nm."
+      "Fig. 9 (panels d-f) shows the effect of the number of ALD cycles on the Al2O3 ALD saturation profile (Table 1, Series D) for a channel height of 500 nm. The leading edges of the adsorption fronts overlapped; however, film penetration, measured as PD 50% , appeared to decrease as the number of cycles increased. The reason for decreasing PD 50% is because the ALD process"
     ],
     "evidence_notes": [
-      "Figure index '8b' derived from series name pattern 'Sample X' which corresponds to part (b) of the figure.",
-      "Sample identifier 'Sample 12' extracted from series name and identified as an independent variable distinguishing this series.",
-      "Channel height (H=500 nm), pillar design (v1b), temperature (300 °C), and cycles (500) explicitly stated in Fig. 8b caption and context.",
-      "Precursors (TMA, water) explicitly stated in Fig. 8b context."
+      "experiment_type: 'ALD' from 'ALD Al2O3' in caption.",
+      "figure.figure_id, figure.figure_index, figure.figure_no, figure.title: from input JSON.",
+      "figure.series_name: from 'series' field in input JSON.",
+      "figure.series_index: index of the series in the 'series' array.",
+      "variables.independent_variables.name: 'cycles' from 'varying number of cycles N' in caption and series name.",
+      "variables.independent_variables.symbol: 'N' from 'varying number of cycles N' in caption.",
+      "variables.independent_variables.value: '250' parsed from series name '250 cycles'.",
+      "variables.controlled_variables.name: 'temperature' from '300 1 C' in caption.",
+      "variables.controlled_variables.value: '300' from '300 1 C' in caption.",
+      "variables.controlled_variables.unit: '°C' from '300 1 C' in caption.",
+      "variables.controlled_variables.name: 'channel height' from 'constant channel height H of 500 nm' in caption and 'channel height of 500 nm' in subfigure context.",
+      "variables.controlled_variables.symbol: 'H' from 'constant channel height H of 500 nm' in caption.",
+      "variables.controlled_variables.value: '500' from 'constant channel height H of 500 nm' in caption.",
+      "variables.controlled_variables.unit: 'nm' from 'constant channel height H of 500 nm' in caption.",
+      "variables.dependent_variables.name: 'Normalized thickness' from plot_metadata.y_label.",
+      "variables.dependent_variables.unit: '-' from plot_metadata.y_label.",
+      "process.process_type: 'ALD' from 'ALD Al2O3' in caption.",
+      "process.material_deposited: 'Al2O3' from 'ALD Al2O3' in caption.",
+      "process.cycles: '250' parsed from series name '250 cycles'.",
+      "process.temperature: '300' from '300 1 C' in caption.",
+      "process.temperature_unit: '°C' from '300 1 C' in caption.",
+      "geometry.structure_type: 'rectangular LHAR channels' from caption.",
+      "geometry.H: '500' from 'constant channel height H of 500 nm' in caption.",
+      "geometry.H_unit: 'nm' from 'constant channel height H of 500 nm' in caption.",
+      "modeling.is_model_result: inferred as false because the caption describes 'as-measured' or 'normalized saturation profile' which implies experimental data.",
+      "data.x_label, data.y_label, data.points: from input JSON."
     ]
   },
   "experiment_id": "experiment-00016"
