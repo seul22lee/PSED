@@ -1,0 +1,277 @@
+{
+  "transport_model": {
+    "equation_structure": {
+      "form": "diffusion_reaction",
+      "spatial_dimension": "1D",
+      "time_dependence": "transient",
+      "reaction_coupling": {
+        "sink_term_present": true,
+        "coupling_variable": {
+          "canonical_name": "rate_of_reactant_consumption",
+          "paper_symbol": "∂n_A/∂t",
+          "physical_meaning": "Rate of reactant A consumption by surface reaction",
+          "units": "mol/s",
+          "definition": "Rate at which precursor A is consumed by surface reactions, acting as a sink term in the transport equation.",
+          "equation_context": "E00010",
+          "annotation": {
+            "evidence": "S00167, E00010",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "convection_term": {
+        "present": false,
+        "velocity_variable": {
+          "canonical_name": "gas_velocity",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        }
+      }
+    },
+    "transport_variable": {
+      "canonical_name": "gas_phase_partial_pressure",
+      "paper_symbol": "p_A",
+      "physical_meaning": "Partial pressure of reactant A",
+      "units": "Pa",
+      "definition": "Gas-phase partial pressure of precursor A inside the channel.",
+      "equation_context": "E00010",
+      "annotation": {
+        "evidence": "S00077, S00167, E00010",
+        "confidence": "high",
+        "uncertainty_note": ""
+      }
+    },
+    "diffusion_model": {
+      "type": "bosanquet_diffusion",
+      "equation": "1/D_eff = 1/D_A + 1/D_Kn",
+      "coefficients": {
+        "molecular_diffusion_coefficient": {
+          "canonical_name": "molecular_diffusion_coefficient",
+          "paper_symbol": "D_A",
+          "physical_meaning": "Gas-phase diffusion coefficient of molecules A",
+          "units": "m2/s",
+          "definition": "Molecular diffusion coefficient of precursor A in the gas phase, calculated from gas viscosity or molecular diameter.",
+          "equation_context": "E00002, E00006",
+          "annotation": {
+            "evidence": "S00059, S00134, E00002, E00006",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "knudsen_diffusion_coefficient": {
+          "canonical_name": "knudsen_diffusion_coefficient",
+          "paper_symbol": "D_Kn",
+          "physical_meaning": "Knudsen diffusion coefficient",
+          "units": "m2/s",
+          "definition": "Diffusion coefficient in the molecular (Knudsen) flow regime, dependent on channel geometry.",
+          "equation_context": "E00002, E00007",
+          "annotation": {
+            "evidence": "S00061, S00149, E00002, E00007",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "effective_diffusion_coefficient": {
+          "canonical_name": "effective_diffusion_coefficient",
+          "paper_symbol": "D_eff",
+          "physical_meaning": "Effective diffusion coefficient",
+          "units": "m2/s",
+          "definition": "Combined diffusion coefficient accounting for both molecular and Knudsen diffusion, following the Bosanquet relation.",
+          "equation_context": "E00002, E00010",
+          "annotation": {
+            "evidence": "S00060, S00134, E00002, E00010",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "dependencies": [
+        "temperature",
+        "pressure",
+        "pore_radius",
+        "molecular_mass"
+      ]
+    },
+    "related_variables": {
+      "spatial_coordinate": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "x",
+        "physical_meaning": "Distance from the beginning of the channel",
+        "units": "m",
+        "definition": "Axial coordinate along the length of the high-aspect-ratio channel.",
+        "equation_context": "E00010",
+        "annotation": {
+          "evidence": "S00091, S00162, E00010",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "time": {
+        "canonical_name": "time",
+        "paper_symbol": "t",
+        "physical_meaning": "Time",
+        "units": "s",
+        "definition": "Temporal coordinate in the transient diffusion equation.",
+        "equation_context": "E00010",
+        "annotation": {
+          "evidence": "S00085, E00010",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_coefficient": {
+        "canonical_name": "effective_diffusion_coefficient",
+        "paper_symbol": "D_eff",
+        "physical_meaning": "Effective diffusion coefficient",
+        "units": "m2/s",
+        "definition": "The effective diffusion coefficient used in the governing transport equation.",
+        "equation_context": "E00010",
+        "annotation": {
+          "evidence": "S00060, E00010",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "regime_indicators": {
+      "knudsen_number": {
+        "canonical_name": "knudsen_number",
+        "paper_symbol": "",
+        "physical_meaning": "Ratio of mean free path to characteristic length",
+        "units": "dimensionless",
+        "definition": "Indicates the flow regime, with Knudsen diffusion being a major limiting factor in mass transport.",
+        "equation_context": "regime classification",
+        "annotation": {
+          "evidence": "S00142, S00149",
+          "confidence": "medium",
+          "uncertainty_note": "The symbol 'Kn' is not explicitly used, but Knudsen diffusion is central to the model."
+        }
+      },
+      "mean_free_path": {
+        "canonical_name": "mean_free_path",
+        "paper_symbol": "",
+        "physical_meaning": "Average distance a molecule travels between collisions",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00142",
+          "confidence": "low",
+          "uncertainty_note": "Implied by Knudsen diffusion, but not explicitly defined or given a symbol."
+        }
+      },
+      "pressure": {
+        "canonical_name": "pressure",
+        "paper_symbol": "p_A, p_B",
+        "physical_meaning": "Gas phase pressure",
+        "units": "Pa",
+        "definition": "Partial pressures of reactant A and other gas components (B), influencing molecular diffusion.",
+        "equation_context": "S00123, S00134",
+        "annotation": {
+          "evidence": "S00077, S00123, S00134, S00290, S00291",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_coupling": {
+      "feature_type": "LHAR_channel",
+      "geometry_parameters": {
+        "height": {
+          "canonical_name": "height",
+          "paper_symbol": "H",
+          "physical_meaning": "Height of the channel",
+          "units": "m",
+          "definition": "The height of the rectangular channel.",
+          "equation_context": "S00132, S00163, E00010",
+          "annotation": {
+            "evidence": "S00069, S00132, S00163, E00010",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "width": {
+          "canonical_name": "width",
+          "paper_symbol": "W",
+          "physical_meaning": "Width of the channel",
+          "units": "m",
+          "definition": "The width of the rectangular channel.",
+          "equation_context": "S00132, E00010",
+          "annotation": {
+            "evidence": "S00132, E00010",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "depth": {
+          "canonical_name": "depth",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "radius": {
+          "canonical_name": "radius",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "h",
+        "physical_meaning": "Hydraulic diameter of the channel",
+        "units": "m",
+        "definition": "Characteristic length scale for a rectangular channel, used in the Knudsen diffusion coefficient calculation.",
+        "equation_context": "S00132, E00007",
+        "annotation": {
+          "evidence": "S00068, S00132, E00007",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "boundary_conditions": {
+      "inlet_condition": "p_A(0, t) = p_A0",
+      "wall_condition": "surface reaction / adsorption",
+      "symmetry_condition": ""
+    },
+    "assumptions": {
+      "dimensionality": "1D",
+      "isothermal": true,
+      "constant_diffusion": true,
+      "molecular_flow": true,
+      "steady_state": false
+    },
+    "solution_strategy": {
+      "type": "analytical_approximate"
+    },
+    "source_reference": {
+      "paper_title": "",
+      "equation_location": "E00010",
+      "notes": "The primary transport model is a transient 1D diffusion-reaction equation. An analytical approximate solution is developed and compared to a fully numerical solution. The diffusion coefficient is assumed constant within a single pulse, but updated between pulses to account for channel narrowing."
+    }
+  }
+}

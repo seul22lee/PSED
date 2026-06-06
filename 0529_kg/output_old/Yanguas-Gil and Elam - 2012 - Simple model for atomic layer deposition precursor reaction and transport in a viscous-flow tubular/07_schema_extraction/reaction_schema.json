@@ -1,0 +1,226 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "Langmuir",
+      "equation": "dh/dt = (b0 * C * vth * s0 / (4 * q)) * (1 - h)^2",
+      "equation_terms": {
+        "adsorption_term": "(b0 * C * vth * s0 / (4 * q)) * (1 - h)^2",
+        "desorption_term": "",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "h",
+        "physical_meaning": "fractional coverage of available sites",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00092, S00108",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "(b0 * C * vth * s0 / (4 * q)) * (1 - h)^2",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "b",
+        "physical_meaning": "precursor reaction probability (coverage-dependent)",
+        "units": "dimensionless",
+        "definition": "b = b0 (1 - h), where b0 is the reaction probability on a bare surface",
+        "equation_context": "E00003, E00004",
+        "annotation": {
+          "evidence": "S00089, S00090, S00091, E00003, E00004",
+          "confidence": "high",
+          "uncertainty_note": "The reaction probability 'b' itself is defined as coverage-dependent, leading to a (1-h)^2 term in the rate equation, despite the paper stating 'first order Langmurian behavior'."
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_flux",
+        "paper_symbol": "Jwall",
+        "physical_meaning": "flow to the walls per unit area (collision flux of precursor molecules)",
+        "units": "molecules/(m^2*s)",
+        "definition": "Jwall = (C * vth) / 4",
+        "equation": "Jwall = (C * vth) / 4",
+        "annotation": {
+          "evidence": "S00088, S00089, E00002",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "desorption_model": {
+      "present": false,
+      "desorption_rate_expression": "",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "site_density",
+        "paper_symbol": "s0",
+        "physical_meaning": "average area of a precursor adsorption site",
+        "units": "m^2",
+        "definition": "average area of a precursor adsorption site",
+        "equation_context": "E00004, E00011",
+        "annotation": {
+          "evidence": "S00094, E00004, E00011",
+          "confidence": "high",
+          "uncertainty_note": "The paper defines s0 as area per site (m^2), while the canonical site_density is sites per area (1/m^2). Thus, 1/s0 would be the canonical site density."
+        }
+      },
+      "site_balance_equation": "",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "maximum fraction of available sites that can be occupied",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00092, S00108",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "b0",
+        "physical_meaning": "reaction probability on a bare surface",
+        "units": "dimensionless",
+        "definition": "The reaction probability 'b' is defined as b0 * (1-h). Thus, b0 is the sticking probability when surface coverage h=0.",
+        "equation_context": "E00003",
+        "annotation": {
+          "evidence": "S00092, E00003",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "b",
+        "physical_meaning": "precursor reaction probability",
+        "units": "dimensionless",
+        "definition": "b = b0 (1 - h)",
+        "equation_context": "S00089, E00003",
+        "annotation": {
+          "evidence": "S00089, S00090, S00091, E00003",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "growth_rate_expression": "",
+      "surface_growth_coupling": ""
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "C (precursor concentration), vth (thermal mean velocity)",
+      "surface_coverage": "h",
+      "temperature_dependence": "vth (thermal mean velocity) is temperature-dependent (S00089). Reaction probability b0 is generally temperature-dependent.",
+      "pressure_dependence": "Precursor concentration C is related to partial pressure. Da is proportional to carrier gas pressure, and excess number c is proportional to precursor pressure (S00126)."
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": {
+        "canonical_name": "damkohler_number",
+        "paper_symbol": "Da",
+        "physical_meaning": "ratio between transport and reaction characteristic times",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "E00015",
+        "annotation": {
+          "evidence": "S00044, S00113, S00116, E00015",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "thiele_modulus": ""
+    },
+    "assumptions": {
+      "irreversible_adsorption": true,
+      "single_site_adsorption": true,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": null,
+      "uniform_surface": null,
+      "coverage_independent_sticking": false
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "",
+      "reaction_order": "first_order",
+      "coverage_dependence": "Reaction probability 'b' is coverage-dependent (S00090), leading to adsorption decreasing as coverage increases (implied by (1-h) terms)."
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "Jwall = b * (C * vth / 4)",
+      "transport_reaction_coupling": "The precursor flow to the walls (Jwall) must match the losses due to surface reaction (S00087). This surface adsorption flux acts as a sink term for the transport model."
+    },
+    "source_reference": {
+      "paper_title": "Simple model for atomic layer deposition precursor reaction and transport in a viscous-flow tubular reactor",
+      "equation_location": "E00003, E00004, S00091, S00092, S00094, S00108, S00109, S00167",
+      "notes": "The paper states 'first order irreversible Langmurian behavior' (S00091, S00167), but the derived rate equation `dh/dt = (b0 * C * vth * s0 / (4 * q)) * (1 - h)^2` (by substituting `b = b0(1-h)` into E00004) shows a second-order dependence on `(1-h)`."
+    }
+  }
+}

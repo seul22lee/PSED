@@ -1,0 +1,225 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "Langmuir",
+      "equation": "∂θ/∂t = A_0 v_th s_0 (1 - θ) n",
+      "equation_terms": {
+        "adsorption_term": "A_0 v_th s_0 (1 - θ) n",
+        "desorption_term": "",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "θ",
+        "physical_meaning": "reacted fraction of available reaction sites",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00092, E00002",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "A_0 v_th s_0 (1 - θ) n",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "s_0",
+        "physical_meaning": "initial sticking probability",
+        "units": "dimensionless",
+        "definition": "sticking probability toward the initial surface on which all reaction sites are still available",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00045, S00084, S00085, E00001, E00002",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_flux",
+        "paper_symbol": "v_th n",
+        "physical_meaning": "molecular collision flux of precursor molecules to the surface",
+        "units": "m^-2 s^-1",
+        "definition": "mean thermal velocity (v_th) multiplied by gas-phase reactant density (n)",
+        "equation": "v_th n",
+        "annotation": {
+          "evidence": "S00089, S00095, E00002",
+          "confidence": "medium",
+          "uncertainty_note": "The term 'collision flux' is not explicitly used, but v_th and n are defined and their product functions as collision flux in the rate equation."
+        }
+      }
+    },
+    "desorption_model": {
+      "present": false,
+      "desorption_rate_expression": "",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "site_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "site_balance_equation": "",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "",
+        "physical_meaning": "maximum fraction of occupied adsorption sites",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00092",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "s_0",
+        "physical_meaning": "initial sticking probability",
+        "units": "dimensionless",
+        "definition": "sticking probability toward the initial surface on which all reaction sites are still available",
+        "equation_context": "reaction_equation, adsorption_model",
+        "annotation": {
+          "evidence": "S00045, S00084, S00085, E00001, E00002",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "s_0 (1 - θ)",
+        "physical_meaning": "reaction probability",
+        "units": "dimensionless",
+        "definition": "probability of reaction upon collision, directly proportional to the unreacted fraction of reaction sites (1 - θ)",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00093, E00002",
+          "confidence": "medium",
+          "uncertainty_note": "The symbol s_0(1-θ) is derived from the text and equation, not explicitly given as a single symbol."
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle",
+        "paper_symbol": "",
+        "physical_meaning": "film thickness deposited per ALD cycle",
+        "units": "",
+        "definition": "A_0 (average area of an adsorption site) can be calculated from the growth per cycle",
+        "annotation": {
+          "evidence": "S00021, S00095",
+          "confidence": "high",
+          "uncertainty_note": "No explicit equation or symbol for GPC is provided, only its relation to A_0."
+        }
+      },
+      "growth_rate_expression": "",
+      "surface_growth_coupling": "The thickness profile acquired after ALD is proportional to the coverage profile (θ)."
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "n (gas-phase reactant density)",
+      "surface_coverage": "θ",
+      "temperature_dependence": "sticking probability of H2O increases with temperature (S00066, S00152, S00154, S00171, S00174, S00198)",
+      "pressure_dependence": "gas-phase reactant density (n) is dependent on process pressure/dose (S00097, S00101, S00143)"
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": {
+        "canonical_name": "damkohler_number",
+        "paper_symbol": "α",
+        "physical_meaning": "ratio between the reaction rate and diffusion rate",
+        "units": "dimensionless",
+        "definition": "α = (1/4) L^2 (S/V) (v_th/D) s_0",
+        "annotation": {
+          "evidence": "S00095, S00096",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "thiele_modulus": ""
+    },
+    "assumptions": {
+      "irreversible_adsorption": true,
+      "single_site_adsorption": true,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": true,
+      "uniform_surface": true,
+      "coverage_independent_sticking": false
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "Can be reaction-limited or diffusion-limited depending on the Damkohler number (α); extraction method focuses on regimes where reaction rate influences penetration depth.",
+      "reaction_order": "First-order with respect to available reaction sites (1-θ) and gas-phase reactant density (n).",
+      "coverage_dependence": "Reaction rate decreases as surface coverage (θ) increases, due to the (1-θ) term."
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "(S/V) v_th s_0 (1 - θ) n",
+      "transport_reaction_coupling": "The surface reaction term acts as a sink in the gas-phase reactant density transport equation (E00001)."
+    },
+    "source_reference": {
+      "paper_title": "Sticking probabilities of H2O and Al(CH3)3 during atomic layer deposition of Al2O3 extracted from their impact on film conformality",
+      "equation_location": "E00001, E00002, S00089, S00093, S00095",
+      "notes": "The model is a simplified irreversible Langmuir model used to extract initial sticking probabilities from thickness profiles in high-aspect-ratio structures."
+    }
+  }
+}

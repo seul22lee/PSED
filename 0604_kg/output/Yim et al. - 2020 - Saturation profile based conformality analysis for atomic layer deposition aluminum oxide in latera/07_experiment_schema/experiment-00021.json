@@ -1,0 +1,408 @@
+{
+  "experiment_type": "simulation",
+  "figure": {
+    "figure_id": "figure-019",
+    "figure_index": 19,
+    "figure_no": 10,
+    "title": "(a)",
+    "series_name": "200 nm",
+    "series_index": 1
+  },
+  "variables": {
+    "independent_variables": [
+      {
+        "name": "Distance inside the channel",
+        "symbol": "x",
+        "value": null,
+        "unit": "µm",
+        "role": "varied"
+      },
+      {
+        "name": "Channel height",
+        "symbol": "H",
+        "value": 200,
+        "unit": "nm",
+        "role": "varied"
+      }
+    ],
+    "controlled_variables": [
+      {
+        "name": "Number of cycles",
+        "symbol": "N",
+        "value": 500,
+        "unit": null,
+        "role": "controlled"
+      },
+      {
+        "name": "Temperature",
+        "symbol": "T",
+        "value": 300,
+        "unit": "°C",
+        "role": "controlled"
+      },
+      {
+        "name": "Precursor pulse time",
+        "symbol": "t P",
+        "value": 0.1,
+        "unit": "s",
+        "role": "controlled"
+      },
+      {
+        "name": "TMA partial pressure",
+        "symbol": "p A0",
+        "value": 65,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "name": "N2 partial pressure",
+        "symbol": "p B",
+        "value": 300,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "name": "TMA molar mass",
+        "symbol": "M A",
+        "value": 0.075,
+        "unit": "kg mol⁻¹",
+        "role": "controlled"
+      },
+      {
+        "name": "N2 molar mass",
+        "symbol": "M B",
+        "value": 0.028,
+        "unit": "kg mol⁻¹",
+        "role": "controlled"
+      },
+      {
+        "name": "TMA molecular diameter",
+        "symbol": "d A",
+        "value": 591,
+        "unit": "pm",
+        "role": "controlled"
+      },
+      {
+        "name": "N2 molecular diameter",
+        "symbol": "d B",
+        "value": 374,
+        "unit": "pm",
+        "role": "controlled"
+      },
+      {
+        "name": "Growth per cycle at saturation",
+        "symbol": "gpc sat",
+        "value": 0.098,
+        "unit": "nm",
+        "role": "controlled"
+      }
+    ],
+    "dependent_variables": [
+      {
+        "name": "Film thickness",
+        "symbol": "S",
+        "unit": "nm",
+        "role": "measured_or_calculated"
+      }
+    ]
+  },
+  "process": {
+    "process_type": "ALD",
+    "material_deposited": "Al2O3",
+    "precursors": [
+      {
+        "name": "trimethylaluminum",
+        "symbol": "TMA",
+        "partial_pressure": 65,
+        "partial_pressure_unit": "Pa",
+        "pulse_time": 0.1,
+        "pulse_time_unit": "s",
+        "molar_mass": 0.075,
+        "molar_mass_unit": "kg mol⁻¹",
+        "molecular_diameter": 591,
+        "molecular_diameter_unit": "pm"
+      },
+      {
+        "name": "nitrogen",
+        "symbol": "N2",
+        "partial_pressure": 300,
+        "partial_pressure_unit": "Pa",
+        "pulse_time": null,
+        "pulse_time_unit": null,
+        "molar_mass": 0.028,
+        "molar_mass_unit": "kg mol⁻¹",
+        "molecular_diameter": 374,
+        "molecular_diameter_unit": "pm"
+      }
+    ],
+    "reactant_sequence": null,
+    "cycles": 500,
+    "temperature": 300,
+    "temperature_unit": "°C",
+    "gpc_sat": 0.098,
+    "gpc_sat_unit": "nm"
+  },
+  "geometry": {
+    "structure_type": "microscopic rectangular LHAR channels",
+    "H": 200,
+    "H_unit": "nm",
+    "L": null,
+    "L_unit": null,
+    "W": null,
+    "W_unit": null,
+    "pillar_layout": null,
+    "generation": null,
+    "trench_width": null,
+    "trench_width_unit": null,
+    "trench_depth": null,
+    "trench_depth_unit": null,
+    "hole_diameter": null,
+    "hole_diameter_unit": null,
+    "hole_depth": null,
+    "hole_depth_unit": null,
+    "hole_shape": null,
+    "pore_diameter": null,
+    "pore_diameter_unit": null,
+    "pore_length": null,
+    "pore_length_unit": null,
+    "porosity": null,
+    "substrate_material": null
+  },
+  "modeling": {
+    "is_model_result": true,
+    "model_name": "Ylilammi et al. 33 diffusion-reaction model",
+    "adsorption_model": null,
+    "diffusion_model": "diffusion-reaction model",
+    "reaction_assumption": null,
+    "parameters": [
+      {
+        "name": "b film",
+        "symbol": null,
+        "value": 2,
+        "unit": null
+      },
+      {
+        "name": "b TMA",
+        "symbol": null,
+        "value": 1,
+        "unit": null
+      },
+      {
+        "name": "r",
+        "symbol": null,
+        "value": 3100,
+        "unit": "kg m⁻³"
+      },
+      {
+        "name": "q",
+        "symbol": null,
+        "value": 3.6,
+        "unit": "nm²"
+      },
+      {
+        "name": "K",
+        "symbol": null,
+        "value": 1000.0,
+        "unit": "Pa⁻¹"
+      },
+      {
+        "name": "c TMA",
+        "symbol": null,
+        "value": 0.012,
+        "unit": null
+      },
+      {
+        "name": "P d",
+        "symbol": null,
+        "value": 0.043,
+        "unit": "s⁻¹"
+      }
+    ]
+  },
+  "data": {
+    "x_label": "Distance inside the channel x (µm)",
+    "y_label": "Film thickness S (nm)",
+    "points": [
+      [
+        0,
+        10
+      ],
+      [
+        10,
+        10
+      ],
+      [
+        20,
+        10
+      ],
+      [
+        30,
+        10
+      ],
+      [
+        40,
+        10
+      ],
+      [
+        50,
+        10
+      ],
+      [
+        60,
+        10
+      ],
+      [
+        70,
+        10
+      ],
+      [
+        80,
+        10
+      ],
+      [
+        90,
+        10
+      ],
+      [
+        100,
+        10
+      ],
+      [
+        105,
+        9
+      ],
+      [
+        110,
+        8
+      ],
+      [
+        115,
+        7
+      ],
+      [
+        120,
+        6
+      ],
+      [
+        125,
+        5
+      ],
+      [
+        130,
+        4
+      ],
+      [
+        135,
+        3
+      ],
+      [
+        140,
+        2
+      ],
+      [
+        145,
+        1
+      ],
+      [
+        150,
+        0
+      ],
+      [
+        155,
+        0
+      ],
+      [
+        160,
+        0
+      ],
+      [
+        170,
+        0
+      ],
+      [
+        180,
+        0
+      ],
+      [
+        190,
+        0
+      ],
+      [
+        200,
+        0
+      ],
+      [
+        210,
+        0
+      ],
+      [
+        220,
+        0
+      ],
+      [
+        230,
+        0
+      ],
+      [
+        240,
+        0
+      ],
+      [
+        250,
+        0
+      ],
+      [
+        260,
+        0
+      ],
+      [
+        270,
+        0
+      ],
+      [
+        280,
+        0
+      ],
+      [
+        290,
+        0
+      ],
+      [
+        300,
+        0
+      ],
+      [
+        350,
+        0
+      ],
+      [
+        400,
+        0
+      ],
+      [
+        450,
+        0
+      ],
+      [
+        500,
+        0
+      ],
+      [
+        550,
+        0
+      ],
+      [
+        600,
+        0
+      ]
+    ]
+  },
+  "provenance": {
+    "caption": "Fig. 10 Simulated saturation profiles of ALD Al2O3 in microscopic rectangular LHAR channels, created with a MATLAB re-implementation of the Ylilammi et al. 33 diffusion-reaction model. Top row, varying channel height H and constant number of cycles N of 500: (a) as-measured saturation profile, (b) scaled saturation profile, and (c) Type 1 normalized saturation profile. Bottom row, varying number of cycles N and constant channel height H of 500 nm: (d) as-measured, (e) scaled, and (f) normalized saturation profiles of Type 1. Parameter values: T = 300 1 C, t P = 0.10 s, p A0 = 65 Pa (A = TMA), p B = 300 Pa (B = N2), M A = 0.075 kg mol /C0 1 , M B = 0.028 kg mol /C0 1 , d A = 591 pm, 33 d B = 374 pm, b film = 2, b TMA = 1, gpc sat = 0.098 nm, r = 3100 kg m /C0 3 , 51 q = 3.6 nm /C0 2 , K = 1000.0 Pa /C0 1 , c TMA = 0.012, and P d = 0.043 1 s /C0 1 .",
+    "paragraphs": [
+      "The effects of increasing the channel height and number of ALD cycles were simulated with the Ylilammi et al. 33 diffusionreaction model and compared with the experimental saturation profiles. Fig. 10 shows the simulated saturation profiles with various channel heights (panels a-c) and with the number of ALD cycles (panels d-f). For different channel height samples, the scaled saturation profile (Fig. 10b) seemed to approach a process specific ''fingerprint'' saturation profile when film filling was 20% or less of the channel height. The leading edges of the scaled saturation profiles overlapped, and PD 50% decreased when the number of ALD cycles increased. The trends in the simulated results closely resembled the experimental saturation profiles."
+    ],
+    "evidence_notes": []
+  },
+  "experiment_id": "experiment-00021"
+}

@@ -1,0 +1,241 @@
+{
+  "geometry_model": {
+    "feature_definition": {
+      "feature_type": "LHAR_channel",
+      "dimensionality": "1D"
+    },
+    "geometry_parameters": {
+      "feature_height": {
+        "canonical_name": "feature_height",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_width": {
+        "canonical_name": "feature_width",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_depth": {
+        "canonical_name": "feature_depth",
+        "paper_symbol": "L",
+        "physical_meaning": "tube length",
+        "units": "m",
+        "definition": "The axial length of the tubular reactor.",
+        "equation_context": "n = z / L (normalized axial coordinate), s0 = (u/L)t (characteristic time)",
+        "annotation": {
+          "evidence": "S00074, S00111, S00166, S00232, S00233",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "pore_radius": {
+        "canonical_name": "pore_radius",
+        "paper_symbol": "R",
+        "physical_meaning": "reactor radius",
+        "units": "m",
+        "definition": "The radius of the tubular reactor.",
+        "equation_context": "R is the reactor radius (S00106), Pe depends mainly on the reactor radius (S00125)",
+        "annotation": {
+          "evidence": "S00106, S00125, S00126, S00140, S00166",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_length": {
+        "canonical_name": "feature_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "derived_parameters": {
+      "aspect_ratio": {
+        "canonical_name": "aspect_ratio",
+        "paper_symbol": "",
+        "physical_meaning": "ratio of depth to width/radius",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00102",
+          "confidence": "medium",
+          "uncertainty_note": "Mentioned qualitatively as 'high aspect-ratio', but no symbol or explicit definition is provided."
+        }
+      },
+      "equivalent_aspect_ratio": {
+        "canonical_name": "equivalent_aspect_ratio",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "internal surface area of the reactor",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00060, S00061, S00253",
+          "confidence": "low",
+          "uncertainty_note": "Mentioned as a general concept or for future work, not explicitly defined as a parameter of this model."
+        }
+      },
+      "cross_section_area": {
+        "canonical_name": "cross_section_area",
+        "paper_symbol": "",
+        "physical_meaning": "cross-sectional area of the tubular reactor",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00242",
+          "confidence": "medium",
+          "uncertainty_note": "Implied by 'cross sectional average' but no symbol or explicit definition."
+        }
+      },
+      "feature_volume": {
+        "canonical_name": "feature_volume",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m3",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_evolution": {
+      "evolving_geometry": false,
+      "evolution_equation": ""
+    },
+    "coordinate_system": {
+      "coordinate_type": "cylindrical",
+      "spatial_variable": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "z",
+        "physical_meaning": "axial coordinate",
+        "units": "m",
+        "definition": "Position along the length of the tubular reactor.",
+        "equation_context": "n = z / L (normalized axial coordinate)",
+        "annotation": {
+          "evidence": "S00104, S00111, S00129, S00136",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_assumptions": {
+      "constant_geometry": true,
+      "symmetric_geometry": true,
+      "uniform_cross_section": true
+    },
+    "transport_interface": {
+      "characteristic_length": {
+        "canonical_name": "characteristic_length",
+        "paper_symbol": "L",
+        "physical_meaning": "tube length, characteristic length for residence time",
+        "units": "m",
+        "definition": "Length of the tubular reactor, used to define characteristic time for transport.",
+        "equation_context": "s0 = (u/L)t, transport time determined by the residence time L = u",
+        "annotation": {
+          "evidence": "S00232, S00233",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_length": {
+        "canonical_name": "diffusion_length",
+        "paper_symbol": "L",
+        "physical_meaning": "axial diffusion length",
+        "units": "m",
+        "definition": "Length scale for axial diffusion transport.",
+        "equation_context": "axial diffusion transport (S00115)",
+        "annotation": {
+          "evidence": "S00115",
+          "confidence": "medium",
+          "uncertainty_note": "Implied by the context of axial diffusion transport."
+        }
+      }
+    },
+    "reaction_interface": {
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "active_surface_area": {
+        "canonical_name": "active_surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "source_reference": {
+      "paper_title": "Simple model for atomic layer deposition precursor reaction and transport in a viscous-flow tubular reactor",
+      "equation_location": "",
+      "notes": "The model describes a 1D radially averaged tubular reactor."
+    }
+  }
+}

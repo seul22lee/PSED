@@ -1,0 +1,475 @@
+{
+  "paper": "Aguinsky et al. - 2023 - Modeling incomplete conformality during atomic layer deposition in high aspect ratio structures",
+  "segments": [
+    {
+      "segment_id": "S00006",
+      "type": "sentence",
+      "text": "## Modeling incomplete conformality during atomic layer deposition in high aspect ratio structures ✩"
+    },
+    {
+      "segment_id": "S00012",
+      "type": "sentence",
+      "text": "Keywords: Atomic layer deposition Thin films High aspect ratio Langmuir kinetics Topography simulation"
+    },
+    {
+      "segment_id": "S00017",
+      "type": "sentence",
+      "text": "Due to its increased control over conformality, ALD is a key enabler of high aspect ratio (HAR) structures such as dynamic random-access memory (DRAM) capacitors [3] and three-dimensional (3D) NAND flash memory [4]."
+    },
+    {
+      "segment_id": "S00027",
+      "type": "sentence",
+      "text": "It is a critical enabler of high aspect ratio structures, such as 3D NAND memory, since its self-limiting behavior enables higher conformality than conventional processes."
+    },
+    {
+      "segment_id": "S00028",
+      "type": "sentence",
+      "text": "However, as the aspect ratio increases, deviations from complete conformality frequently occur, requiring comprehensive modeling to aid the development of novel technologies."
+    },
+    {
+      "segment_id": "S00031",
+      "type": "sentence",
+      "text": "Our model expands the state-of-the art by (i) incorporating gas-phase diffusivity through the Bosanquet formula as well as reaction reversibility in the modeling framework first proposed by Yanguas-Gil and Elam, and (ii) being efficiently integrated within level-set topography simulators."
+    },
+    {
+      "segment_id": "S00032",
+      "type": "sentence",
+      "text": "The model is manually calibrated to published results of the prototypical atomic layer deposition of Al 2 O 3 from TMA and H 2 O in lateral high aspect ratio structures."
+    },
+    {
+      "segment_id": "S00038",
+      "type": "sentence",
+      "text": "In an irreversible self-limiting reaction with fixed reactor conditions, complete conformality is theoretically achievable by adapting the step pulse time 𝑡 𝑝 to the involved HAR structure."
+    },
+    {
+      "segment_id": "S00040",
+      "type": "sentence",
+      "text": "However, in real-world conditions, deviations from complete conformality in HAR structures are observed [1] since (i) the true surface chemistry is not perfectly self-limiting, and (ii) reactant transport becomes severely constricted."
+    },
+    {
+      "segment_id": "S00041",
+      "type": "sentence",
+      "text": "Accordingly, as semiconductor technology advances towards ever higher aspect ratios, the challenge of understanding incomplete conformality in ALD must be addressed with a joint experimental and modeling approach."
+    },
+    {
+      "segment_id": "S00054",
+      "type": "sentence",
+      "text": "Here, we present a model for ALD surface coverage in HAR structures based on one-dimensional (1D) diffusive particle transport, building upon the model proposed by Yanguas-Gil and Elam [8] by combining it with physical-chemical phenomena highlighted in previous works [6,9,16]."
+    },
+    {
+      "segment_id": "S00057",
+      "type": "sentence",
+      "text": "Our model is then manually calibrated to reported ALD thicknesses of Al 2 O 3 in both the H 2 Oand TMA-limited regimes, allowing for a deeper analysis of the role of temperature and geometrical parameters for this prototypical process."
+    },
+    {
+      "segment_id": "S00077",
+      "type": "sentence",
+      "text": "A requirement for determining 𝜃 ( 𝑟 ⃗ ) is finding the distribution of the reactant flux 𝛤 H2 O ( 𝑟 ⃗ ) ."
+    },
+    {
+      "segment_id": "S00080",
+      "type": "sentence",
+      "text": "To alleviate the computational burden, we assume a preferential transport direction, i.e., that the flux is equal on all surfaces at the same 𝑧 coordinate."
+    },
+    {
+      "segment_id": "S00081",
+      "type": "sentence",
+      "text": "This allows to calculate the flux using the continuity equation assuming diffusive flow in a cylinder of diameter 𝑑 ( μm ) and length 𝐿 ( μm ), with adsorption losses, given by a 1D differential equation [8,25]:"
+    },
+    {
+      "segment_id": "E00002",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00093",
+      "type": "sentence",
+      "text": "Fig. Impact of model parameters in the required 𝑡 𝑝 to reach 95% saturation at the bottom of a cylindrical structure with 𝑑 = 1μm , 𝐿 = 100μm in a fictitious chemistry with 𝑠 0 = 2 × 10 -19 m 2 and 𝛤 0 = 10 24 m -2 s -1 ."
+    },
+    {
+      "segment_id": "S00097",
+      "type": "sentence",
+      "text": "Historically, Knudsen diffusion has been defined in terms of a long cylindrical tube [27] of diameter 𝑑 , leading to the following expression for the diffusivity [17]:"
+    },
+    {
+      "segment_id": "E00003",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00098",
+      "type": "sentence",
+      "text": "Therefore, when structures other than a long cylindrical tube are considered, some kind of mapping between the involved geometry and the standard cylinder must be provided."
+    },
+    {
+      "segment_id": "S00099",
+      "type": "sentence",
+      "text": "The development of such mappings has been the source of much controversy since the inception of the theory [28], leading to many lingering misconceptions (e.g., incorrect conductance values for square tubes)."
+    },
+    {
+      "segment_id": "S00100",
+      "type": "sentence",
+      "text": "A further discussion of these misconceptions is outside of the scope of the presented research, instead, the simplified hydraulic diameter approximation is employed [9]."
+    },
+    {
+      "segment_id": "S00101",
+      "type": "sentence",
+      "text": "That is, the diameter 𝑑 in (2) and (3) is replaced with 𝑑 → ℎ 𝑑 ⋅ 𝑑 , where ℎ 𝑑 is the hydraulic diameter factor and 𝑑 is a relevant physical dimension."
+    },
+    {
+      "segment_id": "S00102",
+      "type": "sentence",
+      "text": "For example, for a wide rectangular trench with opening 𝑑 (c.f."
+    },
+    {
+      "segment_id": "S00103",
+      "type": "sentence",
+      "text": "Fig. 3), ℎ 𝑑 is estimated to be 2 [1,9]."
+    },
+    {
+      "segment_id": "S00104",
+      "type": "sentence",
+      "text": "Eq. (3) is valid when reactant-wall collisions are more likely than reactant-reactant collisions (i.e., Knudsen number Kn &gt; 10 )."
+    },
+    {
+      "segment_id": "S00105",
+      "type": "sentence",
+      "text": "Should the rate of particle-particle collisions be comparable, i.e., 1 &lt; Kn &lt; 10 , 𝐷 can be approximated with the Bosanquet interpolation formula [17]:"
+    },
+    {
+      "segment_id": "E00004",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00112",
+      "type": "sentence",
+      "text": "In addition, as 𝜃 sat is defined on the entire structure, the coverage value at the bottom of the structure, i.e., 𝜃 sat ( 𝑧 = 𝐿 ) , is chosen as the representative value for analysis, since it is where the impact of the flux restriction is the largest."
+    },
+    {
+      "segment_id": "S00114",
+      "type": "sentence",
+      "text": "Instead of directly impacting 𝑡 𝑝 , 𝛤 ev greatly affects the maximum coverage achievable at the bottom of the structure."
+    },
+    {
+      "segment_id": "S00115",
+      "type": "sentence",
+      "text": "Therefore, it strictly limits the maximum aspect ratio achievable by a certain reactor configuration and must be considered in the design of novel"
+    },
+    {
+      "segment_id": "S00116",
+      "type": "sentence",
+      "text": "Fig. Illustration of simulated trench after ALD with incomplete conformality."
+    },
+    {
+      "segment_id": "S00120",
+      "type": "sentence",
+      "text": "In addition, previous work has shown that a high value of 𝛤 ev can impact the thickness profile particularly in the transition between a region with high growth to one with low growth [16]."
+    },
+    {
+      "segment_id": "S00122",
+      "type": "sentence",
+      "text": "Topography simulation"
+    },
+    {
+      "segment_id": "S00123",
+      "type": "sentence",
+      "text": "In order to calculate the time evolution of the thickness profiles during the fabrication process in a manner compatible with simulation of further processing steps and DTCO, we employ the established levelset method [18,19] as implemented in ViennaLS [20] and in Silvaco's Victory Process [21]."
+    },
+    {
+      "segment_id": "S00124",
+      "type": "sentence",
+      "text": "In this method, the surface is described as the zero level-set of a 3D function 𝜙 ( 𝑟 ⃗ ) which evolves in time according to the level-set equation"
+    },
+    {
+      "segment_id": "E00005",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00125",
+      "type": "sentence",
+      "text": "where 𝑉 ( 𝑟 ⃗ ) is a scalar velocity field describing how the surface should evolve over time, i.e., how a material is grown or etched."
+    },
+    {
+      "segment_id": "S00126",
+      "type": "sentence",
+      "text": "An illustration of a simulated 3D trench geometry after ALD of Al 2 O 3 is shown in Fig."
+    },
+    {
+      "segment_id": "S00128",
+      "type": "sentence",
+      "text": "However, it is not straightforward to map 𝜃 ( 𝑟 ⃗ ) into 𝑉 ( 𝑟 ⃗ ) ."
+    },
+    {
+      "segment_id": "S00129",
+      "type": "sentence",
+      "text": "Growth rates can be calculated cycle-by-cycle by evolving the surface by the molecular layer thickness [15], however, this imposes a performance penalty since the grid resolution must be small enough to capture the individual molecular layer and 𝜃 ( 𝑟 ⃗ ) must be calculated 𝑁 cycles times."
+    },
+    {
+      "segment_id": "S00130",
+      "type": "sentence",
+      "text": "This calculation repeats even though the geometry changes minimally between sequential cycles."
+    },
+    {
+      "segment_id": "S00131",
+      "type": "sentence",
+      "text": "In order to capture a realistic ALD process with hundreds or thousands of cycles, a more efficient approach is required, bundling multiple cycles into the surface evolution step."
+    },
+    {
+      "segment_id": "S00135",
+      "type": "sentence",
+      "text": "Thus, the velocity field becomes"
+    },
+    {
+      "segment_id": "E00006",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00138",
+      "type": "sentence",
+      "text": "Instead, in the involved level-set based topography simulators, 𝑉 ( 𝑟 ⃗ ) is assumed to be constant during each time step 𝛥𝑡 of the solution of (5)."
+    },
+    {
+      "segment_id": "S00160",
+      "type": "sentence",
+      "text": "Fig. Comparison of topography simulation using the combined surface coverage model with the parameters from Table 1 to H 2 O-limited thickness profiles measured by Arts et al. ["
+    },
+    {
+      "segment_id": "S00164",
+      "type": "sentence",
+      "text": "an evolution of at most one grid spacing 𝛥𝑥 , i.e., 𝛥𝑡 &lt; 𝛥𝑥 ∕max | 𝑉 ( 𝑟 ⃗ ) | ."
+    },
+    {
+      "segment_id": "S00165",
+      "type": "sentence",
+      "text": "After each time step, the geometrical inputs of (2), namely 𝑑 and 𝐿 , are updated."
+    },
+    {
+      "segment_id": "S00166",
+      "type": "sentence",
+      "text": "Thus, for (6) to be physically meaningful, 𝛥𝑥 must be small enough such that the change in the geometry of its magnitude does not significantly impact 𝜃 ( 𝑟 ⃗ ) ."
+    },
+    {
+      "segment_id": "S00171",
+      "type": "sentence",
+      "text": "We calibrate our model to measured thickness profiles of Al 2 O 3 in the H 2 O-limited regime."
+    },
+    {
+      "segment_id": "S00173",
+      "type": "sentence",
+      "text": "13] report film thicknesses in lateral HAR trench-like structures ( 𝑑 = 0 ."
+    },
+    {
+      "segment_id": "S00174",
+      "type": "sentence",
+      "text": "5 μm , 𝐿 = 5000μm ) with an H 2 O dose of approximately 750 mTorr ⋅ s after 400 ALD cycles with a GPC of 1 ."
+    },
+    {
+      "segment_id": "S00178",
+      "type": "sentence",
+      "text": "We were unable to reproduce the reported penetration depths with realistic values of density [29] in the calculation of 𝑠 0 [9] using the ''billiard ball'' approximation."
+    },
+    {
+      "segment_id": "S00182",
+      "type": "sentence",
+      "text": "The model comparison to experimental data is given in Fig. The authors of the original work also estimate 𝛽 0 from the slope at 50% height, and those values are reported in Table 1."
+    },
+    {
+      "segment_id": "S00183",
+      "type": "sentence",
+      "text": "In Fig. 4, we note a good agreement between our topography simulations using the combined model for surface coverage and the reported experimental profiles."
+    },
+    {
+      "segment_id": "S00185",
+      "type": "sentence",
+      "text": "However, we expect that our methodology provides a more accurate estimate, including on the discrepant value at 150 ◦ C , since we consider the entire profile and we include 𝛤 ev ."
+    },
+    {
+      "segment_id": "S00187",
+      "type": "sentence",
+      "text": "The reduction in thickness and the less abrupt transition between the region with"
+    },
+    {
+      "segment_id": "S00190",
+      "type": "sentence",
+      "text": "b) After parameterization to 𝑇 , its effect is investigated in the required 𝑡 𝑝 to reach 95% of saturation, 𝜃 sat at 𝑧 = 𝐿 and SCsat ."
+    },
+    {
+      "segment_id": "S00193",
+      "type": "sentence",
+      "text": "high growth for that profile is strong evidence of the important role of reversible reactions, which is supported by other modeling studies [16]."
+    },
+    {
+      "segment_id": "S00206",
+      "type": "sentence",
+      "text": "We observe that the saturation 𝑡 𝑝 reduces and 𝜃 sat at 𝑧 = 𝐿 increases with higher temperatures, as is expected from a more thermodynamically favorable reaction."
+    },
+    {
+      "segment_id": "S00209",
+      "type": "sentence",
+      "text": "After saturation, i.e. 𝑑𝜃 ∕ 𝑑𝑡 = 0 , we estimate the step coverage to be SCsat = 𝜃 sat ( 𝑧 = 𝐿 )∕ 𝜃 sat ( 𝑧 = 0) ."
+    },
+    {
+      "segment_id": "S00231",
+      "type": "sentence",
+      "text": "The TMA step and geometric parameters"
+    },
+    {
+      "segment_id": "S00233",
+      "type": "sentence",
+      "text": "Due to the comparatively higher complexity of TMA, this step has received more research attention, therefore, we are able to simultaneously apply our model to multiple independent experiments in similar lateral HAR structures ( 𝑑 = 0 ."
+    },
+    {
+      "segment_id": "S00234",
+      "type": "sentence",
+      "text": "5 μm ) [9,13,32]."
+    },
+    {
+      "segment_id": "S00245",
+      "type": "sentence",
+      "text": "The peaks shown in the experimental data from [32] are disregarded since they are reported to be spurious interactions with the pillars sustaining the structure."
+    },
+    {
+      "segment_id": "S00247",
+      "type": "sentence",
+      "text": "32] in lateral HAR structures with different initial openings 𝑑 , shown in Fig. The discrepancy in the structure with 𝑑 = 0 ."
+    },
+    {
+      "segment_id": "S00248",
+      "type": "sentence",
+      "text": "1 μm is due to the limits of our model when the opening becomes fully constricted."
+    },
+    {
+      "segment_id": "S00249",
+      "type": "sentence",
+      "text": "In this situation, the approximation that the entire geometry can be represented by an evolving but single value of 𝑑 starts to fail."
+    },
+    {
+      "segment_id": "S00251",
+      "type": "sentence",
+      "text": "Fig. Comparison of simulated structures to profiles reported by Yim and Ylivaara et al. ["
+    },
+    {
+      "segment_id": "S00252",
+      "type": "sentence",
+      "text": "32] for lateral HAR structures with different initial openings 𝑑 using parameters from Table 2. ''"
+    },
+    {
+      "segment_id": "S00256",
+      "type": "sentence",
+      "text": "additional limitation is the failure of the hydraulic diameter approximation in a constricted structure, since it is not rigorously justified and has significant discrepancies with regards to established results [28]."
+    },
+    {
+      "segment_id": "S00257",
+      "type": "sentence",
+      "text": "For the structure with opening 𝑑 = 2 ."
+    },
+    {
+      "segment_id": "S00258",
+      "type": "sentence",
+      "text": "0 μm , pure Knudsen diffusivity is no longer valid, since Kn ≈ 8 ."
+    },
+    {
+      "segment_id": "S00263",
+      "type": "sentence",
+      "text": "In this work, we present a surface coverage model for incomplete conformality during ALD in HAR structures based on diffusive particle transport and reversible first-order Langmuir kinetics which combines insights from multiple established modeling approaches."
+    },
+    {
+      "segment_id": "S00266",
+      "type": "sentence",
+      "text": "Finally, we present an approach for efficiently integrating our model with a level-set topography simulator by bundling multiple ALD cycles into an artificial time unit."
+    },
+    {
+      "segment_id": "S00267",
+      "type": "sentence",
+      "text": "We manually calibrate our model to reported thickness profiles in the prototypical ALD of Al 2 O 3 from H 2 O and TMA."
+    },
+    {
+      "segment_id": "S00268",
+      "type": "sentence",
+      "text": "We study the impact of temperature in H 2 O-limited profiles, indicating the strong impact of the evaporation flux at lower temperatures and extracting an activation energy of 0 ."
+    },
+    {
+      "segment_id": "S00274",
+      "type": "sentence",
+      "text": "Finally, our robust level-set simulation approach enables the simulation of further processing steps and of process-aware device operation and could be applied to, e.g., atomic layer etching for 3D integration of novel memories."
+    },
+    {
+      "segment_id": "S00293",
+      "type": "sentence",
+      "text": "- [3] Jakschik S, Schroeder U, Hecht T, Dollinger G, Bergmaier A, Bartha J. Physical properties of ALD-Al 2 O 3 in a DRAM-capacitor equivalent structure comparing interfaces and oxygen precursors."
+    },
+    {
+      "segment_id": "S00296",
+      "type": "sentence",
+      "text": "- [4] Fischer A, Routzahn A, Gasvoda RJ, Sims J, Lill T. Control of etch profiles in high aspect ratio holes via precise reactant dosing in thermal atomic layer etching."
+    },
+    {
+      "segment_id": "S00304",
+      "type": "sentence",
+      "text": "Predictive modeling of atomic layer deposition on the feature scale."
+    },
+    {
+      "segment_id": "S00307",
+      "type": "sentence",
+      "text": "- [7] Gordon RG, Hausmann D, Kim E, Shepard J. A kinetic model for step coverage by atomic layer deposition in narrow holes or trenches."
+    },
+    {
+      "segment_id": "S00311",
+      "type": "sentence",
+      "text": "Self-limited reaction-diffusion in nanostructured substrates: Surface coverage dynamics and analytic approximations to ALD saturation times."
+    },
+    {
+      "segment_id": "S00316",
+      "type": "sentence",
+      "text": "Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures."
+    },
+    {
+      "segment_id": "S00319",
+      "type": "sentence",
+      "text": "- [10] Szmyt W, Guerra-Nuñez C, Huber L, Dransfeld C, Utke I. Atomic layer deposition on porous substrates: From general formulation to fibrous substrates and scaling laws."
+    },
+    {
+      "segment_id": "S00326",
+      "type": "sentence",
+      "text": "- [12] Poodt P, Mameli A, Schulpen J, Kessels W, Roozeboom F. Effect of reactor pressure on the conformal coating inside porous substrates by atomic layer deposition."
+    },
+    {
+      "segment_id": "S00332",
+      "type": "sentence",
+      "text": "- [14] Klemenschits X, Selberherr S, Filipovic L. Combined process simulation and simulation of an SRAM cell of the 5nm technology node."
+    },
+    {
+      "segment_id": "S00343",
+      "type": "sentence",
+      "text": "Conformality of atomic layer deposition in microchannels: Impact of process parameters on the simulated thickness profile."
+    },
+    {
+      "segment_id": "S00348",
+      "type": "sentence",
+      "text": "On gaseous self-diffusion in long capillary tubes."
+    },
+    {
+      "segment_id": "S00352",
+      "type": "sentence",
+      "text": "Level set methods and fast marching methods."
+    },
+    {
+      "segment_id": "S00364",
+      "type": "sentence",
+      "text": "Modeling precursor diffusion and reaction of atomic layer deposition in porous structures."
+    },
+    {
+      "segment_id": "S00368",
+      "type": "sentence",
+      "text": "Reactor scale simulations of ALD and ALE: Ideal and non-ideal self-limited processes in a cylindrical and a 300 mm wafer cross-flow reactor."
+    },
+    {
+      "segment_id": "S00371",
+      "type": "sentence",
+      "text": "- [24] Fang W-Z, Tang Y-Q, Ban C, Kang Q, Qiao R, Tao W-Q. Atomic layer deposition in porous electrodes: A pore-scale modeling study."
+    },
+    {
+      "segment_id": "S00398",
+      "type": "sentence",
+      "text": "- [32] Yim J, Ylivaara OM, Ylilammi M, Korpelainen V, Haimi E, Verkama E, et al. Saturation profile based conformality analysis for atomic layer deposition: Aluminum oxide in lateral high-aspect-ratio channels."
+    }
+  ]
+}

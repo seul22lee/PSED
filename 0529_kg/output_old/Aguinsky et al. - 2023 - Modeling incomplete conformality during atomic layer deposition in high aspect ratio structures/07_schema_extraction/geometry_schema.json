@@ -1,0 +1,236 @@
+{
+  "geometry_model": {
+    "feature_definition": {
+      "feature_type": "LHAR_channel",
+      "dimensionality": "1D"
+    },
+    "geometry_parameters": {
+      "feature_height": {
+        "canonical_name": "feature_height",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_width": {
+        "canonical_name": "feature_width",
+        "paper_symbol": "d",
+        "physical_meaning": "diameter of cylindrical structure or opening width of trench",
+        "units": "m",
+        "definition": "The characteristic dimension of the feature opening, referred to as diameter for cylinders and opening for trenches.",
+        "equation_context": "S00081, S00093, S00101, S00102, S00165, S00173, S00233, S00247",
+        "annotation": {
+          "evidence": "S00081, S00093, S00101, S00102, S00173, S00233, S00247",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses μm for units, converted to m for schema compliance."
+        }
+      },
+      "feature_depth": {
+        "canonical_name": "feature_depth",
+        "paper_symbol": "L",
+        "physical_meaning": "length of cylindrical structure or depth of trench",
+        "units": "m",
+        "definition": "The axial length of the cylindrical structure or the depth of the trench.",
+        "equation_context": "S00081, S00093, S00112, S00165, S00173, S00209",
+        "annotation": {
+          "evidence": "S00081, S00093, S00112, S00165, S00173, S00209",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses μm for units, converted to m for schema compliance."
+        }
+      },
+      "pore_radius": {
+        "canonical_name": "pore_radius",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_length": {
+        "canonical_name": "feature_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "derived_parameters": {
+      "aspect_ratio": {
+        "canonical_name": "aspect_ratio",
+        "paper_symbol": "",
+        "physical_meaning": "ratio of feature depth to feature width",
+        "units": "dimensionless",
+        "definition": "L / d",
+        "equation_context": "S00028, S00040, S00041, S00115, S00263",
+        "annotation": {
+          "evidence": "S00028, S00040, S00041, S00115, S00263",
+          "confidence": "medium",
+          "uncertainty_note": "Aspect ratio is a central concept but not given a specific symbol or explicit definition equation in the provided segments. Implied as L/d from context."
+        }
+      },
+      "equivalent_aspect_ratio": {
+        "canonical_name": "equivalent_aspect_ratio",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "h_d * d",
+        "physical_meaning": "effective diameter used in diffusion equations",
+        "units": "m",
+        "definition": "The effective diameter used in the diffusion equations, calculated as the hydraulic diameter factor (h_d) multiplied by the relevant physical dimension (d).",
+        "equation_context": "S00101, Eq. (2), Eq. (3)",
+        "annotation": {
+          "evidence": "S00100, S00101, S00256",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses μm for units, converted to m for schema compliance."
+        }
+      },
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "cross_section_area": {
+        "canonical_name": "cross_section_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_volume": {
+        "canonical_name": "feature_volume",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m3",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_evolution": {
+      "evolving_geometry": true,
+      "evolution_equation": "∂φ/∂t + V(r) |∇φ| = 0 (Eq. 5)"
+    },
+    "coordinate_system": {
+      "coordinate_type": "cartesian",
+      "spatial_variable": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "z",
+        "physical_meaning": "spatial coordinate along the feature depth/length",
+        "units": "m",
+        "definition": "The coordinate representing the position along the depth or length of the high aspect ratio structure.",
+        "equation_context": "S00080, S00112, S00209",
+        "annotation": {
+          "evidence": "S00080, S00112, S00209",
+          "confidence": "high",
+          "uncertainty_note": "Units are implied from feature dimensions (μm in paper, converted to m)."
+        }
+      }
+    },
+    "geometry_assumptions": {
+      "constant_geometry": false,
+      "symmetric_geometry": true,
+      "uniform_cross_section": true
+    },
+    "transport_interface": {
+      "characteristic_length": {
+        "canonical_name": "characteristic_length",
+        "paper_symbol": "d",
+        "physical_meaning": "characteristic length scale for Knudsen number calculation",
+        "units": "m",
+        "definition": "The diameter of the cylindrical tube or opening of the trench, used as the characteristic length for determining the Knudsen number.",
+        "equation_context": "S00097, S00104",
+        "annotation": {
+          "evidence": "S00097, S00104",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses μm for units, converted to m for schema compliance."
+        }
+      },
+      "diffusion_length": {
+        "canonical_name": "diffusion_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "reaction_interface": {
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "active_surface_area": {
+        "canonical_name": "active_surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    }
+  }
+}

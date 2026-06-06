@@ -1,0 +1,251 @@
+{
+  "geometry_model": {
+    "feature_definition": {
+      "feature_type": "LHAR_channel",
+      "dimensionality": "1D"
+    },
+    "geometry_parameters": {
+      "feature_height": {
+        "canonical_name": "feature_height",
+        "paper_symbol": "h",
+        "physical_meaning": "cavity height / nominal gap height",
+        "units": "m",
+        "definition": "nominal gap height of 500 nm",
+        "equation_context": "α ¼ ð 3 = 4 Þ L = h ð Þ 2 s 0; ~ z ; z = h",
+        "annotation": {
+          "evidence": "S00076, S00097, S00100, S00111",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_width": {
+        "canonical_name": "feature_width",
+        "paper_symbol": "w",
+        "physical_meaning": "trench width",
+        "units": "m",
+        "definition": "width of the trench",
+        "equation_context": "trench with width w /C29 h",
+        "annotation": {
+          "evidence": "S00100",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_depth": {
+        "canonical_name": "feature_depth",
+        "paper_symbol": "L",
+        "physical_meaning": "total structure length / penetration depth",
+        "units": "m",
+        "definition": "total structure length, up to a depth of 5 mm",
+        "equation_context": "ξ ; z = L; τ ; tD = L 2; α ¼ ð 3 = 4 Þ L = h ð Þ 2 s 0",
+        "annotation": {
+          "evidence": "S00077, S00091, S00100",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "pore_radius": {
+        "canonical_name": "pore_radius",
+        "paper_symbol": "r",
+        "physical_meaning": "radius of a pore",
+        "units": "m",
+        "definition": "radius of a pore",
+        "equation_context": "EAR ¼ z = r for a pore with radius r",
+        "annotation": {
+          "evidence": "S00115",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_length": {
+        "canonical_name": "feature_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "derived_parameters": {
+      "aspect_ratio": {
+        "canonical_name": "aspect_ratio",
+        "paper_symbol": "AR",
+        "physical_meaning": "ratio of depth to width/height",
+        "units": "dimensionless",
+        "definition": "depth of 5 mm, corresponding to an AR of 10 000",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00055, S00077",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "equivalent_aspect_ratio": {
+        "canonical_name": "equivalent_aspect_ratio",
+        "paper_symbol": "EAR",
+        "physical_meaning": "effective aspect ratio of the structure",
+        "units": "dimensionless",
+        "definition": "EAR ¼ ð z = 2 h Þ ¼ ð ~ z = 2 Þ for a trench, while EAR ¼ z = r for a pore with radius r",
+        "equation_context": "EAR ¼ ð z = 2 h Þ ¼ ð ~ z = 2 Þ",
+        "annotation": {
+          "evidence": "S00114, S00115",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "S",
+        "physical_meaning": "surface area of the structure",
+        "units": "m2",
+        "definition": "part of the surface to volume ratio (S/V)",
+        "equation_context": "S = V is the surface to volume ratio of the structure; ð S = V Þ ¼ ð 2 = h Þ",
+        "annotation": {
+          "evidence": "S00095, S00100",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "cross_section_area": {
+        "canonical_name": "cross_section_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_volume": {
+        "canonical_name": "feature_volume",
+        "paper_symbol": "V",
+        "physical_meaning": "volume of the structure",
+        "units": "m3",
+        "definition": "part of the surface to volume ratio (S/V)",
+        "equation_context": "S = V is the surface to volume ratio of the structure; ð S = V Þ ¼ ð 2 = h Þ",
+        "annotation": {
+          "evidence": "S00095, S00100",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_evolution": {
+      "evolving_geometry": false,
+      "evolution_equation": "",
+      "annotation": {
+        "evidence": "S00151",
+        "confidence": "medium",
+        "uncertainty_note": "The paper states that the effect of narrowing during deposition is 'virtually negligible', implying that the geometry is treated as constant for the model's purpose."
+      }
+    },
+    "coordinate_system": {
+      "coordinate_type": "cartesian",
+      "spatial_variable": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "z",
+        "physical_meaning": "penetration depth",
+        "units": "m",
+        "definition": "penetration depth into the high AR structure",
+        "equation_context": "n ( z,t ); ξ ; z = L; ~ z ; z = h",
+        "annotation": {
+          "evidence": "S00089, S00090, S00111",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_assumptions": {
+      "constant_geometry": true,
+      "symmetric_geometry": null,
+      "uniform_cross_section": null,
+      "annotation": {
+        "evidence": "S00151",
+        "confidence": "medium",
+        "uncertainty_note": "The paper states that the effect of narrowing during deposition is 'virtually negligible', implying that the geometry is treated as constant for the model's purpose."
+      }
+    },
+    "transport_interface": {
+      "characteristic_length": {
+        "canonical_name": "characteristic_length",
+        "paper_symbol": "h",
+        "physical_meaning": "cavity height",
+        "units": "m",
+        "definition": "length scale for Knudsen diffusion",
+        "equation_context": "Knudsen diffusion can be assumed as the mean free path λ mfp /difference 0 : 1mm /C29 h",
+        "annotation": {
+          "evidence": "S00099",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_length": {
+        "canonical_name": "diffusion_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "reaction_interface": {
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "S",
+        "physical_meaning": "surface area of the structure",
+        "units": "m2",
+        "definition": "part of the surface to volume ratio (S/V)",
+        "equation_context": "S = V is the surface to volume ratio of the structure; ð S = V Þ ¼ ð 2 = h Þ",
+        "annotation": {
+          "evidence": "S00095, S00100",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "active_surface_area": {
+        "canonical_name": "active_surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "source_reference": {
+      "paper_title": "Microscopic silicon-based lateral high-aspect-ratio structures for thin film conformality analysis",
+      "equation_location": "",
+      "notes": "The paper models ALD in LHAR trenches, specifically LHAR3 structures, which are 1D systems. While geometry evolution (narrowing) is mentioned, its effect is deemed negligible, implying a constant geometry assumption."
+    }
+  }
+}

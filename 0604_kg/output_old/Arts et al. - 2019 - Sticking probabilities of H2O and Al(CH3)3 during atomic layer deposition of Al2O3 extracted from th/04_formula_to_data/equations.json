@@ -1,0 +1,185 @@
+[
+  {
+    "lhs": [
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "α",
+        "original": "α"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "τ",
+        "ñ"
+      ],
+      [
+        "ξ",
+        "ñ"
+      ],
+      [
+        "α",
+        "ñ"
+      ],
+      [
+        "θ",
+        "ñ"
+      ],
+      [
+        "ñ",
+        "ñ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "τ",
+        "target": "ñ",
+        "effect": "unknown",
+        "reason": "τ is an independent variable in a partial derivative. Its direct algebraic effect on ñ cannot be determined from the equation structure alone."
+      },
+      {
+        "source": "ξ",
+        "target": "ñ",
+        "effect": "unknown",
+        "reason": "ξ is an independent variable in a partial derivative. Its direct algebraic effect on ñ cannot be determined from the equation structure alone."
+      },
+      {
+        "source": "α",
+        "target": "ñ",
+        "effect": "unknown",
+        "reason": "The coefficient of α, which is -(1-θ)ñ, contains other variables (θ, ñ) whose signs are not known from the equation structure alone."
+      },
+      {
+        "source": "θ",
+        "target": "ñ",
+        "effect": "unknown",
+        "reason": "The term involving θ is -α(1-θ)ñ = -αñ + αθñ. The coefficient of θ, which is αñ, contains other variables (α, ñ) whose signs are not known from the equation structure alone."
+      },
+      {
+        "source": "ñ",
+        "target": "ñ",
+        "effect": "unknown",
+        "reason": "The coefficient of ñ, which is -α(1-θ), contains other variables (α, θ) whose signs are not known from the equation structure alone."
+      }
+    ],
+    "equation_type": "Partial Differential Equation",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0001.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "θ",
+        "original": "θ"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "α",
+        "original": "α"
+      },
+      {
+        "symbol": "γ",
+        "original": "γ"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "α",
+        "dθ/dτ"
+      ],
+      [
+        "γ",
+        "dθ/dτ"
+      ],
+      [
+        "θ",
+        "dθ/dτ"
+      ],
+      [
+        "ñ",
+        "dθ/dτ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "α",
+        "target": "dθ/dτ",
+        "effect": "proportional",
+        "reason": "dθ/dτ is directly proportional to α"
+      },
+      {
+        "source": "γ",
+        "target": "dθ/dτ",
+        "effect": "proportional",
+        "reason": "dθ/dτ is directly proportional to γ"
+      },
+      {
+        "source": "θ",
+        "target": "dθ/dτ",
+        "effect": "negative",
+        "reason": "dθ/dτ is proportional to (1 - θ); as θ increases, (1 - θ) decreases, thus dθ/dτ decreases"
+      },
+      {
+        "source": "ñ",
+        "target": "dθ/dτ",
+        "effect": "proportional",
+        "reason": "dθ/dτ is directly proportional to ñ"
+      }
+    ],
+    "equation_type": "differential",
+    "equation_role": "unknown",
+    "equation_image": "equation-0002.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "∂θ/∂z",
+        "original": "|∂θ/∂z|θ=1/2"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "s₀",
+        "original": "s₀"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "s₀",
+        "∂θ/∂z"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "s₀",
+        "target": "∂θ/∂z",
+        "effect": "positive",
+        "reason": "The magnitude of the partial derivative |∂θ/∂z| is approximately proportional to the square root of s₀. An increase in s₀ leads to an increase in |∂θ/∂z|."
+      }
+    ],
+    "equation_type": "approximation",
+    "equation_role": "unknown",
+    "equation_image": "equation-0003.png"
+  }
+]

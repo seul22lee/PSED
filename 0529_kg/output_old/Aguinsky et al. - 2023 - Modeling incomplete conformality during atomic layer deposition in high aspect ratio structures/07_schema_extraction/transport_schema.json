@@ -1,0 +1,277 @@
+{
+  "transport_model": {
+    "equation_structure": {
+      "form": "diffusion_reaction",
+      "spatial_dimension": "1D",
+      "time_dependence": "steady_state",
+      "reaction_coupling": {
+        "sink_term_present": true,
+        "coupling_variable": {
+          "canonical_name": "surface_coverage",
+          "paper_symbol": "𝜃",
+          "physical_meaning": "surface coverage",
+          "units": "dimensionless",
+          "definition": "fraction of occupied sites",
+          "equation_context": "E00002",
+          "annotation": {
+            "evidence": "S00065, S00066, E00002",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "convection_term": {
+        "present": false,
+        "velocity_variable": {
+          "canonical_name": "gas_velocity",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        }
+      }
+    },
+    "transport_variable": {
+      "canonical_name": "gas_phase_flux",
+      "paper_symbol": "𝛤 H2 O",
+      "physical_meaning": "reactant flux",
+      "units": "m-2 s-1",
+      "definition": "flux of the reactant species inside the reactor",
+      "equation_context": "E00002",
+      "annotation": {
+        "evidence": "S00066, S00077, S00082, E00002",
+        "confidence": "high",
+        "uncertainty_note": ""
+      }
+    },
+    "diffusion_model": {
+      "type": "bosanquet_diffusion",
+      "equation": "D = (1 / D_Kn + 1 / D_A)^(-1)",
+      "coefficients": {
+        "molecular_diffusion_coefficient": {
+          "canonical_name": "molecular_diffusion_coefficient",
+          "paper_symbol": "D_A",
+          "physical_meaning": "gas-phase diffusivity",
+          "units": "m2/s",
+          "definition": "conventional Chapman-Enskog gas-phase diffusivity",
+          "equation_context": "E00004",
+          "annotation": {
+            "evidence": "S00096, S00106, E00004",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "knudsen_diffusion_coefficient": {
+          "canonical_name": "knudsen_diffusion_coefficient",
+          "paper_symbol": "D_Kn",
+          "physical_meaning": "Knudsen diffusivity",
+          "units": "m2/s",
+          "definition": "diffusivity stemming from reactant-wall collisions",
+          "equation_context": "E00003, E00004",
+          "annotation": {
+            "evidence": "S00096, E00003, E00004",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "effective_diffusion_coefficient": {
+          "canonical_name": "effective_diffusion_coefficient",
+          "paper_symbol": "D",
+          "physical_meaning": "diffusivity",
+          "units": "m2/s",
+          "definition": "effective diffusion coefficient combining Knudsen and gas-phase diffusion",
+          "equation_context": "E00002, E00004",
+          "annotation": {
+            "evidence": "S00088, E00002, E00004",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "dependencies": [
+        "temperature",
+        "pressure",
+        "pore_radius",
+        "molecular_mass"
+      ]
+    },
+    "related_variables": {
+      "spatial_coordinate": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "z",
+        "physical_meaning": "position along transport direction",
+        "units": "μm",
+        "definition": "axial coordinate in feature",
+        "equation_context": "E00002",
+        "annotation": {
+          "evidence": "S00080, S00081, E00002",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "time": {
+        "canonical_name": "time",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_coefficient": {
+        "canonical_name": "effective_diffusion_coefficient",
+        "paper_symbol": "D",
+        "physical_meaning": "diffusivity",
+        "units": "m2/s",
+        "definition": "shorthand variable appearing in transport equation",
+        "equation_context": "E00002",
+        "annotation": {
+          "evidence": "S00088, E00002",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "regime_indicators": {
+      "knudsen_number": {
+        "canonical_name": "knudsen_number",
+        "paper_symbol": "Kn",
+        "physical_meaning": "ratio of mean free path to characteristic length",
+        "units": "dimensionless",
+        "definition": "indicator for transport regime (Kn > 10 for Knudsen, 1 < Kn < 10 for Bosanquet)",
+        "equation_context": "S00104, S00105",
+        "annotation": {
+          "evidence": "S00104, S00105, S00258",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "mean_free_path": {
+        "canonical_name": "mean_free_path",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "pressure": {
+        "canonical_name": "pressure",
+        "paper_symbol": "p_A",
+        "physical_meaning": "partial pressure",
+        "units": "mTorr",
+        "definition": "partial pressure of reactant A",
+        "equation_context": "S00082",
+        "annotation": {
+          "evidence": "S00082, S00237, S00240",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_coupling": {
+      "feature_type": "cylindrical_structure",
+      "geometry_parameters": {
+        "height": {
+          "canonical_name": "length",
+          "paper_symbol": "L",
+          "physical_meaning": "length of the cylindrical feature",
+          "units": "μm",
+          "definition": "length of the cylinder",
+          "equation_context": "S00081, S00093",
+          "annotation": {
+            "evidence": "S00081, S00093",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        },
+        "width": {
+          "canonical_name": "width",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "depth": {
+          "canonical_name": "depth",
+          "paper_symbol": "",
+          "physical_meaning": "",
+          "units": "m",
+          "definition": "",
+          "equation_context": "",
+          "annotation": {
+            "evidence": "",
+            "confidence": "",
+            "uncertainty_note": ""
+          }
+        },
+        "radius": {
+          "canonical_name": "diameter",
+          "paper_symbol": "d",
+          "physical_meaning": "diameter of the cylindrical feature",
+          "units": "μm",
+          "definition": "diameter of the cylinder, used as characteristic length",
+          "equation_context": "S00081, S00093, S00097",
+          "annotation": {
+            "evidence": "S00081, S00093, S00097",
+            "confidence": "high",
+            "uncertainty_note": ""
+          }
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "d",
+        "physical_meaning": "characteristic length scale used in transport model",
+        "units": "μm",
+        "definition": "diameter of the cylindrical feature, replaced by h_d * d using hydraulic diameter approximation",
+        "equation_context": "E00002, E00003, S00101",
+        "annotation": {
+          "evidence": "S00100, S00101, E00002, E00003",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "boundary_conditions": {
+      "inlet_condition": "Γ_H2O = Γ0 (flux at feature entrance)",
+      "wall_condition": "",
+      "symmetry_condition": ""
+    },
+    "assumptions": {
+      "dimensionality": "1D",
+      "isothermal": true,
+      "constant_diffusion": null,
+      "molecular_flow": false,
+      "steady_state": true
+    },
+    "solution_strategy": {
+      "type": "numerical"
+    },
+    "source_reference": {
+      "paper_title": "",
+      "equation_location": "E00002, E00003, E00004",
+      "notes": "Model uses a 1D steady-state diffusion-reaction equation for reactant flux. Diffusion is modeled by the Bosanquet formula, combining Knudsen and gas-phase diffusion. Reaction terms include adsorption and evaporation fluxes. Hydraulic diameter approximation is used for geometry."
+    }
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "geometry_model": {
+    "feature_definition": {
+      "feature_type": "LHAR_channel",
+      "dimensionality": "1D"
+    },
+    "geometry_parameters": {
+      "feature_height": {
+        "canonical_name": "feature_height",
+        "paper_symbol": "H",
+        "physical_meaning": "height of the LHAR channel",
+        "units": "m",
+        "definition": "The vertical dimension of the rectangular LHAR channel, defined by the thermal silicon oxide layer growth.",
+        "equation_context": "x̃ = x / H; h = 2/(1/H + 1/W)",
+        "annotation": {
+          "evidence": "S00060, S00093, S00094, S00150, S00171, S00310, S00410, S00457, S00505",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_width": {
+        "canonical_name": "feature_width",
+        "paper_symbol": "W",
+        "physical_meaning": "opening width of the channel",
+        "units": "m",
+        "definition": "The width of the rectangular LHAR channel opening.",
+        "equation_context": "h = 2/(1/H + 1/W)",
+        "annotation": {
+          "evidence": "S00457, S00524",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_depth": {
+        "canonical_name": "feature_depth",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "pore_radius": {
+        "canonical_name": "pore_radius",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_length": {
+        "canonical_name": "feature_length",
+        "paper_symbol": "L",
+        "physical_meaning": "lateral length of the channel",
+        "units": "m",
+        "definition": "The axial length of the LHAR channel.",
+        "equation_context": "x = x / L; AR = L / H (implied)",
+        "annotation": {
+          "evidence": "S00060, S00105, S00163, S00176, S00214, S00509",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "derived_parameters": {
+      "aspect_ratio": {
+        "canonical_name": "aspect_ratio",
+        "paper_symbol": "AR",
+        "physical_meaning": "ratio of channel length to channel height",
+        "units": "dimensionless",
+        "definition": "L / H",
+        "equation_context": "AR = L / H (implied from context)",
+        "annotation": {
+          "evidence": "S00043, S00047, S00061, S00176, S00411",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "equivalent_aspect_ratio": {
+        "canonical_name": "equivalent_aspect_ratio",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "h",
+        "physical_meaning": "characteristic diffusion length for the channel",
+        "units": "m",
+        "definition": "2 / (1/H + 1/W)",
+        "equation_context": "h = 2/(1/H + 1/W)",
+        "annotation": {
+          "evidence": "S00457, S00458, S00506",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "A",
+        "physical_meaning": "internal surface area of the channel",
+        "units": "m2",
+        "definition": "The area of the channel walls where deposition occurs.",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00366, S00493",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "cross_section_area": {
+        "canonical_name": "cross_section_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_volume": {
+        "canonical_name": "feature_volume",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m3",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_evolution": {
+      "evolving_geometry": true,
+      "evolution_equation": "",
+      "annotation": {
+        "evidence": "S00100, S00303, S00316",
+        "confidence": "high",
+        "uncertainty_note": "No explicit equation for evolution is provided, but the text clearly describes the geometry changing due to film growth."
+      }
+    },
+    "coordinate_system": {
+      "coordinate_type": "cartesian",
+      "spatial_variable": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "x",
+        "physical_meaning": "distance from channel opening",
+        "units": "m",
+        "definition": "The distance along the LHAR channel from its entry.",
+        "equation_context": "x̃ = x / H; x = x / L",
+        "annotation": {
+          "evidence": "S00094, S00105, S00525, S00527, S00531",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_assumptions": {
+      "constant_geometry": false,
+      "symmetric_geometry": true,
+      "uniform_cross_section": true,
+      "annotation": {
+        "evidence": "S00100, S00316 (constant_geometry); S00042, S00235, S00360 (symmetric_geometry); S00042, S00353, S00361, S00366 (uniform_cross_section)",
+        "confidence": "medium",
+        "uncertainty_note": "Geometry is not constant due to film growth. While the ideal channel is rectangular and uniform, the paper discusses real-world deviations like membrane bending, nanosteps, and roughness as uncertainty sources, implying the underlying model assumes ideal symmetric and uniform cross-sections."
+      }
+    },
+    "transport_interface": {
+      "characteristic_length": {
+        "canonical_name": "characteristic_length",
+        "paper_symbol": "h",
+        "physical_meaning": "characteristic size of the LHAR structure, used for Knudsen number calculation",
+        "units": "m",
+        "definition": "hydraulic diameter of the channel",
+        "equation_context": "Kn = λ / h",
+        "annotation": {
+          "evidence": "S00453, S00454, S00457",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_length": {
+        "canonical_name": "diffusion_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "reaction_interface": {
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "A",
+        "physical_meaning": "internal surface area of the channel",
+        "units": "m2",
+        "definition": "The area of the channel walls available for ALD reactions.",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "S00366, S00493",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "active_surface_area": {
+        "canonical_name": "active_surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "source_reference": {
+      "paper_title": "Saturation profile based conformality analysis for atomic layer deposition: aluminum oxide in lateral high-aspect-ratio channels",
+      "equation_location": "",
+      "notes": "The geometry model describes rectangular LHAR channels. The paper uses a 1D diffusion-reaction model, building upon the Ylilammi et al. model. While the ideal geometry is assumed to be uniform and symmetric for the model, the paper extensively discusses real-world deviations and uncertainties in channel height, membrane bending, nanosteps, and roughness."
+    }
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "reaction_model": {
+    "reaction_equation": {
+      "kinetics_type": "Langmuir",
+      "equation": "dθ/dt = s0 ΓH2O β0(1-θ) - Γev",
+      "equation_terms": {
+        "adsorption_term": "s0 ΓH2O β0(1-θ)",
+        "desorption_term": "Γev",
+        "surface_reaction_term": ""
+      }
+    },
+    "surface_species": {
+      "coverage_variable": {
+        "canonical_name": "surface_coverage",
+        "paper_symbol": "θ",
+        "physical_meaning": "fraction of occupied adsorption sites",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00029, S00054, S00065, S00068",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_density_variable": {
+        "canonical_name": "adsorbed_species_density",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "adsorption_model": {
+      "model_type": "Langmuir_adsorption",
+      "adsorption_rate_expression": "s0 ΓH2O β0(1-θ)",
+      "sticking_coefficient": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "β0",
+        "physical_meaning": "clean surface sticking coefficient",
+        "units": "dimensionless",
+        "definition": "probability that a precursor molecule adsorbs upon collision on a clean surface (θ=0)",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00047, S00066, S00069, S00197, S00329",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "collision_flux": {
+        "canonical_name": "collision_flux",
+        "paper_symbol": "ΓH2O",
+        "physical_meaning": "impinging water flux",
+        "units": "m-2 s-1",
+        "definition": "flux of precursor molecules impinging on the surface",
+        "equation": "dθ/dt = s0 ΓH2O β(θ) - Γev",
+        "annotation": {
+          "evidence": "S00066, S00077, E00001",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "desorption_model": {
+      "present": true,
+      "desorption_rate_expression": "Γev",
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "Γev",
+        "physical_meaning": "evaporation flux",
+        "units": "m-2 s-1",
+        "definition": "flux of desorbing species from the surface, representing reaction reversibility",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "S00066, S00069, S00144, E00001",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "site_balance": {
+      "site_density": {
+        "canonical_name": "site_density",
+        "paper_symbol": "s0",
+        "physical_meaning": "surface site area",
+        "units": "m2",
+        "definition": "surface site area, estimated with a ''billiard ball'' approximation",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "S00070, S00093, S00179, E00001",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "site_balance_equation": "",
+      "maximum_coverage": {
+        "canonical_name": "maximum_surface_coverage",
+        "paper_symbol": "θsat",
+        "physical_meaning": "saturation surface coverage",
+        "value": "1",
+        "units": "dimensionless",
+        "annotation": {
+          "evidence": "S00109, S00114",
+          "confidence": "medium",
+          "uncertainty_note": "The theoretical maximum coverage for θ is 1, but the actual saturation coverage (θsat) can be less than 1 due to desorption (S00114)."
+        }
+      }
+    },
+    "reaction_coefficients": {
+      "adsorption_rate_constant": {
+        "canonical_name": "adsorption_rate_constant",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "desorption_rate_constant": {
+        "canonical_name": "desorption_rate_constant",
+        "paper_symbol": "Γev",
+        "physical_meaning": "evaporation flux",
+        "units": "m-2 s-1",
+        "definition": "flux of desorbing species from the surface, representing reaction reversibility",
+        "equation_context": "reaction_equation",
+        "annotation": {
+          "evidence": "S00066, S00069, S00144, E00001",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "sticking_probability": {
+        "canonical_name": "sticking_probability",
+        "paper_symbol": "β0",
+        "physical_meaning": "clean surface sticking coefficient",
+        "units": "dimensionless",
+        "definition": "probability that a precursor molecule adsorbs upon collision on a clean surface (θ=0)",
+        "equation_context": "adsorption_rate",
+        "annotation": {
+          "evidence": "S00047, S00066, S00069, S00197, S00329",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "reaction_probability": {
+        "canonical_name": "reaction_probability",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "growth_relation": {
+      "growth_per_cycle": {
+        "canonical_name": "growth_per_cycle",
+        "paper_symbol": "GPC",
+        "physical_meaning": "film thickness deposited per ALD cycle",
+        "units": "Å",
+        "definition": "conformal film thickness controlled via the growth per cycle parameter",
+        "annotation": {
+          "evidence": "S00039, S00070, S00174, E00006",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "growth_rate_expression": "V(r⃗) = (GPC / t_p) * θ(r⃗) / θ_sat(r⃗)",
+      "surface_growth_coupling": "Growth rate is proportional to the ratio of local surface coverage to saturation coverage, scaled by GPC and pulse time."
+    },
+    "reaction_dependencies": {
+      "gas_phase_variable": "ΓH2O (precursor flux)",
+      "surface_coverage": "θ",
+      "temperature_dependence": "β0 increases and Γev decreases with increasing T; activation energy of 0.178 eV for β0",
+      "pressure_dependence": ""
+    },
+    "dimensionless_numbers": {
+      "damkohler_number": "",
+      "thiele_modulus": ""
+    },
+    "assumptions": {
+      "irreversible_adsorption": false,
+      "single_site_adsorption": true,
+      "self_limiting_reaction": true,
+      "no_surface_diffusion": true,
+      "uniform_surface": true,
+      "coverage_independent_sticking": false
+    },
+    "reaction_regime": {
+      "rate_limiting_step": "",
+      "reaction_order": "first-order with respect to vacant sites",
+      "coverage_dependence": "adsorption rate is dependent on surface coverage, decreasing as coverage increases"
+    },
+    "boundary_coupling": {
+      "surface_flux_expression": "",
+      "transport_reaction_coupling": "Reactant flux (ΓH2O) from the transport model is consumed by the surface reaction, and the surface coverage (θ) influences the adsorption rate."
+    },
+    "source_reference": {
+      "paper_title": "Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures.",
+      "equation_location": "Eq. (1)",
+      "notes": "Model combines Langmuir kinetics with reversible reactions and a coverage-dependent sticking coefficient. The purge step is not explicitly considered."
+    }
+  }
+}

@@ -1,0 +1,713 @@
+{
+  "paper": "Yanguas-Gil and Elam - 2012 - Simple model for atomic layer deposition precursor reaction and transport in a viscous-flow tubular",
+  "segments": [
+    {
+      "segment_id": "S00003",
+      "type": "sentence",
+      "text": "## Simple model for atomic layer deposition precursor reaction and transport in a viscous-flow tubular reactor "
+    },
+    {
+      "segment_id": "S00037",
+      "type": "sentence",
+      "text": "## Simple model for atomic layer deposition precursor reaction and transport in a viscous-flow tubular reactor"
+    },
+    {
+      "segment_id": "S00041",
+      "type": "sentence",
+      "text": "Precursor reaction and transport are both critical in determining the thickness uniformity and conformality of atomic layer deposition (ALD) thin films."
+    },
+    {
+      "segment_id": "S00042",
+      "type": "sentence",
+      "text": "However, it is sometimes difficult to predict how changes in conditions, such as mass flow rate or precursor reactivity, will affect the outcome of an ALD experiment."
+    },
+    {
+      "segment_id": "S00043",
+      "type": "sentence",
+      "text": "To provide some insight and guidance, we have developed a simple 1D model to describe precursor transport and reaction in a tubular viscous flow ALD reactor."
+    },
+    {
+      "segment_id": "S00044",
+      "type": "sentence",
+      "text": "After making some simplifying assumptions, we show that the transport problem depends only on three independent parameters, the Peclet number, the Damkoeler number, and the excess number, which can be easily calculated for most ALD processes."
+    },
+    {
+      "segment_id": "S00050",
+      "type": "sentence",
+      "text": "3-5 However, precursor transport still plays an important role in ALD, since the fundamental requirement for growth uniformity is attaining surface saturation, which requires adequate precursor delivery."
+    },
+    {
+      "segment_id": "S00052",
+      "type": "sentence",
+      "text": "6 Nonuniform film thickness profiles can also result from precursor depletion, which can be a concern for low vapor pressure precursors, or from self-poisoning by reaction byproducts."
+    },
+    {
+      "segment_id": "S00054",
+      "type": "sentence",
+      "text": "Most of the works in ALD either involve complex computational flow dynamics or are extremely reactor/process dependent."
+    },
+    {
+      "segment_id": "S00056",
+      "type": "sentence",
+      "text": "Two exceptions are the works of Ylilammi, who developed a general model of precursor transport in the plug-flow approximation, 13 and Knoops et al. ,"
+    },
+    {
+      "segment_id": "S00057",
+      "type": "sentence",
+      "text": "who carried out simulations based on the plug-flow limit to determine the impact of ozone decomposition in ALD thickness profiles."
+    },
+    {
+      "segment_id": "S00058",
+      "type": "sentence",
+      "text": "14 In contrast, precursor transport and deposition in high aspect ratio and high"
+    },
+    {
+      "segment_id": "S00060",
+      "type": "sentence",
+      "text": "surface area features have been extensively studied using simple kinetic Monte Carlo simulations, line of sight models, differential equations, and analytic results."
+    },
+    {
+      "segment_id": "S00062",
+      "type": "sentence",
+      "text": "The purpose of this work is to describe a simple model of ALD precursor reaction and transport that: (1) provides good agreement with experimental data, (2) is simple enough to allow a clear identification of the links between growth conditions/precursor properties and coverage profiles, and (3) is easily extensible to more complex chemistries."
+    },
+    {
+      "segment_id": "S00063",
+      "type": "sentence",
+      "text": "We apply our model to a hot-wall tubular viscous flow reactor."
+    },
+    {
+      "segment_id": "S00068",
+      "type": "sentence",
+      "text": "The ALD films were deposited in a custom viscous flow tubular reactor."
+    },
+    {
+      "segment_id": "S00070",
+      "type": "sentence",
+      "text": "22 Ultrahigh purity nitrogen (99.999%) carrier gas was used at a mass flow rate of 300 sccm and a pressure of 1 Torr."
+    },
+    {
+      "segment_id": "S00076",
+      "type": "sentence",
+      "text": "ALD was performed using 200 cycles of TMA/H2O at a deposition temperature of 200 /C14 C. These experiments used a TMA partial pressure of 10 mTorr and a H2O partial pressure of /C24 200 mTorr to ensure that the degree of TMA saturation was dictating the film thickness profiles."
+    },
+    {
+      "segment_id": "S00077",
+      "type": "sentence",
+      "text": "TiO2 profiles were determined in a similar fashion, using 300 cycles of TTIP/H2O at 200 /C14 C. The TTIP was contained in a stainless steel bubbler at a temperature of 45 /C14 C and 60 sccm of ultrahigh purity nitrogen was diverted through the bubbler during the TTIP exposures."
+    },
+    {
+      "segment_id": "S00082",
+      "type": "sentence",
+      "text": "Our model is based on the assumption that the partial pressure of the precursor is much lower than the carrier gas."
+    },
+    {
+      "segment_id": "S00083",
+      "type": "sentence",
+      "text": "Then, we can decouple flow from mass transport and, if the carrier gas flow remains approximately constant during the dose and purge times, we can solve the flow equations for the carrier gas under steady-state conditions despite the pulsed nature of ALD."
+    },
+    {
+      "segment_id": "S00084",
+      "type": "sentence",
+      "text": "This is a good approximation of the experimental setup used in this work where the carrier gas flow is kept constant during the ALD."
+    },
+    {
+      "segment_id": "S00085",
+      "type": "sentence",
+      "text": "The mass transport is controlled by the continuity equation for the precursor density:"
+    },
+    {
+      "segment_id": "E00001",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00086",
+      "type": "sentence",
+      "text": "Here, n is the precursor density, r is the (vector) position inside the tube, D is the diffusion coefficient, and u ð r Þ is the velocity field."
+    },
+    {
+      "segment_id": "S00087",
+      "type": "sentence",
+      "text": "The precursor flow to the walls must match the losses due to surface reaction."
+    },
+    {
+      "segment_id": "S00088",
+      "type": "sentence",
+      "text": "Therefore, a general boundary condition is used:"
+    },
+    {
+      "segment_id": "E00002",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00089",
+      "type": "sentence",
+      "text": "where Jwall is the flow to the walls per unit area, vth is the thermal mean velocity vth ¼ ffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi ffi 8 kT = p M ð Þ p , and b ð r s ; t Þ is the precursor reaction probability for each wall position, r s ."
+    },
+    {
+      "segment_id": "E00005",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00096",
+      "type": "sentence",
+      "text": "with a more general boundary condition:"
+    },
+    {
+      "segment_id": "E00006",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00097",
+      "type": "sentence",
+      "text": "where Gi ð r s ; t Þ represents a gain term for species that are generated as byproducts of surface reactions."
+    },
+    {
+      "segment_id": "S00101",
+      "type": "sentence",
+      "text": "For complex reactor geometries, u ð r ; t Þ would be determined by solving the Navier-Stokes equation, coupled to an energy balance equation to account for thermal transport if thermal gradients are present."
+    },
+    {
+      "segment_id": "S00104",
+      "type": "sentence",
+      "text": "Then, under a fully developed flow approximation the flow is purely axial and does not depend on the axial coordinate, so that Eq. (1) reduces to:"
+    },
+    {
+      "segment_id": "E00008",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00105",
+      "type": "sentence",
+      "text": "If we now radially average Eq. (5), we end up with the following equation:"
+    },
+    {
+      "segment_id": "E00009",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00106",
+      "type": "sentence",
+      "text": "where R is the reactor radius."
+    },
+    {
+      "segment_id": "S00107",
+      "type": "sentence",
+      "text": "Using the boundary condition, Eq. (2), we finally obtain:"
+    },
+    {
+      "segment_id": "E00010",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00111",
+      "type": "sentence",
+      "text": "7) and (8), so that x ¼ n = n 0 , n ¼ z = L , and s ¼ tD = L 2 , where n 0 is the initial precursor density and L is the tube length, we obtain:"
+    },
+    {
+      "segment_id": "E00012",
+      "type": "equation"
+    },
+    {
+      "segment_id": "E00013",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00112",
+      "type": "sentence",
+      "text": "Equations (9) and (10), along with their corresponding boundary conditions x ð 0 ; s Þ , x ð n L ; s Þ and initial conditions x ð n ; 0 Þ and h ð n ; 0 Þ , represent a generalization of the plugflow approximations developed by Ylilammi 13 and Knoops et al. 14 to account for the influence of axial diffusion."
+    },
+    {
+      "segment_id": "S00113",
+      "type": "sentence",
+      "text": "Thus, the transport depends only on three independent parameters: the Peclet number ( Pe ), the Damkoeler number ( Da ), and the excess number ( c )."
+    },
+    {
+      "segment_id": "S00114",
+      "type": "sentence",
+      "text": "These are given by:"
+    },
+    {
+      "segment_id": "E00014",
+      "type": "equation"
+    },
+    {
+      "segment_id": "E00015",
+      "type": "equation"
+    },
+    {
+      "segment_id": "E00016",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00115",
+      "type": "sentence",
+      "text": "The Peclet number measures the relative importance of convection to axial diffusion transport."
+    },
+    {
+      "segment_id": "S00116",
+      "type": "sentence",
+      "text": "The Damkoler number represents the ratio between transport and reaction characteristic times."
+    },
+    {
+      "segment_id": "S00117",
+      "type": "sentence",
+      "text": "23 Finally, The excess number represents the number of precursor molecules inside the reactor tube per unit absorption site."
+    },
+    {
+      "segment_id": "S00118",
+      "type": "sentence",
+      "text": "Pe , Da , and c can be obtained from the experimental conditions and the precursor physical properties."
+    },
+    {
+      "segment_id": "S00119",
+      "type": "sentence",
+      "text": "For instance, the axial velocity, u , can be obtained from the carrier gas flow and pressure through the equation:"
+    },
+    {
+      "segment_id": "E00017",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00120",
+      "type": "sentence",
+      "text": "where p , T , and u are the carrier gas pressure, growth temperature, and mass flow rate, and p 0 and T 0 correspond to atmospheric pressure and room temperature, respectively."
+    },
+    {
+      "segment_id": "S00121",
+      "type": "sentence",
+      "text": "Likewise, the diffusion coefficient can be determined using the Chapman-Engskop approximation: 23"
+    },
+    {
+      "segment_id": "E00018",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00122",
+      "type": "sentence",
+      "text": "Where M and M 0 are the precursor and carrier gas molecular mass, X ð kT = e Þ /C25 1 : 12 kT = e ð Þ /C0 0 : 17 , and r 2 and e are two parameters that depend on the precursor-carrier gas interaction potential."
+    },
+    {
+      "segment_id": "S00123",
+      "type": "sentence",
+      "text": "Two representative values of these parameters are r ¼ 3 : 5 A ˚ and X /C25 0 : 5, 23 and they can be used whenever the interaction potential is not available."
+    },
+    {
+      "segment_id": "S00124",
+      "type": "sentence",
+      "text": "Figure 1 summarizes the influence of the experimental conditions on these three parameters."
+    },
+    {
+      "segment_id": "S00125",
+      "type": "sentence",
+      "text": "Pe depends mainly on the reactor radius and mass flow rate."
+    },
+    {
+      "segment_id": "S00126",
+      "type": "sentence",
+      "text": "Da is proportional to the reaction probability and carrier gas pressure, while the excess number, c , is proportional to the precursor pressure and the reactor radius."
+    },
+    {
+      "segment_id": "S00127",
+      "type": "sentence",
+      "text": "As shown in Fig. 1, Pe numbers are around 100 under typical ALD conditions, while Da and c can vary by many orders of magnitude depending on the reaction probability and the precursor partial pressure inside the reactor tube."
+    },
+    {
+      "segment_id": "S00129",
+      "type": "sentence",
+      "text": "9) and (10) using a central finite difference scheme where the uniform spatial discretization step, D n , has been selected so that Pe D n &lt; 0 : 1."
+    },
+    {
+      "segment_id": "S00130",
+      "type": "sentence",
+      "text": "This minimizes the error of the central difference scheme for a convection-diffusion equation. 24 The time evolution of both Eqs. ("
+    },
+    {
+      "segment_id": "S00131",
+      "type": "sentence",
+      "text": "9) and (10) is solved using a fully implicit scheme except for the nonlinear term, which is linearized by approximating the h x term by h ð s /C0 D s Þ x ð s Þ in Eq. (9)."
+    },
+    {
+      "segment_id": "S00132",
+      "type": "sentence",
+      "text": "The time increment D s is chosen so that D s ¼ 0 : 2 ð D n Þ 2 ."
+    },
+    {
+      "segment_id": "S00133",
+      "type": "sentence",
+      "text": "We have used the following initial conditions:"
+    },
+    {
+      "segment_id": "E00019",
+      "type": "equation"
+    },
+    {
+      "segment_id": "E00020",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00134",
+      "type": "sentence",
+      "text": "We have assumed a square precursor pulse with a variable dose time, s 0, so that:"
+    },
+    {
+      "segment_id": "E00021",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00135",
+      "type": "sentence",
+      "text": "and x ð1 ; s Þ ¼ 0, where infinity is taken as a distance much larger than 1."
+    },
+    {
+      "segment_id": "S00136",
+      "type": "sentence",
+      "text": "Typically, we have used n ð1Þ ¼ 10 and a discretization step of D n ¼ 0 : 002."
+    },
+    {
+      "segment_id": "S00137",
+      "type": "sentence",
+      "text": "Figure 2 shows the comparison of the numerical results against analytic solutions that can be obtained in the pure nonself-limiting case, that is, in the CVD mode given by the convection-diffusion-reaction equation:"
+    },
+    {
+      "segment_id": "E00022",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00138",
+      "type": "sentence",
+      "text": "By directly solving Eq. (16) using Laplace transforms, the following analytic solution for initial conditions x ð n ; 0 Þ ¼ 0, first order boundary condition x ð 0 ; s Þ ¼ 1 at the reactor entrance, and zero density at the infinite x ð1 ; s Þ ¼ 0 is obtained:"
+    },
+    {
+      "segment_id": "S00139",
+      "type": "sentence",
+      "text": "FIG. Influence of experimental parameters on the Peclet, Excess, and Damkoeler numbers."
+    },
+    {
+      "segment_id": "S00140",
+      "type": "sentence",
+      "text": "Peclet and Excess number curves are shown for 1, 2.5, and 5 cm radius tubular reactors."
+    },
+    {
+      "segment_id": "S00141",
+      "type": "sentence",
+      "text": "Damkoler numbers are shown for carrier gas pressures of 0.5, 1, 2, and 3 Torr."
+    },
+    {
+      "segment_id": "S00144",
+      "type": "sentence",
+      "text": "FIG. Comparison of relative thickness vs relative position between numerical simulations (full curves) and analytic results (symbols) for a convection-diffusion-reaction model with a first order nonsaturating reaction term."
+    },
+    {
+      "segment_id": "E00023",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00148",
+      "type": "sentence",
+      "text": "where erfc ð/C14Þ is the complementary error function and ffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi"
+    },
+    {
+      "segment_id": "E00024",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00149",
+      "type": "sentence",
+      "text": "Figure 2 shows excellent agreement between the numerical solution (full lines) and the analytic result (symbols) for s 0 ¼ 0.001, 0.005, and 0.1, thus validating our discretization scheme to numerically solve the partial differential equation."
+    },
+    {
+      "segment_id": "S00154",
+      "type": "sentence",
+      "text": "9) and (10) we can obtain relative film thickness, or coverage profiles along our tubular reactor as a function of the three normalized parameters Pe , Da , and c ."
+    },
+    {
+      "segment_id": "S00156",
+      "type": "sentence",
+      "text": "11)-(15) and Fig. Of these, Pe is essentially a function of the experimental conditions and the reactor geometry."
+    },
+    {
+      "segment_id": "S00157",
+      "type": "sentence",
+      "text": "Da and c , on the other hand, strongly depend on the precursor properties."
+    },
+    {
+      "segment_id": "S00160",
+      "type": "sentence",
+      "text": "Our model requires estimates for the precursor diffusion coefficient and the reaction probability."
+    },
+    {
+      "segment_id": "S00161",
+      "type": "sentence",
+      "text": "For the diffusion coefficient, we used the Chapman-Engskop expression defined in Eq. (15)."
+    },
+    {
+      "segment_id": "S00166",
+      "type": "sentence",
+      "text": "16 For the conditions described above, and using our reactor geometry (R ¼ 2.5 cm, L ¼ 45cm), we obtain the values: Pe ¼ 65, Da ¼ 1550, and c ¼ 2.5."
+    },
+    {
+      "segment_id": "S00167",
+      "type": "sentence",
+      "text": "The experimentally measured Al2O3 thickness profiles and the results from the model are presented in Fig. The agreement is remarkable considering: (1) no fitting parameters were used; (2) the model does not take into account any time delay for precursor transport or precursor depletion in the reactor inlet; (3) the diffusion coefficient has been estimated using average values for the interaction potential with N2; (4) a first order Langmuirian behavior is used to model the surface kinetics; and (5) the effect of radial diffusion is neglected by the radially averaging procedure."
+    },
+    {
+      "segment_id": "S00171",
+      "type": "sentence",
+      "text": "Our model allows us to rationalize the differences between the TMA/H2O and the TTIP/H2O coverage profiles in terms of the nondimensional parameters described above."
+    },
+    {
+      "segment_id": "S00172",
+      "type": "sentence",
+      "text": "In particular, the Da parameter is proportional to the precursor reaction probability."
+    },
+    {
+      "segment_id": "S00174",
+      "type": "sentence",
+      "text": "It is apparent that higher Da numbers lead to steeper coverage profiles and a distinct growth front that moves along the reactor tube, a situation similar to the TMA case."
+    },
+    {
+      "segment_id": "S00175",
+      "type": "sentence",
+      "text": "As Da decreases, the profiles become less steep and coverage saturation is reached more evenly in the reactor, but it also takes longer to achieve saturation."
+    },
+    {
+      "segment_id": "S00176",
+      "type": "sentence",
+      "text": "The profiles for Da ¼ 100 and 10 shown in Fig. 5 are closer to the TTIP/H2O measurements, suggesting that TTIP has a lower surface reaction probability than TMA at 200 /C14 C."
+    },
+    {
+      "segment_id": "S00183",
+      "type": "sentence",
+      "text": "Figure 6 shows the influence of Da on the reactor coverage profiles when the excess number, c , is low."
+    },
+    {
+      "segment_id": "S00186",
+      "type": "sentence",
+      "text": "More importantly, as shown in Fig. 6, when c is low, two different situations are possible depending on the value of Da : high Da numbers lead to a regime where saturation is achieved only at the front of the reactor creating a strong coverage gradient."
+    },
+    {
+      "segment_id": "S00187",
+      "type": "sentence",
+      "text": "On the other hand, lower Da numbers lead to undersaturated growth everywhere in the reactor with gentler gradients."
+    },
+    {
+      "segment_id": "S00188",
+      "type": "sentence",
+      "text": "From a practical point of view, the model results suggest that, for low vapor pressure precursors, saturation at the front of the reactor can be promoted by increasing the Damkoler number, for instance by increasing the carrier gas pressure at constant flow rate (i.e., by throttling the pumping inside the reactor)."
+    },
+    {
+      "segment_id": "S00189",
+      "type": "sentence",
+      "text": "Finally, higher Pe numbers allow for faster precursor delivery along the tube, leading to a faster propagation of the growth front."
+    },
+    {
+      "segment_id": "S00191",
+      "type": "sentence",
+      "text": "FIG. Influence of Damkoler number on theoretical relative thickness profiles ( Pe ¼ 50, c ¼ 10)."
+    },
+    {
+      "segment_id": "S00194",
+      "type": "sentence",
+      "text": "FIG. Influence of Damkoeler number on theoretical relative thickness profiles at low excess numbers ( Pe ¼ 50)."
+    },
+    {
+      "segment_id": "S00197",
+      "type": "sentence",
+      "text": "ing a higher pumping capacity that allows higher flows for the same carrier gas and precursor pressures."
+    },
+    {
+      "segment_id": "S00206",
+      "type": "sentence",
+      "text": "Where Darec is the analagous to the Da term given in Eq. (12), but for a surface recombination probability, b rec ."
+    },
+    {
+      "segment_id": "S00207",
+      "type": "sentence",
+      "text": "Figure 7 shows the influence of increasing wall recombination, Darec , on the relative thickness profiles for a high value of Da ¼ 1000."
+    },
+    {
+      "segment_id": "S00208",
+      "type": "sentence",
+      "text": "As a consequence of the wall recombination, the saturation front propagates more slowly than in the pure self-limited case."
+    },
+    {
+      "segment_id": "S00209",
+      "type": "sentence",
+      "text": "However, since high Da corresponds to a high reaction probability of the self-limited process, saturation is still reached at the front of the reactor."
+    },
+    {
+      "segment_id": "S00210",
+      "type": "sentence",
+      "text": "The situation is different when the ALD process is characterized by a low reaction probability ( Da ¼ 10)."
+    },
+    {
+      "segment_id": "S00211",
+      "type": "sentence",
+      "text": "As shown in Fig. 8, under these conditions the profiles change from being almost completely homogeneous along the reactor in the absence of losses to essentially an exponential decay in surface coverage when the wall recombination probability is high."
+    },
+    {
+      "segment_id": "S00213",
+      "type": "sentence",
+      "text": "FIG. Influence of wall recombination on the relative thickness profiles for large Damkoler numbers ( Pe ¼ 50, Da ¼ 1000, c ¼ 10)."
+    },
+    {
+      "segment_id": "S00218",
+      "type": "sentence",
+      "text": "The results presented in the preceding sections show that decoupling mass transport from flow dynamics is a reasonable approximation for modeling the transport-reaction process in tubular, laminar flow ALD reactors."
+    },
+    {
+      "segment_id": "S00220",
+      "type": "sentence",
+      "text": "FIG. Influence of wall recombination on the relative thickness profiles for small Damkoler numbers ( Pe ¼ 50, Da ¼ 10, c ¼ 10)."
+    },
+    {
+      "segment_id": "S00223",
+      "type": "sentence",
+      "text": "Another consequence of the results presented above is that mass transport can greatly affect the saturation dynamics."
+    },
+    {
+      "segment_id": "S00224",
+      "type": "sentence",
+      "text": "Thus, care should be taken when extracting surface reaction kinetic information from saturation curves based on dosing studies: precursor transport can lead to saturation curves that differ greatly from the exponential function expected for first-order Langmuir behavior, and in some conditions they become strongly dependent on the axial position."
+    },
+    {
+      "segment_id": "S00225",
+      "type": "sentence",
+      "text": "Only when precursor depletion can be neglected will the saturation curves reflect the underlying surface kinetics."
+    },
+    {
+      "segment_id": "S00226",
+      "type": "sentence",
+      "text": "While Da and c depend on precursor properties, Pe is mostly dependent on the experimental configuration."
+    },
+    {
+      "segment_id": "S00227",
+      "type": "sentence",
+      "text": "Two interesting limiting cases are static dosing ( Pe ¼ 0) and plug-flow ( Pe /C29 1) where the contribution of axial diffusion can be neglected."
+    },
+    {
+      "segment_id": "S00228",
+      "type": "sentence",
+      "text": "In the first case, the convecting term in Eq. (11) is the same, and the equations formally resemble the continuum approximation recently developed for coating nanostructured substrates."
+    },
+    {
+      "segment_id": "S00229",
+      "type": "sentence",
+      "text": "21 The only difference is that in the nanostructured substrate case the transport is determined by Knudsen diffusion."
+    },
+    {
+      "segment_id": "S00230",
+      "type": "sentence",
+      "text": "When the axial diffusion is neglected, the following first order differential equation is obtained:"
+    },
+    {
+      "segment_id": "E00026",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00231",
+      "type": "sentence",
+      "text": "and its equivalent nondimensional version results:"
+    },
+    {
+      "segment_id": "E00027",
+      "type": "equation"
+    },
+    {
+      "segment_id": "S00232",
+      "type": "sentence",
+      "text": "Here, s 0 ¼ u = L ð Þ t , and the characteristic time is the residence time of the precursor inside the reactor instead of the diffusion time for the full model."
+    },
+    {
+      "segment_id": "S00233",
+      "type": "sentence",
+      "text": "Likewise, Da 0 still represents the ratio between the characteristic transport and reaction times, with the transport time determined by the residence time L = u ."
+    },
+    {
+      "segment_id": "S00235",
+      "type": "sentence",
+      "text": "13 Also, plug-flow simulations were recently used by Knoops et al. to model ZnO growth profiles in a tubular viscous flow reactor."
+    },
+    {
+      "segment_id": "S00236",
+      "type": "sentence",
+      "text": "14 The numerical solution of Eqs. ("
+    },
+    {
+      "segment_id": "S00237",
+      "type": "sentence",
+      "text": "18) and (10) would be formally equivalent to the models developed in both works."
+    },
+    {
+      "segment_id": "S00238",
+      "type": "sentence",
+      "text": "The plug-flow approximation is valid as long as axial diffusion can be neglected when compared with axial convection."
+    },
+    {
+      "segment_id": "S00239",
+      "type": "sentence",
+      "text": "However, this approximation will break down depending on the average flow and also on the presence of steep precursor gradients inside the reactor."
+    },
+    {
+      "segment_id": "S00240",
+      "type": "sentence",
+      "text": "These gradients will amplify the role of axial diffusion and are likely to be more important at the beginning and the end of the dose pulse."
+    },
+    {
+      "segment_id": "S00241",
+      "type": "sentence",
+      "text": "Finally, we would like to discuss the influence of radial averaging on the model coverage profiles."
+    },
+    {
+      "segment_id": "S00242",
+      "type": "sentence",
+      "text": "One of the main advantages of performing a cross sectional average of the different variables is that the resulting 1D model can be easily solved."
+    },
+    {
+      "segment_id": "S00244",
+      "type": "sentence",
+      "text": "The main consequence of this procedure is an underestimation of axial diffusion: in a full 2D picture, streams at the center of the reactor move at twice the average velocity, allowing precursor molecules to move faster and then diffuse laterally."
+    },
+    {
+      "segment_id": "S00245",
+      "type": "sentence",
+      "text": "This may be an additional source for broadening of"
+    },
+    {
+      "segment_id": "S00246",
+      "type": "sentence",
+      "text": "the axial gradients that is not considered in the 1D model."
+    },
+    {
+      "segment_id": "S00247",
+      "type": "sentence",
+      "text": "While we have shown that the agreement between the simple model for atomic layer deposition precursor reaction and transport (SMART) model and the ALD Al2O3 experiments is very good, the broader experimental profiles shown in Fig. 3 compared to the model results could be a consequence of the limitation of the 1D approximation."
+    },
+    {
+      "segment_id": "S00248",
+      "type": "sentence",
+      "text": "We expect that more computationally intensive modeling of the carrier gas flow will help us better understanding the dynamics of gas mixing and the role of diffusion in precursor transport during ALD."
+    },
+    {
+      "segment_id": "S00250",
+      "type": "sentence",
+      "text": "We have developed a simple 1D model that is able to describe precursor transport and reaction in a tubular viscous flow ALD reactor."
+    },
+    {
+      "segment_id": "S00254",
+      "type": "sentence",
+      "text": "Both the full model and the plug flow approximation for the SMART model are available for download from the site: http://www.es.anl.gov/ald/smart."
+    },
+    {
+      "segment_id": "S00327",
+      "type": "sentence",
+      "text": "- 23 D. E. Rosner, Transport Processes in Chemically Reacting Flow Systems (Dover New York, 2000)."
+    },
+    {
+      "segment_id": "S00328",
+      "type": "sentence",
+      "text": "- 24 C.-P. Hong, Computer Modelling of Heat and Fluid Flow in Materials Processing . ("
+    }
+  ]
+}

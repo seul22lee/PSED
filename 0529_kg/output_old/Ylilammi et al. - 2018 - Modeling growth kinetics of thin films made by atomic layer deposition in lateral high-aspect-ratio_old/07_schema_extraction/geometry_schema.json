@@ -1,0 +1,241 @@
+{
+  "geometry_model": {
+    "feature_definition": {
+      "feature_type": "LHAR_channel",
+      "dimensionality": "1D"
+    },
+    "geometry_parameters": {
+      "feature_height": {
+        "canonical_name": "feature_height",
+        "paper_symbol": "H",
+        "physical_meaning": "Height of the channel; gap height",
+        "units": "m",
+        "definition": "Vertical dimension of the lateral channel",
+        "equation_context": "S00132, S00239, S00253, S00259, S00263, S00265",
+        "annotation": {
+          "evidence": "S00069, S00110, S00113, S00132, S00163, S00239, S00240, S00242, S00244, S00247, S00248, S00253, S00259, S00263, S00265, S00276, S00280, S00300, S00319, S00321, S00322",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses µm in examples, normalized to m."
+        }
+      },
+      "feature_width": {
+        "canonical_name": "feature_width",
+        "paper_symbol": "W",
+        "physical_meaning": "Width of the channel in the z-direction",
+        "units": "m",
+        "definition": "Lateral dimension of the channel perpendicular to height and length",
+        "equation_context": "S00132, S00195, S00253, S00256, S00259, S00265",
+        "annotation": {
+          "evidence": "S00090, S00127, S00132, S00165, S00195, S00227, S00233, S00248, S00253, S00256, S00259, S00265, S00276",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses mm in examples, normalized to m."
+        }
+      },
+      "feature_depth": {
+        "canonical_name": "feature_depth",
+        "paper_symbol": "L",
+        "physical_meaning": "Length of the channel in the x-direction (propagation direction)",
+        "units": "m",
+        "definition": "Axial length of the channel, along which gas propagates",
+        "equation_context": "S00113, S00128, S00259",
+        "annotation": {
+          "evidence": "S00071, S00113, S00128, S00280, S00300",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses mm in examples, normalized to m. This corresponds to the 'gap length' for aspect ratio calculation."
+        }
+      },
+      "pore_radius": {
+        "canonical_name": "pore_radius",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "feature_length": {
+        "canonical_name": "feature_length",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "derived_parameters": {
+      "aspect_ratio": {
+        "canonical_name": "aspect_ratio",
+        "paper_symbol": "a",
+        "physical_meaning": "Ratio of channel length (L) to channel height (H); also denoted as α",
+        "units": "dimensionless",
+        "definition": "L / H",
+        "equation_context": "S00113, S00263, E00044",
+        "annotation": {
+          "evidence": "S00053, S00113, S00263, S00280, S00300",
+          "confidence": "high",
+          "uncertainty_note": "Paper uses 'a' in nomenclature (S00053) and 'α' in equation context (S00263). Definition is L/H (S00113, S00280, S00300)."
+        }
+      },
+      "equivalent_aspect_ratio": {
+        "canonical_name": "equivalent_aspect_ratio",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "dimensionless",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      },
+      "hydraulic_diameter": {
+        "canonical_name": "hydraulic_diameter",
+        "paper_symbol": "h",
+        "physical_meaning": "Hydraulic diameter of the channel",
+        "units": "m",
+        "definition": "Characteristic length for a rectangular channel of height H and width W",
+        "equation_context": "S00132, E00001",
+        "annotation": {
+          "evidence": "S00068, S00132, E00001",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "2Wx",
+        "physical_meaning": "Internal surface area of the channel available for adsorption",
+        "units": "m2",
+        "definition": "2 * W * x (for a channel segment of length x)",
+        "equation_context": "E00021, E00038",
+        "annotation": {
+          "evidence": "S00194, S00256, E00021, E00038",
+          "confidence": "medium",
+          "uncertainty_note": "Not explicitly defined as a single variable, but implied by the terms in adsorption equations."
+        }
+      },
+      "cross_section_area": {
+        "canonical_name": "cross_section_area",
+        "paper_symbol": "WH",
+        "physical_meaning": "Cross-section area of the channel",
+        "units": "m2",
+        "definition": "W * H",
+        "equation_context": "S00259, E00041",
+        "annotation": {
+          "evidence": "S00259, E00041",
+          "confidence": "high",
+          "uncertainty_note": "Not explicitly defined as a single variable, but used as 'area WH'."
+        }
+      },
+      "feature_volume": {
+        "canonical_name": "feature_volume",
+        "paper_symbol": "WHx_p",
+        "physical_meaning": "Volume of the channel segment where reactant is present",
+        "units": "m3",
+        "definition": "W * H * x_p (where x_p is penetration depth)",
+        "equation_context": "S00195, E00022",
+        "annotation": {
+          "evidence": "S00195, E00022",
+          "confidence": "medium",
+          "uncertainty_note": "Not explicitly defined as a single variable, but implied by the term 'WHx_p' for reactant volume."
+        }
+      }
+    },
+    "geometry_evolution": {
+      "evolving_geometry": true,
+      "evolution_equation": "H_N(x) = H - 2 * N * gpc(x)"
+    },
+    "coordinate_system": {
+      "coordinate_type": "cartesian",
+      "spatial_variable": {
+        "canonical_name": "spatial_coordinate",
+        "paper_symbol": "x",
+        "physical_meaning": "Distance from the beginning of the channel; propagation direction",
+        "units": "m",
+        "definition": "Coordinate along the length of the channel where gas propagates",
+        "equation_context": "S00125, S00162, S00167, S00188, S00191, S00221, S00237, S00240, S00253",
+        "annotation": {
+          "evidence": "S00091, S00125, S00126, S00128, S00162, S00167, S00185, S00188, S00189, S00190, S00191, S00193, S00194, S00195, S00197, S00198, S00199, S00200, S00204, S00207, S00208, S00221, S00223, S00237, S00240, S00245, S00253, S00256, S00258, S00259, S00261, S00263",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "geometry_assumptions": {
+      "constant_geometry": true,
+      "symmetric_geometry": true,
+      "uniform_cross_section": true
+    },
+    "transport_interface": {
+      "characteristic_length": {
+        "canonical_name": "characteristic_length",
+        "paper_symbol": "h",
+        "physical_meaning": "Hydraulic diameter of the channel, used as a characteristic length for diffusion (e.g., Knudsen diffusion)",
+        "units": "m",
+        "definition": "Hydraulic diameter of a rectangular channel of height H and width W",
+        "equation_context": "S00132, E00001",
+        "annotation": {
+          "evidence": "S00068, S00132, E00001, S00142",
+          "confidence": "high",
+          "uncertainty_note": ""
+        }
+      },
+      "diffusion_length": {
+        "canonical_name": "diffusion_length",
+        "paper_symbol": "sqrt(D_eff * t)",
+        "physical_meaning": "Length scale over which gas propagates by diffusion",
+        "units": "m",
+        "definition": "Proportional to the square root of effective diffusion coefficient and time",
+        "equation_context": "S00191",
+        "annotation": {
+          "evidence": "S00191",
+          "confidence": "high",
+          "uncertainty_note": "Not a single symbol, but an expression for diffusion length."
+        }
+      }
+    },
+    "reaction_interface": {
+      "surface_area": {
+        "canonical_name": "surface_area",
+        "paper_symbol": "2Wx",
+        "physical_meaning": "Internal surface area of the channel available for adsorption",
+        "units": "m2",
+        "definition": "2 * W * x (for a channel segment of length x)",
+        "equation_context": "E00021, E00038",
+        "annotation": {
+          "evidence": "S00194, S00256, E00021, E00038",
+          "confidence": "medium",
+          "uncertainty_note": "Not explicitly defined as a single variable, but implied by the terms in adsorption equations."
+        }
+      },
+      "active_surface_area": {
+        "canonical_name": "active_surface_area",
+        "paper_symbol": "",
+        "physical_meaning": "",
+        "units": "m2",
+        "definition": "",
+        "equation_context": "",
+        "annotation": {
+          "evidence": "",
+          "confidence": "",
+          "uncertainty_note": ""
+        }
+      }
+    },
+    "source_reference": {
+      "paper_title": "Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures",
+      "equation_location": "",
+      "notes": ""
+    }
+  }
+}
