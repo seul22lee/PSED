@@ -27,28 +27,40 @@ MODEL_NAME = "gemini-2.5-flash"
 
 def extract_caption_candidates(doc_json: Dict, picture_self_ref: str) -> str:
     """
-    doc.texts에서 caption 후보를 수집
-    - "Fig" / "Figure" 패턴 탐색
-    - 그림 아래쪽 텍스트 proximity 기반 수집
+    1. picture의 page_no 파악
+    2. 같은 page의 caption label 텍스트 반환
+    3. 없으면 figure 번호 기준으로 순서 매칭
     """
     texts = doc_json.get("texts", [])
-    caption_candidates = []
-    fig_pattern = re.compile(r"(fig\.?|figure)\s*\d+", re.IGNORECASE)
-    for t in texts:
-        text = t.get("text", "")
-        if not text:
-            continue
-        if fig_pattern.search(text):
-            caption_candidates.append(text)
-    # fallback: caption label 있는 경우
-    for t in texts:
-        if t.get("label") == "CAPTION":
-            caption_candidates.append(t.get("text", ""))
-    return " ".join(caption_candidates[:3])  # 너무 길지 않게 제한
+    pictures = doc_json.get("pictures", [])
 
-# ==========================================
-# Vision LLM 호출
-# ==========================================
+    # self_ref로 picture 찾아서 page_no 파악
+    # self_ref 형식: "#/pictures/8" → index 8
+    m = re.match(r"#/pictures/(\d+)", picture_self_ref)
+    if not m:
+        return ""
+    pic_idx = int(m.group(1))
+    pic = pictures[pic_idx] if pic_idx < len(pictures) else None
+    if not pic:
+        return ""
+
+    # picture의 page_no
+    prov = pic.get("prov", [])
+    pic_pages = set(p.get("page_no") for p in prov if p.get("page_no"))
+    if not pic_pages:
+        return ""
+
+    # 같은 page의 caption label 텍스트 수집
+    captions_on_page = []
+    for t in texts:
+        if t.get("label") not in ("caption", "CAPTION"):
+            continue
+        t_prov = t.get("prov", [])
+        t_pages = set(p.get("page_no") for p in t_prov if p.get("page_no"))
+        if pic_pages & t_pages:
+            captions_on_page.append(t.get("text", ""))
+
+    return " ".join(captions_on_page[:2])
 
 
 def ask_vision_llm(image_path: Path, caption_text: str) -> Dict[str, Any]:
@@ -129,7 +141,11 @@ def filter_figures(paper_stem: str, output_dir: Path):
         is_valid = llm_result.get("is_scientific_figure", False)
         confidence = llm_result.get("confidence", 0.0)
         fig["enhanced_caption"] = enhanced_caption
+        # ↓ 추가: caption이 없으면 enhanced_caption으로 채움
+        if not fig.get("caption") and enhanced_caption:
+            fig["caption"] = enhanced_caption
         fig["vision_decision"] = llm_result
+
         if is_valid and confidence >= 0.5:
             print("KEEP:", image_path.name)
             shutil.copy(str(image_path), filtered_dir / image_path.name)

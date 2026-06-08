@@ -50,12 +50,15 @@
       "L"
     ],
     "aliases": [
-      "feature length",
+      "Length",
+      "cavity length",
       "channel length",
-      "lateral length",
-      "trench length",
+      "feature length",
       "hole length",
-      "structure length"
+      "lateral length",
+      "length",
+      "structure length",
+      "trench length"
     ]
   },
   {
@@ -285,7 +288,6 @@
     "domain": "reaction",
     "symbols": [
       "c",
-      "s",
       "β"
     ],
     "aliases": [
@@ -319,9 +321,12 @@
       "k_ads"
     ],
     "aliases": [
-      "adsorption rate constant",
+      "Adsorption constant",
+      "K",
       "adsorption coefficient",
-      "adsorption kinetic constant"
+      "adsorption constant",
+      "adsorption kinetic constant",
+      "adsorption rate constant"
     ]
   },
   {
@@ -381,18 +386,20 @@
     "canonical_name": "growth_per_cycle",
     "domain": "reaction",
     "symbols": [
-      "GPC",
-      "gpc",
       "gpc_sat"
     ],
     "aliases": [
       "GPC",
-      "growth per cycle",
+      "GPC saturation",
+      "Growth per cycle saturation",
+      "cycle growth",
+      "gpc sat",
       "gpc_sat",
-      "saturation GPC",
+      "growth per cycle",
+      "growth per cycle saturation",
       "saturated GPC",
       "saturated growth per cycle",
-      "cycle growth"
+      "saturation GPC"
     ]
   },
   {
@@ -567,8 +574,7 @@
     "canonical_name": "effective_diffusion_coefficient",
     "domain": "transport",
     "symbols": [
-      "D_eff",
-      "D"
+      "D_eff"
     ],
     "aliases": [
       "effective diffusion coefficient",
@@ -578,9 +584,7 @@
   {
     "canonical_name": "temperature",
     "domain": "transport",
-    "symbols": [
-      "T"
-    ],
+    "symbols": [],
     "aliases": [
       "deposition temperature",
       "deposition temp",
@@ -602,8 +606,12 @@
       "M_B"
     ],
     "aliases": [
-      "molecular mass",
+      "Molar mass of precursor A",
+      "Molar mass of precursor B",
       "molar mass",
+      "molar mass of precursor A",
+      "molar mass of precursor B",
+      "molecular mass",
       "molecular weight"
     ]
   },
@@ -642,14 +650,22 @@
       "t_p"
     ],
     "aliases": [
-      "pulse time",
-      "pulse length",
-      "pulse duration",
-      "reactant pulse length",
-      "reactant pulse time",
+      "Plasma pulse time",
+      "Plasma time",
+      "TMA pulse time",
+      "exposure time",
+      "half-cycle time",
+      "plasma exposure time",
+      "plasma half-cycle time",
+      "plasma pulse time",
+      "plasma time",
       "precursor pulse length",
       "precursor pulse time",
-      "TMA pulse time",
+      "pulse duration",
+      "pulse length",
+      "pulse time",
+      "reactant pulse length",
+      "reactant pulse time",
       "water pulse time"
     ]
   },
@@ -711,7 +727,17 @@
       "p_B0"
     ],
     "aliases": [
+      "Initial precursor A pressure",
+      "Initial precursor B pressure",
+      "Partial pressure of precursor A",
+      "Partial pressure of precursor B",
+      "initial precursor A pressure",
+      "initial precursor B pressure",
       "partial pressure",
+      "partial pressure of precursor A",
+      "partial pressure of precursor B",
+      "precursor A partial pressure",
+      "precursor B partial pressure",
       "precursor partial pressure",
       "reactant partial pressure"
     ]
@@ -793,7 +819,6 @@
     "aliases": [
       "process time",
       "deposition time",
-      "exposure time",
       "reaction time"
     ]
   },
@@ -806,6 +831,157 @@
       "channel filling fraction",
       "filling fraction",
       "feature filling fraction"
+    ]
+  },
+  {
+    "canonical_name": "normalized_thickness",
+    "domain": "deposition",
+    "symbols": [
+      "S_norm",
+      "θ_norm"
+    ],
+    "aliases": [
+      "Normalized thickness",
+      "normalized thickness",
+      "normalised thickness",
+      "Type 1 normalized saturation profile",
+      "normalized saturation profile",
+      "normalized film thickness",
+      "relative thickness",
+      "thickness normalized"
+    ]
+  },
+  {
+    "canonical_name": "thickness_per_cycle",
+    "domain": "deposition",
+    "symbols": [
+      "S/N",
+      "GPC"
+    ],
+    "aliases": [
+      "Thickness/cycles",
+      "thickness per cycle",
+      "thickness/cycles",
+      "scaled saturation profile",
+      "scaled thickness",
+      "thickness per ALD cycle"
+    ]
+  },
+  {
+    "canonical_name": "penetration_depth",
+    "domain": "deposition",
+    "symbols": [
+      "PD",
+      "z_50",
+      "PD_50",
+      "x_p"
+    ],
+    "aliases": [
+      "Film penetration",
+      "PD 50%",
+      "PD50",
+      "PD50%",
+      "Penetration depth",
+      "film penetration",
+      "film penetration depth",
+      "penetration",
+      "penetration depth",
+      "penetration depth ratio",
+      "z50%"
+    ]
+  },
+  {
+    "canonical_name": "surface_coverage",
+    "domain": "reaction",
+    "symbols": [
+      "θ",
+      "theta"
+    ],
+    "aliases": [
+      "surface coverage",
+      "Surface coverage",
+      "fractional surface coverage",
+      "surface saturation"
+    ]
+  },
+  {
+    "canonical_name": "radical_density",
+    "domain": "plasma",
+    "symbols": [
+      "n",
+      "n_r"
+    ],
+    "aliases": [
+      "radical density",
+      "Radical density",
+      "plasma radical density",
+      "normalized radical density",
+      "reactant density"
+    ]
+  },
+  {
+    "canonical_name": "generation",
+    "domain": "geometry",
+    "symbols": [],
+    "aliases": [
+      "PillarHall generation",
+      "pillarHall generation",
+      "generation",
+      "device generation",
+      "structure generation",
+      "chip generation"
+    ]
+  },
+  {
+    "canonical_name": "film_thickness",
+    "domain": "deposition",
+    "symbols": [
+      "S",
+      "t_f"
+    ],
+    "aliases": [
+      "Film thickness",
+      "film thickness",
+      "thickness",
+      "layer thickness",
+      "deposited thickness",
+      "coating thickness",
+      "ALD film thickness",
+      "thickness profile",
+      "film thickness profile"
+    ]
+  },
+  {
+    "canonical_name": "dimensionless_distance",
+    "domain": "geometry",
+    "symbols": [
+      "x̃",
+      "x_tilde",
+      "ξ"
+    ],
+    "aliases": [
+      "Dimensionless distance",
+      "dimensionless distance",
+      "dimensionless position",
+      "normalized distance",
+      "normalized position",
+      "scaled distance"
+    ]
+  },
+  {
+    "canonical_name": "precursor_molecular_diameter",
+    "domain": "process",
+    "symbols": [
+      "d_mol"
+    ],
+    "aliases": [
+      "Molecular diameter of precursor A",
+      "molecular diameter of precursor A",
+      "Molecular diameter of precursor B",
+      "molecular diameter of precursor B",
+      "molecular diameter",
+      "precursor diameter",
+      "molecule diameter"
     ]
   }
 ]
