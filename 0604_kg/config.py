@@ -60,11 +60,12 @@ STEP = {
     "02": "02_figure_filter",
     "03": "03_plot_to_data",
     "04": "04_formula_to_data",
-    "05": "05_paper_schema",
-    "06": "06_enrich_figures",
-    "07": "07_experiment_schema",
-    "08": "08_causal_relations",
-    "09": "09_normalize_causal_relations",
+    "05": "05_enrich_figures",
+    "06": "06_experiment_schema",
+    "07": "07_normalize",
+    "08": "08_match",
+    "09": "09_kg",
+    "10": "10_visualize_matches",
 }
 
 PROMPT_DIR=ROOT/"prompt"

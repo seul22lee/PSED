@@ -1,0 +1,607 @@
+{
+  "experiment_type": "modeling",
+  "figure": {
+    "figure_id": "figure-012",
+    "figure_index": 12,
+    "figure_no": 3,
+    "title": "Surface coverage",
+    "series_name": "Pulse time= 0.1 s (circles)",
+    "series_index": 0
+  },
+  "variables": {
+    "independent_variables": [
+      {
+        "name": "Location",
+        "symbol": "x",
+        "value": null,
+        "unit": "µm",
+        "role": "varied"
+      },
+      {
+        "name": "Pulse time",
+        "symbol": null,
+        "value": 0.1,
+        "unit": "s",
+        "role": "varied"
+      }
+    ],
+    "controlled_variables": [
+      {
+        "name": "Height",
+        "symbol": "H",
+        "value": 0.5,
+        "unit": "µm",
+        "role": "controlled"
+      },
+      {
+        "name": "Width",
+        "symbol": "W",
+        "value": 0.1,
+        "unit": "mm",
+        "role": "controlled"
+      },
+      {
+        "name": "Partial pressure of precursor A",
+        "symbol": "p A0",
+        "value": 100,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "name": "Molar mass of precursor A",
+        "symbol": "M A",
+        "value": 0.0749,
+        "unit": "kg/mol",
+        "role": "controlled"
+      },
+      {
+        "name": "Molecular diameter of precursor A",
+        "symbol": "d A",
+        "value": 591,
+        "unit": "pm",
+        "role": "controlled"
+      },
+      {
+        "name": "Molar mass of precursor B",
+        "symbol": "M B",
+        "value": 0.028,
+        "unit": "kg/mol",
+        "role": "controlled"
+      },
+      {
+        "name": "Molecular diameter of precursor B",
+        "symbol": "d B",
+        "value": 374,
+        "unit": "pm",
+        "role": "controlled"
+      },
+      {
+        "name": "Partial pressure of precursor B",
+        "symbol": "p B",
+        "value": 300,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "name": "Surface site density",
+        "symbol": "q",
+        "value": 5e+18,
+        "unit": "m^-2",
+        "role": "controlled"
+      },
+      {
+        "name": "Temperature",
+        "symbol": "T",
+        "value": 500,
+        "unit": "K",
+        "role": "controlled"
+      },
+      {
+        "name": "Adsorption constant",
+        "symbol": "K",
+        "value": 100,
+        "unit": "Pa^-1",
+        "role": "controlled"
+      },
+      {
+        "name": "Reaction probability",
+        "symbol": "c",
+        "value": 0.01,
+        "unit": null,
+        "role": "controlled"
+      },
+      {
+        "name": "Growth per cycle saturation",
+        "symbol": "gpc sat",
+        "value": 106,
+        "unit": "pm",
+        "role": "controlled"
+      }
+    ],
+    "dependent_variables": [
+      {
+        "name": "Surface coverage",
+        "symbol": "θ",
+        "unit": null,
+        "role": "measured_or_calculated"
+      }
+    ]
+  },
+  "process": {
+    "process_type": null,
+    "material_deposited": null,
+    "precursors": [
+      {
+        "name": null,
+        "symbol": "A",
+        "partial_pressure": 100,
+        "partial_pressure_unit": "Pa",
+        "pulse_time": null,
+        "pulse_time_unit": null,
+        "molar_mass": 0.0749,
+        "molar_mass_unit": "kg/mol",
+        "molecular_diameter": 591,
+        "molecular_diameter_unit": "pm"
+      },
+      {
+        "name": null,
+        "symbol": "B",
+        "partial_pressure": 300,
+        "partial_pressure_unit": "Pa",
+        "pulse_time": null,
+        "pulse_time_unit": null,
+        "molar_mass": 0.028,
+        "molar_mass_unit": "kg/mol",
+        "molecular_diameter": 374,
+        "molecular_diameter_unit": "pm"
+      }
+    ],
+    "reactant_sequence": null,
+    "cycles": null,
+    "temperature": 500,
+    "temperature_unit": "K",
+    "gpc_sat": 106,
+    "gpc_sat_unit": "pm"
+  },
+  "geometry": {
+    "structure_type": "trench",
+    "H": 0.5,
+    "H_unit": "µm",
+    "L": null,
+    "L_unit": null,
+    "W": 0.1,
+    "W_unit": "mm",
+    "pillar_layout": null,
+    "generation": null,
+    "trench_width": null,
+    "trench_width_unit": null,
+    "trench_depth": null,
+    "trench_depth_unit": null,
+    "hole_diameter": null,
+    "hole_diameter_unit": null,
+    "hole_depth": null,
+    "hole_depth_unit": null,
+    "hole_shape": null,
+    "pore_diameter": null,
+    "pore_diameter_unit": null,
+    "pore_length": null,
+    "pore_length_unit": null,
+    "porosity": null,
+    "substrate_material": null
+  },
+  "modeling": {
+    "is_model_result": true,
+    "model_name": "fully numerical solution of differential equations",
+    "adsorption_model": null,
+    "diffusion_model": null,
+    "reaction_assumption": null,
+    "parameters": [
+      {
+        "name": "Surface site density",
+        "symbol": "q",
+        "value": 5e+18,
+        "unit": "m^-2"
+      },
+      {
+        "name": "Adsorption constant",
+        "symbol": "K",
+        "value": 100,
+        "unit": "Pa^-1"
+      },
+      {
+        "name": "Reaction probability",
+        "symbol": "c",
+        "value": 0.01,
+        "unit": null
+      }
+    ]
+  },
+  "data": {
+    "x_label": "Location x (µm)",
+    "y_label": "Surface coverage (θ)",
+    "points": [
+      [
+        0,
+        1.0
+      ],
+      [
+        5,
+        1.0
+      ],
+      [
+        10,
+        1.0
+      ],
+      [
+        15,
+        1.0
+      ],
+      [
+        20,
+        1.0
+      ],
+      [
+        25,
+        1.0
+      ],
+      [
+        30,
+        1.0
+      ],
+      [
+        35,
+        1.0
+      ],
+      [
+        40,
+        1.0
+      ],
+      [
+        45,
+        1.0
+      ],
+      [
+        50,
+        1.0
+      ],
+      [
+        55,
+        1.0
+      ],
+      [
+        60,
+        1.0
+      ],
+      [
+        65,
+        1.0
+      ],
+      [
+        70,
+        1.0
+      ],
+      [
+        75,
+        1.0
+      ],
+      [
+        80,
+        1.0
+      ],
+      [
+        85,
+        1.0
+      ],
+      [
+        90,
+        1.0
+      ],
+      [
+        95,
+        1.0
+      ],
+      [
+        100,
+        1.0
+      ],
+      [
+        105,
+        1.0
+      ],
+      [
+        110,
+        1.0
+      ],
+      [
+        115,
+        1.0
+      ],
+      [
+        120,
+        1.0
+      ],
+      [
+        122,
+        0.99
+      ],
+      [
+        124,
+        0.98
+      ],
+      [
+        126,
+        0.96
+      ],
+      [
+        128,
+        0.94
+      ],
+      [
+        130,
+        0.91
+      ],
+      [
+        132,
+        0.88
+      ],
+      [
+        134,
+        0.84
+      ],
+      [
+        136,
+        0.79
+      ],
+      [
+        138,
+        0.74
+      ],
+      [
+        140,
+        0.68
+      ],
+      [
+        142,
+        0.62
+      ],
+      [
+        144,
+        0.55
+      ],
+      [
+        146,
+        0.48
+      ],
+      [
+        148,
+        0.4
+      ],
+      [
+        150,
+        0.32
+      ],
+      [
+        152,
+        0.25
+      ],
+      [
+        154,
+        0.18
+      ],
+      [
+        156,
+        0.12
+      ],
+      [
+        158,
+        0.07
+      ],
+      [
+        160,
+        0.04
+      ],
+      [
+        162,
+        0.02
+      ],
+      [
+        164,
+        0.01
+      ],
+      [
+        166,
+        0.0
+      ],
+      [
+        170,
+        0.0
+      ],
+      [
+        175,
+        0.0
+      ],
+      [
+        180,
+        0.0
+      ],
+      [
+        185,
+        0.0
+      ],
+      [
+        190,
+        0.0
+      ],
+      [
+        195,
+        0.0
+      ],
+      [
+        200,
+        0.0
+      ]
+    ]
+  },
+  "provenance": {
+    "caption": "FIG. 3. Development of the surface coverage with time. Circles represent the fully numerical solution of differential equations and lines the result of the approximate model. Parameter values used: H ¼ 0.5 l m , W ¼ 0.1 mm, p A0 ¼ 100Pa, M A ¼ 0.0749 kg/mol, d A ¼ 591pm, M B ¼ 0.028 kg/mol, d B ¼ 374 pm, p B ¼ 300Pa, q ¼ 5 /C2 10 18 m /C0 2 , T ¼ 500 K, K ¼ 100Pa /C0 1 , c ¼ 0.01, and gpc sat ¼ 106pm.",
+    "paragraphs": [],
+    "evidence_notes": [
+      "The unit 'l m' for H was interpreted as 'µm' based on common scientific notation and context.",
+      "The unit 'm /C0 2' for q was interpreted as 'm^-2'.",
+      "The unit 'Pa /C0 1' for K was interpreted as 'Pa^-1'."
+    ]
+  },
+  "experiment_id": "experiment-00009",
+  "normalized": {
+    "material": null,
+    "structure_type": "trench",
+    "is_model_result": true,
+    "independent_variables": [
+      {
+        "original_name": "Location",
+        "canonical_name": "spatial_coordinate",
+        "symbol": "x",
+        "value": null,
+        "unit": "nm",
+        "role": "varied"
+      },
+      {
+        "original_name": "Pulse time",
+        "canonical_name": "pulse_time",
+        "symbol": null,
+        "value": 0.1,
+        "unit": "s",
+        "role": "varied"
+      }
+    ],
+    "controlled_variables": [
+      {
+        "original_name": "Height",
+        "canonical_name": "feature_height",
+        "symbol": "H",
+        "value": 500.0,
+        "unit": "nm",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Width",
+        "canonical_name": "feature_width",
+        "symbol": "W",
+        "value": 100000.0,
+        "unit": "nm",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Partial pressure of precursor A",
+        "canonical_name": "partial_pressure",
+        "symbol": "p A0",
+        "value": 100.0,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Molar mass of precursor A",
+        "canonical_name": "molecular_mass",
+        "symbol": "M A",
+        "value": 0.0749,
+        "unit": "kg/mol",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Molecular diameter of precursor A",
+        "canonical_name": "precursor_molecular_diameter",
+        "symbol": "d A",
+        "value": 0.591,
+        "unit": "nm",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Molar mass of precursor B",
+        "canonical_name": "molecular_mass",
+        "symbol": "M B",
+        "value": 0.028,
+        "unit": "kg/mol",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Molecular diameter of precursor B",
+        "canonical_name": "precursor_molecular_diameter",
+        "symbol": "d B",
+        "value": 0.374,
+        "unit": "nm",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Partial pressure of precursor B",
+        "canonical_name": "partial_pressure",
+        "symbol": "p B",
+        "value": 300.0,
+        "unit": "Pa",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Surface site density",
+        "canonical_name": "site_density",
+        "symbol": "q",
+        "value": 5e+18,
+        "unit": "m^-2",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Temperature",
+        "canonical_name": "temperature",
+        "symbol": "T",
+        "value": 226.85000000000002,
+        "unit": "°C",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Adsorption constant",
+        "canonical_name": "adsorption_rate_constant",
+        "symbol": "K",
+        "value": 100.0,
+        "unit": "Pa^-1",
+        "role": "controlled"
+      },
+      {
+        "original_name": "Reaction probability",
+        "canonical_name": "reaction_probability",
+        "symbol": "c",
+        "value": 0.01,
+        "unit": null,
+        "role": "controlled"
+      },
+      {
+        "original_name": "Growth per cycle saturation",
+        "canonical_name": "growth_per_cycle",
+        "symbol": "gpc sat",
+        "value": 0.106,
+        "unit": "nm",
+        "role": "controlled"
+      }
+    ],
+    "dependent_variables": [
+      {
+        "original_name": "Surface coverage",
+        "canonical_name": "surface_coverage",
+        "symbol": "θ",
+        "value": null,
+        "unit": null,
+        "role": "measured_or_calculated"
+      }
+    ],
+    "flat_params": {
+      "pulse_time": 0.1,
+      "feature_height": 500.0,
+      "feature_width": 100000.0,
+      "partial_pressure": 300.0,
+      "molecular_mass": 0.028,
+      "precursor_molecular_diameter": 0.374,
+      "site_density": 5e+18,
+      "temperature": 226.85000000000002,
+      "adsorption_rate_constant": 100.0,
+      "reaction_probability": 0.01,
+      "growth_per_cycle": 0.106
+    }
+  }
+}
