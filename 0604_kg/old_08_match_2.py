@@ -10,12 +10,14 @@ matches.json 을 OUTPUT_DIR 루트에 저장한다.
   3차 스코어링:
     - indep_score : independent variable canonical_name Jaccard
     - ctrl_score  : controlled parameter(flat_params) 유사도
-        · 분모 N = 같은 material 의 '전역 변수 집합'(그 material 모든 실험의 union) 크기로 고정.
-          → 어떤 쌍이든 같은 변수·같은 N 으로 평가되어 매치 간 점수 비교가 일관됨.
-        · 변수별 agree: 둘다 관측→value_sim, 한쪽만→expected_sim(결측 추정),
-          둘다 결측→dummy=E[sim(u,v)](그 변수에서 무작위 두 실험의 기대 일치도).
-        · score    = Σ agree / N
-        · coverage = (둘 다 관측된 개수) / N  → 직접 측정 비율
+        · 교집합이 아니라 "합집합(union)" 기준, 각 파라미터 weight 1 로 평균낸다.
+        · 둘 다 관측: agree = value_sim(va, vb)
+        · 한쪽만 관측: agree = expected_sim(obs, population)
+            = 빠진 값이 같은 material 의 분포에서 뽑힌다고 본 '기대 일치도'.
+              관측값이 흔하면 높고, 드물면 낮고, 분포가 퍼질수록 전반적으로 낮다.
+              (별도 신뢰도 가중 없이 이 값 자체가 불확실성을 반영)
+        · score    = Σ agree / N           (N = 합집합 개수)
+        · coverage = (둘 다 관측된 개수) / N  → 직접 측정 비율(추정 의존도의 반대)
     - total_score = INDEP_WEIGHT * indep_score + CTRL_WEIGHT * ctrl_score
 
 대칭성: ctrl_similarity 는 a/b 순서와 무관 → exp_a↔exp_b 일치도가 항상 같다.
@@ -125,36 +127,22 @@ def load_experiments(output_dir: Path) -> list[dict]:
 
 
 # ─────────────────────────────────────────
-# population 통계 (imputation + 전역 union 용)
+# population 통계 (imputation 용)
 # ─────────────────────────────────────────
-def build_param_stats(exps: list[dict]):
+def build_param_pop(exps: list[dict]) -> dict:
     """
-    같은 material 의 모든 실험을 모아:
-      pop[(mat,key)]   = [values...]          관측값 분포 (결측치 추정용)
-      mat_keys[mat]    = sorted([keys...])     그 material 의 '전역 변수 집합'
-                          → 모든 쌍을 이 고정 집합 위에서 평가해 분모 N 을 통일한다.
-      dummy[(mat,key)] = E[sim(u,v)]           둘 다 결측일 때의 기대 일치도
-                          (무작위 두 실험이 그 변수에서 평균적으로 얼마나 일치하는가;
-                           거의 고정값이면 높고, 퍼진 변수면 낮다)
+    material 별 controlled parameter 의 관측값 분포를 모은다.
+    (material, key) -> [values...]
+    결측치 추정 시, 빠진 값이 이 분포에서 뽑힌다고 보고 기대 일치도를 계산한다.
     """
-    pop, mat_keys = {}, {}
+    pop = {}
     for e in exps:
         mat = e["material"]
-        mat_keys.setdefault(mat, set())
         for k, v in e["flat"].items():
             if v is None:
                 continue
             pop.setdefault((mat, k), []).append(v)
-            mat_keys[mat].add(k)
-
-    dummy = {}
-    for key, vals in pop.items():
-        # 두 무작위 추출의 평균 유사도 = E_{u,v~pop}[value_sim(u,v)]
-        s = sum(value_sim(u, v) for u in vals for v in vals)
-        dummy[key] = s / (len(vals) ** 2)
-
-    mat_keys = {m: sorted(ks) for m, ks in mat_keys.items()}
-    return pop, mat_keys, dummy
+    return pop
 
 
 # ─────────────────────────────────────────
@@ -191,23 +179,24 @@ def indep_similarity(a: dict, b: dict) -> float:
     return len(intersection) / len(union)
 
 
-def ctrl_similarity(a: dict, b: dict, pop: dict, mat_keys: dict, dummy: dict):
+def ctrl_similarity(a: dict, b: dict, pop: dict):
     """
-    '전역 union' 기반 controlled parameter 유사도.
+    합집합 기반 controlled parameter 유사도 + 결측치 imputation(E[sim]).
 
-    분모 N = 같은 material 의 전역 변수 집합 크기(고정) → 모든 쌍이 같은 기준으로 평가됨.
-    각 변수마다 일치도 agree 를 구해(weight 1) 평균낸다.
-      - 둘 다 관측: agree = value_sim(va, vb)                         [observed]
-      - 한쪽만 관측: agree = expected_sim(obs, population)            [imputed]
-      - 둘 다 결측: agree = dummy = E[sim(u,v)] (분포의 평균 자기유사도) [dummy]
-    score    = Σ agree / N
-    coverage = (둘 다 관측된 개수) / N   → 직접 측정 비율
+    각 합집합 파라미터마다 일치도 agree 를 구하고(weight 1), 평균낸다.
+      - 둘 다 관측: agree = value_sim(va, vb)
+      - 한쪽만 관측: agree = expected_sim(obs, population)
+          → 빠진 값이 분포에서 뽑힌다고 본 '기대 일치도'.
+            흔한 값이면 높고 드문 값이면 낮으며, 분포가 퍼지면 전반적으로 낮다.
+            (별도 신뢰도 가중 없이 이 값 자체가 불확실성을 반영)
+    score    = Σ agree / N         (N = 합집합 개수)
+    coverage = (둘 다 관측된 개수) / N   → 직접 측정된 비율(추정 의존도의 반대)
 
     반환: (score, details, coverage)
       details : 파라미터별 {va, vb, ratio(=agree), kind}
     """
     mat  = a["material"]
-    keys = mat_keys.get(mat, [])
+    keys = set(a["flat"]) | set(b["flat"])
     if not keys:
         return 0.0, {}, 0.0
 
@@ -220,13 +209,10 @@ def ctrl_similarity(a: dict, b: dict, pop: dict, mat_keys: dict, dummy: dict):
         if va is not None and vb is not None:
             agree, kind = value_sim(va, vb), "observed"
             n_obs += 1
-        elif va is not None or vb is not None:
+        else:
             obs   = va if va is not None else vb
             agree = expected_sim(obs, pop.get((mat, k), []))
             kind  = "imputed"
-        else:
-            agree = dummy.get((mat, k), 0.0)
-            kind  = "dummy"
 
         details[k] = {"va": va, "vb": vb, "ratio": round(agree, 4), "kind": kind}
         total += agree
@@ -255,7 +241,7 @@ def dep_overlap(a: dict, b: dict) -> list[str]:
 
 
 def compute_matches(exps: list[dict], min_score: float = 0.0) -> list[dict]:
-    pop, mat_keys, dummy = build_param_stats(exps)
+    pop = build_param_pop(exps)
 
     matches = []
     for a, b in combinations(exps, 2):
@@ -270,7 +256,7 @@ def compute_matches(exps: list[dict], min_score: float = 0.0) -> list[dict]:
 
         # 스코어
         i_score                     = indep_similarity(a, b)
-        c_score, c_detail, coverage = ctrl_similarity(a, b, pop, mat_keys, dummy)
+        c_score, c_detail, coverage = ctrl_similarity(a, b, pop)
         total                       = INDEP_WEIGHT * i_score + CTRL_WEIGHT * c_score
 
         if total < min_score:
