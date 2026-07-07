@@ -1,0 +1,426 @@
+[
+  {
+    "lhs": [
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "η",
+        "original": "η"
+      },
+      {
+        "symbol": "s₀",
+        "original": "s₀"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      },
+      {
+        "symbol": "r",
+        "original": "r"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "η",
+        "ñ"
+      ],
+      [
+        "s₀",
+        "ñ"
+      ],
+      [
+        "θ",
+        "ñ"
+      ],
+      [
+        "ñ",
+        "ñ"
+      ],
+      [
+        "r",
+        "ñ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "η",
+        "target": "ñ",
+        "effect": "negative",
+        "reason": "η appears in terms -ηs₀(1 - θ)ñ and -ηrñ. As η increases, these terms become more negative, thus decreasing ∂ñ/∂τ."
+      },
+      {
+        "source": "s₀",
+        "target": "ñ",
+        "effect": "negative",
+        "reason": "s₀ appears in the term -ηs₀(1 - θ)ñ. As s₀ increases, this term becomes more negative, thus decreasing ∂ñ/∂τ."
+      },
+      {
+        "source": "θ",
+        "target": "ñ",
+        "effect": "positive",
+        "reason": "θ appears in the term -ηs₀(1 - θ)ñ. As θ increases, (1 - θ) decreases, making the term -ηs₀(1 - θ)ñ less negative (or more positive), thus increasing ∂ñ/∂τ."
+      },
+      {
+        "source": "ñ",
+        "target": "ñ",
+        "effect": "unknown",
+        "reason": "The terms -ηs₀(1 - θ)ñ and -ηrñ show a negative proportionality to ñ. However, the term ∂²ñ/∂ξ² represents a dependency on the spatial curvature of ñ, not a simple algebraic dependency on ñ itself, making the overall effect of ñ on its rate of change complex and not confidently determinable as a simple positive/negative/proportional/inverse."
+      },
+      {
+        "source": "r",
+        "target": "ñ",
+        "effect": "negative",
+        "reason": "r appears in the term -ηrñ. As r increases, this term becomes more negative, thus decreasing ∂ñ/∂τ."
+      }
+    ],
+    "equation_type": "Partial Differential Equation",
+    "equation_role": "reaction_diffusion",
+    "equation_image": "equation-0001.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "θ",
+        "original": "θ"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "γ",
+        "original": "γ"
+      },
+      {
+        "symbol": "η",
+        "original": "η"
+      },
+      {
+        "symbol": "s₀",
+        "original": "s₀"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "γ",
+        "θ"
+      ],
+      [
+        "η",
+        "θ"
+      ],
+      [
+        "s₀",
+        "θ"
+      ],
+      [
+        "θ",
+        "θ"
+      ],
+      [
+        "ñ",
+        "θ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "γ",
+        "target": "θ",
+        "effect": "proportional",
+        "reason": "γ is a direct multiplier in the numerator of the RHS."
+      },
+      {
+        "source": "η",
+        "target": "θ",
+        "effect": "proportional",
+        "reason": "η is a direct multiplier in the numerator of the RHS."
+      },
+      {
+        "source": "s₀",
+        "target": "θ",
+        "effect": "proportional",
+        "reason": "s₀ is a direct multiplier in the numerator of the RHS."
+      },
+      {
+        "source": "θ",
+        "target": "θ",
+        "effect": "negative",
+        "reason": "θ is part of the (1 - θ) term. As θ increases, (1 - θ) decreases, leading to a decrease in dθ/dτ."
+      },
+      {
+        "source": "ñ",
+        "target": "θ",
+        "effect": "proportional",
+        "reason": "ñ is a direct multiplier in the numerator of the RHS."
+      }
+    ],
+    "equation_type": "differential_equation",
+    "equation_role": "adsorption",
+    "equation_image": "equation-0002.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "η",
+        "original": "η"
+      },
+      {
+        "symbol": "r",
+        "original": "r"
+      },
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "η",
+        "ñ"
+      ],
+      [
+        "r",
+        "ñ"
+      ],
+      [
+        "ñ",
+        "ñ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "η",
+        "target": "ñ",
+        "effect": "positive",
+        "reason": "Increasing the source variable (η) increases the magnitude of the second derivative of the target variable (ñ), leading to a stronger effect on the target's behavior (e.g., faster growth/decay or higher oscillation frequency)."
+      },
+      {
+        "source": "r",
+        "target": "ñ",
+        "effect": "positive",
+        "reason": "Increasing the source variable (r) increases the magnitude of the second derivative of the target variable (ñ), leading to a stronger effect on the target's behavior (e.g., faster growth/decay or higher oscillation frequency)."
+      },
+      {
+        "source": "ñ",
+        "target": "ñ",
+        "effect": "positive",
+        "reason": "Increasing the source variable (ñ) increases the magnitude of its own second derivative, indicating a self-reinforcing or self-regulating behavior."
+      }
+    ],
+    "equation_type": "differential_equation",
+    "equation_role": "unknown",
+    "equation_image": "equation-0003.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "ñ",
+        "original": "ñ"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "η",
+        "original": "η"
+      },
+      {
+        "symbol": "r",
+        "original": "r"
+      },
+      {
+        "symbol": "ξ",
+        "original": "ξ"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "η",
+        "ñ"
+      ],
+      [
+        "r",
+        "ñ"
+      ],
+      [
+        "ξ",
+        "ñ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "η",
+        "target": "ñ",
+        "effect": "negative",
+        "reason": "As η increases, √(ηrξ) increases, making -√(ηrξ) more negative. Since ñ is exp(-√(ηrξ)), ñ decreases."
+      },
+      {
+        "source": "r",
+        "target": "ñ",
+        "effect": "negative",
+        "reason": "As r increases, √(ηrξ) increases, making -√(ηrξ) more negative. Since ñ is exp(-√(ηrξ)), ñ decreases."
+      },
+      {
+        "source": "ξ",
+        "target": "ñ",
+        "effect": "negative",
+        "reason": "As ξ increases, √(ηrξ) increases, making -√(ηrξ) more negative. Since ñ is exp(-√(ηrξ)), ñ decreases."
+      }
+    ],
+    "equation_type": "exponential",
+    "equation_role": "definition",
+    "equation_image": "equation-0004.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "ξ₅₀%",
+        "original": "ξ₅₀%(t)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "η",
+        "original": "η"
+      },
+      {
+        "symbol": "r",
+        "original": "r"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      },
+      {
+        "symbol": "t₅₀%",
+        "original": "t₅₀%"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "η",
+        "ξ₅₀%"
+      ],
+      [
+        "r",
+        "ξ₅₀%"
+      ],
+      [
+        "t",
+        "ξ₅₀%"
+      ],
+      [
+        "t₅₀%",
+        "ξ₅₀%"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "η",
+        "target": "ξ₅₀%",
+        "effect": "inverse",
+        "reason": "η is in the denominator of a square root, which is itself in the denominator of the overall expression."
+      },
+      {
+        "source": "r",
+        "target": "ξ₅₀%",
+        "effect": "inverse",
+        "reason": "r is in the denominator of a square root, which is itself in the denominator of the overall expression."
+      },
+      {
+        "source": "t",
+        "target": "ξ₅₀%",
+        "effect": "positive",
+        "reason": "t is in the numerator inside a natural logarithm; as t increases, ln(t/t₅₀%) increases."
+      },
+      {
+        "source": "t₅₀%",
+        "target": "ξ₅₀%",
+        "effect": "negative",
+        "reason": "t₅₀% is in the denominator inside a natural logarithm; as t₅₀% increases, ln(t/t₅₀%) decreases."
+      }
+    ],
+    "equation_type": "logarithmic",
+    "equation_role": "definition",
+    "equation_image": "equation-0005.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "z̃₅₀%",
+        "original": "z̃₅₀%(t)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "r",
+        "original": "r"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      },
+      {
+        "symbol": "t₅₀%",
+        "original": "t₅₀%"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "r",
+        "z̃₅₀%"
+      ],
+      [
+        "t",
+        "z̃₅₀%"
+      ],
+      [
+        "t₅₀%",
+        "z̃₅₀%"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "r",
+        "target": "z̃₅₀%",
+        "effect": "inverse",
+        "reason": "r is in the denominator of the multiplicative factor"
+      },
+      {
+        "source": "t",
+        "target": "z̃₅₀%",
+        "effect": "positive",
+        "reason": "t is in the numerator inside a natural logarithm; ln(x) is an increasing function"
+      },
+      {
+        "source": "t₅₀%",
+        "target": "z̃₅₀%",
+        "effect": "negative",
+        "reason": "t₅₀% is in the denominator inside a natural logarithm; ln(x) is an increasing function, so an increase in the denominator of its argument leads to a decrease in the overall value"
+      }
+    ],
+    "equation_type": "explicit",
+    "equation_role": "definition",
+    "equation_image": "equation-0006.png"
+  }
+]
