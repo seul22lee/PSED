@@ -79,53 +79,53 @@
         "source": "d_A",
         "target": "z_A",
         "effect": "positive",
-        "reason": "'d_A' appears in (d_A + d_B)^2 and d_A^2, both terms are added to 'z_A'."
+        "reason": "d_A appears in (d_A + d_B)^2 and (d_A)^2, both terms are added to z_A, so increasing d_A increases z_A."
       },
       {
         "source": "d_B",
         "target": "z_A",
         "effect": "positive",
-        "reason": "'d_B' appears in (d_A + d_B)^2, which is added to 'z_A'."
+        "reason": "d_B appears in (d_A + d_B)^2, which is part of a positive term added to z_A, so increasing d_B increases z_A."
       },
       {
         "source": "R",
         "target": "z_A",
         "effect": "negative",
-        "reason": "'R' appears as R^(-1/2) in both additive terms, indicating a negative influence."
+        "reason": "In both main terms, R appears as R^(1/2) in the numerator of a square root and R^(-1) outside, resulting in an overall R^(-1/2) dependency for each term. Since both terms are added, increasing R decreases z_A."
       },
       {
         "source": "T",
         "target": "z_A",
         "effect": "negative",
-        "reason": "'T' appears as T^(-1/2) in both additive terms, indicating a negative influence."
+        "reason": "In both main terms, T appears as T^(1/2) in the numerator of a square root and T^(-1) outside, resulting in an overall T^(-1/2) dependency for each term. Since both terms are added, increasing T decreases z_A."
       },
       {
         "source": "M_A",
         "target": "z_A",
         "effect": "negative",
-        "reason": "'M_A' appears as 1/M_A inside a sum in the first term and as 1/M_A^(1/2) in the second term, both contributing negatively."
+        "reason": "M_A appears in the denominator inside a square root in both main terms (1/M_A + 1/M_B)^(1/2) and (1/M_A)^(1/2). Since both terms are added, increasing M_A decreases z_A."
       },
       {
         "source": "M_B",
         "target": "z_A",
         "effect": "negative",
-        "reason": "'M_B' appears as 1/M_B inside a sum in the first term, contributing negatively."
+        "reason": "M_B appears in the denominator inside a square root in the first main term (1/M_A + 1/M_B)^(1/2). Since this term is added to z_A, increasing M_B decreases z_A."
       },
       {
         "source": "p_B",
         "target": "z_A",
         "effect": "proportional",
-        "reason": "'p_B' is a direct multiplier in the first additive term."
+        "reason": "p_B appears in the numerator of the first main term, which is added to z_A."
       },
       {
         "source": "p_A",
         "target": "z_A",
         "effect": "proportional",
-        "reason": "'p_A' is a direct multiplier in the second additive term."
+        "reason": "p_A appears in the numerator of the second main term, which is added to z_A."
       }
     ],
-    "equation_type": "definition",
-    "equation_role": "definition",
+    "equation_type": "unknown",
+    "equation_role": "unknown",
     "equation_image": "equation-0001.png"
   },
   {
@@ -218,17 +218,17 @@
       {
         "source": "v_A",
         "target": "D_A",
-        "effect": "proportional",
-        "reason": "D_A is directly proportional to v_A squared, which is a direct proportionality."
+        "effect": "positive",
+        "reason": "D_A is proportional to v_A squared (D_A = k * v_A^2), indicating a positive influence."
       },
       {
         "source": "z_A",
         "target": "D_A",
         "effect": "inverse",
-        "reason": "D_A is inversely proportional to z_A."
+        "reason": "D_A is inversely proportional to z_A (D_A = k / z_A)."
       }
     ],
-    "equation_type": "algebraic",
+    "equation_type": "explicit",
     "equation_role": "definition",
     "equation_image": "equation-0003.png"
   },
@@ -280,29 +280,29 @@
         "source": "h",
         "target": "D_Kn",
         "effect": "proportional",
-        "reason": "D_Kn is directly proportional to h (D_Kn = h * ...)"
+        "reason": "h is a direct multiplicative factor in the numerator."
       },
       {
         "source": "R",
         "target": "D_Kn",
         "effect": "proportional",
-        "reason": "R is in the numerator of a term raised to the power of 1/2 (D_Kn ~ R^(1/2))"
+        "reason": "R is in the numerator and raised to a positive power (1/2)."
       },
       {
         "source": "T",
         "target": "D_Kn",
         "effect": "proportional",
-        "reason": "T is in the numerator of a term raised to the power of 1/2 (D_Kn ~ T^(1/2))"
+        "reason": "T is in the numerator and raised to a positive power (1/2)."
       },
       {
         "source": "M_A",
         "target": "D_Kn",
         "effect": "inverse",
-        "reason": "M_A is in the denominator of a term raised to the power of 1/2 (D_Kn ~ 1/M_A^(1/2))"
+        "reason": "M_A is in the denominator and raised to a positive power (1/2)."
       }
     ],
     "equation_type": "unknown",
-    "equation_role": "definition",
+    "equation_role": "diffusion",
     "equation_image": "equation-0004.png"
   },
   {
@@ -337,17 +337,4190 @@
         "source": "H",
         "target": "h",
         "effect": "positive",
-        "reason": "As H increases, 1/H decreases, causing the denominator (1/H + 1/W) to decrease, which in turn causes h to increase."
+        "reason": "h is inversely proportional to the sum (1/H + 1/W). As H increases, 1/H decreases, causing the sum (1/H + 1/W) to decrease, which in turn causes h to increase."
       },
       {
         "source": "W",
         "target": "h",
         "effect": "positive",
-        "reason": "As W increases, 1/W decreases, causing the denominator (1/H + 1/W) to decrease, which in turn causes h to increase."
+        "reason": "h is inversely proportional to the sum (1/H + 1/W). As W increases, 1/W decreases, causing the sum (1/H + 1/W) to decrease, which in turn causes h to increase."
       }
     ],
     "equation_type": "algebraic",
     "equation_role": "definition",
     "equation_image": "equation-0005.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D_eff",
+        "original": "D_eff"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "D_A",
+        "original": "D_A"
+      },
+      {
+        "symbol": "D_Kn",
+        "original": "D_Kn"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "D_A",
+        "D_eff"
+      ],
+      [
+        "D_Kn",
+        "D_eff"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "D_A",
+        "target": "D_eff",
+        "effect": "positive",
+        "reason": "D_eff is inversely proportional to (1/D_A + 1/D_Kn). As D_A increases, 1/D_A decreases, causing the denominator (1/D_A + 1/D_Kn) to decrease, which in turn causes D_eff to increase. The relationship is not strictly proportional or inverse."
+      },
+      {
+        "source": "D_Kn",
+        "target": "D_eff",
+        "effect": "positive",
+        "reason": "D_eff is inversely proportional to (1/D_A + 1/D_Kn). As D_Kn increases, 1/D_Kn decreases, causing the denominator (1/D_A + 1/D_Kn) to decrease, which in turn causes D_eff to increase. The relationship is not strictly proportional or inverse."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0006.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "d_A",
+        "original": "d_A"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "\\eta",
+        "original": "\\eta"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "\\eta",
+        "d_A"
+      ],
+      [
+        "N_0",
+        "d_A"
+      ],
+      [
+        "M_A",
+        "d_A"
+      ],
+      [
+        "R",
+        "d_A"
+      ],
+      [
+        "T",
+        "d_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "\\eta",
+        "target": "d_A",
+        "effect": "negative",
+        "reason": "\\eta is in the denominator under a square root, so d_A is proportional to \\eta^(-1/2)."
+      },
+      {
+        "source": "N_0",
+        "target": "d_A",
+        "effect": "negative",
+        "reason": "N_0 is in the denominator under a square root, so d_A is proportional to N_0^(-1/2)."
+      },
+      {
+        "source": "M_A",
+        "target": "d_A",
+        "effect": "positive",
+        "reason": "M_A is in the numerator under a square root, so d_A is proportional to M_A^(1/2)."
+      },
+      {
+        "source": "R",
+        "target": "d_A",
+        "effect": "positive",
+        "reason": "R is in the numerator under a square root, so d_A is proportional to R^(1/2)."
+      },
+      {
+        "source": "T",
+        "target": "d_A",
+        "effect": "positive",
+        "reason": "T is in the numerator under a square root, so d_A is proportional to T^(1/2)."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0007.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "d_A",
+        "original": "d_A"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "ρ",
+        "original": "ρ"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "M_A",
+        "d_A"
+      ],
+      [
+        "ρ",
+        "d_A"
+      ],
+      [
+        "N_0",
+        "d_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "M_A",
+        "target": "d_A",
+        "effect": "proportional",
+        "reason": "d_A is proportional to M_A raised to the power of 1/3."
+      },
+      {
+        "source": "ρ",
+        "target": "d_A",
+        "effect": "inverse",
+        "reason": "d_A is proportional to 1/ρ raised to the power of 1/3, meaning it is inversely proportional to ρ."
+      },
+      {
+        "source": "N_0",
+        "target": "d_A",
+        "effect": "inverse",
+        "reason": "d_A is proportional to 1/N_0 raised to the power of 1/3, meaning it is inversely proportional to N_0."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0008.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "q",
+        "original": "q"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "b_film",
+        "original": "b_film"
+      },
+      {
+        "symbol": "ρ",
+        "original": "ρ"
+      },
+      {
+        "symbol": "g",
+        "original": "g"
+      },
+      {
+        "symbol": "p",
+        "original": "p"
+      },
+      {
+        "symbol": "c_sat",
+        "original": "c_sat"
+      },
+      {
+        "symbol": "b_A",
+        "original": "b_A"
+      },
+      {
+        "symbol": "M",
+        "original": "M"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "b_film",
+        "q"
+      ],
+      [
+        "ρ",
+        "q"
+      ],
+      [
+        "g",
+        "q"
+      ],
+      [
+        "p",
+        "q"
+      ],
+      [
+        "c_sat",
+        "q"
+      ],
+      [
+        "b_A",
+        "q"
+      ],
+      [
+        "M",
+        "q"
+      ],
+      [
+        "N_0",
+        "q"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "b_film",
+        "target": "q",
+        "effect": "proportional",
+        "reason": "b_film is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "ρ",
+        "target": "q",
+        "effect": "proportional",
+        "reason": "ρ is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "g",
+        "target": "q",
+        "effect": "proportional",
+        "reason": "g is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "p",
+        "target": "q",
+        "effect": "proportional",
+        "reason": "p is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "c_sat",
+        "target": "q",
+        "effect": "proportional",
+        "reason": "c_sat is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "b_A",
+        "target": "q",
+        "effect": "inverse",
+        "reason": "b_A is in the denominator and multiplied by other terms."
+      },
+      {
+        "source": "M",
+        "target": "q",
+        "effect": "inverse",
+        "reason": "M is in the denominator and multiplied by other terms."
+      },
+      {
+        "source": "N_0",
+        "target": "q",
+        "effect": "proportional",
+        "reason": "N_0 is multiplied by the main fraction, effectively in the numerator."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0009.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "D_eff",
+        "original": "D_eff"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "g",
+        "original": "g"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "h",
+        "original": "h"
+      },
+      {
+        "symbol": "N₀",
+        "original": "N₀"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "D_eff",
+        "p_A"
+      ],
+      [
+        "p_A",
+        "p_A"
+      ],
+      [
+        "x",
+        "p_A"
+      ],
+      [
+        "g",
+        "p_A"
+      ],
+      [
+        "R",
+        "p_A"
+      ],
+      [
+        "T",
+        "p_A"
+      ],
+      [
+        "h",
+        "p_A"
+      ],
+      [
+        "N₀",
+        "p_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "D_eff",
+        "target": "p_A",
+        "effect": "proportional",
+        "reason": "∂p_A/∂t is directly proportional to D_eff."
+      },
+      {
+        "source": "p_A",
+        "target": "p_A",
+        "effect": "unknown",
+        "reason": "The relationship between a variable and its second spatial derivative is complex and not a simple direct/inverse/positive/negative influence."
+      },
+      {
+        "source": "x",
+        "target": "p_A",
+        "effect": "unknown",
+        "reason": "x is a variable of differentiation, not a direct multiplier or divisor. Its influence on ∂p_A/∂t is through the spatial variation of p_A."
+      },
+      {
+        "source": "g",
+        "target": "p_A",
+        "effect": "negative",
+        "reason": "∂p_A/∂t is negatively influenced by g due to the -g term."
+      },
+      {
+        "source": "R",
+        "target": "p_A",
+        "effect": "negative",
+        "reason": "∂p_A/∂t is negatively influenced by R due to the -4RT in the subtracted term."
+      },
+      {
+        "source": "T",
+        "target": "p_A",
+        "effect": "negative",
+        "reason": "∂p_A/∂t is negatively influenced by T due to the -4RT in the subtracted term."
+      },
+      {
+        "source": "h",
+        "target": "p_A",
+        "effect": "positive",
+        "reason": "∂p_A/∂t is positively influenced by h because h is in the denominator of a subtracted term."
+      },
+      {
+        "source": "N₀",
+        "target": "p_A",
+        "effect": "positive",
+        "reason": "∂p_A/∂t is positively influenced by N₀ because N₀ is in the denominator of a subtracted term."
+      }
+    ],
+    "equation_type": "partial differential equation",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0010.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "f_ads",
+        "original": "f_ads"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "θ",
+        "f_ads"
+      ],
+      [
+        "c",
+        "f_ads"
+      ],
+      [
+        "N_0",
+        "f_ads"
+      ],
+      [
+        "p_A",
+        "f_ads"
+      ],
+      [
+        "M_A",
+        "f_ads"
+      ],
+      [
+        "R",
+        "f_ads"
+      ],
+      [
+        "T",
+        "f_ads"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "θ",
+        "target": "f_ads",
+        "effect": "negative",
+        "reason": "f_ads is proportional to (1 - θ). As θ increases, (1 - θ) decreases, thus f_ads decreases."
+      },
+      {
+        "source": "c",
+        "target": "f_ads",
+        "effect": "proportional",
+        "reason": "c is in the numerator and multiplied."
+      },
+      {
+        "source": "N_0",
+        "target": "f_ads",
+        "effect": "proportional",
+        "reason": "N_0 is in the numerator and multiplied."
+      },
+      {
+        "source": "p_A",
+        "target": "f_ads",
+        "effect": "proportional",
+        "reason": "p_A is in the numerator and multiplied."
+      },
+      {
+        "source": "M_A",
+        "target": "f_ads",
+        "effect": "negative",
+        "reason": "M_A is in the denominator and under a square root. As M_A increases, the denominator increases, so f_ads decreases."
+      },
+      {
+        "source": "R",
+        "target": "f_ads",
+        "effect": "negative",
+        "reason": "R is in the denominator and under a square root. As R increases, the denominator increases, so f_ads decreases."
+      },
+      {
+        "source": "T",
+        "target": "f_ads",
+        "effect": "negative",
+        "reason": "T is in the denominator and under a square root. As T increases, the denominator increases, so f_ads decreases."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "adsorption",
+    "equation_image": "equation-0011.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "f_des",
+        "original": "f_{des}"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "P_d",
+        "original": "P_d"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "q",
+        "f_des"
+      ],
+      [
+        "θ",
+        "f_des"
+      ],
+      [
+        "P_d",
+        "f_des"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "q",
+        "target": "f_des",
+        "effect": "proportional",
+        "reason": "f_des is directly proportional to q as they are multiplied on the right side of the equation."
+      },
+      {
+        "source": "θ",
+        "target": "f_des",
+        "effect": "proportional",
+        "reason": "f_des is directly proportional to θ as they are multiplied on the right side of the equation."
+      },
+      {
+        "source": "P_d",
+        "target": "f_des",
+        "effect": "proportional",
+        "reason": "f_des is directly proportional to P_d as they are multiplied on the right side of the equation."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "unknown",
+    "equation_image": "equation-0012.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "K",
+        "original": "K"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "θ_eq",
+        "original": "θ_eq"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      },
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "Q",
+        "original": "Q"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "P_d",
+        "original": "P_d"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "θ_eq",
+        "K"
+      ],
+      [
+        "p_A",
+        "K"
+      ],
+      [
+        "c",
+        "K"
+      ],
+      [
+        "Q",
+        "K"
+      ],
+      [
+        "q",
+        "K"
+      ],
+      [
+        "P_d",
+        "K"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "θ_eq",
+        "target": "K",
+        "effect": "positive",
+        "reason": "As θ_eq increases, the numerator θ_eq increases and the denominator (1 - θ_eq) decreases, both contributing to an increase in K."
+      },
+      {
+        "source": "p_A",
+        "target": "K",
+        "effect": "inverse",
+        "reason": "p_A is in the denominator of the main fraction defining K."
+      },
+      {
+        "source": "c",
+        "target": "K",
+        "effect": "proportional",
+        "reason": "c is in the numerator of the expression cQ / (qP_d)."
+      },
+      {
+        "source": "Q",
+        "target": "K",
+        "effect": "proportional",
+        "reason": "Q is in the numerator of the expression cQ / (qP_d)."
+      },
+      {
+        "source": "q",
+        "target": "K",
+        "effect": "inverse",
+        "reason": "q is in the denominator of the expression cQ / (qP_d)."
+      },
+      {
+        "source": "P_d",
+        "target": "K",
+        "effect": "inverse",
+        "reason": "P_d is in the denominator of the expression cQ / (qP_d)."
+      }
+    ],
+    "equation_type": "equality",
+    "equation_role": "unknown",
+    "equation_image": "equation-0013.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "Q",
+        "original": "Q"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "N₀",
+        "original": "N₀"
+      },
+      {
+        "symbol": "Mₐ",
+        "original": "Mₐ"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "N₀",
+        "Q"
+      ],
+      [
+        "Mₐ",
+        "Q"
+      ],
+      [
+        "R",
+        "Q"
+      ],
+      [
+        "T",
+        "Q"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "N₀",
+        "target": "Q",
+        "effect": "proportional",
+        "reason": "N₀ is in the numerator."
+      },
+      {
+        "source": "Mₐ",
+        "target": "Q",
+        "effect": "inverse",
+        "reason": "Mₐ is in the denominator under a square root."
+      },
+      {
+        "source": "R",
+        "target": "Q",
+        "effect": "inverse",
+        "reason": "R is in the denominator under a square root."
+      },
+      {
+        "source": "T",
+        "target": "Q",
+        "effect": "inverse",
+        "reason": "T is in the denominator under a square root."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "unknown",
+    "equation_image": "equation-0014.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "g",
+        "original": "g"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "f_ads",
+        "original": "f_ads"
+      },
+      {
+        "symbol": "f_des",
+        "original": "f_des"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "f_ads",
+        "g"
+      ],
+      [
+        "f_des",
+        "g"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "f_ads",
+        "target": "g",
+        "effect": "positive",
+        "reason": "f_ads is added to determine g. An increase in f_ads directly increases g."
+      },
+      {
+        "source": "f_des",
+        "target": "g",
+        "effect": "negative",
+        "reason": "f_des is subtracted to determine g. An increase in f_des directly decreases g."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0015.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "dθ/dt",
+        "original": "dθ/dt"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "g",
+        "original": "g"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "g",
+        "dθ/dt"
+      ],
+      [
+        "q",
+        "dθ/dt"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "g",
+        "target": "dθ/dt",
+        "effect": "proportional",
+        "reason": "target is in the numerator and source is in the numerator on the opposite side of the equation"
+      },
+      {
+        "source": "q",
+        "target": "dθ/dt",
+        "effect": "inverse",
+        "reason": "target is in the numerator and source is in the denominator on the opposite side of the equation"
+      }
+    ],
+    "equation_role": "definition",
+    "equation_image": "equation-0016.png"
+  },
+  {
+    "lhs": [],
+    "rhs_symbols": [],
+    "dependency_edges": [
+      [
+        "D_eff",
+        "p_A"
+      ],
+      [
+        "p_A",
+        "D_eff"
+      ],
+      [
+        "x",
+        "p_A"
+      ],
+      [
+        "t",
+        "p_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "D_eff",
+        "target": "p_A",
+        "effect": "unknown",
+        "reason": "The equation D_eff * (∂²p_A/∂x²) ≈ 0 implies an inverse relationship between D_eff and the second derivative of p_A with respect to x. However, the effect on p_A itself (not its derivative) cannot be confidently determined as proportional, inverse, positive, or negative based solely on the mathematical structure."
+      },
+      {
+        "source": "p_A",
+        "target": "D_eff",
+        "effect": "unknown",
+        "reason": "The equation D_eff * (∂²p_A/∂x²) ≈ 0 implies an inverse relationship between D_eff and the second derivative of p_A with respect to x. However, the effect of p_A itself (not its derivative) on D_eff cannot be confidently determined as proportional, inverse, positive, or negative based solely on the mathematical structure."
+      },
+      {
+        "source": "x",
+        "target": "p_A",
+        "effect": "unknown",
+        "reason": "The equation implies that the second partial derivative of p_A with respect to x is approximately zero (∂²p_A/∂x² ≈ 0), meaning p_A is approximately a linear function of x. This is a constraint on the functional form, not a direct proportional, inverse, positive, or negative relationship between x and p_A."
+      },
+      {
+        "source": "t",
+        "target": "p_A",
+        "effect": "unknown",
+        "reason": "The equation does not involve any derivatives with respect to t, nor does it constrain the relationship between t and p_A. p_A is a function of t, but the specific effect cannot be determined from this equation."
+      }
+    ],
+    "equation_type": "partial differential equation",
+    "equation_role": "unknown",
+    "equation_image": "equation-0017.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "p_A",
+        "original": "p_A(x,t)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "p_A0",
+        "original": "p_A0"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "p_A0",
+        "p_A"
+      ],
+      [
+        "x",
+        "p_A"
+      ],
+      [
+        "x_s",
+        "p_A"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "p_A0",
+        "target": "p_A",
+        "effect": "proportional",
+        "reason": "p_A is directly proportional to p_A0 as p_A0 is a multiplicative factor on the RHS."
+      },
+      {
+        "source": "x",
+        "target": "p_A",
+        "effect": "negative",
+        "reason": "As x increases, the term (1 - x/x_s) decreases, leading to a decrease in p_A (assuming p_A0 is positive)."
+      },
+      {
+        "source": "x_s",
+        "target": "p_A",
+        "effect": "positive",
+        "reason": "As x_s increases, the term x/x_s decreases, making (1 - x/x_s) increase, leading to an increase in p_A (assuming p_A0 is positive)."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0018.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "x_S",
+        "original": "x_S"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "D",
+        "original": "D"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "D",
+        "x_S"
+      ],
+      [
+        "t",
+        "x_S"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "D",
+        "target": "x_S",
+        "effect": "positive",
+        "reason": "x_S is proportional to the square root of D. As D increases, x_S increases."
+      },
+      {
+        "source": "t",
+        "target": "x_S",
+        "effect": "positive",
+        "reason": "x_S is proportional to the square root of t. As t increases, x_S increases."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0019.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "F",
+        "original": "F"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "H",
+        "original": "H"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      },
+      {
+        "symbol": "D_eff",
+        "original": "D_eff"
+      },
+      {
+        "symbol": "k_B",
+        "original": "k_B"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "p_A0",
+        "original": "p_A0"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "x",
+        "F"
+      ],
+      [
+        "t",
+        "F"
+      ],
+      [
+        "H",
+        "F"
+      ],
+      [
+        "W",
+        "F"
+      ],
+      [
+        "D_eff",
+        "F"
+      ],
+      [
+        "k_B",
+        "F"
+      ],
+      [
+        "T",
+        "F"
+      ],
+      [
+        "p_A",
+        "F"
+      ],
+      [
+        "p_A0",
+        "F"
+      ],
+      [
+        "x_s",
+        "F"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "x",
+        "target": "F",
+        "effect": "unknown",
+        "reason": "x appears as an argument of F and in the denominator of a partial derivative, making the direct influence unclear."
+      },
+      {
+        "source": "t",
+        "target": "F",
+        "effect": "unknown",
+        "reason": "t appears as an argument of F, but its explicit mathematical role in the RHS is not shown."
+      },
+      {
+        "source": "H",
+        "target": "F",
+        "effect": "proportional",
+        "reason": "F is directly proportional to H in both the exact and approximated expressions."
+      },
+      {
+        "source": "W",
+        "target": "F",
+        "effect": "proportional",
+        "reason": "F is directly proportional to W in both the exact and approximated expressions."
+      },
+      {
+        "source": "D_eff",
+        "target": "F",
+        "effect": "proportional",
+        "reason": "F is directly proportional to D_eff in both the exact and approximated expressions."
+      },
+      {
+        "source": "k_B",
+        "target": "F",
+        "effect": "inverse",
+        "reason": "F is inversely proportional to k_B in both the exact and approximated expressions."
+      },
+      {
+        "source": "T",
+        "target": "F",
+        "effect": "inverse",
+        "reason": "F is inversely proportional to T in both the exact and approximated expressions."
+      },
+      {
+        "source": "p_A",
+        "target": "F",
+        "effect": "negative",
+        "reason": "F is proportional to -∂p_A/∂x. An increase in p_A generally leads to an increase in ∂p_A/∂x (assuming positive gradient), which makes F more negative."
+      },
+      {
+        "source": "p_A0",
+        "target": "F",
+        "effect": "proportional",
+        "reason": "F is directly proportional to p_A0 in the approximated expression."
+      },
+      {
+        "source": "x_s",
+        "target": "F",
+        "effect": "inverse",
+        "reason": "F is inversely proportional to x_s in the approximated expression."
+      }
+    ],
+    "equation_type": "differential",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0020.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "N",
+        "original": "N"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      },
+      {
+        "symbol": "K",
+        "original": "K"
+      },
+      {
+        "symbol": "p_A0",
+        "original": "p_A0"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "q",
+        "N"
+      ],
+      [
+        "W",
+        "N"
+      ],
+      [
+        "x",
+        "N"
+      ],
+      [
+        "x_s",
+        "N"
+      ],
+      [
+        "K",
+        "N"
+      ],
+      [
+        "p_A0",
+        "N"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "q",
+        "target": "N",
+        "effect": "proportional",
+        "reason": "N is directly multiplied by q."
+      },
+      {
+        "source": "W",
+        "target": "N",
+        "effect": "proportional",
+        "reason": "N is directly multiplied by W."
+      },
+      {
+        "source": "x",
+        "target": "N",
+        "effect": "unknown",
+        "reason": "x appears as a direct positive term and also within a complex logarithmic term where its influence is not straightforward."
+      },
+      {
+        "source": "x_s",
+        "target": "N",
+        "effect": "positive",
+        "reason": "x_s appears as a multiplier to a logarithmic term and also within the logarithm in a way that increasing x_s increases the argument of the logarithm, leading to an overall positive effect."
+      },
+      {
+        "source": "K",
+        "target": "N",
+        "effect": "unknown",
+        "reason": "K appears in multiple terms, including a denominator and within a logarithm, making its overall influence difficult to determine without further analysis."
+      },
+      {
+        "source": "p_A0",
+        "target": "N",
+        "effect": "unknown",
+        "reason": "p_A0 appears in multiple terms, including a denominator and within a logarithm, making its overall influence difficult to determine without further analysis."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0021.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D",
+        "original": "D"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "p_A0",
+        "original": "p_A0"
+      },
+      {
+        "symbol": "H",
+        "original": "H"
+      },
+      {
+        "symbol": "D_eff",
+        "original": "D_eff"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "k_B",
+        "original": "k_B"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "K",
+        "original": "K"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "p_A0",
+        "D"
+      ],
+      [
+        "H",
+        "D"
+      ],
+      [
+        "D_eff",
+        "D"
+      ],
+      [
+        "q",
+        "D"
+      ],
+      [
+        "k_B",
+        "D"
+      ],
+      [
+        "T",
+        "D"
+      ],
+      [
+        "K",
+        "D"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "p_A0",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "p_A0 appears in the numerator (proportional effect) and within a complex term in the denominator (negative effect), leading to conflicting influences."
+      },
+      {
+        "source": "H",
+        "target": "D",
+        "effect": "proportional",
+        "reason": "H is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "D_eff",
+        "target": "D",
+        "effect": "proportional",
+        "reason": "D_eff is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "q",
+        "target": "D",
+        "effect": "inverse",
+        "reason": "q is in the denominator and multiplied by other terms."
+      },
+      {
+        "source": "k_B",
+        "target": "D",
+        "effect": "inverse",
+        "reason": "k_B is in the denominator and multiplied by other terms."
+      },
+      {
+        "source": "T",
+        "target": "D",
+        "effect": "inverse",
+        "reason": "T is in the denominator and multiplied by other terms."
+      },
+      {
+        "source": "K",
+        "target": "D",
+        "effect": "negative",
+        "reason": "K appears within the term ln(K p_A0 + 1) / (K p_A0) in the denominator. As K increases, K p_A0 increases, the term ln(x+1)/x decreases, so 1 - ln(x+1)/x increases. Since this term is in the denominator, D decreases."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "definition",
+    "equation_image": "equation-0023.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "p_A",
+        "original": "p_A(x,t)"
+      },
+      {
+        "symbol": "p_t",
+        "original": "p_t"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "p_A0",
+        "original": "p_A0"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      },
+      {
+        "symbol": "p_t",
+        "original": "p_t"
+      },
+      {
+        "symbol": "x_t",
+        "original": "x_t"
+      },
+      {
+        "symbol": "D",
+        "original": "D"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "p_A0",
+        "p_A"
+      ],
+      [
+        "x",
+        "p_A"
+      ],
+      [
+        "x_s",
+        "p_A"
+      ],
+      [
+        "p_t",
+        "p_A"
+      ],
+      [
+        "x_t",
+        "p_A"
+      ],
+      [
+        "p_A0",
+        "p_t"
+      ],
+      [
+        "x_t",
+        "p_t"
+      ],
+      [
+        "x_s",
+        "p_t"
+      ],
+      [
+        "D",
+        "x_s"
+      ],
+      [
+        "t",
+        "x_s"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "p_A0",
+        "target": "p_A",
+        "effect": "proportional",
+        "reason": "p_A is directly proportional to p_A0 in the first equation."
+      },
+      {
+        "source": "x",
+        "target": "p_A",
+        "effect": "negative",
+        "reason": "In the first equation, x is in the numerator of a subtracted term. In the second equation, x is in the numerator of a negative exponent. Both indicate a negative effect."
+      },
+      {
+        "source": "x_s",
+        "target": "p_A",
+        "effect": "positive",
+        "reason": "In the first equation, x_s is in the denominator of a subtracted term, leading to a positive effect. In the second equation, the derivative of the exponent argument with respect to x_s is (x - x_t) / (x_s - x_t)^2, which is positive given x > x_t, leading to a positive effect."
+      },
+      {
+        "source": "p_t",
+        "target": "p_A",
+        "effect": "proportional",
+        "reason": "p_A is directly proportional to p_t in the second equation."
+      },
+      {
+        "source": "x_t",
+        "target": "p_A",
+        "effect": "unknown",
+        "reason": "x_t appears in both the numerator and denominator of the exponent in the second equation, making the overall effect ambiguous without knowing relative magnitudes of x, x_t, and x_s."
+      },
+      {
+        "source": "p_A0",
+        "target": "p_t",
+        "effect": "proportional",
+        "reason": "p_t is directly proportional to p_A0 in the third equation."
+      },
+      {
+        "source": "x_t",
+        "target": "p_t",
+        "effect": "negative",
+        "reason": "x_t is in the numerator of a subtracted term in the third equation."
+      },
+      {
+        "source": "x_s",
+        "target": "p_t",
+        "effect": "positive",
+        "reason": "x_s is in the denominator of a subtracted term in the third equation."
+      },
+      {
+        "source": "D",
+        "target": "x_s",
+        "effect": "positive",
+        "reason": "D is under a square root and directly multiplied in the fourth equation."
+      },
+      {
+        "source": "t",
+        "target": "x_s",
+        "effect": "positive",
+        "reason": "t is under a square root and directly multiplied in the fourth equation."
+      }
+    ],
+    "equation_type": "system_of_equations",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0024.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D",
+        "original": "D"
+      },
+      {
+        "symbol": "p_t",
+        "original": "p_t"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "x_t",
+        "original": "x_t"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "D_eff",
+        "original": "D_eff"
+      },
+      {
+        "symbol": "p_t",
+        "original": "p_t"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "x_t",
+        "original": "x_t"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "h",
+        "original": "h"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "Q",
+        "original": "Q"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "P_d",
+        "original": "P_d"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "D_eff",
+        "D"
+      ],
+      [
+        "p_t",
+        "D"
+      ],
+      [
+        "x",
+        "D"
+      ],
+      [
+        "x_t",
+        "D"
+      ],
+      [
+        "x_s",
+        "D"
+      ],
+      [
+        "R",
+        "D"
+      ],
+      [
+        "T",
+        "D"
+      ],
+      [
+        "h",
+        "D"
+      ],
+      [
+        "N_0",
+        "D"
+      ],
+      [
+        "θ",
+        "D"
+      ],
+      [
+        "c",
+        "D"
+      ],
+      [
+        "Q",
+        "D"
+      ],
+      [
+        "q",
+        "D"
+      ],
+      [
+        "P_d",
+        "D"
+      ],
+      [
+        "D_eff",
+        "p_t"
+      ],
+      [
+        "p_t",
+        "p_t"
+      ],
+      [
+        "x",
+        "p_t"
+      ],
+      [
+        "x_t",
+        "p_t"
+      ],
+      [
+        "x_s",
+        "p_t"
+      ],
+      [
+        "R",
+        "p_t"
+      ],
+      [
+        "T",
+        "p_t"
+      ],
+      [
+        "h",
+        "p_t"
+      ],
+      [
+        "N_0",
+        "p_t"
+      ],
+      [
+        "θ",
+        "p_t"
+      ],
+      [
+        "c",
+        "p_t"
+      ],
+      [
+        "Q",
+        "p_t"
+      ],
+      [
+        "q",
+        "p_t"
+      ],
+      [
+        "P_d",
+        "p_t"
+      ],
+      [
+        "D_eff",
+        "x"
+      ],
+      [
+        "p_t",
+        "x"
+      ],
+      [
+        "x",
+        "x"
+      ],
+      [
+        "x_t",
+        "x"
+      ],
+      [
+        "x_s",
+        "x"
+      ],
+      [
+        "R",
+        "x"
+      ],
+      [
+        "T",
+        "x"
+      ],
+      [
+        "h",
+        "x"
+      ],
+      [
+        "N_0",
+        "x"
+      ],
+      [
+        "θ",
+        "x"
+      ],
+      [
+        "c",
+        "x"
+      ],
+      [
+        "Q",
+        "x"
+      ],
+      [
+        "q",
+        "x"
+      ],
+      [
+        "P_d",
+        "x"
+      ],
+      [
+        "D_eff",
+        "x_t"
+      ],
+      [
+        "p_t",
+        "x_t"
+      ],
+      [
+        "x",
+        "x_t"
+      ],
+      [
+        "x_t",
+        "x_t"
+      ],
+      [
+        "x_s",
+        "x_t"
+      ],
+      [
+        "R",
+        "x_t"
+      ],
+      [
+        "T",
+        "x_t"
+      ],
+      [
+        "h",
+        "x_t"
+      ],
+      [
+        "N_0",
+        "x_t"
+      ],
+      [
+        "θ",
+        "x_t"
+      ],
+      [
+        "c",
+        "x_t"
+      ],
+      [
+        "Q",
+        "x_t"
+      ],
+      [
+        "q",
+        "x_t"
+      ],
+      [
+        "P_d",
+        "x_t"
+      ],
+      [
+        "D_eff",
+        "x_s"
+      ],
+      [
+        "p_t",
+        "x_s"
+      ],
+      [
+        "x",
+        "x_s"
+      ],
+      [
+        "x_t",
+        "x_s"
+      ],
+      [
+        "x_s",
+        "x_s"
+      ],
+      [
+        "R",
+        "x_s"
+      ],
+      [
+        "T",
+        "x_s"
+      ],
+      [
+        "h",
+        "x_s"
+      ],
+      [
+        "N_0",
+        "x_s"
+      ],
+      [
+        "θ",
+        "x_s"
+      ],
+      [
+        "c",
+        "x_s"
+      ],
+      [
+        "Q",
+        "x_s"
+      ],
+      [
+        "q",
+        "x_s"
+      ],
+      [
+        "P_d",
+        "x_s"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "D_eff",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable D_eff is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with D_eff would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "p_t",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable p_t appears in multiple terms on both sides of the equation, including exponents. Isolating D to determine the relationship with p_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable x appears in multiple terms on both sides of the equation, including exponents. Isolating D to determine the relationship with x would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_t",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable x_t appears in multiple terms on both sides of the equation, including exponents. Isolating D to determine the relationship with x_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_s",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable x_s appears in multiple terms on both sides of the equation, including exponents. Isolating D to determine the relationship with x_s would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "R",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable R is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with R would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "T",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable T is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with T would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "h",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable h is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with h would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "N_0",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable N_0 is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with N_0 would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "θ",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable θ appears in multiple terms on the RHS. Isolating D to determine the relationship with θ would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "c",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable c is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with c would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "Q",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable Q is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with Q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "q",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable q is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "P_d",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "Target variable D is part of a complex product on the LHS, and source variable P_d is part of a complex sum/difference on the RHS. Isolating D to determine the relationship with P_d would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "D_eff",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable D_eff is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with D_eff would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "p_t",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable p_t appears in multiple terms on both sides of the equation, including exponents. Isolating p_t to determine the relationship with itself would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable x appears in multiple terms on both sides of the equation, including exponents. Isolating p_t to determine the relationship with x would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_t",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable x_t appears in multiple terms on both sides of the equation, including exponents. Isolating p_t to determine the relationship with x_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_s",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable x_s appears in multiple terms on both sides of the equation, including exponents. Isolating p_t to determine the relationship with x_s would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "R",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable R is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with R would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "T",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable T is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with T would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "h",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable h is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with h would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "N_0",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable N_0 is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with N_0 would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "θ",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable θ appears in multiple terms on the RHS. Isolating p_t to determine the relationship with θ would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "c",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable c is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with c would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "Q",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable Q is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with Q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "q",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable q is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "P_d",
+        "target": "p_t",
+        "effect": "unknown",
+        "reason": "Target variable p_t is part of a complex product on the LHS, and source variable P_d is part of a complex sum/difference on the RHS. Isolating p_t to determine the relationship with P_d would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "D_eff",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable D_eff is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with D_eff would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "p_t",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable p_t appears in multiple terms on both sides of the equation, including exponents. Isolating x to determine the relationship with p_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable x appears in multiple terms on both sides of the equation, including exponents. Isolating x to determine the relationship with itself would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_t",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable x_t appears in multiple terms on both sides of the equation, including exponents. Isolating x to determine the relationship with x_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_s",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable x_s appears in multiple terms on both sides of the equation, including exponents. Isolating x to determine the relationship with x_s would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "R",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable R is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with R would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "T",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable T is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with T would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "h",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable h is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with h would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "N_0",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable N_0 is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with N_0 would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "θ",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable θ appears in multiple terms on the RHS. Isolating x to determine the relationship with θ would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "c",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable c is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with c would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "Q",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable Q is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with Q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "q",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable q is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "P_d",
+        "target": "x",
+        "effect": "unknown",
+        "reason": "Target variable x is part of a complex product on the LHS, and source variable P_d is part of a complex sum/difference on the RHS. Isolating x to determine the relationship with P_d would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "D_eff",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable D_eff is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with D_eff would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "p_t",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable p_t appears in multiple terms on both sides of the equation, including exponents. Isolating x_t to determine the relationship with p_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable x appears in multiple terms on both sides of the equation, including exponents. Isolating x_t to determine the relationship with x would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_t",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable x_t appears in multiple terms on both sides of the equation, including exponents. Isolating x_t to determine the relationship with itself would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_s",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable x_s appears in multiple terms on both sides of the equation, including exponents. Isolating x_t to determine the relationship with x_s would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "R",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable R is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with R would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "T",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable T is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with T would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "h",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable h is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with h would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "N_0",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable N_0 is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with N_0 would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "θ",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable θ appears in multiple terms on the RHS. Isolating x_t to determine the relationship with θ would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "c",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable c is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with c would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "Q",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable Q is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with Q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "q",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable q is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "P_d",
+        "target": "x_t",
+        "effect": "unknown",
+        "reason": "Target variable x_t is part of a complex product on the LHS, and source variable P_d is part of a complex sum/difference on the RHS. Isolating x_t to determine the relationship with P_d would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "D_eff",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable D_eff is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with D_eff would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "p_t",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable p_t appears in multiple terms on both sides of the equation, including exponents. Isolating x_s to determine the relationship with p_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable x appears in multiple terms on both sides of the equation, including exponents. Isolating x_s to determine the relationship with x would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_t",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable x_t appears in multiple terms on both sides of the equation, including exponents. Isolating x_s to determine the relationship with x_t would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "x_s",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable x_s appears in multiple terms on both sides of the equation, including exponents. Isolating x_s to determine the relationship with itself would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "R",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable R is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with R would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "T",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable T is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with T would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "h",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable h is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with h would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "N_0",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable N_0 is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with N_0 would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "θ",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable θ appears in multiple terms on the RHS. Isolating x_s to determine the relationship with θ would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "c",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable c is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with c would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "Q",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable Q is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with Q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "q",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable q is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with q would require algebraic rearrangement, which is not allowed."
+      },
+      {
+        "source": "P_d",
+        "target": "x_s",
+        "effect": "unknown",
+        "reason": "Target variable x_s is part of a complex product on the LHS, and source variable P_d is part of a complex sum/difference on the RHS. Isolating x_s to determine the relationship with P_d would require algebraic rearrangement, which is not allowed."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "unknown",
+    "equation_image": "equation-0026.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D",
+        "original": "D"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "x_t",
+        "original": "x_t"
+      },
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      },
+      {
+        "symbol": "D_eff",
+        "original": "D_eff"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "h",
+        "original": "h"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "Q",
+        "original": "Q"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "x",
+        "D"
+      ],
+      [
+        "x_t",
+        "D"
+      ],
+      [
+        "x_s",
+        "D"
+      ],
+      [
+        "D_eff",
+        "D"
+      ],
+      [
+        "R",
+        "D"
+      ],
+      [
+        "T",
+        "D"
+      ],
+      [
+        "h",
+        "D"
+      ],
+      [
+        "N_0",
+        "D"
+      ],
+      [
+        "c",
+        "D"
+      ],
+      [
+        "Q",
+        "D"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "x",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'x' appears in the denominator of a multiplier term (x - x_t). The sign of this term is unknown, which determines whether the overall effect on D is positive or negative."
+      },
+      {
+        "source": "x_t",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'x_t' appears in multiple terms, both in numerators and denominators, and its effect is compounded by the unknown sign of (x - x_t) in the multiplier term."
+      },
+      {
+        "source": "x_s",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'x_s' appears in multiple terms, both in numerators and denominators, and its effect is compounded by the unknown sign of (x - x_t) in the multiplier term."
+      },
+      {
+        "source": "D_eff",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'D_eff' is part of a term that is multiplied by a factor (K) whose sign depends on (x - x_t). The sign of (x - x_t) is unknown, making the overall effect uncertain."
+      },
+      {
+        "source": "R",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'R' is part of a subtracted term, which is then multiplied by a factor (K) whose sign depends on (x - x_t). The sign of (x - x_t) is unknown, making the overall effect uncertain."
+      },
+      {
+        "source": "T",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'T' is part of a subtracted term, which is then multiplied by a factor (K) whose sign depends on (x - x_t). The sign of (x - x_t) is unknown, making the overall effect uncertain."
+      },
+      {
+        "source": "h",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'h' is in the denominator of a subtracted term, which is then multiplied by a factor (K) whose sign depends on (x - x_t). The sign of (x - x_t) is unknown, making the overall effect uncertain."
+      },
+      {
+        "source": "N_0",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'N_0' is in the denominator of a subtracted term, which is then multiplied by a factor (K) whose sign depends on (x - x_t). The sign of (x - x_t) is unknown, making the overall effect uncertain."
+      },
+      {
+        "source": "c",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'c' is part of a subtracted term, which is then multiplied by a factor (K) whose sign depends on (x - x_t). The sign of (x - x_t) is unknown, making the overall effect uncertain."
+      },
+      {
+        "source": "Q",
+        "target": "D",
+        "effect": "unknown",
+        "reason": "'Q' is part of a subtracted term, which is then multiplied by a factor (K) whose sign depends on (x - x_t). The sign of (x - x_t) is unknown, making the overall effect uncertain."
+      }
+    ],
+    "equation_role": "diffusion",
+    "equation_image": "equation-0027.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "x_t",
+        "original": "x_t"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "x_s",
+        "original": "x_s"
+      },
+      {
+        "symbol": "h",
+        "original": "h"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "D_eff",
+        "original": "D_eff"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "Q",
+        "original": "Q"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "x_s",
+        "x_t"
+      ],
+      [
+        "h",
+        "x_t"
+      ],
+      [
+        "N_0",
+        "x_t"
+      ],
+      [
+        "D_eff",
+        "x_t"
+      ],
+      [
+        "R",
+        "x_t"
+      ],
+      [
+        "T",
+        "x_t"
+      ],
+      [
+        "c",
+        "x_t"
+      ],
+      [
+        "Q",
+        "x_t"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "x_s",
+        "target": "x_t",
+        "effect": "proportional",
+        "reason": "x_t is directly proportional to x_s (x_t = x_s - C)"
+      },
+      {
+        "source": "h",
+        "target": "x_t",
+        "effect": "negative",
+        "reason": "h is in the numerator of a term that is square-rooted and then subtracted from x_s; increasing h increases the subtracted term, thus decreasing x_t"
+      },
+      {
+        "source": "N_0",
+        "target": "x_t",
+        "effect": "negative",
+        "reason": "N_0 is in the numerator of a term that is square-rooted and then subtracted from x_s; increasing N_0 increases the subtracted term, thus decreasing x_t"
+      },
+      {
+        "source": "D_eff",
+        "target": "x_t",
+        "effect": "negative",
+        "reason": "D_eff is in the numerator of a term that is square-rooted and then subtracted from x_s; increasing D_eff increases the subtracted term, thus decreasing x_t"
+      },
+      {
+        "source": "R",
+        "target": "x_t",
+        "effect": "positive",
+        "reason": "R is in the denominator of a term that is square-rooted and then subtracted from x_s; increasing R decreases the subtracted term, thus increasing x_t"
+      },
+      {
+        "source": "T",
+        "target": "x_t",
+        "effect": "positive",
+        "reason": "T is in the denominator of a term that is square-rooted and then subtracted from x_s; increasing T decreases the subtracted term, thus increasing x_t"
+      },
+      {
+        "source": "c",
+        "target": "x_t",
+        "effect": "positive",
+        "reason": "c is in the denominator of a term that is square-rooted and then subtracted from x_s; increasing c decreases the subtracted term, thus increasing x_t"
+      },
+      {
+        "source": "Q",
+        "target": "x_t",
+        "effect": "positive",
+        "reason": "Q is in the denominator of a term that is square-rooted and then subtracted from x_s; increasing Q decreases the subtracted term, thus increasing x_t"
+      }
+    ],
+    "equation_type": "conditional",
+    "equation_role": "definition",
+    "equation_image": "equation-0028.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "θ_eq",
+        "original": "θ_eq(x)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "K",
+        "original": "K"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A(x)"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "K",
+        "θ_eq"
+      ],
+      [
+        "p_A",
+        "θ_eq"
+      ],
+      [
+        "x",
+        "θ_eq"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "K",
+        "target": "θ_eq",
+        "effect": "positive",
+        "reason": "θ_eq is an increasing function of K p_A(x), and K p_A(x) is directly proportional to K (assuming p_A(x) > 0)."
+      },
+      {
+        "source": "p_A",
+        "target": "θ_eq",
+        "effect": "positive",
+        "reason": "θ_eq is an increasing function of K p_A(x), and K p_A(x) is directly proportional to p_A (assuming K > 0)."
+      },
+      {
+        "source": "x",
+        "target": "θ_eq",
+        "effect": "unknown",
+        "reason": "The equation shows θ_eq depends on p_A(x), but the functional relationship between x and p_A(x) is not defined within this equation."
+      }
+    ],
+    "equation_type": "definition",
+    "equation_role": "adsorption",
+    "equation_image": "equation-0029.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "τ",
+        "original": "τ"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "K",
+        "original": "K"
+      },
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "Q",
+        "original": "Q"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "q",
+        "τ"
+      ],
+      [
+        "K",
+        "τ"
+      ],
+      [
+        "c",
+        "τ"
+      ],
+      [
+        "Q",
+        "τ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "q",
+        "target": "τ",
+        "effect": "proportional",
+        "reason": "q is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "K",
+        "target": "τ",
+        "effect": "proportional",
+        "reason": "K is in the numerator and multiplied by other terms."
+      },
+      {
+        "source": "c",
+        "target": "τ",
+        "effect": "inverse",
+        "reason": "c is in the denominator and multiplied by other terms."
+      },
+      {
+        "source": "Q",
+        "target": "τ",
+        "effect": "inverse",
+        "reason": "Q is in the denominator and multiplied by other terms."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0030.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "θ(x, t)",
+        "original": "θ(x, t)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "Q",
+        "original": "Q"
+      },
+      {
+        "symbol": "p_A(x, t)",
+        "original": "p_A(x, t)"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "P_d",
+        "original": "P_d"
+      },
+      {
+        "symbol": "θ(x, t)",
+        "original": "θ(x, t)"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "c",
+        "θ(x, t)"
+      ],
+      [
+        "Q",
+        "θ(x, t)"
+      ],
+      [
+        "p_A(x, t)",
+        "θ(x, t)"
+      ],
+      [
+        "q",
+        "θ(x, t)"
+      ],
+      [
+        "P_d",
+        "θ(x, t)"
+      ],
+      [
+        "θ(x, t)",
+        "θ(x, t)"
+      ],
+      [
+        "x",
+        "θ(x, t)"
+      ],
+      [
+        "t",
+        "θ(x, t)"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "c",
+        "target": "θ(x, t)",
+        "effect": "unknown",
+        "reason": "c appears in terms with both positive and negative contributions to dθ(x,t)/dt, and the sign of the net effect depends on the value of θ(x,t)."
+      },
+      {
+        "source": "Q",
+        "target": "θ(x, t)",
+        "effect": "unknown",
+        "reason": "Q appears in terms with both positive and negative contributions to dθ(x,t)/dt, and the sign of the net effect depends on the value of θ(x,t)."
+      },
+      {
+        "source": "p_A(x, t)",
+        "target": "θ(x, t)",
+        "effect": "unknown",
+        "reason": "p_A(x,t) appears in terms with both positive and negative contributions to dθ(x,t)/dt, and the sign of the net effect depends on the value of θ(x,t)."
+      },
+      {
+        "source": "q",
+        "target": "θ(x, t)",
+        "effect": "unknown",
+        "reason": "q appears in the denominator of terms with both positive and negative contributions to dθ(x,t)/dt, and the sign of the net effect depends on the value of θ(x,t)."
+      },
+      {
+        "source": "P_d",
+        "target": "θ(x, t)",
+        "effect": "negative",
+        "reason": "P_d is multiplied by -θ(x,t) on the RHS. Assuming θ(x,t) is positive, an increase in P_d decreases dθ(x,t)/dt."
+      },
+      {
+        "source": "θ(x, t)",
+        "target": "θ(x, t)",
+        "effect": "negative",
+        "reason": "θ(x,t) is multiplied by a negative coefficient -( (c Q p_A(x, t)) / q + P_d ) on the RHS."
+      },
+      {
+        "source": "x",
+        "target": "θ(x, t)",
+        "effect": "unknown",
+        "reason": "x is an argument to functions θ(x,t) and p_A(x,t) on the RHS; its direct influence on dθ(x,t)/dt cannot be determined from the equation structure alone."
+      },
+      {
+        "source": "t",
+        "target": "θ(x, t)",
+        "effect": "unknown",
+        "reason": "t is an argument to functions θ(x,t) and p_A(x,t) on the RHS; its direct influence on dθ(x,t)/dt cannot be determined from the equation structure alone."
+      }
+    ],
+    "equation_type": "differential_equation",
+    "equation_role": "unknown",
+    "equation_image": "equation-0031.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "θ(t)",
+        "original": "θ(t)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "c",
+        "original": "c"
+      },
+      {
+        "symbol": "Q",
+        "original": "Q"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      },
+      {
+        "symbol": "P_d",
+        "original": "P_d"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "c",
+        "θ(t)"
+      ],
+      [
+        "Q",
+        "θ(t)"
+      ],
+      [
+        "q",
+        "θ(t)"
+      ],
+      [
+        "p_A",
+        "θ(t)"
+      ],
+      [
+        "P_d",
+        "θ(t)"
+      ],
+      [
+        "t",
+        "θ(t)"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "c",
+        "target": "θ(t)",
+        "effect": "unknown",
+        "reason": "Variable 'c' appears in both the negative exponent of the first term and within the integrand and its exponent in the second term, leading to complex and potentially conflicting influences."
+      },
+      {
+        "source": "Q",
+        "target": "θ(t)",
+        "effect": "unknown",
+        "reason": "Variable 'Q' appears in both the negative exponent of the first term and within the integrand and its exponent in the second term, leading to complex and potentially conflicting influences."
+      },
+      {
+        "source": "q",
+        "target": "θ(t)",
+        "effect": "unknown",
+        "reason": "Variable 'q' appears in the denominator within both the negative exponent of the first term and within the integrand and its exponent in the second term, leading to complex and potentially conflicting influences."
+      },
+      {
+        "source": "p_A",
+        "target": "θ(t)",
+        "effect": "unknown",
+        "reason": "Variable 'p_A' appears in both the negative exponent of the first term and within the integrand and its exponent in the second term, leading to complex and potentially conflicting influences."
+      },
+      {
+        "source": "P_d",
+        "target": "θ(t)",
+        "effect": "unknown",
+        "reason": "Variable 'P_d' appears additively within the exponents of both the first term and the second term's exponential, leading to complex and potentially conflicting influences."
+      },
+      {
+        "source": "t",
+        "target": "θ(t)",
+        "effect": "unknown",
+        "reason": "Variable 't' is the integration variable and the argument of the target function. Its influence is complex due to its role as an integration limit and within nested integrals and exponentials."
+      }
+    ],
+    "equation_type": "integral equation",
+    "equation_role": "definition",
+    "equation_image": "equation-0032.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "Δx_p",
+        "original": "Δx_p"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "Δs",
+        "original": "Δs"
+      },
+      {
+        "symbol": "s",
+        "original": "s"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "Δs",
+        "Δx_p"
+      ],
+      [
+        "s",
+        "Δx_p"
+      ],
+      [
+        "x",
+        "Δx_p"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "Δs",
+        "target": "Δx_p",
+        "effect": "proportional",
+        "reason": "Δx_p is directly proportional to Δs as Δs is in the numerator."
+      },
+      {
+        "source": "s",
+        "target": "Δx_p",
+        "effect": "unknown",
+        "reason": "The relationship between 's' and 'ds/dx' (and thus '|ds/dx|') is not explicitly defined by the equation's structure alone, making the overall effect on Δx_p unknown."
+      },
+      {
+        "source": "x",
+        "target": "Δx_p",
+        "effect": "unknown",
+        "reason": "The relationship between 'x' and 'ds/dx' (and thus '|ds/dx|') is not explicitly defined by the equation's structure alone, making the overall effect on Δx_p unknown."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "definition",
+    "equation_image": "equation-0033.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "s(x_p)",
+        "original": "s(x_p)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "s(0)",
+        "original": "s(0)"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "s(0)",
+        "s(x_p)"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "s(0)",
+        "target": "s(x_p)",
+        "effect": "proportional",
+        "reason": "s(x_p) is directly proportional to s(0) because s(x_p) equals s(0) divided by a positive constant (2)."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "definition",
+    "equation_image": "equation-0034.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "H",
+        "original": "H(N)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "H",
+        "original": "H(0)"
+      },
+      {
+        "symbol": "N",
+        "original": "N"
+      },
+      {
+        "symbol": "g",
+        "original": "g"
+      },
+      {
+        "symbol": "p",
+        "original": "p"
+      },
+      {
+        "symbol": "c",
+        "original": "c"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "H",
+        "H"
+      ],
+      [
+        "N",
+        "H"
+      ],
+      [
+        "g",
+        "H"
+      ],
+      [
+        "p",
+        "H"
+      ],
+      [
+        "c",
+        "H"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "H",
+        "target": "H",
+        "effect": "proportional",
+        "reason": "H(N) is H(0) minus other terms. An increase in H(0) directly increases H(N)."
+      },
+      {
+        "source": "N",
+        "target": "H",
+        "effect": "negative",
+        "reason": "N is part of the term -2N gpc. An increase in N leads to a larger value being subtracted from H(0), thus decreasing H(N)."
+      },
+      {
+        "source": "g",
+        "target": "H",
+        "effect": "negative",
+        "reason": "g is part of the term -2N gpc. An increase in g leads to a larger value being subtracted from H(0), thus decreasing H(N)."
+      },
+      {
+        "source": "p",
+        "target": "H",
+        "effect": "negative",
+        "reason": "p is part of the term -2N gpc. An increase in p leads to a larger value being subtracted from H(0), thus decreasing H(N)."
+      },
+      {
+        "source": "c",
+        "target": "H",
+        "effect": "negative",
+        "reason": "c is part of the term -2N gpc. An increase in c leads to a larger value being subtracted from H(0), thus decreasing H(N)."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0035.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "θ",
+        "original": "θ"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "θ_i",
+        "original": "θ_i"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "N",
+        "original": "N"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "θ_i",
+        "θ"
+      ],
+      [
+        "x",
+        "θ"
+      ],
+      [
+        "N",
+        "θ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "θ_i",
+        "target": "θ",
+        "effect": "proportional",
+        "reason": "θ is defined as a sum of θ_i terms. Increasing any θ_i directly increases θ."
+      },
+      {
+        "source": "x",
+        "target": "θ",
+        "effect": "unknown",
+        "reason": "θ is a function of x, but the specific functional form of θ_i(x) is not given, so the exact relationship is unknown."
+      },
+      {
+        "source": "N",
+        "target": "θ",
+        "effect": "positive",
+        "reason": "N is the upper limit of the summation. Increasing N adds more terms to the sum, generally increasing θ."
+      }
+    ],
+    "equation_type": "definition",
+    "equation_role": "definition",
+    "equation_image": "equation-0036.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "s",
+        "original": "s(x)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "θ",
+        "original": "θ(x)"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "g",
+        "original": "g"
+      },
+      {
+        "symbol": "p",
+        "original": "p"
+      },
+      {
+        "symbol": "c_sat",
+        "original": "c_sat"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "θ",
+        "s"
+      ],
+      [
+        "g",
+        "s"
+      ],
+      [
+        "p",
+        "s"
+      ],
+      [
+        "c_sat",
+        "s"
+      ],
+      [
+        "x",
+        "s"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "θ",
+        "target": "s",
+        "effect": "proportional",
+        "reason": "s(x) is directly proportional to θ(x) as s(x) = θ(x) * (gpc_sat)."
+      },
+      {
+        "source": "g",
+        "target": "s",
+        "effect": "proportional",
+        "reason": "s(x) is directly proportional to g as s(x) = g * (θ(x)pc_sat)."
+      },
+      {
+        "source": "p",
+        "target": "s",
+        "effect": "proportional",
+        "reason": "s(x) is directly proportional to p as s(x) = p * (θ(x)gc_sat)."
+      },
+      {
+        "source": "c_sat",
+        "target": "s",
+        "effect": "proportional",
+        "reason": "s(x) is directly proportional to c_sat as s(x) = c_sat * (θ(x)gp)."
+      },
+      {
+        "source": "x",
+        "target": "s",
+        "effect": "unknown",
+        "reason": "s is a function of x (s(x)) and also depends on θ(x). The exact functional form of θ(x) is not given, so the direct relationship between x and s cannot be determined confidently."
+      }
+    ],
+    "equation_type": "definition",
+    "equation_role": "definition",
+    "equation_image": "equation-0037.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "dN",
+        "original": "dN"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      },
+      {
+        "symbol": "dx",
+        "original": "dx"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "q",
+        "dN"
+      ],
+      [
+        "W",
+        "dN"
+      ],
+      [
+        "dx",
+        "dN"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "q",
+        "target": "dN",
+        "effect": "proportional",
+        "reason": "dN is directly proportional to q (dN = 2qWdx)"
+      },
+      {
+        "source": "W",
+        "target": "dN",
+        "effect": "proportional",
+        "reason": "dN is directly proportional to W (dN = 2qWdx)"
+      },
+      {
+        "source": "dx",
+        "target": "dN",
+        "effect": "proportional",
+        "reason": "dN is directly proportional to dx (dN = 2qWdx)"
+      }
+    ],
+    "equation_type": "differential",
+    "equation_role": "definition",
+    "equation_image": "equation-0038.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "N",
+        "original": "dN"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "F",
+        "original": "F"
+      },
+      {
+        "symbol": "t",
+        "original": "dt"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "F",
+        "N"
+      ],
+      [
+        "t",
+        "N"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "F",
+        "target": "N",
+        "effect": "proportional",
+        "reason": "dN is directly proportional to F (dN = F * dt)"
+      },
+      {
+        "source": "t",
+        "target": "N",
+        "effect": "proportional",
+        "reason": "dN is directly proportional to dt (dN = F * dt)"
+      }
+    ],
+    "equation_type": "differential_equation",
+    "equation_role": "definition",
+    "equation_image": "equation-0039.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "v",
+        "original": "v"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      },
+      {
+        "symbol": "F",
+        "original": "F"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "x",
+        "v"
+      ],
+      [
+        "t",
+        "v"
+      ],
+      [
+        "F",
+        "v"
+      ],
+      [
+        "q",
+        "v"
+      ],
+      [
+        "W",
+        "v"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "x",
+        "target": "v",
+        "effect": "positive",
+        "reason": "v is the derivative of x with respect to t. A positive change in x over time t results in a positive v."
+      },
+      {
+        "source": "t",
+        "target": "v",
+        "effect": "inverse",
+        "reason": "t is in the denominator of the derivative dx/dt. A smaller change in t for a given change in x would result in a larger v."
+      },
+      {
+        "source": "F",
+        "target": "v",
+        "effect": "proportional",
+        "reason": "F is in the numerator of the expression F/(2qW), which equals v."
+      },
+      {
+        "source": "q",
+        "target": "v",
+        "effect": "inverse",
+        "reason": "q is in the denominator of the expression F/(2qW), which equals v."
+      },
+      {
+        "source": "W",
+        "target": "v",
+        "effect": "inverse",
+        "reason": "W is in the denominator of the expression F/(2qW), which equals v."
+      }
+    ],
+    "equation_type": "differential_and_algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0040.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "F",
+        "original": "F"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "p_A0",
+        "original": "p_{A0}"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      },
+      {
+        "symbol": "H",
+        "original": "H"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "p_A0",
+        "F"
+      ],
+      [
+        "N_0",
+        "F"
+      ],
+      [
+        "M_A",
+        "F"
+      ],
+      [
+        "R",
+        "F"
+      ],
+      [
+        "T",
+        "F"
+      ],
+      [
+        "W",
+        "F"
+      ],
+      [
+        "H",
+        "F"
+      ],
+      [
+        "x",
+        "F"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "p_A0",
+        "target": "F",
+        "effect": "proportional",
+        "reason": "p_A0 is in the numerator."
+      },
+      {
+        "source": "N_0",
+        "target": "F",
+        "effect": "proportional",
+        "reason": "N_0 is in the numerator."
+      },
+      {
+        "source": "M_A",
+        "target": "F",
+        "effect": "inverse",
+        "reason": "M_A is in the denominator, under a square root."
+      },
+      {
+        "source": "R",
+        "target": "F",
+        "effect": "inverse",
+        "reason": "R is in the denominator, under a square root."
+      },
+      {
+        "source": "T",
+        "target": "F",
+        "effect": "inverse",
+        "reason": "T is in the denominator, under a square root."
+      },
+      {
+        "source": "W",
+        "target": "F",
+        "effect": "positive",
+        "reason": "W appears in the numerator (WH) and in the denominator's sub-term (1/W). Increasing W increases the numerator and decreases the denominator's sub-term (1/H + 1/W), which in turn decreases the overall denominator, leading to an increase in F."
+      },
+      {
+        "source": "H",
+        "target": "F",
+        "effect": "positive",
+        "reason": "H appears in the numerator (WH) and in the denominator's sub-term (1/H). Increasing H increases the numerator and decreases the denominator's sub-term (1/H + 1/W), which in turn decreases the overall denominator, leading to an increase in F."
+      },
+      {
+        "source": "x",
+        "target": "F",
+        "effect": "negative",
+        "reason": "x is in the denominator's sub-term (3x/8). Increasing x increases this sub-term, which increases the overall denominator, leading to a decrease in F."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "transport",
+    "equation_image": "equation-0041.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "dx/dt",
+        "original": "dx/dt"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "F",
+        "original": "F"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      },
+      {
+        "symbol": "p_A0",
+        "original": "p_A0"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      },
+      {
+        "symbol": "H",
+        "original": "H"
+      },
+      {
+        "symbol": "x",
+        "original": "x"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "F",
+        "dx/dt"
+      ],
+      [
+        "q",
+        "dx/dt"
+      ],
+      [
+        "W",
+        "dx/dt"
+      ],
+      [
+        "p_A0",
+        "dx/dt"
+      ],
+      [
+        "N_0",
+        "dx/dt"
+      ],
+      [
+        "M_A",
+        "dx/dt"
+      ],
+      [
+        "R",
+        "dx/dt"
+      ],
+      [
+        "T",
+        "dx/dt"
+      ],
+      [
+        "H",
+        "dx/dt"
+      ],
+      [
+        "x",
+        "dx/dt"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "F",
+        "target": "dx/dt",
+        "effect": "proportional",
+        "reason": "F is in the numerator."
+      },
+      {
+        "source": "q",
+        "target": "dx/dt",
+        "effect": "inverse",
+        "reason": "q is in the denominator."
+      },
+      {
+        "source": "W",
+        "target": "dx/dt",
+        "effect": "unknown",
+        "reason": "W appears in the denominator of the first term (inverse effect) and also in the denominator of the second term in a way that an increase in W leads to a decrease in the overall denominator of that term (positive effect). The combined effect is unclear."
+      },
+      {
+        "source": "p_A0",
+        "target": "dx/dt",
+        "effect": "proportional",
+        "reason": "p_A0 is in the numerator."
+      },
+      {
+        "source": "N_0",
+        "target": "dx/dt",
+        "effect": "proportional",
+        "reason": "N_0 is in the numerator."
+      },
+      {
+        "source": "M_A",
+        "target": "dx/dt",
+        "effect": "inverse",
+        "reason": "M_A is in the denominator, under a square root."
+      },
+      {
+        "source": "R",
+        "target": "dx/dt",
+        "effect": "inverse",
+        "reason": "R is in the denominator, under a square root."
+      },
+      {
+        "source": "T",
+        "target": "dx/dt",
+        "effect": "inverse",
+        "reason": "T is in the denominator, under a square root."
+      },
+      {
+        "source": "H",
+        "target": "dx/dt",
+        "effect": "positive",
+        "reason": "H is in the numerator and also in the denominator in a way that an increase in H leads to a decrease in the denominator, both contributing to an increase in dx/dt."
+      },
+      {
+        "source": "x",
+        "target": "dx/dt",
+        "effect": "negative",
+        "reason": "x is in the denominator in a way that an increase in x leads to an increase in the denominator, thus decreasing dx/dt."
+      }
+    ],
+    "equation_type": "differential_equation",
+    "equation_role": "rate_equation",
+    "equation_image": "equation-0042.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "t",
+        "original": "t"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "x",
+        "original": "x"
+      },
+      {
+        "symbol": "H",
+        "original": "H"
+      },
+      {
+        "symbol": "W",
+        "original": "W"
+      },
+      {
+        "symbol": "p_A0",
+        "original": "p_{A0}"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "x",
+        "t"
+      ],
+      [
+        "H",
+        "t"
+      ],
+      [
+        "W",
+        "t"
+      ],
+      [
+        "p_A0",
+        "t"
+      ],
+      [
+        "N_0",
+        "t"
+      ],
+      [
+        "q",
+        "t"
+      ],
+      [
+        "M_A",
+        "t"
+      ],
+      [
+        "R",
+        "t"
+      ],
+      [
+        "T",
+        "t"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "x",
+        "target": "t",
+        "effect": "positive",
+        "reason": "t is proportional to x + (3x^2/16)(1/H + 1/W). As x increases, this sum increases."
+      },
+      {
+        "source": "H",
+        "target": "t",
+        "effect": "negative",
+        "reason": "t is proportional to (1/H + 1/W) and also proportional to 1/H (from the denominator of the fraction). Both terms indicate a negative influence."
+      },
+      {
+        "source": "W",
+        "target": "t",
+        "effect": "negative",
+        "reason": "t is proportional to (1/H + 1/W). As W increases, 1/W decreases, thus the sum decreases."
+      },
+      {
+        "source": "p_A0",
+        "target": "t",
+        "effect": "inverse",
+        "reason": "p_A0 is in the denominator of the multiplicative factor."
+      },
+      {
+        "source": "N_0",
+        "target": "t",
+        "effect": "inverse",
+        "reason": "N_0 is in the denominator of the multiplicative factor."
+      },
+      {
+        "source": "q",
+        "target": "t",
+        "effect": "proportional",
+        "reason": "q is in the numerator of the multiplicative factor."
+      },
+      {
+        "source": "M_A",
+        "target": "t",
+        "effect": "positive",
+        "reason": "M_A is under a square root in the numerator of the multiplicative factor."
+      },
+      {
+        "source": "R",
+        "target": "t",
+        "effect": "positive",
+        "reason": "R is under a square root in the numerator of the multiplicative factor."
+      },
+      {
+        "source": "T",
+        "target": "t",
+        "effect": "positive",
+        "reason": "T is under a square root in the numerator of the multiplicative factor."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "unknown",
+    "equation_image": "equation-0043.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "C",
+        "original": "C"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "p_A0",
+        "original": "p_A0"
+      },
+      {
+        "symbol": "N_0",
+        "original": "N_0"
+      },
+      {
+        "symbol": "q",
+        "original": "q"
+      },
+      {
+        "symbol": "M_A",
+        "original": "M_A"
+      },
+      {
+        "symbol": "R",
+        "original": "R"
+      },
+      {
+        "symbol": "T",
+        "original": "T"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "p_A0",
+        "C"
+      ],
+      [
+        "N_0",
+        "C"
+      ],
+      [
+        "q",
+        "C"
+      ],
+      [
+        "M_A",
+        "C"
+      ],
+      [
+        "R",
+        "C"
+      ],
+      [
+        "T",
+        "C"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "p_A0",
+        "target": "C",
+        "effect": "proportional",
+        "reason": "C is in the numerator, directly proportional to p_A0."
+      },
+      {
+        "source": "N_0",
+        "target": "C",
+        "effect": "proportional",
+        "reason": "C is in the numerator, directly proportional to N_0."
+      },
+      {
+        "source": "q",
+        "target": "C",
+        "effect": "inverse",
+        "reason": "q is in the denominator, inversely proportional to C."
+      },
+      {
+        "source": "M_A",
+        "target": "C",
+        "effect": "negative",
+        "reason": "M_A is in the denominator and under a square root, indicating a negative influence on C."
+      },
+      {
+        "source": "R",
+        "target": "C",
+        "effect": "negative",
+        "reason": "R is in the denominator and under a square root, indicating a negative influence on C."
+      },
+      {
+        "source": "T",
+        "target": "C",
+        "effect": "negative",
+        "reason": "T is in the denominator and under a square root, indicating a negative influence on C."
+      }
+    ],
+    "equation_type": "definition",
+    "equation_role": "unknown",
+    "equation_image": "equation-0044.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "x_p",
+        "original": "x_p"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "H",
+        "original": "H"
+      },
+      {
+        "symbol": "C",
+        "original": "C"
+      },
+      {
+        "symbol": "t_p",
+        "original": "t_p"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "H",
+        "x_p"
+      ],
+      [
+        "C",
+        "x_p"
+      ],
+      [
+        "t_p",
+        "x_p"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "H",
+        "target": "x_p",
+        "effect": "proportional",
+        "reason": "x_p is directly multiplied by H, and the other factor is positive."
+      },
+      {
+        "source": "C",
+        "target": "x_p",
+        "effect": "positive",
+        "reason": "C is inside a square root, added to a constant, and then 1 is subtracted. An increase in C leads to an increase in the term under the square root, which leads to an increase in the square root, and thus an increase in x_p."
+      },
+      {
+        "source": "t_p",
+        "target": "x_p",
+        "effect": "positive",
+        "reason": "t_p is inside a square root, added to a constant, and then 1 is subtracted. An increase in t_p leads to an increase in the term under the square root, which leads to an increase in the square root, and thus an increase in x_p."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0045.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "gpc_sat",
+        "original": "gpc_sat"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "K",
+        "original": "K"
+      },
+      {
+        "symbol": "p_A",
+        "original": "p_A"
+      },
+      {
+        "symbol": "gpc",
+        "original": "gpc"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "K",
+        "gpc_sat"
+      ],
+      [
+        "p_A",
+        "gpc_sat"
+      ],
+      [
+        "gpc",
+        "gpc_sat"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "K",
+        "target": "gpc_sat",
+        "effect": "negative",
+        "reason": "As K increases, the term Kp_A in the denominator increases, causing the fraction 1/(Kp_A) to decrease. Since this term is added to 1 and then multiplied by gpc, an increase in K leads to a decrease in gpc_sat."
+      },
+      {
+        "source": "p_A",
+        "target": "gpc_sat",
+        "effect": "negative",
+        "reason": "As p_A increases, the term Kp_A in the denominator increases, causing the fraction 1/(Kp_A) to decrease. Since this term is added to 1 and then multiplied by gpc, an increase in p_A leads to a decrease in gpc_sat."
+      },
+      {
+        "source": "gpc",
+        "target": "gpc_sat",
+        "effect": "proportional",
+        "reason": "gpc_sat is directly proportional to gpc as gpc is a multiplicative factor on the right-hand side."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "unknown",
+    "equation_image": "equation-0046.png"
   }
 ]

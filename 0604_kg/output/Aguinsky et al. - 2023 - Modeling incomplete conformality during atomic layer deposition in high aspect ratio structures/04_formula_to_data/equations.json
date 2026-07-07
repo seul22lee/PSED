@@ -1,0 +1,430 @@
+[
+  {
+    "lhs": [
+      {
+        "symbol": "dθ/dt",
+        "original": "dθ(r⃗)/dt"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "s₀",
+        "original": "s₀"
+      },
+      {
+        "symbol": "Γ_H₂O",
+        "original": "Γ_H₂O(r⃗)"
+      },
+      {
+        "symbol": "β₀",
+        "original": "β₀"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ(r⃗)"
+      },
+      {
+        "symbol": "Γ_ev",
+        "original": "Γ_ev"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "s₀",
+        "dθ/dt"
+      ],
+      [
+        "Γ_H₂O",
+        "dθ/dt"
+      ],
+      [
+        "β₀",
+        "dθ/dt"
+      ],
+      [
+        "θ",
+        "dθ/dt"
+      ],
+      [
+        "Γ_ev",
+        "dθ/dt"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "s₀",
+        "target": "dθ/dt",
+        "effect": "proportional",
+        "reason": "dθ(r⃗)/dt is directly proportional to s₀ (after rearranging the equation)."
+      },
+      {
+        "source": "Γ_H₂O",
+        "target": "dθ/dt",
+        "effect": "proportional",
+        "reason": "dθ(r⃗)/dt is proportional to Γ_H₂O(r⃗) as it is a positive multiplier in a positive term."
+      },
+      {
+        "source": "β₀",
+        "target": "dθ/dt",
+        "effect": "proportional",
+        "reason": "dθ(r⃗)/dt is proportional to β₀ as it is a positive multiplier in a positive term."
+      },
+      {
+        "source": "θ",
+        "target": "dθ/dt",
+        "effect": "negative",
+        "reason": "θ(r⃗) appears as (1 - θ(r⃗)) in a positive term (increasing θ decreases the term) and as -Γ_ev * θ(r⃗) (increasing θ makes the term more negative). Both contributions indicate a negative influence."
+      },
+      {
+        "source": "Γ_ev",
+        "target": "dθ/dt",
+        "effect": "negative",
+        "reason": "dθ(r⃗)/dt is proportional to -Γ_ev (as it is a positive multiplier in a negative term)."
+      }
+    ],
+    "equation_type": "differential_equation",
+    "equation_role": "empirical",
+    "equation_image": "equation-0001.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D_Kn",
+        "original": "D_Kn"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "v̄",
+        "original": "v̄"
+      },
+      {
+        "symbol": "d",
+        "original": "d"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "v̄",
+        "D_Kn"
+      ],
+      [
+        "d",
+        "D_Kn"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "v̄",
+        "target": "D_Kn",
+        "effect": "proportional",
+        "reason": "D_Kn is directly proportional to v̄ as it appears in the numerator."
+      },
+      {
+        "source": "d",
+        "target": "D_Kn",
+        "effect": "proportional",
+        "reason": "D_Kn is directly proportional to d as it appears in the numerator."
+      }
+    ],
+    "equation_type": "unknown",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0002.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "D",
+        "original": "D"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "D_A",
+        "original": "D_A"
+      },
+      {
+        "symbol": "D_Kn",
+        "original": "D_Kn"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "D_A",
+        "D"
+      ],
+      [
+        "D_Kn",
+        "D"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "D_A",
+        "target": "D",
+        "effect": "positive",
+        "reason": "If D_A increases, 1/D_A decreases. Since 1/D is approximately 1/D_A + 1/D_Kn, 1/D decreases, implying D increases."
+      },
+      {
+        "source": "D_Kn",
+        "target": "D",
+        "effect": "positive",
+        "reason": "If D_Kn increases, 1/D_Kn decreases. Since 1/D is approximately 1/D_A + 1/D_Kn, 1/D decreases, implying D increases."
+      }
+    ],
+    "equation_type": "approximation",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0003.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "φ",
+        "original": "φ(r⃗,t)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "V",
+        "original": "V(r⃗)"
+      },
+      {
+        "symbol": "φ",
+        "original": "φ(r⃗,t)"
+      },
+      {
+        "symbol": "r⃗",
+        "original": "r⃗"
+      },
+      {
+        "symbol": "t",
+        "original": "t"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "V",
+        "φ"
+      ],
+      [
+        "φ",
+        "φ"
+      ],
+      [
+        "r⃗",
+        "φ"
+      ],
+      [
+        "t",
+        "φ"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "V",
+        "target": "φ",
+        "effect": "negative",
+        "reason": "Rearranging the equation gives ∂φ/∂t = -V|∇φ|. Assuming |∇φ| is positive, an increase in V (if V>0) leads to a more negative ∂φ/∂t, implying φ decreases faster."
+      },
+      {
+        "source": "φ",
+        "target": "φ",
+        "effect": "negative",
+        "reason": "Rearranging the equation gives ∂φ/∂t = -V|∇φ|. Assuming V is positive, an increase in |∇φ| leads to a more negative ∂φ/∂t, implying φ decreases faster."
+      },
+      {
+        "source": "r⃗",
+        "target": "φ",
+        "effect": "unknown",
+        "reason": "r⃗ is an independent variable. Its influence on φ depends on the specific functional forms of V(r⃗) and φ(r⃗,t) and their derivatives, which are not specified in the equation structure alone."
+      },
+      {
+        "source": "t",
+        "target": "φ",
+        "effect": "unknown",
+        "reason": "t is an independent variable. The sign of ∂φ/∂t depends on V and |∇φ|, so the direct effect of t on φ cannot be determined confidently from the equation alone."
+      }
+    ],
+    "equation_type": "partial_differential_equation",
+    "equation_role": "level_set",
+    "equation_image": "equation-0004.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "V",
+        "original": "V(r⃗)"
+      },
+      {
+        "symbol": "V",
+        "original": "V(z)"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "C",
+        "original": "C"
+      },
+      {
+        "symbol": "GPC",
+        "original": "GPC"
+      },
+      {
+        "symbol": "θ",
+        "original": "θ(z)"
+      },
+      {
+        "symbol": "z",
+        "original": "z"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "C",
+        "V"
+      ],
+      [
+        "GPC",
+        "V"
+      ],
+      [
+        "θ",
+        "V"
+      ],
+      [
+        "z",
+        "V"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "C",
+        "target": "V",
+        "effect": "proportional",
+        "reason": "V is a product of C and other terms."
+      },
+      {
+        "source": "GPC",
+        "target": "V",
+        "effect": "proportional",
+        "reason": "V is a product of GPC and other terms."
+      },
+      {
+        "source": "θ",
+        "target": "V",
+        "effect": "proportional",
+        "reason": "V is a product of θ and other terms."
+      },
+      {
+        "source": "z",
+        "target": "V",
+        "effect": "unknown",
+        "reason": "V depends on z through the function θ(z), whose form is not specified."
+      }
+    ],
+    "equation_type": "algebraic",
+    "equation_role": "definition",
+    "equation_image": "equation-0005.png"
+  },
+  {
+    "lhs": [
+      {
+        "symbol": "d^2 Γ_H2O(z) / dz^2",
+        "original": "d^2 Γ_H2O(z) / dz^2"
+      }
+    ],
+    "rhs_symbols": [
+      {
+        "symbol": "D",
+        "original": "D"
+      },
+      {
+        "symbol": "v̄",
+        "original": "v̄"
+      },
+      {
+        "symbol": "d",
+        "original": "d"
+      },
+      {
+        "symbol": "β_0",
+        "original": "β_0"
+      },
+      {
+        "symbol": "θ(z)",
+        "original": "θ(z)"
+      },
+      {
+        "symbol": "Γ_H2O(z)",
+        "original": "Γ_H2O(z)"
+      }
+    ],
+    "dependency_edges": [
+      [
+        "D",
+        "d^2 Γ_H2O(z) / dz^2"
+      ],
+      [
+        "v̄",
+        "d^2 Γ_H2O(z) / dz^2"
+      ],
+      [
+        "d",
+        "d^2 Γ_H2O(z) / dz^2"
+      ],
+      [
+        "β_0",
+        "d^2 Γ_H2O(z) / dz^2"
+      ],
+      [
+        "θ(z)",
+        "d^2 Γ_H2O(z) / dz^2"
+      ],
+      [
+        "Γ_H2O(z)",
+        "d^2 Γ_H2O(z) / dz^2"
+      ]
+    ],
+    "dependency_relations": [
+      {
+        "source": "D",
+        "target": "d^2 Γ_H2O(z) / dz^2",
+        "effect": "inverse",
+        "reason": "D is a multiplier on the LHS; when isolating the derivative, D becomes a divisor on the RHS."
+      },
+      {
+        "source": "v̄",
+        "target": "d^2 Γ_H2O(z) / dz^2",
+        "effect": "proportional",
+        "reason": "v̄ is a direct multiplier in the numerator on the RHS."
+      },
+      {
+        "source": "d",
+        "target": "d^2 Γ_H2O(z) / dz^2",
+        "effect": "inverse",
+        "reason": "d is a direct divisor on the RHS."
+      },
+      {
+        "source": "β_0",
+        "target": "d^2 Γ_H2O(z) / dz^2",
+        "effect": "proportional",
+        "reason": "β_0 is a direct multiplier on the RHS."
+      },
+      {
+        "source": "θ(z)",
+        "target": "d^2 Γ_H2O(z) / dz^2",
+        "effect": "negative",
+        "reason": "θ(z) is subtracted from 1; an increase in θ(z) decreases the term (1 - θ(z)), thus decreasing the RHS."
+      },
+      {
+        "source": "Γ_H2O(z)",
+        "target": "d^2 Γ_H2O(z) / dz^2",
+        "effect": "proportional",
+        "reason": "Γ_H2O(z) is a direct multiplier on the RHS."
+      }
+    ],
+    "equation_type": "Differential equation",
+    "equation_role": "diffusion",
+    "equation_image": "equation-0006.png"
+  }
+]
