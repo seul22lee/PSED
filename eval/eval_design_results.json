@@ -1,0 +1,160 @@
+{
+  "task": {
+    "material": "Al2O3",
+    "gap_um": 0.5,
+    "fill_target": 0.9,
+    "temperature_C": 200.0,
+    "reference": "ylilammi_langmuir_channel twin"
+  },
+  "twin_calibration": {
+    "anchor": "ylilammi2018-F6-2",
+    "measured_pd_um": 127.6,
+    "twin_pd_um": 67.7,
+    "ratio_measured_over_twin": 1.89,
+    "note": "twin under-predicts penetration ~2x here -> loop doses are conservative OVER-estimates"
+  },
+  "loop": {
+    "40": {
+      "dose_s": 0.1,
+      "feasible": true,
+      "dose_calibrated_s": 0.02,
+      "sticking_sensitive": false,
+      "eval": {
+        "dose_s": 0.1,
+        "pd_um": 67.7,
+        "L_um": 20.0,
+        "fill_frac": 3.383,
+        "meets": true
+      }
+    },
+    "300": {
+      "dose_s": 0.3981621183314682,
+      "feasible": true,
+      "dose_calibrated_s": 0.111,
+      "sticking_sensitive": false,
+      "eval": {
+        "dose_s": 0.3981621183314682,
+        "pd_um": 135.0,
+        "L_um": 150.0,
+        "fill_frac": 0.9,
+        "meets": true
+      }
+    },
+    "1000": {
+      "dose_s": 4.424023537022179,
+      "feasible": true,
+      "dose_calibrated_s": 1.238,
+      "sticking_sensitive": false,
+      "eval": {
+        "dose_s": 4.424023537022179,
+        "pd_um": 450.0,
+        "L_um": 500.0,
+        "fill_frac": 0.9,
+        "meets": true
+      }
+    },
+    "5000": {
+      "dose_s": null,
+      "feasible": false,
+      "dose_calibrated_s": 30.962,
+      "sticking_sensitive": false
+    }
+  },
+  "llm": [
+    {
+      "aspect_ratio": 40,
+      "rep": 1,
+      "llm_dose_s": 1.0,
+      "eval": {
+        "dose_s": 1.0,
+        "pd_um": 213.9,
+        "L_um": 20.0,
+        "fill_frac": 10.697,
+        "meets": true
+      },
+      "over_dose_x": 10.0,
+      "reasoning": "AR^2 exposure scaling (Gordon/Ylilammi); ~0.4 Pa*s min, extended to ~1s for margin"
+    },
+    {
+      "aspect_ratio": 300,
+      "rep": 1,
+      "llm_dose_s": 100,
+      "eval": {
+        "dose_s": 100,
+        "pd_um": 2139.5,
+        "L_um": 150.0,
+        "fill_frac": 14.263,
+        "meets": true
+      },
+      "over_dose_x": 251.2,
+      "reasoning": "dose*pressure ~ AR^2; penetration ~ sqrt(exposure); 150um at AR=300 demands very large exposure"
+    },
+    {
+      "aspect_ratio": 300,
+      "rep": 2,
+      "llm_dose_s": 60,
+      "eval": {
+        "dose_s": 60,
+        "pd_um": 1657.2,
+        "L_um": 150.0,
+        "fill_frac": 11.048,
+        "meets": true
+      },
+      "over_dose_x": 150.7,
+      "reasoning": "AR^2 penetration scaling; tens of Torr-seconds -> ~60s TMA pulse"
+    },
+    {
+      "aspect_ratio": 1000,
+      "rep": 1,
+      "llm_dose_s": 100,
+      "eval": {
+        "dose_s": 100,
+        "pd_um": 2139.5,
+        "L_um": 500.0,
+        "fill_frac": 4.279,
+        "meets": true
+      },
+      "over_dose_x": 22.6,
+      "reasoning": "required dose grows ~AR^2; ~100 Langmuir-seconds to saturate 500um depth"
+    },
+    {
+      "aspect_ratio": 5000,
+      "rep": 1,
+      "llm_dose_s": 100,
+      "eval": {
+        "dose_s": 100,
+        "pd_um": 2139.5,
+        "L_um": 2500.0,
+        "fill_frac": 0.856,
+        "meets": false
+      },
+      "over_dose_x": null,
+      "reasoning": "achievable PillarHall-type; penetration ~ sqrt(exposure); ~100s exposure-mode dose"
+    }
+  ],
+  "llm_diagnostics": {
+    "AR300_doses_s": [
+      100,
+      60
+    ],
+    "AR300_spread_x": 1.67,
+    "dose_vs_AR": {
+      "40": [
+        1.0
+      ],
+      "300": [
+        60,
+        100
+      ],
+      "1000": [
+        100
+      ],
+      "5000": [
+        100
+      ]
+    },
+    "monotonic_with_AR": true,
+    "own_scaling_law_stated": "AR^2 (dose grows as aspect-ratio squared)",
+    "follows_own_law": "no \u2014 100s given for AR=300, 1000, AND 5000, i.e. flat where AR^2 predicts ~278x"
+  }
+}

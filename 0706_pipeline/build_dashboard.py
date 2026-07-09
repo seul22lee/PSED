@@ -18,8 +18,9 @@ ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_tex
 MAT = {m["id"] for m in ONTO["individuals"]["materials"]}
 STR = {s["id"] for s in ONTO["individuals"]["structures"]}
 QK = {q["id"] for q in ONTO["quantity_kinds"]}
-SI_UNITS = {"nm", "Pa", "s", "°C", "g/mol", "", "nm/cycle", "1/m2", "1/m²", "1/Pa", "Pa/s",
-            "1/m³", "m²/s", "%", "eV", "W", "K", "cycles", "Pa·s", "nm/s", None, "unitless"}
+SI_UNITS = {"nm", "µm", "Pa", "s", "°C", "g/mol", "", "1", "nm/cycle", "1/m2", "1/m²", "1/Pa",
+            "Pa/s", "1/m³", "m²/s", "M2", "1/(m2 s)", "%", "eV", "W", "K", "cycles", "Pa·s",
+            "nm/s", None, "unitless"}
 PAPERS = json.loads((ROOT / "benchmark" / "slices" / "index.json").read_text())
 
 

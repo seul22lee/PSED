@@ -75,18 +75,18 @@ def bar(x, w=20):
 
 
 def main():
-    E = load()
-    papers = sorted({e["_pid"] for e in E})
-    print(f"\nKB EVALUATION — {len(E)} experiments · {len(papers)} papers · {papers}\n" + "=" * 74)
+    Eall = load()
+    papers = sorted({e["_pid"] for e in Eall})
+    print(f"\nKB EVALUATION — {len(Eall)} experiments · {len(papers)} papers · {papers}\n" + "=" * 74)
 
-    # ---- AXIS 1: CONFORMANCE ----
-    def ready(e):
-        return bool(e.get("material") and e.get("material") != "—"
-                    and (measures(e) or e.get("varies"))
-                    and (e.get("provenance") or {}).get("figure_id"))
-    n_ready = sum(ready(e) for e in E)
-    a1 = n_ready / len(E)
-    print(f"\n1 CONFORMANCE   [{bar(a1)}] {a1:5.0%}   {n_ready}/{len(E)} analysis-ready")
+    # ---- AXIS 1: CONFORMANCE (S1 quality gate) ----
+    E = [e for e in Eall if e.get("analysis_ready")]        # corpus metrics run on ready set
+    n_ready = len(E)
+    a1 = n_ready / len(Eall)
+    from collections import Counter as _C
+    iss = _C(i for e in Eall for i in e.get("issues", []))
+    print(f"\n1 CONFORMANCE   [{bar(a1)}] {a1:5.0%}   {n_ready}/{len(Eall)} analysis-ready "
+          f"(quarantined: {dict(iss)})")
 
     # ---- AXIS 2: ACCURACY (read c1 output if present) ----
     c1 = ROOT / "output" / "_accuracy.json"

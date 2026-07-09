@@ -110,6 +110,25 @@ def canon_process(s):     return PROC.get(norm(s))
 def canon_quantity(s):    return QK.get(norm(s))
 def axis_role(qid):       return (QK_META.get(qid) or {}).get("axis_role")
 
+# ---- quantity families + transforms (comparability layer, P1) -------------
+_QR = ONTO.get("quantity_relations", {}) or {}
+FAMILIES = _QR.get("families", {}) or {}
+TRANSFORMS = _QR.get("transforms", []) or []
+FAMILY = {q["id"]: q.get("family") for q in ONTO["quantity_kinds"]}
+def family(qid):          return FAMILY.get(qid)
+RECIPE_ROLE = {q["id"]: q.get("recipe_role") for q in ONTO["quantity_kinds"]}
+def recipe_role(qid):     return RECIPE_ROLE.get(qid)   # control_setting=in recipe
+
+# species intrinsic properties (molar_mass, molecular_diameter, central_atoms)
+SPECIES_PROP = {}
+for _g in ("precursors", "coreactants"):
+    for _it in ONTO["individuals"].get(_g, []):
+        _p = {k: _it[k] for k in ("molar_mass", "molecular_diameter", "central_atoms") if k in _it}
+        for _k in [_it["id"], _it.get("formula"), _it.get("full_name")] + (_it.get("aka") or []):
+            if _k:
+                SPECIES_PROP[str(_k)] = _p
+def species_prop(sp, prop): return (SPECIES_PROP.get(str(sp)) or {}).get(prop) if sp else None
+
 
 def resolve_axis_label(label):
     """Canonicalise a plot AXIS LABEL to a quantity id. Strips '(units)',
