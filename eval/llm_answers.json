@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "description": "Measured answers from a general-purpose LLM (Claude, general-purpose subagent) answering the Al2O3 LHAR conformal-recipe task from domain knowledge only, no tools/files/web. One independent query per (aspect_ratio, rep). Verbatim outputs recorded for reproducibility.",
+    "task_template": "thermal ALD, conformal Al2O3 in LHAR gap=0.5um, aspect_ratio=AR (channel depth=AR*0.5um), reactor has only TMA+water; give precursor, coreactant, temperature_C, TMA precursor_dose_s to conformally coat full depth",
+    "model": "general-purpose subagent (Claude), knowledge-only, tools disabled by instruction",
+    "date": "session-recorded"
+  },
+  "answers": [
+    {"aspect_ratio": 40,   "rep": 1, "precursor": "TMA", "coreactant": "H2O", "temperature_C": 200, "precursor_dose_s": 1.0,  "reasoning": "AR^2 exposure scaling (Gordon/Ylilammi); ~0.4 Pa*s min, extended to ~1s for margin"},
+    {"aspect_ratio": 300,  "rep": 1, "precursor": "TMA", "coreactant": "H2O", "temperature_C": 200, "precursor_dose_s": 100, "reasoning": "dose*pressure ~ AR^2; penetration ~ sqrt(exposure); 150um at AR=300 demands very large exposure"},
+    {"aspect_ratio": 300,  "rep": 2, "precursor": "TMA", "coreactant": "H2O", "temperature_C": 200, "precursor_dose_s": 60,  "reasoning": "AR^2 penetration scaling; tens of Torr-seconds -> ~60s TMA pulse"},
+    {"aspect_ratio": 1000, "rep": 1, "precursor": "TMA", "coreactant": "H2O", "temperature_C": 200, "precursor_dose_s": 100, "reasoning": "required dose grows ~AR^2; ~100 Langmuir-seconds to saturate 500um depth"},
+    {"aspect_ratio": 5000, "rep": 1, "precursor": "TMA", "coreactant": "H2O", "temperature_C": 200, "precursor_dose_s": 100, "reasoning": "achievable PillarHall-type; penetration ~ sqrt(exposure); ~100s exposure-mode dose"}
+  ]
+}

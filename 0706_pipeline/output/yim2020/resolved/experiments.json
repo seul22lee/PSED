@@ -19,17 +19,134 @@
     },
     "granularity": "single",
     "varies": [],
-    "controlled": [],
+    "controlled": [
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
+      }
+    ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "film_thickness",
         "symbol": null,
         "value": null,
-        "unit": "nm"
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
-    "points": []
+    "points": [],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": null,
+    "coordinate_family": null,
+    "measurand_family": "film_amount",
+    "comparability_key": "· ~ film_amount",
+    "comparability_signature": "· ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      }
+    ],
+    "issues": [
+      "no-data"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F2-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F2-1"
+      },
+      "completeness": 0.357
+    }
   },
   {
     "series_name": "Growth/cycles (b)",
@@ -51,17 +168,122 @@
     },
     "granularity": "single",
     "varies": [],
-    "controlled": [],
+    "controlled": [
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
+      }
+    ],
     "dependent": [
       {
         "quantity": "growth_per_cycle",
         "raw": "growth_per_cycle",
         "symbol": null,
         "value": null,
-        "unit": "nm/cycle"
+        "unit": "nm/cycle",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
-    "points": []
+    "points": [],
+    "measurand": {
+      "quantity": "growth_per_cycle",
+      "unit": "nm/cycle",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": null,
+    "coordinate_family": null,
+    "measurand_family": "film_amount",
+    "comparability_key": "· ~ film_amount",
+    "comparability_signature": "· ~ growth_per_cycle",
+    "bridges": [
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      }
+    ],
+    "issues": [
+      "no-data"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F2-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F2-2"
+      },
+      "completeness": 0.357
+    }
   },
   {
     "series_name": "Normalized growth (c)",
@@ -83,17 +305,122 @@
     },
     "granularity": "single",
     "varies": [],
-    "controlled": [],
+    "controlled": [
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
+      }
+    ],
     "dependent": [
       {
         "quantity": "normalized_thickness",
         "raw": "normalized_thickness",
         "symbol": null,
         "value": null,
-        "unit": ""
+        "unit": "1",
+        "dimension": "1",
+        "family": "film_amount"
       }
     ],
-    "points": []
+    "points": [],
+    "measurand": {
+      "quantity": "normalized_thickness",
+      "unit": "1",
+      "dimension": "1",
+      "family": "film_amount"
+    },
+    "coordinate": null,
+    "coordinate_family": null,
+    "measurand_family": "film_amount",
+    "comparability_key": "· ~ film_amount",
+    "comparability_signature": "· ~ normalized_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      }
+    ],
+    "issues": [
+      "no-data"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F2-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F2-3"
+      },
+      "completeness": 0.357
+    }
   },
   {
     "series_name": "Normalized growth (d)",
@@ -115,14 +442,45 @@
     },
     "granularity": "single",
     "varies": [],
-    "controlled": [],
+    "controlled": [
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
+      }
+    ],
     "dependent": [
       {
         "quantity": "normalized_thickness",
         "raw": "normalized_thickness",
         "symbol": null,
         "value": null,
-        "unit": ""
+        "unit": "1",
+        "dimension": "1",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -310,7 +668,79 @@
         1.0,
         0.05
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "normalized_thickness",
+      "unit": "1",
+      "dimension": "1",
+      "family": "film_amount"
+    },
+    "coordinate": null,
+    "coordinate_family": null,
+    "measurand_family": "film_amount",
+    "comparability_key": "· ~ film_amount",
+    "comparability_signature": "· ~ normalized_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F2-4",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F2-4"
+      },
+      "completeness": 0.357
+    }
   },
   {
     "series_name": "Curve (a)",
@@ -345,6 +775,34 @@
         "symbol": null,
         "value": 300.0,
         "unit": "°C"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
@@ -353,7 +811,9 @@
         "raw": "growth_per_cycle",
         "symbol": null,
         "value": null,
-        "unit": "nm/cycle"
+        "unit": "nm/cycle",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -529,7 +989,86 @@
         3.0,
         0.01
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "growth_per_cycle",
+      "unit": "nm/cycle",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "dimensionless_distance",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "dimensionless_distance ~ growth_per_cycle",
+    "bridges": [
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "has_model_pair": true,
+    "exp_id": "yim2020-F3-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F3-1"
+      },
+      "completeness": 0.429
+    }
   },
   {
     "series_name": "Curve (b)",
@@ -564,6 +1103,34 @@
         "symbol": null,
         "value": 300.0,
         "unit": "°C"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
@@ -572,7 +1139,9 @@
         "raw": "growth_per_cycle",
         "symbol": null,
         "value": null,
-        "unit": "nm/cycle"
+        "unit": "nm/cycle",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -800,7 +1369,86 @@
         3.0,
         0.02
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "growth_per_cycle",
+      "unit": "nm/cycle",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "dimensionless_distance",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "dimensionless_distance ~ growth_per_cycle",
+    "bridges": [
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "has_model_pair": true,
+    "exp_id": "yim2020-F3-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F3-2"
+      },
+      "completeness": 0.429
+    }
   },
   {
     "series_name": "Pillar layout v1a and v1b",
@@ -861,6 +1509,34 @@
         "symbol": null,
         "value": "pillar layout v1b",
         "unit": null
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
@@ -869,10 +1545,79 @@
         "raw": "penetration_depth",
         "symbol": null,
         "value": 140000.0,
-        "unit": "nm"
+        "unit": "nm",
+        "dimension": "L",
+        "family": "position"
       }
     ],
-    "points": []
+    "points": [],
+    "measurand": {
+      "quantity": "penetration_depth",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "position"
+    },
+    "coordinate": null,
+    "coordinate_family": null,
+    "measurand_family": "position",
+    "comparability_key": "· ~ position",
+    "comparability_signature": "· ~ penetration_depth",
+    "bridges": [],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F4-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": {
+        "penetration_depth": "measured-in-figure"
+      },
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F4-1"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "Pillar layout v2a",
@@ -926,6 +1671,34 @@
         "symbol": null,
         "value": "pillar layout v2a",
         "unit": null
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
@@ -934,10 +1707,79 @@
         "raw": "penetration_depth",
         "symbol": null,
         "value": 100000.0,
-        "unit": "nm"
+        "unit": "nm",
+        "dimension": "L",
+        "family": "position"
       }
     ],
-    "points": []
+    "points": [],
+    "measurand": {
+      "quantity": "penetration_depth",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "position"
+    },
+    "coordinate": null,
+    "coordinate_family": null,
+    "measurand_family": "position",
+    "comparability_key": "· ~ position",
+    "comparability_signature": "· ~ penetration_depth",
+    "bridges": [],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F4-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": null,
+      "targets": {
+        "penetration_depth": "measured-in-figure"
+      },
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F4-2"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "O",
@@ -979,6 +1821,34 @@
         "symbol": null,
         "value": 500.0,
         "unit": "nm"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
@@ -987,7 +1857,9 @@
         "raw": "",
         "symbol": "O",
         "value": null,
-        "unit": "a.u."
+        "unit": "a.u.",
+        "dimension": null,
+        "family": null
       }
     ],
     "points": [
@@ -1195,7 +2067,84 @@
         250,
         0
       ]
-    ]
+    ],
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": null,
+    "comparability_key": "position ~ ·",
+    "comparability_signature": "spatial_coordinate ~ ·",
+    "bridges": [
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "no-measurand"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F5-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 1000.0,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F5-1"
+      },
+      "completeness": 0.429
+    }
   },
   {
     "series_name": "Al",
@@ -1237,6 +2186,34 @@
         "symbol": null,
         "value": 500.0,
         "unit": "nm"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
@@ -1245,7 +2222,9 @@
         "raw": "",
         "symbol": "Al",
         "value": null,
-        "unit": "a.u."
+        "unit": "a.u.",
+        "dimension": null,
+        "family": null
       }
     ],
     "points": [
@@ -1453,7 +2432,84 @@
         250,
         0
       ]
-    ]
+    ],
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": null,
+    "comparability_key": "position ~ ·",
+    "comparability_signature": "spatial_coordinate ~ ·",
+    "bridges": [
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "no-measurand"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F5-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 1000.0,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F5-2"
+      },
+      "completeness": 0.429
+    }
   },
   {
     "series_name": "Si",
@@ -1495,6 +2551,34 @@
         "symbol": null,
         "value": 500.0,
         "unit": "nm"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
@@ -1503,7 +2587,9 @@
         "raw": "",
         "symbol": "Si",
         "value": null,
-        "unit": "a.u."
+        "unit": "a.u.",
+        "dimension": null,
+        "family": null
       }
     ],
     "points": [
@@ -1711,7 +2797,84 @@
         250,
         4500
       ]
-    ]
+    ],
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": null,
+    "comparability_key": "position ~ ·",
+    "comparability_signature": "spatial_coordinate ~ ·",
+    "bridges": [
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "no-measurand"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F5-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 1000.0,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F5-3"
+      },
+      "completeness": 0.429
+    }
   },
   {
     "series_name": "X5 (50 µm)",
@@ -1745,13 +2908,49 @@
         "value": 50000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 47.5,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -1955,7 +3154,106 @@
         150.0,
         10.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F7-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 50000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F7-1"
+      },
+      "completeness": 0.357
+    }
   },
   {
     "series_name": "X10 (25 µm)",
@@ -1989,13 +3287,49 @@
         "value": 25000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 47.5,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -2203,7 +3537,106 @@
         150.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F7-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 25000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F7-2"
+      },
+      "completeness": 0.357
+    }
   },
   {
     "series_name": "X50 (5 µm)",
@@ -2237,13 +3670,49 @@
         "value": 5000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 47.5,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -2451,7 +3920,106 @@
         150.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F7-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": null,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 5000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F7-3"
+      },
+      "completeness": 0.357
+    }
   },
   {
     "series_name": "100 nm",
@@ -2499,13 +4067,43 @@
         "value": 100.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -2745,7 +4343,106 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F9a-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 100.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9a-1"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 nm",
@@ -2786,13 +4483,55 @@
         "value": 500.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -3048,7 +4787,106 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F9a-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9a-2"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "2000 nm",
@@ -3096,13 +4934,49 @@
         "value": 2000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -3286,7 +5160,106 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F9a-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 2000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9a-3"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "100 nm",
@@ -3334,13 +5307,43 @@
         "value": 100.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -3580,7 +5583,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9b-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 100.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9b-1"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 nm",
@@ -3621,13 +5726,55 @@
         "value": 500.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -3883,7 +6030,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9b-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9b-2"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "2000 nm",
@@ -3931,13 +6180,49 @@
         "value": 2000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -4121,7 +6406,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9b-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 2000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9b-3"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "100 nm",
@@ -4162,13 +6549,49 @@
         "value": 100.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -4408,7 +6831,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9b-4",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 100.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9b-4"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 nm",
@@ -4449,13 +6974,55 @@
         "value": 500.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -4711,7 +7278,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9b-5",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9b-5"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "2000 nm",
@@ -4752,13 +7421,55 @@
         "value": 2000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -4942,7 +7653,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9b-6",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 2000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9b-6"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "100 nm",
@@ -4990,13 +7803,43 @@
         "value": 100.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -5236,7 +8079,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9c-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 100.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9c-1"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 nm",
@@ -5277,13 +8222,55 @@
         "value": 500.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -5539,7 +8526,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9c-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9c-2"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "2000 nm",
@@ -5587,13 +8676,49 @@
         "value": 2000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -5777,7 +8902,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9c-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 2000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9c-3"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "100 nm",
@@ -5818,13 +9045,49 @@
         "value": 100.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -6064,7 +9327,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9c-4",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 100.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9c-4"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 nm",
@@ -6105,13 +9470,55 @@
         "value": 500.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -6367,7 +9774,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9c-5",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9c-5"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "2000 nm",
@@ -6408,13 +9917,55 @@
         "value": 2000.0,
         "unit": "nm",
         "from_label": true
+      },
+      {
+        "quantity": "cycle_number",
+        "value": 500.0,
+        "unit": "",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -6598,7 +10149,109 @@
         400.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017a",
+    "exp_id": "yim2020-F9c-6",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 2000.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9c-6"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "250 cycles",
@@ -6646,13 +10299,49 @@
         "value": 250.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 25.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -6804,7 +10493,106 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F9d-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 250.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9d-1"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 cycles",
@@ -6845,13 +10633,55 @@
         "value": 500.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "feature_height",
+        "value": 500.0,
+        "unit": "nm",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 45.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -7011,7 +10841,106 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F9d-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9d-2"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "1000 cycles",
@@ -7059,13 +10988,49 @@
         "value": 1000.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 90.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -7233,7 +11198,106 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F9d-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 1000.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9d-3"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "250 cycles",
@@ -7281,13 +11345,49 @@
         "value": 250.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 25.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -7439,7 +11539,109 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017d",
+    "exp_id": "yim2020-F9e-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 250.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9e-1"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 cycles",
@@ -7480,13 +11682,55 @@
         "value": 500.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "feature_height",
+        "value": 500.0,
+        "unit": "nm",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 45.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -7646,7 +11890,109 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017d",
+    "exp_id": "yim2020-F9e-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9e-2"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "1000 cycles",
@@ -7694,13 +12040,49 @@
         "value": 1000.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 90.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -7868,7 +12250,109 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017d",
+    "exp_id": "yim2020-F9e-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 1000.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9e-3"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "250 cycles",
@@ -7916,13 +12400,49 @@
         "value": 250.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 25.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -8074,7 +12594,109 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017d",
+    "exp_id": "yim2020-F9f-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 250.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9f-1"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "500 cycles",
@@ -8115,13 +12737,55 @@
         "value": 500.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "feature_height",
+        "value": 500.0,
+        "unit": "nm",
+        "propagated": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 45.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -8281,7 +12945,109 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017d",
+    "exp_id": "yim2020-F9f-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 500.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9f-2"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "1000 cycles",
@@ -8329,13 +13095,49 @@
         "value": 1000.0,
         "unit": "cycles",
         "from_label": true
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 90.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -8503,7 +13305,109 @@
         200.0,
         0.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [
+      "duplicate"
+    ],
+    "analysis_ready": false,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "duplicate_of": "figure-017d",
+    "exp_id": "yim2020-F9f-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": 1000.0,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F9f-3"
+      },
+      "completeness": 0.5
+    }
   },
   {
     "series_name": "TMA pulse: 0.1 s",
@@ -8552,14 +13456,50 @@
         "symbol": null,
         "value": 0.1,
         "unit": "s",
-        "of_reactant": "A_precursor"
+        "of_reactant": "A"
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 47.5,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -8687,7 +13627,106 @@
         180.0,
         4.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F11-1",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": 0.1,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": 0.1,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F11-1"
+      },
+      "completeness": 0.571
+    }
   },
   {
     "series_name": "TMA pulse: 0.2 s",
@@ -8736,14 +13775,50 @@
         "symbol": null,
         "value": 0.2,
         "unit": "s",
-        "of_reactant": "A_precursor"
+        "of_reactant": "A"
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 48.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -8867,7 +13942,106 @@
         190.0,
         5.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F11-2",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": 0.2,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": 0.2,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F11-2"
+      },
+      "completeness": 0.571
+    }
   },
   {
     "series_name": "TMA pulse: 0.4 s",
@@ -8916,14 +14090,50 @@
         "symbol": null,
         "value": 0.4,
         "unit": "s",
-        "of_reactant": "A_precursor"
+        "of_reactant": "A"
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 49.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -9127,7 +14337,106 @@
         380.0,
         5.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F11-3",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": 0.4,
+          "purge_time": null,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": 0.4,
+          "purge_time": null,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F11-3"
+      },
+      "completeness": 0.571
+    }
   },
   {
     "series_name": "Purge: 1 s",
@@ -9176,13 +14485,49 @@
         "symbol": null,
         "value": 1.0,
         "unit": "s"
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 50.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -9306,7 +14651,106 @@
         180.0,
         5.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F11-4",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": 1.0,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": 1.0,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F11-4"
+      },
+      "completeness": 0.571
+    }
   },
   {
     "series_name": "Purge: 4 s",
@@ -9355,13 +14799,49 @@
         "symbol": null,
         "value": 4.0,
         "unit": "s"
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 47.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -9485,7 +14965,106 @@
         180.0,
         5.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F11-5",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": 4.0,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": 4.0,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F11-5"
+      },
+      "completeness": 0.571
+    }
   },
   {
     "series_name": "Purge: 10 s",
@@ -9534,13 +15113,49 @@
         "symbol": null,
         "value": 10.0,
         "unit": "s"
+      },
+      {
+        "quantity": "reference_thickness",
+        "value": 45.0,
+        "unit": "nm",
+        "derived": "profile_mouth"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 72.09,
+        "unit": "g/mol",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.591,
+        "unit": "nm",
+        "of_reactant": "A",
+        "source": "species"
+      },
+      {
+        "quantity": "molecular_mass",
+        "value": 18.02,
+        "unit": "g/mol",
+        "of_reactant": "B",
+        "source": "species"
+      },
+      {
+        "quantity": "precursor_molecular_diameter",
+        "value": 0.265,
+        "unit": "nm",
+        "of_reactant": "B",
+        "source": "species"
       }
     ],
     "dependent": [
       {
         "quantity": "film_thickness",
         "raw": "Film thickness S (nm)",
-        "unit": null
+        "unit": "nm",
+        "dimension": "L",
+        "family": "film_amount"
       }
     ],
     "points": [
@@ -9664,6 +15279,105 @@
         180.0,
         5.0
       ]
-    ]
+    ],
+    "measurand": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "dimension": "L",
+      "family": "film_amount"
+    },
+    "coordinate": "spatial_coordinate",
+    "coordinate_family": "position",
+    "measurand_family": "film_amount",
+    "comparability_key": "position ~ film_amount",
+    "comparability_signature": "spatial_coordinate ~ film_thickness",
+    "bridges": [
+      {
+        "transform": "film_thickness→normalized_thickness",
+        "family": "film_amount",
+        "bridge": "reference_thickness",
+        "present": true
+      },
+      {
+        "transform": "film_thickness→growth_per_cycle",
+        "family": "film_amount",
+        "bridge": "cycle_number",
+        "present": false
+      },
+      {
+        "transform": "film_thickness→areal_density",
+        "family": "film_amount",
+        "bridge": "film_density",
+        "present": false
+      },
+      {
+        "transform": "spatial_coordinate→dimensionless_distance",
+        "family": "position",
+        "bridge": "feature_height",
+        "present": true
+      },
+      {
+        "transform": "spatial_coordinate→aspect_ratio",
+        "family": "position",
+        "bridge": "feature_width",
+        "present": false
+      }
+    ],
+    "issues": [],
+    "analysis_ready": true,
+    "reactants": [
+      {
+        "label": "A",
+        "role": "precursor",
+        "species": "TMA"
+      },
+      {
+        "label": "B",
+        "role": "coreactant",
+        "species": "H2O"
+      }
+    ],
+    "cycle_sequence": "AB",
+    "exp_id": "yim2020-F11-6",
+    "recipe": {
+      "material": "Al2O3",
+      "reactants": [
+        {
+          "label": "A",
+          "role": "precursor",
+          "species": "TMA",
+          "dose_time": null,
+          "purge_time": 10.0,
+          "partial_pressure": null
+        },
+        {
+          "label": "B",
+          "role": "coreactant",
+          "species": "H2O",
+          "dose_time": null,
+          "purge_time": 10.0,
+          "partial_pressure": null
+        }
+      ],
+      "cycle_sequence": "AB",
+      "supercycle": null,
+      "supercycle_repeats": null,
+      "ncycles": null,
+      "temperature": 300.0,
+      "flow_rate": null,
+      "carrier_gas": null,
+      "structure": {
+        "H": 500.0,
+        "W": null
+      },
+      "targets": null,
+      "provenance": "extracted",
+      "possible": null,
+      "channel_map": null,
+      "param_sources": {
+        "_exp_id": "yim2020-F11-6"
+      },
+      "completeness": 0.571
+    }
   }
 ]

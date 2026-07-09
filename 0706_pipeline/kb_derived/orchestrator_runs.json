@@ -1,0 +1,128 @@
+[
+  {
+    "query": "What process deposits Al2O3 on a reactor with TMA and water?",
+    "intent": "identify",
+    "material": "Al2O3",
+    "target": {},
+    "result": {
+      "ok": true,
+      "recipe": {
+        "precursor": "TMA",
+        "coreactant": "H2O",
+        "cycle": "AB",
+        "argonne_json": {
+          "possible": 1,
+          "precursor": 1,
+          "coreactant": 2
+        },
+        "installable": true,
+        "channels": {
+          "A": 1,
+          "B": 2
+        }
+      },
+      "grounding": {
+        "support_n": 142,
+        "source": "kb"
+      },
+      "citations": [
+        "aguinsky2023",
+        "yim2020",
+        "ylilammi2018"
+      ],
+      "alternatives": 0
+    }
+  },
+  {
+    "query": "Predict the conformality of Al2O3 in an aspect-ratio 50 feature",
+    "intent": "predict_conformality",
+    "material": "Al2O3",
+    "target": {
+      "aspect_ratio": 50.0
+    },
+    "result": {
+      "ok": true,
+      "model": "ylilammi_langmuir_channel",
+      "material": "Al2O3",
+      "precursor": "TMA",
+      "carrier": "N2",
+      "penetration_depth_um": 78.15,
+      "aspect_ratio": 50.0,
+      "param_provenance": {
+        "kb": 9,
+        "precursor": 5,
+        "material": 3,
+        "default": 0
+      },
+      "citations": [
+        "aguinsky2023",
+        "yim2020",
+        "ylilammi2018"
+      ]
+    }
+  },
+  {
+    "query": "How long should the TMA dose be to saturate Al2O3?",
+    "intent": "optimize_dose",
+    "material": "Al2O3",
+    "target": {},
+    "result": {
+      "ok": true,
+      "material": "Al2O3",
+      "recommended_precursor_dose_s": 0.00902,
+      "basis": "k1\u2248333/s from sticking s0=1.2e-03 (species_sticking(arts2019))",
+      "self_limited": true,
+      "caveat": "flat-surface saturation time; high-AR features need longer dosing (use predict_conformality)",
+      "citations": [
+        "ylilammi2018"
+      ]
+    }
+  },
+  {
+    "query": "Warm-start the controller for TiO2",
+    "intent": "warm_start",
+    "material": "TiO2",
+    "target": {},
+    "result": {
+      "ok": true,
+      "material": "TiO2",
+      "pA0": null,
+      "tp0": 0.1,
+      "r_star": null,
+      "gpc_expected_nm": null,
+      "self_limited": false,
+      "nearest_process": "ylilammi2018-F7-1",
+      "similarity": 0.833,
+      "citations": [
+        "ylilammi2018"
+      ]
+    }
+  },
+  {
+    "query": "Grow HfO2 on a reactor with only TMA and water",
+    "intent": "identify",
+    "material": "HfO2",
+    "target": {},
+    "result": {
+      "ok": true,
+      "recipe": {
+        "precursor": "HfCl4",
+        "coreactant": null,
+        "cycle": "A",
+        "argonne_json": {
+          "possible": 0
+        },
+        "installable": false,
+        "channels": {
+          "A": null
+        }
+      },
+      "grounding": {
+        "support_n": 0,
+        "source": "ontology"
+      },
+      "citations": [],
+      "alternatives": 2
+    }
+  }
+]

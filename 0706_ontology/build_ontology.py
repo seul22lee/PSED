@@ -106,6 +106,40 @@ def main():
     for a, b in (qr.get("related") or {}).items():
         if a in qk_by_id:
             qk_by_id[a].setdefault("related", []).append(b)
+    # families: tag each quantity with its measurand family (comparability class)
+    fam = qr.get("families", {}) or {}
+    for fid, spec in fam.items():
+        for m in spec.get("members", []):
+            if m in qk_by_id:
+                qk_by_id[m]["family"] = fid
+            else:
+                print(f"  [warn] family '{fid}' references unknown quantity: {m}")
+    # categories: coarse semantic grouping (material/process/geometry/observable/…)
+    for cid, members in (qr.get("categories", {}) or {}).items():
+        for m in members:
+            if m in qk_by_id:
+                qk_by_id[m]["category"] = cid
+            else:
+                print(f"  [warn] category '{cid}' references unknown quantity: {m}")
+    # recipe_role: control_setting (=in recipe) vs structure/species/model/derived/…
+    CAT2ROLE = {"process_parameter": "control_setting", "geometry": "structure",
+                "material_property": "model_parameter", "observable": "observable",
+                "coordinate": "coordinate", "dimensionless_number": "derived"}
+    q2override = {}
+    for role, qs in (qr.get("recipe_role_overrides", {}) or {}).items():
+        for q in qs:
+            q2override[q] = role
+    for q in quantity_kinds:
+        q["recipe_role"] = q2override.get(q["id"]) or CAT2ROLE.get(q.get("category"))
+        can = spec.get("canonical")
+        if can and can not in qk_ids:
+            print(f"  [warn] family '{fid}' canonical is unknown quantity: {can}")
+    # transforms: validate endpoints + bridge exist
+    for t in qr.get("transforms", []) or []:
+        for key in ("from", "to", "bridge"):
+            q = t.get(key)
+            if q and q not in qk_ids:
+                print(f"  [warn] transform {t.get('from')}->{t.get('to')}: unknown {key} '{q}'")
     # axis_role: coordinate / condition / output (drives experiment granularity)
     axis = qr.get("axis_role", {}) or {}
     coord, outp = set(axis.get("coordinate", [])), set(axis.get("output", []))
@@ -125,6 +159,30 @@ def main():
             out.append(it)
         individuals[group] = out
 
+    # ---- models: mint IRI, validate input quantity ids exist ----------------
+    model_families = core.get("model_families", {}) or {}
+    models = []
+    for m in core.get("models", []) or []:
+        m = dict(m)
+        m["iri"] = ald + m["id"]
+        for inp in m.get("inputs", []) or []:
+            q = inp.get("quantity")
+            if q and q not in qk_ids:
+                print(f"  [warn] model '{m['id']}' input references unknown quantity: {q}")
+        for out in m.get("outputs", []) or []:
+            q = out.get("quantity")
+            if q and q not in qk_ids:
+                print(f"  [warn] model '{m['id']}' output references unknown quantity: {q}")
+        fam = m.get("family")
+        if fam and fam not in model_families:
+            print(f"  [warn] model '{m['id']}' references unknown family: {fam}")
+        models.append(m)
+    model_ids = {m["id"] for m in models}
+    for fid, spec in model_families.items():
+        for mem in spec.get("members", []) or []:
+            if mem not in model_ids:
+                print(f"  [warn] model_family '{fid}' references unknown model: {mem}")
+
     compiled = {
         "meta": {**core["meta"], "compiled": True},
         "classes": classes,
@@ -132,6 +190,8 @@ def main():
         "quantity_kinds": quantity_kinds,
         "quantity_relations": qr,
         "individuals": individuals,
+        "model_families": model_families,
+        "models": models,
         "_counts": {
             "classes": len(classes),
             "relations": len(relations),
@@ -139,10 +199,18 @@ def main():
             "quantity_kinds_enriched": sum(1 for q in quantity_kinds if q["unit"]),
             "quantity_specializations": sum(1 for q in quantity_kinds if q.get("specializes")),
             "quantity_equations": sum(1 for q in quantity_kinds if q.get("defined_by")),
+            "quantity_families": len(qr.get("families", {}) or {}),
+            "quantity_in_family": sum(1 for q in quantity_kinds if q.get("family")),
+            "quantity_categories": len(qr.get("categories", {}) or {}),
+            "quantity_categorized": sum(1 for q in quantity_kinds if q.get("category")),
+            "quantity_transforms": len(qr.get("transforms", []) or []),
             "axis_coordinate": sum(1 for q in quantity_kinds if q.get("axis_role") == "coordinate"),
             "axis_condition": sum(1 for q in quantity_kinds if q.get("axis_role") == "condition"),
             "axis_output": sum(1 for q in quantity_kinds if q.get("axis_role") == "output"),
             "individuals": sum(len(v) for v in individuals.values()),
+            "models": len(models),
+            "model_families": len(model_families),
+            "model_equations": sum(len(m.get("equations", []) or []) for m in models),
         },
     }
 

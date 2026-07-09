@@ -88,7 +88,15 @@ def run_pid(x, steps, l_0, T_fixed, pA_bounds, tp_bounds,
             Kp=0.6, Ki=0.25, Kd=0.0,
             margin=0.03,
             use_feedforward=True,
-            r_star=None):
+            r_star=None,
+            warm=None):
+    """warm : optional kb_bridge.warm_start(...) dict. If given, seeds r_star from
+    its KB-grounded pA0/tp0 (skips the cost-optimal-ratio grid search) and the
+    first-step GPC from its literature prior — a literature warm-start instead of a
+    cold mid-range guess (Approach 5). Fully optional / non-breaking."""
+    if warm:
+        if r_star is None and warm.get("r_star"):
+            r_star = warm["r_star"]
     """
     가정: gpc 는 '한 스텝 뒤'에 측정된다.
       -> 스텝 k 결정 시점엔 gpc_{k-1} 까지만 안다.
@@ -124,7 +132,10 @@ def run_pid(x, steps, l_0, T_fixed, pA_bounds, tp_bounds,
     for kk in range(steps):
         # --- 1. gpc 예측 (결정 시점엔 gpc_k 모름) ---
         if g_meas is None:
-            g_hat = get_gpc(0)           # 첫 스텝: 사전값 없음 -> nominal 근처
+            # warm-start: first-step GPC from the KB literature prior (nm -> m to
+            # match the model's SI scale), else nominal
+            wg = (warm or {}).get("priors", {}).get("gpc_expected")
+            g_hat = wg * 1e-9 if wg else get_gpc(0)
         else:
             g_hat = g_meas               # persistence: 마지막 측정값
         model.gpc = g_hat
