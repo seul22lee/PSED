@@ -1,0 +1,75 @@
+{
+ "n_pages": 11,
+ "sections": [
+  "Full Research Paper",
+  "Address:",
+  "Email:",
+  "Keywords:",
+  "Abstract",
+  "Introduction",
+  "Modeling and optimization of atomic layer deposition processes on vertically aligned carbon nanotubes",
+  "Results and Discussion",
+  "Modeling of precursor exposure/adsorption",
+  "Diffusion model of the precursor adsorption kinetics",
+  "Precursor adsorption kinetics",
+  "Diffusion coefficient",
+  "Simulation results",
+  "Approximation to the model assuming rapid adsorption",
+  "Multiple cycle growth kinetics",
+  "Experimental",
+  "Conclusion",
+  "References",
+  "License and Terms"
+ ],
+ "n_figures": 7,
+ "n_tables": 2,
+ "figures": [
+  {
+   "index": 0,
+   "caption": "",
+   "image": "figures/fig_0.png"
+  },
+  {
+   "index": 1,
+   "caption": "Figure 1: Illustration of one ALD cycle on a VACNT array. Upon exposure to the precursor gas (a: bulk gas diffusion), precursor molecules diffuse into the CNT array and adsorb onto available sites (b: confined diffusion and adsorption). After the defined precursor exposure time, purging of the ALD chamber removes unreacted precursor molecules from the chamber (c). After the oxidization pulse, a thin layer of oxide is formed on the surface (d).",
+   "image": "figures/fig_1.png"
+  },
+  {
+   "index": 2,
+   "caption": "Figure 2: Flow chart of the precursor exposure/adsorption simulation for one ALD cycle.",
+   "image": "figures/fig_2.png"
+  },
+  {
+   "index": 3,
+   "caption": "Figure 3: Results of the precursor adsorption kinetics simulation while using the parameters defined in Table 1. The concentration of precursor molecules as a function of depth at several time steps (0 to 50 ms, with 5 ms intervals) within the CNT array is plotted in (a). The effect of the reactive sticking coefficient is demonstrated in (b), where the deposited oxide thickness per cycle is plotted versus the depth in the array, after 50 ms exposure. In (c) the effect of the precursor exposure time is plotted. In (d), the penetration depth of the oxide is plotted as a function of the precursor concentration, exposure time, Knudsen diffusion coefficient, and radius of the CNTs with a reactive sticking coefficient of 10 -2 . The penetration depth clearly depends on the square root of the precursor concentration, exposure time, and diffusion coefficient, but has a nontrivial dependence on the radius of the CNTs.",
+   "image": "figures/fig_3.png"
+  },
+  {
+   "index": 4,
+   "caption": "Figure 4: Comparison of the simplified model (Equation 18) and the simulation of the full diffusion model (solid line) while using a reactive sticking coefficient \u0393 = 1, as function of the varying precursor surface adsorption density. The penetration depths given by both methods are in agreement.",
+   "image": "figures/fig_4.png"
+  },
+  {
+   "index": 5,
+   "caption": "Figure 5: Plot of deposited oxide thickness with respect to the VACNT depth for a multi-cycle ALD process, determined by the model with the parameters in Table 1. (a) Fixed precursor exposure time (50 ms). (b) Scaled exposure time according to Equation 19.",
+   "image": "figures/fig_5.png"
+  },
+  {
+   "index": 6,
+   "caption": "Figure 6: Experimental results for TiO 2 coated VACNTs. (a) An SEM image of a VACNT array coated with 400 cycles of TiO 2 is shown with close-up SEM images at depths of ca. 5, 25, and 80 \u03bc m. At 5 \u03bc m, a thick and conformal coating of TiO 2 is evident. At 25 \u03bc m the oxide coating is visibly thinner, and exposed CNTs are visible, at which the oxide beads have not merged, yet. Down at approx. 80 \u03bc m, only small nucleations of the oxide are noticeable. The TiO 2 thickness on the CNTs (determined by the measurement of the coated-CNT diameter distribution) as a function of depth is plotted in (b) for samples coated with 200 (circles) and 400 (squares) cycles. Error bars are indicated by the size of the points. Plot (c) shows the thickness of aluminum dioxide as a function of depth for the samples prepared with 100 cycles (blue circles) and 200 cycles (red squares), for which the precursor exposure time was fixed at 0.2 s, along with a plot for a sample prepared where the precursor exposure time was scaled as a function of ALD cycles between the 100th and 200th cycles (black diamonds).",
+   "image": "figures/fig_6.png"
+  }
+ ],
+ "tables": [
+  {
+   "index": 0,
+   "caption": "",
+   "markdown": "| simulation parameter                                                                                                                                                                                                                                 | value                                                                           |\n|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|\n| height of the VACNTs initial average CNT diameter areal density of the CNTs ( \u03c3 CNT )                                                                                                                                                                | 10 - 2 cm 10 - 6 cm 10 10 cm - 2                                                |\n| diameter of precursor molecule mass of precursor molecule ( m p ) precursor surface adsorption density ( \u03c3 p ) volume per oxide unit (AB 2 ) concentration of precursor vapor ( n chamber ) reactive sticking coefficient ALD deposition temperature | 10 - 7 cm 4.7 \u00d7 10 - 22 g 10 14 cm - 2 1.4 \u00d7 10 - 22 cm 3 5 \u00d7 10 15 cm - 3 0.01 |\n| precursor exposure time purge time                                                                                                                                                                                                                   | 500 K 50 ms 50 ms                                                               |"
+  },
+  {
+   "index": 1,
+   "caption": "",
+   "markdown": "| variable   | description                                                             | unit         |\n|------------|-------------------------------------------------------------------------|--------------|\n| n          | density of precursor molecules                                          | cm - 3       |\n| n ads      | density of adsorbed precursor molecules                                 | cm - 3       |\n| N          | precursor molecules per unit sample area                                | cm - 2       |\n| x          | distance into the CNT array                                             | cm           |\n| \u0391          | absorption rate per unit volume                                         | cm - 3 s - 1 |\n| I          | impingement rate of precursor molecules                                 | cm - 2 s - 1 |\n| D k        | diffusion coefficient of precursor molecules within the CNT array       | cm 2 s - 1   |\n| f          | fraction of the CNT surface area available for the precursor adsorption | -            |\n| \u0393          | reactive sticking coefficient                                           | -            |\n| \u0394 A s      | surface area per unit volume                                            | cm - 1       |\n| \u0394 V        | void volume per unit volume                                             | -            |\n| \u03c3 CNT      | CNT density                                                             | cm - 2       |\n| \u03c3 p        | adsorption site density                                                 | cm - 2       |\n| \u0394 x        | spacing of discretized points in simulation                             | cm           |\n| \u0394 A i      | surface area contained in \u0394 x per unit area                             | -            |\n| \u0394 V i      | void volume contained in \u0394 x per unit area                              | cm           |\n| n i j      | density of precursor molecules                                          | cm - 3       |\n| N j ads ,i | number of adsorbed precursor molecules                                  | cm - 2       |"
+  }
+ ]
+}
