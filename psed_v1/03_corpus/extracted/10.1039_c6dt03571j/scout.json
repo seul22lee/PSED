@@ -1,0 +1,77 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "ZnO"
+ ],
+ "precursors": [
+  "[Zn(eeki)2]"
+ ],
+ "coreactants": [
+  "H2O"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": [
+  175,
+  300
+ ],
+ "gpc_nm": 0.13,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": "F6a"
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": "F6b"
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": "F6c"
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": "F7"
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": "F10"
+  }
+ },
+ "drill": [
+  {
+   "where": "F6a",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate as a function of deposition temperature showing the ALD window."
+  },
+  {
+   "where": "F6b",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Film thickness as a function of the number of deposition cycles."
+  },
+  {
+   "where": "F6c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Precursor saturation curve at 225 \u00b0C."
+  },
+  {
+   "where": "F6d",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Water co-reactant saturation curve at 225 \u00b0C."
+  }
+ ],
+ "go_deeper": true,
+ "_tokens": {
+  "in": 2443,
+  "out": 575
+ },
+ "_scout_input_chars": 8559
+}

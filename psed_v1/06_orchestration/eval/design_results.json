@@ -1,0 +1,347 @@
+{
+  "reactor": {
+    "channels": [
+      "TMA",
+      "water",
+      "DEZ",
+      "TDMAHf"
+    ],
+    "pA_Pa": 100.0,
+    "T_C": 200.0,
+    "carrier": "N2",
+    "note": "flows/valves autonomous, T manual (RSI 2026 Table I)"
+  },
+  "held_out_validation": {
+    "anchor": "10.1063_1.5028178 \u00b7 Fig 6",
+    "measured_pd_um": 127.6,
+    "twin_pd_um": 66.7,
+    "calib_factor_k": 1.91,
+    "exposure_correction": 0.273,
+    "note": "twin under-predicts penetration; corrected exposure = twin exposure / k^2"
+  },
+  "conformality_metric": "thickness step coverage (bottom/mouth)",
+  "cases": {
+    "40": {
+      "ok": true,
+      "feasible": true,
+      "material": "Al2O3",
+      "aspect_ratio": 40,
+      "gap_um": 0.5,
+      "channel_length_um": 20.0,
+      "target_step_coverage": 0.9,
+      "recipe": {
+        "material": "Al2O3",
+        "precursor_channel": 0,
+        "coreactant_channel": 1,
+        "precursor_species": "TMA",
+        "coreactant_species": "H2O",
+        "ncycles": 188,
+        "precursor_partial_pressure_Pa": 100.0,
+        "required_exposure_Pa_s": 0.3,
+        "precursor_pulse_time_s": 0.003,
+        "purge_precursor_s": 4.0,
+        "purge_coreactant_s": 4.0,
+        "temperature_C": 200.0,
+        "carrier_gas": "N2",
+        "argonne_json": {
+          "possible": 1,
+          "precursor": 0,
+          "coreactant": 1,
+          "ncycles": 188
+        }
+      },
+      "provenance": {
+        "chemistry": {
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1039_d0cp03358h",
+            "10.1063_1.5028178"
+          ]
+        },
+        "gpc": {
+          "value": 0.106319,
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1063_1.5028178"
+          ]
+        },
+        "exposure": {
+          "twin_Pa_s": 1.0,
+          "calibration_corrected_Pa_s": 0.3,
+          "correction": 0.273,
+          "source": "twin+heldout-calibration"
+        },
+        "purge": {
+          "source": "kb",
+          "cites": [
+            "10.1063_1.5028178"
+          ]
+        },
+        "pressure": {
+          "value_Pa": 100.0,
+          "source": "reactor config (fixed flow)"
+        }
+      },
+      "model": "ylilammi_langmuir_channel"
+    },
+    "300": {
+      "ok": true,
+      "feasible": true,
+      "material": "Al2O3",
+      "aspect_ratio": 300,
+      "gap_um": 0.5,
+      "channel_length_um": 150.0,
+      "target_step_coverage": 0.9,
+      "recipe": {
+        "material": "Al2O3",
+        "precursor_channel": 0,
+        "coreactant_channel": 1,
+        "precursor_species": "TMA",
+        "coreactant_species": "H2O",
+        "ncycles": 188,
+        "precursor_partial_pressure_Pa": 100.0,
+        "required_exposure_Pa_s": 2.6,
+        "precursor_pulse_time_s": 0.026,
+        "purge_precursor_s": 4.0,
+        "purge_coreactant_s": 4.0,
+        "temperature_C": 200.0,
+        "carrier_gas": "N2",
+        "argonne_json": {
+          "possible": 1,
+          "precursor": 0,
+          "coreactant": 1,
+          "ncycles": 188
+        }
+      },
+      "provenance": {
+        "chemistry": {
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1039_d0cp03358h",
+            "10.1063_1.5028178"
+          ]
+        },
+        "gpc": {
+          "value": 0.106319,
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1063_1.5028178"
+          ]
+        },
+        "exposure": {
+          "twin_Pa_s": 9.4,
+          "calibration_corrected_Pa_s": 2.6,
+          "correction": 0.273,
+          "source": "twin+heldout-calibration"
+        },
+        "purge": {
+          "source": "kb",
+          "cites": [
+            "10.1063_1.5028178"
+          ]
+        },
+        "pressure": {
+          "value_Pa": 100.0,
+          "source": "reactor config (fixed flow)"
+        }
+      },
+      "model": "ylilammi_langmuir_channel"
+    },
+    "1000": {
+      "ok": true,
+      "feasible": true,
+      "material": "Al2O3",
+      "aspect_ratio": 1000,
+      "gap_um": 0.5,
+      "channel_length_um": 500.0,
+      "target_step_coverage": 0.9,
+      "recipe": {
+        "material": "Al2O3",
+        "precursor_channel": 0,
+        "coreactant_channel": 1,
+        "precursor_species": "TMA",
+        "coreactant_species": "H2O",
+        "ncycles": 188,
+        "precursor_partial_pressure_Pa": 100.0,
+        "required_exposure_Pa_s": 35.7,
+        "precursor_pulse_time_s": 0.357,
+        "purge_precursor_s": 4.0,
+        "purge_coreactant_s": 4.0,
+        "temperature_C": 200.0,
+        "carrier_gas": "N2",
+        "argonne_json": {
+          "possible": 1,
+          "precursor": 0,
+          "coreactant": 1,
+          "ncycles": 188
+        }
+      },
+      "provenance": {
+        "chemistry": {
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1039_d0cp03358h",
+            "10.1063_1.5028178"
+          ]
+        },
+        "gpc": {
+          "value": 0.106319,
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1063_1.5028178"
+          ]
+        },
+        "exposure": {
+          "twin_Pa_s": 130.9,
+          "calibration_corrected_Pa_s": 35.7,
+          "correction": 0.273,
+          "source": "twin+heldout-calibration"
+        },
+        "purge": {
+          "source": "kb",
+          "cites": [
+            "10.1063_1.5028178"
+          ]
+        },
+        "pressure": {
+          "value_Pa": 100.0,
+          "source": "reactor config (fixed flow)"
+        }
+      },
+      "model": "ylilammi_langmuir_channel"
+    },
+    "5000": {
+      "ok": true,
+      "feasible": true,
+      "material": "Al2O3",
+      "aspect_ratio": 5000,
+      "gap_um": 0.5,
+      "channel_length_um": 2500.0,
+      "target_step_coverage": 0.9,
+      "recipe": {
+        "material": "Al2O3",
+        "precursor_channel": 0,
+        "coreactant_channel": 1,
+        "precursor_species": "TMA",
+        "coreactant_species": "H2O",
+        "ncycles": 188,
+        "precursor_partial_pressure_Pa": 100.0,
+        "required_exposure_Pa_s": 931.8,
+        "precursor_pulse_time_s": 9.318,
+        "purge_precursor_s": 4.0,
+        "purge_coreactant_s": 4.0,
+        "temperature_C": 200.0,
+        "carrier_gas": "N2",
+        "argonne_json": {
+          "possible": 1,
+          "precursor": 0,
+          "coreactant": 1,
+          "ncycles": 188
+        }
+      },
+      "provenance": {
+        "chemistry": {
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1039_d0cp03358h",
+            "10.1063_1.5028178"
+          ]
+        },
+        "gpc": {
+          "value": 0.106319,
+          "source": "kb",
+          "cites": [
+            "10.1016_j.sse.2022.108584",
+            "10.1063_1.5028178"
+          ]
+        },
+        "exposure": {
+          "twin_Pa_s": 3413.2,
+          "calibration_corrected_Pa_s": 931.8,
+          "correction": 0.273,
+          "source": "twin+heldout-calibration"
+        },
+        "purge": {
+          "source": "kb",
+          "cites": [
+            "10.1063_1.5028178"
+          ]
+        },
+        "pressure": {
+          "value_Pa": 100.0,
+          "source": "reactor config (fixed flow)"
+        }
+      },
+      "model": "ylilammi_langmuir_channel"
+    }
+  },
+  "llm_baseline": [
+    {
+      "aspect_ratio": 300,
+      "answer": {
+        "aspect_ratio": 300,
+        "possible": 1,
+        "precursor": 0,
+        "coreactant": 1,
+        "ncycles": 180,
+        "precursor_partial_pressure_Pa": 100,
+        "precursor_exposure_Pa_s": 200,
+        "precursor_pulse_time_s": 2.0,
+        "purge_precursor_s": 5,
+        "purge_coreactant_s": 10,
+        "temperature_C": 200,
+        "carrier_gas": "N2",
+        "reasoning": "TMA(ch0)/H2O(ch1) ~0.11 nm/cy so ~180 cy for 20 nm; Gordon/Ylilammi diffusion-limited dose ~ flat-saturation x AR^2 (AR=300) with sub-unity TMA reaction prob ~0.05 gives ~200 Pa*s (2 s at 100 Pa); assumes ~4 OH/nm^2, H2O over-dosed to same exposure"
+      },
+      "scores": {
+        "completeness": 1.0,
+        "chemistry_channel": 1.0,
+        "exposure_aware": 1.0,
+        "caveat_quality": 1.0,
+        "overall": 1.0
+      },
+      "llm_exposure_Pa_s": 200,
+      "our_exposure_Pa_s": 2.6
+    },
+    {
+      "aspect_ratio": 1000,
+      "answer": {
+        "aspect_ratio": 1000,
+        "possible": 1,
+        "precursor": 0,
+        "coreactant": 1,
+        "ncycles": 182,
+        "precursor_partial_pressure_Pa": 100,
+        "precursor_exposure_Pa_s": 250,
+        "precursor_pulse_time_s": 2.5,
+        "purge_precursor_s": 10,
+        "purge_coreactant_s": 10,
+        "temperature_C": 200,
+        "carrier_gas": "N2",
+        "reasoning": "TMA/H2O ~0.11 nm/cy, ~182 cy for 20 nm; AR=1000 lateral HAR diffusion-limited saturation exposure ~AR^2 (Knudsen into 0.5 um gap, Ylilammi/Gordon) ~210 Pa*s, dosed 250 Pa*s (2.5 s at 100 Pa); assumes water over-dosed, no CVD from incomplete purge"
+      },
+      "scores": {
+        "completeness": 1.0,
+        "chemistry_channel": 1.0,
+        "exposure_aware": 1.0,
+        "caveat_quality": 1.0,
+        "overall": 1.0
+      },
+      "llm_exposure_Pa_s": 250,
+      "our_exposure_Pa_s": 35.7
+    }
+  ],
+  "llm_scaling": {
+    "AR_ratio": 3.3333333333333335,
+    "AR^2_expected": 11.1,
+    "llm_exposure_ratio": 1.25,
+    "our_exposure_ratio": 13.73
+  }
+}

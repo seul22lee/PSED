@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "description": "Measured LLM answers to the FULL-RECIPE conformal-design task with the complete reactor config stated (fixed pA=100 Pa, T=200 C manual, 0-indexed channels, carrier N2) and the Argonne recipe schema requested. General-purpose subagent (Claude), knowledge-only, no tools. Verbatim.",
+    "model": "general-purpose subagent (Claude), knowledge-only",
+    "note": "This is a REAL LLM (Claude), not o3/GPT-5. Reported as such."
+  },
+  "answers": [
+    {"aspect_ratio": 300, "possible": 1, "precursor": 0, "coreactant": 1, "ncycles": 180,
+     "precursor_partial_pressure_Pa": 100, "precursor_exposure_Pa_s": 200, "precursor_pulse_time_s": 2.0,
+     "purge_precursor_s": 5, "purge_coreactant_s": 10, "temperature_C": 200, "carrier_gas": "N2",
+     "reasoning": "TMA(ch0)/H2O(ch1) ~0.11 nm/cy so ~180 cy for 20 nm; Gordon/Ylilammi diffusion-limited dose ~ flat-saturation x AR^2 (AR=300) with sub-unity TMA reaction prob ~0.05 gives ~200 Pa*s (2 s at 100 Pa); assumes ~4 OH/nm^2, H2O over-dosed to same exposure"},
+    {"aspect_ratio": 1000, "possible": 1, "precursor": 0, "coreactant": 1, "ncycles": 182,
+     "precursor_partial_pressure_Pa": 100, "precursor_exposure_Pa_s": 250, "precursor_pulse_time_s": 2.5,
+     "purge_precursor_s": 10, "purge_coreactant_s": 10, "temperature_C": 200, "carrier_gas": "N2",
+     "reasoning": "TMA/H2O ~0.11 nm/cy, ~182 cy for 20 nm; AR=1000 lateral HAR diffusion-limited saturation exposure ~AR^2 (Knudsen into 0.5 um gap, Ylilammi/Gordon) ~210 Pa*s, dosed 250 Pa*s (2.5 s at 100 Pa); assumes water over-dosed, no CVD from incomplete purge"}
+  ]
+}
