@@ -175,8 +175,10 @@ def flatten_records(sd, scout, figresults):
     mats = scout.get("materials") or []
     recs = []
     for fr in figresults:
-        realnum = _cap_fignum(fr.get("caption"))
-        fig_label = f"Fig {realnum}" if realnum else f"Fig {fr['figure']}"   # caption number, fallback docling index
+        paper_fig = _cap_fignum(fr.get("caption"))          # citable paper number (from caption)
+        docling_idx = fr.get("figure")                       # docling extraction index (from scout drill)
+        # unresolved captions stay visibly flagged as an index, never shown as a paper number
+        fig_label = f"Fig {paper_fig}" if paper_fig else f"Fig {docling_idx} (idx)"
         for p in fr.get("panels", []):
             x, y = p.get("x", {}), p.get("y", {})
             for s in p.get("series", []):
@@ -197,7 +199,9 @@ def flatten_records(sd, scout, figresults):
                                   "coreactants": scout.get("coreactants")},
                     "source": fr.get("source", "measured"),   # measured | simulated | both
                     "study_type": scout.get("study_type"),
-                    "provenance": {"figure": fig_label, "fig_index": fr["figure"],
+                    "provenance": {"figure": fig_label,
+                                   "figure_number": paper_fig,        # paper's real figure number, or None
+                                   "fig_docling_index": docling_idx,  # extraction index (scout drill tag)
                                    "panel": _clean_panel(p.get("panel")),
                                    "caption": fr["caption"][:200], "extractor": "vision-llm"},
                 })
