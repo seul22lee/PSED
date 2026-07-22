@@ -1,0 +1,29 @@
+<!doctype html><meta charset=utf-8><title>M5 · Orchestration loop</title><style>
+body{margin:0;background:#f4f6f8;color:#14161a;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif}
+@media(prefers-color-scheme:dark){body{background:#131417;color:#eceef2}.card{background:#1c1e22 !important;border-color:#2b2e34 !important}th{color:#767c86 !important}.stage{background:#1c1e22 !important}}
+.wrap{max-width:1040px;margin:0 auto;padding:26px 22px}
+h1{font-size:22px;margin:0 0 2px}.sub{color:#565c66;margin-bottom:16px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8b919b;font-weight:600}
+.card{background:#fff;border:1px solid #e6e8ec;border-radius:12px;padding:16px;margin-bottom:16px}
+h2{font-size:14px;margin:0 0 10px}
+.flow{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap}
+.stage{flex:1;min-width:120px;background:#fff;border:1.5px solid;border-radius:10px;padding:9px 11px}
+.stage b{font-size:13px}.sd{font-size:11px;color:#565c66;margin-top:3px}
+.arrow{display:flex;align-items:center;color:#8b919b;font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:#8b919b;font-size:10.5px;text-transform:uppercase;padding:6px 8px;border-bottom:1px solid #e6e8ec}
+td{padding:8px 8px;border-bottom:1px solid #eef0f3;vertical-align:top}
+.m{font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
+.badge{font-size:11px;padding:2px 7px;border-radius:6px;font-weight:600}
+.cav{font-size:11px;color:#b9770a;margin-top:3px}.cite{font-size:11px;color:#2a78d6;margin-top:2px}
+.note{font-size:12px;color:#565c66}
+</style><div class=wrap>
+<div class=eyebrow>PSED · M5 · Phase 6</div>
+<h1>Orchestration loop — KB ↔ planner ↔ executors</h1>
+<div class=sub>One entry point turns a query into a grounded, cited action by routing an intent to the right executor and writing the result back so the KB's memory grows. The planner is a keyword router today; an LLM would replace only that step.</div>
+<div class=card><h2>The loop</h2><div class=flow><div class=stage style="border-color:#8b919b"><b style="color:#8b919b">query</b><div class=sd>natural-language ask</div></div><div class=arrow>→</div><div class=stage style="border-color:#4a3aa7"><b style="color:#4a3aa7">planner</b><div class=sd>intent + material + target<br><span style='font-size:10px'>(keyword router; LLM-swappable)</span></div></div><div class=arrow>→</div><div class=stage style="border-color:#2a78d6"><b style="color:#2a78d6">KB grounding</b><div class=sd>kb_service · process_id · impute</div></div><div class=arrow>→</div><div class=stage style="border-color:#1baf7a"><b style="color:#1baf7a">executor</b><div class=sd>twin · rate prior · warm-start</div></div><div class=arrow>→</div><div class=stage style="border-color:#eda100"><b style="color:#eda100">write-back</b><div class=sd>kb_derived/ store grows</div></div></div>
+<div class=note style="margin-top:10px">Intents → executors: <span style="color:#2a78d6">identify</span>: process_id → KB processes + citations · <span style="color:#1baf7a">predict_conformality</span>: channel_model twin → penetration depth · <span style="color:#eda100">optimize_dose</span>: kb_bridge rate prior → saturation dose · <span style="color:#9085e9">warm_start</span>: kb_bridge.warm_start → controller seed</div></div>
+<div class=card><h2>Example runs (end-to-end, grounded &amp; cited)</h2>
+<table><tr><th>query</th><th>intent</th><th>material</th><th>result</th></tr><tr><td>What process deposits Al2O3 on a reactor with TMA and water?</td><td><span class=badge style="background:#2a78d622;color:#2a78d6">identify</span></td><td class=m>Al2O3</td><td><span class=m>{"recipe": {"precursor": "TMA", "coreactant": "H2O", "cycle": "AB", "argonne_json": {"possible": 1, "precursor": 1, "coreactant": 2}, "installable": t…</span><div class=cite>cites: aguinsky2023, yim2020, ylilammi2018</div></td></tr><tr><td>Predict the conformality of Al2O3 in an aspect-ratio 50 feature</td><td><span class=badge style="background:#1baf7a22;color:#1baf7a">predict_conformality</span></td><td class=m>Al2O3</td><td><span class=m>{"precursor": "TMA", "carrier": "N2", "penetration_depth_um": 78.15, "aspect_ratio": 50.0, "param_provenance": {"kb": 9, "precursor": 5, "material": 3…</span><div class=cite>cites: aguinsky2023, yim2020, ylilammi2018</div></td></tr><tr><td>How long should the TMA dose be to saturate Al2O3?</td><td><span class=badge style="background:#eda10022;color:#eda100">optimize_dose</span></td><td class=m>Al2O3</td><td><span class=m>{"recommended_precursor_dose_s": 0.00902, "basis": "k1\u2248333/s from sticking s0=1.2e-03 (species_sticking(arts2019))", "self_limited": true}</span><div class=cav>⚠ flat-surface saturation time; high-AR features need longer dosing (use predict_conformality)</div><div class=cite>cites: ylilammi2018</div></td></tr><tr><td>Warm-start the controller for TiO2</td><td><span class=badge style="background:#9085e922;color:#9085e9">warm_start</span></td><td class=m>TiO2</td><td><span class=m>{"pA0": null, "tp0": 0.1, "r_star": null, "gpc_expected_nm": null, "self_limited": false, "nearest_process": "ylilammi2018-F7-1", "similarity": 0.833}</span><div class=cite>cites: ylilammi2018</div></td></tr><tr><td>Grow HfO2 on a reactor with only TMA and water</td><td><span class=badge style="background:#2a78d622;color:#2a78d6">identify</span></td><td class=m>HfO2</td><td><span class=m>{"recipe": {"precursor": "HfCl4", "coreactant": null, "cycle": "A", "argonne_json": {"possible": 0}, "installable": false, "channels": {"A": null}}, "…</span></td></tr></table>
+<div class=note style="margin-top:8px">Each run is appended to <span class=m>0706_pipeline/kb_derived/orchestrator_runs.json</span> — the write-back arrow the stateless Argonne agents lack. Every result carries provenance (papers, parameter sources) so downstream can trust and cite it.</div></div>
+</div>

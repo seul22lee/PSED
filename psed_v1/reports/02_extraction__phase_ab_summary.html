@@ -1,0 +1,323 @@
+<title>ALD Knowledge Base — Phase A + B Results</title>
+<style>
+:root{
+  --bg:#f4f6f8; --panel:#ffffff; --surface:#fcfcfb;
+  --ink:#14161a; --ink2:#565c66; --ink3:#8b919b; --line:#e6e8ec; --line2:#eef0f3;
+  --accent:#2a78d6;
+  --c-blue:#2a78d6; --c-aqua:#1baf7a; --c-yellow:#eda100; --c-green:#008300;
+  --c-violet:#4a3aa7; --c-red:#e34948; --c-grey:#9aa0aa;
+  --good:#0ca30c; --warn:#eda100;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#131417; --panel:#1c1e22; --surface:#1a1a19;
+  --ink:#eceef2; --ink2:#a8adb7; --ink3:#767c86; --line:#2b2e34; --line2:#232529;
+  --accent:#3987e5;
+  --c-blue:#3987e5; --c-aqua:#199e70; --c-yellow:#c98500; --c-green:#3aa53a;
+  --c-violet:#9085e9; --c-red:#e66767; --c-grey:#828892;
+  --good:#3aa53a; --warn:#c98500;
+}}
+:root[data-theme="dark"]{
+  --bg:#131417; --panel:#1c1e22; --surface:#1a1a19;
+  --ink:#eceef2; --ink2:#a8adb7; --ink3:#767c86; --line:#2b2e34; --line2:#232529;
+  --accent:#3987e5;
+  --c-blue:#3987e5; --c-aqua:#199e70; --c-yellow:#c98500; --c-green:#3aa53a;
+  --c-violet:#9085e9; --c-red:#e66767; --c-grey:#828892; --good:#3aa53a; --warn:#c98500;
+}
+:root[data-theme="light"]{
+  --bg:#f4f6f8; --panel:#ffffff; --surface:#fcfcfb;
+  --ink:#14161a; --ink2:#565c66; --ink3:#8b919b; --line:#e6e8ec; --line2:#eef0f3;
+  --accent:#2a78d6; --c-blue:#2a78d6; --c-aqua:#1baf7a; --c-yellow:#eda100;
+  --c-green:#008300; --c-violet:#4a3aa7; --c-red:#e34948; --c-grey:#9aa0aa;
+  --good:#0ca30c; --warn:#eda100;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:40px 28px 72px}
+.serif{font-family:"Iowan Old Style","Charter","Palatino",Georgia,serif}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",Menlo,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+h1{font-size:34px;line-height:1.1;margin:10px 0 8px;letter-spacing:-.01em;text-wrap:balance;font-weight:600}
+.sub{color:var(--ink2);max-width:60ch;font-size:15.5px}
+.flow{margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink2)}
+.flow .st{padding:3px 9px;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+.flow .st.done{border-color:color-mix(in srgb,var(--c-aqua) 45%,var(--line));
+  color:var(--ink);background:color-mix(in srgb,var(--c-aqua) 10%,var(--panel))}
+.flow .ar{color:var(--ink3)}
+section{margin-top:38px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.sec-h h2{font-size:19px;margin:0;font-weight:600;letter-spacing:-.005em}
+.sec-h .tag{font-size:11.5px;color:var(--good);font-weight:600;letter-spacing:.03em}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(6,1fr)}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.kpi .n{font-size:30px;font-weight:600;letter-spacing:-.02em}
+.kpi .l{font-size:12px;color:var(--ink2);margin-top:3px}
+.kpi .s{font-size:11px;color:var(--ink3);margin-top:2px}
+.two{grid-template-columns:1.15fr .85fr}
+@media(max-width:820px){.two{grid-template-columns:1fr}}
+.three{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:820px){.three{grid-template-columns:1fr}}
+.ct{font-size:13px;font-weight:600;margin-bottom:2px}
+.cs{font-size:12px;color:var(--ink3);margin-bottom:14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.meter{margin-bottom:13px}
+.meter .top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+.meter .top b{font-weight:600}
+.track{height:8px;background:var(--line2);border-radius:5px;overflow:hidden}
+.fill{height:100%;border-radius:5px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+td,th{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line2)}
+th{color:var(--ink3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+td.n{text-align:right}
+.next{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.next{grid-template-columns:1fr 1fr}}
+.opt{position:relative}
+.opt.rec{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.opt .p{font-size:11px;color:var(--ink3);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.opt h3{font-size:14.5px;margin:6px 0 5px;font-weight:600}
+.opt p{font-size:12.5px;color:var(--ink2);margin:0}
+.opt .pill{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;letter-spacing:.05em;
+  color:#fff;background:var(--accent);padding:2px 7px;border-radius:20px}
+svg{display:block;overflow:visible}
+.svgwrap{overflow-x:auto}
+.note{font-size:12px;color:var(--ink3);margin-top:12px;line-height:1.5}
+.foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">ALD Knowledge Base · ontology-grounded pipeline</div>
+    <h1 class="serif">Phase A + B — results so far</h1>
+    <p class="sub">The ontology backbone is clean, and the redesigned extraction pipeline
+      turns three ALD papers into correctly-grained, ontology-typed experiments — ready to
+      decide what comes next.</p>
+    <div class="flow">
+      <span class="st done">01–05 parse·figures·plots (reused)</span><span class="ar">→</span>
+      <span class="st done">s06 profile</span><span class="ar">→</span>
+      <span class="st done">s07 extract</span><span class="ar">→</span>
+      <span class="st done">s08 resolve·granularity</span><span class="ar">→</span>
+      <span class="st done">s09 knowledge graph</span>
+    </div>
+  </header>
+
+  <div class="grid kpis" style="margin-top:26px">
+    <div class="card kpi"><div class="n serif">188</div><div class="l">experiments</div><div class="s">from 3 papers</div></div>
+    <div class="card kpi"><div class="n serif" style="color:var(--c-aqua)">62</div><div class="l">profiles</div><div class="s">1 experiment / curve</div></div>
+    <div class="card kpi"><div class="n serif" style="color:var(--c-blue)">122</div><div class="l">sweep-points</div><div class="s">split &amp; grouped</div></div>
+    <div class="card kpi"><div class="n serif">2,437</div><div class="l">quantity values</div><div class="s">role-tagged</div></div>
+    <div class="card kpi"><div class="n serif">201</div><div class="l">ontology classes</div><div class="s">40 relations</div></div>
+    <div class="card kpi"><div class="n serif">121</div><div class="l">quantity kinds</div><div class="s">13 equations</div></div>
+  </div>
+
+  <!-- PHASE A -->
+  <section>
+    <div class="sec-h"><span class="eyebrow">Phase A</span><h2>Ontology relation quality</h2><span class="tag">cleaned ✓</span></div>
+    <div class="grid two">
+      <div class="card">
+        <div class="ct">Relation-map health</div>
+        <div class="cs">every class wired in; every KB question answerable; logic now declared</div>
+        <div id="meters"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Quantity axis roles</div>
+        <div class="cs">what decides line-vs-point granularity — a quantity's role when it is the x-axis</div>
+        <div class="svgwrap"><div id="axis"></div></div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--c-aqua)"></i>coordinate · 5</span>
+          <span><i class="dot" style="background:var(--c-blue)"></i>condition · 77</span>
+          <span><i class="dot" style="background:var(--c-grey)"></i>output · 39</span>
+        </div>
+        <div class="note">A <b>coordinate</b> x-axis (position, distance) → one profile experiment.
+          A <b>condition</b> x-axis (pulse time, temperature) → one experiment per point.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE B -->
+  <section>
+    <div class="sec-h"><span class="eyebrow">Phase B</span><h2>Extraction results</h2><span class="tag">running ✓</span></div>
+    <div class="grid two">
+      <div class="card">
+        <div class="ct">Experiment granularity, per paper</div>
+        <div class="cs">the x-axis label — not the LLM's guess — decides whether a series is one profile or a per-point sweep</div>
+        <div class="svgwrap"><div id="gran"></div></div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--c-aqua)"></i>profile</span>
+          <span><i class="dot" style="background:var(--c-blue)"></i>sweep-point</span>
+          <span><i class="dot" style="background:var(--c-grey)"></i>unresolved x-axis</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">Record relevance</div>
+        <div class="cs">each record tagged — the modeling paper (ylilammi) is correctly mostly model curves</div>
+        <div class="svgwrap" style="display:flex;justify-content:center"><div id="donut"></div></div>
+        <div class="legend" style="justify-content:center">
+          <span><i class="dot" style="background:var(--c-aqua)"></i>experimental · 46</span>
+          <span><i class="dot" style="background:var(--c-violet)"></i>model · 134</span>
+          <span><i class="dot" style="background:var(--c-red)"></i>background · 8</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid two" style="margin-top:16px">
+      <div class="card">
+        <div class="ct">Most-reported quantities</div>
+        <div class="cs">how many experiments report each canonical quantity (top 12)</div>
+        <div class="svgwrap"><div id="quant"></div></div>
+      </div>
+      <div class="card">
+        <div class="ct">Knowledge graph</div>
+        <div class="cs">typed nodes &amp; edges — shared individuals give exact cross-experiment links</div>
+        <table class="mono">
+          <thead><tr><th>node type</th><th class="n">n</th><th>edge type</th><th class="n">n</th></tr></thead>
+          <tbody id="kgtab"></tbody>
+        </table>
+        <div class="note">New structural edges: <b>varies</b> 62 · <b>in_series</b> 122 · <b>series_varies</b> 1
+          — replacing the old soft <span class="mono">similar_to</span> guesswork.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT -->
+  <section>
+    <div class="sec-h"><span class="eyebrow">Decide</span><h2>What comes next</h2></div>
+    <div class="grid next">
+      <div class="card opt rec">
+        <span class="pill">RECOMMENDED</span>
+        <div class="p">Phase C · a</div><h3>Tighten &amp; validate</h3>
+        <p>Fix the 2 known gaps (profile over-collects <span class="mono">Ir</span>; 4 unresolved x-axes), then spot-check the 62 profiles against the papers.</p>
+      </div>
+      <div class="card opt">
+        <div class="p">Phase C · b</div><h3>Scale the corpus</h3>
+        <p>Run the pipeline on the 300+ queued DOIs once the 3-paper output is verified clean.</p>
+      </div>
+      <div class="card opt">
+        <div class="p">Phase E</div><h3>Knowledge tools</h3>
+        <p>Informatics, meta-analysis, RAG Q&amp;A and the lit-review agent on top of the graph (ATLAS parity).</p>
+      </div>
+      <div class="card opt">
+        <div class="p">Phase F</div><h3>Model-aware v2</h3>
+        <p>Attach equations, assumptions &amp; parameter priors to <span class="mono">Model</span> nodes → the digital-twin payoff.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot mono">201 classes · 40 relations · 121 quantities · 164 individuals &nbsp;|&nbsp; 3 papers → 188 experiments · 2,437 values &nbsp;|&nbsp; generated from 0706_ontology + 0706_pipeline outputs</div>
+</div>
+
+<script>
+const CSS = k => getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+const SVGNS="http://www.w3.org/2000/svg";
+function el(t,a){const e=document.createElementNS(SVGNS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function text(x,y,s,o={}){const t=el("text",{x,y,...o});t.textContent=s;return t;}
+
+// ---- Phase A meters ----
+const meters=[["Connectivity — classes wired into the map","200 / 200",1.0],
+  ["Competency — KB questions answerable","10 / 10",1.0],
+  ["Logical characteristics declared","22 / 40",22/40],
+  ["Inverse relations declared","18 / 40",18/40]];
+const mc=document.getElementById("meters");
+meters.forEach(([lab,val,f])=>{
+  const d=document.createElement("div");d.className="meter";
+  const col=f>=0.9?"var(--good)":"var(--accent)";
+  d.innerHTML=`<div class="top"><span>${lab}</span><b class="mono">${val}</b></div>
+    <div class="track"><div class="fill" style="width:${f*100}%;background:${col}"></div></div>`;
+  mc.appendChild(d);
+});
+
+// ---- axis role stacked bar ----
+(function(){
+  const data=[["coordinate",5,"--c-aqua"],["condition",77,"--c-blue"],["output",39,"--c-grey"]];
+  const W=380,H=46,tot=121;let x=0;
+  const s=el("svg",{width:"100%",viewBox:`0 0 ${W} ${H}`,height:H});
+  data.forEach(([n,v,c],i)=>{
+    const w=v/tot*W, gap=i? 2:0;
+    s.appendChild(el("rect",{x:x+gap,y:8,width:Math.max(0,w-gap),height:22,rx:4,fill:CSS(c)}));
+    if(w>26)s.appendChild(text(x+w/2,44,v,{fill:CSS("--ink2"),"font-size":11,"text-anchor":"middle","font-family":"ui-monospace,monospace"}));
+    x+=w;
+  });
+  document.getElementById("axis").appendChild(s);
+})();
+
+// ---- granularity per paper (stacked horizontal) ----
+(function(){
+  const papers=[["arts2019",{profile:8,sweep:0,single:4}],
+    ["yim2020",{profile:30,sweep:0,single:0}],
+    ["ylilammi2018",{profile:24,sweep:122,single:0}]];
+  const cols={profile:"--c-aqua",sweep:"--c-blue",single:"--c-grey"};
+  const W=440,rowH=40,padL=104,barW=W-padL-40,max=146;
+  const H=papers.length*rowH+10;
+  const s=el("svg",{width:"100%",viewBox:`0 0 ${W} ${H}`,height:H});
+  papers.forEach(([name,g],i)=>{
+    const y=i*rowH+8, tot=g.profile+g.sweep+g.single;
+    s.appendChild(text(padL-10,y+18,name,{fill:CSS("--ink"),"font-size":12.5,"text-anchor":"end","font-family":"ui-monospace,monospace"}));
+    let x=padL;
+    ["profile","sweep","single"].forEach((k,j)=>{
+      const w=g[k]/max*barW; if(w<=0)return;
+      const gap=(x>padL)?2:0;
+      s.appendChild(el("rect",{x:x+gap,y,width:Math.max(0,w-gap),height:24,rx:4,fill:CSS(cols[k])}));
+      if(w>22)s.appendChild(text(x+w/2+gap/2,y+16,g[k],{fill:"#fff","font-size":11,"text-anchor":"middle","font-weight":600,"font-family":"ui-monospace,monospace"}));
+      x+=w;
+    });
+    s.appendChild(text(x+8,y+16,"= "+tot,{fill:CSS("--ink3"),"font-size":11.5,"font-family":"ui-monospace,monospace"}));
+  });
+  document.getElementById("gran").appendChild(s);
+})();
+
+// ---- relevance donut ----
+(function(){
+  const data=[["experimental",46,"--c-aqua"],["model",134,"--c-violet"],["background",8,"--c-red"]];
+  const tot=188,R=78,r=50,cx=95,cy=95;
+  const s=el("svg",{width:190,height:190,viewBox:"0 0 190 190"});
+  let a=-Math.PI/2;
+  data.forEach(([n,v,c])=>{
+    const ang=v/tot*2*Math.PI, a2=a+ang, gap=0.03;
+    const p=(rad,an)=>[cx+rad*Math.cos(an),cy+rad*Math.sin(an)];
+    const large=ang>Math.PI?1:0;
+    const [x0,y0]=p(R,a+gap),[x1,y1]=p(R,a2-gap),[x2,y2]=p(r,a2-gap),[x3,y3]=p(r,a+gap);
+    const d=`M${x0} ${y0} A${R} ${R} 0 ${large} 1 ${x1} ${y1} L${x2} ${y2} A${r} ${r} 0 ${large} 0 ${x3} ${y3} Z`;
+    s.appendChild(el("path",{d,fill:CSS(c)}));
+    a=a2;
+  });
+  s.appendChild(text(cx,cy-2,"188",{fill:CSS("--ink"),"font-size":26,"text-anchor":"middle","font-weight":600,"font-family":'"Iowan Old Style",Georgia,serif'}));
+  s.appendChild(text(cx,cy+15,"records",{fill:CSS("--ink3"),"font-size":11,"text-anchor":"middle"}));
+  document.getElementById("donut").appendChild(s);
+})();
+
+// ---- top quantities ----
+(function(){
+  const data=[["partial_pressure",284],["molecular_mass",284],["precursor_molecular_diameter",284],
+    ["pulse_time",267],["feature_height",180],["temperature",151],["feature_width",142],
+    ["growth_per_cycle",142],["adsorption_rate_constant",138],["reaction_probability",138],
+    ["site_density",130],["penetration_depth",126]];
+  const W=520,rowH=22,padL=190,barW=W-padL-46,max=284,H=data.length*rowH+8;
+  const s=el("svg",{width:"100%",viewBox:`0 0 ${W} ${H}`,height:H});
+  data.forEach(([n,v],i)=>{
+    const y=i*rowH+6;
+    s.appendChild(text(padL-8,y+11,n,{fill:CSS("--ink2"),"font-size":11.5,"text-anchor":"end","font-family":"ui-monospace,monospace"}));
+    s.appendChild(el("rect",{x:padL,y:y+2,width:v/max*barW,height:12,rx:3,fill:CSS("--c-blue")}));
+    s.appendChild(text(padL+v/max*barW+7,y+12,v,{fill:CSS("--ink3"),"font-size":11,"font-family":"ui-monospace,monospace"}));
+  });
+  document.getElementById("quant").appendChild(s);
+})();
+
+// ---- kg table ----
+(function(){
+  const nodes=[["Experiment",188],["QuantityValue","2,437"],["QuantityKind",28],["Material",4],
+    ["Precursor",3],["Coreactant",3],["Paper",3],["ExperimentSeries",1]];
+  const edges=[["reports","2,437"],["of_kind","2,437"],["from_paper",188],["in_series",122],
+    ["with_coreactant",62],["varies",62],["deposits",46],["uses_precursor",42]];
+  const tb=document.getElementById("kgtab");
+  for(let i=0;i<nodes.length;i++){
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${nodes[i][0]}</td><td class="n">${nodes[i][1]}</td>
+      <td>${edges[i]?edges[i][0]:""}</td><td class="n">${edges[i]?edges[i][1]:""}</td>`;
+    tb.appendChild(tr);
+  }
+})();
+</script>
