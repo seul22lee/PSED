@@ -1,0 +1,101 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "RuO2"
+ ],
+ "precursors": [
+  "RuO4"
+ ],
+ "coreactants": [
+  "methanol",
+  "ethanol",
+  "1-propanol",
+  "2-propanol"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": [
+  60,
+  120
+ ],
+ "gpc_nm": 0.1,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": "F1c"
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": "F1a, F1b, F5b, F5c"
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": "F1d, F5a"
+  },
+  "conformality_or_penetration_profile": {
+   "present": true,
+   "where": "F1e, F1f"
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": "F2a, F2b, F3a, F3b, F3c, F4a, F4b, F4c, F4d, F4e, F6a, F6b, F6c"
+  }
+ },
+ "drill": [
+  {
+   "where": "F1a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC vs RuO4 pulse time"
+  },
+  {
+   "where": "F1b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC vs methanol pulse time"
+  },
+  {
+   "where": "F1c",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC vs substrate temperature showing ALD window"
+  },
+  {
+   "where": "F1d",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Thickness vs ALD cycle number"
+  },
+  {
+   "where": "F5a",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Thickness vs cycles for various alcohol reactants"
+  },
+  {
+   "where": "F5b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Saturation curves for RuO4 reaction across different alcohols"
+  },
+  {
+   "where": "F5c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Saturation curves for alcohol surface reactions"
+  }
+ ],
+ "go_deeper": true,
+ "_tokens": {
+  "in": 2301,
+  "out": 859
+ },
+ "_scout_input_chars": 8663
+}
