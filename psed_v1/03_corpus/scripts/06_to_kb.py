@@ -103,6 +103,22 @@ def get_card(sd, scout, client):
     return card, tok
 
 
+# A COMPLETE number (+ optional unit). The unit class excludes '-', so 'Al2O3' and
+# '2-propanol' are names, not numbers. Same rule the series path uses in 05 — a condition
+# value must BE a number, never merely contain a digit.
+_NUMU = re.compile(r"\s*([-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?)\s*([A-Za-zµμÅ°%/·^]*)\s*\Z")
+
+
+def _num_cond(k, v):
+    """Caption condition -> controlled entry, ONLY when the value is a complete number.
+    Without this, _num('Al2O3') returns 2.0 and a categorical caption field becomes a
+    fabricated measurement."""
+    m = _NUMU.fullmatch(str(v))
+    if not m:
+        return None
+    return _ctrl(k, float(m.group(1)), (m.group(2) or None), source="caption")
+
+
 def _ctrl(q, v, u, react=None, source="methods"):
     if v is None:
         return None
@@ -153,7 +169,7 @@ def to_experiments(sd, scout, records, card):
         cq = lib.canon_quantity(r.get("coordinate")) or r.get("coordinate")
         mv, mu = _norm_unit(mq, None, (r.get("measurand") or {}).get("unit"))
         pts = [p for p in (r.get("points") or []) if isinstance(p, list) and len(p) == 2]
-        panel_ctrl = [c for c in (_ctrl(k, _num(v), _unit(v), source="caption")
+        panel_ctrl = [c for c in (_num_cond(k, v)
                                   for k, v in (r.get("controlled") or {}).items()) if c]
         mat = lib.canon_material(r.get("material")) or (scout.get("materials") or [None])[0]
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
@@ -170,10 +186,9 @@ def to_experiments(sd, scout, records, card):
                                  source="series")]
         series_ctrl = [c for c in series_ctrl if c]
         # display metadata only — never split or coerced downstream
-        if r.get("series_kind") in ("numeric_sweep", "categorical"):
-            series_name = f'{r.get("series_axis") or "series"}: {r.get("series_value")}'
-        else:
-            series_name = None
+        series_name = (f'{r.get("series_axis") or "series"}: {r.get("series_value")}'
+                       if r.get("series_kind") in ("numeric_sweep", "categorical")
+                       and r.get("series_value") else None)
         e = {
             "material": mat, "material_raw": r.get("material"),
             "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],

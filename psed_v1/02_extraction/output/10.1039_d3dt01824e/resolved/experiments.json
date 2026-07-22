@@ -1,7 +1,7 @@
 [
  {
   "material": "Er2O3",
-  "material_raw": "Si",
+  "material_raw": "Er2O3",
   "precursors": [
    "tris_dmamb_erbium"
   ],
@@ -35,42 +35,18 @@
    {
     "quantity": "deposition_temperature",
     "value": 200.0,
-    "unit": "",
+    "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting"
    },
    {
     "quantity": "cycle_number",
-    "value": 1000,
-    "unit": "",
+    "value": 1000.0,
+    "unit": null,
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "precursor",
-    "value": 1.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "coreactant",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "material",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
    }
   ],
   "measurand": {
@@ -113,14 +89,16 @@
   "exp_id": "10.1039_d3dt01824e-F2a-0",
   "provenance": {
    "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "5",
    "panel": "a",
    "caption": "Fig. 2 Dependence of Er2O3 /uniFB01 lm growth rate on the pulse length of 1 . Si(100) and SiO2 substrates were used at 200 \u00b0C with 1000 growth cycles.",
    "extractor": "vision-llm",
-   "doi": "10.1039_d3dt01824e",
-   "fig_index": "5"
+   "doi": "10.1039_d3dt01824e"
   },
-  "series_name": null,
-  "structure": "planar_wafer",
+  "series_name": "series: Si",
+  "phase": null,
+  "structure": null,
   "varies": [
    "pulse_time"
   ],
@@ -155,7 +133,7 @@
    "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 1000,
+   "ncycles": 1000.0,
    "temperature": 175,
    "flow_rate": null,
    "carrier_gas": null,
@@ -165,15 +143,14 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3dt01824e-F5a-0"
+    "_exp_id": "10.1039_d3dt01824e-F2a-0"
    },
    "completeness": 0.5
-  },
-  "geometry_class": "planar"
+  }
  },
  {
-  "material": "SiO2",
-  "material_raw": "SiO2",
+  "material": "Er2O3",
+  "material_raw": "Er2O3",
   "precursors": [
    "tris_dmamb_erbium"
   ],
@@ -207,42 +184,18 @@
    {
     "quantity": "deposition_temperature",
     "value": 200.0,
-    "unit": "",
+    "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting"
    },
    {
     "quantity": "cycle_number",
-    "value": 1000,
-    "unit": "",
+    "value": 1000.0,
+    "unit": null,
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "precursor",
-    "value": 1.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "coreactant",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "material",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
    }
   ],
   "measurand": {
@@ -285,174 +238,16 @@
   "exp_id": "10.1039_d3dt01824e-F2a-1",
   "provenance": {
    "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "5",
    "panel": "a",
    "caption": "Fig. 2 Dependence of Er2O3 /uniFB01 lm growth rate on the pulse length of 1 . Si(100) and SiO2 substrates were used at 200 \u00b0C with 1000 growth cycles.",
    "extractor": "vision-llm",
-   "doi": "10.1039_d3dt01824e",
-   "fig_index": "5"
+   "doi": "10.1039_d3dt01824e"
   },
-  "series_name": null,
-  "structure": "planar_wafer",
-  "varies": [
-   "pulse_time"
-  ],
-  "dependent": [
-   {
-    "quantity": "growth_per_cycle",
-    "unit": "\u00c5/cycle",
-    "family": "film_amount"
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "SiO2",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "tris_dmamb_erbium",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 1000,
-   "temperature": 175,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1039_d3dt01824e-F5a-1"
-   },
-   "completeness": 0.5
-  },
-  "geometry_class": "planar"
- },
- {
-  "material": "Er2O3",
-  "material_raw": "Si",
-  "precursors": [
-   "tris_dmamb_erbium"
-  ],
-  "coreactants": [
-   "H2O"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "tris_dmamb_erbium"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
-   }
-  ],
-  "carrier_gas": null,
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 175,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "deposition_temperature",
-    "value": 200.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "cycle_number",
-    "value": 1000,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "precursor",
-    "value": 1.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "coreactant",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "material",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   }
-  ],
-  "measurand": {
-   "quantity": "growth_per_cycle",
-   "unit": "\u00c5/cycle",
-   "family": "film_amount"
-  },
-  "coordinate": "pulse_time",
-  "coordinate_family": "exposure_time",
-  "points": [
-   [
-    0.1,
-    0.19
-   ],
-   [
-    0.2,
-    0.235
-   ],
-   [
-    0.3,
-    0.246
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": true,
-  "exp_id": "10.1039_d3dt01824e-F3a-2",
-  "provenance": {
-   "figure": "Fig 3",
-   "panel": "a",
-   "caption": "Fig. 3 Dependence of Er2O3 /uniFB01 lm growth rate on the water pulse length. Si(100) and SiO2 substrates were used at 200 \u00b0C with 1000 growth cycles.",
-   "extractor": "vision-llm",
-   "doi": "10.1039_d3dt01824e",
-   "fig_index": "6"
-  },
-  "series_name": null,
-  "structure": "planar_wafer",
+  "series_name": "series: SiO2",
+  "phase": null,
+  "structure": null,
   "varies": [
    "pulse_time"
   ],
@@ -487,7 +282,7 @@
    "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 1000,
+   "ncycles": 1000.0,
    "temperature": 175,
    "flow_rate": null,
    "carrier_gas": null,
@@ -497,15 +292,14 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3dt01824e-F6a-2"
+    "_exp_id": "10.1039_d3dt01824e-F2a-1"
    },
    "completeness": 0.5
-  },
-  "geometry_class": "planar"
+  }
  },
  {
-  "material": "SiO2",
-  "material_raw": "SiO2",
+  "material": "Er2O3",
+  "material_raw": "Er2O3",
   "precursors": [
    "tris_dmamb_erbium"
   ],
@@ -539,42 +333,155 @@
    {
     "quantity": "deposition_temperature",
     "value": 200.0,
-    "unit": "",
+    "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting"
    },
    {
     "quantity": "cycle_number",
-    "value": 1000,
-    "unit": "",
+    "value": 1000.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    0.1,
+    0.19
+   ],
+   [
+    0.2,
+    0.235
+   ],
+   [
+    0.3,
+    0.246
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_d3dt01824e-F3a-2",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "6",
+   "panel": "a",
+   "caption": "Fig. 3 Dependence of Er2O3 /uniFB01 lm growth rate on the water pulse length. Si(100) and SiO2 substrates were used at 200 \u00b0C with 1000 growth cycles.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_d3dt01824e"
+  },
+  "series_name": "series: Si",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Er2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "tris_dmamb_erbium",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 1000.0,
+   "temperature": 175,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_d3dt01824e-F3a-2"
+   },
+   "completeness": 0.5
+  }
+ },
+ {
+  "material": "Er2O3",
+  "material_raw": "Er2O3",
+  "precursors": [
+   "tris_dmamb_erbium"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "tris_dmamb_erbium"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 175,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 200.0,
+    "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "precursor",
-    "value": 1.0,
-    "unit": "",
+    "quantity": "cycle_number",
+    "value": 1000.0,
+    "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "coreactant",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "material",
-    "value": 2.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -605,14 +512,16 @@
   "exp_id": "10.1039_d3dt01824e-F3a-3",
   "provenance": {
    "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "6",
    "panel": "a",
    "caption": "Fig. 3 Dependence of Er2O3 /uniFB01 lm growth rate on the water pulse length. Si(100) and SiO2 substrates were used at 200 \u00b0C with 1000 growth cycles.",
    "extractor": "vision-llm",
-   "doi": "10.1039_d3dt01824e",
-   "fig_index": "6"
+   "doi": "10.1039_d3dt01824e"
   },
-  "series_name": null,
-  "structure": "planar_wafer",
+  "series_name": "series: SiO2",
+  "phase": null,
+  "structure": null,
   "varies": [
    "pulse_time"
   ],
@@ -625,7 +534,7 @@
   ],
   "issues": [],
   "recipe": {
-   "material": "SiO2",
+   "material": "Er2O3",
    "reactants": [
     {
      "label": "A",
@@ -647,7 +556,7 @@
    "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 1000,
+   "ncycles": 1000.0,
    "temperature": 175,
    "flow_rate": null,
    "carrier_gas": null,
@@ -657,10 +566,9 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3dt01824e-F6a-3"
+    "_exp_id": "10.1039_d3dt01824e-F3a-3"
    },
    "completeness": 0.5
-  },
-  "geometry_class": "planar"
+  }
  }
 ]

@@ -125,17 +125,26 @@ def extract_paper(sd, client):
         prompt = (f"{VISION_SCHEMA}\n\nPAPER PROCESS CARD: {json.dumps(card)}\n"
                   f"FIGURE CAPTION: {g['caption']}\n"
                   f"Panels of interest: {[it.get('where') + '=' + it.get('type','') for it in g['items']]}")
-        r = client.models.generate_content(
-            model=MODEL,
-            contents=[types.Part.from_bytes(data=png, mime_type="image/png"), prompt],
-            config=types.GenerateContentConfig(temperature=0, response_mime_type="application/json"))
-        u = getattr(r, "usage_metadata", None)
-        tok_in += getattr(u, "prompt_token_count", 0) or 0
-        tok_out += getattr(u, "candidates_token_count", 0) or 0
-        try:
-            obj = json.loads(r.text)
-        except Exception:
-            obj = {"_parse_error": r.text[:200]}
+        # One retry on parse failure: a transient malformed response otherwise drops the
+        # whole paper to 0 records silently (observed on celc). Keep the FULL raw text on
+        # final failure so it stays diagnosable without re-calling the API.
+        obj, last_raw = None, None
+        for attempt in range(2):
+            r = client.models.generate_content(
+                model=MODEL,
+                contents=[types.Part.from_bytes(data=png, mime_type="image/png"), prompt],
+                config=types.GenerateContentConfig(temperature=0, response_mime_type="application/json"))
+            u = getattr(r, "usage_metadata", None)
+            tok_in += getattr(u, "prompt_token_count", 0) or 0
+            tok_out += getattr(u, "candidates_token_count", 0) or 0
+            last_raw = r.text
+            try:
+                obj = _loads_json(r.text)
+                break
+            except Exception as e:
+                print(f"    [parse retry {attempt+1}/2] {g['fig']}: {type(e).__name__} {str(e)[:60]}")
+        if obj is None:
+            obj = {"_parse_error": last_raw}          # FULL raw, not truncated
         results.append({"figure": g["fig"], "image": image, "caption": g["caption"],
                         "source": g["source"], **obj})
 
@@ -179,6 +188,28 @@ def _clean_conditions(cond):
 # A COMPLETE number (optional unit). The unit class excludes '-', so '2-propanol' is a
 # name, not a number — this is what makes numeric-vs-categorical decidable here, once.
 _NUMU = _re.compile(r"\s*([-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?)\s*([A-Za-zµμÅ°%/·^]*)\s*\Z")
+
+
+def _loads_json(text):
+    """Robust JSON parse: tolerate markdown fences / trailing prose that some
+    models (e.g. gemini-flash-latest) emit even under response_mime_type=json.
+    Same hardening as 04_extract.py — a transient malformed response must not
+    silently zero a paper's figure data."""
+    if text is None:
+        raise ValueError("empty response")
+    t = text.strip()
+    if t.startswith("```"):
+        t = re.sub(r"^```[a-zA-Z]*\n?", "", t); t = re.sub(r"\n?```\s*$", "", t)
+    try:
+        return json.loads(t)
+    except Exception:
+        i, depth = t.find("{"), 0            # extract the first balanced {...} block
+        if i >= 0:
+            for j in range(i, len(t)):
+                depth += (t[j] == "{") - (t[j] == "}")
+                if depth == 0:
+                    return json.loads(t[i:j + 1])
+        raise
 
 
 def _strip_phase(s):
@@ -231,7 +262,12 @@ def flatten_records(sd, scout, figresults):
             for s in p.get("series", []):
                 lab = (s.get("label") or "").strip()
                 _cls, _match = _classify_label(lab, mats)          # scout.materials anchor
-                if _cls == "material":
+                if _cls == "empty":                                # single-curve panel, no legend
+                    series_kind = series_axis_out = None
+                    series_value_num = series_unit = None
+                    material = (mats[0] if mats else None)
+                    phase = None
+                elif _cls == "material":
                     series_kind, series_value_num, series_unit = "material", None, None
                     material = _match
                     phase = lab if lab != _match else None          # c-MoS2 vs MoS2
