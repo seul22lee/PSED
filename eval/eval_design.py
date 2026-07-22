@@ -75,7 +75,7 @@ def solve_exposure(twin, H, AR, target_sc=0.9, elo=1.0, ehi=1e5):
 
 # ---- held-out validation of the inverse procedure (measure calibration) ----
 def validate_heldout():
-    """Held-out KB profile ylilammi2018-F6-2 (measured PD50 = 127.6 µm at a 0.1 s TMA
+    """Held-out KB profile 10.1063_1.5028178-F6-2 (Ylilammi 2018; measured PD50 = 127.6 µm at a 0.1 s TMA
     pulse, gap 0.5 µm, pA≈100 Pa). Compare the twin's penetration prediction to the
     measurement → a calibration factor the design then applies."""
     r = Reactor(["TMA", "water"], pA_precursor_Pa=100.0, temperature_C=227.0)
@@ -85,7 +85,7 @@ def validate_heldout():
     measured_pd = 127.6
     k = measured_pd / pred_pd                      # measured/twin (>1 ⇒ twin under-predicts)
     # penetration ∝ sqrt(exposure) ⇒ exposure correction factor = 1/k^2
-    return {"anchor": "ylilammi2018-F6-2", "measured_pd_um": measured_pd,
+    return {"anchor": "10.1063_1.5028178 · Fig 6", "measured_pd_um": measured_pd,
             "twin_pd_um": round(pred_pd, 1), "calib_factor_k": round(k, 2),
             "exposure_correction": round(1.0 / k ** 2, 3),
             "note": "twin under-predicts penetration; corrected exposure = twin exposure / k^2"}
@@ -379,8 +379,8 @@ also reason about; the loop makes it reproducible, calibrated, and cited.</div>
 <li><b>Absolute exposure is uncertain</b> (twin-limited). The robust, measured finding is the <b>AR² scaling</b> difference and the <b>completeness/chemistry/exposure/caveat</b> profile — not the exact Pa·s.</li>
 </ul></div>
 </div>"""
-    (ROOT / "m5_design.html").write_text(html)
-    print("wrote m5_design.html (from measured results)")
+    (ROOT / "eval" / "m5_design.html").write_text(html)
+    print("wrote eval/m5_design.html (from measured results)")
 
 
 if __name__ == "__main__":

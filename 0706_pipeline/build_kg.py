@@ -288,11 +288,20 @@ const ring={Paper:0,Category:55,Family:90,ModelFamily:70,Model:100,Material:120,
 function seed(){D.nodes.forEach((n,i)=>{const r=ring[n.type]??380,a=i*2.399;n.x=VBW/2+r*Math.cos(a);n.y=VBH/2+r*Math.sin(a);n.vx=0;n.vy=0;});}
 function layout(iters){for(let it=0;it<iters;it++){
   for(let i=0;i<D.nodes.length;i++)for(let j=i+1;j<D.nodes.length;j++){const a=D.nodes[i],b=D.nodes[j];
-    let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy||1,d=Math.sqrt(d2),f=1500/d2;a.vx+=dx/d*f;a.vy+=dy/d*f;b.vx-=dx/d*f;b.vy-=dy/d*f;}
-  D.links.forEach(l=>{const a=idx[l.s],b=idx[l.t];if(!a||!b)return;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,f=(d-66)*0.02;
+    let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy||1,d=Math.sqrt(d2),f=3000/d2;a.vx+=dx/d*f;a.vy+=dy/d*f;b.vx-=dx/d*f;b.vy-=dy/d*f;}
+  D.links.forEach(l=>{const a=idx[l.s],b=idx[l.t];if(!a||!b)return;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,f=(d-70)*0.016;
     a.vx+=dx/d*f;a.vy+=dy/d*f;b.vx-=dx/d*f;b.vy-=dy/d*f;});
-  D.nodes.forEach(n=>{if(n.fx==null){n.vx+=(VBW/2-n.x)*0.003;n.vy+=(VBH/2-n.y)*0.003;n.x+=(n.vx*=0.82);n.y+=(n.vy*=0.82);}});}}
-seed();layout(280);
+  D.nodes.forEach(n=>{if(n.fx==null){n.vx+=(VBW/2-n.x)*0.002;n.vy+=(VBH/2-n.y)*0.002;n.x+=(n.vx*=0.82);n.y+=(n.vy*=0.82);}});}}
+function fit(pad){pad=pad||58;   // fit the DENSE CORE to the viewBox, clamp outliers to the edge,
+  // so the readable bulk fills the window instead of being crushed by a few far-flung nodes.
+  const xs=D.nodes.map(n=>n.x).sort((a,b)=>a-b),ys=D.nodes.map(n=>n.y).sort((a,b)=>a-b);
+  const q=(v,p)=>{const k=(v.length-1)*p,f=Math.floor(k);return v[f]+(v[Math.min(f+1,v.length-1)]-v[f])*(k-f);};
+  const x0=q(xs,0.05),x1=q(xs,0.95),y0=q(ys,0.05),y1=q(ys,0.95);
+  const w=x1-x0||1,h=y1-y0||1,s=Math.min((VBW-2*pad)/w,(VBH-2*pad)/h);
+  const ox=(VBW-2*pad-w*s)/2,oy=(VBH-2*pad-h*s)/2;
+  D.nodes.forEach(n=>{const x=pad+(n.x-x0)*s+ox,y=pad+(n.y-y0)*s+oy;
+    n.x=Math.min(Math.max(x,pad),VBW-pad);n.y=Math.min(Math.max(y,pad),VBH-pad);});}
+seed();layout(280);fit();
 
 // ---- persistent DOM ----
 const svg=el("svg",{viewBox:`0 0 ${VBW} ${VBH}`});svg.id="svg";
@@ -396,7 +405,7 @@ function showInfo(n){const box=document.getElementById("info");
     <div class="row"><span class="k">links (${ls.length})</span></div>
     ${Object.entries(byRel).map(([e,s])=>`<div class="row"><span style="color:var(--e-${e},var(--ink2))">${e}</span> <span style="color:var(--ink3)">(${s.size})</span><div class="chips">${[...s].slice(0,10).map(x=>`<span class="ichip">${x}</span>`).join("")}${s.size>10?`<span class="ichip">+${s.size-10}</span>`:""}</div></div>`).join("")}`;
 }
-window.relayout=()=>{seed();layout(280);tx=0;ty=0;scale=1;updateView();frame();};
+window.relayout=()=>{seed();layout(280);fit();tx=0;ty=0;scale=1;updateView();frame();};
 window.resetAll=()=>{selPaper.clear();selMat.clear();selRel.clear();q="";document.getElementById("search").value="";
   document.querySelectorAll(".mspanel input").forEach(cb=>cb.checked=false);
   document.querySelectorAll("details.ms summary").forEach(su=>su.textContent=su.textContent.split(":")[0]+": all");

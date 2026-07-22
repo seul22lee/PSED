@@ -1436,7 +1436,12 @@
       "unit": "http://qudt.org/vocab/unit/NanoM",
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "lateral_channel",
+        "vertical_structure",
+        "cavity"
+      ]
     },
     {
       "id": "feature_width",
@@ -1457,7 +1462,12 @@
       "unit": "http://qudt.org/vocab/unit/NanoM",
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "lateral_channel",
+        "vertical_structure",
+        "cavity"
+      ]
     },
     {
       "id": "feature_depth",
@@ -1497,7 +1507,10 @@
       "unit": "http://qudt.org/vocab/unit/MicroM",
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "lateral_channel"
+      ]
     },
     {
       "id": "pore_radius",
@@ -1519,7 +1532,10 @@
       ],
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "porous_material"
+      ]
     },
     {
       "id": "aspect_ratio",
@@ -1552,7 +1568,12 @@
       "family": "position",
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "lateral_channel",
+        "vertical_structure",
+        "nanostructure_array"
+      ]
     },
     {
       "id": "equivalent_aspect_ratio",
@@ -2749,7 +2770,10 @@
       "unit": "http://qudt.org/vocab/unit/UNITLESS",
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "lateral_channel"
+      ]
     },
     {
       "id": "normalized_thickness",
@@ -2891,7 +2915,10 @@
       "unit": null,
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "porous_material"
+      ]
     },
     {
       "id": "film_thickness",
@@ -3077,7 +3104,11 @@
       "family": "position",
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "output"
+      "axis_role": "output",
+      "geometry_class": [
+        "lateral_channel",
+        "vertical_structure"
+      ]
     },
     {
       "id": "penetration_depth_50",
@@ -3407,7 +3438,11 @@
       "unit": "http://qudt.org/vocab/unit/NanoM",
       "category": "geometry",
       "recipe_role": "structure",
-      "axis_role": "condition"
+      "axis_role": "condition",
+      "geometry_class": [
+        "vertical_structure",
+        "porous_material"
+      ]
     },
     {
       "id": "tortuosity",
@@ -3970,6 +4005,416 @@
       "category": "process_parameter",
       "recipe_role": "control_setting",
       "axis_role": "condition"
+    },
+    {
+      "id": "ozone_exposure",
+      "iri": "https://w3id.org/psed-ald/ontology#ozone_exposure",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "ozone_exposure"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "s",
+      "category": "process_parameter",
+      "family": "dose",
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "oxygen_iron_ratio",
+      "iri": "https://w3id.org/psed-ald/ontology#oxygen_iron_ratio",
+      "domain": "composition",
+      "symbols": [],
+      "aliases": [
+        "O/[Fe+O]"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "1",
+      "category": "composition",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "angle",
+      "iri": "https://w3id.org/psed-ald/ontology#angle",
+      "domain": "geometry",
+      "symbols": [],
+      "aliases": [
+        "Angle"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "deg",
+      "category": "geometry",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed",
+      "geometry_class": [
+        "nanostructure_array",
+        "cavity"
+      ]
+    },
+    {
+      "id": "intensity",
+      "iri": "https://w3id.org/psed-ald/ontology#intensity",
+      "domain": "observable",
+      "symbols": [],
+      "aliases": [
+        "Intensity"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "a.u.",
+      "category": "observable",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "tbf_dose",
+      "iri": "https://w3id.org/psed-ald/ontology#tbf_dose",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "TBF_dose"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "s",
+      "category": "process_parameter",
+      "family": "dose",
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "gamma_phase_fraction",
+      "iri": "https://w3id.org/psed-ald/ontology#gamma_phase_fraction",
+      "domain": "material_property",
+      "symbols": [],
+      "aliases": [
+        "Fraction γ Phase"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "1",
+      "category": "material_property",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "ozone_exposure_per_cycle",
+      "iri": "https://w3id.org/psed-ald/ontology#ozone_exposure_per_cycle",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "Ozone Exposure per Cycle"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "s",
+      "category": "process_parameter",
+      "family": "dose",
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "qz",
+      "iri": "https://w3id.org/psed-ald/ontology#qz",
+      "domain": "coordinate",
+      "symbols": [],
+      "aliases": [
+        "Qz"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "Å⁻¹",
+      "category": "coordinate",
+      "family": "position",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "qxy",
+      "iri": "https://w3id.org/psed-ald/ontology#qxy",
+      "domain": "coordinate",
+      "symbols": [],
+      "aliases": [
+        "Qxy"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "Å⁻¹",
+      "category": "coordinate",
+      "family": "position",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "ozone_exposure_time",
+      "iri": "https://w3id.org/psed-ald/ontology#ozone_exposure_time",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "ozone_exposure_time"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "s",
+      "category": "process_parameter",
+      "family": "exposure_time",
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "trench_periodicity",
+      "iri": "https://w3id.org/psed-ald/ontology#trench_periodicity",
+      "domain": "geometry",
+      "symbols": [],
+      "aliases": [
+        "trench_periodicity"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "nm",
+      "category": "geometry",
+      "family": null,
+      "recipe_role": "structure",
+      "axis_role": "condition",
+      "source": "auto-proposed",
+      "geometry_class": [
+        "vertical_structure"
+      ]
+    },
+    {
+      "id": "trench_duty_cycle",
+      "iri": "https://w3id.org/psed-ald/ontology#trench_duty_cycle",
+      "domain": "geometry",
+      "symbols": [],
+      "aliases": [
+        "trench_duty_cycle"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "1",
+      "category": "geometry",
+      "family": null,
+      "recipe_role": "structure",
+      "axis_role": "condition",
+      "source": "auto-proposed",
+      "geometry_class": [
+        "vertical_structure"
+      ]
+    },
+    {
+      "id": "leakage_current_density",
+      "iri": "https://w3id.org/psed-ald/ontology#leakage_current_density",
+      "domain": "electrical",
+      "symbols": [],
+      "aliases": [
+        "Leakage current"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "A/cm²",
+      "category": "electrical",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "voltage",
+      "iri": "https://w3id.org/psed-ald/ontology#voltage",
+      "domain": "electrical",
+      "symbols": [],
+      "aliases": [
+        "Voltage"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "V",
+      "category": "electrical",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "capacitance",
+      "iri": "https://w3id.org/psed-ald/ontology#capacitance",
+      "domain": "electrical",
+      "symbols": [],
+      "aliases": [
+        "Capacitance"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "pF",
+      "category": "electrical",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "bias_voltage",
+      "iri": "https://w3id.org/psed-ald/ontology#bias_voltage",
+      "domain": "electrical",
+      "symbols": [],
+      "aliases": [
+        "Bias voltage"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "V",
+      "category": "electrical",
+      "family": null,
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "frequency",
+      "iri": "https://w3id.org/psed-ald/ontology#frequency",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "frequency"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "Hz",
+      "category": "process_parameter",
+      "family": null,
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "current_density",
+      "iri": "https://w3id.org/psed-ald/ontology#current_density",
+      "domain": "electrical",
+      "symbols": [],
+      "aliases": [
+        "Current density"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "A/cm²",
+      "category": "electrical",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "electric_field",
+      "iri": "https://w3id.org/psed-ald/ontology#electric_field",
+      "domain": "electrical",
+      "symbols": [],
+      "aliases": [
+        "Field"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "MV/cm",
+      "category": "electrical",
+      "family": null,
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "reactive_sticking_coefficient",
+      "iri": "https://w3id.org/psed-ald/ontology#reactive_sticking_coefficient",
+      "domain": "dimensionless_number",
+      "symbols": [],
+      "aliases": [
+        "reactive_sticking_coefficient"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "1",
+      "category": "dimensionless_number",
+      "family": "reaction_efficiency",
+      "recipe_role": "species_property",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "precursor_exposure_time",
+      "iri": "https://w3id.org/psed-ald/ontology#precursor_exposure_time",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "precursor_exposure_time"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "s",
+      "category": "process_parameter",
+      "family": "exposure_time",
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "exposure_time_scaling",
+      "iri": "https://w3id.org/psed-ald/ontology#exposure_time_scaling",
+      "domain": "dimensionless_number",
+      "symbols": [],
+      "aliases": [
+        "exposure_time_scaling"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "1",
+      "category": "dimensionless_number",
+      "family": null,
+      "recipe_role": "model_parameter",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "h2_pulse_time",
+      "iri": "https://w3id.org/psed-ald/ontology#h2_pulse_time",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "H2_pulse_time"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "s",
+      "category": "process_parameter",
+      "family": "exposure_time",
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "nh3_pulse_time",
+      "iri": "https://w3id.org/psed-ald/ontology#nh3_pulse_time",
+      "domain": "process_parameter",
+      "symbols": [],
+      "aliases": [
+        "NH3_pulse_time"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "s",
+      "category": "process_parameter",
+      "family": "exposure_time",
+      "recipe_role": "control_setting",
+      "axis_role": "condition",
+      "source": "auto-proposed"
+    },
+    {
+      "id": "wavelength",
+      "iri": "https://w3id.org/psed-ald/ontology#wavelength",
+      "domain": "optical",
+      "symbols": [],
+      "aliases": [
+        "wavelength"
+      ],
+      "qudt_quantitykind": null,
+      "unit": "nm",
+      "category": "optical",
+      "family": "spectral",
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
     }
   ],
   "quantity_relations": {
@@ -4374,7 +4819,8 @@
         "band_gap",
         "crystallinity",
         "grain_size",
-        "surface_roughness"
+        "surface_roughness",
+        "gamma_phase_fraction"
       ],
       "process_parameter": [
         "pulse_time",
@@ -4390,7 +4836,15 @@
         "reactant_A_partial_pressure",
         "reactant_B_partial_pressure",
         "exposure",
-        "flow_rate"
+        "flow_rate",
+        "ozone_exposure",
+        "tbf_dose",
+        "ozone_exposure_per_cycle",
+        "ozone_exposure_time",
+        "frequency",
+        "precursor_exposure_time",
+        "h2_pulse_time",
+        "nh3_pulse_time"
       ],
       "geometry": [
         "feature_height",
@@ -4401,7 +4855,10 @@
         "pore_diameter",
         "pore_radius",
         "generation",
-        "channel_filling_fraction"
+        "channel_filling_fraction",
+        "angle",
+        "trench_periodicity",
+        "trench_duty_cycle"
       ],
       "observable": [
         "film_thickness",
@@ -4427,18 +4884,37 @@
         "nucleation_delay",
         "equivalent_oxide_thickness",
         "atomic_concentration",
-        "adsorbed_species_density"
+        "adsorbed_species_density",
+        "intensity"
       ],
       "coordinate": [
         "spatial_coordinate",
         "dimensionless_distance",
         "time",
-        "diffusion_length"
+        "diffusion_length",
+        "qz",
+        "qxy"
       ],
       "dimensionless_number": [
         "knudsen_number",
         "damkohler_number",
-        "thiele_modulus"
+        "thiele_modulus",
+        "reactive_sticking_coefficient",
+        "exposure_time_scaling"
+      ],
+      "composition": [
+        "oxygen_iron_ratio"
+      ],
+      "electrical": [
+        "leakage_current_density",
+        "voltage",
+        "capacitance",
+        "bias_voltage",
+        "current_density",
+        "electric_field"
+      ],
+      "optical": [
+        "wavelength"
       ]
     },
     "recipe_role_overrides": {
@@ -4807,6 +5283,69 @@
         "formula": "LiPON",
         "definition": "Lithium phosphorus oxynitride (solid electrolyte).",
         "iri": "https://w3id.org/psed-ald/ontology#LiPON"
+      },
+      {
+        "id": "BaO",
+        "class": "Oxide",
+        "formula": "BaO",
+        "metal_atoms": 1,
+        "iri": "https://w3id.org/psed-ald/ontology#BaO"
+      },
+      {
+        "id": "BaTiO3",
+        "class": "Ternary",
+        "formula": "BaTiO3",
+        "metal_atoms": 2,
+        "iri": "https://w3id.org/psed-ald/ontology#BaTiO3"
+      },
+      {
+        "id": "Mo",
+        "class": "Metal",
+        "formula": "Mo",
+        "metal_atoms": 1,
+        "iri": "https://w3id.org/psed-ald/ontology#Mo"
+      },
+      {
+        "id": "Li2CO3",
+        "class": "Ternary",
+        "formula": "Li2CO3",
+        "metal_atoms": 2,
+        "aka": [
+          "Lithium carbonate"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#Li2CO3"
+      },
+      {
+        "id": "Li2O",
+        "class": "Oxide",
+        "formula": "Li2O",
+        "metal_atoms": 2,
+        "aka": [
+          "Lithium oxide"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#Li2O"
+      },
+      {
+        "id": "Er2O3",
+        "class": "Oxide",
+        "formula": "Er2O3",
+        "metal_atoms": 2,
+        "aka": [
+          "Erbium oxide",
+          "Erbium(III) oxide"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#Er2O3"
+      },
+      {
+        "id": "MoOx",
+        "class": "Oxide",
+        "formula": "MoOx",
+        "metal_atoms": 1,
+        "aka": [
+          "Molybdenum oxide",
+          "Molybdenum suboxide"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#MoOx"
       }
     ],
     "precursors": [
@@ -4995,6 +5534,166 @@
         "full_name": "vanadium oxytripropoxide",
         "has_ligand": "alkoxide",
         "iri": "https://w3id.org/psed-ald/ontology#VOTP"
+      },
+      {
+        "id": "tert-butylferrocene",
+        "class": "HeterolepticPrecursor",
+        "full_name": "tert-butylferrocene",
+        "has_ligand": "cyclopentadienyl",
+        "deposits": [
+          "Fe"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#tert-butylferrocene"
+      },
+      {
+        "id": "py-Ba",
+        "class": "HeterolepticPrecursor",
+        "full_name": "pyridine-barium",
+        "has_ligand": "alkylamine",
+        "deposits": [
+          "Ba"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#py-Ba"
+      },
+      {
+        "id": "Y(sBuCp)3",
+        "class": "HomolepticPrecursor",
+        "full_name": "Yttrium tris(sec-butylcyclopentadienyl)",
+        "has_ligand": "cyclopentadienyl",
+        "deposits": [
+          "Y"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#Y(sBuCp)3"
+      },
+      {
+        "id": "MoCl2O2",
+        "class": "HeterolepticPrecursor",
+        "full_name": "Molybdenum dichloride dioxide",
+        "has_ligand": "halide",
+        "deposits": [
+          "Mo"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#MoCl2O2"
+      },
+      {
+        "id": "trichloroborazine",
+        "class": "Precursor",
+        "full_name": "2,4,6-trichloroborazine",
+        "has_ligand": "halide",
+        "deposits": [
+          "BN"
+        ],
+        "aka": [
+          "TCB"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#trichloroborazine"
+      },
+      {
+        "id": "hexamethyldisilazane",
+        "class": "Precursor",
+        "full_name": "1,1,1,3,3,3-hexamethyldisilazane",
+        "has_ligand": "alkylsilyl",
+        "deposits": [
+          "SiO2",
+          "Si3N4"
+        ],
+        "aka": [
+          "HMDS"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#hexamethyldisilazane"
+      },
+      {
+        "id": "[Zn(eeki)2]",
+        "class": "HomolepticPrecursor",
+        "full_name": "bis(4-(ethylimino)pent-2-en-2-olato)zinc(II)",
+        "has_ligand": "betaketoiminate",
+        "deposits": [
+          "ZnO"
+        ],
+        "aka": [
+          "Zn(eeki)2"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#[Zn(eeki)2]"
+      },
+      {
+        "id": "lithium_tert_butoxide",
+        "class": "HomolepticPrecursor",
+        "full_name": "lithium tert-butoxide",
+        "has_ligand": "alkoxide",
+        "deposits": [
+          "Li2O",
+          "Li2CO3"
+        ],
+        "aka": [
+          "LiOtBu",
+          "LTB"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#lithium_tert_butoxide"
+      },
+      {
+        "id": "tris_dmamb_erbium",
+        "class": "HomolepticPrecursor",
+        "full_name": "tris(1-(dimethylamino)-3,3-dimethylbut-1-en-2-olate)erbium(III)",
+        "has_ligand": "alkoxyamine",
+        "deposits": [
+          "Er2O3"
+        ],
+        "aka": [
+          "Er(dmamb)3"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#tris_dmamb_erbium"
+      },
+      {
+        "id": "barium_bis_triisopropylcyclopentadienyl",
+        "class": "HomolepticPrecursor",
+        "full_name": "barium bis(triisopropylcyclopentadienyl)",
+        "has_ligand": "cyclopentadienyl",
+        "deposits": [
+          "BaO"
+        ],
+        "aka": [
+          "Ba(iPr3Cp)2"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#barium_bis_triisopropylcyclopentadienyl"
+      },
+      {
+        "id": "MoCl4_THD_THF",
+        "class": "HeterolepticPrecursor",
+        "full_name": "tetrachloro(2,2,6,6-tetramethylheptane-3,5-dionato)(tetrahydrofuran)molybdenum",
+        "has_ligand": "betadiketonate",
+        "deposits": [
+          "MoOx"
+        ],
+        "aka": [
+          "MoCl4(thd)(THF)"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#MoCl4_THD_THF"
+      },
+      {
+        "id": "Mo_iPrCp_2H2",
+        "class": "HeterolepticPrecursor",
+        "full_name": "bis(isopropylcyclopentadienyl)molybdenum dihydride",
+        "has_ligand": "cyclopentadienyl",
+        "deposits": [
+          "MoOx"
+        ],
+        "aka": [
+          "Mo(iPrCp)2H2"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#Mo_iPrCp_2H2"
+      },
+      {
+        "id": "SnI4",
+        "class": "HomolepticPrecursor",
+        "full_name": "tin(IV) iodide",
+        "has_ligand": "halide",
+        "deposits": [
+          "SnO2"
+        ],
+        "aka": [
+          "Tin tetraiodide"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#SnI4"
       }
     ],
     "coreactants": [
@@ -5142,6 +5841,21 @@
         "molar_mass": 39.95,
         "molecular_diameter": 340,
         "iri": "https://w3id.org/psed-ald/ontology#Ar"
+      },
+      {
+        "id": "atomic_hydrogen",
+        "class": "Reductant",
+        "full_name": "atomic hydrogen",
+        "iri": "https://w3id.org/psed-ald/ontology#atomic_hydrogen"
+      },
+      {
+        "id": "CO2",
+        "class": "Oxidant",
+        "full_name": "carbon dioxide",
+        "aka": [
+          "CO2"
+        ],
+        "iri": "https://w3id.org/psed-ald/ontology#CO2"
       }
     ],
     "ligand_families": [
@@ -5270,7 +5984,8 @@
           "PillarHall LHAR",
           "LHAR test chip"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#pillarhall_lhar"
+        "iri": "https://w3id.org/psed-ald/ontology#pillarhall_lhar",
+        "geometry_class": "lateral_channel"
       },
       {
         "id": "lhar_channel",
@@ -5284,7 +5999,8 @@
           "lateral high-aspect-ratio structure",
           "narrow channel"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#lhar_channel"
+        "iri": "https://w3id.org/psed-ald/ontology#lhar_channel",
+        "geometry_class": "lateral_channel"
       },
       {
         "id": "trench",
@@ -5294,12 +6010,14 @@
           "nano trench",
           "silicon trench"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#trench"
+        "iri": "https://w3id.org/psed-ald/ontology#trench",
+        "geometry_class": "vertical_structure"
       },
       {
         "id": "via",
         "class": "Via",
-        "iri": "https://w3id.org/psed-ald/ontology#via"
+        "iri": "https://w3id.org/psed-ald/ontology#via",
+        "geometry_class": "vertical_structure"
       },
       {
         "id": "hole",
@@ -5310,12 +6028,14 @@
           "cylindrical hole",
           "circular hole"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#hole"
+        "iri": "https://w3id.org/psed-ald/ontology#hole",
+        "geometry_class": "vertical_structure"
       },
       {
         "id": "cylindrical_pore",
         "class": "Pore",
-        "iri": "https://w3id.org/psed-ald/ontology#cylindrical_pore"
+        "iri": "https://w3id.org/psed-ald/ontology#cylindrical_pore",
+        "geometry_class": "vertical_structure"
       },
       {
         "id": "planar_wafer",
@@ -5325,7 +6045,8 @@
           "flat wafer",
           "planar substrate"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#planar_wafer"
+        "iri": "https://w3id.org/psed-ald/ontology#planar_wafer",
+        "geometry_class": "planar"
       },
       {
         "id": "aao",
@@ -5336,7 +6057,8 @@
           "anodized aluminum oxide",
           "AAO membrane"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#aao"
+        "iri": "https://w3id.org/psed-ald/ontology#aao",
+        "geometry_class": "porous_material"
       },
       {
         "id": "capillary_tube",
@@ -5346,7 +6068,8 @@
           "silica capillary tube",
           "fused silica capillary"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#capillary_tube"
+        "iri": "https://w3id.org/psed-ald/ontology#capillary_tube",
+        "geometry_class": "vertical_structure"
       },
       {
         "id": "macro_lateral",
@@ -5355,12 +6078,14 @@
           "macroscopic lateral trench",
           "macro lateral"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#macro_lateral"
+        "iri": "https://w3id.org/psed-ald/ontology#macro_lateral",
+        "geometry_class": "lateral_channel"
       },
       {
         "id": "air_wedge",
         "class": "AirWedge",
-        "iri": "https://w3id.org/psed-ald/ontology#air_wedge"
+        "iri": "https://w3id.org/psed-ald/ontology#air_wedge",
+        "geometry_class": "lateral_channel"
       },
       {
         "id": "cavity_structure",
@@ -5369,7 +6094,8 @@
           "centrosymmetric cavity",
           "microscopic cavity"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#cavity_structure"
+        "iri": "https://w3id.org/psed-ald/ontology#cavity_structure",
+        "geometry_class": "cavity"
       },
       {
         "id": "opal",
@@ -5378,7 +6104,8 @@
           "opal structure",
           "inverse opal"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#opal"
+        "iri": "https://w3id.org/psed-ald/ontology#opal",
+        "geometry_class": "porous_material"
       },
       {
         "id": "cnt",
@@ -5389,17 +6116,20 @@
           "CNT forest",
           "VACNT"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#cnt"
+        "iri": "https://w3id.org/psed-ald/ontology#cnt",
+        "geometry_class": "nanostructure_array"
       },
       {
         "id": "nanowire",
         "class": "Nanowire",
-        "iri": "https://w3id.org/psed-ald/ontology#nanowire"
+        "iri": "https://w3id.org/psed-ald/ontology#nanowire",
+        "geometry_class": "nanostructure_array"
       },
       {
         "id": "nanorod",
         "class": "Nanorod",
-        "iri": "https://w3id.org/psed-ald/ontology#nanorod"
+        "iri": "https://w3id.org/psed-ald/ontology#nanorod",
+        "geometry_class": "nanostructure_array"
       },
       {
         "id": "pillar_array",
@@ -5410,7 +6140,8 @@
           "silicon pillars",
           "square pillar"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#pillar_array"
+        "iri": "https://w3id.org/psed-ald/ontology#pillar_array",
+        "geometry_class": "nanostructure_array"
       },
       {
         "id": "mesoporous_film",
@@ -5419,7 +6150,8 @@
           "mesoporous thin film",
           "mesoporous titania film"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#mesoporous_film"
+        "iri": "https://w3id.org/psed-ald/ontology#mesoporous_film",
+        "geometry_class": "porous_material"
       },
       {
         "id": "mesoporous_powder",
@@ -5430,12 +6162,14 @@
           "Zeotile",
           "porous powder"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#mesoporous_powder"
+        "iri": "https://w3id.org/psed-ald/ontology#mesoporous_powder",
+        "geometry_class": "porous_material"
       },
       {
         "id": "track_etch_membrane",
         "class": "TrackEtchMembrane",
-        "iri": "https://w3id.org/psed-ald/ontology#track_etch_membrane"
+        "iri": "https://w3id.org/psed-ald/ontology#track_etch_membrane",
+        "geometry_class": "porous_material"
       },
       {
         "id": "mof",
@@ -5444,7 +6178,8 @@
           "MOF",
           "metal-organic framework"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#mof"
+        "iri": "https://w3id.org/psed-ald/ontology#mof",
+        "geometry_class": "porous_material"
       },
       {
         "id": "nonwoven_fiber",
@@ -5454,7 +6189,8 @@
           "polyester fiber",
           "fibrous material"
         ],
-        "iri": "https://w3id.org/psed-ald/ontology#nonwoven_fiber"
+        "iri": "https://w3id.org/psed-ald/ontology#nonwoven_fiber",
+        "geometry_class": "porous_material"
       }
     ],
     "regimes": [
@@ -5799,6 +6535,101 @@
       }
     ]
   },
+  "geometry_classes": {
+    "lateral_channel": {
+      "label": "Lateral high-aspect-ratio structure",
+      "cremers_class": "lateral structures",
+      "transport": "1D precursor diffusion along a long straight lateral channel (PillarHall LHAR)",
+      "members": [
+        "pillarhall_lhar",
+        "lhar_channel",
+        "macro_lateral",
+        "air_wedge"
+      ],
+      "parameters": [
+        "feature_height",
+        "feature_width",
+        "feature_length",
+        "aspect_ratio",
+        "coated_aspect_ratio",
+        "channel_filling_fraction"
+      ]
+    },
+    "vertical_structure": {
+      "label": "Vertical structure (trench / via / hole)",
+      "cremers_class": "vertical structures",
+      "transport": "1D precursor diffusion down a single vertical trench, via or hole",
+      "members": [
+        "trench",
+        "via",
+        "hole",
+        "cylindrical_pore",
+        "capillary_tube"
+      ],
+      "parameters": [
+        "feature_height",
+        "feature_width",
+        "aspect_ratio",
+        "coated_aspect_ratio",
+        "pore_diameter",
+        "trench_periodicity",
+        "trench_duty_cycle"
+      ]
+    },
+    "porous_material": {
+      "label": "Porous material",
+      "cremers_class": "porous materials",
+      "transport": "effective-medium (Knudsen) diffusion through interconnected / parallel pores",
+      "members": [
+        "aao",
+        "track_etch_membrane",
+        "mesoporous_film",
+        "mesoporous_powder",
+        "mof",
+        "opal",
+        "nonwoven_fiber"
+      ],
+      "parameters": [
+        "pore_diameter",
+        "pore_radius",
+        "generation"
+      ]
+    },
+    "nanostructure_array": {
+      "label": "External nanostructure array",
+      "transport": "external coating of free-standing objects; no channel confinement",
+      "members": [
+        "cnt",
+        "nanowire",
+        "nanorod",
+        "pillar_array"
+      ],
+      "parameters": [
+        "aspect_ratio",
+        "angle"
+      ]
+    },
+    "planar": {
+      "label": "Planar substrate",
+      "transport": "flat wafer; no diffusion limitation",
+      "members": [
+        "planar_wafer"
+      ],
+      "parameters": []
+    },
+    "cavity": {
+      "label": "Cavity / macro-feature",
+      "transport": "enclosed cavity",
+      "members": [
+        "cavity_structure"
+      ],
+      "parameters": [
+        "feature_height",
+        "feature_width",
+        "angle"
+      ]
+    }
+  },
   "model_families": {
     "ald_surface_kinetics": {
       "name": "ALD surface-reaction (Langmuir) kinetics",
@@ -6022,7 +6853,12 @@
           "as": "boolean — is the process self-limited?"
         }
       ],
-      "iri": "https://w3id.org/psed-ald/ontology#yanguas_gil_saturation"
+      "iri": "https://w3id.org/psed-ald/ontology#yanguas_gil_saturation",
+      "applies_to_geometry": [
+        "porous_material",
+        "vertical_structure",
+        "lateral_channel"
+      ]
     },
     {
       "id": "ylilammi_langmuir_channel",
@@ -6225,7 +7061,11 @@
           "as": "x_p"
         }
       ],
-      "iri": "https://w3id.org/psed-ald/ontology#ylilammi_langmuir_channel"
+      "iri": "https://w3id.org/psed-ald/ontology#ylilammi_langmuir_channel",
+      "applies_to_geometry": [
+        "lateral_channel",
+        "vertical_structure"
+      ]
     },
     {
       "id": "aguinsky_reversible_levelset",
@@ -6403,7 +7243,11 @@
           "as": "penetration depth"
         }
       ],
-      "iri": "https://w3id.org/psed-ald/ontology#aguinsky_reversible_levelset"
+      "iri": "https://w3id.org/psed-ald/ontology#aguinsky_reversible_levelset",
+      "applies_to_geometry": [
+        "lateral_channel",
+        "vertical_structure"
+      ]
     },
     {
       "id": "arts_recombination",
@@ -6523,25 +7367,29 @@
           "as": "recombination probability r"
         }
       ],
-      "iri": "https://w3id.org/psed-ald/ontology#arts_recombination"
+      "iri": "https://w3id.org/psed-ald/ontology#arts_recombination",
+      "applies_to_geometry": [
+        "lateral_channel",
+        "vertical_structure"
+      ]
     }
   ],
   "_counts": {
     "classes": 201,
     "relations": 40,
-    "quantity_kinds": 124,
-    "quantity_kinds_enriched": 93,
+    "quantity_kinds": 149,
+    "quantity_kinds_enriched": 118,
     "quantity_specializations": 22,
     "quantity_equations": 13,
     "quantity_families": 9,
-    "quantity_in_family": 32,
-    "quantity_categories": 6,
-    "quantity_categorized": 74,
+    "quantity_in_family": 43,
+    "quantity_categories": 9,
+    "quantity_categorized": 99,
     "quantity_transforms": 6,
-    "axis_coordinate": 5,
-    "axis_condition": 80,
-    "axis_output": 39,
-    "individuals": 164,
+    "axis_coordinate": 7,
+    "axis_condition": 93,
+    "axis_output": 49,
+    "individuals": 186,
     "models": 4,
     "model_families": 1,
     "model_equations": 30

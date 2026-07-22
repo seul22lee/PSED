@@ -29,7 +29,7 @@ import importlib.util
 _spec = importlib.util.spec_from_file_location("ex", ROOT / "scripts" / "04_extract.py")
 ex = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(ex)   # section_text, _load_key
 
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-flash-latest"
 OUT = PIPE / "output"
 
 # light unit normalisation to KB conventions
@@ -52,19 +52,22 @@ conditions actually stated (null if absent — do NOT guess):
  "purge_time_s":num|null,"ncycles":num|null,"carrier_gas":str|null}"""
 
 
-def methods_fill(sd, scout, client):
-    """Fill scout-deferred conditions from methods. One call, only if something's missing."""
-    need = (not scout.get("precursors") or not scout.get("coreactants")
-            or not scout.get("temperature_window_C"))
-    md = (EXTRACTED / sd / "document.md").read_text()
-    methods = ex.section_text(md, ["experimental", "methods", "deposition", "film growth",
-                                   "materials and methods"], limit=4000)
-    base = {"precursors": scout.get("precursors") or [],
+def base_card(scout):
+    """Process card from the scout alone (no LLM)."""
+    return {"precursors": scout.get("precursors") or [],
             "coreactants": scout.get("coreactants") or [],
             "process_type": scout.get("process_type") or "unknown",
             "temperature_C": (scout.get("temperature_window_C") or [None])[0],
             "pressure_Pa": None, "pulse_time_s": None, "purge_time_s": None,
             "ncycles": None, "carrier_gas": None}
+
+
+def methods_fill(sd, scout, client):
+    """Fill scout-deferred conditions from the methods section. One LLM call."""
+    base = base_card(scout)
+    md = (EXTRACTED / sd / "document.md").read_text()
+    methods = ex.section_text(md, ["experimental", "methods", "deposition", "film growth",
+                                   "materials and methods"], limit=4000)
     if not methods:
         return base, {}
     from google.genai import types
@@ -74,10 +77,11 @@ def methods_fill(sd, scout, client):
     u = getattr(r, "usage_metadata", None)
     tok = {"in": getattr(u, "prompt_token_count", 0) or 0, "out": getattr(u, "candidates_token_count", 0) or 0}
     try:
-        m = json.loads(r.text)
+        m = ex._loads_json(r.text)
     except Exception:
         return base, tok
-    # prefer scout chemistry, fill the rest from methods
+    if not isinstance(m, dict):          # model sometimes returns a bare list/scalar
+        return base, tok
     for k in ("precursors", "coreactants"):
         if not base[k] and m.get(k):
             base[k] = m[k]
@@ -86,6 +90,17 @@ def methods_fill(sd, scout, client):
         if base.get(k) in (None, "unknown", []) and m.get(k) not in (None, ""):
             base[k] = m[k]
     return base, tok
+
+
+def get_card(sd, scout, client):
+    """The methods-filled process card — CACHED to card.json so it's computed once.
+    On re-resolve (client=None) it loads the cache (or the scout base), NO LLM."""
+    cf = EXTRACTED / sd / "card.json"
+    if cf.exists():
+        return json.loads(cf.read_text()), {}
+    card, tok = (methods_fill(sd, scout, client) if client else (base_card(scout), {}))
+    cf.write_text(json.dumps(card, indent=1))
+    return card, tok
 
 
 def _ctrl(q, v, u, react=None, source="methods"):
@@ -116,7 +131,9 @@ def paper_conditions(card):
 
 
 def short_pid(sd):
-    return sd.split("_")[-1] if "_" in sd else sd
+    # Unified paper id = the filesystem-safe full DOI (the extracted dir name),
+    # so extracted/ and output/ share ONE identifier: the DOI.
+    return sd
 
 
 def to_experiments(sd, scout, records, card):
@@ -141,6 +158,7 @@ def to_experiments(sd, scout, records, card):
         mat = lib.canon_material(r.get("material")) or (scout.get("materials") or [None])[0]
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
         panel = (r.get("provenance") or {}).get("panel") or ""
+        panel = panel.lower() if re.fullmatch(r"[A-Za-z]", str(panel).strip()) else ""   # only a real panel letter
         e = {
             "material": mat, "material_raw": r.get("material"),
             "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
@@ -156,13 +174,56 @@ def to_experiments(sd, scout, records, card):
             "analysis_ready": bool(pts and mq),
             "exp_id": f"{pid}-{fig}{panel}-{len(exps)}",
             "provenance": {**(r.get("provenance") or {}), "doi": sd},
-            "series_name": None, "structure": None, "varies": [], "dependent": [],
+            "series_name": None, "structure": None,
+            # dependent = the measured output; varies = the swept coordinate (profiles).
+            # Populated so the shared 0706 consumers (evaluate_kb, kg, similarity) see the
+            # measured/swept quantities the same way as old-pipeline records.
+            "varies": [cq] if (cq and len(pts) > 1) else [],
+            "dependent": [{"quantity": mq, "unit": (r.get("measurand") or {}).get("unit"),
+                           "family": lib.family(mq)}] if mq else [],
             "issues": [] if pts else ["no-points"],
         }
         r_obj = recipe_mod.from_experiment(e)
         e["recipe"] = r_obj.to_dict(); e["recipe"]["completeness"] = r_obj.completeness()
         exps.append(e)
+    if not exps:
+        # No figure data digitized — still admit the paper as ONE paper-level experiment
+        # (attached to its Paper node in the KG) carrying chemistry + conditions + the data
+        # modalities the scout saw (XRD, spectra, imaging …), so the paper enters the KB.
+        exps.append(paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c, base_ctrl))
     return pid, exps
+
+
+def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c, base_ctrl):
+    raw_mat = (scout.get("materials") or [None])[0]
+    mat = lib.canon_material(raw_mat) or raw_mat
+    gpc = scout.get("gpc_nm")
+    mq = "growth_per_cycle" if gpc is not None else None
+    modalities = sorted(k for k, v in (scout.get("data") or {}).items()
+                        if isinstance(v, dict) and v.get("present"))
+    e = {
+        "material": mat, "material_raw": raw_mat,
+        "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
+        "reactants": reactants, "carrier_gas": carrier, "process_type": ptype,
+        "cycle_sequence": "AB" if core_c else "A",
+        "controlled": base_ctrl,
+        "measurand": {"quantity": mq, "unit": "nm" if mq else None,
+                      "family": lib.family(mq) if mq else None},
+        "coordinate": None, "coordinate_family": None,
+        "points": [], "granularity": "single",
+        "relevance": "experimental", "is_model_result": False, "is_paper_level": True,
+        "analysis_ready": False,
+        "exp_id": f"{pid}-paper-0",
+        "provenance": {"doi": sd, "source": "paper-level", "figure": "paper",
+                       "study_type": scout.get("study_type"), "modalities": modalities},
+        "series_name": None, "structure": None, "varies": [],
+        "dependent": ([{"quantity": mq, "value": gpc, "unit": "nm", "family": lib.family(mq)}]
+                      if mq else []),
+        "issues": ["paper-level (no figure data extracted)"],
+    }
+    r_obj = recipe_mod.from_experiment(e)
+    e["recipe"] = r_obj.to_dict(); e["recipe"]["completeness"] = r_obj.completeness()
+    return e
 
 
 def _num(v):
@@ -178,14 +239,18 @@ def _unit(v):
 
 
 def main(sds):
-    from google import genai
-    client = genai.Client(api_key=ex._load_key())
+    resolve_only = "--resolve-only" in sds        # deterministic re-grounding, NO LLM
+    sds = [s for s in sds if not s.startswith("--")]
+    client = None
+    if not resolve_only:
+        from google import genai
+        client = genai.Client(api_key=ex._load_key())
     TI = TO = 0
     for sd in sds:
         d = EXTRACTED / sd
         scout = json.loads((d / "scout.json").read_text())
         records = json.loads((d / "records.json").read_text()) if (d / "records.json").exists() else []
-        card, tok = methods_fill(sd, scout, client)
+        card, tok = get_card(sd, scout, client)   # cached; LLM only first time (skipped on --resolve-only)
         TI += tok.get("in", 0); TO += tok.get("out", 0)
         pid, exps = to_experiments(sd, scout, records, card)
         outdir = OUT / pid / "resolved"

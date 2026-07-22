@@ -1,0 +1,66 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "Er2O3"
+ ],
+ "precursors": [
+  "tris(1-(dimethylamino)-3,3-dimethylbut-1-en-2-olate)erbium(III)"
+ ],
+ "coreactants": [
+  "H2O"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": [
+  175,
+  225
+ ],
+ "gpc_nm": 0.025,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": "F7"
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": "F5"
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": "F10"
+  },
+  "conformality_or_penetration_profile": {
+   "present": true,
+   "where": "F13"
+  }
+ },
+ "drill": [
+  {
+   "where": "F7",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate as a function of deposition temperature showing the ALD window."
+  },
+  {
+   "where": "F5",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate as a function of precursor pulse length to show saturation."
+  },
+  {
+   "where": "F6",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate as a function of water pulse length to show saturation."
+  }
+ ],
+ "go_deeper": true,
+ "_tokens": {
+  "in": 1999,
+  "out": 500
+ },
+ "_scout_input_chars": 6361
+}
