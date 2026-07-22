@@ -45,15 +45,19 @@ data precisely. Return ONLY JSON:
     "x":{{"quantity":"<coordinate>","unit":"<unit>","log":false}},
     "y":{{"quantity":"<measurand>","unit":"<unit>","log":false}},
     "series":[{{"label":"<series/material or ''>","points":[[x,y],[x,y],...]}}],
-    "conditions":{{"<name>":<value_with_unit_as_string>}}   // conditions fixed in this panel,
-                                                          // read from the caption/axes/legend
+    "conditions":{{"<name>":<numeric_value_with_unit_as_string>}}   // NUMERIC process
+      // conditions held fixed in this panel (e.g. temperature "150 °C", pressure,
+      // dose/pulse time, number of cycles). ONLY quantities with a numeric value.
   }}
 ]}}
 Rules: x.quantity in {COORDINATES}; y.quantity in {MEASURANDS} (pick the closest; if none
 fits, use the axis label verbatim). Read every visible data point in order; if a curve is
 dense, sample ~10-20 representative points. Use the numeric axis scales (mind log axes).
-Do NOT invent panels or series that are not shown. conditions = things held fixed (e.g.
-temperature, precursor, number of cycles) taken from the caption/legend, not guessed."""
+Do NOT invent panels or series that are not shown. conditions = NUMERIC process
+parameters held fixed in this panel (temperature, pressure, dose/pulse time, cycle
+count), from the caption/legend, not guessed. Do NOT put material, precursor,
+coreactant, substrate, or process type in conditions — those are identified separately
+and are NOT conditions."""
 
 
 def _fignum(s):
@@ -151,6 +155,17 @@ def _clean_panel(p):
 import re as _re
 
 
+# Defense-in-depth backstop: a condition must have a NUMERIC value. The vision prompt is
+# the real fix (it no longer offers 'precursor' as an example and excludes categorical
+# fields); this should be a no-op when the prompt behaves. Categorical values are captured
+# properly elsewhere — material via the material field, precursor/coreactant via chemistry.
+def _clean_conditions(cond):
+    if not isinstance(cond, dict):
+        return {}
+    return {k: v for k, v in cond.items()
+            if k and _re.match(r"^\s*[-+]?\.?\d", str(v))}
+
+
 def _strip_phase(s):
     """Strip phase/stack prefixes ('a-', 'c-', 'Mo/') without touching stoichiometry
     digits — 'c-WS2' -> 'WS2', never 'WS'. Bounded repeat resolves stacked prefixes
@@ -209,7 +224,7 @@ def flatten_records(sd, scout, figresults):
                     "measurand": {"quantity": y.get("quantity"), "unit": y.get("unit")},
                     "coordinate": x.get("quantity"), "coordinate_unit": x.get("unit"),
                     "points": s.get("points", []),
-                    "controlled": p.get("conditions", {}),
+                    "controlled": _clean_conditions(p.get("conditions", {})),
                     "chemistry": {"precursors": scout.get("precursors"),
                                   "coreactants": scout.get("coreactants")},
                     "source": fr.get("source", "measured"),   # measured | simulated | both

@@ -8,6 +8,63 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 15:40 (local) — RESOLVED at root: categorical keys leaking into `controlled`
+**Context:** `07` was proposing `material`/`precursor`/`substrate`/`process_type` as
+ontology quantity_kinds. Root cause was upstream: the **vision prompt itself** listed
+"precursor" as a conditions example — `conditions = things held fixed (e.g. temperature,
+precursor, number of cycles)` — so the model dutifully put categorical fields there, and
+`07` faithfully proposed them.
+**Status:** resolved for re-extracted papers; see the stale-corpus note below
+**Detail:** Fixed at the source. `VISION_SCHEMA` now asks for
+`<numeric_value_with_unit_as_string>` and states: *"conditions = NUMERIC process
+parameters held fixed in this panel … Do NOT put material, precursor, coreactant,
+substrate, or process type in conditions — those are identified separately and are NOT
+conditions."* A numeric-only backstop in `_clean_conditions` (value must start with a
+digit) is retained as defense-in-depth — a prompt is not a guarantee.
+
+The 6 deep papers were **re-extracted with fresh vision calls**, not cache-cleaned, so
+they now go through the identical pipeline batch-51 will use and the prompt fix is
+actually validated end-to-end. Result, measured on raw vision output before any filter:
+
+    BEFORE (6 papers): precursor x4, coreactant x4
+    AFTER  (6 papers): {}  — clean
+
+Every condition key the model now emits is a genuine numeric process parameter:
+`temperature`, `pressure`, `hot_wire_temperature`, `pulse_time`, `film_thickness`.
+No structural data loss: panels/series counts identical across all 6; only `celc` point
+count moved 33→35, fresh-vision sampling variance on a dense curve.
+Vision cost: in=15,397 out=5,003 across 9 calls.
+
+⚠️ **The stale corpus still pollutes proposals.** `gather_unmapped()` takes **no
+arguments** — it iterates every directory under `extracted/`, so passing DOIs to
+`07_propose_ontology.py` does not scope it. The 17 papers not yet re-extracted still
+carry **300** categorical keys in their `records.json` `controlled` blocks, and those are
+the entire source of the remaining junk candidates. The re-extracted 6 contribute zero.
+This clears itself when the rest of the corpus runs through the fixed prompt.
+
+## 2026-07-22 15:40 (local) — REGRESSION from re-extraction: series labels lost their semantic prefix
+**Context:** Fresh vision on `10.1021_acs.chemmater.2c01154` returned Fig 16a's series
+labels as bare values (`'0'`, `'0.20'`, `'0.50'`…) instead of the previous
+`'H2 flow ratio: 0'`, `'H2 flow ratio: 0.20'`, …
+**Status:** needs-decision
+**Detail:** The `series_label → controlled` coercion in `06_to_kb` requires a
+`"<name>: <value>"` shape. With bare numeric labels there is no name to parse, so the 6
+H2-flow-ratio conditions added in `0b9ac9f` are **gone**: `H2 conditions: 0`,
+`series-source conditions: 0`. `series_name` now holds `'0.20'` — a number with no
+indication of what it measures.
+
+Nothing is fabricated and nothing is corrupted, but the KB is **less informative** than
+before the re-extraction. The quantity name does survive elsewhere: Fig 17's records
+carry `coordinate: "H2 flow ratio"` (3 records), so the paper's sweep is still
+represented — just not as a per-series condition on Fig 16a.
+
+This is vision non-determinism between runs, not a consequence of the prompt edit (the
+prompt does not mention series labels). It is the cost of re-extracting rather than
+re-flattening. Options: (a) accept — the coordinate captures the sweep; (b) ask the
+prompt to qualify series labels with the legend's quantity name; (c) fall back to the
+panel's legend title when a series label is purely numeric. Worth settling before
+batch-51, since parameter-sweep legends are common.
+
 ## 2026-07-22 14:55 (local) — Swept-condition quantities are ungrounded; 07 proposal needs curation
 **Context:** Series conditions now reach `controlled`, but `canon_quantity('H2 flow
 ratio')` returns `None`, so they enter the KB as free-text with `recipe_role: null` and
