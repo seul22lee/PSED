@@ -8,6 +8,47 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 13:30 (local) — Series-label contamination of the material axis: rule settled
+**Context:** Two variants of the same bug surfaced in the trial batch — condition
+legends (`"H2 flow ratio: 0.20"`, `10.1021_acs.chemmater.2c01154`) and **substrate**
+legends that are themselves valid formulas (`Al2O3`, `Si`, `SiO2` in `jcrysgro`, whose
+deposited film is Bi2Te3). A naive "is this a formula?" test would keep the substrates
+as material and get it wrong.
+**Status:** resolved (classification rule); see the entry below for what is still open
+**Detail:**
+
+**The rule:** a series label counts as the material **only if it is in
+`scout.materials`** (allowing a phase prefix). Every other label — including valid
+formulas used as substrates, barriers, or co-reactants — becomes `series_label`, and
+`material` falls back to `scout.materials[0]`. Implemented as `_classify_label` in
+`05_figure_extract.py`, returning `material` / `condition` / `empty`.
+
+Anchoring on `scout.materials` rather than on formula-shape is the guard that prevents
+substrate and condition contamination of the material axis. **For the 51-paper batch
+this matters most in multi-series figures**, which is where every instance so far came
+from — substrate-comparison plots and parameter-sweep legends.
+
+Re-flattened all 6 deep papers from cached `figure_data.json` (no vision re-call);
+output was **byte-identical** to the previous scout-anchored helper, i.e. this revision
+hardened the rule without changing current data. Record and point counts unchanged.
+
+⚠️ **Known flaw, still present and now the main residual risk.** `_classify_label`
+strips trailing digits (`base = re.sub(r"[+xy0-9\s]+$", "", base)`) *before* comparing,
+which destroys stoichiometry — so the phase-prefix branch advertised in the docstring
+never fires for any material whose formula ends in a digit (MoS2, WS2, TiS2, Al2O3,
+TiO2, ZrO2, Fe2O3, Bi2Te3 — nearly all of them). Verified:
+
+    mats = ['MoS2','WS2','TiS2']
+    'MoS2'   -> material      'c-MoS2'  -> condition
+    'WS2'    -> material      'c-WS2'   -> condition   <-- wrong
+    'TiS2'   -> material      'a-MoS2+x'-> condition
+
+Harmless across the current 6 papers because `mats[0]` is the right material every
+time. **But in a multi-material paper, a phase-prefixed series such as `c-WS2` gets
+`material = mats[0] = MoS2` — silently wrong**, and `chemmater.2c01154` is already such
+a paper (MoS2/WS2/TiS2). Fix: strip the phase prefix without stripping trailing digits
+(keep a narrow `+x`/`+y` suffix strip). Not applied — awaiting a decision.
+
 ## 2026-07-22 13:05 (local) — Series-label-in-material: fixed in records, NOT yet in the KB
 **Context:** Multi-series figures were putting legend text into the `material` field
 (e.g. `"H2 flow ratio: 0.20"` for `10.1021_acs.chemmater.2c01154`). Root cause was
