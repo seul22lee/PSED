@@ -64,23 +64,19 @@
    "unit": "\u00c5/cyc",
    "family": "film_amount"
   },
-  "coordinate": "exposure",
-  "coordinate_family": "dose",
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
   "points": [
    [
     0.0,
     0.0
    ],
    [
-    2.5,
-    0.1
-   ],
-   [
-    5.0,
+    3.5,
     0.6
    ],
    [
-    10.0,
+    10.5,
     1.5
    ],
    [
@@ -89,15 +85,15 @@
    ],
    [
     30.0,
-    3.3
+    3.25
    ],
    [
     60.0,
     4.0
    ],
    [
-    80.0,
-    4.0
+    80.5,
+    4.1
    ]
   ],
   "granularity": "profile",
@@ -118,7 +114,7 @@
   "phase": null,
   "structure": null,
   "varies": [
-   "exposure"
+   "pulse_time"
   ],
   "dependent": [
    {
@@ -237,79 +233,75 @@
   "coordinate_family": "dose",
   "points": [
    [
-    0.0,
+    2.0,
     0.0
    ],
    [
-    2.5,
-    0.1
-   ],
-   [
-    5.0,
-    0.3
-   ],
-   [
-    7.5,
-    0.5
+    3.0,
+    0.42
    ],
    [
     10.0,
-    0.7
-   ],
-   [
-    12.5,
-    0.9
+    0.5
    ],
    [
     15.0,
+    0.72
+   ],
+   [
+    22.0,
+    0.9
+   ],
+   [
+    28.0,
+    1.3
+   ],
+   [
+    35.0,
     1.2
    ],
    [
-    20.0,
-    1.4
+    65.0,
+    2.08
    ],
    [
-    25.0,
-    1.5
+    94.0,
+    2.7
    ],
    [
-    30.0,
-    1.6
+    96.0,
+    2.85
    ],
    [
-    40.0,
-    2.1
+    106.0,
+    2.95
    ],
    [
-    80.0,
-    2.8
-   ],
-   [
-    90.0,
-    2.9
-   ],
-   [
-    100.0,
-    2.8
-   ],
-   [
-    120.0,
-    3.4
-   ],
-   [
-    150.0,
+    143.0,
     3.2
    ],
    [
-    200.0,
-    3.8
+    151.0,
+    3.45
    ],
    [
-    250.0,
-    3.9
+    163.0,
+    2.9
    ],
    [
-    300.0,
+    165.0,
+    3.2
+   ],
+   [
+    222.0,
+    3.32
+   ],
+   [
+    236.0,
+    3.95
+   ],
+   [
+    288.0,
     4.0
    ]
   ],
@@ -441,12 +433,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "ozone_exposure",
+    "quantity": "ozone_pulse_time",
     "value": 10.0,
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": null
    }
   ],
   "measurand": {
@@ -459,31 +451,27 @@
   "points": [
    [
     5.0,
-    10.0
+    6.0
    ],
    [
     10.0,
-    15.0
-   ],
-   [
-    15.0,
-    25.0
+    9.0
    ],
    [
     20.0,
-    35.0
+    31.0
    ],
    [
     35.0,
-    45.0
+    42.0
    ],
    [
     50.0,
-    90.0
+    82.0
    ],
    [
     75.0,
-    125.0
+    127.0
    ]
   ],
   "granularity": "profile",
@@ -615,55 +603,59 @@
    }
   ],
   "measurand": {
-   "quantity": "oxygen_iron_ratio",
-   "unit": "%",
-   "family": null
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cyc",
+   "family": "film_amount"
   },
-  "coordinate": "angle",
-  "coordinate_family": null,
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
   "points": [
    [
-    30.0,
-    61.2
+    160.0,
+    2.0
    ],
    [
-    45.0,
-    59.0
+    180.0,
+    1.9
    ],
    [
-    60.0,
-    58.5
+    200.0,
+    2.0
    ],
    [
-    75.0,
-    59.0
+    220.0,
+    2.3
+   ],
+   [
+    240.0,
+    1.52
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1002_admi.202000318-F2a-3",
+  "exp_id": "10.1002_admi.202000318-F1d-3",
   "provenance": {
-   "figure": "Fig 2",
-   "figure_number": "2",
-   "fig_docling_index": "2",
-   "panel": "a",
-   "caption": "Figure 2. Film compositions calculated from angle-resolved XPS measurements of Fe2O3 films grown with varying levels of ozone exposure. All samples were grown with 20-50 torr-s of TBF exposure except ",
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "d",
+   "caption": "Figure 1. Growth of iron oxide flms as measured by VASE. a) The growth per cycle as a function of ozone exposure with a saturating exposure of TBF.Because the TBF exposure required to reach saturation",
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: 10s Ozone",
+  "series_name": null,
   "phase": null,
   "structure": null,
   "varies": [
-   "angle"
+   "deposition_temperature"
   ],
   "dependent": [
    {
-    "quantity": "oxygen_iron_ratio",
-    "unit": "%",
-    "family": null
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cyc",
+    "family": "film_amount"
    }
   ],
   "issues": [],
@@ -702,7 +694,7 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F2a-3"
+    "_exp_id": "10.1002_admi.202000318-F1d-3"
    },
    "completeness": 0.714
   }
@@ -776,20 +768,20 @@
   "coordinate_family": null,
   "points": [
    [
-    30.0,
-    62.5
+    30,
+    59.8
    ],
    [
-    45.0,
-    60.5
+    45,
+    58.7
    ],
    [
-    60.0,
-    59.5
+    60,
+    58.7
    ],
    [
-    75.0,
-    59.0
+    75,
+    59.1
    ]
   ],
   "granularity": "profile",
@@ -806,7 +798,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: 60s Ozone",
+  "series_name": "ozone exposure time: 10s Ozone",
   "phase": null,
   "structure": null,
   "varies": [
@@ -929,20 +921,20 @@
   "coordinate_family": null,
   "points": [
    [
-    30.0,
-    63.2
+    30,
+    61.5
    ],
    [
-    45.0,
-    60.8
+    45,
+    58.7
    ],
    [
-    60.0,
-    59.8
+    60,
+    58.8
    ],
    [
-    75.0,
-    59.2
+    75,
+    58.8
    ]
   ],
   "granularity": "profile",
@@ -959,7 +951,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: 100s Ozone",
+  "series_name": "ozone exposure time: 60s Ozone",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1082,19 +1074,19 @@
   "coordinate_family": null,
   "points": [
    [
-    30.0,
-    70.2
+    30,
+    63.2
    ],
    [
-    45.0,
-    63.0
+    45,
+    60.7
    ],
    [
-    60.0,
-    60.0
+    60,
+    59.9
    ],
    [
-    75.0,
+    75,
     59.0
    ]
   ],
@@ -1112,7 +1104,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: 120s Ozone",
+  "series_name": "ozone exposure time: 100s Ozone",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1235,20 +1227,20 @@
   "coordinate_family": null,
   "points": [
    [
-    30.0,
-    59.5
+    30,
+    70.3
    ],
    [
-    45.0,
-    58.0
+    45,
+    63.2
    ],
    [
-    60.0,
-    58.0
+    55,
+    60.2
    ],
    [
-    75.0,
-    58.5
+    65,
+    58.9
    ]
   ],
   "granularity": "profile",
@@ -1265,7 +1257,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: 120s Ozone, x10 TBF",
+  "series_name": "ozone exposure time: 120s Ozone",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1377,173 +1369,57 @@
     "of_reactant": "B",
     "source": "methods",
     "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "film_thickness",
-    "value": 24.0,
-    "unit": "nm",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
    }
   ],
   "measurand": {
-   "quantity": "intensity",
-   "unit": "cps",
+   "quantity": "oxygen_iron_ratio",
+   "unit": "%",
    "family": null
   },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
+  "coordinate": "angle",
+  "coordinate_family": null,
   "points": [
    [
-    0.04,
-    15000000.0
+    30,
+    59.5
    ],
    [
-    0.1,
-    12000000.0
+    45,
+    58.1
    ],
    [
-    0.2,
-    10000000.0
+    60,
+    58.2
    ],
    [
-    0.3,
-    8000000.0
-   ],
-   [
-    0.4,
-    6000000.0
-   ],
-   [
-    0.5,
-    4000000.0
-   ],
-   [
-    0.6,
-    2000000.0
-   ],
-   [
-    0.7,
-    1000000.0
-   ],
-   [
-    0.75,
-    500000.0
-   ],
-   [
-    0.8,
-    200000.0
-   ],
-   [
-    0.85,
-    100000.0
-   ],
-   [
-    0.9,
-    200000.0
-   ],
-   [
-    0.95,
-    300000.0
-   ],
-   [
-    1.0,
-    400000.0
-   ],
-   [
-    1.05,
-    300000.0
-   ],
-   [
-    1.1,
-    200000.0
-   ],
-   [
-    1.15,
-    100000.0
-   ],
-   [
-    1.2,
-    80000.0
-   ],
-   [
-    1.3,
-    50000.0
-   ],
-   [
-    1.4,
-    40000.0
-   ],
-   [
-    1.5,
-    30000.0
-   ],
-   [
-    1.6,
-    25000.0
-   ],
-   [
-    1.7,
-    20000.0
-   ],
-   [
-    1.8,
-    15000.0
-   ],
-   [
-    1.9,
-    12000.0
-   ],
-   [
-    2.0,
-    10000.0
-   ],
-   [
-    2.2,
-    7000.0
-   ],
-   [
-    2.4,
-    5000.0
-   ],
-   [
-    2.6,
-    3500.0
-   ],
-   [
-    2.8,
-    2500.0
-   ],
-   [
-    3.0,
-    2000.0
+    75,
+    58.4
    ]
   ],
   "granularity": "profile",
-  "relevance": "model",
+  "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1002_admi.202000318-F4a-8",
+  "exp_id": "10.1002_admi.202000318-F2a-8",
   "provenance": {
-   "figure": "Fig 4",
-   "figure_number": "4",
-   "fig_docling_index": "4",
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "2",
    "panel": "a",
-   "caption": "Figure 4. a) XRR measurement of a 24.0 nm thick Fe2O3 flm,shown in orange. Calculated intensity shown in red is generated from a bilayer model reflecting a gradient of density within the flm,in which ",
+   "caption": "Figure 2. Film compositions calculated from angle-resolved XPS measurements of Fe2O3 films grown with varying levels of ozone exposure. All samples were grown with 20-50 torr-s of TBF exposure except ",
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: Reflectivity",
+  "series_name": "ozone exposure time: 120s Ozone, x10 TBF",
   "phase": null,
   "structure": null,
   "varies": [
-   "spatial_coordinate"
+   "angle"
   ],
   "dependent": [
    {
-    "quantity": "intensity",
-    "unit": "cps",
+    "quantity": "oxygen_iron_ratio",
+    "unit": "%",
     "family": null
    }
   ],
@@ -1583,7 +1459,7 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F4a-8"
+    "_exp_id": "10.1002_admi.202000318-F2a-8"
    },
    "completeness": 0.714
   }
@@ -1646,14 +1522,6 @@
     "of_reactant": "B",
     "source": "methods",
     "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "film_thickness",
-    "value": 24.0,
-    "unit": "nm",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
    }
   ],
   "measurand": {
@@ -1661,136 +1529,72 @@
    "unit": "cps",
    "family": null
   },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
+  "coordinate": "2\u03b8",
+  "coordinate_family": null,
   "points": [
    [
-    0.04,
-    15000000.0
-   ],
-   [
     0.1,
-    12000000.0
-   ],
-   [
-    0.2,
-    10000000.0
+    7000000
    ],
    [
     0.3,
-    8000000.0
-   ],
-   [
-    0.4,
-    6000000.0
+    15000000
    ],
    [
     0.5,
-    4000000.0
-   ],
-   [
-    0.6,
-    2000000.0
+    18000000
    ],
    [
     0.7,
-    1000000.0
+    5000000
    ],
    [
     0.75,
-    500000.0
+    200000
    ],
    [
-    0.8,
-    200000.0
-   ],
-   [
-    0.85,
-    100000.0
-   ],
-   [
-    0.9,
-    150000.0
+    0.83,
+    700000
    ],
    [
     0.95,
-    200000.0
-   ],
-   [
-    1.0,
-    250000.0
-   ],
-   [
-    1.05,
-    200000.0
+    600000
    ],
    [
     1.1,
-    150000.0
-   ],
-   [
-    1.15,
-    100000.0
+    110000
    ],
    [
     1.2,
-    80000.0
+    30000
    ],
    [
-    1.3,
-    50000.0
-   ],
-   [
-    1.4,
-    40000.0
+    1.38,
+    30000
    ],
    [
     1.5,
-    30000.0
-   ],
-   [
-    1.6,
-    25000.0
+    18000
    ],
    [
     1.7,
-    20000.0
-   ],
-   [
-    1.8,
-    15000.0
-   ],
-   [
-    1.9,
-    12000.0
+    10000
    ],
    [
     2.0,
-    10000.0
+    4000
    ],
    [
-    2.2,
-    7000.0
-   ],
-   [
-    2.4,
-    5000.0
-   ],
-   [
-    2.6,
-    3500.0
-   ],
-   [
-    2.8,
-    2500.0
+    2.5,
+    1500
    ],
    [
     3.0,
-    2000.0
+    700
    ]
   ],
   "granularity": "profile",
-  "relevance": "model",
+  "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
   "exp_id": "10.1002_admi.202000318-F4a-9",
@@ -1803,11 +1607,11 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: Single Layer Model",
+  "series_name": "model: Reflectivity",
   "phase": null,
   "structure": null,
   "varies": [
-   "spatial_coordinate"
+   "2\u03b8"
   ],
   "dependent": [
    {
@@ -1915,14 +1719,6 @@
     "of_reactant": "B",
     "source": "methods",
     "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "film_thickness",
-    "value": 24.0,
-    "unit": "nm",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
    }
   ],
   "measurand": {
@@ -1930,136 +1726,68 @@
    "unit": "cps",
    "family": null
   },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
+  "coordinate": "2\u03b8",
+  "coordinate_family": null,
   "points": [
    [
-    0.04,
-    15000000.0
-   ],
-   [
     0.1,
-    12000000.0
-   ],
-   [
-    0.2,
-    10000000.0
+    5000000
    ],
    [
     0.3,
-    8000000.0
-   ],
-   [
-    0.4,
-    6000000.0
+    15000000
    ],
    [
     0.5,
-    4000000.0
-   ],
-   [
-    0.6,
-    2000000.0
+    18000000
    ],
    [
     0.7,
-    1000000.0
+    4000000
    ],
    [
-    0.75,
-    500000.0
-   ],
-   [
-    0.8,
-    200000.0
+    0.78,
+    150000
    ],
    [
     0.85,
-    100000.0
+    600000
    ],
    [
-    0.9,
-    200000.0
+    0.97,
+    600000
    ],
    [
-    0.95,
-    300000.0
+    1.08,
+    80000
    ],
    [
-    1.0,
-    400000.0
+    1.22,
+    25000
    ],
    [
-    1.05,
-    300000.0
-   ],
-   [
-    1.1,
-    200000.0
-   ],
-   [
-    1.15,
-    100000.0
-   ],
-   [
-    1.2,
-    80000.0
-   ],
-   [
-    1.3,
-    50000.0
-   ],
-   [
-    1.4,
-    40000.0
+    1.35,
+    25000
    ],
    [
     1.5,
-    30000.0
-   ],
-   [
-    1.6,
-    25000.0
-   ],
-   [
-    1.7,
-    20000.0
-   ],
-   [
-    1.8,
-    15000.0
-   ],
-   [
-    1.9,
-    12000.0
+    18000
    ],
    [
     2.0,
-    10000.0
+    4000
    ],
    [
-    2.2,
-    7000.0
-   ],
-   [
-    2.4,
-    5000.0
-   ],
-   [
-    2.6,
-    3500.0
-   ],
-   [
-    2.8,
-    2500.0
+    2.5,
+    1500
    ],
    [
     3.0,
-    2000.0
+    700
    ]
   ],
   "granularity": "profile",
-  "relevance": "model",
+  "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
   "exp_id": "10.1002_admi.202000318-F4a-10",
@@ -2072,11 +1800,11 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: Bilayer Model",
+  "series_name": "model: Single Layer Model",
   "phase": null,
   "structure": null,
   "varies": [
-   "spatial_coordinate"
+   "2\u03b8"
   ],
   "dependent": [
    {
@@ -2187,167 +1915,268 @@
    }
   ],
   "measurand": {
+   "quantity": "intensity",
+   "unit": "cps",
+   "family": null
+  },
+  "coordinate": "2\u03b8",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.1,
+    5000000
+   ],
+   [
+    0.3,
+    15000000
+   ],
+   [
+    0.5,
+    18000000
+   ],
+   [
+    0.7,
+    5000000
+   ],
+   [
+    0.82,
+    700000
+   ],
+   [
+    0.95,
+    600000
+   ],
+   [
+    1.1,
+    110000
+   ],
+   [
+    1.25,
+    30000
+   ],
+   [
+    1.38,
+    28000
+   ],
+   [
+    1.5,
+    18000
+   ],
+   [
+    2.0,
+    4000
+   ],
+   [
+    2.5,
+    1500
+   ],
+   [
+    3.0,
+    700
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_admi.202000318-F4a-11",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "4",
+   "panel": "a",
+   "caption": "Figure 4. a) XRR measurement of a 24.0 nm thick Fe2O3 flm,shown in orange. Calculated intensity shown in red is generated from a bilayer model reflecting a gradient of density within the flm,in which ",
+   "extractor": "vision-llm",
+   "doi": "10.1002_admi.202000318"
+  },
+  "series_name": "model: Bilayer Model",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "2\u03b8"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "cps",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Fe2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "tert-butylferrocene",
+     "dose_time": 10,
+     "purge_time": 30,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 10,
+     "purge_time": 30,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 220,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_admi.202000318-F4a-11"
+   },
+   "completeness": 0.714
+  }
+ },
+ {
+  "material": "Fe2O3",
+  "material_raw": "Fe2O3",
+  "precursors": [
+   "tert-butylferrocene"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "tert-butylferrocene"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 220,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 100,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 30,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
    "quantity": "film_density",
-   "unit": "\u00c5\u207b\u00b3",
+   "unit": "\u00c5^-3",
    "family": null
   },
   "coordinate": "spatial_coordinate",
   "coordinate_family": "position",
   "points": [
    [
-    -100.0,
+    -100,
     0.0
    ],
    [
-    -50.0,
-    0.0
+    -70,
+    0.01
    ],
    [
-    -25.0,
+    -50,
     0.05
    ],
    [
-    0.0,
-    0.5
+    -25,
+    0.25
    ],
    [
-    10.0,
-    0.65
+    0,
+    0.52
    ],
    [
-    20.0,
-    0.75
+    25,
+    0.9
    ],
    [
-    30.0,
-    0.85
+    50,
+    1.1
    ],
    [
-    40.0,
-    0.95
-   ],
-   [
-    50.0,
-    1.05
-   ],
-   [
-    60.0,
-    1.15
-   ],
-   [
-    70.0,
-    1.25
-   ],
-   [
-    80.0,
+    100,
     1.3
    ],
    [
-    90.0,
-    1.35
-   ],
-   [
-    100.0,
-    1.4
-   ],
-   [
-    110.0,
-    1.45
-   ],
-   [
-    120.0,
+    150,
     1.5
    ],
    [
-    130.0,
-    1.55
+    200,
+    1.65
    ],
    [
-    140.0,
-    1.6
+    235,
+    1.71
    ],
    [
-    150.0,
-    1.62
-   ],
-   [
-    160.0,
-    1.64
-   ],
-   [
-    170.0,
-    1.66
-   ],
-   [
-    180.0,
-    1.67
-   ],
-   [
-    190.0,
-    1.68
-   ],
-   [
-    200.0,
-    1.69
-   ],
-   [
-    210.0,
-    1.7
-   ],
-   [
-    220.0,
-    1.7
-   ],
-   [
-    230.0,
-    1.7
-   ],
-   [
-    232.0,
-    1.7
-   ],
-   [
-    234.0,
-    1.7
-   ],
-   [
-    236.0,
-    0.7
-   ],
-   [
-    238.0,
+    242,
     0.65
    ],
    [
-    240.0,
-    0.65
+    250,
+    0.63
    ],
    [
-    242.0,
-    0.66
-   ],
-   [
-    244.0,
+    260,
     0.67
    ],
    [
-    246.0,
+    280,
     0.68
-   ],
-   [
-    248.0,
-    0.69
-   ],
-   [
-    250.0,
-    0.7
    ]
   ],
   "granularity": "profile",
   "relevance": "model",
-  "is_model_result": false,
+  "is_model_result": true,
   "analysis_ready": true,
-  "exp_id": "10.1002_admi.202000318-F4b-11",
+  "exp_id": "10.1002_admi.202000318-F4b-12",
   "provenance": {
    "figure": "Fig 4",
    "figure_number": "4",
@@ -2357,7 +2186,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": null,
+  "series_name": "series: Electron Density",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2366,7 +2195,7 @@
   "dependent": [
    {
     "quantity": "film_density",
-    "unit": "\u00c5\u207b\u00b3",
+    "unit": "\u00c5^-3",
     "family": null
    }
   ],
@@ -2406,7 +2235,7 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F4b-11"
+    "_exp_id": "10.1002_admi.202000318-F4b-12"
    },
    "completeness": 0.714
   }
@@ -2481,388 +2310,63 @@
   "points": [
    [
     1.0,
-    0.05
+    310
    ],
    [
-    1.2,
-    0.05
+    1.5,
+    270
    ],
    [
-    1.4,
-    0.07
+    1.71,
+    440
    ],
    [
-    1.6,
-    0.15
-   ],
-   [
-    1.7,
-    0.2
-   ],
-   [
-    1.8,
-    0.15
-   ],
-   [
-    2.0,
-    0.08
+    1.85,
+    300
    ],
    [
     2.2,
-    0.15
+    300
    ],
    [
-    2.35,
-    0.8
+    2.33,
+    860
    ],
    [
-    2.45,
-    0.5
-   ],
-   [
-    2.5,
-    0.4
+    2.47,
+    620
    ],
    [
     2.6,
-    0.25
+    330
    ],
    [
-    2.7,
-    0.18
-   ],
-   [
-    2.8,
-    0.15
-   ],
-   [
-    2.9,
-    0.12
-   ],
-   [
-    3.0,
-    0.1
+    2.83,
+    380
    ],
    [
     3.1,
-    0.08
-   ],
-   [
-    3.2,
-    0.07
-   ],
-   [
-    3.3,
-    0.1
+    250
    ],
    [
     3.4,
-    0.2
-   ],
-   [
-    3.5,
-    0.15
-   ],
-   [
-    3.6,
-    0.1
+    380
    ],
    [
     3.7,
-    0.1
+    430
    ],
    [
-    3.8,
-    0.08
+    3.92,
+    280
    ],
    [
-    3.9,
-    0.08
-   ],
-   [
-    4.0,
-    0.08
-   ],
-   [
-    4.1,
-    0.07
-   ],
-   [
-    4.2,
-    0.06
-   ],
-   [
-    4.3,
-    0.05
+    4.22,
+    280
    ],
    [
     4.4,
-    0.05
-   ],
-   [
-    4.5,
-    0.05
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": true,
-  "exp_id": "10.1002_admi.202000318-F6a-12",
-  "provenance": {
-   "figure": "Fig 6",
-   "figure_number": "6",
-   "fig_docling_index": "6",
-   "panel": "a",
-   "caption": "Figure 6.a) Integrated 2D GIWAXS scans of Fe2O3 flms, summed over all measured angles X as a function of Q. Three scans of flms grown using 100,60,and 20 s of ozone exposure under saturated TBF doses ",
-   "extractor": "vision-llm",
-   "doi": "10.1002_admi.202000318"
-  },
-  "series_name": "series: 100s Ozone",
-  "phase": null,
-  "structure": null,
-  "varies": [
-   "site_density"
-  ],
-  "dependent": [
-   {
-    "quantity": "intensity",
-    "unit": "a.u.",
-    "family": null
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "Fe2O3",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "tert-butylferrocene",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O3",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": null,
-   "temperature": 220,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "nitrogen"
-   },
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F6a-12"
-   },
-   "completeness": 0.714
-  }
- },
- {
-  "material": "Fe2O3",
-  "material_raw": "Fe2O3",
-  "precursors": [
-   "tert-butylferrocene"
-  ],
-  "coreactants": [
-   "O3"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "tert-butylferrocene"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O3"
-   }
-  ],
-  "carrier_gas": {
-   "species": "nitrogen"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 220,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 100,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "purge_time",
-    "value": 30,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   }
-  ],
-  "measurand": {
-   "quantity": "intensity",
-   "unit": "a.u.",
-   "family": null
-  },
-  "coordinate": "site_density",
-  "coordinate_family": null,
-  "points": [
-   [
-    1.0,
-    0.02
-   ],
-   [
-    1.2,
-    0.02
-   ],
-   [
-    1.4,
-    0.03
-   ],
-   [
-    1.6,
-    0.04
-   ],
-   [
-    1.7,
-    0.05
-   ],
-   [
-    1.8,
-    0.04
-   ],
-   [
-    2.0,
-    0.03
-   ],
-   [
-    2.2,
-    0.04
-   ],
-   [
-    2.35,
-    0.15
-   ],
-   [
-    2.45,
-    0.1
-   ],
-   [
-    2.5,
-    0.08
-   ],
-   [
-    2.6,
-    0.06
-   ],
-   [
-    2.7,
-    0.05
-   ],
-   [
-    2.8,
-    0.04
-   ],
-   [
-    2.9,
-    0.035
-   ],
-   [
-    3.0,
-    0.03
-   ],
-   [
-    3.1,
-    0.025
-   ],
-   [
-    3.2,
-    0.02
-   ],
-   [
-    3.3,
-    0.03
-   ],
-   [
-    3.4,
-    0.05
-   ],
-   [
-    3.5,
-    0.04
-   ],
-   [
-    3.6,
-    0.03
-   ],
-   [
-    3.7,
-    0.03
-   ],
-   [
-    3.8,
-    0.025
-   ],
-   [
-    3.9,
-    0.02
-   ],
-   [
-    4.0,
-    0.02
-   ],
-   [
-    4.1,
-    0.015
-   ],
-   [
-    4.2,
-    0.01
-   ],
-   [
-    4.3,
-    0.01
-   ],
-   [
-    4.4,
-    0.01
-   ],
-   [
-    4.5,
-    0.01
+    220
    ]
   ],
   "granularity": "profile",
@@ -2879,7 +2383,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: 60s Ozone",
+  "series_name": "ozone exposure time: 100s Ozone",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3003,127 +2507,55 @@
   "points": [
    [
     1.0,
-    0.01
+    180
    ],
    [
-    1.2,
-    0.01
+    1.5,
+    160
    ],
    [
-    1.4,
-    0.015
+    1.71,
+    185
    ],
    [
-    1.6,
-    0.018
-   ],
-   [
-    1.7,
-    0.02
-   ],
-   [
-    1.8,
-    0.015
-   ],
-   [
-    2.0,
-    0.01
+    1.85,
+    160
    ],
    [
     2.2,
-    0.015
+    180
    ],
    [
     2.35,
-    0.04
-   ],
-   [
-    2.45,
-    0.025
+    250
    ],
    [
     2.5,
-    0.02
-   ],
-   [
-    2.6,
-    0.015
+    270
    ],
    [
     2.7,
-    0.012
+    180
    ],
    [
-    2.8,
-    0.01
-   ],
-   [
-    2.9,
-    0.009
-   ],
-   [
-    3.0,
-    0.008
-   ],
-   [
-    3.1,
-    0.007
-   ],
-   [
-    3.2,
-    0.006
-   ],
-   [
-    3.3,
-    0.008
+    2.83,
+    190
    ],
    [
     3.4,
-    0.01
-   ],
-   [
-    3.5,
-    0.009
-   ],
-   [
-    3.6,
-    0.008
+    190
    ],
    [
     3.7,
-    0.008
+    200
    ],
    [
-    3.8,
-    0.007
-   ],
-   [
-    3.9,
-    0.006
-   ],
-   [
-    4.0,
-    0.005
-   ],
-   [
-    4.1,
-    0.004
-   ],
-   [
-    4.2,
-    0.003
-   ],
-   [
-    4.3,
-    0.003
+    4.22,
+    180
    ],
    [
     4.4,
-    0.003
-   ],
-   [
-    4.5,
-    0.003
+    140
    ]
   ],
   "granularity": "profile",
@@ -3140,7 +2572,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": "series: 20s Ozone",
+  "series_name": "ozone exposure time: 60s Ozone",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3255,13 +2687,190 @@
    }
   ],
   "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "site_density",
+  "coordinate_family": null,
+  "points": [
+   [
+    1.0,
+    110
+   ],
+   [
+    1.5,
+    110
+   ],
+   [
+    2.0,
+    110
+   ],
+   [
+    2.3,
+    130
+   ],
+   [
+    2.5,
+    160
+   ],
+   [
+    2.8,
+    120
+   ],
+   [
+    3.5,
+    110
+   ],
+   [
+    4.0,
+    110
+   ],
+   [
+    4.4,
+    100
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_admi.202000318-F6a-15",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "6",
+   "panel": "a",
+   "caption": "Figure 6.a) Integrated 2D GIWAXS scans of Fe2O3 flms, summed over all measured angles X as a function of Q. Three scans of flms grown using 100,60,and 20 s of ozone exposure under saturated TBF doses ",
+   "extractor": "vision-llm",
+   "doi": "10.1002_admi.202000318"
+  },
+  "series_name": "ozone exposure time: 20s Ozone",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "site_density"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Fe2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "tert-butylferrocene",
+     "dose_time": 10,
+     "purge_time": 30,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 10,
+     "purge_time": 30,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 220,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_admi.202000318-F6a-15"
+   },
+   "completeness": 0.714
+  }
+ },
+ {
+  "material": "Fe2O3",
+  "material_raw": "Fe2O3",
+  "precursors": [
+   "tert-butylferrocene"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "tert-butylferrocene"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 220,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 100,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 30,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
    "quantity": "gamma_phase_fraction",
    "unit": "%",
    "family": null
   },
-  "coordinate": "ozone_exposure_per_cycle",
+  "coordinate": "exposure",
   "coordinate_family": "dose",
   "points": [
+   [
+    5,
+    100
+   ],
    [
     10,
     100
@@ -3272,19 +2881,19 @@
    ],
    [
     30,
-    78
+    76
    ],
    [
     60,
-    37
+    35
    ],
    [
     80,
-    2
+    0
    ],
    [
     100,
-    15
+    12
    ],
    [
     120,
@@ -3292,14 +2901,14 @@
    ],
    [
     140,
-    2
+    0
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1002_admi.202000318-F6b-15",
+  "exp_id": "10.1002_admi.202000318-F6b-16",
   "provenance": {
    "figure": "Fig 6",
    "figure_number": "6",
@@ -3309,11 +2918,11 @@
    "extractor": "vision-llm",
    "doi": "10.1002_admi.202000318"
   },
-  "series_name": null,
+  "series_name": "series: Fraction \u03b3 Phase",
   "phase": null,
   "structure": null,
   "varies": [
-   "ozone_exposure_per_cycle"
+   "exposure"
   ],
   "dependent": [
    {
@@ -3358,615 +2967,7 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F6b-15"
-   },
-   "completeness": 0.714
-  }
- },
- {
-  "material": "Fe2O3",
-  "material_raw": "Fe2O3",
-  "precursors": [
-   "tert-butylferrocene"
-  ],
-  "coreactants": [
-   "O3"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "tert-butylferrocene"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O3"
-   }
-  ],
-  "carrier_gas": {
-   "species": "nitrogen"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 220,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 100,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "purge_time",
-    "value": 30,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "ozone_exposure_time",
-    "value": 30.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "film_thickness",
-    "value": 129.0,
-    "unit": "\u00c5",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
-   }
-  ],
-  "measurand": {
-   "quantity": "qz",
-   "unit": "\u00c5\u207b\u00b9",
-   "family": "position"
-  },
-  "coordinate": "qxy",
-  "coordinate_family": "position",
-  "points": [],
-  "granularity": "single",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": false,
-  "exp_id": "10.1002_admi.202000318-F7a-16",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "a",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
-   "extractor": "vision-llm",
-   "doi": "10.1002_admi.202000318"
-  },
-  "series_name": null,
-  "phase": null,
-  "structure": null,
-  "varies": [],
-  "dependent": [
-   {
-    "quantity": "qz",
-    "unit": "\u00c5\u207b\u00b9",
-    "family": "position"
-   }
-  ],
-  "issues": [
-   "no-points"
-  ],
-  "recipe": {
-   "material": "Fe2O3",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "tert-butylferrocene",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O3",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": null,
-   "temperature": 220,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "nitrogen"
-   },
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F7a-16"
-   },
-   "completeness": 0.714
-  }
- },
- {
-  "material": "Fe2O3",
-  "material_raw": "Fe2O3",
-  "precursors": [
-   "tert-butylferrocene"
-  ],
-  "coreactants": [
-   "O3"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "tert-butylferrocene"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O3"
-   }
-  ],
-  "carrier_gas": {
-   "species": "nitrogen"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 220,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 100,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "purge_time",
-    "value": 30,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "ozone_exposure_time",
-    "value": 60.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "film_thickness",
-    "value": 135.0,
-    "unit": "\u00c5",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
-   }
-  ],
-  "measurand": {
-   "quantity": "qz",
-   "unit": "\u00c5\u207b\u00b9",
-   "family": "position"
-  },
-  "coordinate": "qxy",
-  "coordinate_family": "position",
-  "points": [],
-  "granularity": "single",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": false,
-  "exp_id": "10.1002_admi.202000318-F7b-17",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "b",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
-   "extractor": "vision-llm",
-   "doi": "10.1002_admi.202000318"
-  },
-  "series_name": null,
-  "phase": null,
-  "structure": null,
-  "varies": [],
-  "dependent": [
-   {
-    "quantity": "qz",
-    "unit": "\u00c5\u207b\u00b9",
-    "family": "position"
-   }
-  ],
-  "issues": [
-   "no-points"
-  ],
-  "recipe": {
-   "material": "Fe2O3",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "tert-butylferrocene",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O3",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": null,
-   "temperature": 220,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "nitrogen"
-   },
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F7b-17"
-   },
-   "completeness": 0.714
-  }
- },
- {
-  "material": "Fe2O3",
-  "material_raw": "Fe2O3",
-  "precursors": [
-   "tert-butylferrocene"
-  ],
-  "coreactants": [
-   "O3"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "tert-butylferrocene"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O3"
-   }
-  ],
-  "carrier_gas": {
-   "species": "nitrogen"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 220,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 100,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "purge_time",
-    "value": 30,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "ozone_exposure_time",
-    "value": 120.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "film_thickness",
-    "value": 50.0,
-    "unit": "\u00c5",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
-   }
-  ],
-  "measurand": {
-   "quantity": "qz",
-   "unit": "\u00c5\u207b\u00b9",
-   "family": "position"
-  },
-  "coordinate": "qxy",
-  "coordinate_family": "position",
-  "points": [],
-  "granularity": "single",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": false,
-  "exp_id": "10.1002_admi.202000318-F7c-18",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "c",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
-   "extractor": "vision-llm",
-   "doi": "10.1002_admi.202000318"
-  },
-  "series_name": null,
-  "phase": null,
-  "structure": null,
-  "varies": [],
-  "dependent": [
-   {
-    "quantity": "qz",
-    "unit": "\u00c5\u207b\u00b9",
-    "family": "position"
-   }
-  ],
-  "issues": [
-   "no-points"
-  ],
-  "recipe": {
-   "material": "Fe2O3",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "tert-butylferrocene",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O3",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": null,
-   "temperature": 220,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "nitrogen"
-   },
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F7c-18"
-   },
-   "completeness": 0.714
-  }
- },
- {
-  "material": "Fe2O3",
-  "material_raw": "Fe2O3",
-  "precursors": [
-   "tert-butylferrocene"
-  ],
-  "coreactants": [
-   "O3"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "tert-butylferrocene"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O3"
-   }
-  ],
-  "carrier_gas": {
-   "species": "nitrogen"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 220,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 100,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "purge_time",
-    "value": 30,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "ozone_exposure_time",
-    "value": 140.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "film_thickness",
-    "value": 120.0,
-    "unit": "\u00c5",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
-   }
-  ],
-  "measurand": {
-   "quantity": "qz",
-   "unit": "\u00c5\u207b\u00b9",
-   "family": "position"
-  },
-  "coordinate": "qxy",
-  "coordinate_family": "position",
-  "points": [],
-  "granularity": "single",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": false,
-  "exp_id": "10.1002_admi.202000318-F7d-19",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "d",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
-   "extractor": "vision-llm",
-   "doi": "10.1002_admi.202000318"
-  },
-  "series_name": null,
-  "phase": null,
-  "structure": null,
-  "varies": [],
-  "dependent": [
-   {
-    "quantity": "qz",
-    "unit": "\u00c5\u207b\u00b9",
-    "family": "position"
-   }
-  ],
-  "issues": [
-   "no-points"
-  ],
-  "recipe": {
-   "material": "Fe2O3",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "tert-butylferrocene",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O3",
-     "dose_time": 10,
-     "purge_time": 30,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": null,
-   "temperature": 220,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "nitrogen"
-   },
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F7d-19"
+    "_exp_id": "10.1002_admi.202000318-F6b-16"
    },
    "completeness": 0.714
   }

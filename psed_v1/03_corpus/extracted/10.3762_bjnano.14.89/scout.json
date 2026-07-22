@@ -16,67 +16,163 @@
  "data": {
   "gpc_vs_temperature": {
    "present": true,
-   "where": "F6"
+   "where": [
+    "F6"
+   ]
   },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "F4"
+   "where": [
+    "F4"
+   ]
   },
   "gpc_vs_cycles": {
    "present": true,
-   "where": "F5"
-  },
-  "conformality_or_penetration_profile": {
-   "present": false,
-   "where": null
+   "where": [
+    "F5"
+   ]
   },
   "film_property_vs_condition": {
    "present": true,
-   "where": "F8"
+   "where": [
+    "F2",
+    "F7",
+    "F8",
+    "F10"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "F9"
+   "where": [
+    "F9",
+    "F11a",
+    "F11b",
+    "F11c",
+    "F12a",
+    "F12b"
+   ]
   },
   "other": {
    "present": true,
-   "where": "F3"
+   "where": [
+    "F3a",
+    "F3b"
+   ]
   }
  },
  "drill": [
   {
-   "where": "F6",
-   "type": "gpc_vs_temperature",
+   "where": "F2",
+   "type": "film_property_vs_condition",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC as a function of substrate temperature"
+   "why": "GPC plotted against SnI4 precursor evaporation temperature"
+  },
+  {
+   "where": "F3a",
+   "type": "other",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "QCM mass sensor signal evolution during five sequential ALD cycles"
+  },
+  {
+   "where": "F3b",
+   "type": "other",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "QCM mass sensor signal evolution during a single ALD cycle"
+  },
+  {
+   "where": "F4",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "QCM frequency decrement per ALD cycle as a function of SnI4 pulse length"
   },
   {
    "where": "F5",
    "type": "gpc_vs_cycles",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC as a function of the number of ALD cycles"
+   "why": "SnO2 film GPC as a function of the number of ALD cycles"
+  },
+  {
+   "where": "F6",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "SnO2 GPC as a function of substrate temperature"
+  },
+  {
+   "where": "F7",
+   "type": "film_property_vs_condition",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "Oxygen content in SnO2 films as a function of substrate temperature"
   },
   {
    "where": "F8",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Residual iodine content in the films as a function of deposition temperature"
+   "why": "Residual iodine content in tin oxide films vs substrate temperature"
+  },
+  {
+   "where": "F9",
+   "type": "xrd_or_spectrum",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "GIXRD patterns of SnO2 films deposited at different temperatures"
   },
   {
    "where": "F10",
-   "type": "other",
+   "type": "film_property_vs_condition",
    "measurand": "refractive_index",
    "source": "measured",
-   "why": "Refractive index of the SnO2 film as a function of wavelength"
+   "why": "Refractive index of SnO2 film as a function of wavelength"
+  },
+  {
+   "where": "F11a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS spectra of Sn 3d region for films deposited at 300 and 500 \u00b0C"
+  },
+  {
+   "where": "F11b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS spectra of O 1s region for films deposited at 300 and 500 \u00b0C"
+  },
+  {
+   "where": "F11c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS spectra of valence-band region for films deposited at 300 and 500 \u00b0C"
+  },
+  {
+   "where": "F12a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XAS spectra of O 1s for films deposited at 300 and 500 \u00b0C"
+  },
+  {
+   "where": "F12b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XAS spectra of Sn 3d for films deposited at 300 and 500 \u00b0C"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1759,
-  "out": 598
+  "in": 2360,
+  "out": 1490,
+  "thoughts": 3075,
+  "budget": 12288
  },
- "_scout_input_chars": 5972
+ "_scout_input_chars": 8383
 }

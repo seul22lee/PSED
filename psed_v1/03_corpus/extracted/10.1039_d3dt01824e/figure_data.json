@@ -18,17 +18,13 @@
  },
  "figures": [
   {
-   "figure": "7",
-   "image": "figures/fig_7.png",
-   "caption": "Fig. 4 Dependence of Er2O3 /uniFB01 lm growth rate on Si(100) and SiO2 substrates as a function of deposition temperature.",
-   "source": "measured",
-   "_parse_error": "{\n  \"panels\": [\n    {\n      \"panel\": \"a\",\n      \"x\": {\n        \"quantity\": \"deposition_temperature\",\n        \"unit\": \"\u00b0C\",\n        \"log\": false\n      },\n      \"y\": {\n        \"quantity\": \"growth_per_cy"
-  },
-  {
    "figure": "5",
    "image": "figures/fig_5.png",
    "caption": "Fig. 2 Dependence of Er2O3 /uniFB01 lm growth rate on the pulse length of 1 . Si(100) and SiO2 substrates were used at 200 \u00b0C with 1000 growth cycles.",
    "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -42,32 +38,33 @@
       "unit": "\u00c5/cycle",
       "log": false
      },
+     "series_axis": "substrate",
      "series": [
       {
        "label": "Si",
        "points": [
         [
-         1.0,
-         0.122
+         1,
+         0.123
         ],
         [
-         2.0,
+         2,
          0.136
         ],
         [
-         3.0,
-         0.193
+         3,
+         0.192
         ],
         [
-         4.0,
+         4,
+         0.245
+        ],
+        [
+         5,
          0.246
         ],
         [
-         5.0,
-         0.248
-        ],
-        [
-         6.0,
+         6,
          0.233
         ]
        ]
@@ -76,27 +73,27 @@
        "label": "SiO2",
        "points": [
         [
-         1.0,
+         1,
          0.126
         ],
         [
-         2.0,
+         2,
          0.137
         ],
         [
-         3.0,
-         0.192
+         3,
+         0.194
         ],
         [
-         4.0,
-         0.259
+         4,
+         0.26
         ],
         [
-         5.0,
-         0.248
+         5,
+         0.247
         ],
         [
-         6.0,
+         6,
          0.253
         ]
        ]
@@ -104,10 +101,7 @@
      ],
      "conditions": {
       "deposition_temperature": "200 \u00b0C",
-      "cycle_number": 1000,
-      "precursor": "tris(1-(dimethylamino)-3,3-dimethylbut-1-en-2-olate)erbium(III)",
-      "coreactant": "H2O",
-      "material": "Er2O3"
+      "cycle_number": "1000"
      }
     }
    ]
@@ -117,6 +111,9 @@
    "image": "figures/fig_6.png",
    "caption": "Fig. 3 Dependence of Er2O3 /uniFB01 lm growth rate on the water pulse length. Si(100) and SiO2 substrates were used at 200 \u00b0C with 1000 growth cycles.",
    "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -130,6 +127,7 @@
       "unit": "\u00c5/cycle",
       "log": false
      },
+     "series_axis": "substrate",
      "series": [
       {
        "label": "Si",
@@ -153,7 +151,7 @@
        "points": [
         [
          0.1,
-         0.214
+         0.215
         ],
         [
          0.2,
@@ -161,24 +159,1408 @@
         ],
         [
          0.3,
-         0.248
+         0.247
         ]
        ]
       }
      ],
      "conditions": {
-      "deposition_temperature": "200 \u00b0C",
-      "cycle_number": 1000,
-      "precursor": "tris(1-(dimethylamino)-3,3-dimethylbut-1-en-2-olate)erbium(III)",
-      "coreactant": "H2O",
-      "material": "Er2O3"
+      "temperature": "200 \u00b0C",
+      "cycle_number": "1000"
+     }
+    }
+   ]
+  },
+  {
+   "figure": "7",
+   "image": "figures/fig_7.png",
+   "caption": "Fig. 4 Dependence of Er2O3 /uniFB01 lm growth rate on Si(100) and SiO2 substrates as a function of deposition temperature.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "deposition_temperature",
+      "unit": "\u00b0C",
+      "log": false
+     },
+     "y": {
+      "quantity": "growth_per_cycle",
+      "unit": "\u00c5/cycle",
+      "log": false
+     },
+     "series_axis": "substrate",
+     "series": [
+      {
+       "label": "Si",
+       "points": [
+        [
+         150,
+         0.196
+        ],
+        [
+         175,
+         0.252
+        ],
+        [
+         200,
+         0.233
+        ],
+        [
+         225,
+         0.242
+        ],
+        [
+         250,
+         0.162
+        ],
+        [
+         275,
+         0.14
+        ]
+       ]
+      },
+      {
+       "label": "SiO2",
+       "points": [
+        [
+         150,
+         0.215
+        ],
+        [
+         175,
+         0.23
+        ],
+        [
+         200,
+         0.248
+        ],
+        [
+         225,
+         0.252
+        ],
+        [
+         250,
+         0.188
+        ],
+        [
+         275,
+         0.149
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "10",
+   "image": "figures/fig_10.png",
+   "caption": "Fig. 7 X-ray di /uniFB00 raction patterns of 25 nm thick Er2O3 thin /uniFB01 lms deposited at substrate temperatures of 150, 200, and 250 \u00b0C on Si(100) with 1000 cycles. The dotted lines represent the reference for cubic Er2O3 (COD 1010334 Er2O3).",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "2\u03b8",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "150 \u00b0C",
+       "points": [
+        [
+         5.2,
+         2950
+        ],
+        [
+         8.0,
+         2000
+        ],
+        [
+         11.5,
+         1300
+        ],
+        [
+         16.0,
+         850
+        ],
+        [
+         20.0,
+         650
+        ],
+        [
+         24.0,
+         400
+        ],
+        [
+         27.5,
+         420
+        ],
+        [
+         29.5,
+         1400
+        ],
+        [
+         31.5,
+         600
+        ],
+        [
+         34.5,
+         620
+        ],
+        [
+         37.0,
+         280
+        ],
+        [
+         42.0,
+         240
+        ],
+        [
+         47.5,
+         420
+        ],
+        [
+         49.5,
+         480
+        ],
+        [
+         52.0,
+         260
+        ],
+        [
+         55.0,
+         320
+        ],
+        [
+         58.0,
+         500
+        ],
+        [
+         61.0,
+         220
+        ],
+        [
+         64.5,
+         180
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "150 \u00b0C"
+     }
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "2\u03b8",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "200 \u00b0C",
+       "points": [
+        [
+         5.2,
+         2680
+        ],
+        [
+         8.0,
+         2000
+        ],
+        [
+         11.5,
+         1200
+        ],
+        [
+         16.0,
+         800
+        ],
+        [
+         20.5,
+         700
+        ],
+        [
+         24.0,
+         480
+        ],
+        [
+         27.5,
+         500
+        ],
+        [
+         29.5,
+         1800
+        ],
+        [
+         31.5,
+         700
+        ],
+        [
+         34.0,
+         700
+        ],
+        [
+         36.0,
+         300
+        ],
+        [
+         42.0,
+         280
+        ],
+        [
+         47.5,
+         550
+        ],
+        [
+         49.5,
+         580
+        ],
+        [
+         52.0,
+         360
+        ],
+        [
+         55.0,
+         450
+        ],
+        [
+         58.0,
+         620
+        ],
+        [
+         61.0,
+         320
+        ],
+        [
+         64.5,
+         180
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "200 \u00b0C"
+     }
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "2\u03b8",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "250 \u00b0C",
+       "points": [
+        [
+         5.2,
+         2150
+        ],
+        [
+         8.0,
+         1600
+        ],
+        [
+         11.5,
+         1100
+        ],
+        [
+         16.0,
+         700
+        ],
+        [
+         20.5,
+         620
+        ],
+        [
+         24.0,
+         350
+        ],
+        [
+         27.5,
+         280
+        ],
+        [
+         29.3,
+         1880
+        ],
+        [
+         31.0,
+         300
+        ],
+        [
+         34.0,
+         650
+        ],
+        [
+         36.5,
+         200
+        ],
+        [
+         42.0,
+         200
+        ],
+        [
+         44.0,
+         220
+        ],
+        [
+         48.8,
+         580
+        ],
+        [
+         51.5,
+         220
+        ],
+        [
+         55.0,
+         400
+        ],
+        [
+         57.5,
+         550
+        ],
+        [
+         60.0,
+         220
+        ],
+        [
+         64.5,
+         130
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "250 \u00b0C"
+     }
+    },
+    {
+     "panel": "d",
+     "x": {
+      "quantity": "2\u03b8",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "Er2O3",
+       "points": [
+        [
+         5.0,
+         4
+        ],
+        [
+         20.0,
+         4
+        ],
+        [
+         20.7,
+         19
+        ],
+        [
+         21.4,
+         4
+        ],
+        [
+         28.5,
+         4
+        ],
+        [
+         29.3,
+         100
+        ],
+        [
+         30.1,
+         4
+        ],
+        [
+         31.0,
+         4
+        ],
+        [
+         31.7,
+         28
+        ],
+        [
+         32.5,
+         4
+        ],
+        [
+         34.0,
+         58
+        ],
+        [
+         34.8,
+         4
+        ],
+        [
+         36.1,
+         22
+        ],
+        [
+         36.9,
+         4
+        ],
+        [
+         38.2,
+         11
+        ],
+        [
+         40.2,
+         11
+        ],
+        [
+         42.0,
+         8
+        ],
+        [
+         43.8,
+         27
+        ],
+        [
+         44.6,
+         4
+        ],
+        [
+         47.2,
+         18
+        ],
+        [
+         48.8,
+         53
+        ],
+        [
+         49.6,
+         4
+        ],
+        [
+         50.5,
+         14
+        ],
+        [
+         53.5,
+         17
+        ],
+        [
+         56.5,
+         15
+        ],
+        [
+         58.0,
+         44
+        ],
+        [
+         58.8,
+         4
+        ],
+        [
+         59.5,
+         15
+        ],
+        [
+         60.2,
+         4
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "11",
+   "image": "figures/fig_11.png",
+   "caption": "Fig. 8 High-resolution XPS spectra of Er 4d5/2 (a), O 1s (b), C 1s (c) of the Er2O3 thin /uniFB01 lm grown on a Si(100) at a substrate temperature of 200 \u00b0C with 1500 cycles at various Ar ion etching times (ETs).",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Binding energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "cps",
+      "log": false
+     },
+     "series_axis": "etching time",
+     "series": [
+      {
+       "label": "ET=0 min",
+       "points": [
+        [
+         205,
+         100000
+        ],
+        [
+         195,
+         113000
+        ],
+        [
+         183,
+         125000
+        ],
+        [
+         175,
+         114000
+        ],
+        [
+         168.5,
+         163000
+        ],
+        [
+         165,
+         70000
+        ],
+        [
+         160,
+         62000
+        ]
+       ]
+      },
+      {
+       "label": "ET=2min",
+       "points": [
+        [
+         205,
+         105000
+        ],
+        [
+         195,
+         125000
+        ],
+        [
+         182,
+         145000
+        ],
+        [
+         173,
+         133000
+        ],
+        [
+         168.5,
+         192000
+        ],
+        [
+         165,
+         71000
+        ],
+        [
+         160,
+         64000
+        ]
+       ]
+      },
+      {
+       "label": "ET=5 min",
+       "points": [
+        [
+         205,
+         106000
+        ],
+        [
+         195,
+         126000
+        ],
+        [
+         182,
+         146000
+        ],
+        [
+         173,
+         134000
+        ],
+        [
+         168.5,
+         196000
+        ],
+        [
+         165,
+         71000
+        ],
+        [
+         160,
+         64000
+        ]
+       ]
+      },
+      {
+       "label": "ET=10 min",
+       "points": [
+        [
+         205,
+         106000
+        ],
+        [
+         195,
+         126000
+        ],
+        [
+         182,
+         146000
+        ],
+        [
+         173,
+         134000
+        ],
+        [
+         168.5,
+         197000
+        ],
+        [
+         165,
+         71000
+        ],
+        [
+         160,
+         64000
+        ]
+       ]
+      },
+      {
+       "label": "ET=15 min",
+       "points": [
+        [
+         205,
+         106000
+        ],
+        [
+         195,
+         126000
+        ],
+        [
+         182,
+         146000
+        ],
+        [
+         173,
+         134000
+        ],
+        [
+         168.5,
+         198000
+        ],
+        [
+         165,
+         71000
+        ],
+        [
+         160,
+         64000
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "200 \u00b0C",
+      "cycle_number": 1500
+     }
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "Binding Energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "cps",
+      "log": false
+     },
+     "series_axis": "etching time",
+     "series": [
+      {
+       "label": "ET=0min",
+       "points": [
+        [
+         536,
+         215000
+        ],
+        [
+         531.2,
+         318000
+        ],
+        [
+         528.8,
+         335000
+        ],
+        [
+         526,
+         209000
+        ]
+       ]
+      },
+      {
+       "label": "ET=2min",
+       "points": [
+        [
+         536,
+         218000
+        ],
+        [
+         531.2,
+         252000
+        ],
+        [
+         528.8,
+         400000
+        ],
+        [
+         526,
+         215000
+        ]
+       ]
+      },
+      {
+       "label": "ET=5min",
+       "points": [
+        [
+         536,
+         218000
+        ],
+        [
+         531.2,
+         240000
+        ],
+        [
+         528.8,
+         415000
+        ],
+        [
+         526,
+         215000
+        ]
+       ]
+      },
+      {
+       "label": "ET=10min",
+       "points": [
+        [
+         536,
+         218000
+        ],
+        [
+         531.2,
+         240000
+        ],
+        [
+         528.8,
+         417000
+        ],
+        [
+         526,
+         215000
+        ]
+       ]
+      },
+      {
+       "label": "ET=15min",
+       "points": [
+        [
+         536,
+         218000
+        ],
+        [
+         531.2,
+         240000
+        ],
+        [
+         528.8,
+         418000
+        ],
+        [
+         526,
+         215000
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "200 \u00b0C",
+      "cycle_number": 1500
+     }
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "Binding Energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "cps",
+      "log": false
+     },
+     "series_axis": "etching time",
+     "series": [
+      {
+       "label": "ET=0min",
+       "points": [
+        [
+         298,
+         162000
+        ],
+        [
+         295,
+         175000
+        ],
+        [
+         293.5,
+         183000
+        ],
+        [
+         291.5,
+         166000
+        ],
+        [
+         288,
+         170000
+        ],
+        [
+         284,
+         174000
+        ]
+       ]
+      },
+      {
+       "label": "ET=2min",
+       "points": [
+        [
+         298,
+         168000
+        ],
+        [
+         294,
+         172000
+        ],
+        [
+         290,
+         178000
+        ],
+        [
+         286,
+         186000
+        ],
+        [
+         284,
+         188000
+        ]
+       ]
+      },
+      {
+       "label": "ET=5min",
+       "points": [
+        [
+         298,
+         168000
+        ],
+        [
+         294,
+         174000
+        ],
+        [
+         290,
+         178000
+        ],
+        [
+         286,
+         187000
+        ],
+        [
+         284,
+         191000
+        ]
+       ]
+      },
+      {
+       "label": "ET=10min",
+       "points": [
+        [
+         298,
+         169000
+        ],
+        [
+         294,
+         173000
+        ],
+        [
+         290,
+         179000
+        ],
+        [
+         286,
+         187000
+        ],
+        [
+         284,
+         193000
+        ]
+       ]
+      },
+      {
+       "label": "ET=15min",
+       "points": [
+        [
+         298,
+         168000
+        ],
+        [
+         294,
+         173000
+        ],
+        [
+         290,
+         180000
+        ],
+        [
+         286,
+         188000
+        ],
+        [
+         284,
+         191000
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "200 \u00b0C",
+      "cycle_number": 1500
+     }
+    }
+   ]
+  },
+  {
+   "figure": "12",
+   "image": "figures/fig_12.png",
+   "caption": "Fig. 9 XPS depth pro /uniFB01 le of a 35 nm thick Er2O3 thin /uniFB01 lm grown on a Si (100) substrate at 200 \u00b0C.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Ar Sputter Time",
+      "unit": "s",
+      "log": false
+     },
+     "y": {
+      "quantity": "Atomic %",
+      "unit": "%",
+      "log": false
+     },
+     "series_axis": "XPS peak",
+     "series": [
+      {
+       "label": "C 1s",
+       "points": [
+        [
+         0,
+         16.3
+        ],
+        [
+         28,
+         9.3
+        ],
+        [
+         68,
+         6.1
+        ],
+        [
+         92,
+         6.7
+        ],
+        [
+         273,
+         5.2
+        ],
+        [
+         500,
+         0.2
+        ],
+        [
+         750,
+         0.1
+        ],
+        [
+         1000,
+         0.1
+        ],
+        [
+         1230,
+         6.1
+        ],
+        [
+         1356,
+         5.9
+        ],
+        [
+         1500,
+         6.5
+        ],
+        [
+         1645,
+         6.9
+        ],
+        [
+         1920,
+         7.3
+        ],
+        [
+         2070,
+         6.7
+        ],
+        [
+         2150,
+         6.5
+        ],
+        [
+         2430,
+         5.9
+        ]
+       ]
+      },
+      {
+       "label": "Er 4d5/2",
+       "points": [
+        [
+         0,
+         24.1
+        ],
+        [
+         28,
+         28.7
+        ],
+        [
+         68,
+         31.9
+        ],
+        [
+         100,
+         30.7
+        ],
+        [
+         145,
+         36.1
+        ],
+        [
+         273,
+         34.2
+        ],
+        [
+         500,
+         36.8
+        ],
+        [
+         750,
+         36.6
+        ],
+        [
+         1000,
+         37.1
+        ],
+        [
+         1230,
+         33.8
+        ],
+        [
+         1500,
+         37.1
+        ],
+        [
+         1645,
+         33.2
+        ],
+        [
+         1920,
+         34.2
+        ],
+        [
+         1945,
+         38.2
+        ],
+        [
+         2150,
+         32.6
+        ],
+        [
+         2220,
+         37.8
+        ],
+        [
+         2430,
+         34.4
+        ],
+        [
+         2470,
+         37.6
+        ]
+       ]
+      },
+      {
+       "label": "N 1s",
+       "points": [
+        [
+         0,
+         0.1
+        ],
+        [
+         180,
+         2.3
+        ],
+        [
+         350,
+         1.2
+        ],
+        [
+         520,
+         1.8
+        ],
+        [
+         720,
+         2.0
+        ],
+        [
+         900,
+         2.8
+        ],
+        [
+         1100,
+         0.9
+        ],
+        [
+         1300,
+         1.8
+        ],
+        [
+         1500,
+         1.4
+        ],
+        [
+         1700,
+         1.1
+        ],
+        [
+         1900,
+         1.8
+        ],
+        [
+         2100,
+         1.2
+        ],
+        [
+         2300,
+         2.1
+        ],
+        [
+         2430,
+         3.8
+        ]
+       ]
+      },
+      {
+       "label": "O 1s",
+       "points": [
+        [
+         0,
+         59.8
+        ],
+        [
+         28,
+         59.2
+        ],
+        [
+         68,
+         60.5
+        ],
+        [
+         92,
+         56.8
+        ],
+        [
+         150,
+         63.8
+        ],
+        [
+         273,
+         58.1
+        ],
+        [
+         500,
+         60.8
+        ],
+        [
+         750,
+         61.5
+        ],
+        [
+         1000,
+         62.1
+        ],
+        [
+         1230,
+         55.8
+        ],
+        [
+         1500,
+         61.2
+        ],
+        [
+         1645,
+         54.9
+        ],
+        [
+         1920,
+         56.1
+        ],
+        [
+         1980,
+         62.1
+        ],
+        [
+         2150,
+         54.1
+        ],
+        [
+         2220,
+         62.0
+        ],
+        [
+         2430,
+         57.1
+        ],
+        [
+         2470,
+         62.3
+        ]
+       ]
+      },
+      {
+       "label": "Si 2s",
+       "points": [
+        [
+         0,
+         0.0
+        ],
+        [
+         90,
+         6.0
+        ],
+        [
+         220,
+         0.2
+        ],
+        [
+         360,
+         2.5
+        ],
+        [
+         470,
+         4.6
+        ],
+        [
+         600,
+         2.5
+        ],
+        [
+         920,
+         2.2
+        ],
+        [
+         1170,
+         3.5
+        ],
+        [
+         1350,
+         2.1
+        ],
+        [
+         1600,
+         3.8
+        ],
+        [
+         1800,
+         2.5
+        ],
+        [
+         2020,
+         2.6
+        ],
+        [
+         2140,
+         5.5
+        ],
+        [
+         2370,
+         4.3
+        ],
+        [
+         2500,
+         0.1
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "200 \u00b0C",
+      "thickness": "35 nm"
      }
     }
    ]
   }
  ],
  "_tokens": {
-  "in": 4768,
-  "out": 1136
+  "in": 13118,
+  "out": 4632
  }
 }

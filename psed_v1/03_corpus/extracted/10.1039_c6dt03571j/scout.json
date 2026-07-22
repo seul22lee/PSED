@@ -19,59 +19,155 @@
  "data": {
   "gpc_vs_temperature": {
    "present": true,
-   "where": "F6a"
-  },
-  "gpc_vs_cycles": {
-   "present": true,
-   "where": "F6b"
+   "where": [
+    "F6a"
+   ]
   },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "F6c"
+   "where": [
+    "F6c",
+    "F6d"
+   ]
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F6b"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "F7"
+   "where": [
+    "F5",
+    "F7",
+    "F8",
+    "F9a",
+    "F9b",
+    "F9c",
+    "F10a"
+   ]
   },
   "film_property_vs_condition": {
    "present": true,
-   "where": "F10"
+   "where": [
+    "F10b"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F4a",
+    "F4b"
+   ]
   }
  },
  "drill": [
+  {
+   "where": "F4a",
+   "type": "other",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Thermogravimetric analysis (TG) curves of zinc ketoiminate compounds"
+  },
+  {
+   "where": "F4b",
+   "type": "other",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Isothermal thermogravimetric analysis curves of zinc ketoiminates"
+  },
+  {
+   "where": "F5",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "NMR spectra for thermal decomposition study of precursor at 220 \u00b0C"
+  },
   {
    "where": "F6a",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Growth rate as a function of deposition temperature showing the ALD window."
+   "why": "Growth rate as a function of deposition temperature showing ALD window"
   },
   {
    "where": "F6b",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Film thickness as a function of the number of deposition cycles."
+   "why": "ZnO film thickness as a function of the number of ALD cycles"
   },
   {
    "where": "F6c",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Precursor saturation curve at 225 \u00b0C."
+   "why": "Growth rate versus zinc precursor pulse length demonstrating saturation"
   },
   {
    "where": "F6d",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Water co-reactant saturation curve at 225 \u00b0C."
+   "why": "Growth rate versus water pulse length demonstrating saturation"
+  },
+  {
+   "where": "F7",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "GI-XRD patterns of ZnO thin films deposited at various temperatures"
+  },
+  {
+   "where": "F8",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "RBS spectra of ZnO thin films deposited at 150-300 \u00b0C"
+  },
+  {
+   "where": "F9a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS survey spectra of as-introduced and sputtered ZnO film"
+  },
+  {
+   "where": "F9b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS O 1s binding energy spectra before and after sputtering"
+  },
+  {
+   "where": "F9c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS Zn 2p3/2 binding energy spectra before and after sputtering"
+  },
+  {
+   "where": "F10a",
+   "type": "xrd_or_spectrum",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "Optical transmission spectrum of ZnO film deposited at 225 \u00b0C"
+  },
+  {
+   "where": "F10b",
+   "type": "film_property_vs_condition",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "Tauc plot derived from optical transmission to determine band gap"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2443,
-  "out": 575
+  "in": 3044,
+  "out": 1382,
+  "thoughts": 2499,
+  "budget": 12288
  },
- "_scout_input_chars": 8559
+ "_scout_input_chars": 10970
 }

@@ -8,9 +8,10 @@
    "MoCl2O2"
   ],
   "coreactants": [
-   "atomic hydrogen"
+   "atomic hydrogen",
+   "at-H"
   ],
-  "process_type": "unknown",
+  "process_type": "thermal",
   "temperature_window_C": [
    150,
    450
@@ -22,6 +23,13 @@
    "image": "figures/fig_17.png",
    "caption": "FIG. 1. GPC at 350 \u00b0C as a function of independently varied: (a) MoCl2O2 pulse time, (b) at-H pulse time, (c) MoCl2O2 purge time, (d) at-H purge time, and (e) hot-wire temperature.",
    "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured",
+    "d": "measured",
+    "e": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -35,6 +43,7 @@
       "unit": "nm/cycle",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "",
@@ -45,19 +54,15 @@
         ],
         [
          0.1,
-         0.018
+         0.017
         ],
         [
          0.2,
          0.02
         ],
         [
-         0.4,
+         0.5,
          0.022
-        ],
-        [
-         0.7,
-         0.023
         ],
         [
          1.0,
@@ -65,14 +70,13 @@
         ],
         [
          2.0,
-         0.027
+         0.026
         ]
        ]
       }
      ],
      "conditions": {
-      "deposition_temperature": "350 \u00b0C",
-      "coreactant": "atomic hydrogen"
+      "temperature": "350 \u00b0C"
      }
     },
     {
@@ -87,6 +91,7 @@
       "unit": "nm/cycle",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "",
@@ -97,7 +102,7 @@
         ],
         [
          1.0,
-         0.01
+         0.011
         ],
         [
          2.0,
@@ -108,24 +113,24 @@
          0.018
         ],
         [
-         4.0,
-         0.02
-        ],
-        [
          5.0,
-         0.022
+         0.021
         ],
         [
          7.0,
          0.023
         ],
         [
-         10.0,
-         0.024
+         9.0,
+         0.0225
+        ],
+        [
+         12.0,
+         0.023
         ],
         [
          15.0,
-         0.024
+         0.0235
         ],
         [
          20.0,
@@ -133,18 +138,221 @@
         ],
         [
          25.0,
-         0.024
+         0.025
         ],
         [
          30.0,
+         0.024
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "350 \u00b0C"
+     }
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "purge_time",
+      "unit": "s",
+      "log": false
+     },
+     "y": {
+      "quantity": "growth_per_cycle",
+      "unit": "nm/cycle",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "",
+       "points": [
+        [
+         1.0,
+         0.048
+        ],
+        [
+         2.0,
+         0.037
+        ],
+        [
+         3.0,
+         0.031
+        ],
+        [
+         4.0,
+         0.028
+        ],
+        [
+         6.0,
+         0.025
+        ],
+        [
+         8.0,
+         0.024
+        ],
+        [
+         10.0,
+         0.023
+        ],
+        [
+         15.0,
          0.023
         ]
        ]
       }
      ],
      "conditions": {
-      "deposition_temperature": "350 \u00b0C",
-      "precursor": "MoCl2O2"
+      "temperature": "350 \u00b0C"
+     }
+    },
+    {
+     "panel": "d",
+     "x": {
+      "quantity": "purge_time",
+      "unit": "s",
+      "log": false
+     },
+     "y": {
+      "quantity": "growth_per_cycle",
+      "unit": "nm/cycle",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "",
+       "points": [
+        [
+         1.0,
+         0.02
+        ],
+        [
+         2.0,
+         0.023
+        ],
+        [
+         3.0,
+         0.021
+        ],
+        [
+         4.0,
+         0.021
+        ],
+        [
+         6.0,
+         0.02
+        ],
+        [
+         8.0,
+         0.02
+        ],
+        [
+         10.0,
+         0.02
+        ],
+        [
+         15.0,
+         0.02
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "350 \u00b0C"
+     }
+    },
+    {
+     "panel": "e",
+     "x": {
+      "quantity": "Hot-wire temperature",
+      "unit": "\u00b0C",
+      "log": false
+     },
+     "y": {
+      "quantity": "growth_per_cycle",
+      "unit": "nm/cycle",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "",
+       "points": [
+        [
+         1630.0,
+         0.0005
+        ],
+        [
+         1680.0,
+         0.0012
+        ],
+        [
+         1730.0,
+         0.0023
+        ],
+        [
+         1770.0,
+         0.0036
+        ],
+        [
+         1820.0,
+         0.0055
+        ],
+        [
+         1860.0,
+         0.0078
+        ],
+        [
+         1890.0,
+         0.0118
+        ],
+        [
+         1930.0,
+         0.0143
+        ],
+        [
+         1970.0,
+         0.0173
+        ],
+        [
+         2050.0,
+         0.0228
+        ],
+        [
+         2120.0,
+         0.0238
+        ],
+        [
+         2200.0,
+         0.024
+        ],
+        [
+         2270.0,
+         0.0228
+        ],
+        [
+         2330.0,
+         0.0224
+        ],
+        [
+         2400.0,
+         0.0225
+        ],
+        [
+         2460.0,
+         0.022
+        ],
+        [
+         2600.0,
+         0.0223
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "350 \u00b0C"
      }
     }
    ]
@@ -154,6 +362,9 @@
    "image": "figures/fig_18.png",
    "caption": "FIG. 2. GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments. SE measurements are indicated by open symbols, whereas XRR measurements are shown by solid symbols. The error bars are smaller than their respective markers.",
    "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -167,21 +378,22 @@
       "unit": "nm/cycle",
       "log": false
      },
+     "series_axis": "process and measurement method",
      "series": [
       {
        "label": "CVD SE",
        "points": [
         [
          250,
-         0.1
+         0.0988
         ],
         [
          350,
-         0.074
+         0.0735
         ],
         [
          450,
-         0.08
+         0.0785
         ]
        ]
       },
@@ -190,15 +402,15 @@
        "points": [
         [
          250,
-         0.084
+         0.0841
         ],
         [
          350,
-         0.07
+         0.0711
         ],
         [
          450,
-         0.078
+         0.0788
         ]
        ]
       },
@@ -207,31 +419,31 @@
        "points": [
         [
          150,
-         0.048
+         0.0475
         ],
         [
          200,
-         0.03
+         0.0295
         ],
         [
          250,
-         0.023
+         0.0222
         ],
         [
          300,
-         0.023
+         0.0231
         ],
         [
          350,
-         0.02
+         0.0205
         ],
         [
          400,
-         0.022
+         0.0218
         ],
         [
          450,
-         0.024
+         0.0226
         ]
        ]
       },
@@ -240,19 +452,19 @@
        "points": [
         [
          150,
-         0.045
+         0.0455
         ],
         [
          250,
-         0.026
+         0.0255
         ],
         [
          350,
-         0.021
+         0.0208
         ],
         [
          450,
-         0.025
+         0.0248
         ]
        ]
       }
@@ -266,6 +478,9 @@
    "image": "figures/fig_20.png",
    "caption": "FIG. 3. Thickness of the Mo film as a function of time during the initial stages of the ALD process. Inset: GPC in the incubation regime.",
    "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -275,145 +490,277 @@
       "log": false
      },
      "y": {
-      "quantity": "growth_per_cycle",
-      "unit": "nm/cycle",
+      "quantity": "film_thickness",
+      "unit": "nm",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
-       "label": "",
+       "label": "Mo thickness",
        "points": [
         [
-         220,
-         0.5
+         0,
+         0.0
         ],
         [
-         225,
-         0.7
-        ],
-        [
-         230,
-         1.2
-        ],
-        [
-         235,
-         1.7
-        ],
-        [
-         240,
-         2.2
-        ],
-        [
-         245,
-         2.8
-        ],
-        [
-         250,
-         3.2
-        ],
-        [
-         255,
-         3.7
-        ],
-        [
-         260,
-         4.0
-        ],
-        [
-         265,
-         4.2
-        ],
-        [
-         270,
-         4.1
-        ],
-        [
-         275,
-         3.9
-        ],
-        [
-         280,
-         3.6
-        ],
-        [
-         285,
-         3.3
-        ],
-        [
-         290,
-         3.0
-        ],
-        [
-         295,
-         2.7
-        ],
-        [
-         300,
-         2.4
-        ],
-        [
-         305,
-         2.1
-        ],
-        [
-         310,
-         1.8
-        ],
-        [
-         315,
-         1.5
-        ],
-        [
-         320,
-         1.2
-        ],
-        [
-         325,
-         0.9
-        ],
-        [
-         330,
-         0.6
-        ],
-        [
-         335,
-         0.3
-        ],
-        [
-         340,
+         6,
          0.1
         ],
         [
-         345,
-         0.0
+         12,
+         0.25
         ],
         [
-         350,
-         0.0
+         18,
+         0.42
         ],
         [
-         355,
-         0.0
+         30,
+         0.95
         ],
         [
-         360,
-         0.0
+         42,
+         1.45
         ],
         [
-         365,
-         0.0
+         51,
+         1.85
         ],
         [
-         370,
-         0.0
+         62,
+         2.12
         ],
         [
-         375,
-         0.0
+         82,
+         2.61
         ],
         [
-         380,
-         0.0
+         100,
+         3.02
+        ],
+        [
+         125,
+         3.55
+        ],
+        [
+         152,
+         4.01
+        ],
+        [
+         200,
+         4.97
+        ],
+        [
+         250,
+         5.92
+        ],
+        [
+         300,
+         6.85
+        ],
+        [
+         352,
+         7.8
+        ],
+        [
+         400,
+         8.75
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "21",
+   "image": "figures/fig_21.png",
+   "caption": "FIG. 4. Evolution of HCl and H2O byproduct emission for the MoCl 2 O2 + at-H ALD process, as determined by mass spectroscopy.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Time",
+      "unit": "s",
+      "log": false
+     },
+     "y": {
+      "quantity": "Pressure",
+      "unit": "mbar",
+      "log": true
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "HCl",
+       "points": [
+        [
+         0,
+         1.1e-09
+        ],
+        [
+         10,
+         1.1e-09
+        ],
+        [
+         18.5,
+         1.1e-09
+        ],
+        [
+         19,
+         4.5e-08
+        ],
+        [
+         20,
+         3.2e-08
+        ],
+        [
+         22,
+         1.5e-08
+        ],
+        [
+         25,
+         7.5e-09
+        ],
+        [
+         30,
+         3e-09
+        ],
+        [
+         35,
+         2e-09
+        ],
+        [
+         40,
+         1.7e-09
+        ],
+        [
+         50,
+         1.5e-09
+        ],
+        [
+         60,
+         1.4e-09
+        ],
+        [
+         70,
+         1.3e-09
+        ],
+        [
+         78.5,
+         1.3e-09
+        ],
+        [
+         79.2,
+         2.8e-09
+        ],
+        [
+         81,
+         1.1e-09
+        ],
+        [
+         84,
+         7e-10
+        ],
+        [
+         90,
+         6.5e-10
+        ],
+        [
+         100,
+         6.5e-10
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "Time",
+      "unit": "s",
+      "log": false
+     },
+     "y": {
+      "quantity": "Pressure",
+      "unit": "mbar",
+      "log": true
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "H2O",
+       "points": [
+        [
+         0,
+         2e-09
+        ],
+        [
+         10,
+         2e-09
+        ],
+        [
+         18.5,
+         2e-09
+        ],
+        [
+         19.2,
+         3.6e-09
+        ],
+        [
+         22,
+         2e-09
+        ],
+        [
+         25,
+         1.5e-09
+        ],
+        [
+         30,
+         1.3e-09
+        ],
+        [
+         50,
+         1.3e-09
+        ],
+        [
+         78.5,
+         1.3e-09
+        ],
+        [
+         79.2,
+         2.2e-07
+        ],
+        [
+         80,
+         6e-08
+        ],
+        [
+         81,
+         1.5e-08
+        ],
+        [
+         83,
+         2.5e-09
+        ],
+        [
+         86,
+         1e-09
+        ],
+        [
+         90,
+         8e-10
+        ],
+        [
+         100,
+         8e-10
         ]
        ]
       }
@@ -427,13 +774,772 @@
    "image": "figures/fig_23.png",
    "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
    "source": "measured",
-   "_parse_error": "{\n  \"panels\": [\n    {\n      \"panel\": \"a\",\n      \"x\": {\n        \"quantity\": \"spatial_coordinate\",\n        \"unit\": \"10^15 at/cm^2\",\n        \"log\": false\n      },\n      \"y\": {\n        \"quantity\": \"Compos"
+   "panel_source": {
+    "a": "measured",
+    "b": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a (composition)",
+     "x": {
+      "quantity": "spatial_coordinate",
+      "unit": "10^15 at/cm^2",
+      "log": false
+     },
+     "y": {
+      "quantity": "Composition",
+      "unit": "at%",
+      "log": true
+     },
+     "series_axis": "element",
+     "series": [
+      {
+       "label": "Mo",
+       "points": [
+        [
+         -40,
+         15
+        ],
+        [
+         -20,
+         25
+        ],
+        [
+         0,
+         45
+        ],
+        [
+         10,
+         65
+        ],
+        [
+         20,
+         80
+        ],
+        [
+         30,
+         88
+        ],
+        [
+         50,
+         90
+        ],
+        [
+         75,
+         85
+        ],
+        [
+         100,
+         70
+        ],
+        [
+         125,
+         50
+        ],
+        [
+         150,
+         35
+        ],
+        [
+         175,
+         25
+        ],
+        [
+         200,
+         20
+        ],
+        [
+         225,
+         17
+        ],
+        [
+         250,
+         13
+        ],
+        [
+         275,
+         9
+        ],
+        [
+         300,
+         6
+        ],
+        [
+         325,
+         4.5
+        ],
+        [
+         350,
+         3.0
+        ],
+        [
+         375,
+         2.8
+        ],
+        [
+         400,
+         2.5
+        ]
+       ]
+      },
+      {
+       "label": "Si",
+       "points": [
+        [
+         -40,
+         2.0
+        ],
+        [
+         -20,
+         3.2
+        ],
+        [
+         0,
+         5.0
+        ],
+        [
+         20,
+         6.5
+        ],
+        [
+         40,
+         11
+        ],
+        [
+         60,
+         15
+        ],
+        [
+         80,
+         20
+        ],
+        [
+         100,
+         30
+        ],
+        [
+         120,
+         45
+        ],
+        [
+         140,
+         60
+        ],
+        [
+         160,
+         75
+        ],
+        [
+         180,
+         85
+        ],
+        [
+         200,
+         92
+        ],
+        [
+         250,
+         97
+        ],
+        [
+         300,
+         99
+        ],
+        [
+         350,
+         100
+        ],
+        [
+         400,
+         100
+        ]
+       ]
+      },
+      {
+       "label": "O",
+       "points": [
+        [
+         -40,
+         0.4
+        ],
+        [
+         -20,
+         1.1
+        ],
+        [
+         0,
+         16
+        ],
+        [
+         10,
+         18
+        ],
+        [
+         20,
+         6
+        ],
+        [
+         30,
+         6
+        ],
+        [
+         40,
+         3.2
+        ],
+        [
+         50,
+         2.0
+        ],
+        [
+         60,
+         2.4
+        ],
+        [
+         75,
+         1.8
+        ],
+        [
+         90,
+         1.3
+        ],
+        [
+         110,
+         2.5
+        ],
+        [
+         130,
+         4.0
+        ],
+        [
+         150,
+         3.8
+        ],
+        [
+         175,
+         4.5
+        ],
+        [
+         200,
+         3.2
+        ],
+        [
+         225,
+         2.8
+        ],
+        [
+         250,
+         2.2
+        ],
+        [
+         275,
+         1.0
+        ],
+        [
+         300,
+         0.6
+        ],
+        [
+         320,
+         1.0
+        ],
+        [
+         350,
+         0.2
+        ],
+        [
+         375,
+         0.2
+        ],
+        [
+         390,
+         0.38
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "deposition_temperature": "350 \u00b0C"
+     }
+    },
+    {
+     "panel": "a (concentration)",
+     "x": {
+      "quantity": "spatial_coordinate",
+      "unit": "nm",
+      "log": false
+     },
+     "y": {
+      "quantity": "Concentration",
+      "unit": "atoms/cm^3",
+      "log": true
+     },
+     "series_axis": "element",
+     "series": [
+      {
+       "label": "Si",
+       "points": [
+        [
+         0,
+         3e+21
+        ],
+        [
+         2,
+         5e+19
+        ],
+        [
+         5,
+         2e+19
+        ],
+        [
+         10,
+         3e+19
+        ],
+        [
+         15,
+         3e+19
+        ],
+        [
+         18,
+         3e+19
+        ],
+        [
+         20,
+         1e+22
+        ],
+        [
+         25,
+         8e+22
+        ],
+        [
+         30,
+         1e+23
+        ],
+        [
+         40,
+         1e+23
+        ],
+        [
+         50,
+         1e+23
+        ]
+       ]
+      },
+      {
+       "label": "O",
+       "points": [
+        [
+         0,
+         1e+22
+        ],
+        [
+         2,
+         2e+20
+        ],
+        [
+         5,
+         5e+19
+        ],
+        [
+         10,
+         3e+19
+        ],
+        [
+         15,
+         3e+19
+        ],
+        [
+         18,
+         3e+19
+        ],
+        [
+         20,
+         2e+21
+        ],
+        [
+         23,
+         2e+22
+        ],
+        [
+         28,
+         1e+21
+        ],
+        [
+         32,
+         3e+20
+        ],
+        [
+         36,
+         1e+20
+        ],
+        [
+         40,
+         3e+19
+        ],
+        [
+         45,
+         1e+19
+        ],
+        [
+         50,
+         8e+18
+        ]
+       ]
+      },
+      {
+       "label": "C",
+       "points": [
+        [
+         0,
+         5e+20
+        ],
+        [
+         2,
+         1e+20
+        ],
+        [
+         5,
+         1e+20
+        ],
+        [
+         10,
+         1e+20
+        ],
+        [
+         15,
+         1e+20
+        ],
+        [
+         18,
+         1e+20
+        ],
+        [
+         20,
+         1e+20
+        ],
+        [
+         25,
+         3e+19
+        ],
+        [
+         30,
+         2e+19
+        ],
+        [
+         40,
+         2e+19
+        ],
+        [
+         50,
+         2e+19
+        ]
+       ]
+      },
+      {
+       "label": "Cl",
+       "points": [
+        [
+         0,
+         3e+20
+        ],
+        [
+         2,
+         3e+17
+        ],
+        [
+         5,
+         3e+16
+        ],
+        [
+         10,
+         1.5e+16
+        ],
+        [
+         15,
+         1.5e+16
+        ],
+        [
+         18,
+         3e+17
+        ],
+        [
+         20,
+         2e+19
+        ],
+        [
+         25,
+         1e+19
+        ],
+        [
+         30,
+         6e+17
+        ],
+        [
+         35,
+         6e+16
+        ],
+        [
+         40,
+         3e+16
+        ],
+        [
+         50,
+         1.5e+16
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "deposition_temperature": "350 \u00b0C"
+     }
+    },
+    {
+     "panel": "b (composition)",
+     "x": {
+      "quantity": "deposition_temperature",
+      "unit": "\u00b0C",
+      "log": false
+     },
+     "y": {
+      "quantity": "Composition",
+      "unit": "at%",
+      "log": true
+     },
+     "series_axis": "element",
+     "series": [
+      {
+       "label": "Mo",
+       "points": [
+        [
+         150,
+         70
+        ],
+        [
+         250,
+         92
+        ],
+        [
+         350,
+         95
+        ],
+        [
+         450,
+         96
+        ]
+       ]
+      },
+      {
+       "label": "O",
+       "points": [
+        [
+         150,
+         35
+        ],
+        [
+         250,
+         6.5
+        ],
+        [
+         350,
+         3.5
+        ],
+        [
+         450,
+         3.2
+        ]
+       ]
+      },
+      {
+       "label": "Cl",
+       "points": [
+        [
+         150,
+         2.8
+        ],
+        [
+         350,
+         0.2
+        ],
+        [
+         450,
+         0.4
+        ]
+       ]
+      },
+      {
+       "label": "H",
+       "points": [
+        [
+         150,
+         0.9
+        ],
+        [
+         250,
+         0.4
+        ],
+        [
+         350,
+         0.75
+        ],
+        [
+         450,
+         0.42
+        ]
+       ]
+      },
+      {
+       "label": "C",
+       "points": [
+        [
+         150,
+         0.1
+        ],
+        [
+         350,
+         0.22
+        ],
+        [
+         450,
+         0.29
+        ]
+       ]
+      },
+      {
+       "label": "N",
+       "points": [
+        [
+         150,
+         0.11
+        ],
+        [
+         250,
+         0.24
+        ],
+        [
+         350,
+         0.3
+        ],
+        [
+         450,
+         0.41
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "b (concentration)",
+     "x": {
+      "quantity": "deposition_temperature",
+      "unit": "\u00b0C",
+      "log": false
+     },
+     "y": {
+      "quantity": "Concentration",
+      "unit": "atoms/cm^3",
+      "log": true
+     },
+     "series_axis": "element",
+     "series": [
+      {
+       "label": "O",
+       "points": [
+        [
+         250,
+         3e+22
+        ],
+        [
+         350,
+         1e+21
+        ],
+        [
+         450,
+         2e+19
+        ]
+       ]
+      },
+      {
+       "label": "Si",
+       "points": [
+        [
+         250,
+         8e+19
+        ],
+        [
+         350,
+         4e+19
+        ],
+        [
+         450,
+         4e+19
+        ]
+       ]
+      },
+      {
+       "label": "Cl",
+       "points": [
+        [
+         250,
+         2e+20
+        ],
+        [
+         350,
+         2e+18
+        ],
+        [
+         450,
+         8000000000000000.0
+        ]
+       ]
+      },
+      {
+       "label": "C",
+       "points": [
+        [
+         250,
+         6e+19
+        ],
+        [
+         350,
+         1e+20
+        ],
+        [
+         450,
+         1.2e+20
+        ]
+       ]
+      },
+      {
+       "label": "N",
+       "points": [
+        [
+         250,
+         2e+19
+        ],
+        [
+         350,
+         1.2e+19
+        ],
+        [
+         450,
+         1.5e+19
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
   },
   {
    "figure": "25",
    "image": "figures/fig_25.png",
    "caption": "FIG. 7. Film resistivity as a function of (a) the ALD film thickness and (b) process temperature.",
    "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -447,33 +1553,34 @@
       "unit": "\u00b5\u03a9cm",
       "log": true
      },
+     "series_axis": "",
      "series": [
       {
-       "label": "",
+       "label": "ALD",
        "points": [
         [
-         3.0,
+         2.2,
          400.0
         ],
         [
-         5.0,
-         110.0
+         4.0,
+         115.0
         ],
         [
-         7.0,
-         50.0
+         4.8,
+         58.0
         ],
         [
-         10.0,
-         30.0
+         8.7,
+         26.0
         ],
         [
-         12.0,
-         28.0
+         12.8,
+         23.0
         ],
         [
-         24.0,
-         20.0
+         24.3,
+         18.0
         ]
        ]
       }
@@ -492,25 +1599,26 @@
       "unit": "\u00b5\u03a9cm",
       "log": true
      },
+     "series_axis": "process type",
      "series": [
       {
        "label": "ALD",
        "points": [
         [
          150.0,
-         400.0
+         370.0
         ],
         [
          250.0,
-         30.0
+         23.0
         ],
         [
          350.0,
-         25.0
+         19.0
         ],
         [
          450.0,
-         28.0
+         22.0
         ]
        ]
       },
@@ -518,57 +1626,16 @@
        "label": "CVD",
        "points": [
         [
-         200.0,
-         300.0
+         250.0,
+         270.0
         ],
         [
          350.0,
-         20.0
+         18.0
         ],
         [
          450.0,
-         15.0
-        ]
-       ]
-      }
-     ],
-     "conditions": {}
-    }
-   ]
-  },
-  {
-   "figure": "27",
-   "image": "figures/fig_27.png",
-   "caption": "FIG. 9. TEM analysis with (a) STEM image of the layer stack and conformality estimate and (b) TEM image and FFT analysis.",
-   "source": "measured",
-   "panels": [
-    {
-     "panel": "a",
-     "x": {
-      "quantity": "spatial_coordinate",
-      "unit": "nm",
-      "log": false
-     },
-     "y": {
-      "quantity": "normalized_thickness",
-      "unit": "%",
-      "log": false
-     },
-     "series": [
-      {
-       "label": "",
-       "points": [
-        [
-         0,
-         100
-        ],
-        [
-         12.5,
-         95
-        ],
-        [
-         25,
-         90
+         14.0
         ]
        ]
       }
@@ -579,7 +1646,7 @@
   }
  ],
  "_tokens": {
-  "in": 4437,
-  "out": 4780
+  "in": 12885,
+  "out": 5688
  }
 }

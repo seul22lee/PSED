@@ -1,7 +1,7 @@
 [
  {
   "material": "Mo2N",
-  "material_raw": "MoNx",
+  "material_raw": "Mo2N",
   "precursors": [
    "MoCl4_THD_THF"
   ],
@@ -16,91 +16,41 @@
   "carrier_gas": null,
   "process_type": "unknown",
   "cycle_sequence": "A",
-  "controlled": [
-   {
-    "quantity": "deposition_temperature",
-    "value": 500.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "h2_pulse_time",
-    "value": 20.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "nh3_pulse_time",
-    "value": 60.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   }
-  ],
+  "controlled": [],
   "measurand": {
-   "quantity": "film_thickness",
-   "unit": "nm",
-   "family": "film_amount"
+   "quantity": null,
+   "unit": null,
+   "family": null
   },
-  "coordinate": "cycle_number",
+  "coordinate": null,
   "coordinate_family": null,
-  "points": [
-   [
-    50,
-    4.3
-   ],
-   [
-    100,
-    8.9
-   ],
-   [
-    150,
-    12.4
-   ],
-   [
-    200,
-    17.5
-   ],
-   [
-    250,
-    22.0
-   ],
-   [
-    300,
-    25.0
-   ]
-  ],
-  "granularity": "profile",
+  "points": [],
+  "granularity": "single",
   "relevance": "experimental",
   "is_model_result": false,
-  "analysis_ready": true,
-  "exp_id": "10.1116_6.0002154-F5b-0",
+  "is_paper_level": true,
+  "analysis_ready": false,
+  "exp_id": "10.1116_6.0002154-paper-0",
   "provenance": {
-   "figure": "Fig 5",
-   "panel": "b",
-   "caption": "FIG. 5. (a) Raw XRR data of the MoNx film with a curve fit and (b) the thickness of the MoN x thin film as a function of the number of ALD cycles.",
-   "extractor": "vision-llm",
    "doi": "10.1116_6.0002154",
-   "fig_index": "21"
+   "source": "paper-level",
+   "figure": "paper",
+   "study_type": "experimental",
+   "modalities": [
+    "film_property_vs_condition",
+    "gpc_vs_cycles",
+    "other",
+    "xrd_or_spectrum"
+   ]
   },
   "series_name": null,
-  "structure": "planar_wafer",
-  "varies": [
-   "cycle_number"
+  "phase": null,
+  "structure": null,
+  "varies": [],
+  "dependent": [],
+  "issues": [
+   "paper-level (no figure data extracted)"
   ],
-  "dependent": [
-   {
-    "quantity": "film_thickness",
-    "unit": "nm",
-    "family": "film_amount"
-   }
-  ],
-  "issues": [],
   "recipe": {
    "material": "Mo2N",
    "reactants": [
@@ -117,7 +67,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": 500.0,
+   "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -126,10 +76,9 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_6.0002154-F21b-0"
+    "_exp_id": "10.1116_6.0002154-paper-0"
    },
-   "completeness": 0.5
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  }
 ]

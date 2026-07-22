@@ -51,21 +51,56 @@ SCHEMA = """Return ONLY a JSON object with this exact shape:
  "temperature_window_C": [min,max] | null,   // if a growth/ALD window is stated
  "gpc_nm": number | null,      // saturated growth-per-cycle if stated
  "data": {                     // which DATA figures/tables exist and where
-   "<data_type>": {"present": true, "where": "Fig 2a"} , ...
+   "<data_type>": {"present": true, "where": ["F6","F13","F16"]} , ...
+   // "where" is a LIST — include EVERY figure/panel that shows this data_type.
+   // If three separate figures show saturation profiles, list all three tags.
  },                            // data_type in: %(dtypes)s
- "drill": [                    // figures/tables worth digitizing/deep-extraction
-   {"where":"F7a","type":"<data_type>","measurand":"<measurand>",  // "where" MUST be the
-    "source":"measured"|"simulated",   // figure's [F#] tag from the caption list, plus an
-    "why":"one phrase"}                // optional panel letter (e.g. F7a); NOT the paper's Fig number
+ "drill": [                    // one entry per data-bearing figure/panel
+   {"where":"F7a","type":"<data_type>","measurand":"<measurand>",
+    "source":"measured"|"simulated","why":"one phrase"}
+   // "where" = figure [F#] tag + panel letter when panelled (F7a). Emit a SEPARATE
+   // drill item for EVERY figure and EVERY data panel — do NOT collapse multiple
+   // figures of the same data_type into one. If Fig 3, Fig 7, Fig 9 all show
+   // measured saturation profiles, all three (with their data panels) get items.
+   // Multi-panel: F9a,F9b,F9c,… one per data panel; skip SEM/schematic panels.
  ],
  "go_deeper": true|false       // is a methods+figure deep pass worth it?
 }
+
+CRITICAL COVERAGE RULE — never drop a data plot:
+If a figure/panel clearly contains plotted DATA (points, curves, bars with numeric
+axes), it MUST be drilled. Do NOT skip a data plot for ANY of these reasons:
+  - "another figure of the same type is already listed" — WRONG: different figures are
+    different experiments (different samples, conditions, or channel geometries) and
+    each must be drilled separately.
+  - "it looks like a representative/duplicate" — WRONG: scaled/normalized/as-measured
+    versions of the same measurement are all separate data panels; drill each.
+  - "the caption is a classification/terminology figure" — if it ALSO shows real
+    experimental data (e.g. "the experimental scaled saturation profile"), drill it.
+You are not choosing the "best" or "representative" data figure — you are inventorying
+EVERY data plot. Completeness across same-type figures, but ONLY for actual plots.
+
 Rules: only include a data_type in "data" if a caption/text clearly shows it. Do NOT
 invent. Prefer material ids from this list when they match: %(mats)s . measurand in:
-%(meas)s . Schematics/logos/TEM-without-quantitative-axes are NOT data figures.
+%(meas)s .
+DRILL A PANEL ONLY IF IT PLOTS DATA — i.e. it has numeric axes with points, curves,
+or bars you could digitize into (x,y) values. The following are NEVER data panels,
+even when the figure is about a measurement: SEM / TEM / STEM / AFM images and
+micrographs, optical/photograph images, EDS/elemental maps, schematics, illustrations,
+flow charts, logos. If a figure is entirely such images, it has NO drill items.
+Do NOT hallucinate a data_type onto a microscopy/schematic figure. When a figure
+MIXES an image panel and a plot panel (e.g. (a) SEM, (b) intensity plot), drill ONLY
+the plot panel(s).
+KEEP (do not weaken): if MULTIPLE separate figures each plot data of the same type,
+list every one — never collapse same-type figures to a single representative. That
+rule stays; this change only stops drilling non-plot panels.
 For each drill item set source=simulated when the caption says simulated/calculated/
 modeled/computed/predicted, else measured; if the whole paper is modeling, most/all
 figures are simulated.
+List EVERY figure that shows a given data_type, not just one. Same-type figures are
+separate experiments (different samples/conditions) and must each be drilled. A
+caption saying "as-measured … profiles" or "experimental … profile" is measured
+data — drill it even if another figure of the same type already exists.
 """ % {"dtypes": DATA_TYPES, "mats": MATERIALS[:40], "meas": MEASURANDS}
 
 
@@ -175,22 +210,40 @@ def _loads_json(text):
         raise
 
 
+def _scout_call(client, model, prompt, budgets=(12288, 20000, 32000)):
+    """max_output_tokens caps THINKING + OUTPUT combined on gemini-flash. Figure-heavy
+    papers spend ~3,900 on thinking, so a 4096 budget left ~160 for JSON -> truncated
+    mid-string -> parse failure -> an EMPTY scout that downstream reads as 'no data'.
+    Start high, raise on truncation, and NEVER return a silent empty."""
+    from google.genai import types
+    last_raw, last_finish, last_tok = "", None, {}
+    for i, budget in enumerate(budgets):
+        r = client.models.generate_content(
+            model=model, contents=prompt,
+            config=types.GenerateContentConfig(temperature=0, response_mime_type="application/json",
+                                               max_output_tokens=budget))
+        last_finish = getattr(r.candidates[0], "finish_reason", None) if r.candidates else None
+        last_raw = r.text or ""
+        usage = getattr(r, "usage_metadata", None)
+        last_tok = {"in": getattr(usage, "prompt_token_count", None),
+                    "out": getattr(usage, "candidates_token_count", None),
+                    "thoughts": getattr(usage, "thoughts_token_count", None),
+                    "budget": budget} if usage else {"budget": budget}
+        try:
+            return _loads_json(last_raw), last_tok
+        except Exception:
+            print(f"    [scout retry {i+1}/{len(budgets)}] finish={last_finish} "
+                  f"budget={budget} parse-fail, raising budget")
+    # exhausted: do NOT return an empty scout that reads as 'no data'
+    raise RuntimeError(f"SCOUT FAILED after {len(budgets)} budgets "
+                       f"(finish={last_finish}); raw kept for diagnosis:\n{last_raw[:500]}")
+
+
 def scout(sd, client):
     abstract, conclusion, caps = build_scout_input(sd)
     prompt = (f"{SCHEMA}\n\n=== ABSTRACT ===\n{abstract}\n\n=== CONCLUSION ===\n{conclusion}"
               f"\n\n=== FIGURE/TABLE CAPTIONS ===\n" + "\n".join(caps))
-    from google.genai import types
-    r = client.models.generate_content(
-        model=MODEL, contents=prompt,
-        config=types.GenerateContentConfig(temperature=0, response_mime_type="application/json",
-                                            max_output_tokens=4096))
-    usage = getattr(r, "usage_metadata", None)
-    tok = {"in": getattr(usage, "prompt_token_count", None),
-           "out": getattr(usage, "candidates_token_count", None)} if usage else {}
-    try:
-        obj = _loads_json(r.text)
-    except Exception as e:
-        obj = {"_parse_error": (r.text or "")[:4000], "_parse_exc": f"{type(e).__name__}: {e}"}
+    obj, tok = _scout_call(client, MODEL, prompt)     # raises loudly rather than emptying
     obj["_tokens"] = tok
     obj["_scout_input_chars"] = len(prompt)
     (EXTRACTED / sd / "scout.json").write_text(json.dumps(obj, indent=1))
@@ -267,9 +320,17 @@ def main(sds):
     from google import genai
     client = genai.Client(api_key=_load_key())
     tot_in = tot_out = 0
+    failed = []
     for sd in sds:
         print(f"\n[scout] {sd}")
-        o = scout(sd, client)
+        try:
+            o = scout(sd, client)
+        except Exception as e:
+            # Loud, and NO scout.json written — an empty scout would read downstream as
+            # "this paper has no data" and the paper would vanish from the KB unnoticed.
+            print(f"  [SCOUT FAILED - EMPTY] {sd}: {e}")
+            failed.append(sd)
+            continue
         tk = o.get("_tokens", {})
         tot_in += tk.get("in") or 0; tot_out += tk.get("out") or 0
         print(f"  tokens: in={tk.get('in')} out={tk.get('out')}  (input {o.get('_scout_input_chars')} chars)")
@@ -284,6 +345,9 @@ def main(sds):
         print(f"  go_deeper={o.get('go_deeper')}")
     print(f"\n[scout] total tokens: in={tot_in} out={tot_out} for {len(sds)} papers "
           f"(~{(tot_in+tot_out)//max(len(sds),1)}/paper)")
+    if failed:
+        print(f"[scout] *** {len(failed)} PAPER(S) FAILED — not scouted, NOT in the KB: {failed}")
+        sys.exit(1)          # non-zero so a batch run cannot report success while dropping papers
 
 
 if __name__ == "__main__":

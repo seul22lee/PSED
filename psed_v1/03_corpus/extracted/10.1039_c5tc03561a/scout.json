@@ -1,10 +1,9 @@
 {
  "is_ald_process_paper": true,
- "study_type": "experimental",
+ "study_type": "both",
  "materials": [
   "BaO",
-  "BaTiO3",
-  "TiO2"
+  "BaTiO3"
  ],
  "precursors": [
   "py-Ba",
@@ -22,81 +21,97 @@
  "data": {
   "gpc_vs_temperature": {
    "present": true,
-   "where": "Fig 2a"
+   "where": [
+    "F7a"
+   ]
   },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "Fig 2b, Fig 3b"
-  },
-  "gpc_vs_cycles": {
-   "present": true,
-   "where": "Fig 3a"
-  },
-  "conformality_or_penetration_profile": {
-   "present": true,
-   "where": "Fig 6a, Fig 6b, Fig 6c, Fig 6d"
+   "where": [
+    "F7b",
+    "F8a",
+    "F8b"
+   ]
   },
   "film_property_vs_condition": {
    "present": true,
-   "where": "Fig 8"
+   "where": [
+    "F9a",
+    "F12a",
+    "F13"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "Fig 4a, Fig 4b, Fig 7a"
-  },
-  "other": {
-   "present": true,
-   "where": "Fig 5, Fig 7b, Table 1"
+   "where": [
+    "F9b"
+   ]
   }
  },
  "drill": [
   {
-   "where": "Fig 2a",
+   "where": "F7a",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "ALD window determination"
+   "why": "GPC plotted versus substrate temperature"
   },
   {
-   "where": "Fig 2b",
+   "where": "F7b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Precursor dose saturation"
+   "why": "GPC versus boosting time"
   },
   {
-   "where": "Fig 3a",
-   "type": "gpc_vs_cycles",
-   "measurand": "film_thickness",
-   "source": "measured",
-   "why": "Growth linearity"
-  },
-  {
-   "where": "Fig 3b",
+   "where": "F8a",
    "type": "gpc_vs_dose_saturation",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Oxidant dose saturation"
+   "why": "Film thickness versus number of Ba precursor exposures"
   },
   {
-   "where": "Fig 6a",
-   "type": "conformality_or_penetration_profile",
-   "measurand": "normalized_thickness",
+   "where": "F8b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "Conformality profile"
+   "why": "Thickness variation as a function of oxidant pulse count"
   },
   {
-   "where": "Fig 8",
+   "where": "F9a",
+   "type": "film_property_vs_condition",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS depth profile of BaO film showing composition versus depth"
+  },
+  {
+   "where": "F9b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "X-ray photoelectron spectra on surface and post etching"
+  },
+  {
+   "where": "F12a",
+   "type": "film_property_vs_condition",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS depth profile of as-deposited BTO film on Si"
+  },
+  {
+   "where": "F13",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Electrical properties of BTO"
+   "why": "Leakage current I-V characteristics of Pt/BTO/Ru capacitor"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1954,
-  "out": 808
+  "in": 2587,
+  "out": 867,
+  "thoughts": 2815,
+  "budget": 12288
  },
- "_scout_input_chars": 7228
+ "_scout_input_chars": 9718
 }

@@ -1,8 +1,9 @@
 {
  "is_ald_process_paper": true,
- "study_type": "experimental",
+ "study_type": "both",
  "materials": [
-  "RuO2"
+  "RuO2",
+  "Ru"
  ],
  "precursors": [
   "RuO4"
@@ -22,23 +23,53 @@
  "data": {
   "gpc_vs_temperature": {
    "present": true,
-   "where": "F1c"
+   "where": [
+    "F1c"
+   ]
   },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "F1a, F1b, F5b, F5c"
+   "where": [
+    "F1a",
+    "F1b",
+    "F5b",
+    "F5c"
+   ]
   },
   "gpc_vs_cycles": {
    "present": true,
-   "where": "F1d, F5a"
+   "where": [
+    "F1d",
+    "F5a"
+   ]
   },
   "conformality_or_penetration_profile": {
    "present": true,
-   "where": "F1e, F1f"
+   "where": [
+    "F1f"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "F2a, F2b, F3a, F3b, F3c, F4a, F4b, F4c, F4d, F4e, F6a, F6b, F6c"
+   "where": [
+    "F2a",
+    "F2b",
+    "F2c",
+    "F3a",
+    "F3b",
+    "F3c",
+    "F4c",
+    "F4d",
+    "F4e",
+    "F6c"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F6a",
+    "F6b"
+   ]
   }
  },
  "drill": [
@@ -47,55 +78,148 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC vs RuO4 pulse time"
+   "why": "growth per cycle as a function of RuO4 pulse time"
   },
   {
    "where": "F1b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC vs methanol pulse time"
+   "why": "growth per cycle as a function of methanol pulse time"
   },
   {
    "where": "F1c",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC vs substrate temperature showing ALD window"
+   "why": "growth per cycle as a function of substrate temperature"
   },
   {
    "where": "F1d",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Thickness vs ALD cycle number"
+   "why": "film thickness versus number of ALD cycles on different substrates"
+  },
+  {
+   "where": "F1f",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "penetration_depth",
+   "source": "measured",
+   "why": "normalized Ru EDX depth profile along micropillars"
+  },
+  {
+   "where": "F2a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "in vacuo XPS spectra comparison in the Ru 3d region"
+  },
+  {
+   "where": "F2b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS peak deconvolution of Ru 3d signal"
+  },
+  {
+   "where": "F2c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS peak deconvolution of O 1s signal"
+  },
+  {
+   "where": "F3a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "ex situ XRD diffractograms of as-deposited and annealed films"
+  },
+  {
+   "where": "F3b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "in situ XRD patterns during annealing in helium"
+  },
+  {
+   "where": "F3c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "in situ XRD patterns during annealing in air"
+  },
+  {
+   "where": "F4c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "azimuthal integration intensity profile of GIWAXS data"
+  },
+  {
+   "where": "F4d",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "pair distribution function of as-deposited RuO2 film"
+  },
+  {
+   "where": "F4e",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "pair distribution function of annealed RuO2 film"
   },
   {
    "where": "F5a",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Thickness vs cycles for various alcohol reactants"
+   "why": "thickness vs ALD cycles for different alcohol processes"
   },
   {
    "where": "F5b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Saturation curves for RuO4 reaction across different alcohols"
+   "why": "saturation curves for RuO4 surface reaction with different alcohols"
   },
   {
    "where": "F5c",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Saturation curves for alcohol surface reactions"
+   "why": "saturation curves for alcohol surface reactions"
+  },
+  {
+   "where": "F6a",
+   "type": "other",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "in situ mass spectrometry intensity during methanol pulses"
+  },
+  {
+   "where": "F6b",
+   "type": "other",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "in situ mass spectrometry intensity during RuO4 pulses"
+  },
+  {
+   "where": "F6c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "in situ FTIR difference spectra for methanol and RuO4 half cycles"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2301,
-  "out": 859
+  "in": 2898,
+  "out": 1828,
+  "thoughts": 2520,
+  "budget": 12288
  },
- "_scout_input_chars": 8663
+ "_scout_input_chars": 11067
 }

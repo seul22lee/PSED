@@ -22,6 +22,10 @@
    "image": "figures/fig_17.png",
    "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 \u00b0C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s purge + 40 s O3 + 20 s purge and (b) 6 \u00d7 0.25 s Mo( i PrCp)2H2 + 20 s purge + O 3 + 20 s purge.",
    "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured"
+   },
    "panels": [
     {
      "panel": "b",
@@ -35,6 +39,7 @@
       "unit": "\u00c5/cycle",
       "log": false
      },
+     "series_axis": "measured property",
      "series": [
       {
        "label": "Average GPC",
@@ -68,33 +73,13 @@
          1.46
         ]
        ]
-      }
-     ],
-     "conditions": {
-      "precursor": "Mo(iPrCp)2H2",
-      "coreactant": "O3",
-      "deposition_temperature": "150 \u00b0C"
-     }
-    },
-    {
-     "panel": "b_sup",
-     "x": {
-      "quantity": "pulse_time",
-      "unit": "s",
-      "log": false
-     },
-     "y": {
-      "quantity": "SUP",
-      "unit": "%",
-      "log": false
-     },
-     "series": [
+      },
       {
        "label": "SUP",
        "points": [
         [
          0.0,
-         14.0
+         13.5
         ],
         [
          5.0,
@@ -110,7 +95,7 @@
         ],
         [
          30.0,
-         1.0
+         0.8
         ],
         [
          40.0,
@@ -124,9 +109,8 @@
       }
      ],
      "conditions": {
-      "precursor": "Mo(iPrCp)2H2",
-      "coreactant": "O3",
-      "deposition_temperature": "150 \u00b0C"
+      "temperature": "150 \u00b0C",
+      "purge_time": "20 s"
      }
     }
    ]
@@ -136,6 +120,9 @@
    "image": "figures/fig_18.png",
    "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition temperature.",
    "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -149,13 +136,14 @@
       "unit": "\u00c5/cycle",
       "log": false
      },
+     "series_axis": "measurement location",
      "series": [
       {
        "label": "Average GPC",
        "points": [
         [
          100,
-         1.26
+         1.25
         ],
         [
          125,
@@ -171,11 +159,11 @@
         ],
         [
          200,
-         1.6
+         1.59
         ],
         [
          225,
-         1.69
+         1.68
         ],
         [
          250,
@@ -229,15 +217,15 @@
        "points": [
         [
          100,
-         1.21
+         1.2
         ],
         [
          125,
-         1.39
+         1.4
         ],
         [
          150,
-         1.52
+         1.51
         ],
         [
          175,
@@ -245,11 +233,11 @@
         ],
         [
          200,
-         1.62
+         1.61
         ],
         [
          225,
-         1.7
+         1.69
         ],
         [
          250,
@@ -266,7 +254,7 @@
        "points": [
         [
          100,
-         1.26
+         1.25
         ],
         [
          125,
@@ -300,9 +288,7 @@
       }
      ],
      "conditions": {
-      "precursor": "Mo(iPrCp)2H2",
-      "coreactant": "O3",
-      "process_type": "thermal"
+      "O3 pulse time": "40 s"
      }
     },
     {
@@ -317,56 +303,1104 @@
       "unit": "%",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "SUP",
        "points": [
         [
          100,
-         4.0
-        ],
-        [
-         125,
-         1.5
-        ],
-        [
-         150,
-         4.2
-        ],
-        [
-         175,
          3.8
         ],
         [
+         125,
+         1.6
+        ],
+        [
+         150,
+         4.1
+        ],
+        [
+         175,
+         3.5
+        ],
+        [
          200,
-         5.0
+         5.1
         ],
         [
          225,
-         5.8
+         5.7
         ],
         [
          250,
-         11.2
+         11.3
         ],
         [
          300,
-         13.5
+         13.4
         ]
        ]
       }
      ],
      "conditions": {
-      "precursor": "Mo(iPrCp)2H2",
-      "coreactant": "O3",
-      "process_type": "thermal"
+      "O3 pulse time": "40 s"
      }
+    }
+   ]
+  },
+  {
+   "figure": "20",
+   "image": "figures/fig_20.png",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "2\u0398",
+      "unit": "Degrees",
+      "log": false
+     },
+     "y": {
+      "quantity": "Relative Intensity",
+      "unit": "A.U.",
+      "log": false
+     },
+     "series_axis": "sample condition",
+     "series": [
+      {
+       "label": "200 \u00b0C, 350 \u00b0C Annealed",
+       "points": [
+        [
+         24.0,
+         4.1
+        ],
+        [
+         24.5,
+         4.1
+        ],
+        [
+         25.0,
+         4.15
+        ],
+        [
+         25.2,
+         4.5
+        ],
+        [
+         25.45,
+         5.4
+        ],
+        [
+         25.7,
+         4.5
+        ],
+        [
+         26.0,
+         4.1
+        ],
+        [
+         26.5,
+         3.9
+        ],
+        [
+         27.0,
+         3.8
+        ],
+        [
+         27.5,
+         3.7
+        ],
+        [
+         28.0,
+         3.6
+        ]
+       ]
+      },
+      {
+       "label": "As-Deposited 200 \u00b0C",
+       "points": [
+        [
+         24.0,
+         3.0
+        ],
+        [
+         24.5,
+         3.0
+        ],
+        [
+         25.0,
+         3.0
+        ],
+        [
+         25.5,
+         2.95
+        ],
+        [
+         26.0,
+         2.95
+        ],
+        [
+         26.5,
+         2.9
+        ],
+        [
+         27.0,
+         2.9
+        ],
+        [
+         27.5,
+         2.85
+        ],
+        [
+         28.0,
+         2.8
+        ]
+       ]
+      },
+      {
+       "label": "As-Deposited 150 \u00b0C",
+       "points": [
+        [
+         24.0,
+         2.0
+        ],
+        [
+         24.5,
+         2.0
+        ],
+        [
+         25.0,
+         2.0
+        ],
+        [
+         25.5,
+         1.95
+        ],
+        [
+         26.0,
+         1.95
+        ],
+        [
+         26.5,
+         1.9
+        ],
+        [
+         27.0,
+         1.9
+        ],
+        [
+         27.5,
+         1.85
+        ],
+        [
+         28.0,
+         1.8
+        ]
+       ]
+      },
+      {
+       "label": "As-Deposited 100 \u00b0C",
+       "points": [
+        [
+         24.0,
+         1.0
+        ],
+        [
+         24.5,
+         1.0
+        ],
+        [
+         25.0,
+         0.95
+        ],
+        [
+         25.5,
+         0.9
+        ],
+        [
+         26.0,
+         0.9
+        ],
+        [
+         26.5,
+         0.95
+        ],
+        [
+         27.0,
+         0.9
+        ],
+        [
+         27.5,
+         0.9
+        ],
+        [
+         28.0,
+         0.85
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "21",
+   "image": "figures/fig_21.png",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Binding Energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Counts/s (A.U.)",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "sample condition",
+     "series": [
+      {
+       "label": "200\u00b0C Annealed",
+       "points": [
+        [
+         238.0,
+         71.0
+        ],
+        [
+         237.0,
+         71.5
+        ],
+        [
+         236.2,
+         77.0
+        ],
+        [
+         235.5,
+         88.0
+        ],
+        [
+         234.7,
+         76.0
+        ],
+        [
+         233.8,
+         72.0
+        ],
+        [
+         233.1,
+         78.0
+        ],
+        [
+         232.4,
+         94.0
+        ],
+        [
+         231.6,
+         78.0
+        ],
+        [
+         230.5,
+         71.5
+        ],
+        [
+         229.0,
+         71.0
+        ]
+       ]
+      },
+      {
+       "label": "200\u00b0C",
+       "points": [
+        [
+         238.0,
+         47.0
+        ],
+        [
+         237.0,
+         47.5
+        ],
+        [
+         236.4,
+         53.0
+        ],
+        [
+         235.7,
+         62.0
+        ],
+        [
+         234.8,
+         51.0
+        ],
+        [
+         233.9,
+         47.5
+        ],
+        [
+         233.2,
+         53.0
+        ],
+        [
+         232.5,
+         68.0
+        ],
+        [
+         231.6,
+         52.0
+        ],
+        [
+         230.5,
+         47.5
+        ],
+        [
+         229.0,
+         47.0
+        ]
+       ]
+      },
+      {
+       "label": "150\u00b0C",
+       "points": [
+        [
+         238.0,
+         24.0
+        ],
+        [
+         237.0,
+         24.5
+        ],
+        [
+         236.3,
+         29.0
+        ],
+        [
+         235.5,
+         38.0
+        ],
+        [
+         234.6,
+         28.0
+        ],
+        [
+         233.8,
+         24.5
+        ],
+        [
+         233.1,
+         29.0
+        ],
+        [
+         232.4,
+         43.0
+        ],
+        [
+         231.5,
+         28.0
+        ],
+        [
+         230.5,
+         24.5
+        ],
+        [
+         229.0,
+         24.0
+        ]
+       ]
+      },
+      {
+       "label": "100\u00b0C",
+       "points": [
+        [
+         238.0,
+         2.0
+        ],
+        [
+         237.0,
+         2.5
+        ],
+        [
+         236.2,
+         6.0
+        ],
+        [
+         235.4,
+         13.0
+        ],
+        [
+         234.5,
+         5.0
+        ],
+        [
+         233.7,
+         2.5
+        ],
+        [
+         233.0,
+         5.5
+        ],
+        [
+         232.3,
+         17.0
+        ],
+        [
+         231.4,
+         5.0
+        ],
+        [
+         230.5,
+         2.5
+        ],
+        [
+         229.0,
+         2.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "23",
+   "image": "figures/fig_23.png",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Binding Energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Counts/s",
+      "unit": "A.U.",
+      "log": false
+     },
+     "series_axis": "sample condition and peak component",
+     "series": [
+      {
+       "label": "100\u00b0C - O 1s A",
+       "points": [
+        [
+         535.0,
+         0.0
+        ],
+        [
+         534.0,
+         0.0
+        ],
+        [
+         533.0,
+         0.02
+        ],
+        [
+         532.0,
+         0.12
+        ],
+        [
+         531.2,
+         0.53
+        ],
+        [
+         530.3,
+         2.38
+        ],
+        [
+         529.5,
+         0.78
+        ],
+        [
+         528.5,
+         0.08
+        ],
+        [
+         527.5,
+         0.0
+        ]
+       ]
+      },
+      {
+       "label": "100\u00b0C - O 1s C",
+       "points": [
+        [
+         535.0,
+         0.0
+        ],
+        [
+         533.5,
+         0.03
+        ],
+        [
+         532.1,
+         0.28
+        ],
+        [
+         530.8,
+         0.04
+        ],
+        [
+         527.5,
+         0.0
+        ]
+       ]
+      },
+      {
+       "label": "150\u00b0C - O 1s A",
+       "points": [
+        [
+         535.0,
+         3.0
+        ],
+        [
+         534.0,
+         3.0
+        ],
+        [
+         533.0,
+         3.02
+        ],
+        [
+         532.0,
+         3.15
+        ],
+        [
+         531.2,
+         3.65
+        ],
+        [
+         530.35,
+         5.51
+        ],
+        [
+         529.5,
+         3.82
+        ],
+        [
+         528.5,
+         3.08
+        ],
+        [
+         527.5,
+         3.0
+        ]
+       ]
+      },
+      {
+       "label": "150\u00b0C - O 1s C",
+       "points": [
+        [
+         535.0,
+         3.0
+        ],
+        [
+         533.5,
+         3.03
+        ],
+        [
+         532.05,
+         3.32
+        ],
+        [
+         530.6,
+         3.04
+        ],
+        [
+         527.5,
+         3.0
+        ]
+       ]
+      },
+      {
+       "label": "200\u00b0C - O 1s A",
+       "points": [
+        [
+         535.0,
+         6.0
+        ],
+        [
+         534.0,
+         6.0
+        ],
+        [
+         533.0,
+         6.02
+        ],
+        [
+         532.0,
+         6.12
+        ],
+        [
+         531.2,
+         6.72
+        ],
+        [
+         530.3,
+         8.68
+        ],
+        [
+         529.5,
+         6.85
+        ],
+        [
+         528.5,
+         6.08
+        ],
+        [
+         527.5,
+         6.0
+        ]
+       ]
+      },
+      {
+       "label": "200\u00b0C - O 1s C",
+       "points": [
+        [
+         535.0,
+         6.0
+        ],
+        [
+         533.5,
+         6.01
+        ],
+        [
+         532.0,
+         6.08
+        ],
+        [
+         530.5,
+         6.01
+        ],
+        [
+         527.5,
+         6.0
+        ]
+       ]
+      },
+      {
+       "label": "200\u00b0C Annealed - O 1s A",
+       "points": [
+        [
+         535.0,
+         9.0
+        ],
+        [
+         534.0,
+         9.0
+        ],
+        [
+         533.0,
+         9.05
+        ],
+        [
+         532.0,
+         9.25
+        ],
+        [
+         531.2,
+         10.05
+        ],
+        [
+         530.3,
+         11.95
+        ],
+        [
+         529.5,
+         9.92
+        ],
+        [
+         528.5,
+         9.08
+        ],
+        [
+         527.5,
+         9.0
+        ]
+       ]
+      },
+      {
+       "label": "200\u00b0C Annealed - O 1s C",
+       "points": [
+        [
+         535.0,
+         9.0
+        ],
+        [
+         533.5,
+         9.15
+        ],
+        [
+         532.05,
+         10.22
+        ],
+        [
+         530.8,
+         9.2
+        ],
+        [
+         527.5,
+         9.0
+        ]
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "figure": "24",
+   "image": "figures/fig_24.png",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "wavenumber",
+      "unit": "cm^-1",
+      "log": false
+     },
+     "y": {
+      "quantity": "absorbance",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "precursor and state",
+     "series": [
+      {
+       "label": "iPrCp-Mo As dep",
+       "points": [
+        [
+         4000,
+         0.52
+        ],
+        [
+         3730,
+         0.65
+        ],
+        [
+         3620,
+         0.59
+        ],
+        [
+         3500,
+         0.65
+        ],
+        [
+         3100,
+         0.58
+        ],
+        [
+         2950,
+         0.59
+        ],
+        [
+         2350,
+         0.62
+        ],
+        [
+         1780,
+         0.55
+        ],
+        [
+         1700,
+         0.55
+        ],
+        [
+         1550,
+         0.91
+        ],
+        [
+         1400,
+         0.53
+        ],
+        [
+         1200,
+         0.43
+        ],
+        [
+         1100,
+         0.5
+        ]
+       ]
+      },
+      {
+       "label": "iPrCp-Mo After anneal",
+       "points": [
+        [
+         4000,
+         0.38
+        ],
+        [
+         3730,
+         0.42
+        ],
+        [
+         2350,
+         0.45
+        ],
+        [
+         1530,
+         0.44
+        ],
+        [
+         1250,
+         0.42
+        ],
+        [
+         1100,
+         0.37
+        ]
+       ]
+      },
+      {
+       "label": "tBuN-Mo As dep",
+       "points": [
+        [
+         4000,
+         0.28
+        ],
+        [
+         3400,
+         0.34
+        ],
+        [
+         2950,
+         0.33
+        ],
+        [
+         2350,
+         0.24
+        ],
+        [
+         1700,
+         0.32
+        ],
+        [
+         1600,
+         0.29
+        ],
+        [
+         1430,
+         0.32
+        ],
+        [
+         1220,
+         0.29
+        ],
+        [
+         1100,
+         0.25
+        ]
+       ]
+      },
+      {
+       "label": "tBuN-Mo After anneal",
+       "points": [
+        [
+         4000,
+         0.15
+        ],
+        [
+         3700,
+         0.18
+        ],
+        [
+         3500,
+         0.21
+        ],
+        [
+         2350,
+         0.13
+        ],
+        [
+         1600,
+         0.17
+        ],
+        [
+         1250,
+         0.08
+        ],
+        [
+         1230,
+         0.18
+        ],
+        [
+         1100,
+         0.12
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "wavenumber",
+      "unit": "cm^-1",
+      "log": false
+     },
+     "y": {
+      "quantity": "absorbance",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "precursor and state",
+     "series": [
+      {
+       "label": "iPrCp-Mo As dep",
+       "points": [
+        [
+         1100,
+         0.8
+        ],
+        [
+         1000,
+         0.82
+        ],
+        [
+         950,
+         0.78
+        ],
+        [
+         700,
+         0.85
+        ],
+        [
+         600,
+         0.78
+        ],
+        [
+         500,
+         0.8
+        ]
+       ]
+      },
+      {
+       "label": "iPrCp-Mo After anneal",
+       "points": [
+        [
+         1050,
+         0.48
+        ],
+        [
+         1005,
+         0.65
+        ],
+        [
+         980,
+         0.48
+        ],
+        [
+         825,
+         0.85
+        ],
+        [
+         700,
+         0.48
+        ],
+        [
+         550,
+         0.82
+        ],
+        [
+         450,
+         0.5
+        ]
+       ]
+      },
+      {
+       "label": "tBuN-Mo As dep",
+       "points": [
+        [
+         1100,
+         0.2
+        ],
+        [
+         980,
+         0.22
+        ],
+        [
+         800,
+         0.24
+        ],
+        [
+         650,
+         0.23
+        ],
+        [
+         560,
+         0.22
+        ],
+        [
+         450,
+         0.19
+        ]
+       ]
+      },
+      {
+       "label": "tBuN-Mo After anneal",
+       "points": [
+        [
+         1100,
+         0.05
+        ],
+        [
+         1005,
+         0.22
+        ],
+        [
+         980,
+         0.05
+        ],
+        [
+         825,
+         0.41
+        ],
+        [
+         700,
+         0.05
+        ],
+        [
+         550,
+         0.42
+        ],
+        [
+         500,
+         0.3
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
     }
    ]
   }
  ],
  "_tokens": {
-  "in": 3234,
-  "out": 1451
+  "in": 17454,
+  "out": 6089
  }
 }

@@ -41,8 +41,8 @@ stopping criteria, noise, and CVD sweeps. This is <b>not</b> a re-run of their L
 
 <div class=card><h2>6 · The real KB link for this task (and its limit)</h2>
 <div class=note>The KB still has no GPC-vs-dose data, so the synthetic benchmark is not KB-grounded. But the honest link is now a physics-derived rate prior from a <b>real, per-species initial sticking probability</b> — curated from a 5th paper, <b>Arts 2019 "Sticking probabilities of H₂O and Al(CH₃)₃"</b> (TMA s₀=1.2×10⁻³, H₂O s₀ T-dependent), into the ontology species individuals:
-<code>k1 = s₀·Φ/q,  Φ = pA/√(2πmkT)</code>. For Al₂O₃/TMA: s₀=0.0012 (<span class=m>species_sticking(arts2019)</span>), q=5.0e+18 m⁻², pA=100.0 Pa →
-<b>k1 ≈ 333 s⁻¹</b> (t_sat ≈ 9.0e-03 s). That is the <b>flat-surface</b> saturation time; the literature's ~0.1 s pulses fill high-AR features (a transport problem — the M3 twin's regime). So the KB now grounds the <b>rate</b> for a real chemistry per reactant, but not the synthetic benchmark's dose regime.</div></div>
+<code>k1 = s₀·Φ/q,  Φ = pA/√(2πmkT)</code>. For Al₂O₃/TMA: s₀=None (<span class=m>—</span>), q=0.0e+00 m⁻², pA=None Pa →
+<b>k1 ≈ 0 s⁻¹</b> (t_sat ≈ 0.0e+00 s). That is the <b>flat-surface</b> saturation time; the literature's ~0.1 s pulses fill high-AR features (a transport problem — the M3 twin's regime). So the KB now grounds the <b>rate</b> for a real chemistry per reactant, but not the synthetic benchmark's dose regime.</div></div>
 
 <div class=card><h2>Per-process results (target=98%)</h2>
 <table><tr><th>process</th><th>truth</th><th colspan=3 style="border-bottom:1px solid #2a78d6">deterministic (ε · samples · dose t)</th><th colspan=3 style="border-bottom:1px solid #eda100">grid (ε · samples · dose t)</th><th>stochastic ε (σ)</th></tr>

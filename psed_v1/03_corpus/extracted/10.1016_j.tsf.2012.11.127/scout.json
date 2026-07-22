@@ -17,19 +17,26 @@
  "data": {
   "gpc_vs_cycles": {
    "present": true,
-   "where": "F1"
+   "where": [
+    "F1"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "F2"
+   "where": [
+    "F2",
+    "F3",
+    "F4",
+    "F6a",
+    "F6b"
+   ]
   },
   "conformality_or_penetration_profile": {
    "present": true,
-   "where": "F5"
-  },
-  "film_property_vs_condition": {
-   "present": true,
-   "where": "T0"
+   "where": [
+    "F5a",
+    "F5b"
+   ]
   }
  },
  "drill": [
@@ -38,13 +45,64 @@
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "linear relation of film thickness with ALD cycles"
+   "why": "linear relation of film thickness with number of cycles"
+  },
+  {
+   "where": "F2",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS spectra of ZrO2 and Fe-doped ZrO2 films"
+  },
+  {
+   "where": "F3",
+   "type": "xrd_or_spectrum",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "spectroscopic ellipsometry experimental and model fit curves"
+  },
+  {
+   "where": "F4",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "XRD patterns of as-grown and annealed films"
+  },
+  {
+   "where": "F5a",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "ToF-SIMS depth profile of as-grown film"
+  },
+  {
+   "where": "F5b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "ToF-SIMS depth profile of annealed film"
+  },
+  {
+   "where": "F6a",
+   "type": "xrd_or_spectrum",
+   "measurand": "density",
+   "source": "measured",
+   "why": "XRR measurements and fitting for as-grown films"
+  },
+  {
+   "where": "F6b",
+   "type": "xrd_or_spectrum",
+   "measurand": "density",
+   "source": "measured",
+   "why": "XRR measurements and fitting for annealed films"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1588,
-  "out": 323
+  "in": 2185,
+  "out": 809,
+  "thoughts": 3225,
+  "budget": 12288
  },
- "_scout_input_chars": 5556
+ "_scout_input_chars": 7960
 }

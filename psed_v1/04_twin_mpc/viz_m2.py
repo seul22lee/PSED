@@ -4,7 +4,7 @@ viz_m2.py — visual review of M2 (recipes in the KB + warm-start). Produces
 
   1. Recipe grounding — every experiment lifted to a Recipe, gaps filled from the
      KB/model cascade. Per-material completeness (extracted -> filled) + how many
-     fields came from covariate-conditioned KB inference vs model defaults.  (reads 0706_pipeline/output/recipes.json)
+     fields came from covariate-conditioned KB inference vs model defaults.  (reads 02_extraction/output/recipes.json)
 
   2. Warm-start convergence — a controller that tunes precursor dose to hit a
      conformality target, seeded from the nearest literature process (KB) vs a
@@ -20,12 +20,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).parent
-sys.path.insert(0, str(HERE.parent / "0706_pipeline"))
+sys.path.insert(0, str(HERE.parent / "02_extraction"))
 from channel_model import channelModel
 import kb_bridge, kb_service
 
 BLUE, RED, GREEN, AMBER, INK, GREY = "#2a78d6", "#e34948", "#1baf7a", "#eda100", "#14161a", "#8b919b"
-RECIPES = HERE.parent / "0706_pipeline" / "output" / "recipes.json"
+RECIPES = HERE.parent / "02_extraction" / "output" / "recipes.json"
 
 
 def _png(fig):

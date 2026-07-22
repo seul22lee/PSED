@@ -19,19 +19,26 @@
  "data": {
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "F17"
+   "where": [
+    "F17a",
+    "F17b"
+   ]
   },
   "gpc_vs_temperature": {
    "present": true,
-   "where": "F18"
+   "where": [
+    "F18"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "F20"
-  },
-  "film_property_vs_condition": {
-   "present": true,
-   "where": "T1"
+   "where": [
+    "F20",
+    "F21",
+    "F23",
+    "F24a",
+    "F24b"
+   ]
   }
  },
  "drill": [
@@ -40,27 +47,64 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Saturation curve for Mo precursor"
+   "why": "GPC dependence on Mo precursor pulse length"
   },
   {
    "where": "F17b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Saturation curve for ozone"
+   "why": "GPC dependence on O3 dose length"
   },
   {
    "where": "F18",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Growth per cycle as a function of deposition temperature"
+   "why": "GPC and SUP as a function of growth temperature"
+  },
+  {
+   "where": "F20",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "XRD spectra for as-deposited and annealed MoOx"
+  },
+  {
+   "where": "F21",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "Mo 3d core-level XPS spectra"
+  },
+  {
+   "where": "F23",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "O 1s core-level XPS spectra"
+  },
+  {
+   "where": "F24a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "FTIR spectrum between 4000 and 1100 cm-1"
+  },
+  {
+   "where": "F24b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "FTIR spectrum between 1100 and 500 cm-1"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1768,
-  "out": 464
+  "in": 2369,
+  "out": 842,
+  "thoughts": 2612,
+  "budget": 12288
  },
- "_scout_input_chars": 5657
+ "_scout_input_chars": 8068
 }

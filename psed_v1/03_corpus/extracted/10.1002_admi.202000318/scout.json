@@ -2,13 +2,14 @@
  "is_ald_process_paper": true,
  "study_type": "experimental",
  "materials": [
-  "Fe2O3"
+  "Fe2O3",
+  "NiO"
  ],
  "precursors": [
   "tert-butylferrocene"
  ],
  "coreactants": [
-  "ozone"
+  "O3"
  ],
  "process_type": "thermal",
  "temperature_window_C": null,
@@ -16,90 +17,97 @@
  "data": {
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "Fig 1a, 1b"
+   "where": [
+    "F1a",
+    "F1b"
+   ]
   },
   "gpc_vs_cycles": {
    "present": true,
-   "where": "Fig 1c"
+   "where": [
+    "F1c"
+   ]
   },
   "film_property_vs_condition": {
    "present": true,
-   "where": "Fig 2, 4a, 4b, 6b"
+   "where": [
+    "F2",
+    "F4b",
+    "F6b"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "Fig 2, 6a, 7"
+   "where": [
+    "F4a",
+    "F6a"
+   ]
   }
  },
  "drill": [
   {
-   "where": "Fig 1a",
+   "where": "F1a",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Quantifying GPC dependence on ozone dose"
+   "why": "plots growth per cycle versus ozone exposure"
   },
   {
-   "where": "Fig 1b",
+   "where": "F1b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Quantifying GPC dependence on TBF dose"
+   "why": "plots growth per cycle versus TBF precursor exposure"
   },
   {
-   "where": "Fig 1c",
+   "where": "F1c",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Verifying linear ALD growth"
+   "why": "plots film thickness as a function of the number of ALD cycles"
   },
   {
-   "where": "Fig 2",
-   "type": "xrd_or_spectrum",
+   "where": "F2",
+   "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Analyzing oxygen content and depth profile via XPS"
+   "why": "plots film compositions from ARXPS measurements at various take-off angles"
   },
   {
-   "where": "Fig 4a",
-   "type": "film_property_vs_condition",
-   "measurand": "density",
+   "where": "F4a",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "Extracting XRR data for density modeling"
+   "why": "plots measured XRR reflectivity curve and calculated fits"
   },
   {
-   "where": "Fig 4b",
+   "where": "F4b",
    "type": "film_property_vs_condition",
    "measurand": "density",
    "source": "simulated",
-   "why": "Visualizing modeled electron density profile"
+   "why": "plots calculated electron density profile of the bilayer model through film depth"
   },
   {
-   "where": "Fig 6a",
+   "where": "F6a",
    "type": "xrd_or_spectrum",
-   "measurand": "density",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "Analyzing GIWAXS spectra for phase identification"
+   "why": "plots 1D integrated GIWAXS intensity scans versus scattering vector Q"
   },
   {
-   "where": "Fig 6b",
+   "where": "F6b",
    "type": "film_property_vs_condition",
-   "measurand": "density",
+   "measurand": "impurity_content",
    "source": "measured",
-   "why": "Quantifying phase composition dependence on ozone exposure"
-  },
-  {
-   "where": "Fig 7",
-   "type": "xrd_or_spectrum",
-   "measurand": "density",
-   "source": "measured",
-   "why": "Visualizing 2D GIWAXS patterns for phase changes"
+   "why": "plots calculated phase composition ratio versus ozone exposure length"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2314,
-  "out": 875
+  "in": 2947,
+  "out": 850,
+  "thoughts": 3093,
+  "budget": 12288
  },
- "_scout_input_chars": 9205
+ "_scout_input_chars": 11703
 }

@@ -2,7 +2,7 @@
  "is_ald_process_paper": true,
  "study_type": "experimental",
  "materials": [
-  "Li x Al y S"
+  "LiAlS_x"
  ],
  "precursors": [
   "LTB",
@@ -17,11 +17,26 @@
  "data": {
   "gpc_vs_cycles": {
    "present": true,
-   "where": "F4b"
+   "where": [
+    "F4b"
+   ]
   },
   "film_property_vs_condition": {
    "present": true,
-   "where": "F4c"
+   "where": [
+    "F4c",
+    "F6",
+    "F10a",
+    "F10b"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F10c",
+    "F10d",
+    "F11"
+   ]
   }
  },
  "drill": [
@@ -30,20 +45,64 @@
    "type": "gpc_vs_cycles",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "in situ QCM measurements of Li x Al y S ALD growth"
+   "why": "in situ QCM mass gain measurements during LiAlSx ALD"
   },
   {
    "where": "F4c",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Arrhenius plot of temperature-dependent ionic conductivity"
+   "why": "Arrhenius plot of ionic conductivity versus temperature"
+  },
+  {
+   "where": "F6",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Nyquist plots of AC impedance for LiAlSx film"
+  },
+  {
+   "where": "F10a",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "AC impedance spectra of symmetric cells after storage"
+  },
+  {
+   "where": "F10b",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "SEI resistance versus storage time"
+  },
+  {
+   "where": "F10c",
+   "type": "other",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Coulombic efficiency of Li deposition/stripping"
+  },
+  {
+   "where": "F10d",
+   "type": "other",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "voltage hysteresis profiles of Li deposition/stripping"
+  },
+  {
+   "where": "F11",
+   "type": "other",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Coulombic efficiency over cycling with 25 nm LiAlSx coating"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1372,
-  "out": 327
+  "in": 1969,
+  "out": 785,
+  "thoughts": 2162,
+  "budget": 12288
  },
- "_scout_input_chars": 4686
+ "_scout_input_chars": 7090
 }

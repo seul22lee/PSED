@@ -8,42 +8,52 @@
   "MoCl2O2"
  ],
  "coreactants": [
-  "atomic hydrogen"
+  "atomic hydrogen",
+  "at-H"
  ],
- "process_type": "unknown",
+ "process_type": "thermal",
  "temperature_window_C": [
   150,
   450
  ],
  "gpc_nm": 0.022,
  "data": {
-  "gpc_vs_temperature": {
-   "present": true,
-   "where": "Fig 2"
-  },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "Fig 1a, Fig 1b"
+   "where": [
+    "F17a",
+    "F17b",
+    "F17c",
+    "F17d",
+    "F17e"
+   ]
+  },
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F18"
+   ]
   },
   "gpc_vs_cycles": {
    "present": true,
-   "where": "Fig 3"
-  },
-  "conformality_or_penetration_profile": {
-   "present": true,
-   "where": "Fig 9a"
+   "where": [
+    "F20"
+   ]
   },
   "film_property_vs_condition": {
    "present": true,
-   "where": "Fig 5b, Fig 7a, Fig 7b"
-  },
-  "xrd_or_spectrum": {
-   "present": true,
-   "where": "Fig 5a, Fig 5b, Fig 10"
+   "where": [
+    "F23a",
+    "F23b",
+    "F25a",
+    "F25b"
+   ]
   },
   "other": {
    "present": true,
-   "where": "Fig 4"
+   "where": [
+    "F21"
+   ]
   }
  },
  "drill": [
@@ -52,69 +62,92 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "MoCl2O2 pulse time saturation curve"
+   "why": "GPC as a function of MoCl2O2 pulse time"
   },
   {
    "where": "F17b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "at-H pulse time saturation curve"
+   "why": "GPC as a function of at-H pulse time"
+  },
+  {
+   "where": "F17c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC as a function of MoCl2O2 purge time"
+  },
+  {
+   "where": "F17d",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC as a function of at-H purge time"
+  },
+  {
+   "where": "F17e",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC as a function of hot-wire temperature"
   },
   {
    "where": "F18",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC vs process temperature for ALD and CVD"
+   "why": "GPC as a function of process temperature for ALD and CVD"
   },
   {
    "where": "F20",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Film thickness vs time during initial ALD stages"
+   "why": "Mo film thickness as a function of time during initial stages"
+  },
+  {
+   "where": "F21",
+   "type": "other",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "Mass spec evolution of HCl and H2O byproduct emission"
   },
   {
    "where": "F23a",
-   "type": "xrd_or_spectrum",
+   "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Compositional depth profile by TOF-ERDA"
+   "why": "TOF-ERDA compositional depth profile"
   },
   {
    "where": "F23b",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Averaged film composition at various temperatures"
+   "why": "Averaged film composition vs process temperature"
   },
   {
    "where": "F25a",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Film resistivity as a function of thickness"
+   "why": "Film resistivity vs ALD film thickness"
   },
   {
    "where": "F25b",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Film resistivity as a function of process temperature"
-  },
-  {
-   "where": "F27a",
-   "type": "conformality_or_penetration_profile",
-   "measurand": "normalized_thickness",
-   "source": "measured",
-   "why": "Conformality estimate from STEM image"
+   "why": "Film resistivity vs process temperature"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2145,
-  "out": 999
+  "in": 2745,
+  "out": 1203,
+  "thoughts": 1083,
+  "budget": 12288
  },
- "_scout_input_chars": 7341
+ "_scout_input_chars": 9753
 }

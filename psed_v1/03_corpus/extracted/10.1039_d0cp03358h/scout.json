@@ -16,44 +16,183 @@
  "data": {
   "conformality_or_penetration_profile": {
    "present": true,
-   "where": "F16"
-  },
-  "film_property_vs_condition": {
-   "present": true,
-   "where": "F19"
+   "where": [
+    "F7a",
+    "F7b",
+    "F13",
+    "F14a",
+    "F14b",
+    "F16a",
+    "F16b",
+    "F16c",
+    "F16d",
+    "F16e",
+    "F16f",
+    "F18a",
+    "F18b",
+    "F18c",
+    "F18d",
+    "F18e",
+    "F18f",
+    "F19a",
+    "F19b"
+   ]
   },
   "other": {
    "present": true,
-   "where": "F18"
+   "where": [
+    "F10b"
+   ]
   }
  },
  "drill": [
+  {
+   "where": "F7a",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "simulated",
+   "why": "ideal simulated scaled saturation profile"
+  },
+  {
+   "where": "F7b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "experimental scaled saturation profile for Al2O3 ALD"
+  },
+  {
+   "where": "F10b",
+   "type": "other",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "SEM-EDS elemental line scan profiles along LHAR channel"
+  },
+  {
+   "where": "F13",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "as-measured saturation profiles as a function of reflectometer spot sizes"
+  },
+  {
+   "where": "F14a",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "repeatability of saturation profile measurement"
+  },
+  {
+   "where": "F14b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "reproducibility of ALD runs across various LHAR channels"
+  },
   {
    "where": "F16a",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Experimental saturation profiles of ALD Al2O3 showing thickness vs distance."
+   "why": "as-measured saturation profile for varying channel heights"
+  },
+  {
+   "where": "F16b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "scaled saturation profile for varying channel heights"
+  },
+  {
+   "where": "F16c",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "Type 1 normalized saturation profile for varying channel heights"
+  },
+  {
+   "where": "F16d",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "as-measured saturation profile for varying cycle numbers"
+  },
+  {
+   "where": "F16e",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "scaled saturation profile for varying cycle numbers"
+  },
+  {
+   "where": "F16f",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "Type 1 normalized saturation profile for varying cycle numbers"
   },
   {
    "where": "F18a",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "simulated",
-   "why": "Simulated saturation profiles of ALD Al2O3 using diffusion-reaction model."
+   "why": "simulated as-measured saturation profile with varying channel height"
+  },
+  {
+   "where": "F18b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "simulated",
+   "why": "simulated scaled saturation profile with varying channel height"
+  },
+  {
+   "where": "F18c",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "simulated",
+   "why": "simulated Type 1 normalized saturation profile with varying channel height"
+  },
+  {
+   "where": "F18d",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "simulated",
+   "why": "simulated as-measured saturation profile with varying cycle number"
+  },
+  {
+   "where": "F18e",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "simulated",
+   "why": "simulated scaled saturation profile with varying cycle number"
+  },
+  {
+   "where": "F18f",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "normalized_thickness",
+   "source": "simulated",
+   "why": "simulated Type 1 normalized saturation profile with varying cycle number"
   },
   {
    "where": "F19a",
-   "type": "film_property_vs_condition",
+   "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Al2O3 thickness vs TMA pulse time."
+   "why": "film thickness profile for different TMA pulse times in LHAR channel"
+  },
+  {
+   "where": "F19b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "film thickness profile for different purge times in LHAR channel"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2809,
-  "out": 451
+  "in": 3410,
+  "out": 1733,
+  "thoughts": 3687,
+  "budget": 12288
  },
- "_scout_input_chars": 10171
+ "_scout_input_chars": 12582
 }

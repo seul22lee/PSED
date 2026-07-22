@@ -57,7 +57,7 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "deposition_temperature",
+    "quantity": "temperature",
     "value": 350.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -79,19 +79,15 @@
    ],
    [
     0.1,
-    0.018
+    0.017
    ],
    [
     0.2,
     0.02
    ],
    [
-    0.4,
+    0.5,
     0.022
-   ],
-   [
-    0.7,
-    0.023
    ],
    [
     1.0,
@@ -99,7 +95,7 @@
    ],
    [
     2.0,
-    0.027
+    0.026
    ]
   ],
   "granularity": "profile",
@@ -226,7 +222,7 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "deposition_temperature",
+    "quantity": "temperature",
     "value": 350.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -248,7 +244,7 @@
    ],
    [
     1.0,
-    0.01
+    0.011
    ],
    [
     2.0,
@@ -259,24 +255,24 @@
     0.018
    ],
    [
-    4.0,
-    0.02
-   ],
-   [
     5.0,
-    0.022
+    0.021
    ],
    [
     7.0,
     0.023
    ],
    [
-    10.0,
-    0.024
+    9.0,
+    0.0225
+   ],
+   [
+    12.0,
+    0.023
    ],
    [
     15.0,
-    0.024
+    0.0235
    ],
    [
     20.0,
@@ -284,11 +280,11 @@
    ],
    [
     25.0,
-    0.024
+    0.025
    ],
    [
     30.0,
-    0.023
+    0.024
    ]
   ],
   "granularity": "profile",
@@ -413,150 +409,13 @@
     "of_reactant": "B",
     "source": "methods",
     "recipe_role": "control_setting"
-   }
-  ],
-  "measurand": {
-   "quantity": "growth_per_cycle",
-   "unit": "nm/cycle",
-   "family": "film_amount"
-  },
-  "coordinate": "deposition_temperature",
-  "coordinate_family": "process_temperature",
-  "points": [
-   [
-    250,
-    0.1
-   ],
-   [
-    350,
-    0.074
-   ],
-   [
-    450,
-    0.08
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F2a-2",
-  "provenance": {
-   "figure": "Fig 2",
-   "figure_number": "2",
-   "fig_docling_index": "18",
-   "panel": "a",
-   "caption": "FIG. 2. GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments. SE measurements are indicated by open symbols, whereas XRR measurements are shown by solid symbol",
-   "extractor": "vision-llm",
-   "doi": "10.1116_6.0002804"
-  },
-  "series_name": "series: CVD SE",
-  "phase": null,
-  "structure": null,
-  "varies": [
-   "deposition_temperature"
-  ],
-  "dependent": [
-   {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
-    "family": "film_amount"
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "Mo",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "MoCl2O2",
-     "dose_time": 1,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "atomic_hydrogen",
-     "dose_time": 1,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 400,
-   "temperature": 150,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F2a-2"
    },
-   "completeness": 0.643
-  }
- },
- {
-  "material": "Mo",
-  "material_raw": "Mo",
-  "precursors": [
-   "MoCl2O2"
-  ],
-  "coreactants": [
-   "atomic_hydrogen"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "MoCl2O2"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "atomic_hydrogen"
-   }
-  ],
-  "carrier_gas": null,
-  "process_type": "unknown",
-  "cycle_sequence": "AB",
-  "controlled": [
    {
     "quantity": "temperature",
-    "value": 150,
-    "unit": "C",
+    "value": 350.0,
+    "unit": "\u00b0C",
     "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "cycle_number",
-    "value": 400,
-    "unit": "cycles",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 1,
-    "unit": "s",
-    "of_reactant": "A",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 1,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
+    "source": "caption",
     "recipe_role": "control_setting"
    }
   ],
@@ -565,202 +424,61 @@
    "unit": "nm/cycle",
    "family": "film_amount"
   },
-  "coordinate": "deposition_temperature",
-  "coordinate_family": "process_temperature",
+  "coordinate": "purge_time",
+  "coordinate_family": null,
   "points": [
    [
-    250,
-    0.084
-   ],
-   [
-    350,
-    0.07
-   ],
-   [
-    450,
-    0.078
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F2a-3",
-  "provenance": {
-   "figure": "Fig 2",
-   "figure_number": "2",
-   "fig_docling_index": "18",
-   "panel": "a",
-   "caption": "FIG. 2. GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments. SE measurements are indicated by open symbols, whereas XRR measurements are shown by solid symbol",
-   "extractor": "vision-llm",
-   "doi": "10.1116_6.0002804"
-  },
-  "series_name": "series: CVD XRR",
-  "phase": null,
-  "structure": null,
-  "varies": [
-   "deposition_temperature"
-  ],
-  "dependent": [
-   {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
-    "family": "film_amount"
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "Mo",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "MoCl2O2",
-     "dose_time": 1,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "atomic_hydrogen",
-     "dose_time": 1,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 400,
-   "temperature": 150,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F2a-3"
-   },
-   "completeness": 0.643
-  }
- },
- {
-  "material": "Mo",
-  "material_raw": "Mo",
-  "precursors": [
-   "MoCl2O2"
-  ],
-  "coreactants": [
-   "atomic_hydrogen"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "MoCl2O2"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "atomic_hydrogen"
-   }
-  ],
-  "carrier_gas": null,
-  "process_type": "unknown",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 150,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "cycle_number",
-    "value": 400,
-    "unit": "cycles",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 1,
-    "unit": "s",
-    "of_reactant": "A",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 1,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   }
-  ],
-  "measurand": {
-   "quantity": "growth_per_cycle",
-   "unit": "nm/cycle",
-   "family": "film_amount"
-  },
-  "coordinate": "deposition_temperature",
-  "coordinate_family": "process_temperature",
-  "points": [
-   [
-    150,
+    1.0,
     0.048
    ],
    [
-    200,
-    0.03
+    2.0,
+    0.037
    ],
    [
-    250,
-    0.023
+    3.0,
+    0.031
    ],
    [
-    300,
-    0.023
+    4.0,
+    0.028
    ],
    [
-    350,
-    0.02
+    6.0,
+    0.025
    ],
    [
-    400,
-    0.022
-   ],
-   [
-    450,
+    8.0,
     0.024
+   ],
+   [
+    10.0,
+    0.023
+   ],
+   [
+    15.0,
+    0.023
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F2a-4",
+  "exp_id": "10.1116_6.0002804-F1c-2",
   "provenance": {
-   "figure": "Fig 2",
-   "figure_number": "2",
-   "fig_docling_index": "18",
-   "panel": "a",
-   "caption": "FIG. 2. GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments. SE measurements are indicated by open symbols, whereas XRR measurements are shown by solid symbol",
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "17",
+   "panel": "c",
+   "caption": "FIG. 1. GPC at 350 \u00b0C as a function of independently varied: (a) MoCl2O2 pulse time, (b) at-H pulse time, (c) MoCl2O2 purge time, (d) at-H purge time, and (e) hot-wire temperature.",
    "extractor": "vision-llm",
    "doi": "10.1116_6.0002804"
   },
-  "series_name": "series: ALD SE",
+  "series_name": null,
   "phase": null,
   "structure": null,
   "varies": [
-   "deposition_temperature"
+   "purge_time"
   ],
   "dependent": [
    {
@@ -803,7 +521,389 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F2a-4"
+    "_exp_id": "10.1116_6.0002804-F1c-2"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "nm/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "purge_time",
+  "coordinate_family": null,
+  "points": [
+   [
+    1.0,
+    0.02
+   ],
+   [
+    2.0,
+    0.023
+   ],
+   [
+    3.0,
+    0.021
+   ],
+   [
+    4.0,
+    0.021
+   ],
+   [
+    6.0,
+    0.02
+   ],
+   [
+    8.0,
+    0.02
+   ],
+   [
+    10.0,
+    0.02
+   ],
+   [
+    15.0,
+    0.02
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F1d-3",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "17",
+   "panel": "d",
+   "caption": "FIG. 1. GPC at 350 \u00b0C as a function of independently varied: (a) MoCl2O2 pulse time, (b) at-H pulse time, (c) MoCl2O2 purge time, (d) at-H purge time, and (e) hot-wire temperature.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "purge_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F1d-3"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "nm/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "Hot-wire temperature",
+  "coordinate_family": null,
+  "points": [
+   [
+    1630.0,
+    0.0005
+   ],
+   [
+    1680.0,
+    0.0012
+   ],
+   [
+    1730.0,
+    0.0023
+   ],
+   [
+    1770.0,
+    0.0036
+   ],
+   [
+    1820.0,
+    0.0055
+   ],
+   [
+    1860.0,
+    0.0078
+   ],
+   [
+    1890.0,
+    0.0118
+   ],
+   [
+    1930.0,
+    0.0143
+   ],
+   [
+    1970.0,
+    0.0173
+   ],
+   [
+    2050.0,
+    0.0228
+   ],
+   [
+    2120.0,
+    0.0238
+   ],
+   [
+    2200.0,
+    0.024
+   ],
+   [
+    2270.0,
+    0.0228
+   ],
+   [
+    2330.0,
+    0.0224
+   ],
+   [
+    2400.0,
+    0.0225
+   ],
+   [
+    2460.0,
+    0.022
+   ],
+   [
+    2600.0,
+    0.0223
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F1e-4",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "17",
+   "panel": "e",
+   "caption": "FIG. 1. GPC at 350 \u00b0C as a function of independently varied: (a) MoCl2O2 pulse time, (b) at-H pulse time, (c) MoCl2O2 purge time, (d) at-H purge time, and (e) hot-wire temperature.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "Hot-wire temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F1e-4"
    },
    "completeness": 0.643
   }
@@ -875,20 +975,16 @@
   "coordinate_family": "process_temperature",
   "points": [
    [
-    150,
-    0.045
-   ],
-   [
     250,
-    0.026
+    0.0988
    ],
    [
     350,
-    0.021
+    0.0735
    ],
    [
     450,
-    0.025
+    0.0785
    ]
   ],
   "granularity": "profile",
@@ -905,7 +1001,7 @@
    "extractor": "vision-llm",
    "doi": "10.1116_6.0002804"
   },
-  "series_name": "series: ALD XRR",
+  "series_name": "process and measurement method: CVD SE",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1020,161 +1116,41 @@
    "unit": "nm/cycle",
    "family": "film_amount"
   },
-  "coordinate": "cycle_number",
-  "coordinate_family": null,
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
   "points": [
    [
-    220,
-    0.5
-   ],
-   [
-    225,
-    0.7
-   ],
-   [
-    230,
-    1.2
-   ],
-   [
-    235,
-    1.7
-   ],
-   [
-    240,
-    2.2
-   ],
-   [
-    245,
-    2.8
-   ],
-   [
     250,
-    3.2
-   ],
-   [
-    255,
-    3.7
-   ],
-   [
-    260,
-    4.0
-   ],
-   [
-    265,
-    4.2
-   ],
-   [
-    270,
-    4.1
-   ],
-   [
-    275,
-    3.9
-   ],
-   [
-    280,
-    3.6
-   ],
-   [
-    285,
-    3.3
-   ],
-   [
-    290,
-    3.0
-   ],
-   [
-    295,
-    2.7
-   ],
-   [
-    300,
-    2.4
-   ],
-   [
-    305,
-    2.1
-   ],
-   [
-    310,
-    1.8
-   ],
-   [
-    315,
-    1.5
-   ],
-   [
-    320,
-    1.2
-   ],
-   [
-    325,
-    0.9
-   ],
-   [
-    330,
-    0.6
-   ],
-   [
-    335,
-    0.3
-   ],
-   [
-    340,
-    0.1
-   ],
-   [
-    345,
-    0.0
+    0.0841
    ],
    [
     350,
-    0.0
+    0.0711
    ],
    [
-    355,
-    0.0
-   ],
-   [
-    360,
-    0.0
-   ],
-   [
-    365,
-    0.0
-   ],
-   [
-    370,
-    0.0
-   ],
-   [
-    375,
-    0.0
-   ],
-   [
-    380,
-    0.0
+    450,
+    0.0788
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F3a-6",
+  "exp_id": "10.1116_6.0002804-F2a-6",
   "provenance": {
-   "figure": "Fig 3",
-   "figure_number": "3",
-   "fig_docling_index": "20",
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
    "panel": "a",
-   "caption": "FIG. 3. Thickness of the Mo film as a function of time during the initial stages of the ALD process. Inset: GPC in the incubation regime.",
+   "caption": "FIG. 2. GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments. SE measurements are indicated by open symbols, whereas XRR measurements are shown by solid symbol",
    "extractor": "vision-llm",
    "doi": "10.1116_6.0002804"
   },
-  "series_name": null,
+  "series_name": "process and measurement method: CVD XRR",
   "phase": null,
   "structure": null,
   "varies": [
-   "cycle_number"
+   "deposition_temperature"
   ],
   "dependent": [
    {
@@ -1217,7 +1193,3962 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F3a-6"
+    "_exp_id": "10.1116_6.0002804-F2a-6"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "nm/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    0.0475
+   ],
+   [
+    200,
+    0.0295
+   ],
+   [
+    250,
+    0.0222
+   ],
+   [
+    300,
+    0.0231
+   ],
+   [
+    350,
+    0.0205
+   ],
+   [
+    400,
+    0.0218
+   ],
+   [
+    450,
+    0.0226
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F2a-7",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
+   "panel": "a",
+   "caption": "FIG. 2. GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments. SE measurements are indicated by open symbols, whereas XRR measurements are shown by solid symbol",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "process and measurement method: ALD SE",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F2a-7"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "nm/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    0.0455
+   ],
+   [
+    250,
+    0.0255
+   ],
+   [
+    350,
+    0.0208
+   ],
+   [
+    450,
+    0.0248
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F2a-8",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
+   "panel": "a",
+   "caption": "FIG. 2. GPC as a function of process temperature for both ALD (squares) and CVD (circles) experiments. SE measurements are indicated by open symbols, whereas XRR measurements are shown by solid symbol",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "process and measurement method: ALD XRR",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F2a-8"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "family": "film_amount"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    0.0
+   ],
+   [
+    6,
+    0.1
+   ],
+   [
+    12,
+    0.25
+   ],
+   [
+    18,
+    0.42
+   ],
+   [
+    30,
+    0.95
+   ],
+   [
+    42,
+    1.45
+   ],
+   [
+    51,
+    1.85
+   ],
+   [
+    62,
+    2.12
+   ],
+   [
+    82,
+    2.61
+   ],
+   [
+    100,
+    3.02
+   ],
+   [
+    125,
+    3.55
+   ],
+   [
+    152,
+    4.01
+   ],
+   [
+    200,
+    4.97
+   ],
+   [
+    250,
+    5.92
+   ],
+   [
+    300,
+    6.85
+   ],
+   [
+    352,
+    7.8
+   ],
+   [
+    400,
+    8.75
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F3a-9",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. Thickness of the Mo film as a function of time during the initial stages of the ALD process. Inset: GPC in the incubation regime.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "series: Mo thickness",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "cycle_number"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F3a-9"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Pressure",
+   "unit": "mbar",
+   "family": null
+  },
+  "coordinate": "time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    1.1e-09
+   ],
+   [
+    10,
+    1.1e-09
+   ],
+   [
+    18.5,
+    1.1e-09
+   ],
+   [
+    19,
+    4.5e-08
+   ],
+   [
+    20,
+    3.2e-08
+   ],
+   [
+    22,
+    1.5e-08
+   ],
+   [
+    25,
+    7.5e-09
+   ],
+   [
+    30,
+    3e-09
+   ],
+   [
+    35,
+    2e-09
+   ],
+   [
+    40,
+    1.7e-09
+   ],
+   [
+    50,
+    1.5e-09
+   ],
+   [
+    60,
+    1.4e-09
+   ],
+   [
+    70,
+    1.3e-09
+   ],
+   [
+    78.5,
+    1.3e-09
+   ],
+   [
+    79.2,
+    2.8e-09
+   ],
+   [
+    81,
+    1.1e-09
+   ],
+   [
+    84,
+    7e-10
+   ],
+   [
+    90,
+    6.5e-10
+   ],
+   [
+    100,
+    6.5e-10
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F4a-10",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Evolution of HCl and H2O byproduct emission for the MoCl 2 O2 + at-H ALD process, as determined by mass spectroscopy.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "series: HCl",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "time"
+  ],
+  "dependent": [
+   {
+    "quantity": "Pressure",
+    "unit": "mbar",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F4a-10"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Pressure",
+   "unit": "mbar",
+   "family": null
+  },
+  "coordinate": "time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    2e-09
+   ],
+   [
+    10,
+    2e-09
+   ],
+   [
+    18.5,
+    2e-09
+   ],
+   [
+    19.2,
+    3.6e-09
+   ],
+   [
+    22,
+    2e-09
+   ],
+   [
+    25,
+    1.5e-09
+   ],
+   [
+    30,
+    1.3e-09
+   ],
+   [
+    50,
+    1.3e-09
+   ],
+   [
+    78.5,
+    1.3e-09
+   ],
+   [
+    79.2,
+    2.2e-07
+   ],
+   [
+    80,
+    6e-08
+   ],
+   [
+    81,
+    1.5e-08
+   ],
+   [
+    83,
+    2.5e-09
+   ],
+   [
+    86,
+    1e-09
+   ],
+   [
+    90,
+    8e-10
+   ],
+   [
+    100,
+    8e-10
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F4b-11",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "b",
+   "caption": "FIG. 4. Evolution of HCl and H2O byproduct emission for the MoCl 2 O2 + at-H ALD process, as determined by mass spectroscopy.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "series: H2O",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "time"
+  ],
+  "dependent": [
+   {
+    "quantity": "Pressure",
+    "unit": "mbar",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F4b-11"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    -40,
+    15
+   ],
+   [
+    -20,
+    25
+   ],
+   [
+    0,
+    45
+   ],
+   [
+    10,
+    65
+   ],
+   [
+    20,
+    80
+   ],
+   [
+    30,
+    88
+   ],
+   [
+    50,
+    90
+   ],
+   [
+    75,
+    85
+   ],
+   [
+    100,
+    70
+   ],
+   [
+    125,
+    50
+   ],
+   [
+    150,
+    35
+   ],
+   [
+    175,
+    25
+   ],
+   [
+    200,
+    20
+   ],
+   [
+    225,
+    17
+   ],
+   [
+    250,
+    13
+   ],
+   [
+    275,
+    9
+   ],
+   [
+    300,
+    6
+   ],
+   [
+    325,
+    4.5
+   ],
+   [
+    350,
+    3.0
+   ],
+   [
+    375,
+    2.8
+   ],
+   [
+    400,
+    2.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-12",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-12"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    -40,
+    2.0
+   ],
+   [
+    -20,
+    3.2
+   ],
+   [
+    0,
+    5.0
+   ],
+   [
+    20,
+    6.5
+   ],
+   [
+    40,
+    11
+   ],
+   [
+    60,
+    15
+   ],
+   [
+    80,
+    20
+   ],
+   [
+    100,
+    30
+   ],
+   [
+    120,
+    45
+   ],
+   [
+    140,
+    60
+   ],
+   [
+    160,
+    75
+   ],
+   [
+    180,
+    85
+   ],
+   [
+    200,
+    92
+   ],
+   [
+    250,
+    97
+   ],
+   [
+    300,
+    99
+   ],
+   [
+    350,
+    100
+   ],
+   [
+    400,
+    100
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-13",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-13"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    -40,
+    0.4
+   ],
+   [
+    -20,
+    1.1
+   ],
+   [
+    0,
+    16
+   ],
+   [
+    10,
+    18
+   ],
+   [
+    20,
+    6
+   ],
+   [
+    30,
+    6
+   ],
+   [
+    40,
+    3.2
+   ],
+   [
+    50,
+    2.0
+   ],
+   [
+    60,
+    2.4
+   ],
+   [
+    75,
+    1.8
+   ],
+   [
+    90,
+    1.3
+   ],
+   [
+    110,
+    2.5
+   ],
+   [
+    130,
+    4.0
+   ],
+   [
+    150,
+    3.8
+   ],
+   [
+    175,
+    4.5
+   ],
+   [
+    200,
+    3.2
+   ],
+   [
+    225,
+    2.8
+   ],
+   [
+    250,
+    2.2
+   ],
+   [
+    275,
+    1.0
+   ],
+   [
+    300,
+    0.6
+   ],
+   [
+    320,
+    1.0
+   ],
+   [
+    350,
+    0.2
+   ],
+   [
+    375,
+    0.2
+   ],
+   [
+    390,
+    0.38
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-14",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-14"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    3e+21
+   ],
+   [
+    2,
+    5e+19
+   ],
+   [
+    5,
+    2e+19
+   ],
+   [
+    10,
+    3e+19
+   ],
+   [
+    15,
+    3e+19
+   ],
+   [
+    18,
+    3e+19
+   ],
+   [
+    20,
+    1e+22
+   ],
+   [
+    25,
+    8e+22
+   ],
+   [
+    30,
+    1e+23
+   ],
+   [
+    40,
+    1e+23
+   ],
+   [
+    50,
+    1e+23
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-15",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-15"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1e+22
+   ],
+   [
+    2,
+    2e+20
+   ],
+   [
+    5,
+    5e+19
+   ],
+   [
+    10,
+    3e+19
+   ],
+   [
+    15,
+    3e+19
+   ],
+   [
+    18,
+    3e+19
+   ],
+   [
+    20,
+    2e+21
+   ],
+   [
+    23,
+    2e+22
+   ],
+   [
+    28,
+    1e+21
+   ],
+   [
+    32,
+    3e+20
+   ],
+   [
+    36,
+    1e+20
+   ],
+   [
+    40,
+    3e+19
+   ],
+   [
+    45,
+    1e+19
+   ],
+   [
+    50,
+    8e+18
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-16",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-16"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    5e+20
+   ],
+   [
+    2,
+    1e+20
+   ],
+   [
+    5,
+    1e+20
+   ],
+   [
+    10,
+    1e+20
+   ],
+   [
+    15,
+    1e+20
+   ],
+   [
+    18,
+    1e+20
+   ],
+   [
+    20,
+    1e+20
+   ],
+   [
+    25,
+    3e+19
+   ],
+   [
+    30,
+    2e+19
+   ],
+   [
+    40,
+    2e+19
+   ],
+   [
+    50,
+    2e+19
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-17",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-17"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    3e+20
+   ],
+   [
+    2,
+    3e+17
+   ],
+   [
+    5,
+    3e+16
+   ],
+   [
+    10,
+    1.5e+16
+   ],
+   [
+    15,
+    1.5e+16
+   ],
+   [
+    18,
+    3e+17
+   ],
+   [
+    20,
+    2e+19
+   ],
+   [
+    25,
+    1e+19
+   ],
+   [
+    30,
+    6e+17
+   ],
+   [
+    35,
+    6e+16
+   ],
+   [
+    40,
+    3e+16
+   ],
+   [
+    50,
+    1.5e+16
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-18",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: Cl",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-18"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    70
+   ],
+   [
+    250,
+    92
+   ],
+   [
+    350,
+    95
+   ],
+   [
+    450,
+    96
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-19",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-19"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    35
+   ],
+   [
+    250,
+    6.5
+   ],
+   [
+    350,
+    3.5
+   ],
+   [
+    450,
+    3.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-20",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-20"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    2.8
+   ],
+   [
+    350,
+    0.2
+   ],
+   [
+    450,
+    0.4
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-21",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: Cl",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-21"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    0.9
+   ],
+   [
+    250,
+    0.4
+   ],
+   [
+    350,
+    0.75
+   ],
+   [
+    450,
+    0.42
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-22",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: H",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-22"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    0.1
+   ],
+   [
+    350,
+    0.22
+   ],
+   [
+    450,
+    0.29
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-23",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-23"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "composition",
+   "unit": "at%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    150,
+    0.11
+   ],
+   [
+    250,
+    0.24
+   ],
+   [
+    350,
+    0.3
+   ],
+   [
+    450,
+    0.41
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-24",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: N",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "composition",
+    "unit": "at%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-24"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    250,
+    3e+22
+   ],
+   [
+    350,
+    1e+21
+   ],
+   [
+    450,
+    2e+19
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-25",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-25"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    250,
+    8e+19
+   ],
+   [
+    350,
+    4e+19
+   ],
+   [
+    450,
+    4e+19
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-26",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-26"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    250,
+    2e+20
+   ],
+   [
+    350,
+    2e+18
+   ],
+   [
+    450,
+    8000000000000000.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-27",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: Cl",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-27"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    250,
+    6e+19
+   ],
+   [
+    350,
+    1e+20
+   ],
+   [
+    450,
+    1.2e+20
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-28",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-28"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "Mo",
+  "material_raw": "Mo",
+  "precursors": [
+   "MoCl2O2"
+  ],
+  "coreactants": [
+   "atomic_hydrogen"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl2O2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "atomic_hydrogen"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 400,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "Concentration",
+   "unit": "atoms/cm^3",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    250,
+    2e+19
+   ],
+   [
+    350,
+    1.2e+19
+   ],
+   [
+    450,
+    1.5e+19
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002804-F5-29",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "",
+   "caption": "FIG. 5. TOF-ERDA measurements showing (a) a compositional depth profile of an ALD film obtained at 350 \u00b0C and (b) averaged ALD film composition at various temperatures.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002804"
+  },
+  "series_name": "element: N",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "Concentration",
+    "unit": "atoms/cm^3",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl2O2",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "atomic_hydrogen",
+     "dose_time": 1,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 400,
+   "temperature": 150,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002804-F5-29"
    },
    "completeness": 0.643
   }
@@ -1289,35 +5220,35 @@
   "coordinate_family": "film_amount",
   "points": [
    [
-    3.0,
+    2.2,
     400.0
    ],
    [
-    5.0,
-    110.0
+    4.0,
+    115.0
    ],
    [
-    7.0,
-    50.0
+    4.8,
+    58.0
    ],
    [
-    10.0,
-    30.0
+    8.7,
+    26.0
    ],
    [
-    12.0,
-    28.0
+    12.8,
+    23.0
    ],
    [
-    24.0,
-    20.0
+    24.3,
+    18.0
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F7a-7",
+  "exp_id": "10.1116_6.0002804-F7a-30",
   "provenance": {
    "figure": "Fig 7",
    "figure_number": "7",
@@ -1327,7 +5258,7 @@
    "extractor": "vision-llm",
    "doi": "10.1116_6.0002804"
   },
-  "series_name": null,
+  "series_name": "series: ALD",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1374,7 +5305,7 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F7a-7"
+    "_exp_id": "10.1116_6.0002804-F7a-30"
    },
    "completeness": 0.643
   }
@@ -1447,26 +5378,26 @@
   "points": [
    [
     150.0,
-    400.0
+    370.0
    ],
    [
     250.0,
-    30.0
+    23.0
    ],
    [
     350.0,
-    25.0
+    19.0
    ],
    [
     450.0,
-    28.0
+    22.0
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F7b-8",
+  "exp_id": "10.1116_6.0002804-F7b-31",
   "provenance": {
    "figure": "Fig 7",
    "figure_number": "7",
@@ -1476,7 +5407,7 @@
    "extractor": "vision-llm",
    "doi": "10.1116_6.0002804"
   },
-  "series_name": "series: ALD",
+  "series_name": "process type: ALD",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1523,7 +5454,7 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F7b-8"
+    "_exp_id": "10.1116_6.0002804-F7b-31"
    },
    "completeness": 0.643
   }
@@ -1595,23 +5526,23 @@
   "coordinate_family": "process_temperature",
   "points": [
    [
-    200.0,
-    300.0
+    250.0,
+    270.0
    ],
    [
     350.0,
-    20.0
+    18.0
    ],
    [
     450.0,
-    15.0
+    14.0
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F7b-9",
+  "exp_id": "10.1116_6.0002804-F7b-32",
   "provenance": {
    "figure": "Fig 7",
    "figure_number": "7",
@@ -1621,7 +5552,7 @@
    "extractor": "vision-llm",
    "doi": "10.1116_6.0002804"
   },
-  "series_name": "series: CVD",
+  "series_name": "process type: CVD",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1668,152 +5599,7 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F7b-9"
-   },
-   "completeness": 0.643
-  }
- },
- {
-  "material": "Mo",
-  "material_raw": "Mo",
-  "precursors": [
-   "MoCl2O2"
-  ],
-  "coreactants": [
-   "atomic_hydrogen"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "MoCl2O2"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "atomic_hydrogen"
-   }
-  ],
-  "carrier_gas": null,
-  "process_type": "unknown",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 150,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "cycle_number",
-    "value": 400,
-    "unit": "cycles",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 1,
-    "unit": "s",
-    "of_reactant": "A",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 1,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   }
-  ],
-  "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "%",
-   "family": "film_amount"
-  },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
-  "points": [
-   [
-    0,
-    100
-   ],
-   [
-    12.5,
-    95
-   ],
-   [
-    25,
-    90
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "experimental",
-  "is_model_result": false,
-  "analysis_ready": true,
-  "exp_id": "10.1116_6.0002804-F9a-10",
-  "provenance": {
-   "figure": "Fig 9",
-   "figure_number": "9",
-   "fig_docling_index": "27",
-   "panel": "a",
-   "caption": "FIG. 9. TEM analysis with (a) STEM image of the layer stack and conformality estimate and (b) TEM image and FFT analysis.",
-   "extractor": "vision-llm",
-   "doi": "10.1116_6.0002804"
-  },
-  "series_name": null,
-  "phase": null,
-  "structure": null,
-  "varies": [
-   "spatial_coordinate"
-  ],
-  "dependent": [
-   {
-    "quantity": "normalized_thickness",
-    "unit": "%",
-    "family": "film_amount"
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "Mo",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "MoCl2O2",
-     "dose_time": 1,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "atomic_hydrogen",
-     "dose_time": 1,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 400,
-   "temperature": 150,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1116_6.0002804-F9a-10"
+    "_exp_id": "10.1116_6.0002804-F7b-32"
    },
    "completeness": 0.643
   }
