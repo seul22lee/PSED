@@ -14,7 +14,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 PROPOSED = ROOT / "proposed" / "proposed_ontology.yaml"
-EXT = ROOT.parent / "0706_ontology" / "core_extensions.yaml"
+EXT = ROOT.parent / "01_ontology" / "core_extensions.yaml"
 
 MAT_KEYS = ["id", "class", "formula", "molar_mass", "density", "metal_atoms", "aka"]
 PREC_KEYS = ["id", "class", "full_name", "has_ligand", "deposits", "molar_mass",

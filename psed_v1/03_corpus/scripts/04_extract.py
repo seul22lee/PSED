@@ -17,11 +17,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 
 # --- load Gemini key from 0604_kg/.env (not hardcoded) ---
 def _load_key():
-    envf = ROOT.parent / "0604_kg" / ".env"
+    envf = ROOT / "config" / ".env"
     for line in envf.read_text().splitlines():
         if line.startswith("GOOGLE_API_KEY"):
             return line.split("=", 1)[1].strip().strip('"').strip("'")

@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
-PIPE = ROOT.parent / "0706_pipeline"
+PIPE = ROOT.parent / "02_extraction"
 sys.path.insert(0, str(PIPE / "stages"))
 sys.path.insert(0, str(PIPE))
 import lib                                   # canon_*, family, recipe_role, species_prop

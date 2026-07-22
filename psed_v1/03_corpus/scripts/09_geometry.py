@@ -14,9 +14,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
-PIPE = ROOT.parent / "0706_pipeline"
+PIPE = ROOT.parent / "02_extraction"
 OUT = PIPE / "output"
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 MODEL = "gemini-flash-latest"
 sys.path.insert(0, str(ROOT / "scripts"))
 import importlib.util

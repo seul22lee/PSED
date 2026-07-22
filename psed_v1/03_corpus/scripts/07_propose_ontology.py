@@ -22,15 +22,15 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
 PROPOSED = ROOT / "proposed"; PROPOSED.mkdir(exist_ok=True)
-PIPE = ROOT.parent / "0706_pipeline"
+PIPE = ROOT.parent / "02_extraction"
 sys.path.insert(0, str(PIPE / "stages"))
 import lib
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 MODEL = "gemini-flash-latest"
 
 
 def _key():
-    for l in (ROOT.parent / "0604_kg" / ".env").read_text().splitlines():
+    for l in (ROOT / "config" / ".env").read_text().splitlines():
         if l.startswith("GOOGLE_API_KEY"):
             return l.split("=", 1)[1].strip().strip('"').strip("'")
     return os.environ.get("GOOGLE_API_KEY")
