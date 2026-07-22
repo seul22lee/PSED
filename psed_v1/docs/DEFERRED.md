@@ -8,6 +8,72 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 17:15 (local) — ⚠️ NEVER re-ingest a paper whose KB is richer than its records.json
+**Context:** Re-ingesting 16 papers to clear caption-path fabrications silently destroyed
+**129 experiments**. Caught by the report totals dropping 354 → 225.
+**Status:** resolved (restored); recorded as a standing hazard
+**Detail:** Four papers' KB entries did not come from `03_corpus/extracted/*/records.json`
+at all — they were carried over from the **older, richer** pipeline output:
+
+    10.1063_1.5028178      116 -> 4    (-112)   <- the ylilammi dose profiles
+    10.1039_d0cp03358h      44 -> 36   (-8)
+    10.1016_j.sse.2022.108584 22 -> 10 (-12)
+
+`06_to_kb.py --resolve-only` rebuilds `resolved/experiments.json` **from records.json**,
+so for these papers it overwrites rich data with the thinner 0709 extraction. This is the
+same hazard already noted for ylilammi (0709 decimated its dose profiles 98→4) — M1/M3
+need the archived data, so this would have broken the twin.
+
+Restored all three from git (`git checkout HEAD -- …/resolved/experiments.json`); total
+is back to **357**. Verified first that none of the three contained any fabricated
+condition — they never needed re-ingesting. Only **9** papers actually had fabrications;
+re-ingesting all 16 that merely *contained categorical keys* was over-scoped.
+
+**Rule going forward:** before `06_to_kb --resolve-only` on an existing paper, compare
+`len(records.json)` against `len(resolved/experiments.json)`. If the KB has more, it is
+not records-derived — re-ingesting will thin it. Scope re-ingests to papers that actually
+need the fix, not to every paper that matches a broad grep.
+
+## 2026-07-22 17:15 (local) — RESOLVED: caption-path parse vulnerability (the last one)
+**Context:** `06`'s `panel_ctrl` applied `_ctrl(k, _num(v), _unit(v))` to every caption
+condition, so `_num('Al2O3')` → **2.0** — the same fabrication shape as the series path,
+via a different route. 67 rows across 9 papers.
+**Status:** resolved
+**Detail:** Fixed in code, not by re-flattening data. `_num_cond()` now requires the value
+to match the same COMPLETE-number pattern (`_NUMU`) the series path uses — unit class
+excludes `-`, so `Al2O3`, `TMA`, `2-propanol` are names, not numbers. Verified:
+
+    substrate=Al2O3    -> rejected        temperature=150 °C   -> 150.0 '°C'
+    precursor=TMA      -> rejected        pressure=0.8 mbar    -> 0.8 'mbar'
+    coreactant=2-propanol -> rejected     dose=1.5e-3 Torr     -> 0.0015 'Torr'
+
+**`_num()` is no longer applied to any non-numeric string anywhere in 06** — both the
+caption and series paths now share one rule. The 9 affected papers were re-flattened from
+cache (no vision) and re-ingested. Corpus-wide fabrication check: **[]**.
+
+⚠️ Remaining cosmetic: 30 series conditions in `10.3762_bjnano.5.25` are named
+`series_value` — the `series_axis or "series_value"` fallback firing when vision gave no
+axis. The values are genuine numbers; only the quantity name is a placeholder, and it is
+ungrounded in the ontology. Worth naming properly before batch-51.
+
+## 2026-07-22 17:15 (local) — RESOLVED: 05 vision JSON parsing hardened
+**Context:** `05` used bare `json.loads(r.text)` — no retry, no fence handling, error
+truncated to 200 chars. `celc` hit this and produced **0 records**; only a manual retry
+recovered it. At batch-51 scale a transient bad response silently zeros a paper.
+**Status:** resolved
+**Detail:** `05` now uses the same `_loads_json` as `04` (strips ```json fences, falls back
+to the first balanced `{...}` block), **retries once** on parse failure, and keeps the
+**full** raw text in `_parse_error` instead of 200 chars so failures stay diagnosable
+without another API call. Verified against fenced, prose-wrapped, and plain JSON.
+
+## 2026-07-22 17:15 (local) — RESOLVED: empty series label no longer renders "series: "
+**Context:** `_classify_label` returns `"empty"` for a blank label, but the caller folded
+it into the categorical branch.
+**Status:** resolved
+**Detail:** `05` handles `"empty"` explicitly (all series fields `None`, material falls
+back to `mats[0]`), and `06` only builds `series_name` when there is a `series_kind` AND
+a `series_value`. Corpus-wide check for `series_name == "series: "`: **[]**.
+
 ## 2026-07-22 16:30 (local) — RESOLVED BY REDESIGN: series identity is structured, not a string
 **Context:** Two fabrications (`LTB:H2S` → LTB=2.0; `coreactant: 2-propanol` → coreactant=2.0)
 both came from the same shape: 05 built a descriptive `"axis: value"` string and 06

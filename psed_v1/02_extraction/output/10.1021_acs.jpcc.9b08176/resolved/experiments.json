@@ -1,3083 +1,2169 @@
 [
  {
-  "series_name": "HfO\u2082 (120 s)",
-  "material": "HfO2",
-  "material_raw": "HfO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 120.0,
-    "unit": "s"
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    },
    {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 37.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 300.0,
-    "unit": ""
-   },
-   {
-    "quantity": "generation",
-    "value": 3.0,
-    "unit": null,
-    "propagated": true
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    3.8,
+    330
+   ],
+   [
+    12,
+    570
+   ],
+   [
+    38,
+    730
+   ],
+   [
+    120,
+    870
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-0",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "pulse_time"
   ],
   "dependent": [
    {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
-   }
-  ],
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    5.0,
-    0.98
-   ],
-   [
-    10.0,
-    0.95
-   ],
-   [
-    15.0,
-    0.92
-   ],
-   [
-    20.0,
-    0.88
-   ],
-   [
-    25.0,
-    0.83
-   ],
-   [
-    30.0,
-    0.78
-   ],
-   [
-    35.0,
-    0.72
-   ],
-   [
-    40.0,
-    0.65
-   ],
-   [
-    45.0,
-    0.58
-   ],
-   [
-    50.0,
-    0.5
-   ],
-   [
-    55.0,
-    0.42
-   ],
-   [
-    60.0,
-    0.35
-   ],
-   [
-    65.0,
-    0.28
-   ],
-   [
-    70.0,
-    0.22
-   ],
-   [
-    75.0,
-    0.16
-   ],
-   [
-    80.0,
-    0.1
-   ],
-   [
-    85.0,
-    0.05
-   ],
-   [
-    90.0,
-    0.02
-   ],
-   [
-    95.0,
-    0.01
-   ],
-   [
-    100.0,
-    0.0
-   ]
-  ],
-  "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
-  },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
-   {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
    }
   ],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-0",
   "recipe": {
-   "material": "HfO2",
-   "reactants": [],
-   "cycle_sequence": null,
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 300.0,
-   "temperature": null,
+   "ncycles": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
    "structure": null,
-   "targets": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F2-1"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-0"
    },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+   "completeness": 0.429
+  }
  },
  {
-  "series_name": "Al\u2082O\u2083 (120 s)",
+  "material": "TiO2",
+  "material_raw": "TiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    12,
+    450
+   ],
+   [
+    120,
+    780
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-1",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "TiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-1"
+   },
+   "completeness": 0.429
+  }
+ },
+ {
   "material": "Al2O3",
   "material_raw": "Al2O3",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 120.0,
-    "unit": "s"
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    },
    {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 39.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 300.0,
-    "unit": ""
-   },
-   {
-    "quantity": "generation",
-    "value": 3.0,
-    "unit": null,
-    "propagated": true
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    }
-  ],
-  "dependent": [
-   {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
-   }
-  ],
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    10.0,
-    0.98
-   ],
-   [
-    20.0,
-    0.95
-   ],
-   [
-    30.0,
-    0.92
-   ],
-   [
-    40.0,
-    0.88
-   ],
-   [
-    50.0,
-    0.84
-   ],
-   [
-    60.0,
-    0.8
-   ],
-   [
-    70.0,
-    0.75
-   ],
-   [
-    80.0,
-    0.7
-   ],
-   [
-    90.0,
-    0.65
-   ],
-   [
-    100.0,
-    0.6
-   ],
-   [
-    110.0,
-    0.55
-   ],
-   [
-    120.0,
-    0.5
-   ],
-   [
-    130.0,
-    0.45
-   ],
-   [
-    140.0,
-    0.4
-   ],
-   [
-    150.0,
-    0.35
-   ],
-   [
-    160.0,
-    0.28
-   ],
-   [
-    170.0,
-    0.2
-   ],
-   [
-    180.0,
-    0.12
-   ],
-   [
-    190.0,
-    0.05
-   ],
-   [
-    200.0,
-    0.0
-   ]
   ],
   "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
   },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    120,
+    80
+   ]
+  ],
+  "granularity": "single",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-2",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [],
+  "dependent": [
    {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
    }
   ],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-1",
   "recipe": {
    "material": "Al2O3",
-   "reactants": [],
-   "cycle_sequence": null,
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 300.0,
-   "temperature": null,
+   "ncycles": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
    "structure": null,
-   "targets": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F2-2"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-2"
    },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+   "completeness": 0.429
+  }
  },
  {
-  "series_name": "SiO\u2082 (3.8 s)",
-  "material": "SiO2",
-  "material_raw": "SiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "material": "HfO2",
+  "material_raw": "HfO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 3.8,
-    "unit": "s"
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    },
    {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 60.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 400.0,
-    "unit": ""
-   },
-   {
-    "quantity": "generation",
-    "value": 3.0,
-    "unit": null,
-    "propagated": true
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    }
-  ],
-  "dependent": [
-   {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
-   }
-  ],
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    25.0,
-    0.99
-   ],
-   [
-    50.0,
-    0.98
-   ],
-   [
-    75.0,
-    0.97
-   ],
-   [
-    100.0,
-    0.96
-   ],
-   [
-    125.0,
-    0.94
-   ],
-   [
-    150.0,
-    0.92
-   ],
-   [
-    175.0,
-    0.9
-   ],
-   [
-    200.0,
-    0.87
-   ],
-   [
-    225.0,
-    0.83
-   ],
-   [
-    250.0,
-    0.79
-   ],
-   [
-    275.0,
-    0.74
-   ],
-   [
-    300.0,
-    0.69
-   ],
-   [
-    325.0,
-    0.63
-   ],
-   [
-    350.0,
-    0.57
-   ],
-   [
-    375.0,
-    0.5
-   ],
-   [
-    400.0,
-    0.43
-   ],
-   [
-    425.0,
-    0.36
-   ],
-   [
-    450.0,
-    0.29
-   ],
-   [
-    475.0,
-    0.22
-   ],
-   [
-    500.0,
-    0.15
-   ],
-   [
-    525.0,
-    0.09
-   ],
-   [
-    550.0,
-    0.04
-   ],
-   [
-    575.0,
-    0.01
-   ],
-   [
-    600.0,
-    0.0
-   ]
   ],
   "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
   },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    120,
+    40
+   ]
+  ],
+  "granularity": "single",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-3",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [],
+  "dependent": [
    {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
    }
   ],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-2",
   "recipe": {
-   "material": "SiO2",
-   "reactants": [],
-   "cycle_sequence": null,
+   "material": "HfO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 400.0,
-   "temperature": null,
+   "ncycles": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
    "structure": null,
-   "targets": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F2-3"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-3"
    },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+   "completeness": 0.429
+  }
  },
  {
-  "series_name": "TiO\u2082 (12 s)",
-  "material": "TiO2",
-  "material_raw": "TiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 12.0,
-    "unit": "s"
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    },
    {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 26.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 400.0,
-    "unit": ""
-   },
-   {
-    "quantity": "generation",
-    "value": 3.0,
-    "unit": null,
-    "propagated": true
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    1.05,
+    330
+   ],
+   [
+    2.4,
+    570
+   ],
+   [
+    3.6,
+    730
+   ],
+   [
+    4.8,
+    870
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F3a-4",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time h",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "pulse_time"
   ],
   "dependent": [
    {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
    }
   ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F3a-4"
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "TiO2",
+  "material_raw": "TiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
   "points": [
    [
-    0.0,
+    2.4,
+    450
+   ],
+   [
+    4.8,
+    790
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F3a-5",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time h",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "TiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F3a-5"
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
     1.0
    ],
    [
-    25.0,
-    0.99
+    200,
+    1.0
    ],
    [
-    50.0,
-    0.98
+    400,
+    1.0
    ],
    [
-    75.0,
-    0.97
+    600,
+    1.0
    ],
    [
-    100.0,
-    0.96
+    800,
+    1.0
    ],
    [
-    125.0,
+    1000,
+    1.0
+   ],
+   [
+    1200,
     0.95
    ],
    [
-    150.0,
-    0.94
-   ],
-   [
-    175.0,
-    0.92
-   ],
-   [
-    200.0,
-    0.9
-   ],
-   [
-    225.0,
-    0.88
-   ],
-   [
-    250.0,
-    0.86
-   ],
-   [
-    275.0,
-    0.83
-   ],
-   [
-    300.0,
-    0.8
-   ],
-   [
-    325.0,
-    0.77
-   ],
-   [
-    350.0,
-    0.73
-   ],
-   [
-    375.0,
-    0.69
-   ],
-   [
-    400.0,
-    0.65
-   ],
-   [
-    425.0,
+    1400,
     0.6
    ],
    [
-    450.0,
-    0.55
-   ],
-   [
-    475.0,
+    1455,
     0.5
    ],
    [
-    500.0,
-    0.45
-   ],
-   [
-    525.0,
+    1500,
     0.4
    ],
    [
-    550.0,
-    0.35
-   ],
-   [
-    575.0,
-    0.3
-   ],
-   [
-    600.0,
-    0.25
-   ],
-   [
-    625.0,
-    0.2
-   ],
-   [
-    650.0,
+    1600,
     0.15
    ],
    [
-    675.0,
-    0.08
-   ],
-   [
-    700.0,
+    1700,
     0.0
    ]
   ],
-  "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-6",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
   },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
+  "series_name": "series: r = 10^-5",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
    {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
    }
   ],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-3",
   "recipe": {
-   "material": "TiO2",
-   "reactants": [],
-   "cycle_sequence": null,
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 400.0,
-   "temperature": null,
+   "ncycles": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
    "structure": null,
    "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F2-4"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-6"
    },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+   "completeness": 0.429
+  }
  },
  {
-  "series_name": "SiO\u2082 (12 s)",
   "material": "SiO2",
   "material_raw": "SiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 12.0,
-    "unit": "s"
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    },
    {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 60.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 400.0,
-    "unit": ""
-   },
-   {
-    "quantity": "generation",
-    "value": 3.0,
-    "unit": null,
-    "propagated": true
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    }
   ],
-  "dependent": [
-   {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
-   }
-  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
   "points": [
    [
-    0.0,
+    0,
     1.0
    ],
    [
-    25.0,
-    0.99
+    100,
+    1.0
    ],
    [
-    50.0,
-    0.98
+    200,
+    1.0
    ],
    [
-    75.0,
-    0.97
+    300,
+    1.0
    ],
    [
-    100.0,
-    0.96
-   ],
-   [
-    125.0,
-    0.95
-   ],
-   [
-    150.0,
-    0.94
-   ],
-   [
-    175.0,
-    0.93
-   ],
-   [
-    200.0,
-    0.92
-   ],
-   [
-    225.0,
-    0.91
-   ],
-   [
-    250.0,
-    0.9
-   ],
-   [
-    275.0,
-    0.89
-   ],
-   [
-    300.0,
-    0.88
-   ],
-   [
-    325.0,
-    0.87
-   ],
-   [
-    350.0,
-    0.86
-   ],
-   [
-    375.0,
-    0.84
-   ],
-   [
-    400.0,
-    0.82
-   ],
-   [
-    425.0,
+    400,
     0.8
    ],
    [
-    450.0,
-    0.78
-   ],
-   [
-    475.0,
-    0.75
-   ],
-   [
-    500.0,
-    0.72
-   ],
-   [
-    525.0,
-    0.69
-   ],
-   [
-    550.0,
-    0.66
-   ],
-   [
-    575.0,
-    0.63
-   ],
-   [
-    600.0,
-    0.6
-   ],
-   [
-    625.0,
-    0.57
-   ],
-   [
-    650.0,
-    0.54
-   ],
-   [
-    675.0,
+    510,
     0.5
    ],
    [
-    700.0,
-    0.46
-   ],
-   [
-    725.0,
-    0.42
-   ],
-   [
-    750.0,
-    0.38
-   ],
-   [
-    775.0,
-    0.33
-   ],
-   [
-    800.0,
-    0.28
-   ],
-   [
-    825.0,
-    0.22
-   ],
-   [
-    850.0,
-    0.16
-   ],
-   [
-    875.0,
-    0.1
-   ],
-   [
-    900.0,
-    0.05
-   ],
-   [
-    925.0,
-    0.02
-   ],
-   [
-    950.0,
-    0.0
-   ]
-  ],
-  "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
-  },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
-   {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
-   }
-  ],
-  "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-4",
-  "recipe": {
-   "material": "SiO2",
-   "reactants": [],
-   "cycle_sequence": null,
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 400.0,
-   "temperature": null,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "arts2019-F2-5"
-   },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
- },
- {
-  "series_name": "SiO\u2082 (38 s)",
-  "material": "SiO2",
-  "material_raw": "SiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
-  "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
-  ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
-  },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
-  "controlled": [
-   {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 38.0,
-    "unit": "s"
-   },
-   {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 60.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 400.0,
-    "unit": ""
-   },
-   {
-    "quantity": "generation",
-    "value": 3.0,
-    "unit": null,
-    "propagated": true
-   }
-  ],
-  "dependent": [
-   {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
-   }
-  ],
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    25.0,
-    0.99
-   ],
-   [
-    50.0,
-    0.98
-   ],
-   [
-    75.0,
-    0.97
-   ],
-   [
-    100.0,
-    0.96
-   ],
-   [
-    125.0,
-    0.95
-   ],
-   [
-    150.0,
-    0.94
-   ],
-   [
-    175.0,
-    0.93
-   ],
-   [
-    200.0,
-    0.92
-   ],
-   [
-    225.0,
-    0.91
-   ],
-   [
-    250.0,
-    0.9
-   ],
-   [
-    275.0,
-    0.89
-   ],
-   [
-    300.0,
-    0.88
-   ],
-   [
-    325.0,
-    0.87
-   ],
-   [
-    350.0,
-    0.86
-   ],
-   [
-    375.0,
-    0.85
-   ],
-   [
-    400.0,
-    0.84
-   ],
-   [
-    425.0,
-    0.83
-   ],
-   [
-    450.0,
-    0.82
-   ],
-   [
-    475.0,
-    0.8
-   ],
-   [
-    500.0,
-    0.78
-   ],
-   [
-    525.0,
-    0.76
-   ],
-   [
-    550.0,
-    0.74
-   ],
-   [
-    575.0,
-    0.72
-   ],
-   [
-    600.0,
-    0.7
-   ],
-   [
-    625.0,
-    0.68
-   ],
-   [
-    650.0,
-    0.66
-   ],
-   [
-    675.0,
-    0.64
-   ],
-   [
-    700.0,
-    0.62
-   ],
-   [
-    725.0,
-    0.6
-   ],
-   [
-    750.0,
-    0.58
-   ],
-   [
-    775.0,
-    0.55
-   ],
-   [
-    800.0,
-    0.52
-   ],
-   [
-    825.0,
-    0.49
-   ],
-   [
-    850.0,
-    0.46
-   ],
-   [
-    875.0,
-    0.42
-   ],
-   [
-    900.0,
-    0.38
-   ],
-   [
-    925.0,
-    0.34
-   ],
-   [
-    950.0,
-    0.3
-   ],
-   [
-    975.0,
-    0.25
-   ],
-   [
-    1000.0,
+    600,
     0.2
    ],
    [
-    1025.0,
-    0.15
-   ],
-   [
-    1050.0,
-    0.1
-   ],
-   [
-    1075.0,
+    700,
     0.05
    ],
    [
-    1100.0,
-    0.02
-   ],
-   [
-    1125.0,
-    0.01
-   ],
-   [
-    1150.0,
+    750,
     0.0
    ]
   ],
-  "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-7",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
   },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
+  "series_name": "series: r = 10^-4",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
    {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
    }
   ],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-5",
   "recipe": {
    "material": "SiO2",
-   "reactants": [],
-   "cycle_sequence": null,
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 400.0,
-   "temperature": null,
+   "ncycles": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
    "structure": null,
    "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F2-6"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-7"
    },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+   "completeness": 0.429
+  }
  },
  {
-  "series_name": "TiO\u2082 (120 s)",
-  "material": "TiO2",
-  "material_raw": "TiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
-  "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
-  ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
-  },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
-  "controlled": [
-   {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 120.0,
-    "unit": "s"
-   },
-   {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 26.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 400.0,
-    "unit": ""
-   },
-   {
-    "quantity": "generation",
-    "value": 3.0,
-    "unit": null,
-    "propagated": true
-   }
-  ],
-  "dependent": [
-   {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
-   }
-  ],
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    25.0,
-    0.99
-   ],
-   [
-    50.0,
-    0.98
-   ],
-   [
-    75.0,
-    0.97
-   ],
-   [
-    100.0,
-    0.96
-   ],
-   [
-    125.0,
-    0.95
-   ],
-   [
-    150.0,
-    0.94
-   ],
-   [
-    175.0,
-    0.93
-   ],
-   [
-    200.0,
-    0.92
-   ],
-   [
-    225.0,
-    0.91
-   ],
-   [
-    250.0,
-    0.9
-   ],
-   [
-    275.0,
-    0.89
-   ],
-   [
-    300.0,
-    0.88
-   ],
-   [
-    325.0,
-    0.87
-   ],
-   [
-    350.0,
-    0.86
-   ],
-   [
-    375.0,
-    0.85
-   ],
-   [
-    400.0,
-    0.84
-   ],
-   [
-    425.0,
-    0.83
-   ],
-   [
-    450.0,
-    0.82
-   ],
-   [
-    475.0,
-    0.81
-   ],
-   [
-    500.0,
-    0.8
-   ],
-   [
-    525.0,
-    0.79
-   ],
-   [
-    550.0,
-    0.78
-   ],
-   [
-    575.0,
-    0.77
-   ],
-   [
-    600.0,
-    0.76
-   ],
-   [
-    625.0,
-    0.75
-   ],
-   [
-    650.0,
-    0.74
-   ],
-   [
-    675.0,
-    0.73
-   ],
-   [
-    700.0,
-    0.72
-   ],
-   [
-    725.0,
-    0.7
-   ],
-   [
-    750.0,
-    0.68
-   ],
-   [
-    775.0,
-    0.66
-   ],
-   [
-    800.0,
-    0.64
-   ],
-   [
-    825.0,
-    0.62
-   ],
-   [
-    850.0,
-    0.6
-   ],
-   [
-    875.0,
-    0.58
-   ],
-   [
-    900.0,
-    0.55
-   ],
-   [
-    925.0,
-    0.52
-   ],
-   [
-    950.0,
-    0.49
-   ],
-   [
-    975.0,
-    0.46
-   ],
-   [
-    1000.0,
-    0.43
-   ],
-   [
-    1025.0,
-    0.4
-   ],
-   [
-    1050.0,
-    0.36
-   ],
-   [
-    1075.0,
-    0.32
-   ],
-   [
-    1100.0,
-    0.28
-   ],
-   [
-    1125.0,
-    0.24
-   ],
-   [
-    1150.0,
-    0.2
-   ],
-   [
-    1175.0,
-    0.15
-   ],
-   [
-    1200.0,
-    0.1
-   ]
-  ],
-  "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
-  },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
-   {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
-   }
-  ],
-  "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-6",
-  "recipe": {
-   "material": "TiO2",
-   "reactants": [],
-   "cycle_sequence": null,
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 400.0,
-   "temperature": null,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "arts2019-F2-7"
-   },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
- },
- {
-  "series_name": "SiO\u2082 (120 s)",
   "material": "SiO2",
   "material_raw": "SiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": false,
-  "x_label": "Distance / cavity height",
-  "y_label": "Normalized thickness",
-  "provenance": {
-   "figure_id": "figure-009",
-   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent. Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-009.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "009",
-   "figure": "Fig 2"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "profile",
-  "varies": [
-   "dimensionless_distance"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": null,
-    "value": 120.0,
-    "unit": "s"
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    },
    {
-    "quantity": "generation",
-    "raw": "generation",
-    "symbol": null,
-    "value": 3.0,
-    "unit": null
-   },
-   {
-    "quantity": "film_thickness",
-    "raw": "film_thickness",
-    "symbol": null,
-    "value": 60.0,
-    "unit": "nm"
-   },
-   {
-    "quantity": "cycle_number",
-    "raw": "cycle_number",
-    "symbol": null,
-    "value": 400.0,
-    "unit": ""
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    }
   ],
-  "dependent": [
-   {
-    "quantity": "normalized_thickness",
-    "raw": "Normalized thickness",
-    "unit": "1",
-    "dimension": "1",
-    "family": "film_amount"
-   }
-  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
   "points": [
    [
-    0.0,
+    0,
     1.0
    ],
    [
-    25.0,
-    0.99
+    50,
+    1.0
    ],
    [
-    50.0,
-    0.98
-   ],
-   [
-    75.0,
-    0.97
-   ],
-   [
-    100.0,
-    0.96
-   ],
-   [
-    125.0,
-    0.95
-   ],
-   [
-    150.0,
-    0.94
-   ],
-   [
-    175.0,
-    0.93
-   ],
-   [
-    200.0,
-    0.92
-   ],
-   [
-    225.0,
-    0.91
-   ],
-   [
-    250.0,
+    100,
     0.9
    ],
    [
-    275.0,
-    0.89
-   ],
-   [
-    300.0,
-    0.88
-   ],
-   [
-    325.0,
-    0.87
-   ],
-   [
-    350.0,
-    0.86
-   ],
-   [
-    375.0,
-    0.85
-   ],
-   [
-    400.0,
-    0.84
-   ],
-   [
-    425.0,
-    0.83
-   ],
-   [
-    450.0,
-    0.82
-   ],
-   [
-    475.0,
-    0.81
-   ],
-   [
-    500.0,
-    0.8
-   ],
-   [
-    525.0,
-    0.79
-   ],
-   [
-    550.0,
-    0.78
-   ],
-   [
-    575.0,
-    0.77
-   ],
-   [
-    600.0,
-    0.76
-   ],
-   [
-    625.0,
-    0.75
-   ],
-   [
-    650.0,
-    0.74
-   ],
-   [
-    675.0,
-    0.73
-   ],
-   [
-    700.0,
-    0.72
-   ],
-   [
-    725.0,
-    0.71
-   ],
-   [
-    750.0,
-    0.7
-   ],
-   [
-    775.0,
-    0.69
-   ],
-   [
-    800.0,
-    0.68
-   ],
-   [
-    825.0,
-    0.67
-   ],
-   [
-    850.0,
-    0.66
-   ],
-   [
-    875.0,
-    0.65
-   ],
-   [
-    900.0,
-    0.64
-   ],
-   [
-    925.0,
-    0.63
-   ],
-   [
-    950.0,
-    0.62
-   ],
-   [
-    975.0,
-    0.61
-   ],
-   [
-    1000.0,
-    0.6
-   ],
-   [
-    1025.0,
-    0.59
-   ],
-   [
-    1050.0,
-    0.58
-   ],
-   [
-    1075.0,
-    0.56
-   ],
-   [
-    1100.0,
-    0.54
-   ],
-   [
-    1125.0,
-    0.52
-   ],
-   [
-    1150.0,
+    160,
     0.5
    ],
    [
-    1175.0,
-    0.48
+    220,
+    0.1
    ],
    [
-    1200.0,
-    0.46
+    250,
+    0.0
    ]
   ],
-  "measurand": {
-   "quantity": "normalized_thickness",
-   "unit": "1",
-   "dimension": "1",
-   "family": "film_amount"
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-8",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
   },
-  "coordinate": "dimensionless_distance",
-  "coordinate_family": "position",
-  "measurand_family": "film_amount",
-  "comparability_key": "position ~ film_amount",
-  "comparability_signature": "dimensionless_distance ~ normalized_thickness",
-  "bridges": [
+  "series_name": "series: r = 10^-3",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
    {
-    "transform": "film_thickness\u2192normalized_thickness",
-    "family": "film_amount",
-    "bridge": "reference_thickness",
-    "present": false
-   },
-   {
-    "transform": "spatial_coordinate\u2192dimensionless_distance",
-    "family": "position",
-    "bridge": "feature_height",
-    "present": false
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
    }
   ],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [],
-  "cycle_sequence": null,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F2-7",
   "recipe": {
    "material": "SiO2",
-   "reactants": [],
-   "cycle_sequence": null,
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 400.0,
-   "temperature": null,
+   "ncycles": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
    "structure": null,
    "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F2-8"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-8"
    },
-   "completeness": 0.333
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+   "completeness": 0.429
+  }
  },
  {
-  "series_name": "SiO\u2082",
   "material": "SiO2",
   "material_raw": "SiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": false,
-  "x_label": "ln(Plasma time (s))",
-  "y_label": "PD\u2075\u2070% / cavity height",
-  "provenance": {
-   "figure_id": "figure-010",
-   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-010.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "010",
-   "figure": "Fig 3"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "single",
-  "varies": [
-   "pulse_time"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "recombination_probability",
-    "raw": "recombination_probability",
-    "symbol": "r",
-    "value": 6e-05,
-    "unit": "1"
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    },
    {
-    "quantity": "feature_height",
-    "raw": "feature_height",
-    "symbol": "h",
-    "value": null,
-    "unit": "nm"
-   },
-   {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": "t",
-    "value": null,
-    "unit": "s",
-    "of_reactant": "B"
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
    }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    20,
+    0.8
+   ],
+   [
+    50,
+    0.5
+   ],
+   [
+    80,
+    0.1
+   ],
+   [
+    100,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-9",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "series: r = 10^-2",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
   ],
   "dependent": [
    {
-    "quantity": "penetration_depth",
-    "raw": "PD\u2075\u2070% / cavity height",
-    "unit": "\u00b5m",
-    "dimension": "L",
-    "family": "position"
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
    }
   ],
-  "points": [
-   [
-    1.0,
-    320.0
-   ],
-   [
-    2.4,
-    560.0
-   ],
-   [
-    3.6,
-    720.0
-   ],
-   [
-    4.8,
-    880.0
-   ]
-  ],
-  "measurand": {
-   "quantity": "penetration_depth",
-   "unit": "\u00b5m",
-   "dimension": "L",
-   "family": "position"
-  },
-  "coordinate": "pulse_time",
-  "coordinate_family": "exposure_time",
-  "measurand_family": "position",
-  "comparability_key": "exposure_time ~ position",
-  "comparability_signature": "pulse_time ~ penetration_depth",
-  "bridges": [],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [
-   {
-    "label": "B",
-    "role": "coreactant"
-   }
-  ],
-  "cycle_sequence": "B",
-  "has_model_pair": true,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F3-8",
   "recipe": {
    "material": "SiO2",
    "reactants": [
     {
-     "label": "B",
-     "role": "coreactant",
-     "species": null,
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "B",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": null,
-   "temperature": null,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": {
-    "penetration_depth": "measured-in-figure"
-   },
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "arts2019-F3-1"
-   },
-   "completeness": 0.3
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
- },
- {
-  "series_name": "TiO\u2082",
-  "material": "TiO2",
-  "material_raw": "TiO2",
-  "relevance": "experimental",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
-  "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
-  ],
-  "is_model_result": false,
-  "x_label": "ln(Plasma time (s))",
-  "y_label": "PD\u2075\u2070% / cavity height",
-  "provenance": {
-   "figure_id": "figure-010",
-   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-010.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "010",
-   "figure": "Fig 3"
-  },
-  "granularity": "single",
-  "varies": [
-   "pulse_time"
-  ],
-  "controlled": [
-   {
-    "quantity": "recombination_probability",
-    "raw": "recombination_probability",
-    "symbol": "r",
-    "value": 7e-05,
-    "unit": "1"
-   },
-   {
-    "quantity": "feature_height",
-    "raw": "feature_height",
-    "symbol": "h",
-    "value": null,
-    "unit": "nm"
-   },
-   {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": "t",
-    "value": null,
-    "unit": "s",
-    "of_reactant": "B"
-   }
-  ],
-  "dependent": [
-   {
-    "quantity": "penetration_depth",
-    "raw": "PD\u2075\u2070% / cavity height",
-    "unit": "\u00b5m",
-    "dimension": "L",
-    "family": "position"
-   }
-  ],
-  "points": [
-   [
-    2.4,
-    440.0
-   ],
-   [
-    4.8,
-    800.0
-   ]
-  ],
-  "measurand": {
-   "quantity": "penetration_depth",
-   "unit": "\u00b5m",
-   "dimension": "L",
-   "family": "position"
-  },
-  "coordinate": "pulse_time",
-  "coordinate_family": "exposure_time",
-  "measurand_family": "position",
-  "comparability_key": "exposure_time ~ position",
-  "comparability_signature": "pulse_time ~ penetration_depth",
-  "bridges": [],
-  "issues": [],
-  "analysis_ready": true,
-  "reactants": [
-   {
-    "label": "B",
-    "role": "coreactant"
-   }
-  ],
-  "cycle_sequence": "B",
-  "has_model_pair": true,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F3-9",
-  "recipe": {
-   "material": "TiO2",
-   "reactants": [
+    },
     {
      "label": "B",
      "role": "coreactant",
-     "species": null,
+     "species": "O2_plasma",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "B",
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": {
-    "penetration_depth": "measured-in-figure"
+   "carrier_gas": {
+    "species": "Ar"
    },
+   "structure": null,
+   "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F3-2"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-9"
    },
-   "completeness": 0.3
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+   "completeness": 0.429
+  }
  },
  {
-  "series_name": "Linear Fit SiO\u2082",
   "material": "SiO2",
   "material_raw": "SiO2",
-  "relevance": "model",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
+   "O2_plasma"
   ],
-  "is_model_result": true,
-  "x_label": "ln(Plasma time (s))",
-  "y_label": "PD\u2075\u2070% / cavity height",
-  "provenance": {
-   "figure_id": "figure-010",
-   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-010.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "010",
-   "figure": "Fig 3"
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "granularity": "single",
-  "varies": [
-   "pulse_time"
-  ],
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
     "quantity": "recombination_probability",
-    "raw": "recombination_probability",
-    "symbol": "r",
-    "value": 6e-05,
-    "unit": "1"
-   },
-   {
-    "quantity": "feature_height",
-    "raw": "feature_height",
-    "symbol": "h",
-    "value": null,
-    "unit": "nm"
-   },
-   {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": "t",
-    "value": null,
-    "unit": "s",
-    "of_reactant": "B"
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "model_parameter"
    }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    5,
+    0.5
+   ],
+   [
+    15,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-10",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "series: t = 10^0",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
   ],
   "dependent": [
    {
-    "quantity": "penetration_depth",
-    "raw": "PD\u2075\u2070% / cavity height",
-    "unit": "\u00b5m",
-    "dimension": "L",
-    "family": "position"
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
    }
   ],
-  "points": [
-   [
-    0.0,
-    175.0
-   ],
-   [
-    0.1,
-    189.67
-   ],
-   [
-    0.2,
-    204.33
-   ],
-   [
-    0.3,
-    219.0
-   ],
-   [
-    0.4,
-    233.67
-   ],
-   [
-    0.5,
-    248.33
-   ],
-   [
-    0.6,
-    263.0
-   ],
-   [
-    0.7,
-    277.67
-   ],
-   [
-    0.8,
-    292.33
-   ],
-   [
-    0.9,
-    307.0
-   ],
-   [
-    1.0,
-    321.67
-   ],
-   [
-    1.1,
-    336.33
-   ],
-   [
-    1.2,
-    351.0
-   ],
-   [
-    1.3,
-    365.67
-   ],
-   [
-    1.4,
-    380.33
-   ],
-   [
-    1.5,
-    395.0
-   ],
-   [
-    1.6,
-    409.67
-   ],
-   [
-    1.7,
-    424.33
-   ],
-   [
-    1.8,
-    439.0
-   ],
-   [
-    1.9,
-    453.67
-   ],
-   [
-    2.0,
-    468.33
-   ],
-   [
-    2.1,
-    483.0
-   ],
-   [
-    2.2,
-    497.67
-   ],
-   [
-    2.3,
-    512.33
-   ],
-   [
-    2.4,
-    527.0
-   ],
-   [
-    2.5,
-    541.67
-   ],
-   [
-    2.6,
-    556.33
-   ],
-   [
-    2.7,
-    571.0
-   ],
-   [
-    2.8,
-    585.67
-   ],
-   [
-    2.9,
-    600.33
-   ],
-   [
-    3.0,
-    615.0
-   ],
-   [
-    3.1,
-    629.67
-   ],
-   [
-    3.2,
-    644.33
-   ],
-   [
-    3.3,
-    659.0
-   ],
-   [
-    3.4,
-    673.67
-   ],
-   [
-    3.5,
-    688.33
-   ],
-   [
-    3.6,
-    703.0
-   ],
-   [
-    3.7,
-    717.67
-   ],
-   [
-    3.8,
-    732.33
-   ],
-   [
-    3.9,
-    747.0
-   ],
-   [
-    4.0,
-    761.67
-   ],
-   [
-    4.1,
-    776.33
-   ],
-   [
-    4.2,
-    791.0
-   ],
-   [
-    4.3,
-    805.67
-   ],
-   [
-    4.4,
-    820.33
-   ],
-   [
-    4.5,
-    835.0
-   ],
-   [
-    4.6,
-    849.67
-   ],
-   [
-    4.7,
-    864.33
-   ],
-   [
-    4.8,
-    879.0
-   ],
-   [
-    4.9,
-    893.67
-   ],
-   [
-    5.0,
-    908.33
-   ],
-   [
-    5.1,
-    923.0
-   ],
-   [
-    5.2,
-    937.67
-   ],
-   [
-    5.3,
-    952.33
-   ],
-   [
-    5.4,
-    967.0
-   ],
-   [
-    5.5,
-    981.67
-   ],
-   [
-    5.6,
-    996.33
-   ],
-   [
-    5.7,
-    1011.0
-   ],
-   [
-    5.8,
-    1025.67
-   ],
-   [
-    5.9,
-    1040.33
-   ],
-   [
-    6.0,
-    1055.0
-   ]
-  ],
-  "measurand": {
-   "quantity": "penetration_depth",
-   "unit": "\u00b5m",
-   "dimension": "L",
-   "family": "position"
-  },
-  "coordinate": "pulse_time",
-  "coordinate_family": "exposure_time",
-  "measurand_family": "position",
-  "comparability_key": "exposure_time ~ position",
-  "comparability_signature": "pulse_time ~ penetration_depth",
-  "bridges": [],
   "issues": [],
-  "analysis_ready": true,
-  "reactants": [
-   {
-    "label": "B",
-    "role": "coreactant"
-   }
-  ],
-  "cycle_sequence": "B",
-  "has_model_pair": true,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F3-10",
   "recipe": {
    "material": "SiO2",
    "reactants": [
     {
-     "label": "B",
-     "role": "coreactant",
-     "species": null,
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "B",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": null,
-   "temperature": null,
-   "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": {
-    "penetration_depth": "measured-in-figure"
-   },
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "arts2019-F3-3"
-   },
-   "completeness": 0.3
-  },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
- },
- {
-  "series_name": "Linear Fit TiO\u2082",
-  "material": "TiO2",
-  "material_raw": "TiO2",
-  "relevance": "model",
-  "structure": "trench",
-  "process_type": "PlasmaALD",
-  "precursors": [],
-  "coreactants": [
-   "Oxygen atoms",
-   "oxygen radicals"
-  ],
-  "is_model_result": true,
-  "x_label": "ln(Plasma time (s))",
-  "y_label": "PD\u2075\u2070% / cavity height",
-  "provenance": {
-   "figure_id": "figure-010",
-   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 are determined.",
-   "plot_data_path": "/home/ftk3187/github/PSED/0604_kg/output/Arts et al. - 2019 - Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic/03_plot_to_data/figure-010.json",
-   "paper": "arts2019",
-   "doi": "10.1021_acs.jpcc.9b08176",
-   "fig_index": "010",
-   "figure": "Fig 3"
-  },
-  "granularity": "single",
-  "varies": [
-   "pulse_time"
-  ],
-  "controlled": [
-   {
-    "quantity": "recombination_probability",
-    "raw": "recombination_probability",
-    "symbol": "r",
-    "value": 7e-05,
-    "unit": "1"
-   },
-   {
-    "quantity": "feature_height",
-    "raw": "feature_height",
-    "symbol": "h",
-    "value": null,
-    "unit": "nm"
-   },
-   {
-    "quantity": "plasma_exposure_time",
-    "raw": "plasma_exposure_time",
-    "symbol": "t",
-    "value": null,
-    "unit": "s",
-    "of_reactant": "B"
-   }
-  ],
-  "dependent": [
-   {
-    "quantity": "penetration_depth",
-    "raw": "PD\u2075\u2070% / cavity height",
-    "unit": "\u00b5m",
-    "dimension": "L",
-    "family": "position"
-   }
-  ],
-  "points": [
-   [
-    0.0,
-    105.0
-   ],
-   [
-    0.1,
-    119.17
-   ],
-   [
-    0.2,
-    133.33
-   ],
-   [
-    0.3,
-    147.5
-   ],
-   [
-    0.4,
-    161.67
-   ],
-   [
-    0.5,
-    175.83
-   ],
-   [
-    0.6,
-    190.0
-   ],
-   [
-    0.7,
-    204.17
-   ],
-   [
-    0.8,
-    218.33
-   ],
-   [
-    0.9,
-    232.5
-   ],
-   [
-    1.0,
-    246.67
-   ],
-   [
-    1.1,
-    260.83
-   ],
-   [
-    1.2,
-    275.0
-   ],
-   [
-    1.3,
-    289.17
-   ],
-   [
-    1.4,
-    303.33
-   ],
-   [
-    1.5,
-    317.5
-   ],
-   [
-    1.6,
-    331.67
-   ],
-   [
-    1.7,
-    345.83
-   ],
-   [
-    1.8,
-    360.0
-   ],
-   [
-    1.9,
-    374.17
-   ],
-   [
-    2.0,
-    388.33
-   ],
-   [
-    2.1,
-    402.5
-   ],
-   [
-    2.2,
-    416.67
-   ],
-   [
-    2.3,
-    430.83
-   ],
-   [
-    2.4,
-    445.0
-   ],
-   [
-    2.5,
-    459.17
-   ],
-   [
-    2.6,
-    473.33
-   ],
-   [
-    2.7,
-    487.5
-   ],
-   [
-    2.8,
-    501.67
-   ],
-   [
-    2.9,
-    515.83
-   ],
-   [
-    3.0,
-    530.0
-   ],
-   [
-    3.1,
-    544.17
-   ],
-   [
-    3.2,
-    558.33
-   ],
-   [
-    3.3,
-    572.5
-   ],
-   [
-    3.4,
-    586.67
-   ],
-   [
-    3.5,
-    600.83
-   ],
-   [
-    3.6,
-    615.0
-   ],
-   [
-    3.7,
-    629.17
-   ],
-   [
-    3.8,
-    643.33
-   ],
-   [
-    3.9,
-    657.5
-   ],
-   [
-    4.0,
-    671.67
-   ],
-   [
-    4.1,
-    685.83
-   ],
-   [
-    4.2,
-    700.0
-   ],
-   [
-    4.3,
-    714.17
-   ],
-   [
-    4.4,
-    728.33
-   ],
-   [
-    4.5,
-    742.5
-   ],
-   [
-    4.6,
-    756.67
-   ],
-   [
-    4.7,
-    770.83
-   ],
-   [
-    4.8,
-    785.0
-   ],
-   [
-    4.9,
-    799.17
-   ],
-   [
-    5.0,
-    813.33
-   ],
-   [
-    5.1,
-    827.5
-   ],
-   [
-    5.2,
-    841.67
-   ],
-   [
-    5.3,
-    855.83
-   ],
-   [
-    5.4,
-    870.0
-   ],
-   [
-    5.5,
-    884.17
-   ],
-   [
-    5.6,
-    898.33
-   ],
-   [
-    5.7,
-    912.5
-   ],
-   [
-    5.8,
-    926.67
-   ],
-   [
-    5.9,
-    940.83
-   ],
-   [
-    6.0,
-    955.0
-   ]
-  ],
-  "measurand": {
-   "quantity": "penetration_depth",
-   "unit": "\u00b5m",
-   "dimension": "L",
-   "family": "position"
-  },
-  "coordinate": "pulse_time",
-  "coordinate_family": "exposure_time",
-  "measurand_family": "position",
-  "comparability_key": "exposure_time ~ position",
-  "comparability_signature": "pulse_time ~ penetration_depth",
-  "bridges": [],
-  "issues": [],
-  "analysis_ready": true,
-  "reactants": [
-   {
-    "label": "B",
-    "role": "coreactant"
-   }
-  ],
-  "cycle_sequence": "B",
-  "has_model_pair": true,
-  "exp_id": "10.1021_acs.jpcc.9b08176-F3-11",
-  "recipe": {
-   "material": "TiO2",
-   "reactants": [
+    },
     {
      "label": "B",
      "role": "coreactant",
-     "species": null,
+     "species": "O2_plasma",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "B",
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
-   "carrier_gas": null,
-   "structure": null,
-   "targets": {
-    "penetration_depth": "measured-in-figure"
+   "carrier_gas": {
+    "species": "Ar"
    },
+   "structure": null,
+   "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "arts2019-F3-4"
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-10"
    },
-   "completeness": 0.3
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
   },
-  "extraction": "0604-rich",
-  "geometry_class": "vertical_structure"
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "model_parameter"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    50,
+    1.0
+   ],
+   [
+    100,
+    0.8
+   ],
+   [
+    160,
+    0.5
+   ],
+   [
+    250,
+    0.1
+   ],
+   [
+    300,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-11",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "series: t = 10^1",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-11"
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "model_parameter"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    100,
+    1.0
+   ],
+   [
+    200,
+    1.0
+   ],
+   [
+    300,
+    0.85
+   ],
+   [
+    460,
+    0.5
+   ],
+   [
+    600,
+    0.15
+   ],
+   [
+    700,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-12",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "series: t = 10^2",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-12"
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "model_parameter"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    200,
+    1.0
+   ],
+   [
+    400,
+    1.0
+   ],
+   [
+    600,
+    0.9
+   ],
+   [
+    830,
+    0.5
+   ],
+   [
+    1100,
+    0.15
+   ],
+   [
+    1300,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-13",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "series: t = 10^3",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-13"
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "SiH2(N(C2H5)2)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "model_parameter"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    400,
+    1.0
+   ],
+   [
+    800,
+    1.0
+   ],
+   [
+    1000,
+    0.9
+   ],
+   [
+    1200,
+    0.5
+   ],
+   [
+    1450,
+    0.15
+   ],
+   [
+    1600,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-14",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "series: t = 10^4",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "SiH2(N(C2H5)2)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-14"
+   },
+   "completeness": 0.429
+  }
  }
 ]
