@@ -18,6 +18,14 @@ Prefixed IRIs (qk:Length, unit:NanoM, ald:Oxide) are expanded to full IRIs.
 import json
 from pathlib import Path
 
+
+def _molar_mass(formula):
+    try:
+        from molmass import Formula
+        return round(Formula(formula).mass, 2)
+    except Exception:
+        return None
+
 import yaml
 
 ROOT = Path(__file__).parent
@@ -177,6 +185,19 @@ def main():
         for it in items:
             it = dict(it)
             it["iri"] = ald + it["id"]
+            if group in ("materials", "precursors", "coreactants"):
+                f = it.get("formula")
+                if f:
+                    calc = _molar_mass(f)
+                    if calc is not None:
+                        if it.get("molar_mass") is None:
+                            it["molar_mass"] = calc
+                            it["molar_mass_src"] = "computed(formula, molmass-IUPAC)"
+                        else:
+                            # hand value wins; cross-check and warn on mismatch
+                            if abs(it["molar_mass"] - calc) > 0.1:
+                                print(f"  [mass WARN] {it['id']}: hand={it['molar_mass']} "
+                                      f"calc={calc} (formula={f})")
             out.append(it)
         individuals[group] = out
 
