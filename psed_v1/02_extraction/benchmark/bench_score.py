@@ -19,7 +19,7 @@ from collections import defaultdict
 from pathlib import Path
 
 HERE = Path(__file__).parent
-ONTO = json.loads((HERE.parent.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((HERE.parent.parent / "01_ontology" / "ald_ontology.json").read_text())
 NARROW = ["abstract", "abstract_conclusion", "evidence"]
 
 

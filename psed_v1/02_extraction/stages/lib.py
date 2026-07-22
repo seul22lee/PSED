@@ -12,7 +12,7 @@ REPO = ROOT.parent                             # PSED/
 KG0604 = REPO / "0604_kg" / "output"           # source docling/enrich outputs
 BENCH = ROOT / "benchmark"                     # evidence slices + profiles
 OUTPUT = ROOT / "output"                       # our stage outputs
-ONTO = json.loads((REPO / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((REPO / "01_ontology" / "ald_ontology.json").read_text())
 
 
 def norm(s):
