@@ -148,6 +148,26 @@ def _clean_panel(p):
     return p.lower() if re.fullmatch(r"[A-Za-z]", p) else ""
 
 
+import re as _re
+
+
+def _label_is_material(label, mats):
+    """A series label is a material if it matches a scout material (allowing a
+    phase/prefix like 'a-', 'c-', 'Mo/'), else it's a series/condition label."""
+    if not label:
+        return False
+    lab = label.strip()
+    # obvious condition label: "name: value" or contains a ratio/temp/dose keyword
+    if ":" in lab or _re.search(r"(ratio|flow|temperature|dose|pressure|cycles?|time|power)", lab, _re.I):
+        return False
+    base = _re.sub(r"^(a-|c-|amorphous |crystalline |[A-Za-z]{1,3}/)", "", lab)  # strip phase/prefix
+    base = _re.sub(r"[+xy0-9\s]+$", "", base)  # strip trailing +x, numbers
+    for m in mats:
+        if base == m or lab == m or base == _re.sub(r"^(a-|c-)", "", m):
+            return True
+    return False
+
+
 def flatten_records(sd, scout, figresults):
     mats = scout.get("materials") or []
     recs = []
@@ -158,7 +178,12 @@ def flatten_records(sd, scout, figresults):
             x, y = p.get("x", {}), p.get("y", {})
             for s in p.get("series", []):
                 recs.append({
-                    "doi": sd, "material": (s.get("label") or (mats[0] if mats else None)),
+                    "doi": sd,
+                    "material": (s.get("label") if _label_is_material(s.get("label"), mats)
+                                 else (mats[0] if mats else None)),
+                    "series_label": (None if _label_is_material(s.get("label"), mats)
+                                     else (s.get("label") or None)),
+                    "material_raw": s.get("label"),
                     "measurand": {"quantity": y.get("quantity"), "unit": y.get("unit")},
                     "coordinate": x.get("quantity"), "coordinate_unit": x.get("unit"),
                     "points": s.get("points", []),
