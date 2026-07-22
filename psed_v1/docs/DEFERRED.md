@@ -8,6 +8,41 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 14:55 (local) — Swept-condition quantities are ungrounded; 07 proposal needs curation
+**Context:** Series conditions now reach `controlled`, but `canon_quantity('H2 flow
+ratio')` returns `None`, so they enter the KB as free-text with `recipe_role: null` and
+no family. Ran `07_propose_ontology.py` on the 6 deep papers to generate candidates.
+**Status:** needs-decision — **do NOT run `08_merge_ontology` as-is**
+**Detail:** 23 candidates written to `03_corpus/proposed/proposed_ontology.yaml`
+(status: pending). Roughly a third are genuine; the rest are artifacts and must be
+curated before any merge:
+
+*Genuine and wanted:* `h2_flow_ratio` (the term that motivated the pass), `areal_mass`
+(ng/cm²), `supercycle_ratio`, `log_conductivity`, `inverse_temperature` (1/K, from the
+Arrhenius plot), `methanol_pulse_time` / `ruo4_pulse_time` — though the last two are
+really `pulse_time` with `of_reactant` set, not new quantity kinds.
+
+*Schema-key contamination (not quantities at all):* `materials`, `precursors`,
+`coreactants`, `precursor`, `coreactant`, `material`, `process_type`, `substrate`,
+`device_structure`. These are **record/scout dict field names** leaking into the
+unmapped-term gatherer. That's a bug in the gather step, not a vocabulary gap.
+
+*Normalisation artifacts:* `hot_wire_temperature`, `hot_wire_temperature_dash`,
+`hot_wire_temperature_space` — three candidates for one quantity, because the gatherer
+does not normalise `hot-wire temperature` / `hot wire temperature` / `hot_wire_temperature`
+to a single surface form. Also `sup_percentage` (looks like a superscript parsing
+artifact) and `pressure`, which duplicates the existing `total_pressure`.
+
+*Wrong or already-decided individuals:* `LixAlyS` duplicates the `LiAlS_x` we already
+added (different id, same substance) — and proposes `formula: Li x Al y S`, which would
+break the molar-mass build. `[(Me3Si)2NBiμ-NSiMe3]2` is the **bismuth silylamide dimer
+we deliberately held** pending the monomer/dimer policy, and its proposed
+`deposits: [LixAlyS]` is simply wrong — in jcrysgro it deposits Bi2Te3.
+
+**Before batch-51:** fix the gatherer (exclude schema keys, normalise separators)
+before proposing at scale, or every sweep legend and every dict key will mint junk
+candidates. The proposal file is committed for review but nothing is merged.
+
 ## 2026-07-22 14:25 (local) — RESOLVED: stoichiometry-strip bug in `_classify_label`
 **Context:** The normalisation stripped trailing digits before comparing
 (`re.sub(r"[+xy0-9\s]+$", ...)`), destroying stoichiometry — `c-WS2` → `WS` matched
@@ -138,7 +173,26 @@ co-reactants (`Methanol`, `Ethanol`, `1/2-propanol`), precursor-pair labels
 `material`. `jcrysgro` in particular went from `['Al2O3','Bi2Te3','SiO2']` to
 `['Bi2Te3']` — the substrates had been masquerading as deposited films.
 
-*Still open — neither the rescued condition NOR the phase reaches the KB.*
+*RESOLVED 2026-07-22 14:55.* `06_to_kb.py` now sets `"series_name": r.get("series_label")`
+and adds `"phase": r.get("phase")` (both record types, so the schema is uniform), and a
+parseable `"<name>: <value>"` series label is additionally surfaced into `controlled`
+with `source="series"` so tier/bridge logic can consume it rather than only display it.
+Verified: `chemmater.2c01154` keeps `material {MoS2: 9}`, `series_name` = the 6
+H2-flow-ratio labels, `phase` = {a-MoS2+x, c-MoS2, Mo/c-MoS2, 6×None}, and 6 H2
+conditions in `controlled`.
+
+⚠️ **The coercion needed a numeric guard.** The first attempt keyed only on `":" in
+label`, which fired on precursor:co-reactant pair labels: `LTB:H2S` became
+`{"quantity": "LTB", "value": 2.0}` — the 2.0 taken from the **H₂S subscript**, a number
+that appears nowhere in the paper. `1-propanol` would have yielded `value=1.0,
+unit="propanol"` by the same route. The rule is now **the value must start with a
+digit** (`re.match(r"^[-+]?\.?\d", _val)`): `0.20` and `150 °C` are kept, `H2S` and `Si`
+are rejected. Every label is still preserved verbatim in `series_name` regardless, so
+rejecting a coercion loses nothing. Bare phase labels (no colon) live in `phase` only
+and never become conditions. **Lesson for batch-51: any string→number coercion needs an
+anchored numeric test, not a "contains a digit" test.**
+
+*Previously open —*
 `06_to_kb.py` hardcodes `"series_name": None` (lines 177 and 219) and sets
 `"material_raw": r.get("material")` (line 163) from the **resolved** material rather
 than the true raw label. As of the Option-A change it also drops the new `phase` field

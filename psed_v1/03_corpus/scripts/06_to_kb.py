@@ -159,12 +159,26 @@ def to_experiments(sd, scout, records, card):
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
         panel = (r.get("provenance") or {}).get("panel") or ""
         panel = panel.lower() if re.fullmatch(r"[A-Za-z]", str(panel).strip()) else ""   # only a real panel letter
+        # A parseable "<name>: <value>" series label also becomes a controlled condition,
+        # so tier/bridge logic can use it rather than merely display it. Bare phase labels
+        # (no ':') are skipped here — they stay in series_name/phase.
+        series_ctrl = []
+        sl = r.get("series_label")
+        if sl and ":" in sl:
+            _name, _val = sl.split(":", 1)
+            _name = _name.strip(); _val = _val.strip()
+            # The value must START with a digit. Without this, a pair label like
+            # "LTB:H2S" coerces to LTB=2.0 — the 2 taken from the H2S subscript.
+            if re.match(r"^[-+]?\.?\d", _val):
+                c = _ctrl(_name, _num(_val), _unit(_val), source="series")
+                if c:
+                    series_ctrl = [c]
         e = {
             "material": mat, "material_raw": r.get("material"),
             "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
             "reactants": reactants, "carrier_gas": carrier, "process_type": ptype,
             "cycle_sequence": "AB" if core_c else "A",
-            "controlled": base_ctrl + panel_ctrl,
+            "controlled": base_ctrl + panel_ctrl + series_ctrl,
             "measurand": {"quantity": mq, "unit": (r.get("measurand") or {}).get("unit"),
                           "family": lib.family(mq)},
             "coordinate": cq, "coordinate_family": lib.family(cq),
@@ -174,7 +188,9 @@ def to_experiments(sd, scout, records, card):
             "analysis_ready": bool(pts and mq),
             "exp_id": f"{pid}-{fig}{panel}-{len(exps)}",
             "provenance": {**(r.get("provenance") or {}), "doi": sd},
-            "series_name": None, "structure": None,
+            "series_name": r.get("series_label"),   # condition series (e.g. "H2 flow ratio: 0.20") or None
+            "phase": r.get("phase"),                # crystallographic phase (e.g. "c-MoS2") or None
+            "structure": None,
             # dependent = the measured output; varies = the swept coordinate (profiles).
             # Populated so the shared 0706 consumers (evaluate_kb, kg, similarity) see the
             # measured/swept quantities the same way as old-pipeline records.
@@ -216,7 +232,7 @@ def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec
         "exp_id": f"{pid}-paper-0",
         "provenance": {"doi": sd, "source": "paper-level", "figure": "paper",
                        "study_type": scout.get("study_type"), "modalities": modalities},
-        "series_name": None, "structure": None, "varies": [],
+        "series_name": None, "phase": None, "structure": None, "varies": [],
         "dependent": ([{"quantity": mq, "value": gpc, "unit": "nm", "family": lib.family(mq)}]
                       if mq else []),
         "issues": ["paper-level (no figure data extracted)"],

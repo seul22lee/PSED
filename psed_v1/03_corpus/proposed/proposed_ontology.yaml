@@ -5,10 +5,32 @@ _meta:
   - rejected
   note: 'review each entry, set status: approved to merge via 08_merge_ontology.py'
   tokens:
-    in: 656
-    out: 853
-materials: []
-precursors: []
+    in: 791
+    out: 2111
+materials:
+- id: LixAlyS
+  class: Ternary
+  formula: Li x Al y S
+  metal_atoms: 2
+  aka:
+  - Li-Al-S
+  - Li x Al y S
+  new_class: false
+  status: pending
+  provenance:
+  - 10.1002_celc.201600139
+precursors:
+- id: '[(Me3Si)2NBiμ-NSiMe3]2'
+  class: Precursor
+  full_name: Bis(trimethylsilyl)amino bismuth silyl imido dimer
+  has_ligand: amide
+  deposits:
+  - LixAlyS
+  aka:
+  - '[(Me3Si)2NBi-NSiMe3]2'
+  status: pending
+  provenance:
+  - 10.1016_j.jcrysgro.2017.04.019
 coreactants: []
 quantity_kinds:
 - id: materials
@@ -25,24 +47,24 @@ quantity_kinds:
   - 10.1002_admi.202000318
 - id: precursors
   label: precursors
-  category: composition
+  category: process_parameter
   new_category: false
   family: ''
   new_family: false
   unit: '1'
-  recipe_role: species_property
+  recipe_role: control_setting
   symbols: []
   status: pending
   provenance:
   - 10.1002_admi.202000318
 - id: coreactants
   label: coreactants
-  category: composition
+  category: process_parameter
   new_category: false
   family: ''
   new_family: false
   unit: '1'
-  recipe_role: species_property
+  recipe_role: control_setting
   symbols: []
   status: pending
   provenance:
@@ -77,7 +99,7 @@ quantity_kinds:
   recipe_role: structure
   symbols: []
   status: pending
-  provenance:
+  provenance: &id001
   - 10.1002_admi.202000318
   - 10.1016_j.mee.2018.01.027
   - 10.1016_j.sse.2022.108584
@@ -90,7 +112,7 @@ quantity_kinds:
   - 10.3762_bjnano.5.25
 - id: substrate
   label: substrate
-  category: composition
+  category: geometry
   new_category: false
   family: ''
   new_family: false
@@ -103,17 +125,18 @@ quantity_kinds:
   - 10.1039_c5tc03561a
 - id: precursor
   label: precursor
-  category: composition
+  category: process_parameter
   new_category: false
   family: ''
   new_family: false
   unit: '1'
-  recipe_role: species_property
+  recipe_role: control_setting
   symbols: []
   status: pending
   provenance:
   - 10.1002_admi.202000318
   - 10.1016_j.sse.2022.108584
+  - 10.1021_acs.chemmater.2c02292
   - 10.1039_c6dt03571j
   - 10.1039_c7ra07722j
   - 10.1039_d0cp03358h
@@ -125,17 +148,18 @@ quantity_kinds:
   - 10.3762_bjnano.14.89
 - id: coreactant
   label: coreactant
-  category: composition
+  category: process_parameter
   new_category: false
   family: ''
   new_family: false
   unit: '1'
-  recipe_role: species_property
+  recipe_role: control_setting
   symbols: []
   status: pending
   provenance:
   - 10.1002_admi.202000318
   - 10.1016_j.sse.2022.108584
+  - 10.1021_acs.chemmater.2c02292
   - 10.1021_acs.jpcc.9b08176
   - 10.1039_c6dt03571j
   - 10.1039_d0cp03358h
@@ -144,6 +168,138 @@ quantity_kinds:
   - 10.1116_6.0002436
   - 10.1116_6.0002804
   - 10.3762_bjnano.14.89
+- id: areal_mass
+  label: Mass
+  category: material_property
+  new_category: false
+  family: coverage
+  new_family: false
+  unit: ng/cm^2
+  recipe_role: observable
+  symbols: []
+  status: pending
+  provenance: *id001
+- id: supercycle_ratio
+  label: supercycle_ratio
+  category: process_parameter
+  new_category: false
+  family: dose
+  new_family: false
+  unit: '1'
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance:
+  - 10.1002_celc.201600139
+- id: log_conductivity
+  label: log σ
+  category: electrical
+  new_category: false
+  family: ''
+  new_family: false
+  unit: S/cm
+  recipe_role: observable
+  symbols:
+  - log σ
+  - log(σ)
+  status: pending
+  provenance:
+  - 10.1002_celc.201600139
+- id: inverse_temperature
+  label: 1000/T
+  category: coordinate
+  new_category: false
+  family: process_temperature
+  new_family: false
+  unit: 1/K
+  recipe_role: coordinate
+  symbols:
+  - 1000/T
+  status: pending
+  provenance:
+  - 10.1002_celc.201600139
+- id: hot_wire_temperature
+  label: hot_wire_temperature
+  category: process_parameter
+  new_category: false
+  family: process_temperature
+  new_family: false
+  unit: °C
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance: &id002
+  - 10.1002_pssa.201532305
+- id: pressure
+  label: pressure
+  category: process_parameter
+  new_category: false
+  family: pressure
+  new_family: false
+  unit: Pa
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance:
+  - 10.1002_pssa.201532305
+- id: hot_wire_temperature_dash
+  label: hot-wire_temperature
+  category: process_parameter
+  new_category: false
+  family: process_temperature
+  new_family: false
+  unit: °C
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance: *id002
+- id: hot_wire_temperature_space
+  label: hot-wire temperature
+  category: process_parameter
+  new_category: false
+  family: process_temperature
+  new_family: false
+  unit: °C
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance: *id002
+- id: h2_flow_ratio
+  label: H2 flow ratio
+  category: process_parameter
+  new_category: false
+  family: dose
+  new_family: false
+  unit: '1'
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance:
+  - 10.1021_acs.chemmater.2c01154
+- id: methanol_pulse_time
+  label: methanol_pulse_time
+  category: process_parameter
+  new_category: false
+  family: exposure_time
+  new_family: false
+  unit: s
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance:
+  - 10.1021_acs.chemmater.2c02292
+- id: ruo4_pulse_time
+  label: RuO4_pulse_time
+  category: process_parameter
+  new_category: false
+  family: exposure_time
+  new_family: false
+  unit: s
+  recipe_role: control_setting
+  symbols: []
+  status: pending
+  provenance:
+  - 10.1021_acs.chemmater.2c02292
 - id: device_structure
   label: device_structure
   category: geometry
@@ -156,15 +312,16 @@ quantity_kinds:
   status: pending
   provenance:
   - 10.1039_d3ra05217f
-- id: sup
+- id: sup_percentage
   label: SUP
   category: dimensionless_number
   new_category: false
-  family: reaction_efficiency
+  family: ''
   new_family: false
   unit: '%'
   recipe_role: observable
-  symbols: []
+  symbols:
+  - SUP
   status: pending
   provenance:
   - 10.1116_6.0002436
