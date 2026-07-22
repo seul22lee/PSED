@@ -8,6 +8,36 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 13:55 (local) — RESOLVED: figure numbering (docling index vs caption number)
+**Context:** Records cited docling's image-extraction index as if it were the paper's
+figure number. The offset is per-paper — it depends on how many caption-less images
+(logos, journal marks) docling emits ahead of the first real figure.
+**Status:** resolved
+**Detail:** `_cap_fignum` already parsed the paper number from the caption, but an
+earlier fix wired it only into the **display label** (`provenance.figure`), leaving the
+primary numeric field as the docling index — which is why the bug looked unfixed. The
+citable number is now an explicit field:
+- `provenance.figure_number` — the paper's real number, parsed from the caption (or `None`)
+- `provenance.fig_docling_index` — renamed from `fig_index`; the extraction index the
+  scout drill tags (`F7`) refer to, kept for traceability
+- `provenance.figure` — label; falls back to `"Fig <idx> (idx)"` when the caption has no
+  parseable "Figure N", so an unresolved index is never displayed as a paper number
+
+Measured offsets across the 6 deep papers, confirming this is per-paper and not a
+constant that could be corrected globally:
+
+    celc              idx 4  -> Fig 1      (-3)
+    pssa              idx 13 -> Fig 10     (-3)
+    jcrysgro          idx 7  -> Fig 6      (-1)
+    tsf               idx 1  -> Fig 2      (+1)   <- index BELOW the paper number
+    chemmater.2c01154 idx 16 -> Fig 7      (-9)   <- worst case
+    chemmater.2c02292 idx 1  -> Fig 1      ( 0)
+
+All drilled figures resolved; **no `figure_number: None`** in the current batch.
+Only `relabel_figures.py` (a one-off retroactive script, already applied) referenced the
+old `fig_index` name; the live pipeline does not. `06_to_kb.py` spreads provenance
+wholesale, so both fields reach `resolved/experiments.json` with no change there.
+
 ## 2026-07-22 13:30 (local) — Series-label contamination of the material axis: rule settled
 **Context:** Two variants of the same bug surfaced in the trial batch — condition
 legends (`"H2 flow ratio: 0.20"`, `10.1021_acs.chemmater.2c01154`) and **substrate**
@@ -27,6 +57,16 @@ Anchoring on `scout.materials` rather than on formula-shape is the guard that pr
 substrate and condition contamination of the material axis. **For the 51-paper batch
 this matters most in multi-series figures**, which is where every instance so far came
 from — substrate-comparison plots and parameter-sweep legends.
+
+**Batch-51 watch list (both bug classes):**
+1. *Unparseable captions.* Figures whose caption has no "Figure N" get
+   `figure_number: None` and a `"Fig <idx> (idx)"` label. None occurred in the 6-paper
+   batch, but they will at scale — grep for `(idx)` and eyeball those before citing.
+2. *Over-routing by the material anchor.* If `scout.materials` misses a genuinely
+   deposited second material, its series get re-routed to `series_label` and inherit
+   `mats[0]` as material. `material_raw` retains the verbatim vision label, so any
+   mis-route is **recoverable by re-flattening from cache — no vision re-call needed**.
+   Cross-check `material_raw` against `material` after the batch to find these.
 
 Re-flattened all 6 deep papers from cached `figure_data.json` (no vision re-call);
 output was **byte-identical** to the previous scout-anchored helper, i.e. this revision
