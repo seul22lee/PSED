@@ -1,0 +1,141 @@
+[
+ {
+  "material": "TiO2",
+  "material_raw": "TiO2",
+  "precursors": [
+   "TiCl4"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TiCl4"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 30.66,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": null,
+   "unit": null,
+   "family": null
+  },
+  "coordinate": null,
+  "coordinate_family": null,
+  "points": [],
+  "granularity": "single",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "is_paper_level": true,
+  "analysis_ready": false,
+  "exp_id": "10.1186_s11671-015-0872-9-paper-0",
+  "provenance": {
+   "doi": "10.1186_s11671-015-0872-9",
+   "source": "paper-level",
+   "figure": "paper",
+   "study_type": "experimental",
+   "modalities": [
+    "xrd_or_spectrum"
+   ]
+  },
+  "series_name": null,
+  "structure": "aao",
+  "varies": [],
+  "dependent": [],
+  "issues": [
+   "paper-level (no figure data extracted)"
+  ],
+  "recipe": {
+   "material": "TiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TiCl4",
+     "dose_time": 0.25,
+     "purge_time": 1,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 0.25,
+     "purge_time": 1,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1186_s11671-015-0872-9-paper-0"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "porous_material"
+ }
+]

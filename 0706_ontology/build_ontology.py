@@ -149,6 +149,27 @@ def main():
         q["axis_role"] = ("coordinate" if q["id"] in coord
                           else "output" if q["id"] in outp else "condition")
 
+    # ---- overlay: approved auto-proposed extensions (core_extensions.yaml) ----
+    # merged into core so the hand-curated core.yaml is never edited by the pipeline.
+    ext = {}
+    extf = ROOT / "core_extensions.yaml"
+    if extf.exists():
+        ext = yaml.safe_load(extf.read_text()) or {}
+        for group, items in (ext.get("individuals") or {}).items():
+            core.setdefault("individuals", {}).setdefault(group, []).extend(items)
+        for q in ext.get("quantity_kinds") or []:          # fully-formed qk entries
+            qk = {"id": q["id"], "iri": ald + q["id"], "domain": q.get("domain"),
+                  "symbols": q.get("symbols", []), "aliases": q.get("aliases", []),
+                  "qudt_quantitykind": None, "unit": q.get("unit"),
+                  "category": q.get("category"), "family": q.get("family") or None,
+                  "recipe_role": q.get("recipe_role"),
+                  "axis_role": q.get("axis_role", "output" if q.get("recipe_role") == "observable"
+                               else "coordinate" if q.get("recipe_role") == "coordinate" else "condition"),
+                  "source": "auto-proposed"}
+            quantity_kinds.append(qk); qk_ids.add(qk["id"]); qk_by_id[qk["id"]] = qk
+        for cat, members in (ext.get("categories") or {}).items():
+            qr.setdefault("categories", {}).setdefault(cat, []).extend(members)
+
     # ---- individuals: mint IRI, expand class ref ----------------------------
     individuals = {}
     for group, items in (core.get("individuals") or {}).items():
@@ -183,6 +204,38 @@ def main():
             if mem not in model_ids:
                 print(f"  [warn] model_family '{fid}' references unknown model: {mem}")
 
+    # ---- geometry-class layer (geometry_classes.yaml overlay) ----------------
+    # Under `geometry`, the first layer is the geometry_class (transport regime);
+    # geometry quantities parameterise a class; structures instance a class; models
+    # declare which classes they are valid for (used for geometry-scoped validation).
+    geometry_classes = {}
+    geof = ROOT / "geometry_classes.yaml"
+    if geof.exists():
+        gy = yaml.safe_load(geof.read_text()) or {}
+        geometry_classes = gy.get("geometry_classes", {}) or {}
+        struct2gc = {m: gc for gc, s in geometry_classes.items() for m in (s.get("members") or [])}
+        for it in individuals.get("structures", []):
+            if it["id"] in struct2gc:
+                it["geometry_class"] = struct2gc[it["id"]]
+            elif it["id"] not in struct2gc:
+                print(f"  [warn] structure '{it['id']}' has no geometry_class")
+        q2gc = {}
+        for gc, s in geometry_classes.items():
+            for q in (s.get("parameters") or []):
+                q2gc.setdefault(q, []).append(gc)
+                if q not in qk_ids:
+                    print(f"  [warn] geometry_class '{gc}' parameter unknown quantity: {q}")
+        for q in quantity_kinds:
+            if q["id"] in q2gc:
+                q["geometry_class"] = q2gc[q["id"]]
+        mg = gy.get("model_geometry", {}) or {}
+        for m in models:
+            if m["id"] in mg:
+                m["applies_to_geometry"] = mg[m["id"]]
+        for mid in mg:
+            if mid not in model_ids:
+                print(f"  [warn] model_geometry references unknown model: {mid}")
+
     compiled = {
         "meta": {**core["meta"], "compiled": True},
         "classes": classes,
@@ -190,6 +243,7 @@ def main():
         "quantity_kinds": quantity_kinds,
         "quantity_relations": qr,
         "individuals": individuals,
+        "geometry_classes": geometry_classes,
         "model_families": model_families,
         "models": models,
         "_counts": {

@@ -23,8 +23,14 @@ HERE = Path(__file__).parent
 PIPE = HERE.parent / "0706_pipeline"
 sys.path.insert(0, str(PIPE))
 from channel_model import channelModel, MODEL_ID
+from scipy.optimize import minimize
 import similarity as sim
 import kb_service as ks
+
+# the geometry classes this twin's ontology model is valid for (geometry-scoped validation)
+_ONTO = json.load(open(HERE.parent / "0706_ontology" / "ald_ontology.json"))
+TWIN_GEOMETRY = next((m.get("applies_to_geometry") for m in _ONTO.get("models", [])
+                      if m["id"] == MODEL_ID), None) or []
 
 BLUE, RED, GREEN, AMBER, PURPLE, INK, GREY = "#2a78d6", "#e34948", "#1baf7a", "#eda100", "#9085e9", "#14161a", "#8b919b"
 NM = 1e-9
@@ -170,14 +176,18 @@ def validate_one(exp):
     rel = (dpd / pd_m) if (dpd and pd_m) else None
     r2 = cm.get("r2") if cm else None
     thermal = _is_thermal(exp)
-    agree = thermal and (r2 is not None and r2 >= 0.5) and (rel is None or rel <= 0.3)
+    gc = exp.get("geometry_class")
+    geom_ok = (gc is None) or (not TWIN_GEOMETRY) or (gc in TWIN_GEOMETRY)   # ontology-grounded scope
+    agree = geom_ok and thermal and (r2 is not None and r2 >= 0.5) and (rel is None or rel <= 0.3)
 
     # provenance of the two penetration-setting inputs decides the verdict:
     #   any assumed  -> DATA gap        (no info; measure it)
     #   any imputed  -> ESTIMATION gap  (KB estimate may be the cause, not the model)
     #   all extracted-> MODEL gap       (real Ylilammi physics / literature K,c miss)
     dstates = [prov.get(k) for k in DRIVERS]
-    if not thermal:
+    if not geom_ok:
+        verdict, kind = "out of scope", f"geometry '{gc}' — the {MODEL_ID} twin is valid for {TWIN_GEOMETRY}; needs a {gc} model"
+    elif not thermal:
         verdict, kind = "out of scope", "plasma / recombination-limited — needs the Arts/Aguinsky model, not the thermal twin"
     elif agree:
         verdict, kind = "agrees", None
@@ -212,6 +222,9 @@ def run():
     targets = [e for e in E if e.get("granularity") == "profile"
                and e.get("relevance") == "experimental"
                and (e.get("measurand") or {}).get("quantity") in ("film_thickness", "normalized_thickness")
+               # the twin predicts ABSOLUTE penetration, so compare only against profiles measured
+               # on an absolute-distance axis (µm) — never scaled/dimensionless or vs-cycles curves.
+               and e.get("coordinate") == "spatial_coordinate"
                and e.get("points") and len(e["points"]) >= 6]
     results = [r for r in (validate_one(e) for e in targets) if r]
     # thermal (in-scope) first, best R² last; plasma/out-of-scope grouped at the end
@@ -227,7 +240,9 @@ def _png(fig):
 
 
 def overlay_fig(results, worst_n=3, best_n=3):
-    ins = [r for r in results if r["thermal"]]           # quantitative comparison = thermal only
+    # only profiles the twin is actually meant to fit — exclude out-of-scope (plasma AND
+    # geometry mismatch), else out-of-scope porous profiles masquerade as "best fits".
+    ins = [r for r in results if r["verdict"] != "out of scope"]
     picks = ins[:worst_n] + ins[-best_n:] if len(ins) > worst_n + best_n else ins
     n = len(picks)
     fig, axes = plt.subplots(1, n, figsize=(2.7 * n, 3.0), squeeze=False)
@@ -243,6 +258,101 @@ def overlay_fig(results, worst_n=3, best_n=3):
     axes[0][-1].legend(fontsize=7)
     fig.tight_layout()
     return _png(fig)
+
+
+def _profile_png(r):
+    """A single twin-vs-measured plot for one profile (click-to-reveal in the table)."""
+    xm, ym = r.get("_meas") or ([], [])
+    xt, yt = r.get("_twin") or ([], [])
+    fig, ax = plt.subplots(figsize=(3.4, 2.5))
+    if xm:
+        ax.plot(xm, ym, "o", color=INK, ms=3, label="measured")
+    if xt:
+        ax.plot(xt, yt, "-", color=(GREEN if r["agree"] else RED), lw=2, label="twin")
+    ax.axhline(0.5, color=GREY, ls=":", lw=.8)
+    ax.set_xlabel("x (µm)", fontsize=8); ax.set_ylabel("norm. thickness", fontsize=8)
+    ax.set_ylim(-0.05, 1.15); ax.tick_params(labelsize=7)
+    if xm or xt:
+        ax.legend(fontsize=7)
+    fig.tight_layout()
+    return _png(fig)
+
+
+# ---------- inverse fit: recover the ASSUMED (imputed) conditions -------------
+def _r2(y, yt):
+    y = np.asarray(y, float); yt = np.asarray(yt, float)
+    ss = np.sum((y - y.mean()) ** 2)
+    return float(1 - np.sum((y - yt) ** 2) / ss) if ss > 0 else -9.0
+
+
+def inverse_fit(exp):
+    """Hold the EXTRACTED conditions fixed, warm-start the IMPUTED ones, and optimise the
+    two identifiable free parameters — exposure (pA·t_p) and the lumped sticking coefficient
+    c — to reproduce the measured profile on its own coordinate. This mirrors how the source
+    papers extract c by fitting the Ylilammi model to the saturation profile. Returns the
+    recovered values, the warm→fit R², and the search trajectory for visualisation."""
+    twin, notes, prov = build_twin(exp)
+    meas = measured_profile(exp)
+    if not meas:
+        return None
+    xm, ym = meas
+    xg = np.array(xm) * 1e-6
+    ym = np.array(ym, float)
+    wtp, wc, pA = twin.t_p, twin.c, twin.pA
+    dose_free = prov.get("dose") != "extracted"     # free exposure only if dose was NOT extracted
+
+    def curve(lm, lc):
+        twin.t_p = wtp * np.exp(lm) if dose_free else wtp
+        twin.c = float(np.clip(wc * np.exp(lc), 1e-5, 1.0))
+        twin.prepare()
+        th, _, _ = twin.approx(xg, np.zeros_like(xg))
+        t0 = th[0] if th[0] > 0 else (th.max() or 1)
+        return np.clip(th / t0, 0, None)
+
+    lm_grid = np.linspace(-2.5, 2.5, 11) if dose_free else np.array([0.0])
+    grid = [(lm, lc) for lm in lm_grid for lc in np.linspace(-2.5, 2.5, 11)]
+    best = min(grid, key=lambda p: float(np.mean((curve(*p) - ym) ** 2)))   # robust warm-start
+    traj = []
+    def sse(p):
+        yt = curve(p[0], p[1]); traj.append((float(p[0]), float(p[1]), _r2(ym, yt)))
+        return float(np.mean((yt - ym) ** 2))
+    res = minimize(sse, list(best), method="Nelder-Mead",
+                   options={"maxiter": 120, "xatol": 1e-3, "fatol": 1e-7})
+    lm, lc = res.x
+    # ~7 representative curves along the search, ordered warm→converged by R²
+    cand = {(0.0, 0.0), tuple(best), (lm, lc)} | {(a, b) for a, b, _ in traj}
+    scored = sorted((_r2(ym, curve(a, b)), a, b) for a, b in cand)
+    picks = [scored[int(i)] for i in np.linspace(0, len(scored) - 1, min(7, len(scored)))]
+    curves = [(round(r, 3), list(curve(a, b))) for r, a, b in picks]
+    return {
+        "exp_id": exp["exp_id"], "geometry_class": exp.get("geometry_class"),
+        "dose_free": dose_free, "niter": len(traj),
+        "r2_warm": _r2(ym, curve(0, 0)), "r2_fit": _r2(ym, curve(lm, lc)),
+        "expo_warm": wtp * pA, "expo_fit": (wtp * np.exp(lm) if dose_free else wtp) * pA,
+        "c_warm": wc, "c_fit": float(np.clip(wc * np.exp(lc), 1e-5, 1)),
+        "xm": list(xm), "ym": list(ym), "curves": curves,
+        "r2track": [t[2] for t in traj],
+    }
+
+
+def inverse_png(f):
+    fig, (ax, axr) = plt.subplots(1, 2, figsize=(6.6, 2.6), gridspec_kw={"width_ratios": [2, 1]})
+    ax.plot(f["xm"], f["ym"], "o", color=INK, ms=3, label="measured", zorder=5)
+    n = len(f["curves"])
+    for i, (r, yt) in enumerate(f["curves"]):
+        last = (i == n - 1)
+        ax.plot(f["xm"], yt, "-", color=(GREEN if last else RED),
+                lw=(2.2 if last else 1), alpha=(0.2 + 0.8 * (i / max(1, n - 1))),
+                label=("fit" if last else ("warm start" if i == 0 else None)))
+    ax.axhline(0.5, color=GREY, ls=":", lw=.8); ax.set_ylim(-0.05, 1.15)
+    ax.set_xlabel("x (µm)", fontsize=8); ax.set_ylabel("norm. thickness", fontsize=8); ax.tick_params(labelsize=7)
+    ax.set_title(f"R² {f['r2_warm']:.2f} → {f['r2_fit']:.2f}    exposure {f['expo_warm']:.1f}→{f['expo_fit']:.1f} Pa·s"
+                 f"    c {f['c_warm']:.3f}→{f['c_fit']:.4f}", fontsize=7.5)
+    ax.legend(fontsize=7, loc="upper right")
+    axr.plot(range(1, len(f["r2track"]) + 1), f["r2track"], "-", color=PURPLE, lw=1.3)
+    axr.set_xlabel("iteration", fontsize=8); axr.set_ylabel("R²", fontsize=8)
+    axr.set_ylim(-1.05, 1.05); axr.tick_params(labelsize=7); axr.set_title("convergence", fontsize=8)
+    fig.tight_layout(); return _png(fig)
 
 
 VCOLOR = {"agrees": GREEN, "model gap": RED, "estimation gap": PURPLE,
@@ -279,7 +389,11 @@ td{{padding:5px 8px;border-bottom:1px solid #eef0f3}}.m{{font-family:ui-monospac
 .flag{{color:#e34948;font-weight:600}}.ok{{color:#1baf7a;font-weight:600}}
 .kv{{display:flex;gap:22px;flex-wrap:wrap;margin:8px 0 2px}} .kv div b{{display:block;font-size:18px}} .kv div span{{color:#8b919b;font-size:11px}}
 .note{{font-size:11px;color:#8b919b}}
+.prow{{cursor:pointer}} .prow:hover td{{background:#f4f6f8}}
+.detail{{display:none}} .detail td{{background:#fafbfc;text-align:center}}
+img.pfit{{max-width:400px;width:100%;height:auto}}
 </style>
+<script>function tog(r){{var d=r.nextElementSibling; if(d&&d.classList.contains('detail')) d.style.display = d.style.display==='table-row'?'none':'table-row';}}</script>
 <div class=wrap>
 <div class=eyebrow>PSED · M3 · Phase 4</div>
 <h1>Twin validation against measured KB profiles</h1>
@@ -301,7 +415,18 @@ profile across <b>all four papers</b> and scored with the same curve engine used
 <div class=card><h2>Twin vs measured — worst &amp; best fits</h2><img src="data:image/png;base64,{ov}"></div>
 <div class=card><h2>Penetration depth: twin vs measured</h2><img src="data:image/png;base64,{sc}">
 <div class=note>On the diagonal = the twin reproduces the measured penetration. Off-diagonal reds are where literature parameters + the Ylilammi physics miss the real profile.</div></div>
-<div class=card><h2>Per-profile results</h2>
+<div class=card><h2>Inverse fit — recovering the assumed conditions</h2>
+<div class=note style="margin-bottom:8px">The forward twin above runs on KB-imputed inputs. Here we instead <b>hold the EXTRACTED
+conditions fixed</b>, warm-start the <b>imputed</b> ones, and optimise the two identifiable free
+parameters — <b>exposure</b> (pA·t_p, sets penetration depth) and the <b>lumped sticking coefficient
+c</b> (sets front sharpness) — to fit each profile on its own coordinate. This is the same inverse
+procedure the source papers use to <b>extract c</b>. Click a row to watch the fit converge (warm→fit)
+and read the recovered values.</div>
+{invsummary}
+<table><tr><th>exp id</th><th>geometry</th><th>R² warm→fit</th><th>exposure warm→fit (Pa·s)</th><th>c warm→fit</th></tr>
+{invrows}
+</table></div>
+<div class=card><h2>Per-profile results (forward twin)</h2>
 <table><tr><th>exp id</th><th>R²</th><th>PD50 meas</th><th>PD50 twin</th><th>ΔPD50</th><th>inputs measured</th><th>verdict</th></tr>
 {rows}
 </table></div>
@@ -332,13 +457,39 @@ def main():
         note = f'<div class=note>{"; ".join(r["notes"])}</div>' if r["notes"] else ""
         inputs = " · ".join(f'<span style="color:#1baf7a">{k}</span>' for k in r["measured"]) \
             + ("".join(f' · <span style="color:#9085e9">{k}~</span>' for k in r["imputed"]))
-        rows += (f"<tr><td class=m>{r['exp_id']}{note}</td><td class=m>{r['r2']}</td>"
+        png = _profile_png(r)
+        rows += (f"<tr class=prow onclick=\"tog(this)\"><td class=m>▸ {r['exp_id']}{note}</td><td class=m>{r['r2']}</td>"
                  f"<td class=m>{_um(r['pd_meas'])}</td><td class=m>{_um(r['pd_twin'])}</td><td class=m>{rel}</td>"
-                 f"<td style='font-size:11px'>{inputs or '—'}</td><td>{st}{kind}</td></tr>")
+                 f"<td style='font-size:11px'>{inputs or '—'}</td><td>{st}{kind}</td></tr>"
+                 f"<tr class=detail><td colspan=7><img class=pfit src=\"data:image/png;base64,{png}\"></td></tr>")
+    # ---- inverse fit: recover the assumed conditions for in-scope profiles ----
+    byid = {e.get("exp_id"): e for e in ks._load()}
+    inscope = [r["exp_id"] for r in results if r["verdict"] != "out of scope"]
+    fits = [f for f in (inverse_fit(byid[i]) for i in inscope if i in byid) if f]
+    fits.sort(key=lambda f: -(f["r2_fit"] - f["r2_warm"]))     # biggest recovery first
+    improved = sum(1 for f in fits if f["r2_fit"] - f["r2_warm"] > 0.05)
+    mean_warm = sum(f["r2_warm"] for f in fits) / len(fits) if fits else 0
+    mean_fit = sum(f["r2_fit"] for f in fits) / len(fits) if fits else 0
+    invsummary = (f'<div class=kv><div><b>{len(fits)}</b><span>profiles fitted</span></div>'
+                  f'<div><b>{mean_warm:.2f} → {mean_fit:.2f}</b><span>mean R² (warm → fit)</span></div>'
+                  f'<div><b>{improved}</b><span>materially recovered (ΔR²&gt;0.05)</span></div></div>')
+    invrows = ""
+    for f in fits:
+        d = "▲" if f["r2_fit"] - f["r2_warm"] > 0.05 else ""
+        png = inverse_png(f)
+        invrows += (f"<tr class=prow onclick=\"tog(this)\"><td class=m>▸ {f['exp_id']}</td>"
+                    f"<td>{f['geometry_class']}</td>"
+                    f"<td class=m>{f['r2_warm']:.2f} → {f['r2_fit']:.2f} {d}</td>"
+                    f"<td class=m>{f['expo_warm']:.1f} → {f['expo_fit']:.1f}{'' if f['dose_free'] else ' (fixed)'}</td>"
+                    f"<td class=m>{f['c_warm']:.3f} → {f['c_fit']:.4f}</td></tr>"
+                    f"<tr class=detail><td colspan=5><img class=pfit style='max-width:660px' "
+                    f"src=\"data:image/png;base64,{png}\"></td></tr>")
     out = HERE / "m3_validation.html"
     out.write_text(HTML.format(model=MODEL_ID, nt=nt, npass=npass, nmodel=nmodel,
-                               nest=nest, ndata=ndata, noos=noos, ov=ov, sc=sc, rows=rows))
+                               nest=nest, ndata=ndata, noos=noos, ov=ov, sc=sc, rows=rows,
+                               invsummary=invsummary, invrows=invrows))
     print("wrote", out)
+    print(f"  inverse fit: {len(fits)} profiles, mean R² {mean_warm:.2f}→{mean_fit:.2f}, {improved} recovered")
     print(f"  {len(results)} profiles ({nt} thermal, {noos} plasma) · {npass} agree · "
           f"{nmodel} model · {nest} estimation · {ndata} data gaps")
     for r in ins[:6]:

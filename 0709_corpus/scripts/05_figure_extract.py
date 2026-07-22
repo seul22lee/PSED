@@ -21,7 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
 ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-flash-latest"
 MAX_PX = 1100
 
 
@@ -135,10 +135,25 @@ def extract_paper(sd, client):
     return results, records, tok_in, tok_out
 
 
+def _cap_fignum(caption):
+    """The paper's REAL figure number, parsed from the caption text (e.g. 'FIG. 3',
+    'Figure 10:'). This is the citable number — NOT docling's image-extraction index."""
+    m = re.search(r"\b(?:fig(?:ure)?|scheme)\.?\s*0*([0-9]+)", (caption or "").lower())
+    return m.group(1) if m else None
+
+
+def _clean_panel(p):
+    """Keep only a real panel letter (a/b/c…); drop drill-tag pollution."""
+    p = str(p or "").strip()
+    return p.lower() if re.fullmatch(r"[A-Za-z]", p) else ""
+
+
 def flatten_records(sd, scout, figresults):
     mats = scout.get("materials") or []
     recs = []
     for fr in figresults:
+        realnum = _cap_fignum(fr.get("caption"))
+        fig_label = f"Fig {realnum}" if realnum else f"Fig {fr['figure']}"   # caption number, fallback docling index
         for p in fr.get("panels", []):
             x, y = p.get("x", {}), p.get("y", {})
             for s in p.get("series", []):
@@ -152,7 +167,8 @@ def flatten_records(sd, scout, figresults):
                                   "coreactants": scout.get("coreactants")},
                     "source": fr.get("source", "measured"),   # measured | simulated | both
                     "study_type": scout.get("study_type"),
-                    "provenance": {"figure": f"Fig {fr['figure']}", "panel": p.get("panel"),
+                    "provenance": {"figure": fig_label, "fig_index": fr["figure"],
+                                   "panel": _clean_panel(p.get("panel")),
                                    "caption": fr["caption"][:200], "extractor": "vision-llm"},
                 })
     return recs

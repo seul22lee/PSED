@@ -1,0 +1,1298 @@
+[
+ {
+  "material": "MoOx",
+  "material_raw": "Average GPC",
+  "precursors": [
+   "Mo_iPrCp_2H2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Mo_iPrCp_2H2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 20,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.75,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 48,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "precursor",
+    "value": 2.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "coreactant",
+    "value": 3.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 150.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    0.0,
+    0.07
+   ],
+   [
+    5.0,
+    1.04
+   ],
+   [
+    10.0,
+    1.15
+   ],
+   [
+    20.0,
+    1.35
+   ],
+   [
+    30.0,
+    1.42
+   ],
+   [
+    40.0,
+    1.51
+   ],
+   [
+    50.0,
+    1.46
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F1b-0",
+  "provenance": {
+   "figure": "Fig 1",
+   "panel": "b",
+   "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 \u00b0C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s pu",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436",
+   "fig_index": "17"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Mo_iPrCp_2H2",
+     "dose_time": 0.75,
+     "purge_time": 20,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 48,
+     "purge_time": 20,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F17b-0"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "planar"
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "SUP",
+  "precursors": [
+   "Mo_iPrCp_2H2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Mo_iPrCp_2H2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 20,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.75,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 48,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "precursor",
+    "value": 2.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "coreactant",
+    "value": 3.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 150.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "SUP",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    0.0,
+    14.0
+   ],
+   [
+    5.0,
+    4.0
+   ],
+   [
+    10.0,
+    1.0
+   ],
+   [
+    20.0,
+    6.0
+   ],
+   [
+    30.0,
+    1.0
+   ],
+   [
+    40.0,
+    4.0
+   ],
+   [
+    50.0,
+    3.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F1b-1",
+  "provenance": {
+   "figure": "Fig 1",
+   "panel": "b_sup",
+   "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 \u00b0C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s pu",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436",
+   "fig_index": "17"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "SUP",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Mo_iPrCp_2H2",
+     "dose_time": 0.75,
+     "purge_time": 20,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 48,
+     "purge_time": 20,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F17b_sup-1"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "planar"
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "Average GPC",
+  "precursors": [
+   "Mo_iPrCp_2H2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Mo_iPrCp_2H2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 20,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.75,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 48,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "precursor",
+    "value": 2.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "coreactant",
+    "value": 3.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.26
+   ],
+   [
+    125,
+    1.39
+   ],
+   [
+    150,
+    1.51
+   ],
+   [
+    175,
+    1.45
+   ],
+   [
+    200,
+    1.6
+   ],
+   [
+    225,
+    1.69
+   ],
+   [
+    250,
+    1.78
+   ],
+   [
+    300,
+    2.38
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-2",
+  "provenance": {
+   "figure": "Fig 2",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436",
+   "fig_index": "18"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Mo_iPrCp_2H2",
+     "dose_time": 0.75,
+     "purge_time": 20,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 48,
+     "purge_time": 20,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F18a-2"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "planar"
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "Inlet GPC",
+  "precursors": [
+   "Mo_iPrCp_2H2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Mo_iPrCp_2H2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 20,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.75,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 48,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "precursor",
+    "value": 2.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "coreactant",
+    "value": 3.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.3
+   ],
+   [
+    125,
+    1.41
+   ],
+   [
+    150,
+    1.44
+   ],
+   [
+    175,
+    1.39
+   ],
+   [
+    200,
+    1.51
+   ],
+   [
+    225,
+    1.58
+   ],
+   [
+    250,
+    1.57
+   ],
+   [
+    300,
+    2.6
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-3",
+  "provenance": {
+   "figure": "Fig 2",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436",
+   "fig_index": "18"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Mo_iPrCp_2H2",
+     "dose_time": 0.75,
+     "purge_time": 20,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 48,
+     "purge_time": 20,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F18a-3"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "planar"
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "Middle GPC",
+  "precursors": [
+   "Mo_iPrCp_2H2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Mo_iPrCp_2H2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 20,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.75,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 48,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "precursor",
+    "value": 2.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "coreactant",
+    "value": 3.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.21
+   ],
+   [
+    125,
+    1.39
+   ],
+   [
+    150,
+    1.52
+   ],
+   [
+    175,
+    1.46
+   ],
+   [
+    200,
+    1.62
+   ],
+   [
+    225,
+    1.7
+   ],
+   [
+    250,
+    1.79
+   ],
+   [
+    300,
+    2.53
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-4",
+  "provenance": {
+   "figure": "Fig 2",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436",
+   "fig_index": "18"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Mo_iPrCp_2H2",
+     "dose_time": 0.75,
+     "purge_time": 20,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 48,
+     "purge_time": 20,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F18a-4"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "planar"
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "Outlet GPC",
+  "precursors": [
+   "Mo_iPrCp_2H2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Mo_iPrCp_2H2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 20,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.75,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 48,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "precursor",
+    "value": 2.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "coreactant",
+    "value": 3.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.26
+   ],
+   [
+    125,
+    1.37
+   ],
+   [
+    150,
+    1.57
+   ],
+   [
+    175,
+    1.49
+   ],
+   [
+    200,
+    1.66
+   ],
+   [
+    225,
+    1.78
+   ],
+   [
+    250,
+    1.98
+   ],
+   [
+    300,
+    2.02
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-5",
+  "provenance": {
+   "figure": "Fig 2",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436",
+   "fig_index": "18"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Mo_iPrCp_2H2",
+     "dose_time": 0.75,
+     "purge_time": 20,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 48,
+     "purge_time": 20,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F18a-5"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "planar"
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "SUP",
+  "precursors": [
+   "Mo_iPrCp_2H2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Mo_iPrCp_2H2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "nitrogen"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 20,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.75,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 48,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "precursor",
+    "value": 2.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
+    "quantity": "coreactant",
+    "value": 3.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   }
+  ],
+  "measurand": {
+   "quantity": "SUP",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    4.0
+   ],
+   [
+    125,
+    1.5
+   ],
+   [
+    150,
+    4.2
+   ],
+   [
+    175,
+    3.8
+   ],
+   [
+    200,
+    5.0
+   ],
+   [
+    225,
+    5.8
+   ],
+   [
+    250,
+    11.2
+   ],
+   [
+    300,
+    13.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2b-6",
+  "provenance": {
+   "figure": "Fig 2",
+   "panel": "b",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436",
+   "fig_index": "18"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "SUP",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Mo_iPrCp_2H2",
+     "dose_time": 0.75,
+     "purge_time": 20,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": 48,
+     "purge_time": 20,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "nitrogen"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F18b-6"
+   },
+   "completeness": 0.714
+  },
+  "geometry_class": "planar"
+ }
+]

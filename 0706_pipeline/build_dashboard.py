@@ -18,25 +18,45 @@ ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_tex
 MAT = {m["id"] for m in ONTO["individuals"]["materials"]}
 STR = {s["id"] for s in ONTO["individuals"]["structures"]}
 QK = {q["id"] for q in ONTO["quantity_kinds"]}
-SI_UNITS = {"nm", "µm", "Pa", "s", "°C", "g/mol", "", "1", "nm/cycle", "1/m2", "1/m²", "1/Pa",
+SI_UNITS = {"nm", "µm", "Pa", "s", "°C", "C", "g/mol", "", "1", "nm/cycle", "1/m2", "1/m²", "1/Pa",
             "Pa/s", "1/m³", "m²/s", "M2", "1/(m2 s)", "%", "eV", "W", "K", "cycles", "Pa·s",
-            "nm/s", None, "unitless"}
-PAPERS = json.loads((ROOT / "benchmark" / "slices" / "index.json").read_text())
+            "nm/s", None, "unitless",
+            # units the 0709 vision/resolve pass legitimately emits
+            "Å/cycle", "Å", "at.%", "atoms/nm²", "atoms/nm2", "A/cm²", "A/cm2", "mA/cm²",
+            "F", "F/cm²", "µF/cm²", "nF", "pF", "Ω·cm", "ohm cm", "Ω/sq", "cm²/Vs",
+            "wt.%", "at%", "°", "arb.", "a.u.", "counts", "ppm", "mbar", "Torr", "sccm", "g/cm³"}
+def _corpus():
+    """The active DOI-named KB (all output/*/resolved dirs; _archive excluded)."""
+    import glob
+    rows = []
+    for f in sorted(glob.glob(str(ROOT / "output" / "*" / "resolved" / "experiments.json"))):
+        pid = f.split("/output/")[1].split("/")[0]
+        rows.append({"paper_id": pid, "paper": pid})
+    return rows
+
+
+PAPERS = _corpus()
 
 
 def conformance(e):
     qs = (e.get("controlled") or []) + (e.get("dependent") or [])
-    qids = [q.get("quantity") for q in qs] + (e.get("varies") or [])
+    meas = (e.get("measurand") or {}).get("quantity")      # 0709 schema: measurand + coordinate
+    coord = e.get("coordinate")
+    qids = [q.get("quantity") for q in qs] + (e.get("varies") or []) + [q for q in (meas, coord) if q]
     resolved = [q for q in qids if q in QK]
     units = [q.get("unit") for q in qs if q.get("value") is not None]
+    mu = (e.get("measurand") or {}).get("unit")
+    if mu:
+        units.append(mu)
     si_ok = [u for u in units if u in SI_UNITS]
+    prov = e.get("provenance") or {}
     checks = {
         "material": bool(e.get("material") in MAT) or e.get("relevance") == "model",
         "quantities": len(qids) > 0 and len(resolved) == len(qids),
         "units": (len(si_ok) == len(units)) if units else True,
         "granularity": e.get("granularity") in ("profile", "sweep_point", "single"),
-        "provenance": bool((e.get("provenance") or {}).get("figure_id")),
-        "linked": bool(e.get("varies")) or bool(e.get("in_series")) or e.get("granularity") == "single",
+        "provenance": bool(prov.get("figure_id") or prov.get("figure")),   # 0709 uses .figure
+        "linked": bool(e.get("varies")) or bool(e.get("in_series")) or e.get("granularity") in ("single", "profile"),
     }
     n = sum(checks.values())
     status = "ready" if n == 6 else ("partial" if n >= 4 else "review")

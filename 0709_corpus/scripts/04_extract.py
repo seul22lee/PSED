@@ -27,7 +27,7 @@ def _load_key():
             return line.split("=", 1)[1].strip().strip('"').strip("'")
     return os.environ.get("GOOGLE_API_KEY")
 
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-flash-latest"
 
 # --- ontology controlled vocabulary (kept compact to save tokens) ---
 MATERIALS = sorted({m["id"] for m in ONTO["individuals"]["materials"]})
@@ -155,6 +155,26 @@ def build_scout_input(sd):
     return abstract, conclusion, caps
 
 
+def _loads_json(text):
+    """Robust JSON parse: tolerate markdown fences / trailing prose that some
+    models (e.g. gemini-flash-latest) emit even under response_mime_type=json."""
+    if text is None:
+        raise ValueError("empty response")
+    t = text.strip()
+    if t.startswith("```"):
+        t = re.sub(r"^```[a-zA-Z]*\n?", "", t); t = re.sub(r"\n?```\s*$", "", t)
+    try:
+        return json.loads(t)
+    except Exception:
+        i, depth = t.find("{"), 0            # extract the first balanced {...} block
+        if i >= 0:
+            for j in range(i, len(t)):
+                depth += (t[j] == "{") - (t[j] == "}")
+                if depth == 0:
+                    return json.loads(t[i:j + 1])
+        raise
+
+
 def scout(sd, client):
     abstract, conclusion, caps = build_scout_input(sd)
     prompt = (f"{SCHEMA}\n\n=== ABSTRACT ===\n{abstract}\n\n=== CONCLUSION ===\n{conclusion}"
@@ -162,14 +182,15 @@ def scout(sd, client):
     from google.genai import types
     r = client.models.generate_content(
         model=MODEL, contents=prompt,
-        config=types.GenerateContentConfig(temperature=0, response_mime_type="application/json"))
+        config=types.GenerateContentConfig(temperature=0, response_mime_type="application/json",
+                                            max_output_tokens=4096))
     usage = getattr(r, "usage_metadata", None)
     tok = {"in": getattr(usage, "prompt_token_count", None),
            "out": getattr(usage, "candidates_token_count", None)} if usage else {}
     try:
-        obj = json.loads(r.text)
-    except Exception:
-        obj = {"_parse_error": r.text[:200]}
+        obj = _loads_json(r.text)
+    except Exception as e:
+        obj = {"_parse_error": (r.text or "")[:4000], "_parse_exc": f"{type(e).__name__}: {e}"}
     obj["_tokens"] = tok
     obj["_scout_input_chars"] = len(prompt)
     (EXTRACTED / sd / "scout.json").write_text(json.dumps(obj, indent=1))
