@@ -151,24 +151,37 @@ def _clean_panel(p):
 import re as _re
 
 
+def _strip_phase(s):
+    """Strip phase/stack prefixes ('a-', 'c-', 'Mo/') without touching stoichiometry
+    digits — 'c-WS2' -> 'WS2', never 'WS'. Bounded repeat resolves stacked prefixes
+    ('Mo/c-MoS2' -> 'c-MoS2' -> 'MoS2')."""
+    prev = None
+    out = s.strip()
+    for _ in range(4):                      # bounded: resolve stacked prefixes
+        if out == prev:
+            break
+        prev = out
+        out = _re.sub(r"^(a-|c-|amorphous |crystalline |[A-Za-z]{1,3}/)\s*", "", out).strip()
+    return out
+
+
 def _classify_label(label, mats):
-    """Return 'material' if the series label is one of THIS paper's deposited
-    materials (scout.materials, allowing a phase prefix like a-/c-), else
-    'condition' (substrate, H2 ratio, temperature series, etc.). Anchored on
-    scout.materials so real formulas that are merely substrates/barriers
+    """Return (cls, matched). cls in {material, condition, empty}. When cls=='material',
+    `matched` is the CANONICAL scout material it maps to (e.g. c-WS2 -> WS2), so the
+    record can store the clean material and keep the phase separately.
+
+    Anchored on scout.materials so real formulas that are merely substrates/barriers
     (Al2O3, Si, SiO2 in a Bi2Te3 paper) are NOT treated as the material."""
     if not label:
-        return "empty"
+        return ("empty", None)
     lab = label.strip()
-    matset = set(mats or [])
-    # exact or phase-prefixed match to a scouted material -> material
-    base = _re.sub(r"^(a-|c-|amorphous |crystalline |[A-Za-z]{1,3}/)", "", lab)
-    base = _re.sub(r"[+xy0-9\s]+$", "", base)
-    for m in matset:
-        mbase = _re.sub(r"^(a-|c-)", "", m)
-        if lab == m or base == m or base == mbase:
-            return "material"
-    return "condition"   # everything else, incl. real formulas not in scout.materials
+    base = _strip_phase(lab)
+    base_nox = _re.sub(r"\+[xy]$", "", base)   # only a trailing '+x'/'+y' (non-stoich), NOT digits
+    for m in (mats or []):
+        mbase = _strip_phase(m)
+        if lab in (m, mbase) or base in (m, mbase) or base_nox in (m, mbase):
+            return ("material", m)          # canonical scout material
+    return ("condition", None)
 
 
 def flatten_records(sd, scout, figresults):
@@ -182,15 +195,17 @@ def flatten_records(sd, scout, figresults):
         for p in fr.get("panels", []):
             x, y = p.get("x", {}), p.get("y", {})
             for s in p.get("series", []):
-                _cls = _classify_label(s.get("label"), mats)
-                _mat = (s.get("label") if _cls == "material"
-                        else (mats[0] if mats else None))
-                _series = (s.get("label") if _cls == "condition" else None)
+                _cls, _match = _classify_label(s.get("label"), mats)
                 recs.append({
                     "doi": sd,
-                    "material": _mat,
-                    "series_label": _series,
+                    "material": (_match if _cls == "material"
+                                 else (mats[0] if mats else None)),
+                    "series_label": (s.get("label") if _cls == "condition" else None),
                     "material_raw": s.get("label"),
+                    # phase = the raw phase-tagged label ONLY when it differs from the
+                    # canonical material (c-MoS2 vs MoS2); None when they're equal.
+                    "phase": (s.get("label")
+                              if (_cls == "material" and s.get("label") != _match) else None),
                     "measurand": {"quantity": y.get("quantity"), "unit": y.get("unit")},
                     "coordinate": x.get("quantity"), "coordinate_unit": x.get("unit"),
                     "points": s.get("points", []),
