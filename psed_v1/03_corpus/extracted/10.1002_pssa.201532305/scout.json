@@ -1,0 +1,67 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "W"
+ ],
+ "precursors": [
+  "WF6"
+ ],
+ "coreactants": [
+  "H2"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": null,
+ "gpc_nm": null,
+ "data": {
+  "film_property_vs_condition": {
+   "present": true,
+   "where": "F6"
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": "F7"
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": "F13"
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": "F14a"
+  },
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": "F14b"
+  }
+ },
+ "drill": [
+  {
+   "where": "F13",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Shows in-situ SE monitoring of linear HWALD growth with stepwise cycle increments"
+  },
+  {
+   "where": "F14a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Determines saturation behaviour with atomic hydrogen pulse time"
+  },
+  {
+   "where": "F14b",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Shows dependence of growth per cycle on hot-wire temperature"
+  }
+ ],
+ "go_deeper": true,
+ "_tokens": {
+  "in": 2850,
+  "out": 485
+ },
+ "_scout_input_chars": 8796
+}
