@@ -8,6 +8,37 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 14:25 (local) — RESOLVED: stoichiometry-strip bug in `_classify_label`
+**Context:** The normalisation stripped trailing digits before comparing
+(`re.sub(r"[+xy0-9\s]+$", ...)`), destroying stoichiometry — `c-WS2` → `WS` matched
+nothing, so a real phase-tagged material was silently demoted to a condition and
+rescued to `mats[0]` (wrong in a multi-material paper like `chemmater.2c01154`,
+MoS2/WS2/TiS2).
+**Status:** resolved
+**Detail:** Two things were wrong and both are fixed:
+1. *Stoichiometry.* `_strip_phase` now removes only the phase/stack prefix
+   (`a-`, `c-`, `Mo/`) and a trailing non-stoichiometric `+x`/`+y`. Digits survive.
+   The strip repeats (bounded to 4 passes) because prefixes stack in practice:
+   `Mo/c-MoS2` → `c-MoS2` → `MoS2`. A single pass — the first attempt — left `c-MoS2`
+   and still failed.
+2. *Canonicalisation (Option A).* `_classify_label` now returns `(cls, matched)`, where
+   `matched` is the **canonical scout material**. The record stores that, not the raw
+   label. Storing the raw label (the intermediate attempt) fragmented the material axis:
+   `canon_material('c-MoS2')` returns `None`, so `06_to_kb`'s `canon(raw) or raw`
+   fallback would have created `MoS2`, `c-MoS2`, `a-MoS2+x`, `Mo/c-MoS2` as four
+   separate KB materials and 3 spurious KG `Material` nodes. It also would not have met
+   the original goal — `c-WS2` would have stored `c-WS2`, not `WS2`.
+
+Phase is preserved rather than discarded: `material_raw` keeps the verbatim vision
+label, and a new `phase` field holds the phase-tagged label **only when it differs from
+the canonical material** (`c-MoS2` vs `MoS2`; `None` when they're equal).
+
+Verified on `chemmater.2c01154`: `material` = MoS2 ×9, `phase` = {`a-MoS2+x`, `c-MoS2`,
+`Mo/c-MoS2`, 6×None}, `series_label` = the 6 H2-flow-ratio labels. KB material Counter
+is `{'MoS2': 9}` and KG `Material` node count stayed at **24** — no fragmentation. The
+other 5 papers' records differ only by the additive `phase: null` key (verified: zero
+non-`phase` diff lines).
+
 ## 2026-07-22 13:55 (local) — RESOLVED: figure numbering (docling index vs caption number)
 **Context:** Records cited docling's image-extraction index as if it were the paper's
 figure number. The offset is per-paper — it depends on how many caption-less images
@@ -107,14 +138,21 @@ co-reactants (`Methanol`, `Ethanol`, `1/2-propanol`), precursor-pair labels
 `material`. `jcrysgro` in particular went from `['Al2O3','Bi2Te3','SiO2']` to
 `['Bi2Te3']` — the substrates had been masquerading as deposited films.
 
-*Still open — the rescued condition does not reach the KB.* `06_to_kb.py` hardcodes
-`"series_name": None` (lines 177 and 219) and sets `"material_raw": r.get("material")`
-(line 163) from the **resolved** material rather than the true raw label. So in
-`resolved/experiments.json` the material is now clean, but `series_name`,
-`series_label` and a faithful `material_raw` are all absent — the H2-flow-ratio
-condition that distinguishes the 9 MoS2 curves is still lost at the KB boundary.
-Deciding how to carry it (populate `series_name` from `series_label`? promote a
-parsed `name: value` label into `controlled`?) is the open question.
+*Still open — neither the rescued condition NOR the phase reaches the KB.*
+`06_to_kb.py` hardcodes `"series_name": None` (lines 177 and 219) and sets
+`"material_raw": r.get("material")` (line 163) from the **resolved** material rather
+than the true raw label. As of the Option-A change it also drops the new `phase` field
+— confirmed: `KB phase field: Counter({None: 9})` for `chemmater.2c01154`.
+
+So `records.json` retains `series_label`, `material_raw` and `phase`, but
+`resolved/experiments.json` carries none of them. Two things are therefore invisible to
+any KB query: the H2-flow-ratio condition distinguishing the 9 MoS2 curves, and the
+amorphous/crystalline/stack distinction that is the *point* of that paper.
+
+**Decide before batch-51 whether phase and/or the condition series must be queryable in
+`experiments.json`.** If yes, a single `06_to_kb` change carries both through — they are
+already sitting in the records, so no re-extraction and no vision call is needed either
+way. Deliberately not fixed in the Option-A commit to keep that change reviewable.
 
 *Known flaw in the classifier regex.* `_label_is_material` strips trailing digits
 (`base = re.sub(r"[+xy0-9\s]+$", "", base)`), which destroys stoichiometry, so the
