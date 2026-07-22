@@ -16,156 +16,22 @@
   "process_type": "plasma",
   "temperature_window_C": [
    50,
-   300
+   200
   ]
  },
  "figures": [
-  {
-   "figure": "5",
-   "image": "figures/fig_5.png",
-   "caption": "Fig. 3 (a) In situ thickness measurements by SE for plasma-assisted ALDof Li2CO3 at 50, 200, 275 and 300 /C14 Candthermal ALD of Li2CO3 at 150 /C14 C. The /uniFB01 lm growth between 50 and 200 /C14 C with plasma ALD was very similar (see ESI \u2020 ). (b) Growth per cycle as a function of process table temperature for both plasma-assisted (squares) and thermal (circles) ALD processes.",
-   "source": "measured",
-   "panels": [
-    {
-     "panel": "b",
-     "x": {
-      "quantity": "deposition_temperature",
-      "unit": "\u00b0C",
-      "log": false
-     },
-     "y": {
-      "quantity": "growth_per_cycle",
-      "unit": "\u00c5",
-      "log": false
-     },
-     "series": [
-      {
-       "label": "SE, thermal",
-       "points": [
-        [
-         50,
-         0.15
-        ],
-        [
-         100,
-         0.71
-        ],
-        [
-         150,
-         0.6
-        ],
-        [
-         200,
-         0.58
-        ],
-        [
-         250,
-         0.51
-        ],
-        [
-         300,
-         0.5
-        ]
-       ]
-      },
-      {
-       "label": "SE, plasma",
-       "points": [
-        [
-         50,
-         0.85
-        ],
-        [
-         100,
-         0.86
-        ],
-        [
-         150,
-         0.82
-        ],
-        [
-         200,
-         0.81
-        ],
-        [
-         250,
-         0.77
-        ],
-        [
-         275,
-         1.23
-        ],
-        [
-         300,
-         1.39
-        ]
-       ]
-      }
-     ],
-     "conditions": {
-      "precursor": "lithium tert-butoxide",
-      "material": "Li2CO3"
-     }
-    },
-    {
-     "panel": "b_EBS",
-     "x": {
-      "quantity": "deposition_temperature",
-      "unit": "\u00b0C",
-      "log": false
-     },
-     "y": {
-      "quantity": "growth_per_cycle",
-      "unit": "Li at. nm^-2",
-      "log": false
-     },
-     "series": [
-      {
-       "label": "EBS, thermal",
-       "points": [
-        [
-         150,
-         2.1
-        ]
-       ]
-      },
-      {
-       "label": "EBS, plasma",
-       "points": [
-        [
-         150,
-         3.1
-        ],
-        [
-         250,
-         2.8
-        ],
-        [
-         275,
-         5.0
-        ],
-        [
-         300,
-         6.9
-        ]
-       ]
-      }
-     ],
-     "conditions": {
-      "precursor": "lithium tert-butoxide",
-      "material": "Li2CO3"
-     }
-    }
-   ]
-  },
   {
    "figure": "4",
    "image": "figures/fig_4.png",
    "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to the eye. Dotted lines indicate the chosen standard values and the corresponding growth per cycle. Note that the reaction time of H2O after dosing was kept at 4 s.",
    "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured"
+   },
    "panels": [
     {
-     "panel": "a_LiOtBu",
+     "panel": "a1",
      "x": {
       "quantity": "pulse_time",
       "unit": "s",
@@ -176,6 +42,7 @@
       "unit": "\u00c5",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "LiOtBu dose",
@@ -186,7 +53,7 @@
         ],
         [
          0.5,
-         0.19
+         0.195
         ],
         [
          1.0,
@@ -206,23 +73,21 @@
         ],
         [
          8.0,
-         0.6
+         0.605
         ],
         [
          10.0,
-         0.62
+         0.615
         ]
        ]
       }
      ],
      "conditions": {
-      "deposition_temperature": "150 \u00b0C",
-      "process_type": "thermal",
-      "material": "Li2CO3"
+      "temperature": "150 \u00b0C"
      }
     },
     {
-     "panel": "a_H2O",
+     "panel": "a2",
      "x": {
       "quantity": "pulse_time",
       "unit": "ms",
@@ -233,6 +98,7 @@
       "unit": "\u00c5",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "H2O dose",
@@ -247,7 +113,7 @@
         ],
         [
          100.0,
-         0.6
+         0.605
         ],
         [
          200.0,
@@ -257,13 +123,11 @@
       }
      ],
      "conditions": {
-      "deposition_temperature": "150 \u00b0C",
-      "process_type": "thermal",
-      "material": "Li2CO3"
+      "temperature": "150 \u00b0C"
      }
     },
     {
-     "panel": "a_CO2",
+     "panel": "a3",
      "x": {
       "quantity": "pulse_time",
       "unit": "s",
@@ -274,12 +138,13 @@
       "unit": "\u00c5",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "CO2 dose",
        "points": [
         [
-         0.0,
+         0.1,
          0.17
         ],
         [
@@ -288,7 +153,7 @@
         ],
         [
          1.0,
-         0.57
+         0.58
         ],
         [
          2.0,
@@ -296,19 +161,17 @@
         ],
         [
          4.0,
-         0.6
+         0.61
         ]
        ]
       }
      ],
      "conditions": {
-      "deposition_temperature": "150 \u00b0C",
-      "process_type": "thermal",
-      "material": "Li2CO3"
+      "temperature": "150 \u00b0C"
      }
     },
     {
-     "panel": "b_LiOtBu",
+     "panel": "b1",
      "x": {
       "quantity": "pulse_time",
       "unit": "s",
@@ -319,6 +182,7 @@
       "unit": "\u00c5",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "LiOtBu dose",
@@ -333,11 +197,11 @@
         ],
         [
          1.0,
-         0.58
+         0.585
         ],
         [
          2.0,
-         0.72
+         0.725
         ],
         [
          4.0,
@@ -345,27 +209,25 @@
         ],
         [
          5.0,
-         0.8
+         0.805
         ],
         [
          6.0,
-         0.82
+         0.825
         ],
         [
          8.0,
-         0.85
+         0.855
         ]
        ]
       }
      ],
      "conditions": {
-      "deposition_temperature": "150 \u00b0C",
-      "process_type": "plasma",
-      "material": "Li2CO3"
+      "temperature": "150 \u00b0C"
      }
     },
     {
-     "panel": "b_plasma",
+     "panel": "b2",
      "x": {
       "quantity": "pulse_time",
       "unit": "s",
@@ -376,6 +238,7 @@
       "unit": "\u00c5",
       "log": false
      },
+     "series_axis": "",
      "series": [
       {
        "label": "Plasma duration",
@@ -386,7 +249,7 @@
         ],
         [
          0.5,
-         0.57
+         0.575
         ],
         [
          1.0,
@@ -408,16 +271,1699 @@
       }
      ],
      "conditions": {
-      "deposition_temperature": "150 \u00b0C",
-      "process_type": "plasma",
-      "material": "Li2CO3"
+      "temperature": "150 \u00b0C"
+     }
+    }
+   ]
+  },
+  {
+   "figure": "5",
+   "image": "figures/fig_5.png",
+   "caption": "Fig. 3 (a) In situ thickness measurements by SE for plasma-assisted ALDof Li2CO3 at 50, 200, 275 and 300 /C14 Candthermal ALD of Li2CO3 at 150 /C14 C. The /uniFB01 lm growth between 50 and 200 /C14 C with plasma ALD was very similar (see ESI \u2020 ). (b) Growth per cycle as a function of process table temperature for both plasma-assisted (squares) and thermal (circles) ALD processes.",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "cycle_number",
+      "unit": "",
+      "log": false
+     },
+     "y": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "log": false
+     },
+     "series_axis": "process parameters",
+     "series": [
+      {
+       "label": "Thermal 150 \u00b0C",
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         50,
+         2.0
+        ],
+        [
+         100,
+         4.3
+        ],
+        [
+         150,
+         6.8
+        ],
+        [
+         200,
+         9.4
+        ],
+        [
+         250,
+         12.0
+        ],
+        [
+         300,
+         14.6
+        ],
+        [
+         350,
+         17.3
+        ],
+        [
+         400,
+         20.0
+        ],
+        [
+         450,
+         22.8
+        ],
+        [
+         500,
+         25.6
+        ],
+        [
+         550,
+         28.5
+        ],
+        [
+         600,
+         31.5
+        ]
+       ]
+      },
+      {
+       "label": "Plasma 50 \u00b0C",
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         50,
+         2.7
+        ],
+        [
+         100,
+         6.0
+        ],
+        [
+         150,
+         10.7
+        ],
+        [
+         200,
+         15.6
+        ],
+        [
+         250,
+         21.3
+        ],
+        [
+         300,
+         23.6
+        ],
+        [
+         350,
+         28.1
+        ],
+        [
+         400,
+         32.7
+        ],
+        [
+         450,
+         36.8
+        ],
+        [
+         500,
+         40.8
+        ],
+        [
+         550,
+         45.1
+        ],
+        [
+         600,
+         49.3
+        ]
+       ]
+      },
+      {
+       "label": "Plasma 200 \u00b0C",
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         50,
+         2.6
+        ],
+        [
+         100,
+         5.2
+        ],
+        [
+         150,
+         9.7
+        ],
+        [
+         200,
+         14.0
+        ],
+        [
+         250,
+         18.2
+        ],
+        [
+         300,
+         22.2
+        ],
+        [
+         350,
+         26.1
+        ],
+        [
+         400,
+         30.3
+        ],
+        [
+         450,
+         34.6
+        ],
+        [
+         500,
+         39.0
+        ],
+        [
+         550,
+         43.4
+        ],
+        [
+         600,
+         48.0
+        ]
+       ]
+      },
+      {
+       "label": "Plasma 275 \u00b0C",
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         50,
+         3.8
+        ],
+        [
+         100,
+         6.9
+        ],
+        [
+         150,
+         10.0
+        ],
+        [
+         200,
+         16.1
+        ],
+        [
+         250,
+         22.3
+        ],
+        [
+         300,
+         28.5
+        ],
+        [
+         350,
+         35.1
+        ],
+        [
+         400,
+         42.6
+        ],
+        [
+         450,
+         49.3
+        ]
+       ]
+      },
+      {
+       "label": "Plasma 300 \u00b0C",
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         50,
+         3.6
+        ],
+        [
+         100,
+         7.1
+        ],
+        [
+         150,
+         8.0
+        ],
+        [
+         200,
+         13.5
+        ],
+        [
+         250,
+         19.5
+        ],
+        [
+         300,
+         28.7
+        ],
+        [
+         350,
+         36.6
+        ],
+        [
+         400,
+         45.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "deposition_temperature",
+      "unit": "\u00b0C",
+      "log": false
+     },
+     "y": {
+      "quantity": "growth_per_cycle",
+      "unit": "\u00c5",
+      "log": false
+     },
+     "series_axis": "measurement method and process type",
+     "series": [
+      {
+       "label": "SE, thermal",
+       "points": [
+        [
+         50,
+         0.15
+        ],
+        [
+         100,
+         0.71
+        ],
+        [
+         150,
+         0.6
+        ],
+        [
+         200,
+         0.57
+        ],
+        [
+         250,
+         0.51
+        ],
+        [
+         300,
+         0.51
+        ]
+       ]
+      },
+      {
+       "label": "SE, plasma",
+       "points": [
+        [
+         50,
+         0.85
+        ],
+        [
+         100,
+         0.86
+        ],
+        [
+         150,
+         0.83
+        ],
+        [
+         200,
+         0.81
+        ],
+        [
+         250,
+         0.77
+        ],
+        [
+         275,
+         1.23
+        ],
+        [
+         300,
+         1.39
+        ]
+       ]
+      },
+      {
+       "label": "EBS, thermal",
+       "points": [
+        [
+         150,
+         2.08
+        ]
+       ]
+      },
+      {
+       "label": "EBS, plasma",
+       "points": [
+        [
+         150,
+         3.08
+        ],
+        [
+         250,
+         2.76
+        ],
+        [
+         275,
+         4.88
+        ],
+        [
+         300,
+         6.82
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "6",
+   "image": "figures/fig_6.png",
+   "caption": "Fig. 4 Phase shift of the incident light ( D ) from in situ SE measurements of the reaction of CO2 and H2O with /C24 50 nm plasma ALD /uniFB01 lms grown at 250, 275 and 300 /C14 C. First, CO2 was dosed into the reaction chamber 20 times with pulses of 2 s, next H2O was pulsed 20 times for 50 ms and afterwards CO2 was again pulsed 20 times. SE data was recorded after every pulse and D is plotted at 589 nm.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Measurement number",
+      "unit": "",
+      "log": false
+     },
+     "y": {
+      "quantity": "\u0394",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "series_axis": "temperature",
+     "series": [
+      {
+       "label": "250 \u00b0C",
+       "points": [
+        [
+         0,
+         0.6
+        ],
+        [
+         5,
+         0.7
+        ],
+        [
+         10,
+         0.7
+        ],
+        [
+         15,
+         0.7
+        ],
+        [
+         20,
+         0.7
+        ],
+        [
+         25,
+         0.7
+        ],
+        [
+         30,
+         0.7
+        ],
+        [
+         35,
+         0.7
+        ],
+        [
+         40,
+         0.7
+        ],
+        [
+         45,
+         0.7
+        ],
+        [
+         50,
+         0.8
+        ],
+        [
+         55,
+         0.8
+        ],
+        [
+         60,
+         0.8
+        ]
+       ]
+      },
+      {
+       "label": "275 \u00b0C",
+       "points": [
+        [
+         0,
+         1.3
+        ],
+        [
+         1,
+         2.1
+        ],
+        [
+         2,
+         2.7
+        ],
+        [
+         3,
+         3.5
+        ],
+        [
+         4,
+         4.0
+        ],
+        [
+         5,
+         4.6
+        ],
+        [
+         6,
+         5.0
+        ],
+        [
+         8,
+         6.0
+        ],
+        [
+         10,
+         6.8
+        ],
+        [
+         12,
+         7.7
+        ],
+        [
+         14,
+         8.4
+        ],
+        [
+         16,
+         9.2
+        ],
+        [
+         18,
+         10.0
+        ],
+        [
+         20,
+         10.6
+        ],
+        [
+         22,
+         11.0
+        ],
+        [
+         24,
+         11.5
+        ],
+        [
+         26,
+         12.0
+        ],
+        [
+         28,
+         12.4
+        ],
+        [
+         30,
+         12.8
+        ],
+        [
+         32,
+         13.3
+        ],
+        [
+         35,
+         13.8
+        ],
+        [
+         40,
+         14.3
+        ],
+        [
+         41,
+         15.3
+        ],
+        [
+         42,
+         15.7
+        ],
+        [
+         43,
+         16.2
+        ],
+        [
+         45,
+         16.6
+        ],
+        [
+         48,
+         17.2
+        ],
+        [
+         52,
+         17.8
+        ],
+        [
+         55,
+         18.2
+        ],
+        [
+         60,
+         18.5
+        ]
+       ]
+      },
+      {
+       "label": "300 \u00b0C",
+       "points": [
+        [
+         0,
+         1.8
+        ],
+        [
+         5,
+         1.8
+        ],
+        [
+         10,
+         1.8
+        ],
+        [
+         15,
+         1.9
+        ],
+        [
+         20,
+         1.9
+        ],
+        [
+         22,
+         2.5
+        ],
+        [
+         24,
+         3.1
+        ],
+        [
+         26,
+         3.6
+        ],
+        [
+         28,
+         4.1
+        ],
+        [
+         30,
+         4.6
+        ],
+        [
+         32,
+         5.0
+        ],
+        [
+         35,
+         5.5
+        ],
+        [
+         38,
+         6.0
+        ],
+        [
+         40,
+         6.2
+        ],
+        [
+         41,
+         6.9
+        ],
+        [
+         43,
+         7.5
+        ],
+        [
+         45,
+         8.0
+        ],
+        [
+         48,
+         8.8
+        ],
+        [
+         50,
+         9.3
+        ],
+        [
+         53,
+         10.1
+        ],
+        [
+         56,
+         10.8
+        ],
+        [
+         60,
+         11.3
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "wavelength": "589 nm"
+     }
+    }
+   ]
+  },
+  {
+   "figure": "7",
+   "image": "figures/fig_7.png",
+   "caption": "Fig. 5 In situ SE thickness measurement for plasma-assisted ALD of Li2CO3 at 300 /C14 C using di /uniFB00 erent O2 plasma exposure times.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "cycle_number",
+      "unit": "",
+      "log": false
+     },
+     "y": {
+      "quantity": "film_thickness",
+      "unit": "nm",
+      "log": false
+     },
+     "series_axis": "plasma exposure time",
+     "series": [
+      {
+       "label": "3 s plasma",
+       "points": [
+        [
+         0,
+         0.0
+        ],
+        [
+         20,
+         1.0
+        ],
+        [
+         40,
+         2.0
+        ],
+        [
+         60,
+         2.8
+        ],
+        [
+         80,
+         3.8
+        ],
+        [
+         100,
+         4.8
+        ],
+        [
+         120,
+         6.0
+        ],
+        [
+         140,
+         7.2
+        ],
+        [
+         160,
+         9.0
+        ],
+        [
+         180,
+         11.2
+        ],
+        [
+         200,
+         14.0
+        ],
+        [
+         220,
+         17.0
+        ],
+        [
+         240,
+         20.8
+        ],
+        [
+         260,
+         24.8
+        ],
+        [
+         280,
+         28.8
+        ],
+        [
+         300,
+         33.0
+        ],
+        [
+         320,
+         37.0
+        ],
+        [
+         340,
+         41.5
+        ],
+        [
+         360,
+         46.0
+        ]
+       ]
+      },
+      {
+       "label": "5 s plasma",
+       "points": [
+        [
+         0,
+         0.0
+        ],
+        [
+         20,
+         1.5
+        ],
+        [
+         40,
+         3.2
+        ],
+        [
+         60,
+         5.2
+        ],
+        [
+         80,
+         7.2
+        ],
+        [
+         100,
+         9.5
+        ],
+        [
+         120,
+         12.0
+        ],
+        [
+         140,
+         14.8
+        ],
+        [
+         160,
+         18.0
+        ],
+        [
+         180,
+         21.5
+        ],
+        [
+         200,
+         24.5
+        ],
+        [
+         220,
+         28.0
+        ],
+        [
+         240,
+         31.8
+        ],
+        [
+         260,
+         35.0
+        ],
+        [
+         280,
+         38.5
+        ],
+        [
+         300,
+         42.0
+        ],
+        [
+         320,
+         45.5
+        ],
+        [
+         340,
+         49.0
+        ]
+       ]
+      },
+      {
+       "label": "20 s plasma",
+       "points": [
+        [
+         0,
+         0.0
+        ],
+        [
+         20,
+         2.0
+        ],
+        [
+         40,
+         4.6
+        ],
+        [
+         60,
+         7.5
+        ],
+        [
+         80,
+         10.5
+        ],
+        [
+         100,
+         13.8
+        ],
+        [
+         120,
+         17.5
+        ],
+        [
+         140,
+         21.5
+        ],
+        [
+         160,
+         24.5
+        ],
+        [
+         180,
+         27.5
+        ],
+        [
+         200,
+         30.8
+        ],
+        [
+         220,
+         34.0
+        ],
+        [
+         240,
+         37.3
+        ],
+        [
+         260,
+         40.5
+        ],
+        [
+         280,
+         43.5
+        ],
+        [
+         300,
+         46.8
+        ],
+        [
+         320,
+         50.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "300 \u00b0C"
+     }
+    }
+   ]
+  },
+  {
+   "figure": "8",
+   "image": "figures/fig_8.png",
+   "caption": "Fig. 6 XPS (a) C 1s, (b) Li 1s and (c) O 1s spectra for Li2CO3 grown by thermal ALD at 150 /C14 C. The measured spectra (black line) and /uniFB01 tted peaks (blue and red) are plotted together. The obtained Li2CO3 stoichiometry is 33.0 at% Li, 17.7 at% C and 49.3 at% O.",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Binding energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "C 1s",
+       "points": [
+        [
+         294.0,
+         5.0
+        ],
+        [
+         292.0,
+         6.0
+        ],
+        [
+         291.0,
+         25.0
+        ],
+        [
+         290.0,
+         95.0
+        ],
+        [
+         289.0,
+         35.0
+        ],
+        [
+         288.0,
+         12.0
+        ],
+        [
+         287.0,
+         10.0
+        ],
+        [
+         285.3,
+         38.0
+        ],
+        [
+         284.0,
+         10.0
+        ],
+        [
+         282.0,
+         5.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "150 \u00b0C"
+     }
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "Binding energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "Li 1s",
+       "points": [
+        [
+         62.0,
+         5.0
+        ],
+        [
+         58.0,
+         5.0
+        ],
+        [
+         56.5,
+         30.0
+        ],
+        [
+         55.3,
+         95.0
+        ],
+        [
+         54.0,
+         25.0
+        ],
+        [
+         52.0,
+         5.0
+        ],
+        [
+         50.0,
+         5.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "150 \u00b0C"
+     }
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "Binding energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "O 1s",
+       "points": [
+        [
+         538.0,
+         5.0
+        ],
+        [
+         535.0,
+         8.0
+        ],
+        [
+         533.0,
+         30.0
+        ],
+        [
+         531.8,
+         95.0
+        ],
+        [
+         530.0,
+         20.0
+        ],
+        [
+         528.0,
+         5.0
+        ],
+        [
+         526.0,
+         5.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "150 \u00b0C"
+     }
+    }
+   ]
+  },
+  {
+   "figure": "9",
+   "image": "figures/fig_9.png",
+   "caption": "Fig. 7 XRD gonio scans of /C24 50 nm thick Li2CO3 /uniFB01 lms grown on TiN using thermal (blue) and plasma (red) ALD at di /uniFB00 erent processing temperatures. The bars in the lower panel indicate the expected di /uniFB00 raction from a Li2CO3 powder sample. The re /uniFB02 ections at /C24 42.5 originate from the TiN (200) textured substrate.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "2-theta",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "temperature",
+     "series": [
+      {
+       "label": "Thermal 300 \u00b0C",
+       "points": [
+        [
+         20.0,
+         87.0
+        ],
+        [
+         25.0,
+         81.0
+        ],
+        [
+         30.0,
+         78.0
+        ],
+        [
+         31.8,
+         83.0
+        ],
+        [
+         33.0,
+         77.0
+        ],
+        [
+         40.0,
+         75.0
+        ],
+        [
+         42.4,
+         94.0
+        ],
+        [
+         44.0,
+         74.0
+        ],
+        [
+         50.0,
+         72.0
+        ],
+        [
+         60.0,
+         70.0
+        ]
+       ]
+      },
+      {
+       "label": "Thermal 150 \u00b0C",
+       "points": [
+        [
+         20.0,
+         78.0
+        ],
+        [
+         25.0,
+         72.0
+        ],
+        [
+         30.0,
+         69.0
+        ],
+        [
+         31.7,
+         74.0
+        ],
+        [
+         33.0,
+         68.0
+        ],
+        [
+         40.0,
+         66.0
+        ],
+        [
+         42.4,
+         85.0
+        ],
+        [
+         44.0,
+         65.0
+        ],
+        [
+         50.0,
+         63.0
+        ],
+        [
+         60.0,
+         62.0
+        ]
+       ]
+      },
+      {
+       "label": "Thermal 100 \u00b0C",
+       "points": [
+        [
+         20.0,
+         69.0
+        ],
+        [
+         25.0,
+         63.0
+        ],
+        [
+         30.0,
+         60.0
+        ],
+        [
+         31.7,
+         65.0
+        ],
+        [
+         33.0,
+         59.0
+        ],
+        [
+         40.0,
+         57.0
+        ],
+        [
+         42.4,
+         77.0
+        ],
+        [
+         44.0,
+         56.0
+        ],
+        [
+         50.0,
+         55.0
+        ],
+        [
+         60.0,
+         54.0
+        ]
+       ]
+      },
+      {
+       "label": "Plasma 250 \u00b0C",
+       "points": [
+        [
+         20.0,
+         58.0
+        ],
+        [
+         25.0,
+         51.0
+        ],
+        [
+         30.0,
+         48.0
+        ],
+        [
+         31.8,
+         49.0
+        ],
+        [
+         35.0,
+         46.0
+        ],
+        [
+         40.0,
+         44.0
+        ],
+        [
+         42.4,
+         64.0
+        ],
+        [
+         44.0,
+         43.0
+        ],
+        [
+         50.0,
+         42.0
+        ],
+        [
+         60.0,
+         41.0
+        ]
+       ]
+      },
+      {
+       "label": "Plasma 150 \u00b0C",
+       "points": [
+        [
+         20.0,
+         48.0
+        ],
+        [
+         25.0,
+         41.0
+        ],
+        [
+         30.0,
+         38.0
+        ],
+        [
+         35.0,
+         36.0
+        ],
+        [
+         40.0,
+         34.0
+        ],
+        [
+         42.4,
+         54.0
+        ],
+        [
+         44.0,
+         33.0
+        ],
+        [
+         50.0,
+         32.0
+        ],
+        [
+         60.0,
+         31.0
+        ]
+       ]
+      },
+      {
+       "label": "Plasma 50 \u00b0C",
+       "points": [
+        [
+         20.0,
+         37.0
+        ],
+        [
+         25.0,
+         30.0
+        ],
+        [
+         30.0,
+         27.0
+        ],
+        [
+         31.6,
+         35.0
+        ],
+        [
+         33.0,
+         26.0
+        ],
+        [
+         40.0,
+         24.0
+        ],
+        [
+         42.4,
+         51.0
+        ],
+        [
+         44.0,
+         23.0
+        ],
+        [
+         50.0,
+         22.0
+        ],
+        [
+         60.0,
+         21.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "12",
+   "image": "figures/fig_12.png",
+   "caption": "Fig. 10 (a) Impedance spectroscopy of 50 nm Li2CO3 /uniFB01 lms prepared by thermal (blue) and plasma-assisted (red) ALD at 150 /C14 C and (b) equivalent circuit models used to /uniFB01 t the data.",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Z_Re",
+      "unit": "k\u03a9",
+      "log": false
+     },
+     "y": {
+      "quantity": "Z_Im",
+      "unit": "k\u03a9",
+      "log": false
+     },
+     "series_axis": "process_type",
+     "series": [
+      {
+       "label": "Plasma",
+       "points": [
+        [
+         0.3,
+         0.2
+        ],
+        [
+         0.8,
+         1.2
+        ],
+        [
+         1.5,
+         2.0
+        ],
+        [
+         2.5,
+         2.6
+        ],
+        [
+         3.5,
+         2.9
+        ],
+        [
+         4.8,
+         3.0
+        ],
+        [
+         6.0,
+         2.8
+        ],
+        [
+         7.2,
+         2.5
+        ],
+        [
+         8.0,
+         2.8
+        ],
+        [
+         8.6,
+         3.6
+        ],
+        [
+         9.2,
+         4.7
+        ],
+        [
+         9.8,
+         5.7
+        ],
+        [
+         10.3,
+         7.2
+        ],
+        [
+         10.8,
+         8.3
+        ],
+        [
+         11.2,
+         9.6
+        ],
+        [
+         11.7,
+         10.8
+        ],
+        [
+         12.3,
+         12.3
+        ],
+        [
+         13.1,
+         14.2
+        ],
+        [
+         14.1,
+         16.3
+        ],
+        [
+         15.2,
+         18.8
+        ],
+        [
+         16.3,
+         21.5
+        ],
+        [
+         17.7,
+         24.8
+        ],
+        [
+         19.3,
+         28.4
+        ]
+       ]
+      },
+      {
+       "label": "Thermal",
+       "points": [
+        [
+         0.1,
+         0.2
+        ],
+        [
+         0.5,
+         1.5
+        ],
+        [
+         1.0,
+         2.8
+        ],
+        [
+         2.2,
+         4.8
+        ],
+        [
+         3.4,
+         6.3
+        ],
+        [
+         4.5,
+         7.2
+        ],
+        [
+         5.5,
+         8.0
+        ],
+        [
+         6.7,
+         8.8
+        ],
+        [
+         8.0,
+         9.5
+        ],
+        [
+         9.5,
+         10.0
+        ],
+        [
+         11.1,
+         10.5
+        ],
+        [
+         12.7,
+         10.7
+        ],
+        [
+         14.4,
+         10.7
+        ],
+        [
+         16.1,
+         10.6
+        ],
+        [
+         17.7,
+         10.2
+        ],
+        [
+         19.3,
+         9.5
+        ],
+        [
+         20.8,
+         8.8
+        ],
+        [
+         22.2,
+         8.0
+        ],
+        [
+         23.5,
+         7.1
+        ],
+        [
+         24.7,
+         5.8
+        ],
+        [
+         25.8,
+         3.6
+        ],
+        [
+         26.6,
+         4.1
+        ],
+        [
+         27.4,
+         5.5
+        ],
+        [
+         28.0,
+         7.2
+        ],
+        [
+         28.5,
+         9.2
+        ],
+        [
+         29.0,
+         11.6
+        ],
+        [
+         29.5,
+         13.6
+        ],
+        [
+         29.8,
+         15.8
+        ],
+        [
+         30.0,
+         18.4
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "temperature": "150 \u00b0C",
+      "thickness": "50 nm"
      }
     }
    ]
   }
  ],
  "_tokens": {
-  "in": 3305,
-  "out": 1831
+  "in": 15450,
+  "out": 6233
  }
 }

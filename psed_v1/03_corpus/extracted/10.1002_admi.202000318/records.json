@@ -13,7 +13,7 @@
    "quantity": "growth_per_cycle",
    "unit": "\u00c5/cyc"
   },
-  "coordinate": "exposure",
+  "coordinate": "pulse_time",
   "coordinate_unit": "s",
   "points": [
    [
@@ -21,15 +21,11 @@
     0.0
    ],
    [
-    2.5,
-    0.1
-   ],
-   [
-    5.0,
+    3.5,
     0.6
    ],
    [
-    10.0,
+    10.5,
     1.5
    ],
    [
@@ -38,15 +34,15 @@
    ],
    [
     30.0,
-    3.3
+    3.25
    ],
    [
     60.0,
     4.0
    ],
    [
-    80.0,
-    4.0
+    80.5,
+    4.1
    ]
   ],
   "controlled": {},
@@ -55,7 +51,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -87,79 +83,75 @@
   "coordinate_unit": "torr-s",
   "points": [
    [
-    0.0,
+    2.0,
     0.0
    ],
    [
-    2.5,
-    0.1
-   ],
-   [
-    5.0,
-    0.3
-   ],
-   [
-    7.5,
-    0.5
+    3.0,
+    0.42
    ],
    [
     10.0,
-    0.7
-   ],
-   [
-    12.5,
-    0.9
+    0.5
    ],
    [
     15.0,
+    0.72
+   ],
+   [
+    22.0,
+    0.9
+   ],
+   [
+    28.0,
+    1.3
+   ],
+   [
+    35.0,
     1.2
    ],
    [
-    20.0,
-    1.4
+    65.0,
+    2.08
    ],
    [
-    25.0,
-    1.5
+    94.0,
+    2.7
    ],
    [
-    30.0,
-    1.6
+    96.0,
+    2.85
    ],
    [
-    40.0,
-    2.1
+    106.0,
+    2.95
    ],
    [
-    80.0,
-    2.8
-   ],
-   [
-    90.0,
-    2.9
-   ],
-   [
-    100.0,
-    2.8
-   ],
-   [
-    120.0,
-    3.4
-   ],
-   [
-    150.0,
+    143.0,
     3.2
    ],
    [
-    200.0,
-    3.8
+    151.0,
+    3.45
    ],
    [
-    250.0,
-    3.9
+    163.0,
+    2.9
    ],
    [
-    300.0,
+    165.0,
+    3.2
+   ],
+   [
+    222.0,
+    3.32
+   ],
+   [
+    236.0,
+    3.95
+   ],
+   [
+    288.0,
     4.0
    ]
   ],
@@ -169,7 +161,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -202,43 +194,38 @@
   "points": [
    [
     5.0,
-    10.0
+    6.0
    ],
    [
     10.0,
-    15.0
-   ],
-   [
-    15.0,
-    25.0
+    9.0
    ],
    [
     20.0,
-    35.0
+    31.0
    ],
    [
     35.0,
-    45.0
+    42.0
    ],
    [
     50.0,
-    90.0
+    82.0
    ],
    [
     75.0,
-    125.0
+    127.0
    ]
   ],
   "controlled": {
-   "ozone_exposure": "10 s",
-   "precursor_exposure": "90-100 torr-s"
+   "ozone_pulse_time": "10 s"
   },
   "chemistry": {
    "precursors": [
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -255,9 +242,67 @@
  {
   "doi": "10.1002_admi.202000318",
   "material": "Fe2O3",
-  "material_raw": "10s Ozone",
+  "material_raw": "",
   "phase": null,
   "series_axis": null,
+  "series_value": "",
+  "series_kind": null,
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cyc"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_unit": "\u00b0C",
+  "points": [
+   [
+    160.0,
+    2.0
+   ],
+   [
+    180.0,
+    1.9
+   ],
+   [
+    200.0,
+    2.0
+   ],
+   [
+    220.0,
+    2.3
+   ],
+   [
+    240.0,
+    1.52
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "tert-butylferrocene"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "d",
+   "caption": "Figure 1. Growth of iron oxide flms as measured by VASE. a) The growth per cycle as a function of ozone exposure with a saturating exposure of TBF.Because the TBF exposure required to reach saturation",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1002_admi.202000318",
+  "material": "Fe2O3",
+  "material_raw": "10s Ozone",
+  "phase": null,
+  "series_axis": "ozone exposure time",
   "series_value": "10s Ozone",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -270,20 +315,20 @@
   "coordinate_unit": "degrees",
   "points": [
    [
-    30.0,
-    61.2
+    30,
+    59.8
    ],
    [
-    45.0,
-    59.0
+    45,
+    58.7
    ],
    [
-    60.0,
-    58.5
+    60,
+    58.7
    ],
    [
-    75.0,
-    59.0
+    75,
+    59.1
    ]
   ],
   "controlled": {},
@@ -292,7 +337,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -311,7 +356,7 @@
   "material": "Fe2O3",
   "material_raw": "60s Ozone",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "ozone exposure time",
   "series_value": "60s Ozone",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -324,20 +369,20 @@
   "coordinate_unit": "degrees",
   "points": [
    [
-    30.0,
-    62.5
+    30,
+    61.5
    ],
    [
-    45.0,
-    60.5
+    45,
+    58.7
    ],
    [
-    60.0,
-    59.5
+    60,
+    58.8
    ],
    [
-    75.0,
-    59.0
+    75,
+    58.8
    ]
   ],
   "controlled": {},
@@ -346,7 +391,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -365,7 +410,7 @@
   "material": "Fe2O3",
   "material_raw": "100s Ozone",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "ozone exposure time",
   "series_value": "100s Ozone",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -378,20 +423,20 @@
   "coordinate_unit": "degrees",
   "points": [
    [
-    30.0,
+    30,
     63.2
    ],
    [
-    45.0,
-    60.8
+    45,
+    60.7
    ],
    [
-    60.0,
-    59.8
+    60,
+    59.9
    ],
    [
-    75.0,
-    59.2
+    75,
+    59.0
    ]
   ],
   "controlled": {},
@@ -400,7 +445,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -419,7 +464,7 @@
   "material": "Fe2O3",
   "material_raw": "120s Ozone",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "ozone exposure time",
   "series_value": "120s Ozone",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -432,20 +477,20 @@
   "coordinate_unit": "degrees",
   "points": [
    [
-    30.0,
-    70.2
+    30,
+    70.3
    ],
    [
-    45.0,
-    63.0
+    45,
+    63.2
    ],
    [
-    60.0,
-    60.0
+    55,
+    60.2
    ],
    [
-    75.0,
-    59.0
+    65,
+    58.9
    ]
   ],
   "controlled": {},
@@ -454,7 +499,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -473,7 +518,7 @@
   "material": "Fe2O3",
   "material_raw": "120s Ozone, x10 TBF",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "ozone exposure time",
   "series_value": "120s Ozone, x10 TBF",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -486,20 +531,20 @@
   "coordinate_unit": "degrees",
   "points": [
    [
-    30.0,
+    30,
     59.5
    ],
    [
-    45.0,
-    58.0
+    45,
+    58.1
    ],
    [
-    60.0,
-    58.0
+    60,
+    58.2
    ],
    [
-    75.0,
-    58.5
+    75,
+    58.4
    ]
   ],
   "controlled": {},
@@ -508,7 +553,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -527,7 +572,7 @@
   "material": "Fe2O3",
   "material_raw": "Reflectivity",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "model",
   "series_value": "Reflectivity",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -536,146 +581,80 @@
    "quantity": "Intensity",
    "unit": "cps"
   },
-  "coordinate": "spatial_coordinate",
+  "coordinate": "2\u03b8",
   "coordinate_unit": "degrees",
   "points": [
    [
-    0.04,
-    15000000.0
-   ],
-   [
     0.1,
-    12000000.0
-   ],
-   [
-    0.2,
-    10000000.0
+    7000000
    ],
    [
     0.3,
-    8000000.0
-   ],
-   [
-    0.4,
-    6000000.0
+    15000000
    ],
    [
     0.5,
-    4000000.0
-   ],
-   [
-    0.6,
-    2000000.0
+    18000000
    ],
    [
     0.7,
-    1000000.0
+    5000000
    ],
    [
     0.75,
-    500000.0
+    200000
    ],
    [
-    0.8,
-    200000.0
-   ],
-   [
-    0.85,
-    100000.0
-   ],
-   [
-    0.9,
-    200000.0
+    0.83,
+    700000
    ],
    [
     0.95,
-    300000.0
-   ],
-   [
-    1.0,
-    400000.0
-   ],
-   [
-    1.05,
-    300000.0
+    600000
    ],
    [
     1.1,
-    200000.0
-   ],
-   [
-    1.15,
-    100000.0
+    110000
    ],
    [
     1.2,
-    80000.0
+    30000
    ],
    [
-    1.3,
-    50000.0
-   ],
-   [
-    1.4,
-    40000.0
+    1.38,
+    30000
    ],
    [
     1.5,
-    30000.0
-   ],
-   [
-    1.6,
-    25000.0
+    18000
    ],
    [
     1.7,
-    20000.0
-   ],
-   [
-    1.8,
-    15000.0
-   ],
-   [
-    1.9,
-    12000.0
+    10000
    ],
    [
     2.0,
-    10000.0
+    4000
    ],
    [
-    2.2,
-    7000.0
-   ],
-   [
-    2.4,
-    5000.0
-   ],
-   [
-    2.6,
-    3500.0
-   ],
-   [
-    2.8,
-    2500.0
+    2.5,
+    1500
    ],
    [
     3.0,
-    2000.0
+    700
    ]
   ],
-  "controlled": {
-   "film_thickness": "24.0 nm"
-  },
+  "controlled": {},
   "chemistry": {
    "precursors": [
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
-  "source": "both",
+  "source": "measured",
   "study_type": "experimental",
   "provenance": {
    "figure": "Fig 4",
@@ -691,7 +670,7 @@
   "material": "Fe2O3",
   "material_raw": "Single Layer Model",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "model",
   "series_value": "Single Layer Model",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -700,146 +679,76 @@
    "quantity": "Intensity",
    "unit": "cps"
   },
-  "coordinate": "spatial_coordinate",
+  "coordinate": "2\u03b8",
   "coordinate_unit": "degrees",
   "points": [
    [
-    0.04,
-    15000000.0
-   ],
-   [
     0.1,
-    12000000.0
-   ],
-   [
-    0.2,
-    10000000.0
+    5000000
    ],
    [
     0.3,
-    8000000.0
-   ],
-   [
-    0.4,
-    6000000.0
+    15000000
    ],
    [
     0.5,
-    4000000.0
-   ],
-   [
-    0.6,
-    2000000.0
+    18000000
    ],
    [
     0.7,
-    1000000.0
+    4000000
    ],
    [
-    0.75,
-    500000.0
-   ],
-   [
-    0.8,
-    200000.0
+    0.78,
+    150000
    ],
    [
     0.85,
-    100000.0
+    600000
    ],
    [
-    0.9,
-    150000.0
+    0.97,
+    600000
    ],
    [
-    0.95,
-    200000.0
+    1.08,
+    80000
    ],
    [
-    1.0,
-    250000.0
+    1.22,
+    25000
    ],
    [
-    1.05,
-    200000.0
-   ],
-   [
-    1.1,
-    150000.0
-   ],
-   [
-    1.15,
-    100000.0
-   ],
-   [
-    1.2,
-    80000.0
-   ],
-   [
-    1.3,
-    50000.0
-   ],
-   [
-    1.4,
-    40000.0
+    1.35,
+    25000
    ],
    [
     1.5,
-    30000.0
-   ],
-   [
-    1.6,
-    25000.0
-   ],
-   [
-    1.7,
-    20000.0
-   ],
-   [
-    1.8,
-    15000.0
-   ],
-   [
-    1.9,
-    12000.0
+    18000
    ],
    [
     2.0,
-    10000.0
+    4000
    ],
    [
-    2.2,
-    7000.0
-   ],
-   [
-    2.4,
-    5000.0
-   ],
-   [
-    2.6,
-    3500.0
-   ],
-   [
-    2.8,
-    2500.0
+    2.5,
+    1500
    ],
    [
     3.0,
-    2000.0
+    700
    ]
   ],
-  "controlled": {
-   "film_thickness": "24.0 nm"
-  },
+  "controlled": {},
   "chemistry": {
    "precursors": [
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
-  "source": "both",
+  "source": "measured",
   "study_type": "experimental",
   "provenance": {
    "figure": "Fig 4",
@@ -855,7 +764,7 @@
   "material": "Fe2O3",
   "material_raw": "Bilayer Model",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "model",
   "series_value": "Bilayer Model",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -864,146 +773,72 @@
    "quantity": "Intensity",
    "unit": "cps"
   },
-  "coordinate": "spatial_coordinate",
+  "coordinate": "2\u03b8",
   "coordinate_unit": "degrees",
   "points": [
    [
-    0.04,
-    15000000.0
-   ],
-   [
     0.1,
-    12000000.0
-   ],
-   [
-    0.2,
-    10000000.0
+    5000000
    ],
    [
     0.3,
-    8000000.0
-   ],
-   [
-    0.4,
-    6000000.0
+    15000000
    ],
    [
     0.5,
-    4000000.0
-   ],
-   [
-    0.6,
-    2000000.0
+    18000000
    ],
    [
     0.7,
-    1000000.0
+    5000000
    ],
    [
-    0.75,
-    500000.0
-   ],
-   [
-    0.8,
-    200000.0
-   ],
-   [
-    0.85,
-    100000.0
-   ],
-   [
-    0.9,
-    200000.0
+    0.82,
+    700000
    ],
    [
     0.95,
-    300000.0
-   ],
-   [
-    1.0,
-    400000.0
-   ],
-   [
-    1.05,
-    300000.0
+    600000
    ],
    [
     1.1,
-    200000.0
+    110000
    ],
    [
-    1.15,
-    100000.0
+    1.25,
+    30000
    ],
    [
-    1.2,
-    80000.0
-   ],
-   [
-    1.3,
-    50000.0
-   ],
-   [
-    1.4,
-    40000.0
+    1.38,
+    28000
    ],
    [
     1.5,
-    30000.0
-   ],
-   [
-    1.6,
-    25000.0
-   ],
-   [
-    1.7,
-    20000.0
-   ],
-   [
-    1.8,
-    15000.0
-   ],
-   [
-    1.9,
-    12000.0
+    18000
    ],
    [
     2.0,
-    10000.0
+    4000
    ],
    [
-    2.2,
-    7000.0
-   ],
-   [
-    2.4,
-    5000.0
-   ],
-   [
-    2.6,
-    3500.0
-   ],
-   [
-    2.8,
-    2500.0
+    2.5,
+    1500
    ],
    [
     3.0,
-    2000.0
+    700
    ]
   ],
-  "controlled": {
-   "film_thickness": "24.0 nm"
-  },
+  "controlled": {},
   "chemistry": {
    "precursors": [
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
-  "source": "both",
+  "source": "measured",
   "study_type": "experimental",
   "provenance": {
    "figure": "Fig 4",
@@ -1017,167 +852,79 @@
  {
   "doi": "10.1002_admi.202000318",
   "material": "Fe2O3",
-  "material_raw": "",
+  "material_raw": "Electron Density",
   "phase": null,
   "series_axis": null,
-  "series_value": "",
-  "series_kind": null,
+  "series_value": "Electron Density",
+  "series_kind": "categorical",
   "series_value_num": null,
   "series_unit": null,
   "measurand": {
    "quantity": "density",
-   "unit": "\u00c5\u207b\u00b3"
+   "unit": "\u00c5^-3"
   },
   "coordinate": "spatial_coordinate",
   "coordinate_unit": "\u00c5",
   "points": [
    [
-    -100.0,
+    -100,
     0.0
    ],
    [
-    -50.0,
-    0.0
+    -70,
+    0.01
    ],
    [
-    -25.0,
+    -50,
     0.05
    ],
    [
-    0.0,
-    0.5
+    -25,
+    0.25
    ],
    [
-    10.0,
-    0.65
+    0,
+    0.52
    ],
    [
-    20.0,
-    0.75
+    25,
+    0.9
    ],
    [
-    30.0,
-    0.85
+    50,
+    1.1
    ],
    [
-    40.0,
-    0.95
-   ],
-   [
-    50.0,
-    1.05
-   ],
-   [
-    60.0,
-    1.15
-   ],
-   [
-    70.0,
-    1.25
-   ],
-   [
-    80.0,
+    100,
     1.3
    ],
    [
-    90.0,
-    1.35
-   ],
-   [
-    100.0,
-    1.4
-   ],
-   [
-    110.0,
-    1.45
-   ],
-   [
-    120.0,
+    150,
     1.5
    ],
    [
-    130.0,
-    1.55
+    200,
+    1.65
    ],
    [
-    140.0,
-    1.6
+    235,
+    1.71
    ],
    [
-    150.0,
-    1.62
-   ],
-   [
-    160.0,
-    1.64
-   ],
-   [
-    170.0,
-    1.66
-   ],
-   [
-    180.0,
-    1.67
-   ],
-   [
-    190.0,
-    1.68
-   ],
-   [
-    200.0,
-    1.69
-   ],
-   [
-    210.0,
-    1.7
-   ],
-   [
-    220.0,
-    1.7
-   ],
-   [
-    230.0,
-    1.7
-   ],
-   [
-    232.0,
-    1.7
-   ],
-   [
-    234.0,
-    1.7
-   ],
-   [
-    236.0,
-    0.7
-   ],
-   [
-    238.0,
+    242,
     0.65
    ],
    [
-    240.0,
-    0.65
+    250,
+    0.63
    ],
    [
-    242.0,
-    0.66
-   ],
-   [
-    244.0,
+    260,
     0.67
    ],
    [
-    246.0,
+    280,
     0.68
-   ],
-   [
-    248.0,
-    0.69
-   ],
-   [
-    250.0,
-    0.7
    ]
   ],
   "controlled": {},
@@ -1186,10 +933,10 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
-  "source": "both",
+  "source": "simulated",
   "study_type": "experimental",
   "provenance": {
    "figure": "Fig 4",
@@ -1205,7 +952,7 @@
   "material": "Fe2O3",
   "material_raw": "100s Ozone",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "ozone exposure time",
   "series_value": "100s Ozone",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -1219,127 +966,63 @@
   "points": [
    [
     1.0,
-    0.05
+    310
    ],
    [
-    1.2,
-    0.05
+    1.5,
+    270
    ],
    [
-    1.4,
-    0.07
+    1.71,
+    440
    ],
    [
-    1.6,
-    0.15
-   ],
-   [
-    1.7,
-    0.2
-   ],
-   [
-    1.8,
-    0.15
-   ],
-   [
-    2.0,
-    0.08
+    1.85,
+    300
    ],
    [
     2.2,
-    0.15
+    300
    ],
    [
-    2.35,
-    0.8
+    2.33,
+    860
    ],
    [
-    2.45,
-    0.5
-   ],
-   [
-    2.5,
-    0.4
+    2.47,
+    620
    ],
    [
     2.6,
-    0.25
+    330
    ],
    [
-    2.7,
-    0.18
-   ],
-   [
-    2.8,
-    0.15
-   ],
-   [
-    2.9,
-    0.12
-   ],
-   [
-    3.0,
-    0.1
+    2.83,
+    380
    ],
    [
     3.1,
-    0.08
-   ],
-   [
-    3.2,
-    0.07
-   ],
-   [
-    3.3,
-    0.1
+    250
    ],
    [
     3.4,
-    0.2
-   ],
-   [
-    3.5,
-    0.15
-   ],
-   [
-    3.6,
-    0.1
+    380
    ],
    [
     3.7,
-    0.1
+    430
    ],
    [
-    3.8,
-    0.08
+    3.92,
+    280
    ],
    [
-    3.9,
-    0.08
-   ],
-   [
-    4.0,
-    0.08
-   ],
-   [
-    4.1,
-    0.07
-   ],
-   [
-    4.2,
-    0.06
-   ],
-   [
-    4.3,
-    0.05
+    4.22,
+    280
    ],
    [
     4.4,
-    0.05
-   ],
-   [
-    4.5,
-    0.05
+    220
    ]
   ],
   "controlled": {},
@@ -1348,7 +1031,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -1367,7 +1050,7 @@
   "material": "Fe2O3",
   "material_raw": "60s Ozone",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "ozone exposure time",
   "series_value": "60s Ozone",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -1381,127 +1064,55 @@
   "points": [
    [
     1.0,
-    0.02
+    180
    ],
    [
-    1.2,
-    0.02
+    1.5,
+    160
    ],
    [
-    1.4,
-    0.03
+    1.71,
+    185
    ],
    [
-    1.6,
-    0.04
-   ],
-   [
-    1.7,
-    0.05
-   ],
-   [
-    1.8,
-    0.04
-   ],
-   [
-    2.0,
-    0.03
+    1.85,
+    160
    ],
    [
     2.2,
-    0.04
+    180
    ],
    [
     2.35,
-    0.15
-   ],
-   [
-    2.45,
-    0.1
+    250
    ],
    [
     2.5,
-    0.08
-   ],
-   [
-    2.6,
-    0.06
+    270
    ],
    [
     2.7,
-    0.05
+    180
    ],
    [
-    2.8,
-    0.04
-   ],
-   [
-    2.9,
-    0.035
-   ],
-   [
-    3.0,
-    0.03
-   ],
-   [
-    3.1,
-    0.025
-   ],
-   [
-    3.2,
-    0.02
-   ],
-   [
-    3.3,
-    0.03
+    2.83,
+    190
    ],
    [
     3.4,
-    0.05
-   ],
-   [
-    3.5,
-    0.04
-   ],
-   [
-    3.6,
-    0.03
+    190
    ],
    [
     3.7,
-    0.03
+    200
    ],
    [
-    3.8,
-    0.025
-   ],
-   [
-    3.9,
-    0.02
-   ],
-   [
-    4.0,
-    0.02
-   ],
-   [
-    4.1,
-    0.015
-   ],
-   [
-    4.2,
-    0.01
-   ],
-   [
-    4.3,
-    0.01
+    4.22,
+    180
    ],
    [
     4.4,
-    0.01
-   ],
-   [
-    4.5,
-    0.01
+    140
    ]
   ],
   "controlled": {},
@@ -1510,7 +1121,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -1529,7 +1140,7 @@
   "material": "Fe2O3",
   "material_raw": "20s Ozone",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "ozone exposure time",
   "series_value": "20s Ozone",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -1543,127 +1154,39 @@
   "points": [
    [
     1.0,
-    0.01
+    110
    ],
    [
-    1.2,
-    0.01
-   ],
-   [
-    1.4,
-    0.015
-   ],
-   [
-    1.6,
-    0.018
-   ],
-   [
-    1.7,
-    0.02
-   ],
-   [
-    1.8,
-    0.015
+    1.5,
+    110
    ],
    [
     2.0,
-    0.01
+    110
    ],
    [
-    2.2,
-    0.015
-   ],
-   [
-    2.35,
-    0.04
-   ],
-   [
-    2.45,
-    0.025
+    2.3,
+    130
    ],
    [
     2.5,
-    0.02
-   ],
-   [
-    2.6,
-    0.015
-   ],
-   [
-    2.7,
-    0.012
+    160
    ],
    [
     2.8,
-    0.01
-   ],
-   [
-    2.9,
-    0.009
-   ],
-   [
-    3.0,
-    0.008
-   ],
-   [
-    3.1,
-    0.007
-   ],
-   [
-    3.2,
-    0.006
-   ],
-   [
-    3.3,
-    0.008
-   ],
-   [
-    3.4,
-    0.01
+    120
    ],
    [
     3.5,
-    0.009
-   ],
-   [
-    3.6,
-    0.008
-   ],
-   [
-    3.7,
-    0.008
-   ],
-   [
-    3.8,
-    0.007
-   ],
-   [
-    3.9,
-    0.006
+    110
    ],
    [
     4.0,
-    0.005
-   ],
-   [
-    4.1,
-    0.004
-   ],
-   [
-    4.2,
-    0.003
-   ],
-   [
-    4.3,
-    0.003
+    110
    ],
    [
     4.4,
-    0.003
-   ],
-   [
-    4.5,
-    0.003
+    100
    ]
   ],
   "controlled": {},
@@ -1672,7 +1195,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -1689,20 +1212,24 @@
  {
   "doi": "10.1002_admi.202000318",
   "material": "Fe2O3",
-  "material_raw": "",
+  "material_raw": "Fraction \u03b3 Phase",
   "phase": null,
   "series_axis": null,
-  "series_value": "",
-  "series_kind": null,
+  "series_value": "Fraction \u03b3 Phase",
+  "series_kind": "categorical",
   "series_value_num": null,
   "series_unit": null,
   "measurand": {
    "quantity": "Fraction \u03b3 Phase",
    "unit": "%"
   },
-  "coordinate": "Ozone Exposure per Cycle",
+  "coordinate": "exposure",
   "coordinate_unit": "s",
   "points": [
+   [
+    5,
+    100
+   ],
    [
     10,
     100
@@ -1713,19 +1240,19 @@
    ],
    [
     30,
-    78
+    76
    ],
    [
     60,
-    37
+    35
    ],
    [
     80,
-    2
+    0
    ],
    [
     100,
-    15
+    12
    ],
    [
     120,
@@ -1733,7 +1260,7 @@
    ],
    [
     140,
-    2
+    0
    ]
   ],
   "controlled": {},
@@ -1742,7 +1269,7 @@
     "tert-butylferrocene"
    ],
    "coreactants": [
-    "ozone"
+    "O3"
    ]
   },
   "source": "measured",
@@ -1753,166 +1280,6 @@
    "fig_docling_index": "6",
    "panel": "b",
    "caption": "Figure 6.a) Integrated 2D GIWAXS scans of Fe2O3 flms, summed over all measured angles X as a function of Q. Three scans of flms grown using 100,60,and 20 s of ozone exposure under saturated TBF doses ",
-   "extractor": "vision-llm"
-  }
- },
- {
-  "doi": "10.1002_admi.202000318",
-  "material": "Fe2O3",
-  "material_raw": "",
-  "phase": null,
-  "series_axis": null,
-  "series_value": "",
-  "series_kind": null,
-  "series_value_num": null,
-  "series_unit": null,
-  "measurand": {
-   "quantity": "Qz",
-   "unit": "\u00c5\u207b\u00b9"
-  },
-  "coordinate": "Qxy",
-  "coordinate_unit": "\u00c5\u207b\u00b9",
-  "points": [],
-  "controlled": {
-   "ozone_exposure_time": "30s",
-   "film_thickness": "129 \u00c5"
-  },
-  "chemistry": {
-   "precursors": [
-    "tert-butylferrocene"
-   ],
-   "coreactants": [
-    "ozone"
-   ]
-  },
-  "source": "measured",
-  "study_type": "experimental",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "a",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
-   "extractor": "vision-llm"
-  }
- },
- {
-  "doi": "10.1002_admi.202000318",
-  "material": "Fe2O3",
-  "material_raw": "",
-  "phase": null,
-  "series_axis": null,
-  "series_value": "",
-  "series_kind": null,
-  "series_value_num": null,
-  "series_unit": null,
-  "measurand": {
-   "quantity": "Qz",
-   "unit": "\u00c5\u207b\u00b9"
-  },
-  "coordinate": "Qxy",
-  "coordinate_unit": "\u00c5\u207b\u00b9",
-  "points": [],
-  "controlled": {
-   "ozone_exposure_time": "60s",
-   "film_thickness": "135 \u00c5"
-  },
-  "chemistry": {
-   "precursors": [
-    "tert-butylferrocene"
-   ],
-   "coreactants": [
-    "ozone"
-   ]
-  },
-  "source": "measured",
-  "study_type": "experimental",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "b",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
-   "extractor": "vision-llm"
-  }
- },
- {
-  "doi": "10.1002_admi.202000318",
-  "material": "Fe2O3",
-  "material_raw": "",
-  "phase": null,
-  "series_axis": null,
-  "series_value": "",
-  "series_kind": null,
-  "series_value_num": null,
-  "series_unit": null,
-  "measurand": {
-   "quantity": "Qz",
-   "unit": "\u00c5\u207b\u00b9"
-  },
-  "coordinate": "Qxy",
-  "coordinate_unit": "\u00c5\u207b\u00b9",
-  "points": [],
-  "controlled": {
-   "ozone_exposure_time": "120s",
-   "film_thickness": "50 \u00c5"
-  },
-  "chemistry": {
-   "precursors": [
-    "tert-butylferrocene"
-   ],
-   "coreactants": [
-    "ozone"
-   ]
-  },
-  "source": "measured",
-  "study_type": "experimental",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "c",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
-   "extractor": "vision-llm"
-  }
- },
- {
-  "doi": "10.1002_admi.202000318",
-  "material": "Fe2O3",
-  "material_raw": "",
-  "phase": null,
-  "series_axis": null,
-  "series_value": "",
-  "series_kind": null,
-  "series_value_num": null,
-  "series_unit": null,
-  "measurand": {
-   "quantity": "Qz",
-   "unit": "\u00c5\u207b\u00b9"
-  },
-  "coordinate": "Qxy",
-  "coordinate_unit": "\u00c5\u207b\u00b9",
-  "points": [],
-  "controlled": {
-   "ozone_exposure_time": "140s",
-   "film_thickness": "120 \u00c5"
-  },
-  "chemistry": {
-   "precursors": [
-    "tert-butylferrocene"
-   ],
-   "coreactants": [
-    "ozone"
-   ]
-  },
-  "source": "measured",
-  "study_type": "experimental",
-  "provenance": {
-   "figure": "Fig 7",
-   "figure_number": "7",
-   "fig_docling_index": "7",
-   "panel": "d",
-   "caption": "Figure 7. 2D GIWAXS patterns of Fe2O3 films grown with a) 30s,b) 60s, c) 120s, and d) 140s of ozone exposure per cycle.The TBF exposure in (d) is twice that of (c),and all patterns are plotted on the ",
    "extractor": "vision-llm"
   }
  }

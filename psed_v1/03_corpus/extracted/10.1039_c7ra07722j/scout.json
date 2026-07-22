@@ -16,62 +16,137 @@
  "process_type": "plasma",
  "temperature_window_C": [
   50,
-  300
+  200
  ],
  "gpc_nm": 0.082,
  "data": {
-  "gpc_vs_temperature": {
-   "present": true,
-   "where": "F5b"
-  },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "F4"
+   "where": [
+    "F4a",
+    "F4b"
+   ]
   },
   "gpc_vs_cycles": {
    "present": true,
-   "where": "F5a"
+   "where": [
+    "F5a",
+    "F7"
+   ]
   },
-  "conformality_or_penetration_profile": {
+  "gpc_vs_temperature": {
    "present": true,
-   "where": "F11"
+   "where": [
+    "F5b"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "F9"
+   "where": [
+    "F8a",
+    "F8b",
+    "F8c",
+    "F9"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F12a"
+   ]
   },
   "other": {
    "present": true,
-   "where": "F12"
+   "where": [
+    "F6"
+   ]
   }
  },
  "drill": [
-  {
-   "where": "F5b",
-   "type": "gpc_vs_temperature",
-   "measurand": "growth_per_cycle",
-   "source": "measured",
-   "why": "Growth per cycle as a function of temperature for both plasma and thermal ALD"
-  },
   {
    "where": "F4a",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Saturation curve for thermal ALD of Li2CO3"
+   "why": "shows self-limiting growth saturation curve for thermal ALD of Li2CO3"
   },
   {
    "where": "F4b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Saturation curve for plasma-assisted ALD of Li2CO3"
+   "why": "shows self-limiting growth saturation curve for plasma-assisted ALD of Li2CO3"
+  },
+  {
+   "where": "F5a",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "shows in situ thickness measurements vs ALD cycles for plasma and thermal processes"
+  },
+  {
+   "where": "F5b",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "shows growth per cycle as a function of temperature for plasma and thermal ALD"
+  },
+  {
+   "where": "F6",
+   "type": "other",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "shows phase shift Delta from in situ ellipsometry during sequential CO2 and H2O dosing"
+  },
+  {
+   "where": "F7",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "shows in situ film thickness vs cycles for different O2 plasma exposure times"
+  },
+  {
+   "where": "F8a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "shows XPS C 1s core-level spectrum for thermal ALD Li2CO3 film"
+  },
+  {
+   "where": "F8b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "shows XPS Li 1s core-level spectrum for thermal ALD Li2CO3 film"
+  },
+  {
+   "where": "F8c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "shows XPS O 1s core-level spectrum for thermal ALD Li2CO3 film"
+  },
+  {
+   "where": "F9",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "shows XRD gonio scans of Li2CO3 films deposited at different temperatures"
+  },
+  {
+   "where": "F12a",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "shows impedance spectroscopy spectra for thermal and plasma ALD films"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2828,
-  "out": 513
+  "in": 3429,
+  "out": 1210,
+  "thoughts": 2848,
+  "budget": 12288
  },
- "_scout_input_chars": 9572
+ "_scout_input_chars": 11983
 }

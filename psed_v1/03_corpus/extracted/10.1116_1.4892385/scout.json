@@ -14,29 +14,42 @@
  "data": {
   "conformality_or_penetration_profile": {
    "present": true,
-   "where": "F12"
+   "where": [
+    "F8a",
+    "F8b",
+    "F12"
+   ]
   }
  },
  "drill": [
+  {
+   "where": "F8a",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "simulated surface coverage vs position for different precursor densities"
+  },
+  {
+   "where": "F8b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "simulated surface coverage vs position for different reaction probabilities"
+  },
   {
    "where": "F12",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Measured and calculated ZrO2 thickness profiles inside the porous substrate"
-  },
-  {
-   "where": "F8",
-   "type": "conformality_or_penetration_profile",
-   "measurand": "surface_coverage",
-   "source": "simulated",
-   "why": "Simulated surface coverage profiles as a function of depth"
+   "why": "measured and calculated ZrO2 film thickness profile inside porous substrate"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1975,
-  "out": 302
+  "in": 2576,
+  "out": 378,
+  "thoughts": 1995,
+  "budget": 12288
  },
- "_scout_input_chars": 7512
+ "_scout_input_chars": 9923
 }

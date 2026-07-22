@@ -2,7 +2,6 @@
  "is_ald_process_paper": true,
  "study_type": "both",
  "materials": [
-  "TiO2",
   "Al2O3"
  ],
  "precursors": [],
@@ -13,65 +12,90 @@
  "data": {
   "conformality_or_penetration_profile": {
    "present": true,
-   "where": "Fig 3b, 3c, 3d, 4, 5, 6b, 6c"
-  },
-  "film_property_vs_condition": {
-   "present": true,
-   "where": "Fig 3d, 6b, 6c"
-  },
-  "other": {
-   "present": true,
-   "where": "Fig 3a"
+   "where": [
+    "F3a",
+    "F3b",
+    "F3c",
+    "F3d",
+    "F4",
+    "F5a",
+    "F5b",
+    "F6b",
+    "F6c"
+   ]
   }
  },
  "drill": [
   {
-   "where": "Fig 3b",
+   "where": "F3a",
    "type": "conformality_or_penetration_profile",
-   "measurand": "growth_per_cycle",
-   "source": "simulated",
-   "why": "Simulated GPC vs depth for different reactive sticking coefficients"
-  },
-  {
-   "where": "Fig 3c",
-   "type": "conformality_or_penetration_profile",
-   "measurand": "growth_per_cycle",
-   "source": "simulated",
-   "why": "Simulated GPC vs depth for different precursor exposure times"
-  },
-  {
-   "where": "Fig 3d",
-   "type": "film_property_vs_condition",
    "measurand": "penetration_depth",
    "source": "simulated",
-   "why": "Simulated penetration depth as a function of various process parameters"
+   "why": "simulated precursor concentration profile as a function of depth in CNT array"
   },
   {
-   "where": "Fig 5",
+   "where": "F3b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "growth_per_cycle",
+   "source": "simulated",
+   "why": "simulated deposited oxide thickness per cycle versus depth for varying sticking coefficients"
+  },
+  {
+   "where": "F3c",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "simulated",
-   "why": "Simulated film thickness vs depth for fixed and scaled exposure times in multi-cycle ALD"
+   "why": "simulated oxide thickness versus depth for different precursor exposure times"
   },
   {
-   "where": "Fig 6b",
+   "where": "F3d",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "penetration_depth",
+   "source": "simulated",
+   "why": "simulated penetration depth as a function of process parameters"
+  },
+  {
+   "where": "F4",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "penetration_depth",
+   "source": "simulated",
+   "why": "simulated penetration depth versus precursor surface adsorption density"
+  },
+  {
+   "where": "F5a",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "simulated",
+   "why": "simulated multi-cycle oxide thickness profile vs depth for fixed exposure time"
+  },
+  {
+   "where": "F5b",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "simulated",
+   "why": "simulated multi-cycle oxide thickness profile vs depth for scaled exposure time"
+  },
+  {
+   "where": "F6b",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Measured TiO2 thickness vs depth for different ALD cycles"
+   "why": "experimental TiO2 thickness vs depth for 200 and 400 ALD cycles"
   },
   {
-   "where": "Fig 6c",
+   "where": "F6c",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Measured Al2O3 thickness vs depth for fixed and scaled precursor exposure times"
+   "why": "experimental Al2O3 thickness vs depth for fixed vs scaled precursor exposure times"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2078,
-  "out": 690
+  "in": 2711,
+  "out": 871,
+  "thoughts": 2114,
+  "budget": 12288
  },
- "_scout_input_chars": 8204
+ "_scout_input_chars": 10702
 }

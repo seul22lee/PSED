@@ -5,7 +5,7 @@
   "Al2O3"
  ],
  "precursors": [
-  "TMA"
+  "trimethylaluminum"
  ],
  "coreactants": [
   "H2O"
@@ -16,33 +16,71 @@
  "data": {
   "conformality_or_penetration_profile": {
    "present": true,
-   "where": "F6"
+   "where": [
+    "F6",
+    "F8",
+    "F9"
+   ]
   },
   "film_property_vs_condition": {
    "present": true,
-   "where": "F7b"
+   "where": [
+    "F4",
+    "F7a",
+    "F7b"
+   ]
   }
  },
  "drill": [
+  {
+   "where": "F4",
+   "type": "film_property_vs_condition",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "plots required pulse time to reach 95% saturation at structure bottom against model parameters"
+  },
   {
    "where": "F6",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "simulated",
-   "why": "Comparison of simulated and experimental H2O-limited thickness profiles in HAR structures."
+   "why": "compares simulated topography model profiles with measured H2O-limited thickness profiles"
+  },
+  {
+   "where": "F7a",
+   "type": "film_property_vs_condition",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "Arrhenius plot of kinetic model parameters as a function of temperature"
+  },
+  {
+   "where": "F7b",
+   "type": "film_property_vs_condition",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "plots required pulse time for 95% saturation and conformality versus temperature"
   },
   {
    "where": "F8",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "simulated",
-   "why": "Comparison of simulated and experimental TMA-limited thickness profiles."
+   "why": "compares simulated TMA-limited thickness profiles to literature measurements"
+  },
+  {
+   "where": "F9",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "simulated",
+   "why": "plots simulated vs experimental penetration profiles for lateral HAR structures with different openings"
   }
  ],
  "go_deeper": false,
  "_tokens": {
-  "in": 1682,
-  "out": 327
+  "in": 2283,
+  "out": 654,
+  "thoughts": 1779,
+  "budget": 12288
  },
- "_scout_input_chars": 6179
+ "_scout_input_chars": 8590
 }

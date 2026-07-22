@@ -29,7 +29,13 @@ for pdf in sorted(glob.glob(str(ROOT / "pdfs" / "*.pdf"))):
     info = {"ald": "", "go": "", "mats": "", "nexp": ""}
     if st["scout"]:
         s = json.loads((d / "scout.json").read_text())
-        info["ald"] = "Y" if s.get("is_ald_process_paper") else "N"
+        # A FAILED scout must never look like a deliberate non-ALD rejection: a truncated
+        # response leaves is_ald_process_paper=None, which used to render as "N" and hid
+        # 10.1116_1.4938104 for weeks. "N" now means only a clean non-ALD verdict.
+        if s.get("_parse_error") or s.get("_scout_failed") or s.get("is_ald_process_paper") is None:
+            info["ald"] = "FAIL"
+        else:
+            info["ald"] = "Y" if s.get("is_ald_process_paper") else "N"
         info["go"] = "Y" if s.get("go_deeper") else ""
         info["mats"] = ",".join(s.get("materials") or [])
         for m in s.get("materials") or []:

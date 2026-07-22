@@ -14,33 +14,75 @@
  ],
  "process_type": "thermal",
  "temperature_window_C": null,
- "gpc_nm": null,
+ "gpc_nm": 0.1056,
  "data": {
   "conformality_or_penetration_profile": {
    "present": true,
-   "where": "F14"
+   "where": [
+    "F12",
+    "F13",
+    "F14",
+    "F15"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F10",
+    "F11"
+   ]
   }
  },
  "drill": [
+  {
+   "where": "F10",
+   "type": "other",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "simulated reactant pressure distributions along the channel over time"
+  },
+  {
+   "where": "F11",
+   "type": "other",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "simulated surface coverage development with time"
+  },
+  {
+   "where": "F12",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "simulated",
+   "why": "simulated film thickness profiles in channels of different heights"
+  },
+  {
+   "where": "F13",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "penetration_depth",
+   "source": "simulated",
+   "why": "comparison of penetration depth given by numerical, approximate, and Gordon models"
+  },
   {
    "where": "F14",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Measured and calculated thickness profile of Al2O3 in a lateral high aspect ratio channel"
+   "why": "measured and calculated Al2O3 film thickness profiles in lateral channel"
   },
   {
    "where": "F15",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Measured and calculated thickness profile of TiO2 in a lateral high aspect ratio channel"
+   "why": "measured and calculated TiO2 film thickness profiles in lateral channel"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2429,
-  "out": 321
+  "in": 3030,
+  "out": 649,
+  "thoughts": 2602,
+  "budget": 12288
  },
- "_scout_input_chars": 7751
+ "_scout_input_chars": 10162
 }

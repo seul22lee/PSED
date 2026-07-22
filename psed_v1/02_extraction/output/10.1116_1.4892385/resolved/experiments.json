@@ -67,11 +67,204 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "cycle_number",
-    "value": 1135.0,
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "reaction_probability",
+    "value": 0.0002,
     "unit": null,
     "of_reactant": null,
     "source": "caption",
+    "recipe_role": "model_parameter"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    100,
+    1.0
+   ],
+   [
+    105,
+    0.95
+   ],
+   [
+    110,
+    0.8
+   ],
+   [
+    115,
+    0.5
+   ],
+   [
+    120,
+    0.2
+   ],
+   [
+    125,
+    0.07
+   ],
+   [
+    130,
+    0.02
+   ],
+   [
+    140,
+    0.0
+   ],
+   [
+    500,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1116_1.4892385-F2a-0",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "8",
+   "panel": "a",
+   "caption": "FIG. 2. (Color online) Surface coverage 1 /C0 H ( t , z ) for different precursor densities (here TEMAZ) n P ( t , z \u00bc 0) and a fixed reaction probability b 0 \u00bc 2 /C2 10 /C0 4 (a). Surface coverage 1 ",
+   "extractor": "vision-llm",
+   "doi": "10.1116_1.4892385"
+  },
+  "series_name": "precursor density: n_P = 10^22 m^-3",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "ZrO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TEMAZ",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 1135,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_1.4892385-F2a-0"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "ZrO2",
+  "material_raw": "ZrO2",
+  "precursors": [
+   "TEMAZ"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TEMAZ"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 80,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 1135,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
     "recipe_role": "control_setting"
    },
    {
@@ -83,17 +276,415 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "growth_per_cycle",
-    "value": 0.093,
-    "unit": "nm/cycle",
+    "quantity": "reaction_probability",
+    "value": 0.0002,
+    "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "observable"
+    "recipe_role": "model_parameter"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    210,
+    1.0
+   ],
+   [
+    220,
+    0.9
+   ],
+   [
+    225,
+    0.6
+   ],
+   [
+    230,
+    0.2
+   ],
+   [
+    235,
+    0.05
+   ],
+   [
+    245,
+    0.01
+   ],
+   [
+    250,
+    0.0
+   ],
+   [
+    500,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1116_1.4892385-F2a-1",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "8",
+   "panel": "a",
+   "caption": "FIG. 2. (Color online) Surface coverage 1 /C0 H ( t , z ) for different precursor densities (here TEMAZ) n P ( t , z \u00bc 0) and a fixed reaction probability b 0 \u00bc 2 /C2 10 /C0 4 (a). Surface coverage 1 ",
+   "extractor": "vision-llm",
+   "doi": "10.1116_1.4892385"
+  },
+  "series_name": "precursor density: n_P = 4\u00b710^22 m^-3",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "ZrO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TEMAZ",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 1135,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_1.4892385-F2a-1"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "ZrO2",
+  "material_raw": "ZrO2",
+  "precursors": [
+   "TEMAZ"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TEMAZ"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 80,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 1135,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "reaction_probability",
+    "value": 0.0002,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "model_parameter"
+   }
+  ],
+  "measurand": {
+   "quantity": "surface_coverage",
+   "unit": "",
+   "family": "coverage"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    340,
+    1.0
+   ],
+   [
+    345,
+    0.98
+   ],
+   [
+    350,
+    0.9
+   ],
+   [
+    355,
+    0.6
+   ],
+   [
+    360,
+    0.2
+   ],
+   [
+    365,
+    0.05
+   ],
+   [
+    375,
+    0.01
+   ],
+   [
+    380,
+    0.0
+   ],
+   [
+    500,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1116_1.4892385-F2a-2",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "8",
+   "panel": "a",
+   "caption": "FIG. 2. (Color online) Surface coverage 1 /C0 H ( t , z ) for different precursor densities (here TEMAZ) n P ( t , z \u00bc 0) and a fixed reaction probability b 0 \u00bc 2 /C2 10 /C0 4 (a). Surface coverage 1 ",
+   "extractor": "vision-llm",
+   "doi": "10.1116_1.4892385"
+  },
+  "series_name": "precursor density: n_P = 10^23 m^-3",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "surface_coverage",
+    "unit": "",
+    "family": "coverage"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "ZrO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TEMAZ",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 1135,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_1.4892385-F2a-2"
+   },
+   "completeness": 0.643
+  }
+ },
+ {
+  "material": "ZrO2",
+  "material_raw": "ZrO2",
+  "precursors": [
+   "TEMAZ"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TEMAZ"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 80,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 1135,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 1135.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
    "quantity": "film_thickness",
-   "unit": "um",
+   "unit": "\u00b5m",
    "family": "film_amount"
   },
   "coordinate": "spatial_coordinate",
@@ -101,7 +692,7 @@
   "points": [
    [
     0.0,
-    0.11
+    0.111
    ],
    [
     1.2,
@@ -116,27 +707,27 @@
     0.07
    ],
    [
-    3.3,
+    3.1,
     0.08
    ],
    [
-    3.8,
+    3.6,
     0.08
    ],
    [
-    4.8,
+    4.3,
     0.08
    ],
    [
-    5.3,
+    5.1,
     0.07
    ],
    [
-    5.8,
-    0.072
+    5.6,
+    0.071
    ],
    [
-    6.5,
+    6.3,
     0.07
    ],
    [
@@ -144,27 +735,27 @@
     0.08
    ],
    [
-    8.1,
+    8.0,
     0.05
    ],
    [
-    8.8,
-    0.06
+    8.6,
+    0.051
    ],
    [
     8.9,
-    0.05
+    0.06
    ],
    [
     9.0,
     0.04
    ],
    [
-    12.0,
+    11.8,
     0.04
    ],
    [
-    12.5,
+    12.3,
     0.04
    ]
   ],
@@ -172,7 +763,7 @@
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_1.4892385-F5a-0",
+  "exp_id": "10.1116_1.4892385-F5a-3",
   "provenance": {
    "figure": "Fig 5",
    "figure_number": "5",
@@ -182,7 +773,7 @@
    "extractor": "vision-llm",
    "doi": "10.1116_1.4892385"
   },
-  "series_name": "series: measured ZrO2 layer thickness",
+  "series_name": "precursor density: measured ZrO2 layer thickness",
   "phase": null,
   "structure": null,
   "varies": [
@@ -191,7 +782,7 @@
   "dependent": [
    {
     "quantity": "film_thickness",
-    "unit": "um",
+    "unit": "\u00b5m",
     "family": "film_amount"
    }
   ],
@@ -226,14 +817,12 @@
     "species": "Argon"
    },
    "structure": null,
-   "targets": {
-    "gpc_sat": 0.093
-   },
+   "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F5a-0"
+    "_exp_id": "10.1116_1.4892385-F5a-3"
    },
    "completeness": 0.643
   }
@@ -306,14 +895,6 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "cycle_number",
-    "value": 1135.0,
-    "unit": null,
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
     "quantity": "pulse_time",
     "value": 10.0,
     "unit": "s",
@@ -322,17 +903,17 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "growth_per_cycle",
-    "value": 0.093,
-    "unit": "nm/cycle",
+    "quantity": "cycle_number",
+    "value": 1135.0,
+    "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "observable"
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
    "quantity": "film_thickness",
-   "unit": "um",
+   "unit": "\u00b5m",
    "family": "film_amount"
   },
   "coordinate": "spatial_coordinate",
@@ -340,74 +921,54 @@
   "points": [
    [
     0.0,
-    0.101
+    0.1005
    ],
    [
-    2.0,
-    0.094
+    2.5,
+    0.092
    ],
    [
-    4.0,
-    0.083
+    5.0,
+    0.078
    ],
    [
-    6.0,
-    0.071
-   ],
-   [
-    8.0,
+    7.5,
     0.058
    ],
    [
     10.0,
-    0.044
+    0.038
    ],
    [
-    12.0,
-    0.031
+    12.5,
+    0.024
    ],
    [
-    14.0,
-    0.021
+    15.0,
+    0.014
    ],
    [
-    16.0,
-    0.013
-   ],
-   [
-    18.0,
+    17.5,
     0.008
    ],
    [
     20.0,
-    0.005
+    0.004
    ],
    [
-    22.0,
-    0.003
-   ],
-   [
-    24.0,
-    0.002
-   ],
-   [
-    26.0,
-    0.001
-   ],
-   [
-    28.0,
-    0.0005
+    25.0,
+    0.0015
    ],
    [
     30.0,
-    0.0002
+    0.0005
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_1.4892385-F5a-1",
+  "exp_id": "10.1116_1.4892385-F5a-4",
   "provenance": {
    "figure": "Fig 5",
    "figure_number": "5",
@@ -417,7 +978,7 @@
    "extractor": "vision-llm",
    "doi": "10.1116_1.4892385"
   },
-  "series_name": "series: calculated coating profile for n_P(t,z=0) = 1.0 * 10^20 m^-3 and beta_0 = 2 * 10^-4",
+  "series_name": "precursor density: calculated coating profile for n_P(t,z=0) = 1.0 \u00b7 10^20 m^-3 and \u03b2_0 = 2 \u00b7 10^-4",
   "phase": null,
   "structure": null,
   "varies": [
@@ -426,7 +987,7 @@
   "dependent": [
    {
     "quantity": "film_thickness",
-    "unit": "um",
+    "unit": "\u00b5m",
     "family": "film_amount"
    }
   ],
@@ -461,14 +1022,12 @@
     "species": "Argon"
    },
    "structure": null,
-   "targets": {
-    "gpc_sat": 0.093
-   },
+   "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F5a-1"
+    "_exp_id": "10.1116_1.4892385-F5a-4"
    },
    "completeness": 0.643
   }
@@ -538,6 +1097,14 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
     "recipe_role": "control_setting"
    },
    {
@@ -547,27 +1114,11 @@
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "growth_per_cycle",
-    "value": 0.093,
-    "unit": "nm/cycle",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "observable"
    }
   ],
   "measurand": {
    "quantity": "film_thickness",
-   "unit": "um",
+   "unit": "\u00b5m",
    "family": "film_amount"
   },
   "coordinate": "spatial_coordinate",
@@ -575,74 +1126,58 @@
   "points": [
    [
     0.0,
-    0.105
+    0.1055
    ],
    [
-    2.0,
-    0.105
-   ],
-   [
-    4.0,
-    0.105
-   ],
-   [
-    6.0,
+    5.0,
     0.104
    ],
    [
-    8.0,
-    0.102
+    7.5,
+    0.101
    ],
    [
     10.0,
-    0.097
+    0.091
    ],
    [
     12.0,
-    0.089
+    0.078
    ],
    [
     14.0,
-    0.076
-   ],
-   [
-    16.0,
     0.061
    ],
    [
+    16.0,
+    0.044
+   ],
+   [
     18.0,
-    0.046
+    0.03
    ],
    [
     20.0,
-    0.033
+    0.019
    ],
    [
     22.0,
-    0.022
+    0.012
    ],
    [
-    24.0,
-    0.014
-   ],
-   [
-    26.0,
-    0.009
-   ],
-   [
-    28.0,
-    0.006
+    25.0,
+    0.005
    ],
    [
     30.0,
-    0.004
+    0.001
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1116_1.4892385-F5a-2",
+  "exp_id": "10.1116_1.4892385-F5a-5",
   "provenance": {
    "figure": "Fig 5",
    "figure_number": "5",
@@ -652,7 +1187,7 @@
    "extractor": "vision-llm",
    "doi": "10.1116_1.4892385"
   },
-  "series_name": "series: calculated coating profile for n_P(t,z=0) = 2.9 * 10^20 m^-3 and beta_0 = 2 * 10^-4",
+  "series_name": "precursor density: calculated coating profile for n_P(t,z=0) = 2.9 \u00b7 10^20 m^-3 and \u03b2_0 = 2 \u00b7 10^-4",
   "phase": null,
   "structure": null,
   "varies": [
@@ -661,7 +1196,7 @@
   "dependent": [
    {
     "quantity": "film_thickness",
-    "unit": "um",
+    "unit": "\u00b5m",
     "family": "film_amount"
    }
   ],
@@ -696,613 +1231,12 @@
     "species": "Argon"
    },
    "structure": null,
-   "targets": {
-    "gpc_sat": 0.093
-   },
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F5a-2"
-   },
-   "completeness": 0.643
-  }
- },
- {
-  "material": "ZrO2",
-  "material_raw": "ZrO2",
-  "precursors": [
-   "TEMAZ"
-  ],
-  "coreactants": [
-   "O2"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "TEMAZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O2"
-   }
-  ],
-  "carrier_gas": {
-   "species": "Argon"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 200,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 80,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "cycle_number",
-    "value": 1135,
-    "unit": "cycles",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "A",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   }
-  ],
-  "measurand": {
-   "quantity": "surface_coverage",
-   "unit": "",
-   "family": "coverage"
-  },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    50.0,
-    1.0
-   ],
-   [
-    95.0,
-    1.0
-   ],
-   [
-    100.0,
-    0.99
-   ],
-   [
-    105.0,
-    0.9
-   ],
-   [
-    110.0,
-    0.6
-   ],
-   [
-    115.0,
-    0.25
-   ],
-   [
-    120.0,
-    0.08
-   ],
-   [
-    125.0,
-    0.02
-   ],
-   [
-    130.0,
-    0.0
-   ],
-   [
-    150.0,
-    0.0
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "model",
-  "is_model_result": true,
-  "analysis_ready": true,
-  "exp_id": "10.1116_1.4892385-F2a-3",
-  "provenance": {
-   "figure": "Fig 2",
-   "figure_number": "2",
-   "fig_docling_index": "8",
-   "panel": "a",
-   "caption": "FIG. 2. (Color online) Surface coverage 1 /C0 H ( t , z ) for different precursor densities (here TEMAZ) n P ( t , z \u00bc 0) and a fixed reaction probability b 0 \u00bc 2 /C2 10 /C0 4 (a). Surface coverage 1 ",
-   "extractor": "vision-llm",
-   "doi": "10.1116_1.4892385"
-  },
-  "series_name": "series: nP = 10^22 m^-3",
-  "phase": null,
-  "structure": null,
-  "varies": [
-   "spatial_coordinate"
-  ],
-  "dependent": [
-   {
-    "quantity": "surface_coverage",
-    "unit": "",
-    "family": "coverage"
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "ZrO2",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "TEMAZ",
-     "dose_time": 10,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O2",
-     "dose_time": 10,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 1135,
-   "temperature": 200,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "Argon"
-   },
-   "structure": null,
    "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F2a-3"
-   },
-   "completeness": 0.643
-  }
- },
- {
-  "material": "ZrO2",
-  "material_raw": "ZrO2",
-  "precursors": [
-   "TEMAZ"
-  ],
-  "coreactants": [
-   "O2"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "TEMAZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O2"
-   }
-  ],
-  "carrier_gas": {
-   "species": "Argon"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 200,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 80,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "cycle_number",
-    "value": 1135,
-    "unit": "cycles",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "A",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   }
-  ],
-  "measurand": {
-   "quantity": "surface_coverage",
-   "unit": "",
-   "family": "coverage"
-  },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    100.0,
-    1.0
-   ],
-   [
-    200.0,
-    1.0
-   ],
-   [
-    210.0,
-    0.99
-   ],
-   [
-    215.0,
-    0.95
-   ],
-   [
-    220.0,
-    0.75
-   ],
-   [
-    225.0,
-    0.45
-   ],
-   [
-    230.0,
-    0.18
-   ],
-   [
-    235.0,
-    0.05
-   ],
-   [
-    240.0,
-    0.01
-   ],
-   [
-    250.0,
-    0.0
-   ],
-   [
-    300.0,
-    0.0
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "model",
-  "is_model_result": true,
-  "analysis_ready": true,
-  "exp_id": "10.1116_1.4892385-F2a-4",
-  "provenance": {
-   "figure": "Fig 2",
-   "figure_number": "2",
-   "fig_docling_index": "8",
-   "panel": "a",
-   "caption": "FIG. 2. (Color online) Surface coverage 1 /C0 H ( t , z ) for different precursor densities (here TEMAZ) n P ( t , z \u00bc 0) and a fixed reaction probability b 0 \u00bc 2 /C2 10 /C0 4 (a). Surface coverage 1 ",
-   "extractor": "vision-llm",
-   "doi": "10.1116_1.4892385"
-  },
-  "series_name": "series: nP = 4 * 10^22 m^-3",
-  "phase": null,
-  "structure": null,
-  "varies": [
-   "spatial_coordinate"
-  ],
-  "dependent": [
-   {
-    "quantity": "surface_coverage",
-    "unit": "",
-    "family": "coverage"
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "ZrO2",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "TEMAZ",
-     "dose_time": 10,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O2",
-     "dose_time": 10,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 1135,
-   "temperature": 200,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "Argon"
-   },
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F2a-4"
-   },
-   "completeness": 0.643
-  }
- },
- {
-  "material": "ZrO2",
-  "material_raw": "ZrO2",
-  "precursors": [
-   "TEMAZ"
-  ],
-  "coreactants": [
-   "O2"
-  ],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": "TEMAZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "O2"
-   }
-  ],
-  "carrier_gas": {
-   "species": "Argon"
-  },
-  "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "temperature",
-    "value": 200,
-    "unit": "C",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "total_pressure",
-    "value": 80,
-    "unit": "Pa",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "cycle_number",
-    "value": 1135,
-    "unit": "cycles",
-    "of_reactant": null,
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "A",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10,
-    "unit": "s",
-    "of_reactant": "B",
-    "source": "methods",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": 10.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   }
-  ],
-  "measurand": {
-   "quantity": "surface_coverage",
-   "unit": "",
-   "family": "coverage"
-  },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
-  "points": [
-   [
-    0.0,
-    1.0
-   ],
-   [
-    200.0,
-    1.0
-   ],
-   [
-    335.0,
-    1.0
-   ],
-   [
-    340.0,
-    0.99
-   ],
-   [
-    345.0,
-    0.95
-   ],
-   [
-    350.0,
-    0.75
-   ],
-   [
-    355.0,
-    0.45
-   ],
-   [
-    360.0,
-    0.18
-   ],
-   [
-    365.0,
-    0.05
-   ],
-   [
-    370.0,
-    0.01
-   ],
-   [
-    380.0,
-    0.0
-   ],
-   [
-    450.0,
-    0.0
-   ]
-  ],
-  "granularity": "profile",
-  "relevance": "model",
-  "is_model_result": true,
-  "analysis_ready": true,
-  "exp_id": "10.1116_1.4892385-F2a-5",
-  "provenance": {
-   "figure": "Fig 2",
-   "figure_number": "2",
-   "fig_docling_index": "8",
-   "panel": "a",
-   "caption": "FIG. 2. (Color online) Surface coverage 1 /C0 H ( t , z ) for different precursor densities (here TEMAZ) n P ( t , z \u00bc 0) and a fixed reaction probability b 0 \u00bc 2 /C2 10 /C0 4 (a). Surface coverage 1 ",
-   "extractor": "vision-llm",
-   "doi": "10.1116_1.4892385"
-  },
-  "series_name": "series: nP = 10^23 m^-3",
-  "phase": null,
-  "structure": null,
-  "varies": [
-   "spatial_coordinate"
-  ],
-  "dependent": [
-   {
-    "quantity": "surface_coverage",
-    "unit": "",
-    "family": "coverage"
-   }
-  ],
-  "issues": [],
-  "recipe": {
-   "material": "ZrO2",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": "TEMAZ",
-     "dose_time": 10,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "O2",
-     "dose_time": 10,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
-   "cycle_sequence": "AB",
-   "supercycle": null,
-   "supercycle_repeats": null,
-   "ncycles": 1135,
-   "temperature": 200,
-   "flow_rate": null,
-   "carrier_gas": {
-    "species": "Argon"
-   },
-   "structure": null,
-   "targets": null,
-   "provenance": "extracted",
-   "possible": null,
-   "channel_map": null,
-   "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F2a-5"
+    "_exp_id": "10.1116_1.4892385-F5a-5"
    },
    "completeness": 0.643
   }

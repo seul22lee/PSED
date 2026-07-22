@@ -20,7 +20,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).parent
-PIPE = HERE.parent / "0706_pipeline"
+PIPE = HERE.parent / "02_extraction"
 sys.path.insert(0, str(PIPE))
 from channel_model import channelModel, MODEL_ID
 from scipy.optimize import minimize

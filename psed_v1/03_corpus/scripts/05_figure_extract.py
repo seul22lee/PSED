@@ -63,7 +63,11 @@ data precisely. Return ONLY JSON:
 Rules: x.quantity in {COORDINATES}; y.quantity in {MEASURANDS} (pick the closest; if none
 fits, use the axis label verbatim). Read every visible data point in order; if a curve is
 dense, sample ~10-20 representative points. Use the numeric axis scales (mind log axes).
-Do NOT invent panels or series that are not shown. conditions = NUMERIC process
+Return one entry for EVERY panel shown in the figure — if the figure has panels
+(a),(b),(c),(d),(e),(f), return all of them, including panels that are rescaled or
+normalized versions of another panel. Do NOT invent panels that aren't shown, and do
+NOT omit shown panels. A 6-panel figure must return 6 panels.
+conditions = NUMERIC process
 parameters held fixed in this panel (temperature, pressure, dose/pulse time, cycle
 count), from the caption/legend, not guessed. Do NOT put material, precursor,
 coreactant, substrate, or process type in conditions — those are identified separately
@@ -82,6 +86,14 @@ def _fignum(s):
     """Parse the docling figure INDEX from a drill 'where' like 'F7a' / 'F7' / 'Fig 7'."""
     m = re.search(r"[Ff](?:ig(?:ure)?)?\.?\s*(\d+)", str(s))
     return m.group(1) if m else None
+
+
+def _panel_letter(s):
+    """Panel letter from a drill tag: 'F7a' -> 'a'; 'F7' -> '' (figure-level).
+    Lets each panel keep its OWN measured/simulated source instead of collapsing a
+    mixed figure to 'both' and mislabelling its measured panel as model."""
+    m = re.search(r"[Ff](?:ig(?:ure)?)?\.?\s*\d+\s*([a-hA-H])\b", str(s))
+    return m.group(1).lower() if m else ""
 
 
 def caption_fig_index(structure):
@@ -103,6 +115,15 @@ def downscaled_png(path):
 def extract_paper(sd, client):
     d = EXTRACTED / sd
     scout = json.loads((d / "scout.json").read_text())
+    # Gate on DRILL ONLY, not go_deeper. An empty drill means there is nothing to read,
+    # so vision is skipped (this is what stops hallucinated-drill spend on microscopy
+    # papers, since those score go_deeper=False AND tend to drill nothing real).
+    # go_deeper is NOT used: the scout sets it False on papers that do contain real data
+    # plots (e.g. 10.1063_1.4867469 has XRD + C-V; 10.1016_j.sse.2022.108584 has 9
+    # measured records), so gating on it silently drops genuine measured data.
+    if not scout.get("drill"):
+        print(f"[05 skip] {sd}: drill=0 — nothing to read (go_deeper={scout.get('go_deeper')})")
+        return [], [], 0, 0
     struct = json.loads((d / "structure.json").read_text())
     fig_by_num = caption_fig_index(struct)
 
@@ -117,10 +138,19 @@ def extract_paper(sd, client):
         if not fig or not fig.get("image"):
             continue
         g = groups.setdefault(fig["image"], {"fig": num, "caption": fig["caption"],
-                                             "items": [], "sources": set()})
+                                             "items": [], "sources": set(), "panel_source": {}})
         g["items"].append(it)
         g["sources"].add(it.get("source") or "measured")
+        # Keep each panel's OWN source. A figure like Fig 3 mixes an ideal *simulated*
+        # panel (a) with the *experimental* panel (b); collapsing them to "both" made 06
+        # label the measured panel as model.
+        _pl = _panel_letter(it.get("where", ""))
+        if _pl:
+            g["panel_source"][_pl] = it.get("source") or "measured"
+        else:
+            g["panel_source"]["_fig"] = it.get("source") or "measured"
     for g in groups.values():
+        # figure-level summary kept for reporting only — NEVER used to stamp a panel
         g["source"] = "simulated" if g["sources"] == {"simulated"} else \
                        ("both" if len(g["sources"]) > 1 else "measured")
 
@@ -130,14 +160,30 @@ def extract_paper(sd, client):
     results, tok_in, tok_out = [], 0, 0
     for image, g in groups.items():
         png = downscaled_png(d / image)
+        # The drill tag names a panel of INTEREST (e.g. 'F16a'); it must never leak into
+        # the prompt as a restriction, or vision returns only that panel and the other
+        # five are silently lost. Give the data types at FIGURE level and demand all panels.
+        data_types = sorted({it.get("type", "") for it in g["items"] if it.get("type")})
+        hint = ("This figure contains data of type(s): " + ", ".join(data_types) + ". "
+                "The scout flagged specific panels as most relevant, but READ EVERY PANEL "
+                "PRESENT in the figure (a, b, c, …), returning one entry per panel — "
+                "including panels that are scaled/normalized versions of another. Do not "
+                "restrict to the flagged panel.")
         prompt = (f"{VISION_SCHEMA}\n\nPAPER PROCESS CARD: {json.dumps(card)}\n"
-                  f"FIGURE CAPTION: {g['caption']}\n"
-                  f"Panels of interest: {[it.get('where') + '=' + it.get('type','') for it in g['items']]}")
-        # One retry on parse failure: a transient malformed response otherwise drops the
-        # whole paper to 0 records silently (observed on celc). Keep the FULL raw text on
-        # final failure so it stays diagnosable without re-calling the API.
-        obj, last_raw = None, None
-        for attempt in range(2):
+                  f"FIGURE CAPTION: {g['caption']}\n{hint}")
+        # Retry on BOTH failure modes, keeping the best response seen:
+        #  - parse failure: a transient malformed reply otherwise drops the paper to 0
+        #    records silently (observed on celc). Keep FULL raw text on final failure.
+        #  - panel under-extraction: vision returning fewer panels than the caption
+        #    declares silently loses whole datasets (observed on d0cp03358h Fig 9: 1/6).
+        # Expect the DATA panels scout drilled, not every caption-declared panel: a
+        # caption may declare (a),(b) where (a) is an SEM image. Scout lists all data
+        # panels, so image/schematic panels are never expected and never burn retries.
+        drilled_panels = {_panel_letter(it.get("where", "")) for it in g["items"]}
+        drilled_panels.discard("")
+        expected = len(drilled_panels) if drilled_panels else _caption_panel_count(g["caption"])
+        obj, last_raw, best, best_n = None, None, None, -1
+        for attempt in range(3):
             r = client.models.generate_content(
                 model=MODEL,
                 contents=[types.Part.from_bytes(data=png, mime_type="image/png"), prompt],
@@ -147,14 +193,24 @@ def extract_paper(sd, client):
             tok_out += getattr(u, "candidates_token_count", 0) or 0
             last_raw = r.text
             try:
-                obj = _loads_json(r.text)
-                break
+                cand = _loads_json(r.text)
             except Exception as e:
-                print(f"    [parse retry {attempt+1}/2] {g['fig']}: {type(e).__name__} {str(e)[:60]}")
+                print(f"    [parse retry {attempt+1}/3] {g['fig']}: {type(e).__name__} {str(e)[:60]}")
+                continue
+            got = len(cand.get("panels") or [])
+            if got > best_n:
+                best, best_n = cand, got
+            if not expected or got >= expected:       # complete (or nothing to compare to)
+                break
+            if attempt < 2:
+                print(f"    [panel retry {attempt+1}] fig {g['fig']}: {got}/{expected} panels")
+        obj = best
         if obj is None:
             obj = {"_parse_error": last_raw}          # FULL raw, not truncated
+        elif expected and best_n < expected:
+            print(f"    [WARN] fig {g['fig']}: kept {best_n}/{expected} panels after 3 attempts")
         results.append({"figure": g["fig"], "image": image, "caption": g["caption"],
-                        "source": g["source"], **obj})
+                        "source": g["source"], "panel_source": g["panel_source"], **obj})
 
     (d / "figure_data.json").write_text(json.dumps(
         {"doi": sd, "process_card": card, "figures": results,
@@ -196,6 +252,12 @@ def _clean_conditions(cond):
 # A COMPLETE number (optional unit). The unit class excludes '-', so '2-propanol' is a
 # name, not a number — this is what makes numeric-vs-categorical decidable here, once.
 _NUMU = _re.compile(r"\s*([-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?)\s*([A-Za-zµμÅ°%/·^]*)\s*\Z")
+
+
+def _caption_panel_count(caption):
+    """How many panels the caption declares, e.g. '(a) … (b) … (f)' -> 6. Deterministic;
+    used to detect under-extraction of multi-panel figures."""
+    return len(set(_re.findall(r"\(([a-h])\)", str(caption).lower())))
 
 
 def _loads_json(text):
@@ -263,6 +325,11 @@ def flatten_records(sd, scout, figresults):
         fig_label = f"Fig {paper_fig}" if paper_fig else f"Fig {docling_idx} (idx)"
         for p in fr.get("panels", []):
             x, y = p.get("x", {}), p.get("y", {})
+            # each panel keeps its own measured/simulated source; figure-level only as fallback
+            _pl = (p.get("panel") or "").strip().lower()
+            _src = (fr.get("panel_source", {}).get(_pl)
+                    or fr.get("panel_source", {}).get("_fig")
+                    or "measured")
             # series_axis is only a NAME for the condition. scout.materials is the decider
             # of material-vs-condition, so a legend that looks like a formula but isn't this
             # paper's film (substrate Al2O3/Si, coreactant Methanol) stays a condition.
@@ -309,7 +376,7 @@ def flatten_records(sd, scout, figresults):
                     "controlled": _clean_conditions(p.get("conditions", {})),
                     "chemistry": {"precursors": scout.get("precursors"),
                                   "coreactants": scout.get("coreactants")},
-                    "source": fr.get("source", "measured"),   # measured | simulated | both
+                    "source": _src,                          # measured | simulated (never "both")
                     "study_type": scout.get("study_type"),
                     "provenance": {"figure": fig_label,
                                    "figure_number": paper_fig,        # paper's real figure number, or None

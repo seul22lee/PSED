@@ -17,50 +17,99 @@
  ],
  "gpc_nm": 0.025,
  "data": {
-  "gpc_vs_temperature": {
-   "present": true,
-   "where": "F7"
-  },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "F5"
+   "where": [
+    "F5",
+    "F6"
+   ]
+  },
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F7"
+   ]
   },
   "xrd_or_spectrum": {
    "present": true,
-   "where": "F10"
+   "where": [
+    "F10",
+    "F11a",
+    "F11b",
+    "F11c"
+   ]
   },
-  "conformality_or_penetration_profile": {
+  "film_property_vs_condition": {
    "present": true,
-   "where": "F13"
+   "where": [
+    "F12"
+   ]
   }
  },
  "drill": [
-  {
-   "where": "F7",
-   "type": "gpc_vs_temperature",
-   "measurand": "growth_per_cycle",
-   "source": "measured",
-   "why": "Growth rate as a function of deposition temperature showing the ALD window."
-  },
   {
    "where": "F5",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Growth rate as a function of precursor pulse length to show saturation."
+   "why": "growth rate vs precursor pulse length"
   },
   {
    "where": "F6",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Growth rate as a function of water pulse length to show saturation."
+   "why": "growth rate vs water pulse length"
+  },
+  {
+   "where": "F7",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "growth rate vs deposition temperature"
+  },
+  {
+   "where": "F10",
+   "type": "xrd_or_spectrum",
+   "measurand": "density",
+   "source": "measured",
+   "why": "XRD patterns at various deposition temperatures"
+  },
+  {
+   "where": "F11a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "Er 4d5/2 XPS spectra at various Ar ion etching times"
+  },
+  {
+   "where": "F11b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "O 1s XPS spectra at various Ar ion etching times"
+  },
+  {
+   "where": "F11c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "C 1s XPS spectra at various Ar ion etching times"
+  },
+  {
+   "where": "F12",
+   "type": "film_property_vs_condition",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS depth profile showing elemental concentration vs etching time"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1999,
-  "out": 500
+  "in": 2600,
+  "out": 868,
+  "thoughts": 2707,
+  "budget": 12288
  },
- "_scout_input_chars": 6361
+ "_scout_input_chars": 8772
 }

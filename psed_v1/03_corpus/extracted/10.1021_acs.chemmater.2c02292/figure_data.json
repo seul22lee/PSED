@@ -2,7 +2,8 @@
  "doi": "10.1021_acs.chemmater.2c02292",
  "process_card": {
   "materials": [
-   "RuO2"
+   "RuO2",
+   "Ru"
   ],
   "precursors": [
    "RuO4"
@@ -25,6 +26,13 @@
    "image": "figures/fig_1.png",
    "caption": "Figure 1: ALD characteristics: a) Growth per cycle (GPC) as a function of RuO4 pulse time, using a fixed pulse time of 25s for methanol. b) GPC as a function of methanol pulse time, with the RuO4 pulse time kept fixed at 40s. c) Temperature window of the ALD process showing the growth per cycle as a function of substrate temperature, as obtained from XRR. Note that for the data points with error bars, the mean of the data points measured in each case is plotted and the error bar corresponds to the standard deviation of the data. d) Thickness vs. the number of ALD cycles, as determined from XRR on Si-H and Si with native oxide substrates at 100 \u00b0C (Inset: schematic illustration of the ALD process). e) Cross-sectional SEM image of the RuO2 coated micropillars indicating the different depths where the EDX was measured. f) The normalised Ru L",
    "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured",
+    "d": "measured",
+    "f": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -44,30 +52,30 @@
        "label": "",
        "points": [
         [
-         15.0,
+         15,
          0.65
         ],
         [
-         30.0,
+         30,
          0.87
         ],
         [
-         40.0,
+         40,
          1.03
         ],
         [
-         45.0,
-         1.01
+         45,
+         1.02
         ],
         [
-         50.0,
+         50,
          1.05
         ]
        ]
       }
      ],
      "conditions": {
-      "methanol_pulse_time": "25 s"
+      "pulse_time": "25 s"
      }
     },
     {
@@ -88,30 +96,30 @@
        "label": "",
        "points": [
         [
-         5.0,
+         5,
          0.88
         ],
         [
-         10.0,
+         10,
          0.9
         ],
         [
-         20.0,
+         20,
          1.03
         ],
         [
-         25.0,
+         25,
          1.08
         ],
         [
-         30.0,
+         30,
          1.03
         ]
        ]
       }
      ],
      "conditions": {
-      "RuO4_pulse_time": "40 s"
+      "pulse_time": "40 s"
      }
     },
     {
@@ -132,19 +140,19 @@
        "label": "",
        "points": [
         [
-         60.0,
+         60,
          1.1
         ],
         [
-         80.0,
+         80,
          0.98
         ],
         [
-         100.0,
+         100,
          1.03
         ],
         [
-         120.0,
+         120,
          1.1
         ]
        ]
@@ -170,28 +178,28 @@
        "label": "Si-H",
        "points": [
         [
-         15.0,
+         15,
          1.75
         ],
         [
-         20.0,
-         2.22
+         20,
+         2.23
         ],
         [
-         35.0,
-         3.7
+         35,
+         3.71
         ],
         [
-         50.0,
-         5.15
+         50,
+         5.16
         ],
         [
-         70.0,
-         7.3
+         70,
+         7.28
         ],
         [
-         85.0,
-         8.8
+         85,
+         8.78
         ]
        ]
       },
@@ -199,19 +207,19 @@
        "label": "Si with native oxide",
        "points": [
         [
-         20.0,
-         1.75
+         20,
+         1.72
         ],
         [
-         25.0,
+         25,
          2.75
         ],
         [
-         35.0,
+         35,
          3.55
         ],
         [
-         50.0,
+         50,
          5.0
         ]
        ]
@@ -220,6 +228,1178 @@
      "conditions": {
       "temperature": "100 \u00b0C"
      }
+    },
+    {
+     "panel": "f",
+     "x": {
+      "quantity": "Ru L intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "y": {
+      "quantity": "spatial_coordinate",
+      "unit": "\u00b5m",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "",
+       "points": [
+        [
+         18.9,
+         0
+        ],
+        [
+         15.5,
+         10
+        ],
+        [
+         14.3,
+         20
+        ],
+        [
+         14.3,
+         30
+        ],
+        [
+         15.1,
+         40
+        ],
+        [
+         15.9,
+         50
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "2",
+   "image": "figures/fig_2.png",
+   "caption": "Figure 2: a) Comparison of the in vacuo XPS spectra in the Ru 3d region for metallic Ru (RuO4-H2 ALD process) 58 , and RuO2 (RuO4-methanol process, this work). b) and c) XPS peak deconvolution of the Ru 3d and O 1s signals, respectively for the RuO4methanol process.",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "Binding energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "CPS",
+      "log": false
+     },
+     "series_axis": "material",
+     "series": [
+      {
+       "label": "Ru metal (RuO4-H2)",
+       "points": [
+        [
+         292.0,
+         180
+        ],
+        [
+         289.0,
+         180
+        ],
+        [
+         286.0,
+         190
+        ],
+        [
+         284.8,
+         280
+        ],
+        [
+         284.2,
+         700
+        ],
+        [
+         283.6,
+         420
+        ],
+        [
+         282.5,
+         170
+        ],
+        [
+         281.0,
+         200
+        ],
+        [
+         280.3,
+         860
+        ],
+        [
+         280.0,
+         1760
+        ],
+        [
+         279.7,
+         1460
+        ],
+        [
+         279.3,
+         800
+        ],
+        [
+         278.8,
+         300
+        ],
+        [
+         278.0,
+         80
+        ]
+       ]
+      },
+      {
+       "label": "RuO2 (RuO4-methanol)",
+       "points": [
+        [
+         294.0,
+         180
+        ],
+        [
+         291.0,
+         190
+        ],
+        [
+         288.5,
+         250
+        ],
+        [
+         287.0,
+         350
+        ],
+        [
+         285.3,
+         530
+        ],
+        [
+         284.2,
+         420
+        ],
+        [
+         282.8,
+         300
+        ],
+        [
+         281.8,
+         480
+        ],
+        [
+         281.0,
+         680
+        ],
+        [
+         280.5,
+         520
+        ],
+        [
+         279.8,
+         220
+        ],
+        [
+         279.0,
+         50
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "Binding energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "CPS",
+      "log": false
+     },
+     "series_axis": "peak component",
+     "series": [
+      {
+       "label": "Ru 3d5/2",
+       "points": [
+        [
+         283.5,
+         0
+        ],
+        [
+         282.5,
+         120
+        ],
+        [
+         281.4,
+         600
+        ],
+        [
+         280.5,
+         200
+        ],
+        [
+         279.8,
+         0
+        ]
+       ]
+      },
+      {
+       "label": "Ru 3d5/2 satellite",
+       "points": [
+        [
+         286.0,
+         0
+        ],
+        [
+         284.5,
+         50
+        ],
+        [
+         283.6,
+         140
+        ],
+        [
+         282.5,
+         50
+        ],
+        [
+         281.0,
+         0
+        ]
+       ]
+      },
+      {
+       "label": "Ru 3d3/2",
+       "points": [
+        [
+         288.5,
+         0
+        ],
+        [
+         287.0,
+         80
+        ],
+        [
+         285.5,
+         340
+        ],
+        [
+         284.5,
+         120
+        ],
+        [
+         283.5,
+         0
+        ]
+       ]
+      },
+      {
+       "label": "Ru 3d3/2 satellite",
+       "points": [
+        [
+         290.0,
+         0
+        ],
+        [
+         288.5,
+         30
+        ],
+        [
+         287.0,
+         70
+        ],
+        [
+         285.5,
+         20
+        ],
+        [
+         284.0,
+         0
+        ]
+       ]
+      },
+      {
+       "label": "C 1s",
+       "points": [
+        [
+         285.0,
+         0
+        ],
+        [
+         284.4,
+         35
+        ],
+        [
+         283.8,
+         0
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "Binding energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "CPS",
+      "log": false
+     },
+     "series_axis": "peak component",
+     "series": [
+      {
+       "label": "O 1s",
+       "points": [
+        [
+         534.5,
+         0
+        ],
+        [
+         533.0,
+         50
+        ],
+        [
+         531.5,
+         200
+        ],
+        [
+         530.2,
+         420
+        ],
+        [
+         529.5,
+         280
+        ],
+        [
+         528.8,
+         50
+        ],
+        [
+         528.0,
+         0
+        ]
+       ]
+      },
+      {
+       "label": "OH",
+       "points": [
+        [
+         534.0,
+         0
+        ],
+        [
+         532.8,
+         30
+        ],
+        [
+         531.5,
+         90
+        ],
+        [
+         530.3,
+         20
+        ],
+        [
+         529.5,
+         0
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "3",
+   "image": "figures/fig_3.png",
+   "caption": "Figure 3: a) Lab-based ex situ X-ray diffractograms of as-deposited, He-annealed, and air-annealed RuO2 films with a thickness of 20 nm. b) and c) In situ XRD patterns acquired during the anneals in helium and air, respectively. d) 3D AFM images of an as-deposited 20 nm RuO2 film on a Si-H substrate (top), the same film after annealing in He to 800 \u00b0C (middle), and after annealing in air to 800 \u00b0C (bottom). Note the different scales along the z-axis (height).",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "2\u0398",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "annealing condition",
+     "series": [
+      {
+       "label": "Annealed in He",
+       "points": [
+        [
+         20.0,
+         170.0
+        ],
+        [
+         25.0,
+         170.0
+        ],
+        [
+         27.0,
+         175.0
+        ],
+        [
+         28.1,
+         315.0
+        ],
+        [
+         29.5,
+         175.0
+        ],
+        [
+         32.0,
+         170.0
+        ],
+        [
+         34.0,
+         170.0
+        ],
+        [
+         35.1,
+         220.0
+        ],
+        [
+         36.5,
+         170.0
+        ],
+        [
+         40.0,
+         195.0
+        ],
+        [
+         42.0,
+         170.0
+        ],
+        [
+         50.0,
+         170.0
+        ],
+        [
+         54.3,
+         210.0
+        ],
+        [
+         57.9,
+         190.0
+        ],
+        [
+         60.0,
+         170.0
+        ]
+       ]
+      },
+      {
+       "label": "Annealed in air",
+       "points": [
+        [
+         20.0,
+         110.0
+        ],
+        [
+         25.0,
+         110.0
+        ],
+        [
+         27.0,
+         115.0
+        ],
+        [
+         28.1,
+         255.0
+        ],
+        [
+         29.5,
+         115.0
+        ],
+        [
+         32.0,
+         110.0
+        ],
+        [
+         34.0,
+         110.0
+        ],
+        [
+         35.1,
+         160.0
+        ],
+        [
+         36.5,
+         110.0
+        ],
+        [
+         40.0,
+         140.0
+        ],
+        [
+         42.0,
+         110.0
+        ],
+        [
+         50.0,
+         110.0
+        ],
+        [
+         54.3,
+         150.0
+        ],
+        [
+         57.9,
+         130.0
+        ],
+        [
+         60.0,
+         110.0
+        ]
+       ]
+      },
+      {
+       "label": "As deposited",
+       "points": [
+        [
+         20.0,
+         60.0
+        ],
+        [
+         22.0,
+         50.0
+        ],
+        [
+         24.0,
+         70.0
+        ],
+        [
+         26.0,
+         40.0
+        ],
+        [
+         28.0,
+         65.0
+        ],
+        [
+         30.0,
+         45.0
+        ],
+        [
+         32.0,
+         75.0
+        ],
+        [
+         34.0,
+         45.0
+        ],
+        [
+         36.0,
+         70.0
+        ],
+        [
+         38.0,
+         50.0
+        ],
+        [
+         40.0,
+         75.0
+        ],
+        [
+         43.0,
+         65.0
+        ],
+        [
+         46.0,
+         50.0
+        ],
+        [
+         50.0,
+         60.0
+        ],
+        [
+         54.0,
+         55.0
+        ],
+        [
+         58.0,
+         60.0
+        ],
+        [
+         60.0,
+         50.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "film_thickness": "20 nm"
+     }
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "deposition_temperature",
+      "unit": "\u00b0C",
+      "log": false
+     },
+     "y": {
+      "quantity": "2\u0398",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "series_axis": "diffraction peak",
+     "series": [
+      {
+       "label": "RuO2 (110)",
+       "points": [
+        [
+         430.0,
+         28.0
+        ],
+        [
+         850.0,
+         28.0
+        ]
+       ]
+      },
+      {
+       "label": "RuO2 (101)",
+       "points": [
+        [
+         430.0,
+         35.3
+        ],
+        [
+         850.0,
+         35.3
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "atmosphere": "helium",
+      "film_thickness": "20 nm"
+     }
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "deposition_temperature",
+      "unit": "\u00b0C",
+      "log": false
+     },
+     "y": {
+      "quantity": "2\u0398",
+      "unit": "\u00b0",
+      "log": false
+     },
+     "series_axis": "diffraction peak",
+     "series": [
+      {
+       "label": "RuO2 (110)",
+       "points": [
+        [
+         430.0,
+         28.0
+        ],
+        [
+         850.0,
+         28.0
+        ]
+       ]
+      },
+      {
+       "label": "RuO2 (101)",
+       "points": [
+        [
+         430.0,
+         35.3
+        ],
+        [
+         850.0,
+         35.3
+        ]
+       ]
+      }
+     ],
+     "conditions": {
+      "atmosphere": "air",
+      "film_thickness": "20 nm"
+     }
+    }
+   ]
+  },
+  {
+   "figure": "4",
+   "image": "figures/fig_4.png",
+   "caption": "Figure 4: a) and b) Synchrotron-based 2D GIWAXS patterns of a 50 nm as-deposited film and of the same film annealed in helium. c) Azimuthal integration of the GIWAXS data for the two films . d) and e) PDFs of the as-deposited and the annealed films, resulting from the grazing incidence total X-ray scattering patterns shown in Figure S4 . The respective zoomed images are provided in the left side of the plots.",
+   "source": "measured",
+   "panel_source": {
+    "c": "measured",
+    "d": "measured",
+    "e": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "q_r",
+      "unit": "nm^-1",
+      "log": false
+     },
+     "y": {
+      "quantity": "q_z",
+      "unit": "nm^-1",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "As deposited",
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         20,
+         0
+        ],
+        [
+         20,
+         40
+        ],
+        [
+         0,
+         40
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "q_r",
+      "unit": "nm^-1",
+      "log": false
+     },
+     "y": {
+      "quantity": "q_z",
+      "unit": "nm^-1",
+      "log": false
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "Annealed",
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         20,
+         0
+        ],
+        [
+         20,
+         40
+        ],
+        [
+         0,
+         40
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "q",
+      "unit": "nm^-1",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "sample condition",
+     "series": [
+      {
+       "label": "Annealed",
+       "points": [
+        [
+         20.0,
+         9.8
+        ],
+        [
+         24.6,
+         6.9
+        ],
+        [
+         26.0,
+         1.2
+        ],
+        [
+         28.0,
+         3.4
+        ],
+        [
+         32.0,
+         1.2
+        ],
+        [
+         37.1,
+         8.0
+        ],
+        [
+         39.4,
+         4.4
+        ],
+        [
+         44.1,
+         3.0
+        ],
+        [
+         46.5,
+         3.1
+        ],
+        [
+         50.0,
+         1.4
+        ],
+        [
+         54.0,
+         1.5
+        ]
+       ]
+      },
+      {
+       "label": "As deposited",
+       "points": [
+        [
+         20.0,
+         1.0
+        ],
+        [
+         25.0,
+         1.1
+        ],
+        [
+         27.0,
+         1.8
+        ],
+        [
+         28.5,
+         2.5
+        ],
+        [
+         30.5,
+         3.4
+        ],
+        [
+         32.5,
+         1.5
+        ],
+        [
+         35.0,
+         1.2
+        ],
+        [
+         40.0,
+         1.1
+        ],
+        [
+         45.0,
+         1.0
+        ],
+        [
+         50.0,
+         1.1
+        ],
+        [
+         54.0,
+         1.2
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "d",
+     "x": {
+      "quantity": "spatial_coordinate",
+      "unit": "\u00c5",
+      "log": false
+     },
+     "y": {
+      "quantity": "G(r)",
+      "unit": "\u00c5^-2",
+      "log": false
+     },
+     "series_axis": "data type",
+     "series": [
+      {
+       "label": "As deposited",
+       "points": [
+        [
+         1.0,
+         -0.2
+        ],
+        [
+         2.0,
+         0.0
+        ],
+        [
+         2.68,
+         3.1
+        ],
+        [
+         3.5,
+         0.2
+        ],
+        [
+         4.5,
+         2.2
+        ],
+        [
+         7.0,
+         1.8
+        ],
+        [
+         8.2,
+         1.2
+        ],
+        [
+         11.0,
+         0.5
+        ],
+        [
+         14.7,
+         1.1
+        ],
+        [
+         20.0,
+         0.6
+        ],
+        [
+         25.0,
+         0.3
+        ],
+        [
+         30.0,
+         0.1
+        ]
+       ]
+      },
+      {
+       "label": "Fit",
+       "points": [
+        [
+         1.0,
+         -0.3
+        ],
+        [
+         2.68,
+         3.3
+        ],
+        [
+         3.5,
+         0.1
+        ],
+        [
+         4.5,
+         2.1
+        ],
+        [
+         7.0,
+         1.7
+        ],
+        [
+         8.2,
+         1.1
+        ],
+        [
+         11.0,
+         0.4
+        ],
+        [
+         14.7,
+         1.0
+        ],
+        [
+         20.0,
+         0.5
+        ],
+        [
+         25.0,
+         0.2
+        ],
+        [
+         30.0,
+         0.1
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "e",
+     "x": {
+      "quantity": "spatial_coordinate",
+      "unit": "\u00c5",
+      "log": false
+     },
+     "y": {
+      "quantity": "G(r)",
+      "unit": "\u00c5^-2",
+      "log": false
+     },
+     "series_axis": "data type",
+     "series": [
+      {
+       "label": "Annealed",
+       "points": [
+        [
+         2.0,
+         3.5
+        ],
+        [
+         3.5,
+         11.5
+        ],
+        [
+         4.5,
+         3.5
+        ],
+        [
+         5.5,
+         7.8
+        ],
+        [
+         7.2,
+         8.5
+        ],
+        [
+         8.4,
+         7.6
+        ],
+        [
+         10.5,
+         9.8
+        ],
+        [
+         13.8,
+         8.4
+        ],
+        [
+         16.0,
+         4.1
+        ],
+        [
+         20.5,
+         5.6
+        ],
+        [
+         25.8,
+         5.1
+        ],
+        [
+         30.0,
+         1.8
+        ]
+       ]
+      },
+      {
+       "label": "Fit",
+       "points": [
+        [
+         2.0,
+         3.2
+        ],
+        [
+         3.5,
+         11.2
+        ],
+        [
+         4.5,
+         3.1
+        ],
+        [
+         5.5,
+         7.5
+        ],
+        [
+         7.2,
+         8.2
+        ],
+        [
+         8.4,
+         7.2
+        ],
+        [
+         10.5,
+         9.5
+        ],
+        [
+         13.8,
+         8.1
+        ],
+        [
+         16.0,
+         3.9
+        ],
+        [
+         20.5,
+         5.4
+        ],
+        [
+         25.8,
+         4.8
+        ],
+        [
+         30.0,
+         1.6
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
     }
    ]
   },
@@ -228,6 +1408,11 @@
    "image": "figures/fig_5.png",
    "caption": "Figure 5: a) Thickness against the number of ALD cycles for the methanol, ethanol, 1-propanol, and 2-propanol (isopropanol) based processes, as obtained from XRR. b) and c) Saturation curves for the RuO4 surface reaction and the alcohol surface reaction, respectively, for these different processes. d) 3D-AFM images obtained for the methanol, ethanol, 2-propanol, and 1-propanol based processes (from top to bottom respectively) after 85, 70, 50, and 50 ALD cycles, respectively. Note the different scales along the z-axis (height).",
    "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured"
+   },
    "panels": [
     {
      "panel": "a",
@@ -249,10 +1434,6 @@
         [
          15,
          1.7
-        ],
-        [
-         20,
-         2.2
         ],
         [
          25,
@@ -282,10 +1463,6 @@
         [
          15,
          2.4
-        ],
-        [
-         20,
-         2.8
         ],
         [
          25,
@@ -407,7 +1584,7 @@
        "points": [
         [
          10,
-         1.77
+         1.78
         ],
         [
          25,
@@ -462,11 +1639,11 @@
        "points": [
         [
          30,
-         1.21
+         1.22
         ],
         [
          40,
-         1.36
+         1.37
         ],
         [
          50,
@@ -483,11 +1660,622 @@
         ],
         [
          40,
-         2.01
+         2.02
         ],
         [
          50,
-         2.05
+         2.06
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
+  },
+  {
+   "figure": "6",
+   "image": "figures/fig_6.png",
+   "caption": "Figure 6: a) , b) In situ mass spectrometry data obtained during successive methanol pulses and successive RuO4 pulses, respectively c) In situ FTIR difference spectra for the methanol (blue) and RuO4 half cycles (red). The methanol difference spectrum is",
+   "source": "measured",
+   "panel_source": {
+    "a": "measured",
+    "b": "measured",
+    "c": "measured"
+   },
+   "panels": [
+    {
+     "panel": "a",
+     "x": {
+      "quantity": "time",
+      "unit": "s",
+      "log": false
+     },
+     "y": {
+      "quantity": "Normalised intensity (a.u.)",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "m/z",
+     "series": [
+      {
+       "label": "15",
+       "points": [
+        [
+         20,
+         0.02
+        ],
+        [
+         30,
+         0.05
+        ],
+        [
+         35,
+         0.98
+        ],
+        [
+         52,
+         0.98
+        ],
+        [
+         55,
+         0.2
+        ],
+        [
+         60,
+         0.08
+        ],
+        [
+         80,
+         0.02
+        ],
+        [
+         95,
+         0.98
+        ],
+        [
+         115,
+         0.98
+        ],
+        [
+         120,
+         0.18
+        ],
+        [
+         140,
+         0.02
+        ],
+        [
+         160,
+         0.98
+        ],
+        [
+         185,
+         0.98
+        ],
+        [
+         190,
+         0.18
+        ],
+        [
+         220,
+         0.01
+        ]
+       ]
+      },
+      {
+       "label": "18",
+       "points": [
+        [
+         20,
+         0.0
+        ],
+        [
+         30,
+         0.05
+        ],
+        [
+         35,
+         0.98
+        ],
+        [
+         40,
+         0.95
+        ],
+        [
+         52,
+         0.9
+        ],
+        [
+         55,
+         0.2
+        ],
+        [
+         80,
+         0.02
+        ],
+        [
+         95,
+         0.88
+        ],
+        [
+         115,
+         0.86
+        ],
+        [
+         120,
+         0.18
+        ],
+        [
+         140,
+         0.02
+        ],
+        [
+         160,
+         0.85
+        ],
+        [
+         185,
+         0.83
+        ],
+        [
+         190,
+         0.18
+        ],
+        [
+         220,
+         0.01
+        ]
+       ]
+      },
+      {
+       "label": "44",
+       "points": [
+        [
+         20,
+         0.01
+        ],
+        [
+         30,
+         0.05
+        ],
+        [
+         35,
+         0.96
+        ],
+        [
+         45,
+         0.92
+        ],
+        [
+         52,
+         0.92
+        ],
+        [
+         60,
+         0.15
+        ],
+        [
+         80,
+         0.05
+        ],
+        [
+         95,
+         0.94
+        ],
+        [
+         115,
+         0.92
+        ],
+        [
+         120,
+         0.15
+        ],
+        [
+         140,
+         0.05
+        ],
+        [
+         160,
+         0.9
+        ],
+        [
+         185,
+         0.91
+        ],
+        [
+         190,
+         0.15
+        ],
+        [
+         220,
+         0.02
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "time",
+      "unit": "s",
+      "log": false
+     },
+     "y": {
+      "quantity": "Normalised intensity (a.u.)",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "m/z",
+     "series": [
+      {
+       "label": "32",
+       "points": [
+        [
+         60,
+         0.01
+        ],
+        [
+         70,
+         0.02
+        ],
+        [
+         77,
+         0.95
+        ],
+        [
+         80,
+         0.72
+        ],
+        [
+         115,
+         0.7
+        ],
+        [
+         118,
+         0.1
+        ],
+        [
+         130,
+         0.01
+        ],
+        [
+         156,
+         0.95
+        ],
+        [
+         160,
+         0.72
+        ],
+        [
+         195,
+         0.7
+        ],
+        [
+         198,
+         0.08
+        ],
+        [
+         236,
+         0.92
+        ],
+        [
+         240,
+         0.72
+        ],
+        [
+         275,
+         0.7
+        ],
+        [
+         278,
+         0.08
+        ],
+        [
+         300,
+         0.01
+        ]
+       ]
+      },
+      {
+       "label": "44",
+       "points": [
+        [
+         60,
+         0.01
+        ],
+        [
+         77,
+         0.95
+        ],
+        [
+         80,
+         0.65
+        ],
+        [
+         115,
+         0.6
+        ],
+        [
+         118,
+         0.08
+        ],
+        [
+         130,
+         0.01
+        ],
+        [
+         156,
+         0.95
+        ],
+        [
+         160,
+         0.63
+        ],
+        [
+         195,
+         0.59
+        ],
+        [
+         198,
+         0.05
+        ],
+        [
+         236,
+         0.92
+        ],
+        [
+         240,
+         0.62
+        ],
+        [
+         275,
+         0.58
+        ],
+        [
+         278,
+         0.05
+        ],
+        [
+         300,
+         0.01
+        ]
+       ]
+      },
+      {
+       "label": "81",
+       "points": [
+        [
+         60,
+         0.01
+        ],
+        [
+         77,
+         0.9
+        ],
+        [
+         82,
+         0.85
+        ],
+        [
+         85,
+         0.73
+        ],
+        [
+         115,
+         0.68
+        ],
+        [
+         118,
+         0.08
+        ],
+        [
+         130,
+         0.01
+        ],
+        [
+         156,
+         0.88
+        ],
+        [
+         165,
+         0.7
+        ],
+        [
+         195,
+         0.65
+        ],
+        [
+         198,
+         0.05
+        ],
+        [
+         236,
+         0.85
+        ],
+        [
+         245,
+         0.68
+        ],
+        [
+         275,
+         0.63
+        ],
+        [
+         278,
+         0.05
+        ],
+        [
+         300,
+         0.01
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "c",
+     "x": {
+      "quantity": "wavenumber",
+      "unit": "cm^-1",
+      "log": false
+     },
+     "y": {
+      "quantity": "Transmittance (a.u.)",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "pulse sequence",
+     "series": [
+      {
+       "label": "After RuO4 pulse",
+       "points": [
+        [
+         5000,
+         0.6
+        ],
+        [
+         4000,
+         0.65
+        ],
+        [
+         3000,
+         0.7
+        ],
+        [
+         2500,
+         0.75
+        ],
+        [
+         2000,
+         0.48
+        ],
+        [
+         1900,
+         0.72
+        ],
+        [
+         1000,
+         0.82
+        ],
+        [
+         700,
+         0.8
+        ]
+       ]
+      },
+      {
+       "label": "After methanol pulse",
+       "points": [
+        [
+         5000,
+         0.17
+        ],
+        [
+         4000,
+         0.18
+        ],
+        [
+         3000,
+         0.19
+        ],
+        [
+         2500,
+         0.2
+        ],
+        [
+         2000,
+         0.33
+        ],
+        [
+         1900,
+         0.2
+        ],
+        [
+         1000,
+         0.18
+        ],
+        [
+         700,
+         0.15
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    },
+    {
+     "panel": "d",
+     "x": {
+      "quantity": "binding_energy",
+      "unit": "eV",
+      "log": false
+     },
+     "y": {
+      "quantity": "Intensity (a.u.)",
+      "unit": "a.u.",
+      "log": false
+     },
+     "series_axis": "surface termination",
+     "series": [
+      {
+       "label": "Ending with RuO4",
+       "points": [
+        [
+         537,
+         175
+        ],
+        [
+         534,
+         190
+        ],
+        [
+         532,
+         350
+        ],
+        [
+         530,
+         570
+        ],
+        [
+         529,
+         320
+        ],
+        [
+         526,
+         145
+        ]
+       ]
+      },
+      {
+       "label": "Ending with methanol",
+       "points": [
+        [
+         537,
+         165
+        ],
+        [
+         534,
+         180
+        ],
+        [
+         532,
+         300
+        ],
+        [
+         530.1,
+         480
+        ],
+        [
+         529,
+         280
+        ],
+        [
+         526,
+         135
         ]
        ]
       }
@@ -498,7 +2286,7 @@
   }
  ],
  "_tokens": {
-  "in": 4060,
-  "out": 1982
+  "in": 13492,
+  "out": 7779
  }
 }

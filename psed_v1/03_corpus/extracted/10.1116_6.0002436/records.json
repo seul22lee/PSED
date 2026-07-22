@@ -4,7 +4,7 @@
   "material": "MoOx",
   "material_raw": "Average GPC",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "measured property",
   "series_value": "Average GPC",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -46,7 +46,8 @@
    ]
   ],
   "controlled": {
-   "deposition_temperature": "150 \u00b0C"
+   "temperature": "150 \u00b0C",
+   "purge_time": "20 s"
   },
   "chemistry": {
    "precursors": [
@@ -72,21 +73,21 @@
   "material": "MoOx",
   "material_raw": "SUP",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "measured property",
   "series_value": "SUP",
   "series_kind": "categorical",
   "series_value_num": null,
   "series_unit": null,
   "measurand": {
-   "quantity": "SUP",
-   "unit": "%"
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle"
   },
   "coordinate": "pulse_time",
   "coordinate_unit": "s",
   "points": [
    [
     0.0,
-    14.0
+    13.5
    ],
    [
     5.0,
@@ -102,7 +103,7 @@
    ],
    [
     30.0,
-    1.0
+    0.8
    ],
    [
     40.0,
@@ -114,7 +115,8 @@
    ]
   ],
   "controlled": {
-   "deposition_temperature": "150 \u00b0C"
+   "temperature": "150 \u00b0C",
+   "purge_time": "20 s"
   },
   "chemistry": {
    "precursors": [
@@ -130,7 +132,7 @@
    "figure": "Fig 1",
    "figure_number": "1",
    "fig_docling_index": "17",
-   "panel": "",
+   "panel": "b",
    "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 \u00b0C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s pu",
    "extractor": "vision-llm"
   }
@@ -140,7 +142,7 @@
   "material": "MoOx",
   "material_raw": "Average GPC",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "measurement location",
   "series_value": "Average GPC",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -154,7 +156,7 @@
   "points": [
    [
     100,
-    1.26
+    1.25
    ],
    [
     125,
@@ -170,11 +172,11 @@
    ],
    [
     200,
-    1.6
+    1.59
    ],
    [
     225,
-    1.69
+    1.68
    ],
    [
     250,
@@ -185,7 +187,9 @@
     2.38
    ]
   ],
-  "controlled": {},
+  "controlled": {
+   "O3 pulse time": "40 s"
+  },
   "chemistry": {
    "precursors": [
     "Mo(iPrCp)2H2"
@@ -210,7 +214,7 @@
   "material": "MoOx",
   "material_raw": "Inlet GPC",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "measurement location",
   "series_value": "Inlet GPC",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -255,7 +259,9 @@
     2.6
    ]
   ],
-  "controlled": {},
+  "controlled": {
+   "O3 pulse time": "40 s"
+  },
   "chemistry": {
    "precursors": [
     "Mo(iPrCp)2H2"
@@ -280,7 +286,7 @@
   "material": "MoOx",
   "material_raw": "Middle GPC",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "measurement location",
   "series_value": "Middle GPC",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -294,15 +300,15 @@
   "points": [
    [
     100,
-    1.21
+    1.2
    ],
    [
     125,
-    1.39
+    1.4
    ],
    [
     150,
-    1.52
+    1.51
    ],
    [
     175,
@@ -310,11 +316,11 @@
    ],
    [
     200,
-    1.62
+    1.61
    ],
    [
     225,
-    1.7
+    1.69
    ],
    [
     250,
@@ -325,7 +331,9 @@
     2.53
    ]
   ],
-  "controlled": {},
+  "controlled": {
+   "O3 pulse time": "40 s"
+  },
   "chemistry": {
    "precursors": [
     "Mo(iPrCp)2H2"
@@ -350,7 +358,7 @@
   "material": "MoOx",
   "material_raw": "Outlet GPC",
   "phase": null,
-  "series_axis": null,
+  "series_axis": "measurement location",
   "series_value": "Outlet GPC",
   "series_kind": "categorical",
   "series_value_num": null,
@@ -364,7 +372,7 @@
   "points": [
    [
     100,
-    1.26
+    1.25
    ],
    [
     125,
@@ -395,7 +403,9 @@
     2.02
    ]
   ],
-  "controlled": {},
+  "controlled": {
+   "O3 pulse time": "40 s"
+  },
   "chemistry": {
    "precursors": [
     "Mo(iPrCp)2H2"
@@ -434,38 +444,40 @@
   "points": [
    [
     100,
-    4.0
-   ],
-   [
-    125,
-    1.5
-   ],
-   [
-    150,
-    4.2
-   ],
-   [
-    175,
     3.8
    ],
    [
+    125,
+    1.6
+   ],
+   [
+    150,
+    4.1
+   ],
+   [
+    175,
+    3.5
+   ],
+   [
     200,
-    5.0
+    5.1
    ],
    [
     225,
-    5.8
+    5.7
    ],
    [
     250,
-    11.2
+    11.3
    ],
    [
     300,
-    13.5
+    13.4
    ]
   ],
-  "controlled": {},
+  "controlled": {
+   "O3 pulse time": "40 s"
+  },
   "chemistry": {
    "precursors": [
     "Mo(iPrCp)2H2"
@@ -482,6 +494,1718 @@
    "fig_docling_index": "18",
    "panel": "b",
    "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "200 \u00b0C, 350 \u00b0C Annealed",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "200 \u00b0C, 350 \u00b0C Annealed",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "A.U."
+  },
+  "coordinate": "2\u0398",
+  "coordinate_unit": "Degrees",
+  "points": [
+   [
+    24.0,
+    4.1
+   ],
+   [
+    24.5,
+    4.1
+   ],
+   [
+    25.0,
+    4.15
+   ],
+   [
+    25.2,
+    4.5
+   ],
+   [
+    25.45,
+    5.4
+   ],
+   [
+    25.7,
+    4.5
+   ],
+   [
+    26.0,
+    4.1
+   ],
+   [
+    26.5,
+    3.9
+   ],
+   [
+    27.0,
+    3.8
+   ],
+   [
+    27.5,
+    3.7
+   ],
+   [
+    28.0,
+    3.6
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "As-Deposited 200 \u00b0C",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "As-Deposited 200 \u00b0C",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "A.U."
+  },
+  "coordinate": "2\u0398",
+  "coordinate_unit": "Degrees",
+  "points": [
+   [
+    24.0,
+    3.0
+   ],
+   [
+    24.5,
+    3.0
+   ],
+   [
+    25.0,
+    3.0
+   ],
+   [
+    25.5,
+    2.95
+   ],
+   [
+    26.0,
+    2.95
+   ],
+   [
+    26.5,
+    2.9
+   ],
+   [
+    27.0,
+    2.9
+   ],
+   [
+    27.5,
+    2.85
+   ],
+   [
+    28.0,
+    2.8
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "As-Deposited 150 \u00b0C",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "As-Deposited 150 \u00b0C",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "A.U."
+  },
+  "coordinate": "2\u0398",
+  "coordinate_unit": "Degrees",
+  "points": [
+   [
+    24.0,
+    2.0
+   ],
+   [
+    24.5,
+    2.0
+   ],
+   [
+    25.0,
+    2.0
+   ],
+   [
+    25.5,
+    1.95
+   ],
+   [
+    26.0,
+    1.95
+   ],
+   [
+    26.5,
+    1.9
+   ],
+   [
+    27.0,
+    1.9
+   ],
+   [
+    27.5,
+    1.85
+   ],
+   [
+    28.0,
+    1.8
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "As-Deposited 100 \u00b0C",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "As-Deposited 100 \u00b0C",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "A.U."
+  },
+  "coordinate": "2\u0398",
+  "coordinate_unit": "Degrees",
+  "points": [
+   [
+    24.0,
+    1.0
+   ],
+   [
+    24.5,
+    1.0
+   ],
+   [
+    25.0,
+    0.95
+   ],
+   [
+    25.5,
+    0.9
+   ],
+   [
+    26.0,
+    0.9
+   ],
+   [
+    26.5,
+    0.95
+   ],
+   [
+    27.0,
+    0.9
+   ],
+   [
+    27.5,
+    0.9
+   ],
+   [
+    28.0,
+    0.85
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "200\u00b0C Annealed",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "200\u00b0C Annealed",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    238.0,
+    71.0
+   ],
+   [
+    237.0,
+    71.5
+   ],
+   [
+    236.2,
+    77.0
+   ],
+   [
+    235.5,
+    88.0
+   ],
+   [
+    234.7,
+    76.0
+   ],
+   [
+    233.8,
+    72.0
+   ],
+   [
+    233.1,
+    78.0
+   ],
+   [
+    232.4,
+    94.0
+   ],
+   [
+    231.6,
+    78.0
+   ],
+   [
+    230.5,
+    71.5
+   ],
+   [
+    229.0,
+    71.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "200\u00b0C",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "200\u00b0C",
+  "series_kind": "numeric_sweep",
+  "series_value_num": 200.0,
+  "series_unit": "\u00b0C",
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    238.0,
+    47.0
+   ],
+   [
+    237.0,
+    47.5
+   ],
+   [
+    236.4,
+    53.0
+   ],
+   [
+    235.7,
+    62.0
+   ],
+   [
+    234.8,
+    51.0
+   ],
+   [
+    233.9,
+    47.5
+   ],
+   [
+    233.2,
+    53.0
+   ],
+   [
+    232.5,
+    68.0
+   ],
+   [
+    231.6,
+    52.0
+   ],
+   [
+    230.5,
+    47.5
+   ],
+   [
+    229.0,
+    47.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "150\u00b0C",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "150\u00b0C",
+  "series_kind": "numeric_sweep",
+  "series_value_num": 150.0,
+  "series_unit": "\u00b0C",
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    238.0,
+    24.0
+   ],
+   [
+    237.0,
+    24.5
+   ],
+   [
+    236.3,
+    29.0
+   ],
+   [
+    235.5,
+    38.0
+   ],
+   [
+    234.6,
+    28.0
+   ],
+   [
+    233.8,
+    24.5
+   ],
+   [
+    233.1,
+    29.0
+   ],
+   [
+    232.4,
+    43.0
+   ],
+   [
+    231.5,
+    28.0
+   ],
+   [
+    230.5,
+    24.5
+   ],
+   [
+    229.0,
+    24.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "100\u00b0C",
+  "phase": null,
+  "series_axis": "sample condition",
+  "series_value": "100\u00b0C",
+  "series_kind": "numeric_sweep",
+  "series_value_num": 100.0,
+  "series_unit": "\u00b0C",
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    238.0,
+    2.0
+   ],
+   [
+    237.0,
+    2.5
+   ],
+   [
+    236.2,
+    6.0
+   ],
+   [
+    235.4,
+    13.0
+   ],
+   [
+    234.5,
+    5.0
+   ],
+   [
+    233.7,
+    2.5
+   ],
+   [
+    233.0,
+    5.5
+   ],
+   [
+    232.3,
+    17.0
+   ],
+   [
+    231.4,
+    5.0
+   ],
+   [
+    230.5,
+    2.5
+   ],
+   [
+    229.0,
+    2.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "100\u00b0C - O 1s A",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "100\u00b0C - O 1s A",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    0.0
+   ],
+   [
+    534.0,
+    0.0
+   ],
+   [
+    533.0,
+    0.02
+   ],
+   [
+    532.0,
+    0.12
+   ],
+   [
+    531.2,
+    0.53
+   ],
+   [
+    530.3,
+    2.38
+   ],
+   [
+    529.5,
+    0.78
+   ],
+   [
+    528.5,
+    0.08
+   ],
+   [
+    527.5,
+    0.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "100\u00b0C - O 1s C",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "100\u00b0C - O 1s C",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    0.0
+   ],
+   [
+    533.5,
+    0.03
+   ],
+   [
+    532.1,
+    0.28
+   ],
+   [
+    530.8,
+    0.04
+   ],
+   [
+    527.5,
+    0.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "150\u00b0C - O 1s A",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "150\u00b0C - O 1s A",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    3.0
+   ],
+   [
+    534.0,
+    3.0
+   ],
+   [
+    533.0,
+    3.02
+   ],
+   [
+    532.0,
+    3.15
+   ],
+   [
+    531.2,
+    3.65
+   ],
+   [
+    530.35,
+    5.51
+   ],
+   [
+    529.5,
+    3.82
+   ],
+   [
+    528.5,
+    3.08
+   ],
+   [
+    527.5,
+    3.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "150\u00b0C - O 1s C",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "150\u00b0C - O 1s C",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    3.0
+   ],
+   [
+    533.5,
+    3.03
+   ],
+   [
+    532.05,
+    3.32
+   ],
+   [
+    530.6,
+    3.04
+   ],
+   [
+    527.5,
+    3.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "200\u00b0C - O 1s A",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "200\u00b0C - O 1s A",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    6.0
+   ],
+   [
+    534.0,
+    6.0
+   ],
+   [
+    533.0,
+    6.02
+   ],
+   [
+    532.0,
+    6.12
+   ],
+   [
+    531.2,
+    6.72
+   ],
+   [
+    530.3,
+    8.68
+   ],
+   [
+    529.5,
+    6.85
+   ],
+   [
+    528.5,
+    6.08
+   ],
+   [
+    527.5,
+    6.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "200\u00b0C - O 1s C",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "200\u00b0C - O 1s C",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    6.0
+   ],
+   [
+    533.5,
+    6.01
+   ],
+   [
+    532.0,
+    6.08
+   ],
+   [
+    530.5,
+    6.01
+   ],
+   [
+    527.5,
+    6.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "200\u00b0C Annealed - O 1s A",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "200\u00b0C Annealed - O 1s A",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    9.0
+   ],
+   [
+    534.0,
+    9.0
+   ],
+   [
+    533.0,
+    9.05
+   ],
+   [
+    532.0,
+    9.25
+   ],
+   [
+    531.2,
+    10.05
+   ],
+   [
+    530.3,
+    11.95
+   ],
+   [
+    529.5,
+    9.92
+   ],
+   [
+    528.5,
+    9.08
+   ],
+   [
+    527.5,
+    9.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "200\u00b0C Annealed - O 1s C",
+  "phase": null,
+  "series_axis": "sample condition and peak component",
+  "series_value": "200\u00b0C Annealed - O 1s C",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "A.U."
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_unit": "eV",
+  "points": [
+   [
+    535.0,
+    9.0
+   ],
+   [
+    533.5,
+    9.15
+   ],
+   [
+    532.05,
+    10.22
+   ],
+   [
+    530.8,
+    9.2
+   ],
+   [
+    527.5,
+    9.0
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "iPrCp-Mo As dep",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "iPrCp-Mo As dep",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    4000,
+    0.52
+   ],
+   [
+    3730,
+    0.65
+   ],
+   [
+    3620,
+    0.59
+   ],
+   [
+    3500,
+    0.65
+   ],
+   [
+    3100,
+    0.58
+   ],
+   [
+    2950,
+    0.59
+   ],
+   [
+    2350,
+    0.62
+   ],
+   [
+    1780,
+    0.55
+   ],
+   [
+    1700,
+    0.55
+   ],
+   [
+    1550,
+    0.91
+   ],
+   [
+    1400,
+    0.53
+   ],
+   [
+    1200,
+    0.43
+   ],
+   [
+    1100,
+    0.5
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "iPrCp-Mo After anneal",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "iPrCp-Mo After anneal",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    4000,
+    0.38
+   ],
+   [
+    3730,
+    0.42
+   ],
+   [
+    2350,
+    0.45
+   ],
+   [
+    1530,
+    0.44
+   ],
+   [
+    1250,
+    0.42
+   ],
+   [
+    1100,
+    0.37
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "tBuN-Mo As dep",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "tBuN-Mo As dep",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    4000,
+    0.28
+   ],
+   [
+    3400,
+    0.34
+   ],
+   [
+    2950,
+    0.33
+   ],
+   [
+    2350,
+    0.24
+   ],
+   [
+    1700,
+    0.32
+   ],
+   [
+    1600,
+    0.29
+   ],
+   [
+    1430,
+    0.32
+   ],
+   [
+    1220,
+    0.29
+   ],
+   [
+    1100,
+    0.25
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "tBuN-Mo After anneal",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "tBuN-Mo After anneal",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    4000,
+    0.15
+   ],
+   [
+    3700,
+    0.18
+   ],
+   [
+    3500,
+    0.21
+   ],
+   [
+    2350,
+    0.13
+   ],
+   [
+    1600,
+    0.17
+   ],
+   [
+    1250,
+    0.08
+   ],
+   [
+    1230,
+    0.18
+   ],
+   [
+    1100,
+    0.12
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "iPrCp-Mo As dep",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "iPrCp-Mo As dep",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    1100,
+    0.8
+   ],
+   [
+    1000,
+    0.82
+   ],
+   [
+    950,
+    0.78
+   ],
+   [
+    700,
+    0.85
+   ],
+   [
+    600,
+    0.78
+   ],
+   [
+    500,
+    0.8
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "iPrCp-Mo After anneal",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "iPrCp-Mo After anneal",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    1050,
+    0.48
+   ],
+   [
+    1005,
+    0.65
+   ],
+   [
+    980,
+    0.48
+   ],
+   [
+    825,
+    0.85
+   ],
+   [
+    700,
+    0.48
+   ],
+   [
+    550,
+    0.82
+   ],
+   [
+    450,
+    0.5
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "tBuN-Mo As dep",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "tBuN-Mo As dep",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    1100,
+    0.2
+   ],
+   [
+    980,
+    0.22
+   ],
+   [
+    800,
+    0.24
+   ],
+   [
+    650,
+    0.23
+   ],
+   [
+    560,
+    0.22
+   ],
+   [
+    450,
+    0.19
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm"
+  }
+ },
+ {
+  "doi": "10.1116_6.0002436",
+  "material": "MoOx",
+  "material_raw": "tBuN-Mo After anneal",
+  "phase": null,
+  "series_axis": "precursor and state",
+  "series_value": "tBuN-Mo After anneal",
+  "series_kind": "categorical",
+  "series_value_num": null,
+  "series_unit": null,
+  "measurand": {
+   "quantity": "absorbance",
+   "unit": "a.u."
+  },
+  "coordinate": "wavenumber",
+  "coordinate_unit": "cm^-1",
+  "points": [
+   [
+    1100,
+    0.05
+   ],
+   [
+    1005,
+    0.22
+   ],
+   [
+    980,
+    0.05
+   ],
+   [
+    825,
+    0.41
+   ],
+   [
+    700,
+    0.05
+   ],
+   [
+    550,
+    0.42
+   ],
+   [
+    500,
+    0.3
+   ]
+  ],
+  "controlled": {},
+  "chemistry": {
+   "precursors": [
+    "Mo(iPrCp)2H2"
+   ],
+   "coreactants": [
+    "O3"
+   ]
+  },
+  "source": "measured",
+  "study_type": "experimental",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
    "extractor": "vision-llm"
   }
  }

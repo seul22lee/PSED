@@ -12,7 +12,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "0706_pipeline"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "02_extraction"))
 from channel_model import channelModel, PARAMS
 import kb_bridge
 

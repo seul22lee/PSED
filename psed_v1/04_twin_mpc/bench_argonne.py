@@ -24,7 +24,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).parent
-sys.path.insert(0, str(HERE.parent / "0706_pipeline"))
+sys.path.insert(0, str(HERE.parent / "02_extraction"))
 from saturation_model import BENCHMARK, SaturationModel, Pathway
 import kb_bridge
 

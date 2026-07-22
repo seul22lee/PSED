@@ -15,7 +15,7 @@ control (later milestone).
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "0706_pipeline"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "02_extraction"))
 import kb_service  # noqa: E402
 
 # ---- unit converters: KB unit -> channelModel SI ----

@@ -14,54 +14,165 @@
  "temperature_window_C": null,
  "gpc_nm": null,
  "data": {
-  "film_property_vs_condition": {
+  "gpc_vs_temperature": {
    "present": true,
-   "where": "F6"
-  },
-  "xrd_or_spectrum": {
-   "present": true,
-   "where": "F7"
-  },
-  "gpc_vs_cycles": {
-   "present": true,
-   "where": "F13"
+   "where": [
+    "F10",
+    "F14b"
+   ]
   },
   "gpc_vs_dose_saturation": {
    "present": true,
-   "where": "F14a"
+   "where": [
+    "F14a",
+    "F14c"
+   ]
   },
-  "gpc_vs_temperature": {
+  "gpc_vs_cycles": {
    "present": true,
-   "where": "F14b"
+   "where": [
+    "F13"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F6a",
+    "F6b",
+    "F6c",
+    "F6d",
+    "F8",
+    "F9",
+    "F12"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F7",
+    "F15"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F3"
+   ]
   }
  },
  "drill": [
+  {
+   "where": "F3",
+   "type": "other",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "hot-wire temperature versus applied power plot"
+  },
+  {
+   "where": "F6a",
+   "type": "film_property_vs_condition",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "film growth versus hot-wire temperature"
+  },
+  {
+   "where": "F6b",
+   "type": "film_property_vs_condition",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "film growth versus H2 flow rate"
+  },
+  {
+   "where": "F6c",
+   "type": "film_property_vs_condition",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "film growth versus WF6 flow rate"
+  },
+  {
+   "where": "F6d",
+   "type": "film_property_vs_condition",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "film growth versus H2 carrier gas flow rate"
+  },
+  {
+   "where": "F7",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS depth profile of W film grown at 0.01 mbar"
+  },
+  {
+   "where": "F8",
+   "type": "film_property_vs_condition",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "CVD growth rate versus process pressure"
+  },
+  {
+   "where": "F9",
+   "type": "film_property_vs_condition",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "in-situ SE monitoring of film thickness during individual pulses"
+  },
+  {
+   "where": "F10",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "influence of pressure and substrate temperature on net growth"
+  },
+  {
+   "where": "F12",
+   "type": "film_property_vs_condition",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "CVD growth rate versus process pressure for gas mixture"
+  },
   {
    "where": "F13",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Shows in-situ SE monitoring of linear HWALD growth with stepwise cycle increments"
+   "why": "in-situ monitoring of film thickness versus ALD cycles"
   },
   {
    "where": "F14a",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Determines saturation behaviour with atomic hydrogen pulse time"
+   "why": "growth per cycle versus atomic H pulse time"
   },
   {
    "where": "F14b",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Shows dependence of growth per cycle on hot-wire temperature"
+   "why": "growth per cycle versus hot-wire temperature window"
+  },
+  {
+   "where": "F14c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "growth per cycle versus post atomic H purge time"
+  },
+  {
+   "where": "F15",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS depth profile of 15 nm thick HWALD W film"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2850,
-  "out": 485
+  "in": 3447,
+  "out": 1399,
+  "thoughts": 2756,
+  "budget": 12288
  },
- "_scout_input_chars": 8796
+ "_scout_input_chars": 11200
 }
