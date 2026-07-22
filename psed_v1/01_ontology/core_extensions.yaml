@@ -38,6 +38,20 @@ individuals:
     aka:
     - Molybdenum oxide
     - Molybdenum suboxide
+  - id: Bi2Te3
+    class: Telluride
+    formula: Bi2Te3
+    metal_atoms: 2
+    pubchem_cid: 6379155
+  - id: TiS2
+    class: TransitionMetalDichalcogenide
+    formula: TiS2
+    metal_atoms: 1
+    pubchem_cid: 61544
+  - id: LiAlS_x
+    class: Sulfide
+    full_name: lithium aluminum sulfide (non-stoichiometric)
+    metal_atoms: 2
   precursors:
   - id: tert-butylferrocene
     class: HeterolepticPrecursor
@@ -138,6 +152,52 @@ individuals:
     - SnO2
     aka:
     - Tin tetraiodide
+  - id: RuO4
+    class: HomolepticPrecursor
+    full_name: ruthenium tetroxide
+    has_ligand: oxo
+    formula: RuO4
+    central_atoms: 1
+    pubchem_cid: 26077
+  - id: TDMAAl
+    class: HomolepticPrecursor
+    full_name: tris(dimethylamido)aluminum
+    has_ligand: amide
+    formula: "Al(N(CH3)2)3"
+    central_atoms: 1
+    aggregation: dimer
+    pubchem_cid: 16688802
+  - id: LTB
+    class: HomolepticPrecursor
+    full_name: lithium tert-butoxide
+    has_ligand: alkoxide
+    formula: "LiOC(CH3)3"
+    central_atoms: 1
+    pubchem_cid: 23664764
+  - id: "Fe(TMHD)3"
+    class: HomolepticPrecursor
+    full_name: "tris(2,2,6,6-tetramethyl-3,5-heptanedionato)iron(III)"
+    has_ligand: diketonate
+    formula: "Fe(C11H19O2)3"
+    central_atoms: 1
+  - id: "Zr(TMHD)4"
+    class: HomolepticPrecursor
+    full_name: "tetrakis(2,2,6,6-tetramethyl-3,5-heptanedionato)zirconium(IV)"
+    has_ligand: diketonate
+    formula: "Zr(C11H19O2)4"
+    central_atoms: 1
+  - id: "(Me2N)3Bi"
+    class: HomolepticPrecursor
+    full_name: "tris(dimethylamido)bismuth(III)"
+    has_ligand: amide
+    formula: "Bi(N(CH3)2)3"
+    central_atoms: 1
+  - id: "(MeEtN)3Bi"
+    class: HomolepticPrecursor
+    full_name: "tris(methylethylamido)bismuth(III)"
+    has_ligand: amide
+    formula: "Bi(N(CH3)(C2H5))3"
+    central_atoms: 1
   coreactants:
   - id: atomic_hydrogen
     class: Reductant
@@ -147,6 +207,30 @@ individuals:
     full_name: carbon dioxide
     aka:
     - CO2
+  - id: methanol
+    class: Reductant
+    full_name: methanol
+    formula: "CH3OH"
+    pubchem_cid: 887
+  - id: ethanol
+    class: Reductant
+    full_name: ethanol
+    formula: "C2H5OH"
+    pubchem_cid: 702
+  - id: "1-propanol"
+    class: Reductant
+    full_name: 1-propanol
+    formula: "C3H7OH"
+    pubchem_cid: 1031
+  - id: "2-propanol"
+    class: Reductant
+    full_name: 2-propanol (isopropanol)
+    formula: "C3H7OH"
+    pubchem_cid: 3776
+  - id: "(Et3Si)2Te"
+    class: Chalcogenidant
+    full_name: "bis(triethylsilyl)telluride"
+    formula: "(Si(C2H5)3)2Te"
 quantity_kinds:
 - id: ozone_exposure
   unit: s
