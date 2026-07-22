@@ -44,7 +44,12 @@ data precisely. Return ONLY JSON:
   {{"panel":"a",
     "x":{{"quantity":"<coordinate>","unit":"<unit>","log":false}},
     "y":{{"quantity":"<measurand>","unit":"<unit>","log":false}},
-    "series":[{{"label":"<series/material or ''>","points":[[x,y],[x,y],...]}}],
+    "series_axis":"<the variable that distinguishes the multiple curves, read from the
+       caption or legend — e.g. 'H2 flow ratio', 'substrate', 'coreactant', 'precursor',
+       'deposition temperature'. Give the axis NAME even if the curve labels look like
+       chemical names. '' only if there is a single curve.>",
+    "series":[{{"label":"<this curve's label verbatim, e.g. '0.20' or 'Al2O3' or 'Methanol'>",
+       "points":[[x,y],[x,y],...]}}],
     "conditions":{{"<name>":<numeric_value_with_unit_as_string>}}   // NUMERIC process
       // conditions held fixed in this panel (e.g. temperature "150 °C", pressure,
       // dose/pulse time, number of cycles). ONLY quantities with a numeric value.
@@ -57,7 +62,12 @@ Do NOT invent panels or series that are not shown. conditions = NUMERIC process
 parameters held fixed in this panel (temperature, pressure, dose/pulse time, cycle
 count), from the caption/legend, not guessed. Do NOT put material, precursor,
 coreactant, substrate, or process type in conditions — those are identified separately
-and are NOT conditions."""
+and are NOT conditions.
+series_axis = what separates the curves, from caption/legend. Report it even when the
+labels look like materials (e.g. curves 'Al2O3'/'Si'/'SiO2' under a caption about
+substrates → series_axis 'substrate'; curves 'Methanol'/'Ethanol' → 'coreactant').
+Do NOT decide whether a label is the deposited material — just copy the label verbatim
+and name the axis. Whether a label is the film material is determined downstream."""
 
 
 def _fignum(s):
@@ -166,6 +176,11 @@ def _clean_conditions(cond):
             if k and _re.match(r"^\s*[-+]?\.?\d", str(v))}
 
 
+# A COMPLETE number (optional unit). The unit class excludes '-', so '2-propanol' is a
+# name, not a number — this is what makes numeric-vs-categorical decidable here, once.
+_NUMU = _re.compile(r"\s*([-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?)\s*([A-Za-zµμÅ°%/·^]*)\s*\Z")
+
+
 def _strip_phase(s):
     """Strip phase/stack prefixes ('a-', 'c-', 'Mo/') without touching stoichiometry
     digits — 'c-WS2' -> 'WS2', never 'WS'. Bounded repeat resolves stacked prefixes
@@ -209,18 +224,41 @@ def flatten_records(sd, scout, figresults):
         fig_label = f"Fig {paper_fig}" if paper_fig else f"Fig {docling_idx} (idx)"
         for p in fr.get("panels", []):
             x, y = p.get("x", {}), p.get("y", {})
+            # series_axis is only a NAME for the condition. scout.materials is the decider
+            # of material-vs-condition, so a legend that looks like a formula but isn't this
+            # paper's film (substrate Al2O3/Si, coreactant Methanol) stays a condition.
+            axis = (p.get("series_axis") or "").strip()
             for s in p.get("series", []):
-                _cls, _match = _classify_label(s.get("label"), mats)
+                lab = (s.get("label") or "").strip()
+                _cls, _match = _classify_label(lab, mats)          # scout.materials anchor
+                if _cls == "material":
+                    series_kind, series_value_num, series_unit = "material", None, None
+                    material = _match
+                    phase = lab if lab != _match else None          # c-MoS2 vs MoS2
+                    series_axis_out = None
+                else:
+                    material = (mats[0] if mats else None)
+                    phase = None
+                    m = _NUMU.fullmatch(lab)
+                    if m:                                          # a real numeric sweep value
+                        series_kind = "numeric_sweep"
+                        series_value_num = float(m.group(1))
+                        series_unit = m.group(2) or None
+                    else:                                          # categorical (substrate, coreactant, ...)
+                        series_kind = "categorical"
+                        series_value_num = None
+                        series_unit = None
+                    series_axis_out = (axis or None)
                 recs.append({
                     "doi": sd,
-                    "material": (_match if _cls == "material"
-                                 else (mats[0] if mats else None)),
-                    "series_label": (s.get("label") if _cls == "condition" else None),
-                    "material_raw": s.get("label"),
-                    # phase = the raw phase-tagged label ONLY when it differs from the
-                    # canonical material (c-MoS2 vs MoS2); None when they're equal.
-                    "phase": (s.get("label")
-                              if (_cls == "material" and s.get("label") != _match) else None),
+                    "material": material,
+                    "material_raw": lab,
+                    "phase": phase,
+                    "series_axis": series_axis_out,     # "H2 flow ratio" / "substrate" / None
+                    "series_value": lab,                # raw value/name of this curve
+                    "series_kind": series_kind,         # numeric_sweep | categorical | material
+                    "series_value_num": series_value_num,  # float, only when numeric_sweep
+                    "series_unit": series_unit,            # unit, only when numeric_sweep
                     "measurand": {"quantity": y.get("quantity"), "unit": y.get("unit")},
                     "coordinate": x.get("quantity"), "coordinate_unit": x.get("unit"),
                     "points": s.get("points", []),

@@ -159,20 +159,21 @@ def to_experiments(sd, scout, records, card):
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
         panel = (r.get("provenance") or {}).get("panel") or ""
         panel = panel.lower() if re.fullmatch(r"[A-Za-z]", str(panel).strip()) else ""   # only a real panel letter
-        # A parseable "<name>: <value>" series label also becomes a controlled condition,
-        # so tier/bridge logic can use it rather than merely display it. Bare phase labels
-        # (no ':') are skipped here — they stay in series_name/phase.
+        # Series identity arrives STRUCTURED from 05 — no string is parsed here. Only a
+        # numeric_sweep contributes a controlled condition; categorical/material series
+        # never do. This is what makes value fabrication (LTB:H2S -> 2.0, 2-propanol ->
+        # 2.0) structurally impossible rather than merely guarded against.
         series_ctrl = []
-        sl = r.get("series_label")
-        if sl and ":" in sl:
-            _name, _val = sl.split(":", 1)
-            _name = _name.strip(); _val = _val.strip()
-            # The value must START with a digit. Without this, a pair label like
-            # "LTB:H2S" coerces to LTB=2.0 — the 2 taken from the H2S subscript.
-            if re.match(r"^[-+]?\.?\d", _val):
-                c = _ctrl(_name, _num(_val), _unit(_val), source="series")
-                if c:
-                    series_ctrl = [c]
+        if r.get("series_kind") == "numeric_sweep" and r.get("series_value_num") is not None:
+            series_ctrl = [_ctrl(r.get("series_axis") or "series_value",
+                                 r.get("series_value_num"), r.get("series_unit"),
+                                 source="series")]
+        series_ctrl = [c for c in series_ctrl if c]
+        # display metadata only — never split or coerced downstream
+        if r.get("series_kind") in ("numeric_sweep", "categorical"):
+            series_name = f'{r.get("series_axis") or "series"}: {r.get("series_value")}'
+        else:
+            series_name = None
         e = {
             "material": mat, "material_raw": r.get("material"),
             "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
@@ -188,7 +189,7 @@ def to_experiments(sd, scout, records, card):
             "analysis_ready": bool(pts and mq),
             "exp_id": f"{pid}-{fig}{panel}-{len(exps)}",
             "provenance": {**(r.get("provenance") or {}), "doi": sd},
-            "series_name": r.get("series_label"),   # condition series (e.g. "H2 flow ratio: 0.20") or None
+            "series_name": series_name,             # display only; built from structure, never re-parsed
             "phase": r.get("phase"),                # crystallographic phase (e.g. "c-MoS2") or None
             "structure": None,
             # dependent = the measured output; varies = the swept coordinate (profiles).

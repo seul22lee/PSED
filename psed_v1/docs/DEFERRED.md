@@ -8,6 +8,61 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 16:30 (local) — RESOLVED BY REDESIGN: series identity is structured, not a string
+**Context:** Two fabrications (`LTB:H2S` → LTB=2.0; `coreactant: 2-propanol` → coreactant=2.0)
+both came from the same shape: 05 built a descriptive `"axis: value"` string and 06
+split it back apart with `_num()`. Each guard fixed one route and the next input found
+another.
+**Status:** resolved — the failure mode is now structurally impossible
+**Detail:** The string round-trip is deleted. 05 classifies **once** and emits structure:
+`series_kind` (`numeric_sweep` | `categorical` | `material`), `series_axis`,
+`series_value`, `series_value_num`, `series_unit`. 06 dispatches on `series_kind`:
+only `numeric_sweep` yields a controlled condition, and it uses the float 05 already
+parsed. **06 no longer calls `split()` or `_num()` on any label.** `series_name` is
+rebuilt from structure for display and is never re-parsed. The `series_label` field is
+gone.
+
+Numeric-vs-categorical is decided by a COMPLETE-number match (`_NUMU`) whose unit class
+excludes `-`, so `2-propanol` is a name, not a number. Validated across all four cases:
+
+    class 1 sweep      '0.20'      -> numeric_sweep, num=0.20, material MoS2
+    class 2 phase      'c-MoS2'    -> material,      num=None, material MoS2, phase c-MoS2
+    class 3 substrate  'Al2O3'     -> categorical,   num=None, material Bi2Te3
+    class 3 coreactant '2-propanol'-> categorical,   num=None, material RuO2
+
+Re-extracted 6 papers: `series_kind` distribution — chemmater.2c01154 13 numeric_sweep,
+2c02292 15 categorical, jcrysgro 3 categorical, celc 3 categorical, pssa 1 material +
+3 categorical, tsf 1 categorical. **13 series conditions in the whole KB, all genuine H2
+sweeps; zero series-source fabrications.**
+
+⚠️ **Cosmetic:** an empty series label (single-curve panel) classifies as `categorical`
+and renders `series_name: "series: "`. Harmless — it contributes no condition — but it
+should be `None`. `_classify_label` returns `"empty"` and the caller folds that into the
+categorical branch.
+
+## 2026-07-22 16:30 (local) — 67 fabricated caption-source conditions in 9 STALE papers
+**Context:** Found by the whole-KB fabrication sweep after the series redesign. These do
+NOT come from the series path — they come from the **caption** path.
+**Status:** needs-decision
+**Detail:** Old records (extracted before the vision-prompt fix) still carry categorical
+keys inside `conditions`, and `06`'s `panel_ctrl` line applies
+`_ctrl(k, _num(v), _unit(v), source="caption")` to every one — so `_num('Al2O3')` yields
+**2.0**:
+
+    {'quantity': 'precursor',  'value': 2.0, 'source': 'caption'}
+    {'quantity': 'material',   'value': 2.0, 'source': 'caption'}
+    {'quantity': 'substrate',  'value': 2.0, 'unit': 'i', 'source': 'caption'}
+
+**67 instances across 9 papers**; **0 in the 6 re-extracted papers**. Going forward this
+cannot recur — the fixed prompt plus `_clean_conditions` (numeric-only) keeps categorical
+keys out of `controlled`. But the existing KB rows are wrong today.
+
+Cheapest remedy: **re-flatten the 9 stale papers from their cached `figure_data.json`**
+(`scripts/reflatten_records.py`) — `_clean_conditions` strips the categorical keys, then
+re-ingest. **No vision calls, no cost.** Not done here because those papers are outside
+this task's DEEP6 scope. Worth clearing before batch-51 so the corpus has no fabricated
+numbers at any scale.
+
 ## 2026-07-22 15:40 (local) — RESOLVED at root: categorical keys leaking into `controlled`
 **Context:** `07` was proposing `material`/`precursor`/`substrate`/`process_type` as
 ontology quantity_kinds. Root cause was upstream: the **vision prompt itself** listed

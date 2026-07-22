@@ -53,63 +53,35 @@
   "points": [
    [
     280,
-    1.7
-   ],
-   [
-    290,
-    1.765
+    1.69
    ],
    [
     300,
-    1.83
-   ],
-   [
-    310,
-    1.895
+    1.81
    ],
    [
     320,
-    1.96
-   ],
-   [
-    330,
-    2.025
+    1.93
    ],
    [
     340,
-    2.09
-   ],
-   [
-    350,
-    2.155
+    2.05
    ],
    [
     360,
-    2.22
-   ],
-   [
-    370,
-    2.285
+    2.17
    ],
    [
     380,
-    2.35
-   ],
-   [
-    390,
-    2.415
+    2.29
    ],
    [
     400,
-    2.48
+    2.41
    ],
    [
-    410,
-    2.545
-   ],
-   [
-    418,
-    2.6
+    417.5,
+    2.52
    ]
   ],
   "granularity": "profile",
@@ -208,6 +180,14 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "pressure",
+    "value": 0.15,
+    "unit": "mbar",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
     "quantity": "temperature",
     "value": 315.0,
     "unit": "",
@@ -216,17 +196,9 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "hot_wire_temperature",
+    "quantity": "hot-wire temperature",
     "value": 1750.0,
     "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "pressure",
-    "value": 0.15,
-    "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
     "recipe_role": null
@@ -241,31 +213,31 @@
   "coordinate_family": "exposure_time",
   "points": [
    [
-    0.1,
+    0,
     0.002
    ],
    [
-    1.0,
+    1,
     0.004
    ],
    [
-    5.0,
+    5,
     0.0068
    ],
    [
-    10.0,
+    10,
     0.0096
    ],
    [
-    15.0,
+    15,
     0.009
    ],
    [
-    20.0,
+    20,
     0.01
    ],
    [
-    30.0,
+    30,
     0.016
    ]
   ],
@@ -283,7 +255,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_pssa.201532305"
   },
-  "series_name": null,
+  "series_name": "series: ",
   "phase": null,
   "structure": null,
   "varies": [
@@ -365,20 +337,20 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "temperature",
-    "value": 315.0,
-    "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
     "quantity": "pressure",
     "value": 0.15,
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
     "recipe_role": null
+   },
+   {
+    "quantity": "temperature",
+    "value": 315.0,
+    "unit": "",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -386,31 +358,31 @@
    "unit": "nm/cycle",
    "family": "film_amount"
   },
-  "coordinate": "Hot-wire temperature",
-  "coordinate_family": null,
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
   "points": [
    [
-    1550.0,
+    1550,
     0.0075
    ],
    [
-    1630.0,
+    1630,
     0.0075
    ],
    [
-    1700.0,
+    1700,
     0.0069
    ],
    [
-    1750.0,
+    1750,
     0.0072
    ],
    [
-    1810.0,
+    1810,
     0.0114
    ],
    [
-    1860.0,
+    1860,
     0.0171
    ]
   ],
@@ -428,11 +400,11 @@
    "extractor": "vision-llm",
    "doi": "10.1002_pssa.201532305"
   },
-  "series_name": null,
+  "series_name": "series: ",
   "phase": null,
   "structure": null,
   "varies": [
-   "Hot-wire temperature"
+   "deposition_temperature"
   ],
   "dependent": [
    {
@@ -510,6 +482,14 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "pressure",
+    "value": 0.15,
+    "unit": "mbar",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null
+   },
+   {
     "quantity": "temperature",
     "value": 315.0,
     "unit": "",
@@ -518,17 +498,9 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "hot_wire_temperature",
+    "quantity": "hot-wire temperature",
     "value": 1750.0,
     "unit": "",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": null
-   },
-   {
-    "quantity": "pressure",
-    "value": 0.15,
-    "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
     "recipe_role": null
@@ -543,23 +515,23 @@
   "coordinate_family": null,
   "points": [
    [
-    5.0,
+    5,
     0.0122
    ],
    [
-    15.0,
+    15,
     0.0103
    ],
    [
-    20.0,
+    20,
     0.009
    ],
    [
-    25.0,
+    25,
     0.0088
    ],
    [
-    30.0,
+    30,
     0.009
    ]
   ],
@@ -577,7 +549,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_pssa.201532305"
   },
-  "series_name": null,
+  "series_name": "series: ",
   "phase": null,
   "structure": null,
   "varies": [
