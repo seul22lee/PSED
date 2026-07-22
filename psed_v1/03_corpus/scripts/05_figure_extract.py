@@ -44,10 +44,15 @@ data precisely. Return ONLY JSON:
   {{"panel":"a",
     "x":{{"quantity":"<coordinate>","unit":"<unit>","log":false}},
     "y":{{"quantity":"<measurand>","unit":"<unit>","log":false}},
-    "series_axis":"<the variable that distinguishes the multiple curves, read from the
-       caption or legend — e.g. 'H2 flow ratio', 'substrate', 'coreactant', 'precursor',
-       'deposition temperature'. Give the axis NAME even if the curve labels look like
-       chemical names. '' only if there is a single curve.>",
+    "series_axis":"<REQUIRED for any multi-curve panel: the NAME of the variable that
+       distinguishes the curves. Read it from the caption, legend title, or — if the
+       curve labels themselves carry a unit — from that unit. Examples: labels
+       '10 cycles','20 cycles' -> series_axis 'number of cycles'; labels '5ms','45ms'
+       -> 'exposure time'; labels '150°C','200°C' -> 'temperature'; a caption 'Effect of
+       H2 flow ratio' with labels '0.2','0.5' -> 'H2 flow ratio'; substrate legend
+       'Al2O3','Si' -> 'substrate'. Only '' when there is a single curve. NEVER leave it
+       blank for a multi-curve panel — if unsure, infer the physical quantity the labels
+       measure.>",
     "series":[{{"label":"<this curve's label verbatim, e.g. '0.20' or 'Al2O3' or 'Methanol'>",
        "points":[[x,y],[x,y],...]}}],
     "conditions":{{"<name>":<numeric_value_with_unit_as_string>}}   // NUMERIC process
@@ -67,7 +72,10 @@ series_axis = what separates the curves, from caption/legend. Report it even whe
 labels look like materials (e.g. curves 'Al2O3'/'Si'/'SiO2' under a caption about
 substrates → series_axis 'substrate'; curves 'Methanol'/'Ethanol' → 'coreactant').
 Do NOT decide whether a label is the deposited material — just copy the label verbatim
-and name the axis. Whether a label is the film material is determined downstream."""
+and name the axis. Whether a label is the film material is determined downstream.
+For any panel with more than one curve, series_axis MUST be a non-empty name. If the
+curve labels include a unit (cycles, ms, °C, %), name the corresponding quantity as the
+axis and keep the value in the label. Do not put the axis name into the labels."""
 
 
 def _fignum(s):

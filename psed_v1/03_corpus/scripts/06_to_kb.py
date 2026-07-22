@@ -181,8 +181,11 @@ def to_experiments(sd, scout, records, card):
         # 2.0) structurally impossible rather than merely guarded against.
         series_ctrl = []
         if r.get("series_kind") == "numeric_sweep" and r.get("series_value_num") is not None:
-            series_ctrl = [_ctrl(r.get("series_axis") or "series_value",
-                                 r.get("series_value_num"), r.get("series_unit"),
+            # Naming the axis is vision's job (05). 06 never reconstructs it — a blank
+            # axis becomes a VISIBLE flag so it stands out in QA instead of hiding behind
+            # a meaningless 'series_value'.
+            _axis = (r.get("series_axis") or "").strip() or "unnamed_series_axis"
+            series_ctrl = [_ctrl(_axis, r.get("series_value_num"), r.get("series_unit"),
                                  source="series")]
         series_ctrl = [c for c in series_ctrl if c]
         # display metadata only — never split or coerced downstream
