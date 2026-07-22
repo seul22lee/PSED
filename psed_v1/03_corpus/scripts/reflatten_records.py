@@ -10,6 +10,7 @@ label vs material classifier) so existing papers pick up the fix for free.
 import importlib.util
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -40,9 +41,9 @@ def reflatten(sd):
     records = _fe.flatten_records(sd, scout, figresults)
     rj.write_text(json.dumps(records, indent=1))
 
-    moved = sum(1 for r in records if r.get("series_label"))
+    kinds = Counter(r.get("series_kind") for r in records)
     print(f"  {sd}: {len(before)} -> {len(records)} records | "
-          f"{moved} series_label rescued | materials={sorted({r['material'] for r in records})}")
+          f"series {dict(kinds)} | materials={sorted({r['material'] for r in records})}")
     return records
 
 
