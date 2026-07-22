@@ -8,6 +8,48 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 13:05 (local) — Series-label-in-material: fixed in records, NOT yet in the KB
+**Context:** Multi-series figures were putting legend text into the `material` field
+(e.g. `"H2 flow ratio: 0.20"` for `10.1021_acs.chemmater.2c01154`). Root cause was
+post-processing in `flatten_records`, not the vision prompt.
+**Status:** needs-decision (partially resolved)
+**Detail:**
+
+*Resolved:* `05_figure_extract.flatten_records` now classifies each series label as
+material vs condition (`_label_is_material`), routing conditions to a new
+`series_label` field and keeping the verbatim label in `material_raw`. All 6 deep-pass
+papers were re-flattened from the cached `figure_data.json` via
+`scripts/reflatten_records.py` — **no vision re-call**, record and point counts
+unchanged. The bug was wider than first reported: substrates (`Si`, `SiO2`, `Al2O3`),
+co-reactants (`Methanol`, `Ethanol`, `1/2-propanol`), precursor-pair labels
+(`LTB:H2S`, `TDMAAl:H2S`) and thickness labels (`50nm LixAlyS`) were all sitting in
+`material`. `jcrysgro` in particular went from `['Al2O3','Bi2Te3','SiO2']` to
+`['Bi2Te3']` — the substrates had been masquerading as deposited films.
+
+*Still open — the rescued condition does not reach the KB.* `06_to_kb.py` hardcodes
+`"series_name": None` (lines 177 and 219) and sets `"material_raw": r.get("material")`
+(line 163) from the **resolved** material rather than the true raw label. So in
+`resolved/experiments.json` the material is now clean, but `series_name`,
+`series_label` and a faithful `material_raw` are all absent — the H2-flow-ratio
+condition that distinguishes the 9 MoS2 curves is still lost at the KB boundary.
+Deciding how to carry it (populate `series_name` from `series_label`? promote a
+parsed `name: value` label into `controlled`?) is the open question.
+
+*Known flaw in the classifier regex.* `_label_is_material` strips trailing digits
+(`base = re.sub(r"[+xy0-9\s]+$", "", base)`), which destroys stoichiometry, so the
+phase/prefix branch never matches any material whose formula ends in a digit — i.e.
+`MoS2`, `Al2O3`, `TiO2`, `ZrO2`, `WS2`, `TiS2`, `Fe2O3`, `Bi2Te3`, nearly all of them.
+`c-MoS2`, `a-MoS2+x`, `a-Al2O3` are therefore misread as conditions. Only the exact
+`lab == m` check saves unprefixed labels. Harmless across the current 6 papers because
+the `mats[0]` fallback happens to be the right material every time — but in a
+multi-material paper where a phase-prefixed series is *not* `mats[0]`, the record would
+silently get the wrong material. Fix is to strip the prefix without touching trailing
+digits before comparing.
+
+*Rule for the 51-paper batch:* multi-series figures now route condition labels to
+`series_label`, keeping `material` clean — but re-check the two items above before
+scaling up, since both get worse with more multi-series papers.
+
 ## 2026-07-22 12:33 (local) — Bismuth silylamide dimer held out of the ontology
 **Context:** Three jcrysgro precursors (`10.1016_j.jcrysgro.2017.04.019`) could not be
 pinned down from secondary sources and were resolved from the docling'd paper text.
