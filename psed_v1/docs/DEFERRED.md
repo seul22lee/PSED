@@ -8,6 +8,38 @@ Status values: `deferred` · `needs-decision` · `needs-verification`
 
 ---
 
+## 2026-07-22 18:05 (local) — RESOLVED: `series_value` placeholder axis
+**Context:** When vision returned no `series_axis`, `06` fell back to naming the
+controlled quantity `"series_value"` — a meaningless, ungrounded placeholder. 30 rows in
+`10.3762_bjnano.5.25`. The values were genuine; only the axis NAME was missing.
+**Status:** resolved
+**Detail:** Fixed where the information actually lives — the figure. `VISION_SCHEMA` now
+makes `series_axis` **required** for any multi-curve panel and tells the model to derive
+it from the label's unit when the caption/legend doesn't name it: labels `'10 cycles'` →
+axis `'number of cycles'`, `'5ms'` → `'exposure time'`, `'150°C'` → `'temperature'`.
+`06` never reconstructs the name; a blank axis now becomes the visible flag
+`unnamed_series_axis` instead of hiding behind a plausible-looking `series_value`.
+
+After re-extraction the axes are named and, better, **canonicalise into real ontology
+quantities**:
+
+    cycle_number                   24
+    H2 flow ratio                  13
+    pulse_time                      5
+    reactive_sticking_coefficient   1
+
+Corpus-wide check for `series_value` / `unnamed_series_axis`: **[]**. Only the axis name
+changed — series values and points were already correct.
+
+Two notes on the re-extraction. (1) The records-vs-KB rule below caught
+`10.1039_d0cp03358h` (KB 44 > records 36), so it was **not** re-ingested; re-extracting it
+also thinned its records 36→11 (332→151 points) for no benefit, so its `records.json` and
+`figure_data.json` were restored from git. Lesson: only re-extract a paper if its KB will
+actually be rebuilt from it. (2) `bjnano.5.25` lost points overall (379→308) but the loss
+is entirely in the **simulation** figures — Fig 3 129→76, Fig 5 201→178 — while the
+**measured** Fig 6 gained (49→54). Fig 5 is model output, not twin-used, so this trade is
+acceptable; the twin-relevant data improved.
+
 ## 2026-07-22 17:15 (local) — ⚠️ NEVER re-ingest a paper whose KB is richer than its records.json
 **Context:** Re-ingesting 16 papers to clear caption-path fabrications silently destroyed
 **129 experiments**. Caught by the report totals dropping 354 → 225.

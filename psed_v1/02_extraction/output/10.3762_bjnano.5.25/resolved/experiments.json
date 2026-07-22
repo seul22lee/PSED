@@ -16,12 +16,20 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "exposure",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "derived"
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "reactive_sticking_coefficient",
+    "value": 1.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "species_property"
    }
   ],
   "measurand": {
@@ -33,68 +41,28 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.1
+    0,
+    0.133
    ],
    [
-    5.0,
-    0.09
+    25,
+    0.133
    ],
    [
-    10.0,
-    0.08
+    30,
+    0.133
    ],
    [
-    15.0,
-    0.07
+    31,
+    0.132
    ],
    [
-    20.0,
-    0.06
-   ],
-   [
-    25.0,
-    0.05
-   ],
-   [
-    30.0,
-    0.04
-   ],
-   [
-    35.0,
+    32,
     0.03
    ],
    [
-    40.0,
-    0.02
-   ],
-   [
-    45.0,
-    0.015
-   ],
-   [
-    50.0,
-    0.01
-   ],
-   [
-    60.0,
-    0.005
-   ],
-   [
-    70.0,
-    0.002
-   ],
-   [
-    80.0,
-    0.001
-   ],
-   [
-    90.0,
-    0.0005
-   ],
-   [
-    100.0,
-    0.0002
+    33,
+    0.0
    ]
   ],
   "granularity": "profile",
@@ -111,7 +79,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 10^-4",
+  "series_name": "reactive sticking coefficient: 1",
   "phase": null,
   "structure": null,
   "varies": [
@@ -132,7 +100,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -152,7 +120,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3b-0"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -172,12 +140,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "exposure",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "derived"
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -189,44 +157,28 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.133
    ],
    [
-    20.0,
-    0.12
+    25,
+    0.133
    ],
    [
-    25.0,
-    0.12
+    30,
+    0.125
    ],
    [
-    28.0,
-    0.11
+    32,
+    0.05
    ],
    [
-    30.0,
-    0.09
-   ],
-   [
-    32.0,
-    0.06
-   ],
-   [
-    34.0,
-    0.03
-   ],
-   [
-    36.0,
+    35,
     0.01
    ],
    [
-    38.0,
-    0.005
-   ],
-   [
-    40.0,
-    0.002
+    40,
+    0.0
    ]
   ],
   "granularity": "profile",
@@ -243,7 +195,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": null,
+  "series_name": "reactive sticking coefficient: 10^-1",
   "phase": null,
   "structure": null,
   "varies": [
@@ -264,7 +216,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -284,7 +236,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3b-1"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -304,12 +256,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "exposure",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "derived"
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -321,48 +273,32 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.133
    ],
    [
-    25.0,
-    0.12
+    20,
+    0.133
    ],
    [
-    28.0,
-    0.12
-   ],
-   [
-    30.0,
-    0.12
-   ],
-   [
-    32.0,
+    25,
     0.11
    ],
    [
-    33.0,
-    0.09
+    30,
+    0.07
    ],
    [
-    34.0,
-    0.06
-   ],
-   [
-    35.0,
+    35,
     0.03
    ],
    [
-    36.0,
+    40,
     0.01
    ],
    [
-    37.0,
-    0.005
-   ],
-   [
-    38.0,
-    0.002
+    50,
+    0.0
    ]
   ],
   "granularity": "profile",
@@ -379,7 +315,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": null,
+  "series_name": "reactive sticking coefficient: 10^-2",
   "phase": null,
   "structure": null,
   "varies": [
@@ -400,7 +336,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -420,7 +356,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3b-2"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -440,20 +376,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "exposure",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "derived"
-   },
-   {
-    "quantity": "series_value",
-    "value": 1.0,
-    "unit": null,
-    "of_reactant": null,
-    "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -465,47 +393,31 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.133
    ],
    [
-    30.0,
-    0.12
+    10,
+    0.13
    ],
    [
-    31.0,
-    0.12
-   ],
-   [
-    32.0,
-    0.12
-   ],
-   [
-    33.0,
+    20,
     0.11
    ],
    [
-    33.5,
-    0.09
+    30,
+    0.07
    ],
    [
-    34.0,
-    0.06
+    40,
+    0.035
    ],
    [
-    34.5,
-    0.03
+    50,
+    0.015
    ],
    [
-    35.0,
-    0.01
-   ],
-   [
-    35.5,
-    0.005
-   ],
-   [
-    36.0,
+    70,
     0.002
    ]
   ],
@@ -523,7 +435,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 1",
+  "series_name": "reactive sticking coefficient: 10^-3",
   "phase": null,
   "structure": null,
   "varies": [
@@ -544,7 +456,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -564,7 +476,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3b-3"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -584,12 +496,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 10.0,
+    "quantity": "pulse_time",
+    "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
-    "source": "series",
-    "recipe_role": null
+    "source": "caption",
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -601,57 +513,45 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.095
    ],
    [
-    5.0,
-    0.12
+    20,
+    0.075
    ],
    [
-    10.0,
-    0.12
+    40,
+    0.052
    ],
    [
-    12.0,
-    0.11
+    60,
+    0.031
    ],
    [
-    13.0,
-    0.09
+    80,
+    0.015
    ],
    [
-    14.0,
-    0.06
-   ],
-   [
-    15.0,
-    0.03
-   ],
-   [
-    16.0,
-    0.01
-   ],
-   [
-    17.0,
-    0.005
+    100,
+    0.003
    ]
   ],
   "granularity": "profile",
   "relevance": "model",
   "is_model_result": true,
   "analysis_ready": true,
-  "exp_id": "10.3762_bjnano.5.25-F3c-4",
+  "exp_id": "10.3762_bjnano.5.25-F3b-4",
   "provenance": {
    "figure": "Fig 3",
    "figure_number": "3",
    "fig_docling_index": "3",
-   "panel": "c",
+   "panel": "b",
    "caption": "Figure 3: Results of the precursor adsorption kinetics simulation while using the parameters defined in Table 1. The concentration of precursor molecules as a function of depth at several time steps (",
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 10ms",
+  "series_name": "reactive sticking coefficient: 10^-4",
   "phase": null,
   "structure": null,
   "varies": [
@@ -672,7 +572,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -690,9 +590,9 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.3762_bjnano.5.25-F3c-4"
+    "_exp_id": "10.3762_bjnano.5.25-F3b-4"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -712,12 +612,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 20.0,
+    "quantity": "pulse_time",
+    "value": 10.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -729,44 +629,28 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.133
    ],
    [
-    10.0,
-    0.12
+    10,
+    0.133
    ],
    [
-    15.0,
-    0.12
-   ],
-   [
-    18.0,
-    0.12
-   ],
-   [
-    20.0,
+    12,
     0.11
    ],
    [
-    21.0,
-    0.09
+    15,
+    0.05
    ],
    [
-    22.0,
-    0.06
-   ],
-   [
-    23.0,
-    0.03
-   ],
-   [
-    24.0,
+    18,
     0.01
    ],
    [
-    25.0,
-    0.005
+    22,
+    0.0
    ]
   ],
   "granularity": "profile",
@@ -783,7 +667,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 20ms",
+  "series_name": "exposure time: 10ms",
   "phase": null,
   "structure": null,
   "varies": [
@@ -804,7 +688,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 10.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -824,7 +708,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3c-5"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -844,12 +728,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 50.0,
+    "quantity": "pulse_time",
+    "value": 20.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -861,44 +745,28 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.133
    ],
    [
-    20.0,
-    0.12
+    18,
+    0.133
    ],
    [
-    25.0,
-    0.12
-   ],
-   [
-    28.0,
-    0.12
-   ],
-   [
-    30.0,
+    20,
     0.11
    ],
    [
-    31.0,
-    0.09
+    23,
+    0.05
    ],
    [
-    32.0,
-    0.06
-   ],
-   [
-    33.0,
-    0.03
-   ],
-   [
-    34.0,
+    26,
     0.01
    ],
    [
-    35.0,
-    0.005
+    30,
+    0.0
    ]
   ],
   "granularity": "profile",
@@ -915,7 +783,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 50ms",
+  "series_name": "exposure time: 20ms",
   "phase": null,
   "structure": null,
   "varies": [
@@ -936,7 +804,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 20.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -956,7 +824,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3c-6"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -976,12 +844,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 75.0,
+    "quantity": "pulse_time",
+    "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -993,44 +861,28 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.133
    ],
    [
-    25.0,
-    0.12
+    28,
+    0.133
    ],
    [
-    30.0,
-    0.12
-   ],
-   [
-    33.0,
-    0.12
-   ],
-   [
-    35.0,
+    30,
     0.11
    ],
    [
-    36.0,
-    0.09
+    33,
+    0.05
    ],
    [
-    37.0,
-    0.06
-   ],
-   [
-    38.0,
-    0.03
-   ],
-   [
-    39.0,
+    36,
     0.01
    ],
    [
-    40.0,
-    0.005
+    40,
+    0.0
    ]
   ],
   "granularity": "profile",
@@ -1047,7 +899,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 75ms",
+  "series_name": "exposure time: 50ms",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1068,7 +920,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -1088,7 +940,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3c-7"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -1108,12 +960,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 100.0,
+    "quantity": "pulse_time",
+    "value": 75.0,
     "unit": "ms",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -1125,44 +977,28 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    0.12
+    0,
+    0.133
    ],
    [
-    30.0,
-    0.12
+    35,
+    0.133
    ],
    [
-    35.0,
-    0.12
-   ],
-   [
-    38.0,
-    0.12
-   ],
-   [
-    40.0,
+    37,
     0.11
    ],
    [
-    41.0,
-    0.09
+    40,
+    0.05
    ],
    [
-    42.0,
-    0.06
-   ],
-   [
-    43.0,
-    0.03
-   ],
-   [
-    44.0,
+    43,
     0.01
    ],
    [
-    45.0,
-    0.005
+    47,
+    0.0
    ]
   ],
   "granularity": "profile",
@@ -1179,7 +1015,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 100ms",
+  "series_name": "exposure time: 75ms",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1200,7 +1036,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 75.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -1220,7 +1056,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F3c-8"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -1238,75 +1074,74 @@
   "carrier_gas": null,
   "process_type": "unknown",
   "cycle_sequence": "A",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 100.0,
+    "unit": "ms",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting"
+   }
+  ],
   "measurand": {
-   "quantity": "penetration_depth",
-   "unit": "\u00b5m",
-   "family": "position"
+   "quantity": "growth_per_cycle",
+   "unit": "nm",
+   "family": "film_amount"
   },
-  "coordinate": null,
-  "coordinate_family": null,
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
   "points": [
    [
-    0.01,
-    10.0
+    0,
+    0.133
    ],
    [
-    0.0316,
-    17.78
+    42,
+    0.133
    ],
    [
-    0.1,
-    31.62
+    44,
+    0.11
    ],
    [
-    0.316,
-    56.23
+    47,
+    0.05
    ],
    [
-    1.0,
-    100.0
+    50,
+    0.01
    ],
    [
-    3.16,
-    177.8
-   ],
-   [
-    10.0,
-    316.2
-   ],
-   [
-    31.6,
-    562.3
-   ],
-   [
-    100.0,
-    1000.0
+    54,
+    0.0
    ]
   ],
   "granularity": "profile",
   "relevance": "model",
   "is_model_result": true,
   "analysis_ready": true,
-  "exp_id": "10.3762_bjnano.5.25-F3d-9",
+  "exp_id": "10.3762_bjnano.5.25-F3c-9",
   "provenance": {
    "figure": "Fig 3",
    "figure_number": "3",
    "fig_docling_index": "3",
-   "panel": "d",
+   "panel": "c",
    "caption": "Figure 3: Results of the precursor adsorption kinetics simulation while using the parameters defined in Table 1. The concentration of precursor molecules as a function of depth at several time steps (",
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: x_p \\propto \\sqrt{n_{chamber}}",
+  "series_name": "exposure time: 100ms",
   "phase": null,
   "structure": null,
-  "varies": [],
+  "varies": [
+   "spatial_coordinate"
+  ],
   "dependent": [
    {
-    "quantity": "penetration_depth",
-    "unit": "\u00b5m",
-    "family": "position"
+    "quantity": "growth_per_cycle",
+    "unit": "nm",
+    "family": "film_amount"
    }
   ],
   "issues": [],
@@ -1317,7 +1152,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 100.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -1330,16 +1165,14 @@
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
-   "targets": {
-    "penetration_depth": "measured-in-figure"
-   },
+   "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.3762_bjnano.5.25-F3d-9"
+    "_exp_id": "10.3762_bjnano.5.25-F3c-9"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -1363,44 +1196,20 @@
    "unit": "\u00b5m",
    "family": "position"
   },
-  "coordinate": null,
-  "coordinate_family": null,
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
   "points": [
    [
     0.01,
-    3.16
-   ],
-   [
-    0.0316,
-    5.62
-   ],
-   [
-    0.1,
-    10.0
-   ],
-   [
-    0.316,
-    17.78
+    140
    ],
    [
     1.0,
-    31.62
-   ],
-   [
-    3.16,
-    56.23
-   ],
-   [
-    10.0,
-    100.0
-   ],
-   [
-    31.6,
-    177.8
+    1400
    ],
    [
     100.0,
-    316.2
+    14000
    ]
   ],
   "granularity": "profile",
@@ -1417,10 +1226,12 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: x_p \\propto \\sqrt{t}",
+  "series_name": "parameter dependence: x_p \u221d sqrt(n_chamber)",
   "phase": null,
   "structure": null,
-  "varies": [],
+  "varies": [
+   "pulse_time"
+  ],
   "dependent": [
    {
     "quantity": "penetration_depth",
@@ -1482,44 +1293,20 @@
    "unit": "\u00b5m",
    "family": "position"
   },
-  "coordinate": null,
-  "coordinate_family": null,
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
   "points": [
    [
     0.01,
-    1.0
-   ],
-   [
-    0.0316,
-    1.78
-   ],
-   [
-    0.1,
-    3.16
-   ],
-   [
-    0.316,
-    5.62
+    18
    ],
    [
     1.0,
-    10.0
-   ],
-   [
-    3.16,
-    17.78
-   ],
-   [
-    10.0,
-    31.62
-   ],
-   [
-    31.6,
-    56.23
+    180
    ],
    [
     100.0,
-    100.0
+    1800
    ]
   ],
   "granularity": "profile",
@@ -1536,10 +1323,12 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: x_p \\propto \\sqrt{D_k}",
+  "series_name": "parameter dependence: x_p \u221d sqrt(t)",
   "phase": null,
   "structure": null,
-  "varies": [],
+  "varies": [
+   "pulse_time"
+  ],
   "dependent": [
    {
     "quantity": "penetration_depth",
@@ -1601,28 +1390,20 @@
    "unit": "\u00b5m",
    "family": "position"
   },
-  "coordinate": null,
-  "coordinate_family": null,
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
   "points": [
    [
+    0.01,
+    2.2
+   ],
+   [
     1.0,
-    100.0
-   ],
-   [
-    3.16,
-    50.0
-   ],
-   [
-    10.0,
-    20.0
-   ],
-   [
-    31.6,
-    10.0
+    22
    ],
    [
     100.0,
-    5.0
+    220
    ]
   ],
   "granularity": "profile",
@@ -1639,10 +1420,12 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: x_p \\propto f(r)",
+  "series_name": "parameter dependence: x_p \u221d sqrt(D_k)",
   "phase": null,
   "structure": null,
-  "varies": [],
+  "varies": [
+   "pulse_time"
+  ],
   "dependent": [
    {
     "quantity": "penetration_depth",
@@ -1698,98 +1481,61 @@
   "carrier_gas": null,
   "process_type": "unknown",
   "cycle_sequence": "A",
-  "controlled": [
-   {
-    "quantity": "precursor_exposure_time",
-    "value": 50.0,
-    "unit": "ms",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "control_setting"
-   },
-   {
-    "quantity": "series_value",
-    "value": 10.0,
-    "unit": "cycles",
-    "of_reactant": null,
-    "source": "series",
-    "recipe_role": null
-   }
-  ],
+  "controlled": [],
   "measurand": {
-   "quantity": "film_thickness",
-   "unit": "nm",
-   "family": "film_amount"
+   "quantity": "penetration_depth",
+   "unit": "\u00b5m",
+   "family": "position"
   },
-  "coordinate": "spatial_coordinate",
-  "coordinate_family": "position",
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
   "points": [
    [
-    0.0,
-    1.3
+    1.0,
+    25
    ],
    [
-    5.0,
-    1.3
+    3.0,
+    20
    ],
    [
     10.0,
-    1.3
-   ],
-   [
-    15.0,
-    1.2
-   ],
-   [
-    17.5,
-    1.0
-   ],
-   [
-    20.0,
-    0.7
-   ],
-   [
-    22.5,
-    0.4
-   ],
-   [
-    25.0,
-    0.2
-   ],
-   [
-    27.5,
-    0.1
+    15
    ],
    [
     30.0,
-    0.0
+    8
+   ],
+   [
+    50.0,
+    1.5
    ]
   ],
   "granularity": "profile",
   "relevance": "model",
   "is_model_result": true,
   "analysis_ready": true,
-  "exp_id": "10.3762_bjnano.5.25-F5a-13",
+  "exp_id": "10.3762_bjnano.5.25-F3d-13",
   "provenance": {
-   "figure": "Fig 5",
-   "figure_number": "5",
-   "fig_docling_index": "5",
-   "panel": "a",
-   "caption": "Figure 5: Plot of deposited oxide thickness with respect to the VACNT depth for a multi-cycle ALD process, determined by the model with the parameters in Table 1. (a) Fixed precursor exposure time (50",
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "3",
+   "panel": "d",
+   "caption": "Figure 3: Results of the precursor adsorption kinetics simulation while using the parameters defined in Table 1. The concentration of precursor molecules as a function of depth at several time steps (",
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 10 cycles",
+  "series_name": "parameter dependence: x_p \u221d f(r)",
   "phase": null,
   "structure": null,
   "varies": [
-   "spatial_coordinate"
+   "pulse_time"
   ],
   "dependent": [
    {
-    "quantity": "film_thickness",
-    "unit": "nm",
-    "family": "film_amount"
+    "quantity": "penetration_depth",
+    "unit": "\u00b5m",
+    "family": "position"
    }
   ],
   "issues": [],
@@ -1813,12 +1559,14 @@
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
-   "targets": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.3762_bjnano.5.25-F5a-13"
+    "_exp_id": "10.3762_bjnano.5.25-F3d-13"
    },
    "completeness": 0.3
   }
@@ -1840,7 +1588,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -1848,12 +1596,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 20.0,
+    "quantity": "cycle_number",
+    "value": 100.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -1865,43 +1613,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    2.6
+    0,
+    13.5
    ],
    [
-    5.0,
-    2.6
+    11.5,
+    13.5
    ],
    [
-    10.0,
-    2.6
+    13.5,
+    12.5
    ],
    [
-    15.0,
-    2.4
+    16.0,
+    9.8
    ],
    [
-    17.5,
-    2.0
+    19.0,
+    6.2
    ],
    [
-    20.0,
-    1.4
-   ],
-   [
-    22.5,
-    0.8
+    22.0,
+    3.2
    ],
    [
     25.0,
+    1.4
+   ],
+   [
+    28.0,
     0.4
    ],
    [
-    27.5,
-    0.2
+    32.0,
+    0.1
    ],
    [
-    30.0,
+    36.0,
     0.0
    ]
   ],
@@ -1919,7 +1667,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 20 cycles",
+  "series_name": "number of cycles: 100 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -1940,7 +1688,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -1948,7 +1696,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 100.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -1960,7 +1708,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-14"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -1980,7 +1728,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -1988,12 +1736,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 30.0,
+    "quantity": "cycle_number",
+    "value": 90.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2005,43 +1753,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    3.9
+    0,
+    12.2
    ],
    [
-    5.0,
-    3.9
+    11.5,
+    12.2
    ],
    [
-    10.0,
-    3.9
+    13.5,
+    11.4
    ],
    [
-    15.0,
-    3.6
+    16.0,
+    9.1
    ],
    [
-    17.5,
-    3.0
+    19.0,
+    5.9
    ],
    [
-    20.0,
-    2.1
-   ],
-   [
-    22.5,
-    1.2
+    22.0,
+    3.1
    ],
    [
     25.0,
-    0.6
+    1.3
    ],
    [
-    27.5,
-    0.3
+    28.0,
+    0.4
    ],
    [
-    30.0,
+    32.0,
+    0.1
+   ],
+   [
+    36.0,
     0.0
    ]
   ],
@@ -2059,7 +1807,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 30 cycles",
+  "series_name": "number of cycles: 90 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2080,7 +1828,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2088,7 +1836,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 90.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -2100,7 +1848,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-15"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -2120,7 +1868,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -2128,12 +1876,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 40.0,
+    "quantity": "cycle_number",
+    "value": 80.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2145,43 +1893,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    5.2
+    0,
+    10.8
    ],
    [
-    5.0,
-    5.2
+    11.5,
+    10.8
    ],
    [
-    10.0,
-    5.2
+    13.5,
+    10.2
    ],
    [
-    15.0,
-    4.8
+    16.0,
+    8.4
    ],
    [
-    17.5,
-    4.0
+    19.0,
+    5.6
    ],
    [
-    20.0,
-    2.8
-   ],
-   [
-    22.5,
-    1.6
+    22.0,
+    3.0
    ],
    [
     25.0,
-    0.8
+    1.3
    ],
    [
-    27.5,
+    28.0,
     0.4
    ],
    [
-    30.0,
+    32.0,
+    0.1
+   ],
+   [
+    36.0,
     0.0
    ]
   ],
@@ -2199,7 +1947,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 40 cycles",
+  "series_name": "number of cycles: 80 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2220,7 +1968,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2228,7 +1976,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 80.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -2240,7 +1988,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-16"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -2260,7 +2008,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -2268,12 +2016,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 50.0,
+    "quantity": "cycle_number",
+    "value": 70.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2285,43 +2033,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    6.5
+    0,
+    9.5
    ],
    [
-    5.0,
-    6.5
+    12.0,
+    9.5
    ],
    [
-    10.0,
-    6.5
+    14.0,
+    9.1
    ],
    [
-    15.0,
-    6.0
-   ],
-   [
-    17.5,
-    5.0
+    17.0,
+    7.5
    ],
    [
     20.0,
-    3.5
+    5.1
    ],
    [
-    22.5,
-    2.0
+    23.0,
+    2.8
    ],
    [
-    25.0,
-    1.0
+    25.5,
+    1.2
    ],
    [
-    27.5,
-    0.5
+    28.0,
+    0.4
    ],
    [
-    30.0,
+    32.0,
+    0.1
+   ],
+   [
+    36.0,
     0.0
    ]
   ],
@@ -2339,7 +2087,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 50 cycles",
+  "series_name": "number of cycles: 70 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2360,7 +2108,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2368,7 +2116,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 70.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -2380,7 +2128,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-17"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -2400,7 +2148,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -2408,12 +2156,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
+    "quantity": "cycle_number",
     "value": 60.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2425,43 +2173,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    7.8
+    0,
+    8.1
    ],
    [
-    5.0,
-    7.8
-   ],
-   [
-    10.0,
-    7.8
+    12.5,
+    8.1
    ],
    [
     15.0,
-    7.2
+    7.9
    ],
    [
-    17.5,
-    6.0
+    18.0,
+    6.5
    ],
    [
-    20.0,
-    4.2
+    20.5,
+    4.6
    ],
    [
-    22.5,
-    2.4
+    23.0,
+    2.6
    ],
    [
-    25.0,
+    25.5,
     1.2
    ],
    [
-    27.5,
-    0.6
+    28.0,
+    0.4
    ],
    [
-    30.0,
+    32.0,
+    0.1
+   ],
+   [
+    36.0,
     0.0
    ]
   ],
@@ -2479,7 +2227,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 60 cycles",
+  "series_name": "number of cycles: 60 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2500,7 +2248,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2508,7 +2256,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 60.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -2520,7 +2268,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-18"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -2540,7 +2288,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -2548,12 +2296,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 70.0,
+    "quantity": "cycle_number",
+    "value": 50.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2565,43 +2313,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    9.1
+    0,
+    6.7
    ],
    [
-    5.0,
-    9.1
+    13.5,
+    6.7
    ],
    [
-    10.0,
-    9.1
+    16.0,
+    6.5
    ],
    [
-    15.0,
-    8.4
+    18.5,
+    5.4
    ],
    [
-    17.5,
-    7.0
+    21.0,
+    4.0
    ],
    [
-    20.0,
-    4.9
+    23.5,
+    2.4
    ],
    [
-    22.5,
-    2.8
+    26.0,
+    1.1
    ],
    [
-    25.0,
-    1.4
+    28.0,
+    0.4
    ],
    [
-    27.5,
-    0.7
+    32.0,
+    0.1
    ],
    [
-    30.0,
+    36.0,
     0.0
    ]
   ],
@@ -2619,7 +2367,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 70 cycles",
+  "series_name": "number of cycles: 50 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2640,7 +2388,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2648,7 +2396,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 50.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -2660,7 +2408,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-19"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -2680,7 +2428,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -2688,12 +2436,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 80.0,
+    "quantity": "cycle_number",
+    "value": 40.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2705,43 +2453,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    10.4
+    0,
+    5.4
    ],
    [
-    5.0,
-    10.4
+    14.5,
+    5.4
    ],
    [
-    10.0,
-    10.4
+    17.0,
+    5.2
    ],
    [
-    15.0,
-    9.6
+    19.5,
+    4.4
    ],
    [
-    17.5,
-    8.0
+    22.0,
+    3.3
    ],
    [
-    20.0,
-    5.6
+    24.0,
+    2.2
    ],
    [
-    22.5,
-    3.2
+    26.0,
+    1.0
    ],
    [
-    25.0,
-    1.6
+    28.0,
+    0.4
    ],
    [
-    27.5,
-    0.8
+    32.0,
+    0.1
    ],
    [
-    30.0,
+    36.0,
     0.0
    ]
   ],
@@ -2759,7 +2507,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 80 cycles",
+  "series_name": "number of cycles: 40 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2780,7 +2528,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2788,7 +2536,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 40.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -2800,7 +2548,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-20"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -2820,7 +2568,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -2828,12 +2576,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 90.0,
+    "quantity": "cycle_number",
+    "value": 30.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2845,43 +2593,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    11.7
+    0,
+    4.0
    ],
    [
-    5.0,
-    11.7
+    15.5,
+    4.0
    ],
    [
-    10.0,
-    11.7
+    18.0,
+    3.9
    ],
    [
-    15.0,
-    10.8
-   ],
-   [
-    17.5,
-    9.0
-   ],
-   [
-    20.0,
-    6.3
+    20.5,
+    3.3
    ],
    [
     22.5,
-    3.6
+    2.6
    ],
    [
-    25.0,
+    24.5,
     1.8
    ],
    [
-    27.5,
-    0.9
+    26.5,
+    1.0
    ],
    [
-    30.0,
+    28.0,
+    0.4
+   ],
+   [
+    32.0,
+    0.1
+   ],
+   [
+    36.0,
     0.0
    ]
   ],
@@ -2899,7 +2647,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 90 cycles",
+  "series_name": "number of cycles: 30 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -2920,7 +2668,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2928,7 +2676,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 30.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -2940,7 +2688,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-21"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -2960,7 +2708,7 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "precursor_exposure_time",
+    "quantity": "pulse_time",
     "value": 50.0,
     "unit": "ms",
     "of_reactant": null,
@@ -2968,12 +2716,12 @@
     "recipe_role": "control_setting"
    },
    {
-    "quantity": "series_value",
-    "value": 100.0,
+    "quantity": "cycle_number",
+    "value": 20.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -2985,47 +2733,43 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    13.0
+    0,
+    2.7
    ],
    [
-    5.0,
-    13.0
+    17.0,
+    2.7
    ],
    [
-    10.0,
-    13.0
+    19.5,
+    2.6
    ],
    [
-    12.5,
-    12.9
+    21.5,
+    2.3
    ],
    [
-    15.0,
-    12.0
-   ],
-   [
-    17.5,
-    10.0
-   ],
-   [
-    20.0,
-    7.0
-   ],
-   [
-    22.5,
-    4.0
+    23.5,
+    1.8
    ],
    [
     25.0,
-    2.0
+    1.4
    ],
    [
-    27.5,
-    1.0
+    26.5,
+    0.9
    ],
    [
-    30.0,
+    28.0,
+    0.4
+   ],
+   [
+    32.0,
+    0.1
+   ],
+   [
+    36.0,
     0.0
    ]
   ],
@@ -3043,7 +2787,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 100 cycles",
+  "series_name": "number of cycles: 20 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3064,7 +2808,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -3072,7 +2816,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 20.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -3084,7 +2828,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5a-22"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -3104,12 +2848,20 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
+    "quantity": "pulse_time",
+    "value": 50.0,
+    "unit": "ms",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
     "value": 10.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -3121,43 +2873,39 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    1.3
-   ],
-   [
-    10.0,
-    1.3
-   ],
-   [
-    15.0,
-    1.3
+    0,
+    1.35
    ],
    [
     20.0,
+    1.35
+   ],
+   [
+    22.0,
+    1.3
+   ],
+   [
+    24.0,
     1.2
    ],
    [
-    22.5,
-    1.0
-   ],
-   [
-    25.0,
-    0.7
+    26.0,
+    0.9
    ],
    [
     27.5,
-    0.4
+    0.6
    ],
    [
-    30.0,
-    0.2
+    29.0,
+    0.3
    ],
    [
-    32.5,
+    32.0,
     0.1
    ],
    [
-    35.0,
+    36.0,
     0.0
    ]
   ],
@@ -3165,17 +2913,17 @@
   "relevance": "model",
   "is_model_result": true,
   "analysis_ready": true,
-  "exp_id": "10.3762_bjnano.5.25-F5b-23",
+  "exp_id": "10.3762_bjnano.5.25-F5a-23",
   "provenance": {
    "figure": "Fig 5",
    "figure_number": "5",
    "fig_docling_index": "5",
-   "panel": "b",
+   "panel": "a",
    "caption": "Figure 5: Plot of deposited oxide thickness with respect to the VACNT depth for a multi-cycle ALD process, determined by the model with the parameters in Table 1. (a) Fixed precursor exposure time (50",
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 10 cycles",
+  "series_name": "number of cycles: 10 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3196,7 +2944,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 50.0,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -3204,7 +2952,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 10.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -3214,9 +2962,9 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.3762_bjnano.5.25-F5b-23"
+    "_exp_id": "10.3762_bjnano.5.25-F5a-23"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -3236,12 +2984,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 20.0,
+    "quantity": "cycle_number",
+    "value": 100.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -3253,43 +3001,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    2.6
+    0,
+    13.5
    ],
    [
-    10.0,
-    2.6
-   ],
-   [
-    15.0,
-    2.6
-   ],
-   [
-    20.0,
-    2.4
-   ],
-   [
-    22.5,
-    2.0
+    23.5,
+    13.5
    ],
    [
     25.0,
-    1.4
+    12.5
    ],
    [
-    27.5,
-    0.8
+    27.0,
+    8.0
    ],
    [
-    30.0,
-    0.4
+    29.0,
+    3.5
    ],
    [
-    32.5,
+    31.0,
+    1.0
+   ],
+   [
+    34.0,
     0.2
    ],
    [
-    35.0,
+    37.0,
     0.0
    ]
   ],
@@ -3307,7 +3047,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 20 cycles",
+  "series_name": "number of cycles: 100 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3336,7 +3076,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 100.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -3348,7 +3088,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-24"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -3368,12 +3108,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 30.0,
+    "quantity": "cycle_number",
+    "value": 90.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -3385,43 +3125,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    3.9
+    0,
+    12.2
    ],
    [
-    10.0,
-    3.9
-   ],
-   [
-    15.0,
-    3.9
-   ],
-   [
-    20.0,
-    3.6
-   ],
-   [
-    22.5,
-    3.0
+    23.5,
+    12.2
    ],
    [
     25.0,
-    2.1
+    11.5
    ],
    [
-    27.5,
-    1.2
+    27.0,
+    7.5
    ],
    [
-    30.0,
-    0.6
+    29.0,
+    3.3
    ],
    [
-    32.5,
-    0.3
+    31.0,
+    0.9
    ],
    [
-    35.0,
+    34.0,
+    0.2
+   ],
+   [
+    37.0,
     0.0
    ]
   ],
@@ -3439,7 +3171,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 30 cycles",
+  "series_name": "number of cycles: 90 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3468,7 +3200,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 90.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -3480,7 +3212,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-25"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -3500,12 +3232,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 40.0,
+    "quantity": "cycle_number",
+    "value": 80.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -3517,43 +3249,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    5.2
+    0,
+    10.8
    ],
    [
-    10.0,
-    5.2
-   ],
-   [
-    15.0,
-    5.2
-   ],
-   [
-    20.0,
-    4.8
-   ],
-   [
-    22.5,
-    4.0
+    23.5,
+    10.8
    ],
    [
     25.0,
-    2.8
+    10.2
    ],
    [
-    27.5,
-    1.6
+    27.0,
+    7.0
    ],
    [
-    30.0,
+    29.0,
+    3.0
+   ],
+   [
+    31.0,
     0.8
    ],
    [
-    32.5,
-    0.4
+    34.0,
+    0.2
    ],
    [
-    35.0,
+    37.0,
     0.0
    ]
   ],
@@ -3571,7 +3295,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 40 cycles",
+  "series_name": "number of cycles: 80 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3600,7 +3324,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 80.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -3612,7 +3336,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-26"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -3632,12 +3356,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 50.0,
+    "quantity": "cycle_number",
+    "value": 70.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -3649,43 +3373,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    6.5
+    0,
+    9.5
    ],
    [
-    10.0,
-    6.5
-   ],
-   [
-    15.0,
-    6.5
-   ],
-   [
-    20.0,
-    6.0
-   ],
-   [
-    22.5,
-    5.0
+    23.5,
+    9.5
    ],
    [
     25.0,
-    3.5
+    9.0
    ],
    [
-    27.5,
-    2.0
+    27.0,
+    6.3
    ],
    [
-    30.0,
-    1.0
+    29.0,
+    2.7
    ],
    [
-    32.5,
-    0.5
+    31.0,
+    0.7
    ],
    [
-    35.0,
+    34.0,
+    0.15
+   ],
+   [
+    37.0,
     0.0
    ]
   ],
@@ -3703,7 +3419,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 50 cycles",
+  "series_name": "number of cycles: 70 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3732,7 +3448,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 70.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -3744,7 +3460,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-27"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -3764,12 +3480,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
+    "quantity": "cycle_number",
     "value": 60.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -3781,43 +3497,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    7.8
+    0,
+    8.1
    ],
    [
-    10.0,
-    7.8
-   ],
-   [
-    15.0,
-    7.8
-   ],
-   [
-    20.0,
-    7.2
-   ],
-   [
-    22.5,
-    6.0
+    23.5,
+    8.1
    ],
    [
     25.0,
-    4.2
+    7.7
    ],
    [
-    27.5,
+    27.0,
+    5.5
+   ],
+   [
+    29.0,
     2.4
    ],
    [
-    30.0,
-    1.2
-   ],
-   [
-    32.5,
+    31.0,
     0.6
    ],
    [
-    35.0,
+    34.0,
+    0.15
+   ],
+   [
+    37.0,
     0.0
    ]
   ],
@@ -3835,7 +3543,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 60 cycles",
+  "series_name": "number of cycles: 60 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3864,7 +3572,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 60.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -3876,7 +3584,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-28"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -3896,12 +3604,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 70.0,
+    "quantity": "cycle_number",
+    "value": 50.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -3913,43 +3621,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    9.1
+    0,
+    6.7
    ],
    [
-    10.0,
-    9.1
-   ],
-   [
-    15.0,
-    9.1
-   ],
-   [
-    20.0,
-    8.4
-   ],
-   [
-    22.5,
-    7.0
+    23.5,
+    6.7
    ],
    [
     25.0,
-    4.9
+    6.4
    ],
    [
-    27.5,
-    2.8
+    27.0,
+    4.6
    ],
    [
-    30.0,
-    1.4
+    29.0,
+    2.0
    ],
    [
-    32.5,
-    0.7
+    31.0,
+    0.5
    ],
    [
-    35.0,
+    34.0,
+    0.1
+   ],
+   [
+    37.0,
     0.0
    ]
   ],
@@ -3967,7 +3667,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 70 cycles",
+  "series_name": "number of cycles: 50 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -3996,7 +3696,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 50.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4008,7 +3708,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-29"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -4028,12 +3728,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 80.0,
+    "quantity": "cycle_number",
+    "value": 40.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -4045,43 +3745,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    10.4
+    0,
+    5.4
    ],
    [
-    10.0,
-    10.4
-   ],
-   [
-    15.0,
-    10.4
-   ],
-   [
-    20.0,
-    9.6
-   ],
-   [
-    22.5,
-    8.0
+    23.5,
+    5.4
    ],
    [
     25.0,
-    5.6
+    5.1
    ],
    [
-    27.5,
-    3.2
+    27.0,
+    3.7
    ],
    [
-    30.0,
+    29.0,
     1.6
    ],
    [
-    32.5,
-    0.8
+    31.0,
+    0.4
    ],
    [
-    35.0,
+    34.0,
+    0.1
+   ],
+   [
+    37.0,
     0.0
    ]
   ],
@@ -4099,7 +3791,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 80 cycles",
+  "series_name": "number of cycles: 40 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -4128,7 +3820,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 40.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4140,7 +3832,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-30"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -4160,12 +3852,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 90.0,
+    "quantity": "cycle_number",
+    "value": 30.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -4177,43 +3869,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    11.7
+    0,
+    4.0
    ],
    [
-    10.0,
-    11.7
-   ],
-   [
-    15.0,
-    11.7
-   ],
-   [
-    20.0,
-    10.8
-   ],
-   [
-    22.5,
-    9.0
+    23.5,
+    4.0
    ],
    [
     25.0,
-    6.3
+    3.8
    ],
    [
-    27.5,
-    3.6
+    27.0,
+    2.8
    ],
    [
-    30.0,
-    1.8
+    29.0,
+    1.2
    ],
    [
-    32.5,
-    0.9
+    31.0,
+    0.3
    ],
    [
-    35.0,
+    34.0,
+    0.05
+   ],
+   [
+    37.0,
     0.0
    ]
   ],
@@ -4231,7 +3915,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 90 cycles",
+  "series_name": "number of cycles: 30 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -4260,7 +3944,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 30.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4272,7 +3956,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-31"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -4292,12 +3976,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 100.0,
+    "quantity": "cycle_number",
+    "value": 20.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -4309,43 +3993,35 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    13.0
+    0,
+    2.7
    ],
    [
-    10.0,
-    13.0
-   ],
-   [
-    15.0,
-    13.0
-   ],
-   [
-    20.0,
-    12.0
-   ],
-   [
-    22.5,
-    10.0
+    23.5,
+    2.7
    ],
    [
     25.0,
-    7.0
+    2.5
    ],
    [
-    27.5,
-    4.0
+    27.0,
+    1.8
    ],
    [
-    30.0,
-    2.0
+    29.0,
+    0.8
    ],
    [
-    32.5,
-    1.0
+    31.0,
+    0.2
    ],
    [
-    35.0,
+    34.0,
+    0.05
+   ],
+   [
+    37.0,
     0.0
    ]
   ],
@@ -4363,7 +4039,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 100 cycles",
+  "series_name": "number of cycles: 20 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -4392,7 +4068,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 20.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4404,7 +4080,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F5b-32"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -4424,12 +4100,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 200.0,
+    "quantity": "cycle_number",
+    "value": 10.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -4441,65 +4117,49 @@
   "coordinate_family": "position",
   "points": [
    [
-    0.0,
-    10.0
+    0,
+    1.35
    ],
    [
-    4.0,
-    10.0
+    23.5,
+    1.35
    ],
    [
-    8.0,
-    10.0
-   ],
-   [
-    12.0,
-    10.0
-   ],
-   [
-    16.0,
-    10.0
-   ],
-   [
-    20.0,
-    10.0
-   ],
-   [
-    24.0,
-    10.0
+    26.0,
+    1.2
    ],
    [
     28.0,
-    9.0
+    0.7
    ],
    [
-    32.0,
-    7.0
+    30.0,
+    0.3
+   ],
+   [
+    33.0,
+    0.05
    ],
    [
     36.0,
-    4.0
-   ],
-   [
-    40.0,
-    2.0
+    0.0
    ]
   ],
   "granularity": "profile",
-  "relevance": "experimental",
-  "is_model_result": false,
+  "relevance": "model",
+  "is_model_result": true,
   "analysis_ready": true,
-  "exp_id": "10.3762_bjnano.5.25-F6b-33",
+  "exp_id": "10.3762_bjnano.5.25-F5b-33",
   "provenance": {
-   "figure": "Fig 6",
-   "figure_number": "6",
-   "fig_docling_index": "6",
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "5",
    "panel": "b",
-   "caption": "Figure 6: Experimental results for TiO 2 coated VACNTs. (a) An SEM image of a VACNT array coated with 400 cycles of TiO 2 is shown with close-up SEM images at depths of ca. 5, 25, and 80 \u03bc m. At 5 \u03bc m",
+   "caption": "Figure 5: Plot of deposited oxide thickness with respect to the VACNT depth for a multi-cycle ALD process, determined by the model with the parameters in Table 1. (a) Fixed precursor exposure time (50",
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 200 cycles",
+  "series_name": "number of cycles: 10 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -4528,7 +4188,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 10.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4538,9 +4198,9 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.3762_bjnano.5.25-F6b-33"
+    "_exp_id": "10.3762_bjnano.5.25-F5b-33"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -4560,12 +4220,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 400.0,
+    "quantity": "cycle_number",
+    "value": 200.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -4578,47 +4238,59 @@
   "points": [
    [
     0.0,
-    26.0
+    9.5
    ],
    [
-    4.0,
-    26.0
+    3.0,
+    9.2
    ],
    [
-    8.0,
-    26.0
+    6.2,
+    9.5
    ],
    [
-    12.0,
-    26.0
+    10.0,
+    9.8
    ],
    [
-    16.0,
-    24.0
+    12.2,
+    9.2
+   ],
+   [
+    14.5,
+    9.8
+   ],
+   [
+    17.5,
+    9.2
    ],
    [
     20.0,
-    22.0
+    9.2
    ],
    [
-    24.0,
-    19.0
+    25.0,
+    9.8
    ],
    [
-    28.0,
-    16.0
+    27.5,
+    9.5
    ],
    [
-    32.0,
-    13.0
+    30.0,
+    8.8
    ],
    [
-    36.0,
-    8.0
+    32.5,
+    8.2
+   ],
+   [
+    35.0,
+    4.5
    ],
    [
     40.0,
-    2.0
+    2.5
    ]
   ],
   "granularity": "profile",
@@ -4635,7 +4307,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 400 cycles",
+  "series_name": "number of cycles: 200 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -4664,7 +4336,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 200.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4676,7 +4348,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F6b-34"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -4696,12 +4368,12 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 100.0,
+    "quantity": "cycle_number",
+    "value": 400.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -4714,56 +4386,76 @@
   "points": [
    [
     0.0,
-    7.0
+    25.3
    ],
    [
-    2.0,
-    7.0
+    3.0,
+    25.5
    ],
    [
-    4.0,
-    7.0
-   ],
-   [
-    6.0,
-    7.0
-   ],
-   [
-    8.0,
-    7.0
+    6.2,
+    25.5
    ],
    [
     10.0,
-    7.0
+    25.2
    ],
    [
-    12.0,
-    7.0
+    12.2,
+    25.0
    ],
    [
-    14.0,
-    7.0
+    14.5,
+    23.3
    ],
    [
-    15.0,
-    7.0
+    17.5,
+    21.5
+   ],
+   [
+    20.0,
+    18.5
+   ],
+   [
+    25.0,
+    16.0
+   ],
+   [
+    27.5,
+    13.3
+   ],
+   [
+    30.0,
+    9.5
+   ],
+   [
+    32.5,
+    8.8
+   ],
+   [
+    35.0,
+    5.2
+   ],
+   [
+    40.0,
+    2.5
    ]
   ],
   "granularity": "profile",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.3762_bjnano.5.25-F6c-35",
+  "exp_id": "10.3762_bjnano.5.25-F6b-35",
   "provenance": {
    "figure": "Fig 6",
    "figure_number": "6",
    "fig_docling_index": "6",
-   "panel": "c",
+   "panel": "b",
    "caption": "Figure 6: Experimental results for TiO 2 coated VACNTs. (a) An SEM image of a VACNT array coated with 400 cycles of TiO 2 is shown with close-up SEM images at depths of ca. 5, 25, and 80 \u03bc m. At 5 \u03bc m",
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 100 cycles",
+  "series_name": "number of cycles: 400 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -4792,7 +4484,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 400.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4802,9 +4494,9 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.3762_bjnano.5.25-F6c-35"
+    "_exp_id": "10.3762_bjnano.5.25-F6b-35"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  },
  {
@@ -4824,12 +4516,20 @@
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "series_value",
-    "value": 200.0,
+    "quantity": "pulse_time",
+    "value": 0.2,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 100.0,
     "unit": "cycles",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": "control_setting"
    }
   ],
   "measurand": {
@@ -4842,39 +4542,23 @@
   "points": [
    [
     0.0,
-    20.0
+    7.5
    ],
    [
-    2.0,
-    20.0
-   ],
-   [
-    4.0,
-    20.0
+    3.0,
+    7.5
    ],
    [
     6.0,
-    19.0
+    7.5
    ],
    [
-    8.0,
-    16.0
-   ],
-   [
-    10.0,
-    13.0
-   ],
-   [
-    12.0,
-    9.0
-   ],
-   [
-    14.0,
-    6.0
+    9.0,
+    7.5
    ],
    [
     15.0,
-    5.0
+    1.5
    ]
   ],
   "granularity": "profile",
@@ -4891,7 +4575,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 200 cycles",
+  "series_name": "number of cycles: 100 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -4912,7 +4596,7 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 0.2,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -4920,7 +4604,7 @@
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": null,
+   "ncycles": 100.0,
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
@@ -4932,7 +4616,7 @@
    "param_sources": {
     "_exp_id": "10.3762_bjnano.5.25-F6c-36"
    },
-   "completeness": 0.3
+   "completeness": 0.5
   }
  },
  {
@@ -4950,7 +4634,24 @@
   "carrier_gas": null,
   "process_type": "unknown",
   "cycle_sequence": "A",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 0.2,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200.0,
+    "unit": "cycles",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting"
+   }
+  ],
   "measurand": {
    "quantity": "film_thickness",
    "unit": "nm",
@@ -4961,39 +4662,43 @@
   "points": [
    [
     0.0,
-    20.0
+    20.2
    ],
    [
-    2.0,
-    20.0
-   ],
-   [
-    4.0,
-    20.0
+    3.0,
+    20.2
    ],
    [
     6.0,
-    20.0
+    20.2
    ],
    [
-    8.0,
-    19.0
+    9.0,
+    13.5
    ],
    [
     10.0,
-    17.0
+    9.2
+   ],
+   [
+    11.0,
+    7.2
    ],
    [
     12.0,
-    12.0
+    5.8
+   ],
+   [
+    13.0,
+    3.8
    ],
    [
     14.0,
-    7.0
+    2.2
    ],
    [
     15.0,
-    5.0
+    1.8
    ]
   ],
   "granularity": "profile",
@@ -5010,7 +4715,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.5.25"
   },
-  "series_name": "series: 200 scaled cycles",
+  "series_name": "number of cycles: 200 cycles",
   "phase": null,
   "structure": null,
   "varies": [
@@ -5031,7 +4736,143 @@
      "label": "A",
      "role": "precursor",
      "species": null,
-     "dose_time": null,
+     "dose_time": 0.2,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200.0,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.3762_bjnano.5.25-F6c-37"
+   },
+   "completeness": 0.5
+  }
+ },
+ {
+  "material": "TiO2",
+  "material_raw": "TiO2",
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 0.2,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "family": "film_amount"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0.0,
+    20.2
+   ],
+   [
+    3.0,
+    20.2
+   ],
+   [
+    6.0,
+    19.8
+   ],
+   [
+    7.5,
+    19.0
+   ],
+   [
+    9.0,
+    17.5
+   ],
+   [
+    10.0,
+    16.2
+   ],
+   [
+    11.0,
+    15.2
+   ],
+   [
+    12.0,
+    14.5
+   ],
+   [
+    13.0,
+    8.5
+   ],
+   [
+    14.0,
+    5.8
+   ],
+   [
+    15.0,
+    4.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.3762_bjnano.5.25-F6c-38",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 6: Experimental results for TiO 2 coated VACNTs. (a) An SEM image of a VACNT array coated with 400 cycles of TiO 2 is shown with close-up SEM images at depths of ca. 5, 25, and 80 \u03bc m. At 5 \u03bc m",
+   "extractor": "vision-llm",
+   "doi": "10.3762_bjnano.5.25"
+  },
+  "series_name": "number of cycles: 200 scaled cycles",
+  "phase": null,
+  "structure": null,
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "TiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": 0.2,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -5049,9 +4890,9 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.3762_bjnano.5.25-F6c-37"
+    "_exp_id": "10.3762_bjnano.5.25-F6c-38"
    },
-   "completeness": 0.3
+   "completeness": 0.4
   }
  }
 ]
