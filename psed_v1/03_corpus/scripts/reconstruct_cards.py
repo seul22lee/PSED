@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
-OUT = ROOT.parent / "0706_pipeline" / "output"
+OUT = ROOT.parent / "02_extraction" / "output"
 
 # doi-dir  ->  short output pid
 PAIRS = {

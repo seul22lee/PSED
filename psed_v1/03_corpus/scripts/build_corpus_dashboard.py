@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent          # 0709_corpus
 REF = ROOT / "refsets"
 PDFS = ROOT / "pdfs"
 EXTRACTED = ROOT / "extracted"
-KB = ROOT.parent / "0706_pipeline" / "output"
+KB = ROOT.parent / "02_extraction" / "output"
 
 
 def load():

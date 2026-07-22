@@ -23,7 +23,7 @@ import requests
 
 ROOT = Path(__file__).resolve().parent.parent
 REFSETS = ROOT / "refsets"
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 META = REFSETS / "metadata.jsonl"
 SLEEP_S = 1.0
 

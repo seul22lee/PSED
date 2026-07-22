@@ -20,13 +20,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 MODEL = "gemini-flash-latest"
 MAX_PX = 1100
 
 
 def _load_key():
-    for line in (ROOT.parent / "0604_kg" / ".env").read_text().splitlines():
+    for line in (ROOT / "config" / ".env").read_text().splitlines():
         if line.startswith("GOOGLE_API_KEY"):
             return line.split("=", 1)[1].strip().strip('"').strip("'")
     return os.environ.get("GOOGLE_API_KEY")
