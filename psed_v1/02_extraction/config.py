@@ -14,7 +14,7 @@ Two design changes vs 0604_kg:
 from pathlib import Path
 
 ROOT       = Path(__file__).parent
-ONTOLOGY_DIR = ROOT.parent / "0706_ontology"     # the ontology module (reused, not duplicated)
+ONTOLOGY_DIR = ROOT.parent / "01_ontology"     # the ontology module (reused, not duplicated)
 PDF_DIR    = ROOT / "pdf"
 OUTPUT_DIR = ROOT / "output"
 

@@ -28,7 +28,7 @@ import similarity as sim
 import kb_service as ks
 
 # the geometry classes this twin's ontology model is valid for (geometry-scoped validation)
-_ONTO = json.load(open(HERE.parent / "0706_ontology" / "ald_ontology.json"))
+_ONTO = json.load(open(HERE.parent / "01_ontology" / "ald_ontology.json"))
 TWIN_GEOMETRY = next((m.get("applies_to_geometry") for m in _ONTO.get("models", [])
                       if m["id"] == MODEL_ID), None) or []
 

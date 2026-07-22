@@ -116,7 +116,7 @@ def condition_similarity(a, b, SC):
 # CURVE similarity — agreement of the actual data in the canonical basis
 # =============================================================================
 import re
-ONTO = json.load(open(os.path.join(_REPO, "0706_ontology", "ald_ontology.json")))
+ONTO = json.load(open(os.path.join(_REPO, "01_ontology", "ald_ontology.json")))
 _QR = ONTO.get("quantity_relations", {})
 FAM = {f: s["canonical"] for f, s in (_QR.get("families") or {}).items()}
 TRANS = _QR.get("transforms", [])

@@ -1,0 +1,130 @@
+[
+ {
+  "material": "ZrO2",
+  "material_raw": "ZrO2",
+  "precursors": [
+   "Zr(TMHD)4"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Zr(TMHD)4"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 350,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "family": "film_amount"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "points": [
+   [
+    700,
+    9.5
+   ],
+   [
+    1000,
+    12.4
+   ],
+   [
+    1200,
+    16.7
+   ],
+   [
+    1600,
+    20.6
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1016_j.tsf.2012.11.127-F2a-0",
+  "provenance": {
+   "figure": "Fig 2",
+   "fig_index": "1",
+   "panel": "a",
+   "caption": "Figure 2 - Linear relation of the film thickness with number of cycles indicates that films grow in ALD regime at a growth rate of 0.13 \u00c5/cycle.",
+   "extractor": "vision-llm",
+   "doi": "10.1016_j.tsf.2012.11.127"
+  },
+  "series_name": null,
+  "structure": "planar_wafer",
+  "varies": [
+   "cycle_number"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "ZrO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Zr(TMHD)4",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 350,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1016_j.tsf.2012.11.127-F2a-0"
+   },
+   "completeness": 0.429
+  },
+  "geometry_class": "planar"
+ }
+]

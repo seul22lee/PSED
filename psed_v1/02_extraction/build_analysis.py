@@ -14,7 +14,7 @@ from collections import defaultdict
 from statistics import mean, pstdev
 
 ROOT = Path(__file__).parent
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 
 
 def val_source(c):

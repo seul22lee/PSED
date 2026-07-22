@@ -14,7 +14,7 @@ from pathlib import Path
 from collections import Counter
 
 ROOT = Path(__file__).parent
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 MAT = {m["id"] for m in ONTO["individuals"]["materials"]}
 STR = {s["id"] for s in ONTO["individuals"]["structures"]}
 QK = {q["id"] for q in ONTO["quantity_kinds"]}

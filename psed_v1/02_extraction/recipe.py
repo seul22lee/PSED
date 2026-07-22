@@ -21,7 +21,7 @@ from dataclasses import dataclass, field, asdict
 
 # quantity -> recipe_role (control_setting = in the recipe; else structure /
 # species_property / model_parameter / derived / observable / coordinate)
-_ONTO = _json.loads((_Path(__file__).parent.parent / "0706_ontology" / "ald_ontology.json").read_text())
+_ONTO = _json.loads((_Path(__file__).parent.parent / "01_ontology" / "ald_ontology.json").read_text())
 RECIPE_ROLE = {q["id"]: q.get("recipe_role") for q in _ONTO["quantity_kinds"]}
 
 

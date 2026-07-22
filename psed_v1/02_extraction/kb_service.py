@@ -16,7 +16,7 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-ONTO = json.loads((ROOT.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 _MATERIALS = {m["id"]: m for m in ONTO["individuals"].get("materials", [])}
 # precursor/coreactant species -> individual (indexed by id, formula, full_name, aka)
 _SPECIES = {}

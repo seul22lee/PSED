@@ -21,7 +21,7 @@ HERE = Path(__file__).parent
 SLICES = HERE / "slices"
 PROMPTS = HERE / "prompts"
 OUT = HERE / "out"
-ONTO = json.loads((HERE.parent.parent / "0706_ontology" / "ald_ontology.json").read_text())
+ONTO = json.loads((HERE.parent.parent / "01_ontology" / "ald_ontology.json").read_text())
 
 SCOPES = ["abstract", "abstract_conclusion", "evidence", "full"]
 
