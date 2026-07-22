@@ -1,0 +1,59 @@
+# Geometry-class layer. Under the `geometry` category the FIRST organizing layer is the
+# geometry_class (transport regime / test-structure type); the geometry QUANTITIES
+# (feature_height, aspect_ratio, pore_diameter, …) hang beneath the class they parameterize.
+#
+# Classification follows the Cremers et al. 2019 conformality review (Appl. Phys. Rev. 6,
+# 021302), Sec. III: test structures are classified as VERTICAL structures, LATERAL
+# structures, and POROUS materials (AAO/membranes/powders grouped as porous). We add
+# `planar` (flat, no diffusion limit), `nanostructure_array` (external coating), and
+# `cavity`. Loaded by build_ontology.py as an overlay (core.yaml is not edited):
+#   geometry (category)
+#     └─ geometry_class            e.g. lateral_channel, porous_material
+#          ├─ members  : the structure individuals in that class
+#          └─ parameters: the geometry quantities that describe that class
+# A conformality MODEL declares which geometry_class it is valid for (model_geometry), so
+# the Ylilammi 1D-channel twin is never scored against a porous_material profile.
+
+geometry_classes:
+  lateral_channel:
+    label: Lateral high-aspect-ratio structure
+    cremers_class: lateral structures
+    transport: 1D precursor diffusion along a long straight lateral channel (PillarHall LHAR)
+    members: [pillarhall_lhar, lhar_channel, macro_lateral, air_wedge]
+    parameters: [feature_height, feature_width, feature_length, aspect_ratio,
+                 coated_aspect_ratio, channel_filling_fraction]
+  vertical_structure:
+    label: Vertical structure (trench / via / hole)
+    cremers_class: vertical structures
+    transport: 1D precursor diffusion down a single vertical trench, via or hole
+    members: [trench, via, hole, cylindrical_pore, capillary_tube]
+    parameters: [feature_height, feature_width, aspect_ratio, coated_aspect_ratio,
+                 pore_diameter, trench_periodicity, trench_duty_cycle]
+  porous_material:
+    label: Porous material
+    cremers_class: porous materials
+    transport: effective-medium (Knudsen) diffusion through interconnected / parallel pores
+    members: [aao, track_etch_membrane, mesoporous_film, mesoporous_powder, mof, opal, nonwoven_fiber]
+    parameters: [pore_diameter, pore_radius, generation]
+  nanostructure_array:
+    label: External nanostructure array
+    transport: external coating of free-standing objects; no channel confinement
+    members: [cnt, nanowire, nanorod, pillar_array]
+    parameters: [aspect_ratio, angle]
+  planar:
+    label: Planar substrate
+    transport: flat wafer; no diffusion limitation
+    members: [planar_wafer]
+    parameters: []
+  cavity:
+    label: Cavity / macro-feature
+    transport: enclosed cavity
+    members: [cavity_structure]
+    parameters: [feature_height, feature_width, angle]
+
+# which geometry classes each ontology model is physically valid for
+model_geometry:
+  ylilammi_langmuir_channel: [lateral_channel, vertical_structure]
+  aguinsky_reversible_levelset: [lateral_channel, vertical_structure]
+  arts_recombination: [lateral_channel, vertical_structure]
+  yanguas_gil_saturation: [porous_material, vertical_structure, lateral_channel]

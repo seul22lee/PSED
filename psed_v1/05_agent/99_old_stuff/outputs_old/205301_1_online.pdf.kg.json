@@ -1,0 +1,2861 @@
+{
+  "nodes": [
+    {
+      "id": "pA",
+      "type": "variable",
+      "label": "pA",
+      "metadata": {
+        "definition": "Partial pressure of reactant A (Pa)",
+        "units": null,
+        "source_equations": [
+          "1",
+          "13",
+          "17",
+          "32"
+        ]
+      }
+    },
+    {
+      "id": "RT",
+      "type": "variable",
+      "label": "RT",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "1",
+          "10"
+        ]
+      }
+    },
+    {
+      "id": "A",
+      "type": "variable",
+      "label": "A",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "3",
+          "11",
+          "29",
+          "46"
+        ]
+      }
+    },
+    {
+      "id": "a",
+      "type": "variable",
+      "label": "a",
+      "metadata": {
+        "definition": "Aspect ratio",
+        "units": null,
+        "source_equations": [
+          "6",
+          "7"
+        ]
+      }
+    },
+    {
+      "id": "b",
+      "type": "variable",
+      "label": "b",
+      "metadata": {
+        "definition": "Number of metal atoms in a molecule",
+        "units": null,
+        "source_equations": [
+          "6",
+          "7"
+        ]
+      }
+    },
+    {
+      "id": "c",
+      "type": "variable",
+      "label": "c",
+      "metadata": {
+        "definition": "K (Pa\u00021) gpcsat (pm) rms thickness error (nm)",
+        "units": null,
+        "source_equations": [
+          "6",
+          "7",
+          "11",
+          "27",
+          "30"
+        ]
+      }
+    },
+    {
+      "id": "gpcsat",
+      "type": "variable",
+      "label": "gpcsat",
+      "metadata": {
+        "definition": "Saturation growth in cycle (m)",
+        "units": null,
+        "source_equations": [
+          "9"
+        ]
+      }
+    },
+    {
+      "id": "M",
+      "type": "variable",
+      "label": "M",
+      "metadata": {
+        "definition": "N0: q ¼ bfilm",
+        "units": "9",
+        "source_equations": [
+          "9"
+        ]
+      }
+    },
+    {
+      "id": "h",
+      "type": "variable",
+      "label": "h",
+      "metadata": {
+        "definition": "@pA @t ¼ Deff",
+        "units": null,
+        "source_equations": [
+          "11",
+          "12",
+          "26",
+          "27",
+          "36"
+        ]
+      }
+    },
+    {
+      "id": "p",
+      "type": "variable",
+      "label": "p",
+      "metadata": {
+        "definition": "; we get the penetration depth at pulse length tp, when W \u0005 H ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ",
+        "units": "44",
+        "source_equations": [
+          "11",
+          "22",
+          "43",
+          "44"
+        ]
+      }
+    },
+    {
+      "id": "MART",
+      "type": "variable",
+      "label": "MART",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "11",
+          "14",
+          "43",
+          "44"
+        ]
+      }
+    },
+    {
+      "id": "q",
+      "type": "variable",
+      "label": "q",
+      "metadata": {
+        "definition": "þ Pd 205301-5 Ylilammi, Ylivaara, and Puurunen J. Appl. Phys. 123, 205301 (2018) The analytical solution is (integrations from 0 to t) h tð Þ ¼ e\u0002Ð",
+        "units": null,
+        "source_equations": [
+          "12",
+          "16",
+          "26",
+          "30",
+          "32",
+          "44"
+        ]
+      }
+    },
+    {
+      "id": "K",
+      "type": "variable",
+      "label": "K",
+      "metadata": {
+        "definition": "Adsorption equilibrium constant (1/Pa)",
+        "units": null,
+        "source_equations": [
+          "13",
+          "30"
+        ]
+      }
+    },
+    {
+      "id": "cQ",
+      "type": "variable",
+      "label": "cQ",
+      "metadata": {
+        "definition": "q pAþPd \u0007 \b dtdt: Because typically we need to solve Eq. (31) more than 10 000 times in ﬁtting the result of one growth experiment, it is the major time consuming step in the analysis. Numerical integration of Eq. (32) is too slow. In this work, Eq. (31) is solved by the 4th order Runge-Kutta method (Arfken, 1970). It is self-initiated and easily stable. Often, 100 time points (time step, e.g., 1 ms) are enough for accurate results. However, sometimes this does not guarantee convergence and then we need to increase the number of time points. In Figs. 2 and 3, this approximate model is compared with the numerical solution of the differential equations. Both models give practically identical results. V. THICKNESS PROFILE AND THE PENETRATION",
+        "units": "32",
+        "source_equations": [
+          "13",
+          "32"
+        ]
+      }
+    },
+    {
+      "id": "Q",
+      "type": "variable",
+      "label": "Q",
+      "metadata": {
+        "definition": "Collision rate at unit pressure (m\u00022 s\u00021 Pa\u00021)",
+        "units": null,
+        "source_equations": [
+          "14",
+          "27",
+          "30"
+        ]
+      }
+    },
+    {
+      "id": "dh",
+      "type": "variable",
+      "label": "dh",
+      "metadata": {
+        "definition": "dt ¼ g q : 04 December 2025 23:11:22 During the reactant pulse, the net adsorption rate is always positive so that the question whether the adsorption is revers- ible or irreversible is not important for this model. Both cases are covered by the Langmuir model; in the latter case, Pd ¼ 0. Experiments show that better ﬁt, especially in the case of TiO2 is obtained if Pd > 0. Although the Langmuir model is used in this analysis, the actual reaction mechanism may be much more complicated. IV. APPROXIMATE SOLUTION TO THE DIFFUSION",
+        "units": "16",
+        "source_equations": [
+          "16"
+        ]
+      }
+    },
+    {
+      "id": "dt",
+      "type": "variable",
+      "label": "dt",
+      "metadata": {
+        "definition": "ð cQ q pAe Ð",
+        "units": null,
+        "source_equations": [
+          "16",
+          "32",
+          "39",
+          "40"
+        ]
+      }
+    },
+    {
+      "id": "g",
+      "type": "variable",
+      "label": "g",
+      "metadata": {
+        "definition": "Viscosity of gas (Pa s)",
+        "units": null,
+        "source_equations": [
+          "16"
+        ]
+      }
+    },
+    {
+      "id": "x",
+      "type": "variable",
+      "label": "x",
+      "metadata": {
+        "definition": "Distance from the beginning of the channel (m)",
+        "units": null,
+        "source_equations": [
+          "17",
+          "18",
+          "29",
+          "34",
+          "36",
+          "42"
+        ]
+      }
+    },
+    {
+      "id": "t",
+      "type": "variable",
+      "label": "t",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "17",
+          "19",
+          "35",
+          "43"
+        ]
+      }
+    },
+    {
+      "id": "D",
+      "type": "variable",
+      "label": "D",
+      "metadata": {
+        "definition": "x \u0002 xt ð Þ 2xs xt \u0002 xs ð Þ2 \u0004",
+        "units": null,
+        "source_equations": [
+          "19",
+          "27"
+        ]
+      }
+    },
+    {
+      "id": "Dt",
+      "type": "variable",
+      "label": "Dt",
+      "metadata": {
+        "definition": null,
+        "units": null,
+        "source_equations": [
+          "22",
+          "24"
+        ]
+      }
+    },
+    {
+      "id": "xs",
+      "type": "variable",
+      "label": "xs",
+      "metadata": {
+        "definition": "xs ¼ ﬃﬃﬃﬃﬃ",
+        "units": null,
+        "source_equations": [
+          "24"
+        ]
+      }
+    },
+    {
+      "id": "s",
+      "type": "variable",
+      "label": "s",
+      "metadata": {
+        "definition": "ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ",
+        "units": null,
+        "source_equations": [
+          "30",
+          "34"
+        ]
+      }
+    },
+    {
+      "id": "xp",
+      "type": "variable",
+      "label": "xp",
+      "metadata": {
+        "definition": "Half-thickness penetration depth (m)",
+        "units": null,
+        "source_equations": [
+          "33"
+        ]
+      }
+    },
+    {
+      "id": "dx",
+      "type": "variable",
+      "label": "dx",
+      "metadata": {
+        "definition": "dt ¼",
+        "units": null,
+        "source_equations": [
+          "33",
+          "38",
+          "40",
+          "42"
+        ]
+      }
+    },
+    {
+      "id": "F",
+      "type": "variable",
+      "label": "F",
+      "metadata": {
+        "definition": "2qW ¼",
+        "units": null,
+        "source_equations": [
+          "39",
+          "40",
+          "42"
+        ]
+      }
+    },
+    {
+      "id": "C",
+      "type": "variable",
+      "label": "C",
+      "metadata": {
+        "definition": "A: ¼ 2qW x þ",
+        "units": "21",
+        "source_equations": [
+          "44"
+        ]
+      }
+    },
+    {
+      "id": "gpc",
+      "type": "variable",
+      "label": "gpc",
+      "metadata": {
+        "definition": "Film growth per cycle (m)",
+        "units": null,
+        "source_equations": [
+          "46"
+        ]
+      }
+    },
+    {
+      "id": "Eq1",
+      "type": "equation",
+      "label": "Equation 1",
+      "metadata": {
+        "latex": "\\frac{1}{2} = pA \\cdot RT",
+        "raw": "\u0004\n\u00051=2 pA\nRT ;"
+      }
+    },
+    {
+      "id": "Eq2",
+      "type": "equation",
+      "label": "Equation 2",
+      "metadata": {
+        "latex": "\\frac{1}{2} = 0.5",
+        "raw": "\u0002\n\u00031=2\n:"
+      }
+    },
+    {
+      "id": "Eq3",
+      "type": "equation",
+      "label": "Equation 3",
+      "metadata": {
+        "latex": "\\frac{v_2}{A} = z_A",
+        "raw": "v2\nA\nzA\n:"
+      }
+    },
+    {
+      "id": "Eq4",
+      "type": "equation",
+      "label": "Equation 4",
+      "metadata": {
+        "latex": "\\frac{1}{2}",
+        "raw": "\u0002\n\u00031=2\n;"
+      }
+    },
+    {
+      "id": "Eq6",
+      "type": "equation",
+      "label": "Equation 6",
+      "metadata": {
+        "latex": "\\sqrt{a^2 + b^2} = c",
+        "raw": ":"
+      }
+    },
+    {
+      "id": "Eq7",
+      "type": "equation",
+      "label": "Equation 7",
+      "metadata": {
+        "latex": "\\(\\sqrt{a^2 + b^2} = c\\)",
+        "raw": ":"
+      }
+    },
+    {
+      "id": "Eq8",
+      "type": "equation",
+      "label": "Equation 8",
+      "metadata": {
+        "latex": "\\[ 1 = 3 \\]",
+        "raw": "\u0002\n\u00031=3\n:"
+      }
+    },
+    {
+      "id": "Eq9",
+      "type": "equation",
+      "label": "Equation 9",
+      "metadata": {
+        "latex": "\\[\nq_{\\text{gpcsat}} = \\frac{M}{N_0}\n\\]",
+        "raw": "q gpcsat\nM\nN0:"
+      }
+    },
+    {
+      "id": "Eq10",
+      "type": "equation",
+      "label": "Equation 10",
+      "metadata": {
+        "latex": "\\frac{RT}{N_0}",
+        "raw": "RT\nN0\n;"
+      }
+    },
+    {
+      "id": "Eq11",
+      "type": "equation",
+      "label": "Equation 11",
+      "metadata": {
+        "latex": "\\( f_{\\text{ads}} = \\frac{1}{h} c N_0 p A \\sqrt{\\frac{2 p}{MART}} \\)",
+        "raw": "fads ¼ 1 \u0002 h\nð\nÞ\ncN0pA\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\n;"
+      }
+    },
+    {
+      "id": "Eq12",
+      "type": "equation",
+      "label": "Equation 12",
+      "metadata": {
+        "latex": "f_{des} = q h P_{d}",
+        "raw": "fdes ¼ qhPd;"
+      }
+    },
+    {
+      "id": "Eq13",
+      "type": "equation",
+      "label": "Equation 13",
+      "metadata": {
+        "latex": "K = \\frac{h_{eq}}{pA} \\cdot \\frac{1}{h_{eq}} = cQ \\cdot qP_d;",
+        "raw": "K ¼ heq=pA\n1 \u0002 heq\n¼ cQ\nqPd\n;"
+      }
+    },
+    {
+      "id": "Eq14",
+      "type": "equation",
+      "label": "Equation 14",
+      "metadata": {
+        "latex": "\\[\nQ = \\frac{N_0}{\\sqrt{2\\pi MART}}\n\\]",
+        "raw": "Q ¼\nN0\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\n:"
+      }
+    },
+    {
+      "id": "Eq16",
+      "type": "equation",
+      "label": "Equation 16",
+      "metadata": {
+        "latex": "\\frac{dh}{dt} = g q",
+        "raw": "dh\ndt ¼ g\nq :"
+      }
+    },
+    {
+      "id": "Eq17",
+      "type": "equation",
+      "label": "Equation 17",
+      "metadata": {
+        "latex": "\\frac{\\partial^2 pA(x, t)}{\\partial x^2} = 0",
+        "raw": "@2pA x; t\nð\nÞ\n@x2\n\u0004 0:"
+      }
+    },
+    {
+      "id": "Eq18",
+      "type": "equation",
+      "label": "Equation 18",
+      "metadata": {
+        "latex": "x < x_t",
+        "raw": "\u0002\n\u0003\n;\nx < xt;"
+      }
+    },
+    {
+      "id": "Eq19",
+      "type": "equation",
+      "label": "Equation 19",
+      "metadata": {
+        "latex": "\\[ x_s = \\sqrt{\\frac{D t}{\\pi}} \\]",
+        "raw": "xs ¼\nﬃﬃﬃﬃﬃ\nDt\np\n:"
+      }
+    },
+    {
+      "id": "Eq20",
+      "type": "equation",
+      "label": "Equation 20",
+      "metadata": {
+        "latex": "\\( x_s \\)",
+        "raw": "1\nxs\n:"
+      }
+    },
+    {
+      "id": "Eq22",
+      "type": "equation",
+      "label": "Equation 22",
+      "metadata": {
+        "latex": "\\sqrt{\\frac{Dt}{p}}",
+        "raw": "\u0002\n\u0003\nﬃﬃﬃﬃﬃ\nDt\np\n:"
+      }
+    },
+    {
+      "id": "Eq24",
+      "type": "equation",
+      "label": "Equation 24",
+      "metadata": {
+        "latex": "xs = \\sqrt{Dt}",
+        "raw": "xs ¼\nﬃﬃﬃﬃﬃ\nDt\np\n:"
+      }
+    },
+    {
+      "id": "Eq25",
+      "type": "equation",
+      "label": "Equation 25",
+      "metadata": {
+        "latex": "\\frac{x_t - x_s}{\\left( \\sqrt{2} \\right)}",
+        "raw": "xt \u0002 xs\nxt \u0002 xs\nð\nÞ2\n:"
+      }
+    },
+    {
+      "id": "Eq26",
+      "type": "equation",
+      "label": "Equation 26",
+      "metadata": {
+        "latex": "\\frac{x_t - x_s}{4RT} = \\frac{N_0}{q h P_d}",
+        "raw": "xt \u0002 xs\nþ 4RT\nhN0\nqhPd:"
+      }
+    },
+    {
+      "id": "Eq27",
+      "type": "equation",
+      "label": "Equation 27",
+      "metadata": {
+        "latex": "\\[\nD = \\frac{D_{\\text{eff}} (x_t - x_s)^2}{4RT h N_0 c Q}\n\\]",
+        "raw": "D\nx \u0002 xt\nð\nÞ\n2xs xt \u0002 xs\nð\nÞ2 \u0004\nDeff\nxt \u0002 xs\nð\nÞ2 \u0002 4RT\nhN0\ncQ:"
+      }
+    },
+    {
+      "id": "Eq28",
+      "type": "equation",
+      "label": "Equation 28",
+      "metadata": {
+        "latex": "x_t = 0, \\text{ otherwise}",
+        "raw": "xt ¼ 0; otherwise:"
+      }
+    },
+    {
+      "id": "Eq29",
+      "type": "equation",
+      "label": "Equation 29",
+      "metadata": {
+        "latex": "\\begin{equation}\nh_{eq}(x) = \\frac{K_p A(x)}{1 + K_p A(x)}\n\\end{equation}",
+        "raw": "heq x\nð Þ ¼\nKpA x\nð Þ\n1 þ KpA x\nð Þ :"
+      }
+    },
+    {
+      "id": "Eq30",
+      "type": "equation",
+      "label": "Equation 30",
+      "metadata": {
+        "latex": "s = \\frac{q K}{2 c Q}",
+        "raw": "s ¼ qK\n2cQ :"
+      }
+    },
+    {
+      "id": "Eq32",
+      "type": "equation",
+      "label": "Equation 32",
+      "metadata": {
+        "latex": "\\frac{cQ}{q pA + P_d} \\frac{d}{dt} \\left( \\frac{cQ}{q pA e^{cQ}} \\frac{d}{dt} \\left( \\frac{cQ}{q pA + P_d} \\right) \\right)",
+        "raw": "cQ\nq pAþPd\n\u0007\n\b\ndt\nð cQ\nq pAe\nÐ\ncQ\nq pAþPd\n\u0007\n\b\ndtdt:"
+      }
+    },
+    {
+      "id": "Eq33",
+      "type": "equation",
+      "label": "Equation 33",
+      "metadata": {
+        "latex": "\\[\nD_{xp} = \\frac{D_s}{\\left| \\frac{ds}{dx} \\right|}\n\\]",
+        "raw": "Dxp ¼\nDs\njds=dxj ;"
+      }
+    },
+    {
+      "id": "Eq34",
+      "type": "equation",
+      "label": "Equation 34",
+      "metadata": {
+        "latex": "s \\cdot x = s_0 \\cdot 2",
+        "raw": "s xp\nð\nÞ ¼ s 0\nð Þ\n2 :"
+      }
+    },
+    {
+      "id": "Eq35",
+      "type": "equation",
+      "label": "Equation 35",
+      "metadata": {
+        "latex": "H_N(t) = H_0(t) - 2N g_{pc}",
+        "raw": "H N\nð Þ ¼ H 0\nð Þ \u0002 2N gpc:"
+      }
+    },
+    {
+      "id": "Eq36",
+      "type": "equation",
+      "label": "Equation 36",
+      "metadata": {
+        "latex": "\\sum_{i=1}^{h} hi(x)",
+        "raw": "i¼1\nhi x\nð Þ;"
+      }
+    },
+    {
+      "id": "Eq37",
+      "type": "equation",
+      "label": "Equation 37",
+      "metadata": {
+        "latex": "\\( g_{pcsat} \\)",
+        "raw": "ð Þgpcsat:"
+      }
+    },
+    {
+      "id": "Eq38",
+      "type": "equation",
+      "label": "Equation 38",
+      "metadata": {
+        "latex": "dN = 2qW \\, dx",
+        "raw": "dN ¼ 2qWdx:"
+      }
+    },
+    {
+      "id": "Eq39",
+      "type": "equation",
+      "label": "Equation 39",
+      "metadata": {
+        "latex": "dN = F dt",
+        "raw": "dN ¼ Fdt:"
+      }
+    },
+    {
+      "id": "Eq40",
+      "type": "equation",
+      "label": "Equation 40",
+      "metadata": {
+        "latex": "\\frac{dv}{dt} = \\frac{F}{2qW} dx",
+        "raw": "v ¼ dx\ndt ¼\nF\n2qW :"
+      }
+    },
+    {
+      "id": "Eq42",
+      "type": "equation",
+      "label": "Equation 42",
+      "metadata": {
+        "latex": "\\mathcal{F} :  \u0002 =  \\frac{1}{\\sqrt{2\\pi}} \\int \\exp\\left(-\\frac{x^2}{2}\\right) dx",
+        "raw": "\u0002\n\u0003 :"
+      }
+    },
+    {
+      "id": "Eq43",
+      "type": "equation",
+      "label": "Equation 43",
+      "metadata": {
+        "latex": "\\frac{HpA_0 N_0}{2q} \\sqrt{\\frac{2p}{MART} p t}",
+        "raw": "\u0002\n\u0003\n¼\nHpA0N0\n2q\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\nt:"
+      }
+    },
+    {
+      "id": "Eq44",
+      "type": "equation",
+      "label": "Equation 44",
+      "metadata": {
+        "latex": "\\[\nC = \\frac{p A_0 N_0}{2 q} \\sqrt{\\frac{2 p}{MART}}\n\\]",
+        "raw": "C ¼\npA0N0\n2q\nﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ\n2pMART\np\n;"
+      }
+    },
+    {
+      "id": "Eq45",
+      "type": "equation",
+      "label": "Equation 45",
+      "metadata": {
+        "latex": "0 = 375",
+        "raw": "0:375\n:"
+      }
+    },
+    {
+      "id": "Eq46",
+      "type": "equation",
+      "label": "Equation 46",
+      "metadata": {
+        "latex": "\\[\ngpc_{sat} = 1 + K_p A gpc\n\\]",
+        "raw": "gpcsat ¼ 1 þ KpA\nKpA\ngpc;"
+      }
+    },
+    {
+      "id": "frac",
+      "type": "variable",
+      "label": "frac",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "ot",
+      "type": "variable",
+      "label": "ot",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "v_2",
+      "type": "variable",
+      "label": "v_2",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "z_A",
+      "type": "variable",
+      "label": "z_A",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "sqrt",
+      "type": "variable",
+      "label": "sqrt",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "q_",
+      "type": "variable",
+      "label": "q_",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "N_0",
+      "type": "variable",
+      "label": "N_0",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "f_",
+      "type": "variable",
+      "label": "f_",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "ads",
+      "type": "variable",
+      "label": "ads",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "des",
+      "type": "variable",
+      "label": "des",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "P_",
+      "type": "variable",
+      "label": "P_",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "d",
+      "type": "variable",
+      "label": "d",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "es",
+      "type": "variable",
+      "label": "es",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "h_",
+      "type": "variable",
+      "label": "h_",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "eq",
+      "type": "variable",
+      "label": "eq",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "qP_d",
+      "type": "variable",
+      "label": "qP_d",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "x_t",
+      "type": "variable",
+      "label": "x_t",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "x_s",
+      "type": "variable",
+      "label": "x_s",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "P_d",
+      "type": "variable",
+      "label": "P_d",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "D_",
+      "type": "variable",
+      "label": "D_",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "eff",
+      "type": "variable",
+      "label": "eff",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "otherwise",
+      "type": "variable",
+      "label": "otherwise",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "equation",
+      "type": "variable",
+      "label": "equation",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "K_p",
+      "type": "variable",
+      "label": "K_p",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "begin",
+      "type": "variable",
+      "label": "begin",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "e",
+      "type": "variable",
+      "label": "e",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "D_s",
+      "type": "variable",
+      "label": "D_s",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "ds",
+      "type": "variable",
+      "label": "ds",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "s_0",
+      "type": "variable",
+      "label": "s_0",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "H_N",
+      "type": "variable",
+      "label": "H_N",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "H_0",
+      "type": "variable",
+      "label": "H_0",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "N",
+      "type": "variable",
+      "label": "N",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "g_",
+      "type": "variable",
+      "label": "g_",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "pc",
+      "type": "variable",
+      "label": "pc",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "i",
+      "type": "variable",
+      "label": "i",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "hi",
+      "type": "variable",
+      "label": "hi",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "sum_",
+      "type": "variable",
+      "label": "sum_",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "pcsat",
+      "type": "variable",
+      "label": "pcsat",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "dN",
+      "type": "variable",
+      "label": "dN",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "qW",
+      "type": "variable",
+      "label": "qW",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "dv",
+      "type": "variable",
+      "label": "dv",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "v",
+      "type": "variable",
+      "label": "v",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "mathcal",
+      "type": "variable",
+      "label": "mathcal",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "HpA_0",
+      "type": "variable",
+      "label": "HpA_0",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "A_0",
+      "type": "variable",
+      "label": "A_0",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "gpc_",
+      "type": "variable",
+      "label": "gpc_",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "sat",
+      "type": "variable",
+      "label": "sat",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "Alice",
+      "type": "variable",
+      "label": "Alice",
+      "metadata": {
+        "notes": "auto-created source"
+      }
+    },
+    {
+      "id": "Bob",
+      "type": "variable",
+      "label": "Bob",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    },
+    {
+      "id": "Charlie",
+      "type": "variable",
+      "label": "Charlie",
+      "metadata": {
+        "notes": "auto-created target"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "pA",
+      "target": "Eq1",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pA appears in Eq1"
+      }
+    },
+    {
+      "source": "RT",
+      "target": "Eq1",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable RT appears in Eq1"
+      }
+    },
+    {
+      "source": "Eq1",
+      "target": "frac",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq1 defines frac"
+      }
+    },
+    {
+      "source": "Eq1",
+      "target": "ot",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq1 governs evolution of ot"
+      }
+    },
+    {
+      "source": "Eq2",
+      "target": "frac",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq2 defines frac"
+      }
+    },
+    {
+      "source": "v_2",
+      "target": "Eq3",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable v_2 appears in Eq3"
+      }
+    },
+    {
+      "source": "A",
+      "target": "Eq3",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable A appears in Eq3"
+      }
+    },
+    {
+      "source": "z_A",
+      "target": "Eq3",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable z_A appears in Eq3"
+      }
+    },
+    {
+      "source": "Eq3",
+      "target": "frac",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq3 defines frac"
+      }
+    },
+    {
+      "source": "a",
+      "target": "Eq6",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable a appears in Eq6"
+      }
+    },
+    {
+      "source": "b",
+      "target": "Eq6",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable b appears in Eq6"
+      }
+    },
+    {
+      "source": "c",
+      "target": "Eq6",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable c appears in Eq6"
+      }
+    },
+    {
+      "source": "Eq6",
+      "target": "sqrt",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq6 defines sqrt"
+      }
+    },
+    {
+      "source": "a",
+      "target": "Eq7",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable a appears in Eq7"
+      }
+    },
+    {
+      "source": "b",
+      "target": "Eq7",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable b appears in Eq7"
+      }
+    },
+    {
+      "source": "c",
+      "target": "Eq7",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable c appears in Eq7"
+      }
+    },
+    {
+      "source": "Eq7",
+      "target": "sqrt",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq7 defines sqrt"
+      }
+    },
+    {
+      "source": "q_",
+      "target": "Eq9",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q_ appears in Eq9"
+      }
+    },
+    {
+      "source": "gpcsat",
+      "target": "Eq9",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable gpcsat appears in Eq9"
+      }
+    },
+    {
+      "source": "M",
+      "target": "Eq9",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable M appears in Eq9"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq9",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq9"
+      }
+    },
+    {
+      "source": "Eq9",
+      "target": "q_",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq9 defines q_"
+      }
+    },
+    {
+      "source": "RT",
+      "target": "Eq10",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable RT appears in Eq10"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq10",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq10"
+      }
+    },
+    {
+      "source": "f_",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable f_ appears in Eq11"
+      }
+    },
+    {
+      "source": "ads",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable ads appears in Eq11"
+      }
+    },
+    {
+      "source": "h",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h appears in Eq11"
+      }
+    },
+    {
+      "source": "c",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable c appears in Eq11"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq11"
+      }
+    },
+    {
+      "source": "p",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable p appears in Eq11"
+      }
+    },
+    {
+      "source": "A",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable A appears in Eq11"
+      }
+    },
+    {
+      "source": "p",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable p appears in Eq11"
+      }
+    },
+    {
+      "source": "MART",
+      "target": "Eq11",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable MART appears in Eq11"
+      }
+    },
+    {
+      "source": "Eq11",
+      "target": "f_",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq11 defines f_"
+      }
+    },
+    {
+      "source": "Eq11",
+      "target": "s",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq11 governs evolution of s"
+      }
+    },
+    {
+      "source": "f_",
+      "target": "Eq12",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable f_ appears in Eq12"
+      }
+    },
+    {
+      "source": "des",
+      "target": "Eq12",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable des appears in Eq12"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq12",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq12"
+      }
+    },
+    {
+      "source": "h",
+      "target": "Eq12",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h appears in Eq12"
+      }
+    },
+    {
+      "source": "P_",
+      "target": "Eq12",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable P_ appears in Eq12"
+      }
+    },
+    {
+      "source": "d",
+      "target": "Eq12",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable d appears in Eq12"
+      }
+    },
+    {
+      "source": "Eq12",
+      "target": "f_",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq12 defines f_"
+      }
+    },
+    {
+      "source": "Eq12",
+      "target": "es",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq12 governs evolution of es"
+      }
+    },
+    {
+      "source": "K",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable K appears in Eq13"
+      }
+    },
+    {
+      "source": "h_",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h_ appears in Eq13"
+      }
+    },
+    {
+      "source": "eq",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable eq appears in Eq13"
+      }
+    },
+    {
+      "source": "pA",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pA appears in Eq13"
+      }
+    },
+    {
+      "source": "h_",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h_ appears in Eq13"
+      }
+    },
+    {
+      "source": "eq",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable eq appears in Eq13"
+      }
+    },
+    {
+      "source": "cQ",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable cQ appears in Eq13"
+      }
+    },
+    {
+      "source": "qP_d",
+      "target": "Eq13",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable qP_d appears in Eq13"
+      }
+    },
+    {
+      "source": "Eq13",
+      "target": "K",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq13 defines K"
+      }
+    },
+    {
+      "source": "Eq13",
+      "target": "ot",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq13 governs evolution of ot"
+      }
+    },
+    {
+      "source": "Q",
+      "target": "Eq14",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable Q appears in Eq14"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq14",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq14"
+      }
+    },
+    {
+      "source": "MART",
+      "target": "Eq14",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable MART appears in Eq14"
+      }
+    },
+    {
+      "source": "Eq14",
+      "target": "Q",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq14 defines Q"
+      }
+    },
+    {
+      "source": "dh",
+      "target": "Eq16",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dh appears in Eq16"
+      }
+    },
+    {
+      "source": "dt",
+      "target": "Eq16",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dt appears in Eq16"
+      }
+    },
+    {
+      "source": "g",
+      "target": "Eq16",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable g appears in Eq16"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq16",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq16"
+      }
+    },
+    {
+      "source": "Eq16",
+      "target": "frac",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq16 defines frac"
+      }
+    },
+    {
+      "source": "Eq16",
+      "target": "h",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq16 governs evolution of h"
+      }
+    },
+    {
+      "source": "pA",
+      "target": "Eq17",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pA appears in Eq17"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq17",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq17"
+      }
+    },
+    {
+      "source": "t",
+      "target": "Eq17",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable t appears in Eq17"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq17",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq17"
+      }
+    },
+    {
+      "source": "Eq17",
+      "target": "frac",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq17 defines frac"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq18",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq18"
+      }
+    },
+    {
+      "source": "x_t",
+      "target": "Eq18",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_t appears in Eq18"
+      }
+    },
+    {
+      "source": "x_s",
+      "target": "Eq19",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_s appears in Eq19"
+      }
+    },
+    {
+      "source": "D",
+      "target": "Eq19",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable D appears in Eq19"
+      }
+    },
+    {
+      "source": "t",
+      "target": "Eq19",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable t appears in Eq19"
+      }
+    },
+    {
+      "source": "Eq19",
+      "target": "x_s",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq19 defines x_s"
+      }
+    },
+    {
+      "source": "x_s",
+      "target": "Eq20",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_s appears in Eq20"
+      }
+    },
+    {
+      "source": "Dt",
+      "target": "Eq22",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable Dt appears in Eq22"
+      }
+    },
+    {
+      "source": "p",
+      "target": "Eq22",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable p appears in Eq22"
+      }
+    },
+    {
+      "source": "xs",
+      "target": "Eq24",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable xs appears in Eq24"
+      }
+    },
+    {
+      "source": "Dt",
+      "target": "Eq24",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable Dt appears in Eq24"
+      }
+    },
+    {
+      "source": "Eq24",
+      "target": "xs",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq24 defines xs"
+      }
+    },
+    {
+      "source": "x_t",
+      "target": "Eq25",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_t appears in Eq25"
+      }
+    },
+    {
+      "source": "x_s",
+      "target": "Eq25",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_s appears in Eq25"
+      }
+    },
+    {
+      "source": "x_t",
+      "target": "Eq26",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_t appears in Eq26"
+      }
+    },
+    {
+      "source": "x_s",
+      "target": "Eq26",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_s appears in Eq26"
+      }
+    },
+    {
+      "source": "RT",
+      "target": "Eq26",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable RT appears in Eq26"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq26",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq26"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq26",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq26"
+      }
+    },
+    {
+      "source": "h",
+      "target": "Eq26",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h appears in Eq26"
+      }
+    },
+    {
+      "source": "P_d",
+      "target": "Eq26",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable P_d appears in Eq26"
+      }
+    },
+    {
+      "source": "Eq26",
+      "target": "frac",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq26 defines frac"
+      }
+    },
+    {
+      "source": "D",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable D appears in Eq27"
+      }
+    },
+    {
+      "source": "D_",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable D_ appears in Eq27"
+      }
+    },
+    {
+      "source": "eff",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable eff appears in Eq27"
+      }
+    },
+    {
+      "source": "x_t",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_t appears in Eq27"
+      }
+    },
+    {
+      "source": "x_s",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_s appears in Eq27"
+      }
+    },
+    {
+      "source": "RT",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable RT appears in Eq27"
+      }
+    },
+    {
+      "source": "h",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h appears in Eq27"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq27"
+      }
+    },
+    {
+      "source": "c",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable c appears in Eq27"
+      }
+    },
+    {
+      "source": "Q",
+      "target": "Eq27",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable Q appears in Eq27"
+      }
+    },
+    {
+      "source": "Eq27",
+      "target": "D",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq27 defines D"
+      }
+    },
+    {
+      "source": "x_t",
+      "target": "Eq28",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x_t appears in Eq28"
+      }
+    },
+    {
+      "source": "otherwise",
+      "target": "Eq28",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable otherwise appears in Eq28"
+      }
+    },
+    {
+      "source": "Eq28",
+      "target": "x_t",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq28 defines x_t"
+      }
+    },
+    {
+      "source": "equation",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable equation appears in Eq29"
+      }
+    },
+    {
+      "source": "h_",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h_ appears in Eq29"
+      }
+    },
+    {
+      "source": "eq",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable eq appears in Eq29"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq29"
+      }
+    },
+    {
+      "source": "K_p",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable K_p appears in Eq29"
+      }
+    },
+    {
+      "source": "A",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable A appears in Eq29"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq29"
+      }
+    },
+    {
+      "source": "K_p",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable K_p appears in Eq29"
+      }
+    },
+    {
+      "source": "A",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable A appears in Eq29"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq29"
+      }
+    },
+    {
+      "source": "equation",
+      "target": "Eq29",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable equation appears in Eq29"
+      }
+    },
+    {
+      "source": "Eq29",
+      "target": "begin",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq29 defines begin"
+      }
+    },
+    {
+      "source": "s",
+      "target": "Eq30",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable s appears in Eq30"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq30",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq30"
+      }
+    },
+    {
+      "source": "K",
+      "target": "Eq30",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable K appears in Eq30"
+      }
+    },
+    {
+      "source": "c",
+      "target": "Eq30",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable c appears in Eq30"
+      }
+    },
+    {
+      "source": "Q",
+      "target": "Eq30",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable Q appears in Eq30"
+      }
+    },
+    {
+      "source": "Eq30",
+      "target": "s",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq30 defines s"
+      }
+    },
+    {
+      "source": "cQ",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable cQ appears in Eq32"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq32"
+      }
+    },
+    {
+      "source": "pA",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pA appears in Eq32"
+      }
+    },
+    {
+      "source": "P_d",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable P_d appears in Eq32"
+      }
+    },
+    {
+      "source": "d",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable d appears in Eq32"
+      }
+    },
+    {
+      "source": "dt",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dt appears in Eq32"
+      }
+    },
+    {
+      "source": "cQ",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable cQ appears in Eq32"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq32"
+      }
+    },
+    {
+      "source": "pA",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pA appears in Eq32"
+      }
+    },
+    {
+      "source": "e",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable e appears in Eq32"
+      }
+    },
+    {
+      "source": "cQ",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable cQ appears in Eq32"
+      }
+    },
+    {
+      "source": "d",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable d appears in Eq32"
+      }
+    },
+    {
+      "source": "dt",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dt appears in Eq32"
+      }
+    },
+    {
+      "source": "cQ",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable cQ appears in Eq32"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq32"
+      }
+    },
+    {
+      "source": "pA",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pA appears in Eq32"
+      }
+    },
+    {
+      "source": "P_d",
+      "target": "Eq32",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable P_d appears in Eq32"
+      }
+    },
+    {
+      "source": "Eq32",
+      "target": "t",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq32 governs evolution of t"
+      }
+    },
+    {
+      "source": "D_",
+      "target": "Eq33",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable D_ appears in Eq33"
+      }
+    },
+    {
+      "source": "xp",
+      "target": "Eq33",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable xp appears in Eq33"
+      }
+    },
+    {
+      "source": "D_s",
+      "target": "Eq33",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable D_s appears in Eq33"
+      }
+    },
+    {
+      "source": "ds",
+      "target": "Eq33",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable ds appears in Eq33"
+      }
+    },
+    {
+      "source": "dx",
+      "target": "Eq33",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dx appears in Eq33"
+      }
+    },
+    {
+      "source": "Eq33",
+      "target": "D_",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq33 defines D_"
+      }
+    },
+    {
+      "source": "Eq33",
+      "target": "s",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq33 governs evolution of s"
+      }
+    },
+    {
+      "source": "s",
+      "target": "Eq34",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable s appears in Eq34"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq34",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq34"
+      }
+    },
+    {
+      "source": "s_0",
+      "target": "Eq34",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable s_0 appears in Eq34"
+      }
+    },
+    {
+      "source": "Eq34",
+      "target": "s",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq34 defines s"
+      }
+    },
+    {
+      "source": "Eq34",
+      "target": "ot",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq34 governs evolution of ot"
+      }
+    },
+    {
+      "source": "H_N",
+      "target": "Eq35",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable H_N appears in Eq35"
+      }
+    },
+    {
+      "source": "t",
+      "target": "Eq35",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable t appears in Eq35"
+      }
+    },
+    {
+      "source": "H_0",
+      "target": "Eq35",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable H_0 appears in Eq35"
+      }
+    },
+    {
+      "source": "t",
+      "target": "Eq35",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable t appears in Eq35"
+      }
+    },
+    {
+      "source": "N",
+      "target": "Eq35",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N appears in Eq35"
+      }
+    },
+    {
+      "source": "g_",
+      "target": "Eq35",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable g_ appears in Eq35"
+      }
+    },
+    {
+      "source": "pc",
+      "target": "Eq35",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pc appears in Eq35"
+      }
+    },
+    {
+      "source": "Eq35",
+      "target": "H_N",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq35 defines H_N"
+      }
+    },
+    {
+      "source": "i",
+      "target": "Eq36",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable i appears in Eq36"
+      }
+    },
+    {
+      "source": "h",
+      "target": "Eq36",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable h appears in Eq36"
+      }
+    },
+    {
+      "source": "hi",
+      "target": "Eq36",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable hi appears in Eq36"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq36",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq36"
+      }
+    },
+    {
+      "source": "Eq36",
+      "target": "sum_",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq36 defines sum_"
+      }
+    },
+    {
+      "source": "g_",
+      "target": "Eq37",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable g_ appears in Eq37"
+      }
+    },
+    {
+      "source": "pcsat",
+      "target": "Eq37",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable pcsat appears in Eq37"
+      }
+    },
+    {
+      "source": "dN",
+      "target": "Eq38",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dN appears in Eq38"
+      }
+    },
+    {
+      "source": "qW",
+      "target": "Eq38",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable qW appears in Eq38"
+      }
+    },
+    {
+      "source": "dx",
+      "target": "Eq38",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dx appears in Eq38"
+      }
+    },
+    {
+      "source": "Eq38",
+      "target": "dN",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq38 defines dN"
+      }
+    },
+    {
+      "source": "Eq38",
+      "target": "N",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq38 governs evolution of N"
+      }
+    },
+    {
+      "source": "dN",
+      "target": "Eq39",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dN appears in Eq39"
+      }
+    },
+    {
+      "source": "F",
+      "target": "Eq39",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable F appears in Eq39"
+      }
+    },
+    {
+      "source": "dt",
+      "target": "Eq39",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dt appears in Eq39"
+      }
+    },
+    {
+      "source": "Eq39",
+      "target": "dN",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq39 defines dN"
+      }
+    },
+    {
+      "source": "Eq39",
+      "target": "N",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq39 governs evolution of N"
+      }
+    },
+    {
+      "source": "dv",
+      "target": "Eq40",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dv appears in Eq40"
+      }
+    },
+    {
+      "source": "dt",
+      "target": "Eq40",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dt appears in Eq40"
+      }
+    },
+    {
+      "source": "F",
+      "target": "Eq40",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable F appears in Eq40"
+      }
+    },
+    {
+      "source": "qW",
+      "target": "Eq40",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable qW appears in Eq40"
+      }
+    },
+    {
+      "source": "dx",
+      "target": "Eq40",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dx appears in Eq40"
+      }
+    },
+    {
+      "source": "Eq40",
+      "target": "frac",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq40 defines frac"
+      }
+    },
+    {
+      "source": "Eq40",
+      "target": "v",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq40 governs evolution of v"
+      }
+    },
+    {
+      "source": "F",
+      "target": "Eq42",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable F appears in Eq42"
+      }
+    },
+    {
+      "source": "x",
+      "target": "Eq42",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable x appears in Eq42"
+      }
+    },
+    {
+      "source": "dx",
+      "target": "Eq42",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable dx appears in Eq42"
+      }
+    },
+    {
+      "source": "Eq42",
+      "target": "mathcal",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq42 defines mathcal"
+      }
+    },
+    {
+      "source": "Eq42",
+      "target": "x",
+      "relation": "governs",
+      "metadata": {
+        "description": "Eq42 governs evolution of x"
+      }
+    },
+    {
+      "source": "HpA_0",
+      "target": "Eq43",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable HpA_0 appears in Eq43"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq43",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq43"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq43",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq43"
+      }
+    },
+    {
+      "source": "p",
+      "target": "Eq43",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable p appears in Eq43"
+      }
+    },
+    {
+      "source": "MART",
+      "target": "Eq43",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable MART appears in Eq43"
+      }
+    },
+    {
+      "source": "p",
+      "target": "Eq43",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable p appears in Eq43"
+      }
+    },
+    {
+      "source": "t",
+      "target": "Eq43",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable t appears in Eq43"
+      }
+    },
+    {
+      "source": "C",
+      "target": "Eq44",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable C appears in Eq44"
+      }
+    },
+    {
+      "source": "p",
+      "target": "Eq44",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable p appears in Eq44"
+      }
+    },
+    {
+      "source": "A_0",
+      "target": "Eq44",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable A_0 appears in Eq44"
+      }
+    },
+    {
+      "source": "N_0",
+      "target": "Eq44",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable N_0 appears in Eq44"
+      }
+    },
+    {
+      "source": "q",
+      "target": "Eq44",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable q appears in Eq44"
+      }
+    },
+    {
+      "source": "p",
+      "target": "Eq44",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable p appears in Eq44"
+      }
+    },
+    {
+      "source": "MART",
+      "target": "Eq44",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable MART appears in Eq44"
+      }
+    },
+    {
+      "source": "Eq44",
+      "target": "C",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq44 defines C"
+      }
+    },
+    {
+      "source": "gpc_",
+      "target": "Eq46",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable gpc_ appears in Eq46"
+      }
+    },
+    {
+      "source": "sat",
+      "target": "Eq46",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable sat appears in Eq46"
+      }
+    },
+    {
+      "source": "K_p",
+      "target": "Eq46",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable K_p appears in Eq46"
+      }
+    },
+    {
+      "source": "A",
+      "target": "Eq46",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable A appears in Eq46"
+      }
+    },
+    {
+      "source": "gpc",
+      "target": "Eq46",
+      "relation": "appears_in",
+      "metadata": {
+        "description": "Variable gpc appears in Eq46"
+      }
+    },
+    {
+      "source": "Eq46",
+      "target": "gpc_",
+      "relation": "defines",
+      "metadata": {
+        "description": "Eq46 defines gpc_"
+      }
+    },
+    {
+      "source": "Alice",
+      "target": "Bob",
+      "relation": "parent-child",
+      "metadata": {
+        "description": "Alice is the parent of Bob."
+      }
+    },
+    {
+      "source": "Bob",
+      "target": "Charlie",
+      "relation": "sibling",
+      "metadata": {
+        "description": "Bob and Charlie are siblings."
+      }
+    }
+  ]
+}

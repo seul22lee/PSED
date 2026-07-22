@@ -1,0 +1,82 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "SnO2"
+ ],
+ "precursors": [
+  "SnI4"
+ ],
+ "coreactants": [
+  "O3"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": null,
+ "gpc_nm": 0.25,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": "F6"
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": "F4"
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": "F5"
+  },
+  "conformality_or_penetration_profile": {
+   "present": false,
+   "where": null
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": "F8"
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": "F9"
+  },
+  "other": {
+   "present": true,
+   "where": "F3"
+  }
+ },
+ "drill": [
+  {
+   "where": "F6",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC as a function of substrate temperature"
+  },
+  {
+   "where": "F5",
+   "type": "gpc_vs_cycles",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC as a function of the number of ALD cycles"
+  },
+  {
+   "where": "F8",
+   "type": "film_property_vs_condition",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "Residual iodine content in the films as a function of deposition temperature"
+  },
+  {
+   "where": "F10",
+   "type": "other",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "Refractive index of the SnO2 film as a function of wavelength"
+  }
+ ],
+ "go_deeper": true,
+ "_tokens": {
+  "in": 1759,
+  "out": 598
+ },
+ "_scout_input_chars": 5972
+}

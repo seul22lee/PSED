@@ -1,0 +1,169 @@
+[
+  {
+    "source": [
+      "D",
+      "t"
+    ],
+    "target": "x_s",
+    "relation_type": "equation_based",
+    "description": "Penetration length (x_s) depends positively on the effective diffusion coefficient (D) and time (t) as x_s = sqrt(D t).",
+    "equation_id": "p4_eq5",
+    "direction": "positive"
+  },
+  {
+    "source": "diffusion",
+    "target": "growth kinetics/penetration depth",
+    "relation_type": "mechanistic_text",
+    "description": "Diffusion of reactant in the channel limits the propagation of ALD growth and thus penetration depth.",
+    "equation_id": null,
+    "direction": "unknown"
+  },
+  {
+    "source": "surface coverage (θ)",
+    "target": "partial pressure of reactant (p_A)",
+    "relation_type": "mechanistic_text",
+    "description": "Surface coverage increases with reactant partial pressure p_A, as evident from the Langmuir model equations and thickness profile integration.",
+    "equation_id": null,
+    "direction": "positive"
+  },
+  {
+    "source": "adsorption rate",
+    "target": "concentration (partial pressure p_A)",
+    "relation_type": "mechanistic_text",
+    "description": "The adsorption rate is proportional to the available reactant concentration/partial pressure p_A (typical in Langmuir kinetics).",
+    "equation_id": null,
+    "direction": "positive"
+  },
+  {
+    "source": "film thickness",
+    "target": "position x (in channel)",
+    "relation_type": "mechanistic_text",
+    "description": "Film thickness decreases with increasing distance x from the channel entrance due to reactant depletion along the channel.",
+    "equation_id": null,
+    "direction": "negative"
+  },
+  {
+    "source": [
+      "geometry H",
+      "W",
+      "aspect ratio a"
+    ],
+    "target": "reactant flux/diffusion",
+    "relation_type": "mechanistic_text",
+    "description": "Channel geometry (height H, width W, and aspect ratio a) influences the diffusion flux and conformality profile.",
+    "equation_id": null,
+    "direction": "unknown"
+  },
+  {
+    "source": "sticking coefficient (c)",
+    "target": "coverage profile",
+    "relation_type": "mechanistic_text",
+    "description": "The sticking coefficient controls the shape and steepness of the coverage profile along the LHAR channel.",
+    "equation_id": null,
+    "direction": "unknown"
+  },
+  {
+    "source": [
+      "H",
+      "W",
+      "D",
+      "k"
+    ],
+    "target": "F(x, t)",
+    "relation_type": "equation_based",
+    "description": "Gas flow F(x,t) through the channel is defined by geometry (H, W), diffusion coefficient (D), and rate constant (k).",
+    "equation_id": "p4_eq3",
+    "direction": "unknown"
+  },
+  {
+    "source": [
+      "H",
+      "W",
+      "D_eff",
+      "k_B",
+      "T",
+      "∂p_A/∂x"
+    ],
+    "target": "F(x, t)",
+    "relation_type": "equation_based",
+    "description": "F(x, t), the flux at x and time t, is defined by the channel geometry, effective diffusion coefficient, temperature, and local pressure gradient.",
+    "equation_id": "p4_eq6",
+    "direction": "unknown"
+  },
+  {
+    "source": [
+      "q",
+      "W",
+      "θ",
+      "x"
+    ],
+    "target": "N",
+    "relation_type": "equation_based",
+    "description": "The total number of adsorbed molecules N up to position x is positively dependent on the integral of surface coverage θ and factors q, W.",
+    "equation_id": "p4_eq8",
+    "direction": "positive"
+  },
+  {
+    "source": [
+      "q",
+      "W",
+      "K",
+      "p_A0",
+      "x_s",
+      "x"
+    ],
+    "target": "N",
+    "relation_type": "equation_based",
+    "description": "The explicit expression for N includes dependence on adsorption equilibrium, geometry, pressure, and position.",
+    "equation_id": "p4_eq10",
+    "direction": "unknown"
+  },
+  {
+    "source": [
+      "cQ",
+      "q",
+      "p_A",
+      "P_d"
+    ],
+    "target": "θ(t)",
+    "relation_type": "equation_based",
+    "description": "Surface coverage θ(t) is governed by a differential equation involving sticking coefficient (c), collision rate (Q), saturation density (q), local p_A, and desorption probability (P_d).",
+    "equation_id": "p5_eq0",
+    "direction": "unknown"
+  },
+  {
+    "source": "b_film",
+    "target": "q",
+    "relation_type": "equation_based",
+    "description": "The ratio q = b_film / b_A defines q in terms of areal densities of film and molecule A.",
+    "equation_id": "p3_eq9",
+    "direction": "unknown"
+  },
+  {
+    "source": "p4_eq6",
+    "target": "p4_eq7",
+    "relation_type": "equation_equation",
+    "description": "Equation p4_eq7 is an approximation or further formulation based on p4_eq6.",
+    "equation_id": null,
+    "direction": "unknown"
+  },
+  {
+    "source": "p4_eq8",
+    "target": "p4_eq10",
+    "relation_type": "equation_equation",
+    "description": "p4_eq10 gives a more detailed evaluation or solution to the integral for N in p4_eq8/p4_eq9.",
+    "equation_id": null,
+    "direction": "unknown"
+  },
+  {
+    "source": [
+      "diffusion",
+      "surface reaction (adsorption/desorption)"
+    ],
+    "target": "film conformality profile",
+    "relation_type": "mechanistic_text",
+    "description": "The combined effect of diffusion and surface reaction kinetics determines the ALD film conformality profile in LHAR structures.",
+    "equation_id": null,
+    "direction": "unknown"
+  }
+]

@@ -1,0 +1,491 @@
+## 1. Variable classification
+
+Below each symbol is assigned to one of five classes:
+
+### 1.1 Controllable process knobs (recipe variables)
+
+Usual ALD‑recipe‑level knobs in/implicit in the model:
+
+- \(T\) – substrate / gas temperature  
+- \(p_A\) (specifically \(p_{A0}\) at inlet) – precursor A partial pressure during pulse  
+- \(p_B\) – background / carrier / co‑reactant partial pressure (if independently set)  
+- \(c\) – effective sticking coefficient of A (in practice tuned indirectly via choice of precursor, ligand chemistry, plasma vs thermal, etc., but not a “knob” in a single recipe; here treated as material/chemistry choice, see below)  
+- Pulse‑time \(t_{\text{pulse}}\) for A (not explicitly listed, but implicit in integrating \(d\theta/dt\) and determining \(x_s\))  
+- Purge time and co‑reactant pulse conditions (enter only indirectly here; not explicitly in the equations)
+
+For the optimization discussion I will treat:
+- Primary **controllable recipe variables**: \(T\), \(p_{A0}\), \(p_B\), \(t_{\text{pulse}}\).
+
+### 1.2 Design / geometry variables
+
+- \(H\) – feature/channel height  
+- \(W\) – feature/channel width  
+- \(h = \tfrac{1}{2}\frac{HW}{H+W}\) – hydraulic diameter  
+- \(x\) – spatial coordinate along the feature length (design: feature depth \(L\), not explicitly given)  
+- \(x_s\) – penetration/saturation front location (state-like, but fundamentally tied to geometry; I classify it as a **state variable** below)  
+- Cross‑sectional area \(HW\) (appears in \(F\))
+
+So strictly as “design variables” that a process integrator cannot change run‑to‑run, but which define the target structure:
+
+- Design / geometry: \(H\), \(W\), (and implicit feature length \(L\)).  
+- Derived geometry: \(h\), cross‑section \(H W\).
+
+### 1.3 Material / precursor / surface properties
+
+These are intrinsic to the chosen film + precursor system (not tunable per run, but tunable by changing chemistry or material stack):
+
+- \(M_A\) – molar mass of precursor A  
+- \(M_B\) – molar mass of background gas B (in \(z_A\))  
+- \(\rho\) – condensed‑phase density of precursor or film (depending on which expression you use for \(d_A\)/\(q\))  
+- \(d_A\) – molecular diameter of A (derived from \(M_A,\rho,\dots\))  
+- \(d_B\) – molecular diameter of B (enters \(z_A\))  
+- \(\tau\) – factor in collision term (geometry of collisions)  
+- \(b_A\) – stoichiometric coefficient of A in the film  
+- \(b_{\text{film}}\) – film‑related factor entering \(q\)  
+- \(M\) – molar mass of the deposited film’s repeat unit  
+- \(C_{\text{sat}}\) – saturation coverage per cycle (embedded in expression for \(q\))  
+- \(P_0 d_s\) – effective desorption prefactor (attempt frequency × desorption probability)  
+- \(c\) – sticking coefficient of A (chemistry‑dependent; usually considered a kinetic parameter)  
+- \(\rho_A\) – gas‑phase mass density of A (appears in the flux expression in your compact form)  
+- Film stoichiometry/structure parameters inside \(gP\) in the \(q\) expression
+
+These are “knobs” only if you are willing to **change precursor, coreactant, carrier gas, or film composition**. Within one recipe for a fixed material, they are parameters, not controls.
+
+### 1.4 Fundamental constants
+
+- \(N_0\) – Avogadro’s number  
+- \(R\) – universal gas constant  
+- \(k_B\) – Boltzmann constant  
+- \(\pi\) – mathematical constant
+
+These are fixed.
+
+### 1.5 State / derived variables
+
+Quantities computed by the model from geometry, materials, and process conditions:
+
+- \(v_A\) – mean thermal speed of A  
+- \(z_A\) – collision parameter / mean free path‑related term  
+- \(D_A\) – molecular diffusion coefficient of A  
+- \(D_{Kn}\) – Knudsen diffusion coefficient  
+- \(D_{\text{eff}}\) – effective diffusion coefficient  
+- \(t\) – time variable  
+- \(p_A(x,t)\) – local precursor partial pressure field  
+- \(F(x,t)\) – diffusive molar flow of A along the channel  
+- \(f_{\text{ads}}\) – adsorption flux  
+- \(f_{\text{des}}\) – desorption flux  
+- \(g\) – net adsorption flux  
+- \(\theta(x,t)\) – surface coverage  
+- \(\theta_{\text{eq}}\) – local equilibrium coverage (given \(p_A\))  
+- \(q\) – site density per area (film capacity per area)  
+- \(Q\) – kinetic prefactor \(=N_0 / \sqrt{2\pi M_A R T}\)  
+- \(K\) – Langmuir equilibrium constant  
+- \(x_s(t)\) – location of the penetration/saturation front  
+- (Growth metrics not explicitly in equations but implied) local growth per cycle GPC\((x)\), step coverage / conformality
+
+---
+
+## 2. Influence of controllable variables on physics and growth
+
+Here I focus on the **true recipe knobs**: \(T\), \(p_{A0}\), \(p_B\), and exposure time \(t_{\text{pulse}}\). I’ll go through how they propagate through:
+
+- transport coefficients (\(D_A, D_{Kn}, D_{\text{eff}}\)),
+- pressure field \(p_A(x,t)\),
+- adsorption/desorption rates,
+- net reaction rate \(g\),
+- coverage \(\theta\) and penetration depth \(x_s\),
+- and finally growth metrics (local GPC, conformality).
+
+### 2.1 Temperature \(T\)
+
+#### Effect on transport
+
+- Molecular speed:
+  \[
+  v_A \propto \sqrt{\frac{T}{M_A}}
+  \]
+- Molecular diffusion:
+  \[
+  D_A \propto v_A^2 z_A \sim T\cdot z_A
+  \]
+  and \(z_A\) also contains \(\sqrt{T}\), so overall \(D_A\) grows with roughly \(T^{3/2}\) if pressures fixed.
+- Knudsen diffusion:
+  \[
+  D_{Kn} = h\left(\frac{8RT}{9\pi M_A}\right)^{1/2} \propto \sqrt{T}
+  \]
+- Effective diffusion:
+  \[
+  D_{\text{eff}} = \left(\frac{1}{D_A} + \frac{1}{D_{Kn}}\right)^{-1}
+  \]
+  increases with \(T\); the limiting regime (molecular vs Knudsen) determines exact scaling.
+
+Net effect: **higher \(T\) → higher \(D_{\text{eff}}\)** → easier penetration, larger \(x_s\) for same chemistry and pulse length.
+
+#### Effect on adsorption/desorption
+
+- Adsorption flux:
+  \[
+  f_{\text{ads}} = (1-\theta)\frac{c N_0 p_A}{\sqrt{2\pi M_A RT}} = (1-\theta)\,c\,Q\,p_A
+  \]
+  with \(Q \propto 1/\sqrt{T}\).
+  - For fixed \(p_A\), raising \(T\) reduces \(Q\), **slightly decreasing** \(f_{\text{ads}}\) per unit \(p_A\).
+- Desorption:
+  \[
+  f_{\text{des}} = q P_0 d_s
+  \]
+  has no explicit \(T\) in this simplified form, but in reality \(P_0 d_s\) is Arrhenius. In this model we treat it as constant.
+
+- Equilibrium constant:
+  \[
+  K = \frac{cQ}{q P_0 d_s} \propto \frac{1}{\sqrt{T}}
+  \]
+  So increasing \(T\) **reduces \(K\)**, i.e. weaker equilibrium adsorption at fixed \(p_A\).
+
+Trade‑off:
+
+- Higher \(T\): better diffusion but somewhat weaker adsorption equilibrium (smaller \(K\)), and slightly slower adsorption rate per unit pressure.
+- The net impact on saturation depth can go **either way**, but in high‑AR ALD, improved diffusion usually dominates, so higher \(T\) often gives deeper penetration but can slightly reduce GPC if adsorption becomes too weak at the deepest locations.
+
+#### Effect on coverage, \(x_s\), conformality
+
+- Larger \(D_{\text{eff}}\) → for a given \(t_{\text{pulse}}\), the pressure profile flattens and gas penetrates deeper → \(x_s\) increases.
+- But smaller \(K\) and \(Q\) → need higher \(p_A\) or longer \(t_{\text{pulse}}\) to reach near‑saturation at depth.
+- Conformality (coverage ratio bottom/top) is improved if diffusion was limiting; it may worsen if adsorption becomes too weak at the bottom relative to the top.
+
+### 2.2 Precursor inlet pressure \(p_{A0}\)
+
+\(p_{A0}\) is one of the **most powerful knobs**.
+
+#### Effect on pressure field and flux
+
+Under the quasi‑steady approximation:
+
+\[
+p_A(x) = p_{A0}\left(1 - \frac{x}{x_s}\right)
+\]
+and
+\[
+F \approx H W \frac{D_{\text{eff}}}{k_B T}\frac{p_{A0}}{x_s}
+\]
+
+So:
+
+- \(p_{A0}\uparrow \Rightarrow p_A(x)\uparrow\) everywhere \(x<x_s\)
+- For a given \(x_s\), flux \(F \propto p_{A0}\)
+
+#### Effect on adsorption, net rate, and coverage
+
+- Adsorption:
+  \[
+  f_{\text{ads}} \propto (1-\theta)\,c\,Q\,p_A
+  \]
+  → linearly scales with local \(p_A\).
+- Net flux:
+  \[
+  g = f_{\text{ads}} - f_{\text{des}}
+  \]
+  → increasing \(p_A\) raises \(g\); once \(f_{\text{ads}}\) beats \(f_{\text{des}}\), \(\theta\) moves rapidly to \(\theta_{\text{eq}}\).
+
+Therefore:
+
+- Higher \(p_{A0}\) → faster local saturation (shorter local saturation time) for any location where gas can reach.
+- Also, higher flux can push \(x_s\) deeper before gas is fully consumed in a finite pulse.
+
+Impact on growth:
+
+- Local GPC increases toward its saturation limit as \(p_A\) is raised.
+- Conformality improves because deeper regions have enough \(p_A\) and time to reach similar \(\theta\) as the entrance.
+- But eventually you hit a **transport limit**: increasing \(p_{A0}\) further only shallowly increases \(x_s\) once diffusion + geometric sink dominate.
+
+### 2.3 Background / carrier pressure \(p_B\)
+
+Enters via the collision term \(z_A\):
+
+\[
+z_A = \frac{\pi}{4} (d_A + d_B)^2 
+\left[ \frac{8RT}{\pi} \left( \frac{1}{M_A} + \frac{1}{M_B} \right) \right]^{1/2} 
+\frac{p_B}{RT} + \dots
+\]
+
+Higher \(p_B\):
+
+- Increases collisions with B → can **reduce \(D_A\)** (more collisions, shorter mean free path).
+- This shifts the balance toward Knudsen diffusion; if \(D_A\) becomes much smaller than \(D_{Kn}\), then \(D_{\text{eff}}\approx D_A\).
+
+Practically:
+
+- Raising carrier pressure (common in some ALD systems) tends to **lower \(D_{\text{eff}}\)** and reduce penetration depth, all else fixed.
+- Conversely, too low \(p_B\) may cause gas flow nonuniformity or instability; there is usually a process‑driven optimum.
+
+### 2.4 Exposure/pulse time \(t_{\text{pulse}}\)
+
+Not written explicitly in the equations, but critical in integrating:
+
+- Coverage dynamics:
+  \[
+  \theta(x,t_{\text{pulse}}) = \theta_0 + \int_0^{t_{\text{pulse}}} \frac{g(x,t)}{q}\,dt
+  \]
+- Penetration depth \(x_s(t_{\text{pulse}})\) arises from:
+  - Diffusion of A into new regions, and
+  - Time available for adsorption to consume precursor along the path.
+
+Qualitative impact:
+
+- Longer \(t_{\text{pulse}}\) → more time for gas to diffuse and react → larger \(x_s\) and higher \(\theta(x)\) at all depths.
+- There is a “self‑limited” regime where adding pulse time no longer increases GPC near the entrance but may still improve penetration deeper into the feature.
+- Beyond a certain \(t_{\text{pulse}}\), \(x_s\rightarrow L\) and \(\theta(x)\rightarrow \theta_{\text{eq}}\) everywhere: fully saturated and conformal.
+
+---
+
+## 3. End‑to‑end rate‑calculation chain
+
+Conceptually, from decision variables to growth metrics:
+
+1. **Decision variables (recipe + design)**  
+   - \(T, p_{A0}, p_B, t_{\text{pulse}}\) (recipe)  
+   - \(H,W,L\) (geometry; given)  
+   - Material set: \(M_A, c, q, P_0 d_s, \ldots\) (chosen system)
+
+2. **Transport coefficients**  
+   - Compute \(d_A(M_A,\rho,N_0,R,T)\)  
+   - Compute \(v_A(T,M_A)\) and \(z_A(p_A,p_B,d_A,d_B,M_A,M_B,\tau,T)\)  
+   - \(D_A(v_A,z_A)\) and \(h(H,W)\)  
+   - \(D_{Kn}(h,M_A,T)\)  
+   - \(D_{\text{eff}}(D_A,D_{Kn})\)
+
+3. **Coupled diffusion–reaction**  
+   - Use PDE:
+     \[
+     \frac{\partial p_A}{\partial t} = D_{\text{eff}}\frac{\partial^2 p_A}{\partial x^2} - g\frac{4RT}{hN_0}
+     \]
+   - With \(g(x,t) = f_{\text{ads}}(p_A(x,t),\theta(x,t)) - f_{\text{des}}(q)\).
+
+   Under quasi‑steady approximation for \(p_A\):
+   - Solve \(D_{\text{eff}} \partial^2p_A/\partial x^2 \approx 0\) with boundary \(p_A(0,t)=p_{A0}\), \(p_A(x_s,t)=0\).
+   - Obtain \(p_A(x,t) = p_{A0}(1-x/x_s)\) in region \(x<x_s\).
+
+4. **Local kinetics and coverage evolution**
+   - Given \(p_A(x,t)\),
+     \[
+     f_{\text{ads}}(x,t) = (1-\theta(x,t))cQp_A(x,t)
+     \]
+   - \(f_{\text{des}}(x,t)=qP_0d_s\)  
+   - Net: \(g(x,t) = f_{\text{ads}}-f_{\text{des}}\)
+   - Integrate:
+     \[
+     \frac{d\theta(x,t)}{dt} = \frac{g(x,t)}{q}
+     \]
+   over \(0<t<t_{\text{pulse}}\).
+
+   The front \(x_s(t)\) is where \(p_A\) effectively drops to zero due to consumption; it is determined by matching integrated consumption to supplied flux.
+
+5. **Growth metrics**
+   - Local GPC at depth \(x\):
+     \[
+     \text{GPC}(x) \propto \theta_{\text{final}}(x)
+     \]
+     (proportional to \(\theta\) if one monolayer corresponds to \(\theta=1\)).
+   - Conformality / step coverage:
+     \[
+     \text{Conformality} = \frac{\text{GPC at bottom}}{\text{GPC at top}} \approx \frac{\theta_{\text{final}}(x=L)}{\theta_{\text{final}}(x=0)}
+     \]
+   - Penetration depth:
+     \[
+     x_s(t_{\text{pulse}}) = \max x \text{ such that } \theta(x,t_{\text{pulse}})\approx \theta_{\text{eq}} \text{ or } p_A(x) > \text{threshold}
+     \]
+
+Thus:
+
+\[
+(T,p_{A0},p_B,t_{\text{pulse}};\;H,W,L;\text{chemistry})\Rightarrow D_{\text{eff}},p_A(x,t),g(x,t),\theta(x,t)\Rightarrow \text{GPC}(x),x_s,\text{conformality}
+\]
+
+---
+
+## 4. Example optimization problem formulations
+
+Below are representative, well‑posed optimization problems using this model.
+
+### 4.1 Problem A – Maximize conformality at fixed cycle time
+
+**Goal:** For a given feature geometry and total process time budget per cycle, choose precursor conditions to maximize conformality (minimize thickness nonuniformity along depth).
+
+- **Decision variables**:  
+  \(\mathbf{u} = (T, p_{A0}, t_{\text{pulse}})\)  
+  (Optionally include \(p_B\) if carrier pressure is adjustable.)
+
+- **Given / fixed**:  
+  \(H, W, L\); material parameters (\(M_A,c,q,\rho, P_0d_s,\dots\)); total cycle budget \(t_{\text{cycle,max}}\).
+
+- **Objectives** (choose one or combine):
+  - Maximize conformality:
+    \[
+    J_1(\mathbf{u}) = \frac{\theta(L,t_{\text{pulse}})}{\theta(0,t_{\text{pulse}})}
+    \]
+  - Alternatively, minimize variation:
+    \[
+    J_1(\mathbf{u}) = -\max_x\left|\theta(x,t_{\text{pulse}}) - \bar{\theta}\right|
+    \]
+    where \(\bar{\theta}\) is spatial average.
+
+- **Constraints**:
+  - Self‑limiting at the entrance (top):
+    \[
+    \theta(0,t_{\text{pulse}}) \ge (1-\epsilon)\,\theta_{\text{eq}}(p_{A0})
+    \]
+  - Cycle time:
+    \[
+    t_{\text{pulse}} + t_{\text{purge}} + t_{\text{co-reactant}} \le t_{\text{cycle,max}}
+    \]
+  - Process windows:
+    \[
+    T_{\min}\le T\le T_{\max},\quad p_{A0,\min}\le p_{A0}\le p_{A0,\max}
+    \]
+
+- **Use of model**:
+  1. For each candidate \((T,p_{A0},t_{\text{pulse}})\):
+     - Compute \(D_{\text{eff}}(T,p_B)\).
+     - Solve diffusion–reaction to get \(p_A(x,t),\theta(x,t)\).
+  2. Evaluate \(\theta(L,t_{\text{pulse}})\), \(\theta(0,t_{\text{pulse}})\), and objective \(J_1\).
+  3. Use nonlinear optimization (e.g. gradient‑free or adjoint if PDE solved) to search for best \(\mathbf{u}\).
+
+### 4.2 Problem B – Minimize pulse time for required conformality
+
+**Goal:** Achieve target step coverage \(\eta_{\text{target}}\) with minimal precursor pulse time (throughput maximization).
+
+- **Decision variables**:
+  \(\mathbf{u} = (p_{A0},T,t_{\text{pulse}})\).
+
+- **Objective**:
+  \[
+  \min_{\mathbf{u}} J_2(\mathbf{u}) = t_{\text{pulse}}
+  \]
+
+- **Constraints**:
+  - Conformality requirement:
+    \[
+    \frac{\theta(L,t_{\text{pulse}})}{\theta(0,t_{\text{pulse}})} \ge \eta_{\text{target}}
+    \]
+  - Minimum local coverage at bottom:
+    \[
+    \theta(L,t_{\text{pulse}}) \ge \theta_{\text{min}}
+    \]
+  - Process windows on \(T\) and \(p_{A0}\).
+
+- **Model usage**:
+  - Same chain as above; \(t_{\text{pulse}}\) is the variable to push as low as possible while satisfying coverage constraints.
+
+### 4.3 Problem C – Maximize deposition rate subject to conformality
+
+**Goal:** Maximize GPC per unit time while keeping conformality above a threshold.
+
+- **Decision variables**:
+  \(\mathbf{u} = (T,p_{A0},p_B,t_{\text{pulse}})\).
+
+- **Objective**:
+  Define spatially averaged GPC:
+  \[
+  \text{GPC}_{\text{avg}}(\mathbf{u}) \propto \frac{1}{L}\int_0^L\theta(x,t_{\text{pulse}})\,dx
+  \]
+  and effective deposition rate:
+  \[
+  J_3(\mathbf{u}) = \frac{\text{GPC}_{\text{avg}}(\mathbf{u})}{t_{\text{cycle}}(\mathbf{u})}
+  \]
+  Maximize \(J_3\).
+
+- **Constraints**:
+  - Conformality:
+    \[
+    \frac{\theta(L,t_{\text{pulse}})}{\theta(0,t_{\text{pulse}})} \ge \eta_{\min}
+    \]
+  - Thermal budget bounds for \(T\), and mechanical/chemical windows for pressures.
+
+- **Model usage**:
+  - As above; now GPC is integrated over \(x\) and normalized by total cycle time.
+
+### 4.4 Problem D – Process window screening for new precursor (chemistry choice)
+
+Here some “material” parameters become design choices: \(M_A, c, P_0d_s\). This is more for **process/precursor development** than per‑run optimization.
+
+- **Decision variables**:  
+  \(\mathbf{v} = (M_A, c, P_0d_s)\) representing candidate precursors, plus recipe variables \((T,p_{A0},t_{\text{pulse}})\).
+
+- **Objective**:
+  Multi‑objective: maximize conformality and GPC, minimize required \(t_{\text{pulse}}\), subject to physical bounds on \(M_A, c, P_0d_s\).
+
+- **Constraints**:
+  - Chemistry feasibility (ranges of \(c\), stability at \(T\), etc.)
+  - Same coverage/conformality constraints as above.
+
+This uses the **same model**, but reclassifies some “material parameters” as design choices at **development** time.
+
+---
+
+## 5. Tunable vs non‑tunable parameters in normal ALD recipes
+
+### 5.1 Tunable in a normal ALD recipe (run‑to‑run knobs)
+
+Directly tunable (or at least strongly influenced):
+
+- \(T\) – substrate / reactor temperature
+- \(p_{A0}\) – precursor A partial pressure (via bubbler temperature, carrier flow, dose valve timing)
+- \(p_B\) – carrier / background pressure to a limited extent
+- \(t_{\text{pulse}}\) – precursor A pulse time
+- Co‑reactant pulse time and pressure (affects other half‑cycle; not in this A‑side model)
+- Purge times and flows (affect residual \(p_A\) and \(p_B\) between pulses, not explicitly modeled here)
+
+Indirectly tunable (through system design, not recipe):
+
+- \(H,W,L\) – feature geometry (fixed by the device design; not changed between wafers in normal operation)
+- Reactor total pressure and flow patterns (within some range)
+
+### 5.2 Not tunable per recipe (intrinsic)
+
+Fixed by physics or chosen material/precursor system:
+
+- Fundamental constants: \(N_0, R, k_B\).
+- Intrinsic precursor properties:  
+  \(M_A, d_A\), vapor density/boiling point (→ \(\rho\)), \(M_B,d_B\), \(\tau\).
+- Surface kinetics parameters for a fixed chemistry:
+  - \(c\) (sticking coefficient) – sometimes weakly temperature‑dependent but mainly chemical.
+  - \(P_0 d_s\) – desorption prefactor.
+  - Site density and film‑related factors in \(q\): \(b_A,b_{\text{film}},M,gP,C_{\text{sat}}\).
+- Geometric dimensions of the device: \(H,W,L\) (unless you redesign the device).
+
+### 5.3 Derived, but effectively fixed once system is chosen
+
+Given the above fixed parameters, these are computed but not independently tunable:
+
+- \(d_A\) from \(M_A,\rho,T\)
+- \(v_A,z_A,D_A,D_{Kn},D_{\text{eff}}\) once \(T,p_B, H,W\) are chosen
+- \(Q\), \(q\), \(K\) for a given \(T,p_A\) and chemistry
+- \(p_A(x,t)\), \(g(x,t)\), \(\theta(x,t)\), \(x_s\) – they are the **model outputs** for a given recipe
+
+---
+
+## 6. Summary – Optimization mindset with this model
+
+From an optimization perspective:
+
+- **Design space** (fixed by integration & precursor choice):  
+  \(H,W,L\), \(M_A, c, q, P_0d_s,\rho\) etc.
+
+- **Control space / knobs**:  
+  \(T,p_{A0},p_B,t_{\text{pulse}}\) (and co‑reactant conditions).
+
+- **State space / outcomes**:  
+  \(D_{\text{eff}}\), \(p_A(x,t)\), \(g(x,t)\), \(\theta(x,t)\), \(x_s\), and derived metrics (GPC(x), conformality, penetration).
+
+The rate‑calculation chain is:
+
+\[
+\text{controls} \Rightarrow (D_{\text{eff}},p_A(x,t)) \Rightarrow g(x,t) \Rightarrow \theta(x,t) \Rightarrow \text{GPC}(x),\text{conformality},x_s
+\]
+
+and all reasonable optimization problems can be formulated as:
+
+- choosing controls (and possibly chemistries)  
+- to extremize objectives involving \(\theta(x,t_{\text{pulse}})\), \(x_s\), and GPC  
+- subject to self‑limiting and process‑window constraints
+
+with the key understanding that **material/geometry parameters are not knobs** in everyday ALD recipes, whereas pressures, temperature, and pulse times are.

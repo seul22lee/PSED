@@ -1,0 +1,1130 @@
+
+View
+Online 
+Export
+Citation
+RESEARCH ARTICLE |  MAY 22 2018
+Modeling growth kinetics of thin films made by atomic layer
+deposition in lateral high-aspect-ratio structures 
+Markku Ylilammi; Oili M. E. Ylivaara 
+ ; Riikka L. Puurunen 
+J. Appl. Phys. 123, 205301 (2018)
+https://doi.org/10.1063/1.5028178
+Articles You May Be Interested In
+Microscopic silicon-based lateral high-aspect-ratio structures for thin film conformality analysis
+J. Vac. Sci. Technol. A (December 2014)
+Conformality in atomic layer deposition: Current status overview of analysis and modelling
+Appl. Phys. Rev. (April 2019)
+Sticking probabilities of H2O and Al(CH3)3 during atomic layer deposition of Al2O3 extracted from their
+impact on film conformality
+J. Vac. Sci. Technol. A (April 2019)
+ 04 December 2025 23:11:22
+Modeling growth kinetics of thin films made by atomic layer deposition
+in lateral high-aspect-ratio structures
+Markku Ylilammi,1,a) Oili M. E. Ylivaara,1 and Riikka L. Puurunen1,2
+1VTT Technical Research Centre of Finland, P.O. Box 1000, FI-02044 VTT, Finland
+2Aalto University School of Chemical Engineering, P.O. Box 16100, FI-00076 Aalto, Finland
+(Received 8 March 2018; accepted 5 May 2018; published online 22 May 2018)
+The conformality of thin ﬁlms grown by atomic layer deposition (ALD) is studied using all-silicon
+test structures with long narrow lateral channels. A diffusion model, developed in this work, is
+used for studying the propagation of ALD growth in narrow channels. The diffusion model takes
+into account the gas transportation at low pressures, the dynamic Langmuir adsorption model for
+the ﬁlm growth and the effect of channel narrowing due to ﬁlm growth. The ﬁlm growth is calcu-
+lated by solving the diffusion equation with surface reactions. An efﬁcient analytic approximate
+solution of the diffusion equation is developed for ﬁtting the model to the measured thickness pro-
+ﬁle. The ﬁtting gives the equilibrium constant of adsorption and the sticking coefﬁcient. This model
+and Gordon’s plug ﬂow model are compared. The simulations predict the experimental measure-
+ment results quite well for Al2O3 and TiO2 ALD processes. Published by AIP Publishing.
+https://doi.org/10.1063/1.5028178
+NOMENCLATURE
+a
+Aspect ratio
+b
+Number of metal atoms in a molecule
+c
+Lumped sticking coefﬁcient
+C
+Penetration depth parameter in the Gordon model
+(1/s)
+D
+Apparent longitudinal diffusion coefﬁcient (m2/s)
+dA
+Diameter of molecule A (m)
+DA
+Gas-phase diffusion coefﬁcient of molecules A (m2/s)
+Deff
+Effective diffusion coefﬁcient (m2/s)
+DKn
+Knudsen diffusion coefﬁcient (m2/s)
+F
+Gas ﬂow of the reactant (mol/s)
+fads
+Adsorption rate (m2 s1)
+fdes
+Desorption rate (m2 s1)
+g
+Net adsorption rate (m2 s1)
+gpc
+Film growth per cycle (m)
+gpcsat
+Saturation growth in cycle (m)
+h
+Hydraulic diameter of the channel (m)
+H
+Height of the channel (m)
+K
+Adsorption equilibrium constant (1/Pa)
+L
+Length of the channel (m)
+M
+Molar mass of the deposited ﬁlm (kg/mol)
+MA
+Molar mass of reactant A (kg/mol)
+N
+Total number of adsorbed molecules; number of
+ALD cycles
+nA
+Amount of reactant A (mol)
+N0
+Avogadro constant (1/mol)
+pA
+Partial pressure of reactant A (Pa)
+pA0
+Input partial pressure of reactant A (Pa)
+Pd
+Desorption probability in unit time (1/s)
+q
+Adsorption density of molecules in saturation (1/m2)
+Q
+Collision rate at unit pressure (m2 s1 Pa1)
+R
+Gas constant (J K1 mol1)
+s
+Film thickness (m)
+t
+Time (s)
+T
+Temperature (K)
+tp
+Length of the reactant pulse (s)
+v
+Velocity of gas front (m/s)
+vA
+Average speed of molecules A (m/s)
+W
+Width of the channel (m)
+x
+Distance from the beginning of the channel (m)
+xp
+Half-thickness penetration depth (m)
+xs
+Distance where the linear part of the reactant pres-
+sure is zero (m)
+xt
+Length of the linear part of the pressure distribution
+(m)
+zA
+Collision rate of molecule A (1/s)
+Ds
+Error in thickness measurement (m)
+g
+Viscosity of gas (Pa s)
+h
+Surface coverage
+heq
+Equilibrium surface coverage in the Langmuir model
+q
+Density of the condensed phase (kg/m3)
+s
+Time constant of adsorption
+I. INTRODUCTION
+The downscaling of future semiconductor devices with
+increasing three-dimensionality—e.g., through-silicon-vias,
+FinFETS, 3D-NAND ﬂash memories—sets new require-
+ments for the aspect ratios which thin ﬁlm processes have to
+conformably reach. Atomic layer deposition (ALD), based
+on the use of repeated, self-terminating reactions of typically
+at least two compatible reactants on a solid substrate
+(Puurunen, 2005 and George, 2010), is a technique that can
+often meet the conformality requirements. Conformal ﬁlms
+made by ALD are also needed in other ﬁelds, with intrinsic
+three-dimensionality requirements, such as microelectrome-
+chanical systems (MEMS), energy applications, and high-
+surface-area catalysts. Despite its importance, experimental
+a)Electronic mail: markku.ylilammi@vtt.ﬁ
+0021-8979/2018/123(20)/205301/8/$30.00
+Published by AIP Publishing.
+123, 205301-1
+JOURNAL OF APPLIED PHYSICS 123, 205301 (2018)
+ 04 December 2025 23:11:22
+data on conformality has been infrequently reported in scien-
+tiﬁc articles on ALD, likely due to the absence of available
+and easy-to-use analysis structures and methods. Notable
+exceptions are Dendooven (2010), Rose and Bartha (2009),
+Schwille (2017), and Yanguas-Gil (2017).
+This work continues the earlier work (Gao, 2015), where
+microscopic lateral high-aspect-ratio structure (LHAR) pro-
+totypes were designed and fabricated. The LHAR structures
+consist of a long, narrow lateral gap of typically 500 nm in
+height (analogous to a vertical trench but rotated 90) in a
+polysilicon membrane, supported by pillars. The ﬁrst LHAR
+prototypes have been used for conformality analysis of the
+ALD Al2O3-, TiO2- and Ir-based thin ﬁlms (Gao, 2015;
+Mattinen, 2016; and Puurunen and Gao, 2016). This work
+uses LHAR (PillarHallV
+R) prototypes with a new all-silicon
+design made by a fabrication process resembling that previ-
+ously reported (Gao, 2015). The length of the fabricated
+channels varied from 1 lm to 5 mm, so that for a typical gap
+height of 500 nm, the gap length vs. height gives the aspect
+ratio in the range from 2:1 to 10 000:1. It turned out that the
+penetration depth does not depend on the length of the chan-
+nel when it is long enough. The structure of the LHAR test
+device is schematically illustrated in Fig. 1.
+The goal of this work is to develop a model to calculate
+the thickness proﬁle of ALD growth in high-aspect-ratio
+trenches. Using this model, the measured ALD ﬁlm thickness
+proﬁles can be used to extract kinetic growth information.
+The derived model and its analytical simpliﬁcation are com-
+pared with the Gordon model (Gordon, 2003). The fre-
+quently used trimethylaluminum-water (TMA) process for
+Al2O3 and the chloride process for TiO2 have been used to
+verify the model.
+II. GAS DIFFUSION IN NARROW CHANNELS
+The hard-sphere model of molecules (Levine, 1978) can
+satisfactorily explain the diffusion properties of bulk gas
+mixtures. If the partial pressures of molecules A and B are
+pA and pB, their molar masses MA and MB and diameters dA
+and dB, respectively, the collision rate of A molecules in a
+gas mixture A þ B at temperature T is given by
+zA ¼ p
+4 dA þ dB
+ð
+Þ2 8RT
+p
+1
+MA
+þ 1
+MB
+
+
+
+1=2 pB
+RT
+þ p dA
+ð
+Þ2 16RT
+pMA
+
+1=2 pA
+RT ;
+(1)
+where the latter term is the rate of A-A collisions. R ¼ kBN0
+is the gas constant where kB is the Boltzmann constant and
+N0 the Avogadro constant. The average speed of A mole-
+cules is
+vA ¼
+8RT
+pMA
+
+1=2
+:
+(2)
+The gas-phase diffusion constant of A molecules is
+DA ¼ 3p
+16
+v2
+A
+zA
+:
+(3)
+The diffusion model of mass transport in narrow channels
+can be extended to the transition ﬂow regime if the effect of
+walls is incorporated into the model. The diffusion constant
+in a molecular (Knudsen) ﬂow is (Poodt, 2017)
+DKn ¼ h
+8RT
+9pMA
+
+1=2
+;
+(4)
+where
+h ¼
+2
+1
+H þ 1
+W
+(5)
+is the hydraulic diameter of a rectangular channel of height
+H and width W.
+The diffusion resistance is the sum of bulk diffusion in
+gas and wall collisions. The combined diffusion constant in a
+narrow channel at low pressures follows the Bosanquet rela-
+tion (Poodt, 2017)
+Deff ¼
+1
+1
+DA
+þ 1
+DKn
+:
+(6)
+Calculation of the diffusion constant DA requires a value for the
+diameter dA of the molecule. For common gases, this can be cal-
+culated, e.g., from the gas phase viscosity g (Levine, 1978)
+dA 
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+5
+16gN0
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+MART
+p
+r
+s
+:
+(7)
+The viscosity of water vapor at 100 C is g ¼ 12.55 lPa s
+(Weast, 1977), which gives a molecular diameter dA¼ 418 pm.
+For nitrogen at 11 C, g ¼ 17.07 lPa s and dB ¼ 374 pm. For
+most reactants in ALD, the gas phase viscosity is not mea-
+sured. The molecular diameter can be calculated from a molec-
+ular dynamics simulation, but because the Knudsen diffusion
+is the major limiting factor in the mass transport in narrow
+channels, a rough estimate of the molecular diameter is sufﬁ-
+cient. We obtain it from the density q of the liquid or solid
+phase of the material
+FIG. 1. Schematic cross-section of the LHAR test device (not in scale). The
+gas front propagates in the x-direction. The penetration depth of the ALD
+ﬁlm growth is xp. The width of the channel in the z-direction is W. The
+length in the x-direction is L.
+205301-2
+Ylilammi, Ylivaara, and Puurunen
+J. Appl. Phys. 123, 205301 (2018)
+ 04 December 2025 23:11:22
+dA  2
+3MA
+4pqN0
+
+1=3
+:
+(8)
+Trimethylaluminum (TMA, Al(CH3)3) exists at low tempera-
+tures in a dimeric form, but above 215 C, more than 96% is
+in the monomeric form (Almenningen, 1971). Therefore, the
+diffusion constant of the monomer is used. The molecular
+diameters of metal precursors used here are dTMA ¼ 591 pm
+and dTiCl4 ¼ 703.9 pm.
+For the modeling of the mass transport in ALD, we need
+to quantify the amount of material that chemisorbs on the
+surface in one reaction cycle. This depends on the adsorption
+density q of the reactant molecules. If the experimental satu-
+ration growth per cycle is gpcsat (layer thickness per cycle at
+saturation reactant exposure) is available, we can calculate
+the adsorption density q from the ﬁlm mass density q
+q ¼ bfilm
+bA
+q gpcsat
+M
+N0:
+(9)
+Here, bﬁlm is the number of metal atoms in the formula unit
+of the deposited ﬁlm and bA the number of metal atoms in
+one reactant molecule. M is the molar mass of a formula unit
+of the ﬁlm. For TMA and Al2O3, these are bﬁlm ¼ 2 and bA
+¼ 1, and for TiCl4 and TiO2, bﬁlm ¼ 1 and bA ¼ 1.
+Because the weight and the size of water molecules are
+smaller than those of the metal reactants they diffuse much
+more rapidly than the metal compounds and the growth-
+limiting factor is assumed to be the diffusion of metal
+precursors.
+III. MODELING THE FILM GROWTH
+The coordinate system used in the high-aspect-ratio
+lateral channel is deﬁned in Fig. 1. The gas enters from the
+left and propagates along the x-axis by diffusion. In the y-
+direction (height), the time constant for concentration equili-
+bration by diffusion is H2/Deff  10 ns, where the channel
+height H ¼ 1 lm and the effective diffusion coefﬁcient Deff
+is typically about 1 cm2/s. Therefore, we may assume well
+that there are no concentration gradients in the y-direction
+in the millisecond time scale of the ALD process. In the
+z-direction, the channel is very wide (W  H), and therefore
+the concentration is assumed constant in that direction.
+We can now simplify the problem by using the fact that
+the gas concentration is constant in the y and z directions.
+The one-dimensional diffusion equation for partial pressure
+pA is
+@pA
+@t ¼ Deff
+@2pA
+@x2  g 4
+h
+RT
+N0
+;
+(10)
+where the gas adsorption rate to the walls is g (1/m2s). This
+equation can be solved numerically, but when the number of
+reactant pulses in an ALD process can be several thousands
+the computational task is impractically heavy.
+Although the surface reactions may be very compli-
+cated, we use the Langmuir adsorption model for the chemi-
+sorption process. With sticking probability c the rate of
+adsorption (1/m2s) (Levine, 1978) is
+fads ¼ 1  h
+ð
+Þ
+cN0pA
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+2pMART
+p
+;
+(11)
+and the rate of desorption is
+fdes ¼ qhPd;
+(12)
+where h is the surface coverage, q the saturation adsorption den-
+sity, and Pd the desorption probability in unit time. Here, c must
+be understood as a lumped sticking coefﬁcient which combines
+the effects of all sequential and parallel surface processes.
+In equilibrium, these are equal and we can deﬁne the
+adsorption equilibrium constant K using the collision rate at
+unit pressure Q (Levine, 1978)
+K ¼ heq=pA
+1  heq
+¼ cQ
+qPd
+;
+(13)
+Q ¼
+N0
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+2pMART
+p
+:
+(14)
+The net adsorption rate g (1/m2s) of gas A is
+g ¼ fads  fdes
+(15)
+and the rate of change in the surface coverage h is
+dh
+dt ¼ g
+q :
+(16)
+During the reactant pulse, the net adsorption rate is always
+positive so that the question whether the adsorption is revers-
+ible or irreversible is not important for this model. Both
+cases are covered by the Langmuir model; in the latter case,
+Pd ¼ 0. Experiments show that better ﬁt, especially in the
+case of TiO2 is obtained if Pd > 0. Although the Langmuir
+model is used in this analysis, the actual reaction mechanism
+may be much more complicated.
+IV. APPROXIMATE SOLUTION TO THE DIFFUSION
+EQUATION
+We need a simple approximate model for the reactant
+gas partial pressure pA as a function of location x and time t,
+so that we do not need to ﬁnd a numerical solution of the dif-
+fusion equation in ﬁtting the model to the measured results.
+In the beginning of the channel, the surfaces are immediately
+saturated and no gas is used in adsorption g(x ¼ 0)  0. The
+gas ﬂow is in the steady state (@pA/@t  0) and the diffusion
+equation is simpliﬁed to
+Deff
+@2pA x; t
+ð
+Þ
+@x2
+ 0:
+(17)
+Its solution is
+pA x; t
+ð
+Þ ¼ pA0 1  x
+xs
+
+
+;
+x < xt;
+(18)
+where the boundary conditions pA(0,t) ¼ pA0 and pA(xs,t)  0
+have been used. xt is the limit beyond which the approximation
+g  0 is not valid and xs describes how far the reactant front
+has propagated at time t. It is the location where the linear part
+of the pressure distribution would go to zero.
+205301-3
+Ylilammi, Ylivaara, and Puurunen
+J. Appl. Phys. 123, 205301 (2018)
+ 04 December 2025 23:11:22
+Because the gas propagates by diffusion, a reasonable
+approximation is that the growth distance is proportional to
+the diffusion length (Yanguas-Gil, 2017) or
+xs ¼
+ﬃﬃﬃﬃﬃ
+Dt
+p
+:
+(19)
+Here, D is a parameter (apparent longitudinal diffusion con-
+stant) describing the velocity of the gas front. In the region
+on linear pressure distribution (x < xt) and when the surfaces
+are saturated, the diffusion gas ﬂow (molecules/s)
+Fðx; tÞ ¼ HW Deff
+kBT
+@pA
+dx  pA0HW Deff
+kBT
+1
+xs
+:
+(20)
+The total number of molecules adsorbed onto the surfaces at
+distance x is
+N ¼
+ðx
+0
+2qWhdx ¼ 2qW
+ðx
+0
+KpA0 1  x
+xs
+
+
+1 þ KpA0 1  x
+xs
+
+ dx
+¼ 2qW
+x þ
+xs
+KpA0
+ln
+KpA0 1  x
+xs
+
+
+þ 1
+KpA0 þ 1
+0
+B
+@
+1
+C
+A:
+(21)
+When we neglect the small amount nA  pA0WHxp/(2RT) of
+yet unused reactant in the gas phase, this must be equal to
+the integrated gas ﬂow at time t
+ðt
+0
+Fðx; tÞdt ¼ N;
+ðt
+0
+pA0HW Deff
+kBT
+dtﬃﬃﬃﬃﬃ
+Dt
+p
+¼ 2qWxs þ 2qW
+xs
+KpA0
+ln
+1
+KpA0 þ 1 ;
+pA0H 2Deff
+kBT
+ﬃﬃﬃﬃ
+t
+D
+r
+¼ 2q 1 þ
+1
+KpA0
+ln
+1
+KpA0 þ 1
+
+
+ﬃﬃﬃﬃﬃ
+Dt
+p
+:
+(22)
+From this, we can solve the apparent longitudinal diffusion
+constant which is needed to calculate xs in (19)
+D ¼
+pA0HDeff
+qkBT 1  ln KpA0 þ 1
+ð
+Þ
+KpA0
+
+ :
+(23)
+In the constant-slope region x < xt, the pressure is approxi-
+mated by the linear model (18). Beyond point xt (in the tail
+region), we approximate the partial pressure by an exponen-
+tial tail and we use the following model to describe the reac-
+tant pressure
+pA x; t
+ð
+Þ ¼ pA0 1  x
+xs
+
+
+;
+x < xt;
+pAðx; tÞ ¼ pt exp
+ x  xt
+xs  xt
+
+
+;
+x > xt;
+pt ¼ pA0 1  xt
+xs
+
+
+;
+xs ¼
+ﬃﬃﬃﬃﬃ
+Dt
+p
+:
+(24)
+The point xt is chosen, so that the pressure is continuous. In
+the tail region (x > xt),
+dpA
+dt ¼ Dpt exp
+x  xt
+xt  xs
+
+
+x  xt
+ð
+Þ
+2xs xt  xs
+ð
+Þ2 ;
+d2pA
+dx2 ¼
+pt exp x  xt
+xt  xs
+xt  xs
+ð
+Þ2
+:
+(25)
+When these are inserted in the diffusion equation, Eq. (10),
+we get
+Dpt exp
+x  xt
+xt  xs
+
+
+x  xt
+ð
+Þ
+2xs xt  xs
+ð
+Þ2
+¼ Deff
+pt exp x  xt
+xt  xs
+xt  xs
+ð
+Þ2
+ 4RT
+hN0
+1  h
+ð
+ÞcQpt
+ exp x  xt
+xt  xs
+þ 4RT
+hN0
+qhPd:
+(26)
+In the tail region, the surface coverage is low. When h  0,
+we have
+D
+x  xt
+ð
+Þ
+2xs xt  xs
+ð
+Þ2 
+Deff
+xt  xs
+ð
+Þ2  4RT
+hN0
+cQ:
+(27)
+Now, we choose xt, so that this equation is true at location x
+¼ xt, but xt must not be negative
+xt ¼ xs 
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+hN0Deff
+4RTcQ
+s
+;
+if xs >
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+hN0Deff
+4RTcQ
+s
+xt ¼ 0; otherwise:
+(28)
+In Fig. 2, this approximate model is compared with the
+numerical solution of the diffusion equation and the ﬁt looks
+quite good.
+Next, we need a solution for the surface coverage h at
+point x at time t. If the gas pressure changes slowly com-
+pared to the rate of adsorption, we may assume that the
+adsorption is in equilibrium and the surface coverage at loca-
+tion x would be
+heq x
+ð Þ ¼
+KpA x
+ð Þ
+1 þ KpA x
+ð Þ :
+(29)
+At constant pA, the surface coverage h approaches exponen-
+tially the equilibrium coverage and the time constant of this
+process when heq ¼ 0.5 is
+s ¼ qK
+2cQ :
+(30)
+The equilibrium model is sufﬁciently accurate if s is much
+smaller than the pulse length tp. However, in real ALD pro-
+cesses, the adsorption can be far from equilibrium, and thus
+this assumption is not useful.
+The surface coverage h(x,t) in the Langmuir model can
+always be found by solving
+dh x; t
+ð
+Þ
+dt
+¼ cQpA x; t
+ð
+Þ
+q
+
+cQpA x; t
+ð
+Þ
+q
+þ Pd
+
+
+h x; t
+ð
+Þ:
+(31)
+205301-4
+Ylilammi, Ylivaara, and Puurunen
+J. Appl. Phys. 123, 205301 (2018)
+ 04 December 2025 23:11:22
+The analytical solution is (integrations from 0 to t)
+h tð Þ ¼ eÐ
+cQ
+q pAþPd
+
+
+dt
+ð cQ
+q pAe
+Ð
+cQ
+q pAþPd
+
+
+dtdt:
+(32)
+Because typically we need to solve Eq. (31) more than
+10 000 times in ﬁtting the result of one growth experiment, it
+is the major time consuming step in the analysis. Numerical
+integration of Eq. (32) is too slow. In this work, Eq. (31) is
+solved by the 4th order Runge-Kutta method (Arfken, 1970).
+It is self-initiated and easily stable. Often, 100 time points
+(time step, e.g., 1 ms) are enough for accurate results.
+However, sometimes this does not guarantee convergence
+and then we need to increase the number of time points.
+In Figs. 2 and 3, this approximate model is compared
+with the numerical solution of the differential equations.
+Both models give practically identical results.
+V. THICKNESS PROFILE AND THE PENETRATION
+DEPTH
+In an ALD growth experiment, N cycles of reactant
+pulses consisting of the ﬁrst reactant (e.g., TMA) and the
+second reactant (H2O) are fed into the channel, and the
+resulting thickness proﬁle s(x) is measured. When the pene-
+tration depth xp is determined by measuring the ﬁlm thick-
+ness s, the error in it is
+Dxp ¼
+Ds
+jds=dxj ;
+(33)
+where Ds is the error in ﬁlm thickness and ds/dx is the slope
+of the ﬁlm thickness vs. location at the point of measure-
+ment. The maximum value of the slope is at the point of half
+ﬁlm thickness and determining xp at this point gives the best
+accuracy. Therefore, we deﬁne the half-thickness penetration
+xp of the ﬁlm growth, so that the ﬁlm thickness is 50% of
+thickness s(0) at the beginning of the channel, or by solving
+xp in the equation
+s xp
+ð
+Þ ¼ s 0
+ð Þ
+2 :
+(34)
+The ﬁlm grows on both the top and bottom surfaces of the
+channel. If the thickness growth of the ﬁlm in one complete
+growth cycle is gpc, the free height of the channel after N
+cycles is
+H N
+ð Þ ¼ H 0
+ð Þ  2N gpc:
+(35)
+Because the ﬁlm growth thickness depends on location x, the
+channel height also varies with location. This complicates
+the analysis because the diffusion constant now depends on
+location. This problem is circumvented by assuming that the
+channel height is constant in the whole channel and it is
+updated to the value in the beginning of the channel after
+each pulse. Thus, in the model, the channel in the tail region
+is narrower than in reality, so the model predicts slightly too
+steep thinning of the ﬁlm. However, this is a good assump-
+tion when the ﬁlm is thin compared to the gap height H and
+when the ﬁlm does not grow much beyond the point xp.
+In the last step, we add the contributions hi in the surface
+coverage of all the N cycles and compute the ﬁnal thickness
+distribution s(x)
+h x
+ð Þ ¼
+X
+N
+i¼1
+hi x
+ð Þ;
+(36)
+s x
+ð Þ ¼ h x
+ð Þgpcsat:
+(37)
+The resulting ﬁlm thickness distributions with different chan-
+nel height values are shown in Fig. 4.
+FIG. 2. Comparison of the development of reactant pressure distributions in
+time. Lines indicate the approximate model and circles the fully numerical
+solution of the growth equations. Parameter values used: H¼ 0.5lm, W
+¼ 0.1 mm, pA0¼ 100 Pa, MA¼ 0.0749 kg/mol, dA ¼ 591 pm, MB ¼ 0.028 kg/
+mol, dB ¼ 374 pm, pB ¼ 300 Pa, q ¼ 5  1018 m2, T ¼ 500 K, K ¼ 100 Pa1,
+c ¼ 0.01, and gpcsat ¼ 106 pm. The locations of points xt and xs of the 0.1s
+pulse are marked.
+FIG. 3. Development of the surface coverage with time. Circles represent
+the fully numerical solution of differential equations and lines the result of
+the approximate model. Parameter values used: H ¼ 0.5lm, W ¼ 0.1 mm,
+pA0 ¼ 100 Pa, MA ¼ 0.0749 kg/mol, dA ¼ 591 pm, MB ¼ 0.028kg/mol, dB
+¼ 374 pm, pB ¼ 300 Pa, q ¼ 5  1018 m2, T ¼ 500 K, K¼ 100 Pa1, c ¼ 0.01,
+and gpcsat ¼ 106 pm.
+205301-5
+Ylilammi, Ylivaara, and Puurunen
+J. Appl. Phys. 123, 205301 (2018)
+ 04 December 2025 23:11:22
+VI. COMPARISON WITH THE GORDON MODEL
+In the Gordon model for ALD conformality, it is
+assumed that the gas enters the rectangular channel (height
+H  width W) as a front with a constant concentration with-
+out any gas diffusion in the propagation direction (x-axis).
+This is called the Gordon model (Gordon, 2003). Gas is
+adsorbed onto the two walls. When q is the saturation areal
+density (m2) of the adsorbed molecules, the number
+of adsorbed molecules at distance dx in a channel with width
+W is
+dN ¼ 2qWdx:
+(38)
+On the other hand, the number of molecules is equal to the
+ﬂow F (1/s) of incoming gas in time dt
+dN ¼ Fdt:
+(39)
+When the surface is saturated, there is no absorption and this
+location x propagates with velocity v
+v ¼ dx
+dt ¼
+F
+2qW :
+(40)
+The ﬂow through a channel of length x and area WH in a
+molecular ﬂow is approximated by Gordon (2003)
+F ¼
+pA0N0
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+2pMART
+p
+WH
+1 þ 3x
+8
+1
+H þ 1
+W
+
+ ;
+(41)
+where pA0 is the partial pressure of molecules A in the begin-
+ning of the channel. Now, the location x of the saturation
+border propagates with velocity
+dx
+dt ¼
+F
+2qW ¼
+pA0N0
+2q
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+2pMART
+p
+H
+1 þ 3x
+8
+1
+H þ 1
+W
+
+ :
+(42)
+This can be separated and integrated as
+x þ 3x2
+16
+1
+H þ 1
+W
+
+
+¼
+HpA0N0
+2q
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+2pMART
+p
+t:
+(43)
+In the Gordon model, the aspect ratio a ¼ x/H is independent
+of height H of the channel. If we denote
+C ¼
+pA0N0
+2q
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+2pMART
+p
+;
+(44)
+we get the penetration depth at pulse length tp, when W  H
+xp ¼ H
+ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+1 þ 3
+4 Ctp
+r
+ 1
+0:375
+:
+(45)
+This is plotted in Fig. 5 for one ALD cycle and compared
+with the present diffusion models. Although the Gordon
+model in this case gives a good description of the ﬁlm pene-
+tration depth, it does not give the thickness proﬁle and it
+does not enable modeling of the ﬁlm growth kinetics.
+VII. EXPERIMENTAL
+To test the growth model, ALD Al2O3 and TiO2 ﬁlms
+were grown on LHAR structures. The ALD reactor was a
+Picosun R-150 with four reactant lines. Al2O3 was grown
+with the same process as in Gao (2015) from trimethylalumi-
+num (TMA) and water (H2O) at 300 C and TiO2 from tita-
+nium tetrachloride (TiCl4) and H2O at 110 C. Nitrogen was
+FIG. 4. Film thickness proﬁles after 1000 cycles calculated by the approxi-
+mate model when the original channel heights are H ¼ 2, 1, 0.5, or 0.2 lm.
+Reactant pulse length tp ¼ 0.1 s. In the last case, the channel entrance is
+completely plugged up. Parameter values used: H ¼ 0.5 lm, W ¼ 0.1 mm,
+pA0 ¼ 100 Pa, MA ¼ 0.0749 kg/mol, dA ¼ 591 pm, MB ¼ 0.028 kg/mol, dB
+¼ 374 pm, pB ¼ 300 Pa, q¼ 5  1018 m2, T¼ 500K, K¼ 100 Pa1, c ¼ 0.01,
+and gpcsat ¼ 106pm.
+FIG. 5. Comparison of the penetration depth given by different models in
+one reactant pulse. Circles represent the fully numerical solution, the solid
+line the analytical approximate solution and the dashed line the Gordon
+model. Parameter values used: H ¼ 0.5 lm, W ¼ 0.1 mm, pA0 ¼ 100 Pa, MA
+¼ 0.0749 kg/mol,
+dA ¼ 591 pm,
+MB ¼ 0.028 kg/mol,
+dB ¼ 374 pm,
+pB
+¼ 300 Pa, q¼ 5  1018 m2, T ¼ 500 K, K ¼ 100 Pa1, c¼ 0.01, tp ¼ 0.1 s,
+and gpcsat ¼ 106 pm. In the Gordon model, only the Knudsen diffusion is
+considered which is slightly faster than the diffusion given by the effective
+diffusion coefﬁcient in Eq. (6).
+205301-6
+Ylilammi, Ylivaara, and Puurunen
+J. Appl. Phys. 123, 205301 (2018)
+ 04 December 2025 23:11:22
+used both as a purging gas and as a carrier gas for the reac-
+tants. The LHAR chips (PillarHallV
+R 3rd generation proto-
+types by VTT) were thermalized in the ALD chamber at the
+deposition temperature for 10 min before starting the growth
+process. For Al2O3 growth, the AlMe3 pulse and purge times
+were 0.1 and 4.0 s, respectively, followed by 0.1 and 4.0 s
+H2O pulse and purge steps. This reaction sequence was
+repeated for 500 cycles, leading approximately to 50 nm
+ﬁlm. Nitrogen ﬂow rates were 150 sccm through each reac-
+tant line. In the TiO2 growth, the reactant pulse and purge
+times were also 0.1 and 4.0 s, respectively. In the TiO2 depo-
+sition, the number of pulse sequences was 1000 resulting in
+approximately 50 nm ﬁlm thickness. Chamber pressures for
+both Al2O3 and TiO2 during the runs were appr. 300 Pa.
+The LHAR structures were inspected optically after the
+ALD before and after removing the membrane. The ﬁlm
+growth depth was determined by spectroscopic reﬂectometry
+measurements using SCI FilmTek 2000M equipment, and the
+samples were measured using a 100-point line scan. The mea-
+surement started at the beginning of the lateral cavity proceed-
+ing in 2 lm steps towards the cavity end; thus, the total scan
+length was 200 lm. In the measurement, a 50 objective lens
+was used, giving roughly 5 lm spot size. The precision of the
+ﬁlm thickness measurement is limited by the roughness of the
+channel surface and we estimate it to be about 3 nm.
+VIII. RESULTS
+The measured and calculated thickness proﬁles of Al2O3
+and TiO2 ﬁlms are given in Figs. 6 and 7. The extracted
+growth parameters are in Table I. The saturation growth in
+one cycle gpcsat is the equilibrium thickness of layer growth
+at saturation or high reactant exposure or
+gpcsat ¼ 1 þ KpA
+KpA
+gpc;
+(46)
+where gpc is the observed growth per cycle at reactant pres-
+sure pA and K is the equilibrium constant in the Langmuir
+model. The thickness error is the rms difference between the
+measured and calculated thicknesses and describes how well
+the modeling describes the measured result.
+The ALD thickness proﬁles of Al2O3 and TiO2 ﬁlms are
+quite different. Aluminum oxide ﬁlm exhibits constant thick-
+ness from the beginning to close to the penetration depth.
+Titanium oxide thickness is nowhere constant but the ﬁlm
+thickness gradually decreases when the gas enters deeper
+into the channel. In the Langmuir model, this results in quite
+different values for the sticking coefﬁcient c and the equilib-
+rium constant K. The root cause probably is that the deposi-
+tion of TiO2 produces very reactive HCl (Knapas and Ritala,
+2013), while the Al2O3 deposition produces relatively pas-
+sive CH4 (Puurunen, 2005). If we knew the reaction mecha-
+nism, it could be used to replace the Langmuir adsorption
+equation, Eq. (31), and the present ﬁtting procedure could be
+then used to ﬁnd out the model parameters.
+IX. CONCLUSIONS
+The model presented here describes quite well the thick-
+ness distribution of ALD growth in narrow channels. This
+FIG. 6. The measured (circles) and calculated (line) thickness proﬁles of a
+500 cycle deposition process of Al2O3 from Al(CH3)3 and H2O in PillarHall
+V
+R
+prototype 3 with a nominal channel gap height of 0.5lm. The length L of the
+channel was 1 mm which gives a structural aspect ratio of 2000.
+FIG. 7. The measured (circles) and calculated (line) thickness proﬁles of a
+1000 cycle deposition process of TiO2 from TiCl4 and H2O. The nominal
+channel gap height is 0.5 lm. The length L of the channel was 1 mm which
+gives a structural aspect ratio of 2000.
+TABLE I. Parameters extracted from the measured ﬁlm thickness proﬁles. The measured and calculated thickness proﬁles are in Figs. 6 and 7. Thickness error
+is the rms value of the difference between the measured and ﬁtted thickness values.
+Material
+Cycles
+H (nm)
+pA0 (Pa)
+c
+K (Pa1)
+gpcsat (pm)
+rms thickness error (nm)
+Al2O3
+500
+500
+147
+0.00572
+219
+105.6
+0.974
+TiO2
+1000
+500
+25.7
+0.10
+0.252
+54.4
+1.525
+205301-7
+Ylilammi, Ylivaara, and Puurunen
+J. Appl. Phys. 123, 205301 (2018)
+ 04 December 2025 23:11:22
+model can be used to design and optimize a deposition pro-
+cess for a new device. By ﬁtting the model to the measured
+thickness distribution, one obtains parameters of the growth
+reaction model used. Here, only the simple Langmuir surface
+reaction model is applied, but it can be replaced by any
+model by changing Eq. (31). More elaborate models require
+more numerous parameters and their determination requires
+a more extensive set of measured data.
+ACKNOWLEDGMENTS
+This work received funding from the Academy of
+Finland through the Finnish Centre of Excellence in Atomic
+Layer Deposition and from Tekes (since 2018 Business
+Finland) through the PillarHall TUTL Project. The samples
+were fabricated at the Micronova Clean Room Facilities of
+VTT, Espoo.
+Almenningen, A., Halvorsen, S., and Haaland, A., “A gas phase electron dif-
+fraction investigation of the molecular structures of trimethylaluminium
+monomer and dimer,” Acta Chem. Scand. 25, 1937–1945 (1971).
+Arfken, G., Mathematical Methods for Physicists (Academic Press, London,
+1970).
+CRC Handbook of Chemistry and Physics 58th ed., edited by R. C. Weast
+(CRC Press, 1977).
+Dendooven, J., Deduytsche, D., Musschoot, J., Vanmeirhaeghe, R. L., and
+Detavernier, C., “Conformality of Al2O3 and AlN deposited by plasma-
+enhanced atomic layer deposition,” J.
+Electrochem. Soc 157(4),
+G111–G116 (2010).
+Gao, F., Arpiainen, S., and Puurunen, R. L., “Microscopic silicon-based lat-
+eral high-aspect-ratio structures for thin ﬁlm conformality analysis,”
+J. Vac. Sci. Technol. A 33, 010601 (2015).
+George, S. M., “Atomic layer deposition: An overview,” Chem. Rev. 110,
+111–113 (2010).
+Gordon, R. G., “A kinetic model for step coverage by atomic layer deposi-
+tion in narrow holes and trenches,” Chem. Vap. Deposition 9, 73–78
+(2003).
+Knapas, K. and Ritala, M., “In situ studies on reaction mechanisms in atomic
+layer deposition,” Crit. Rev. Solid State Mat. Sci. 38, 167–202 (2013).
+Levine, I. R., Physical Chemistry (McGraw-Hill, 1978).
+Mattinen, M., H€am€al€ainen, J., Gao, F., Jalkanen, P., Mizohata, K., R€ais€anen,
+J., Puurunen, R. L., Ritala, M., and Leskel€a, M., “Nucleation and confor-
+mality of iridium and iridium oxide thin ﬁlms grown by atomic layer depo-
+sition,” Langmuir 32, 10559–10569 (2016).
+Poodt, P., Mameli, A., Schulpen, J., Kessels, W. M. M., and Roozeboom, F.,
+“Effect of reactor pressure on the conformal coating inside porous substrates
+by atomic layer deposition,” J. Vac. Sci. Technol. A 35(2), 021502 (2017).
+Puurunen, R. L., “Surface chemistry of atomic layer deposition: A case
+study for the trimethylaluminum/water process,” J. Appl. Phys. 97,
+121301 (2005).
+Puurunen, R. L. and Gao, F., “Inﬂuence of ALD temperature on thin ﬁlm
+conformality: Investigation with microscopic lateral high-aspect-ratio
+structures,” in 2016 14th International Baltic Conference on Atomic Layer
+Deposition (BALD), St. Petersburg (IEEE, 2016), pp. 20–24.
+Rose, M. and Bartha, J. W., “Method to determine the sticking coefﬁcient of
+precursor molecules in atomic layer deposition,” Appl. Surf. Sci. 255,
+6620–6623 (2009).
+Schwille, M. C., Sch€ossler, T., Barth, J., Knaut, M., Sch€on, F., H€ochst, A.,
+Oettel, M., and Bartha, J. W., “Experimental and simulation approach for
+process optimization of atomic layer deposited thin ﬁlms in high aspect
+ratio 3D structures,” J. Vac. Sci. Technol. A 35, 01B118 (2017).
+Yanguas-Gil, A., Growth and Transport in Nanostructured Materials;
+Reactive Transport in PVD, CVD, and ALD (Springer, 2017).
+205301-8
+Ylilammi, Ylivaara, and Puurunen
+J. Appl. Phys. 123, 205301 (2018)
+ 04 December 2025 23:11:22

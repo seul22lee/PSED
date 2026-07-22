@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-network@latest/styles/vis-network.css" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@latest/dist/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 900px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#B0E57C", "font": {"color": "black"}, "id": "D_A", "label": "D_A", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "D_{Kn}", "label": "D_{Kn}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "D_{eff}", "label": "D_{eff}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "v_A", "label": "v_A", "shape": "dot", "title": "type: derived"}, {"color": "#76D7C4", "font": {"color": "black"}, "id": "M_A", "label": "M_A", "shape": "dot", "title": "type: material"}, {"color": "#76D7C4", "font": {"color": "black"}, "id": "M_B", "label": "M_B", "shape": "dot", "title": "type: material"}, {"color": "#FFB347", "font": {"color": "red"}, "id": "T", "label": "T", "shape": "dot", "title": "type: process"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "z_A", "label": "z_A", "shape": "dot", "title": "type: derived"}, {"color": "#76D7C4", "font": {"color": "black"}, "id": "d_A", "label": "d_A", "shape": "dot", "title": "type: material"}, {"color": "#76D7C4", "font": {"color": "black"}, "id": "d_B", "label": "d_B", "shape": "dot", "title": "type: material"}, {"color": "#FFB347", "font": {"color": "red"}, "id": "p_A", "label": "p_A", "shape": "dot", "title": "type: process"}, {"color": "#FFB347", "font": {"color": "red"}, "id": "p_B", "label": "p_B", "shape": "dot", "title": "type: process"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "\u03c4", "label": "\u03c4", "shape": "dot", "title": "type: derived"}, {"color": "#C2C2F0", "font": {"color": "black"}, "id": "h", "label": "h", "shape": "dot", "title": "type: geometry"}, {"color": "#C2C2F0", "font": {"color": "black"}, "id": "H", "label": "H", "shape": "dot", "title": "type: geometry"}, {"color": "#C2C2F0", "font": {"color": "black"}, "id": "W", "label": "W", "shape": "dot", "title": "type: geometry"}, {"color": "#D5D8DC", "font": {"color": "black"}, "id": "N_0", "label": "N_0", "shape": "dot", "title": "type: constant"}, {"color": "#D5D8DC", "font": {"color": "black"}, "id": "R", "label": "R", "shape": "dot", "title": "type: constant"}, {"color": "#76D7C4", "font": {"color": "black"}, "id": "\u03c1", "label": "\u03c1", "shape": "dot", "title": "type: material"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "g", "label": "g", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "f_{ads}", "label": "f_{ads}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "f_{des}", "label": "f_{des}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "x_s", "label": "x_s", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "p_{A0}", "label": "p_{A0}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "F(x,t)", "label": "F(x,t)", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "\u03b8", "label": "\u03b8", "shape": "dot", "title": "type: derived"}, {"color": "#FFB347", "font": {"color": "red"}, "id": "c", "label": "c", "shape": "dot", "title": "type: process"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "q", "label": "q", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "b_{film}", "label": "b_{film}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "g P C_{sat}", "label": "g P C_{sat}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "b_A", "label": "b_A", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "M", "label": "M", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "P_0", "label": "P_0", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "d_s", "label": "d_s", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "d\u03b8/dt", "label": "d\u03b8/dt", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "\u03b8_{eq}", "label": "\u03b8_{eq}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "K", "label": "K", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "Q", "label": "Q", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "pulse time", "label": "pulse time", "shape": "dot", "title": "type: derived"}, {"color": "#C2C2F0", "font": {"color": "black"}, "id": "L", "label": "L", "shape": "dot", "title": "type: geometry"}, {"color": "#C2C2F0", "font": {"color": "black"}, "id": "AR", "label": "AR", "shape": "dot", "title": "type: geometry"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "g_{film}", "label": "g_{film}", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "\u2202p_A/\u2202t", "label": "\u2202p_A/\u2202t", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "p_A(x)", "label": "p_A(x)", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "f_{ads}(x)", "label": "f_{ads}(x)", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "g(x)", "label": "g(x)", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "\u03b8(x,t)", "label": "\u03b8(x,t)", "shape": "dot", "title": "type: derived"}, {"color": "#B0E57C", "font": {"color": "black"}, "id": "sink term g 4RT/(h N_0)", "label": "sink term g 4RT/(h N_0)", "shape": "dot", "title": "type: derived"}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "#e74c3c", "from": "M_A", "label": "decreases", "to": "v_A", "width": 3}, {"arrows": "to", "color": "#2ecc71", "from": "T", "label": "increases", "to": "v_A", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "v_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "v_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "d_A", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "d_B", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_B", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "p_A", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "p_B", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "\u03c4", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "z_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "v_A", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "z_A", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "d_A", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "d_B", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "p_A", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "p_B", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "\u03c4", "label": "depends_on", "to": "D_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "H", "label": "depends_on", "to": "h", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "W", "label": "depends_on", "to": "h", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "H", "label": "depends_on", "to": "D_{Kn}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "W", "label": "depends_on", "to": "D_{Kn}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "h", "label": "depends_on", "to": "D_{Kn}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "D_{Kn}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "D_{Kn}", "width": 2}, {"arrows": "to", "color": "#e74c3c", "from": "H", "label": "decreases", "to": "D_{Kn}", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "W", "label": "decreases", "to": "D_{Kn}", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "D_A", "label": "depends_on", "to": "D_{eff}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "D_{Kn}", "label": "depends_on", "to": "D_{eff}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "D_{eff}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "D_{eff}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "d_A", "label": "depends_on", "to": "D_{eff}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "H", "label": "depends_on", "to": "D_{eff}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "W", "label": "depends_on", "to": "D_{eff}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "N_0", "label": "depends_on", "to": "d_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "d_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "R", "label": "depends_on", "to": "d_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "d_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "\u03c1", "label": "depends_on", "to": "d_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "N_0", "label": "depends_on", "to": "d_A", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "d_A", "width": 2}, {"arrows": "to", "color": "#2ecc71", "from": "d_A", "label": "positive_influence", "to": "z_A", "width": 3}, {"arrows": "to", "color": "#2ecc71", "from": "d_A", "label": "positive_influence", "to": "D_A", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "D_{eff}", "label": "depends_on", "to": "\u2202p_A/\u2202t", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "g", "label": "depends_on", "to": "\u2202p_A/\u2202t", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "h", "label": "depends_on", "to": "\u2202p_A/\u2202t", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "N_0", "label": "depends_on", "to": "\u2202p_A/\u2202t", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "R", "label": "depends_on", "to": "\u2202p_A/\u2202t", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "\u2202p_A/\u2202t", "width": 2}, {"arrows": "to", "color": "#e74c3c", "from": "g", "label": "negative_influence", "to": "\u2202p_A/\u2202t", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "D_{eff}", "label": "depends_on", "to": "p_A(x)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "x_s", "label": "depends_on", "to": "p_A(x)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "p_{A0}", "label": "depends_on", "to": "p_A(x)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "H", "label": "depends_on", "to": "F(x,t)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "W", "label": "depends_on", "to": "F(x,t)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "D_{eff}", "label": "depends_on", "to": "F(x,t)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "F(x,t)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "x_s", "label": "depends_on", "to": "F(x,t)", "width": 2}, {"arrows": "to", "color": "#2ecc71", "from": "H", "label": "positive_influence", "to": "F(x,t)", "width": 3}, {"arrows": "to", "color": "#2ecc71", "from": "W", "label": "positive_influence", "to": "F(x,t)", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "x_s", "label": "decreases", "to": "F(x,t)", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "p_A", "label": "depends_on", "to": "f_{ads}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "\u03b8", "label": "depends_on", "to": "f_{ads}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "c", "label": "depends_on", "to": "f_{ads}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "N_0", "label": "depends_on", "to": "f_{ads}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "f_{ads}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "R", "label": "depends_on", "to": "f_{ads}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "f_{ads}", "width": 2}, {"arrows": "to", "color": "#2ecc71", "from": "p_A", "label": "increases", "to": "f_{ads}", "width": 3}, {"arrows": "to", "color": "#2ecc71", "from": "c", "label": "increases", "to": "f_{ads}", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "\u03b8", "label": "decreases", "to": "f_{ads}", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "b_{film}", "label": "depends_on", "to": "q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "\u03c1", "label": "depends_on", "to": "q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "g P C_{sat}", "label": "depends_on", "to": "q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "b_A", "label": "depends_on", "to": "q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M", "label": "depends_on", "to": "q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "N_0", "label": "depends_on", "to": "q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "q", "label": "depends_on", "to": "f_{des}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "P_0", "label": "depends_on", "to": "f_{des}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "d_s", "label": "depends_on", "to": "f_{des}", "width": 2}, {"arrows": "to", "color": "#2ecc71", "from": "q", "label": "increases", "to": "f_{des}", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "f_{ads}", "label": "depends_on", "to": "g", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "f_{des}", "label": "depends_on", "to": "g", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "g", "label": "depends_on", "to": "d\u03b8/dt", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "q", "label": "depends_on", "to": "d\u03b8/dt", "width": 2}, {"arrows": "to", "color": "#2ecc71", "from": "g", "label": "increases", "to": "\u03b8", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "q", "label": "negative_influence", "to": "d\u03b8/dt", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "N_0", "label": "depends_on", "to": "Q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "M_A", "label": "depends_on", "to": "Q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "R", "label": "depends_on", "to": "Q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "T", "label": "depends_on", "to": "Q", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "c", "label": "depends_on", "to": "K", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "Q", "label": "depends_on", "to": "K", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "q", "label": "depends_on", "to": "K", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "P_0", "label": "depends_on", "to": "K", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "d_s", "label": "depends_on", "to": "K", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "p_A", "label": "depends_on", "to": "\u03b8_{eq}", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "K", "label": "depends_on", "to": "\u03b8_{eq}", "width": 2}, {"arrows": "to", "color": "#2ecc71", "from": "K", "label": "positive_influence", "to": "\u03b8_{eq}", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "p_A(x)", "label": "depends_on", "to": "f_{ads}(x)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "f_{ads}(x)", "label": "depends_on", "to": "g(x)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "g(x)", "label": "depends_on", "to": "\u03b8(x,t)", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "D_{eff}", "label": "depends_on", "to": "x_s", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "c", "label": "depends_on", "to": "x_s", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "K", "label": "depends_on", "to": "x_s", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "q", "label": "depends_on", "to": "x_s", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "pulse time", "label": "depends_on", "to": "x_s", "width": 2}, {"arrows": "to", "color": "#2ecc71", "from": "D_{eff}", "label": "increases", "to": "x_s", "width": 3}, {"arrows": "to", "color": "#2ecc71", "from": "pulse time", "label": "increases", "to": "x_s", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "c", "label": "negative_influence", "to": "x_s", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "K", "label": "negative_influence", "to": "x_s", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "q", "label": "negative_influence", "to": "x_s", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "H", "label": "negative_influence", "to": "D_{eff}", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "W", "label": "negative_influence", "to": "D_{eff}", "width": 3}, {"arrows": "to", "color": "#e74c3c", "from": "h", "label": "negative_influence", "to": "sink term g 4RT/(h N_0)", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "L", "label": "depends_on", "to": "AR", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "H", "label": "depends_on", "to": "AR", "width": 2}, {"arrows": "to", "color": "#3498db", "from": "W", "label": "depends_on", "to": "AR", "width": 2}, {"arrows": "to", "color": "#e74c3c", "from": "AR", "label": "negative_influence", "to": "x_s", "width": 3}, {"arrows": "to", "color": "#3498db", "from": "g_{film}", "label": "depends_on", "to": "q", "width": 2}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

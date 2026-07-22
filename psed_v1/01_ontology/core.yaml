@@ -1,0 +1,1079 @@
+# =============================================================================
+# ALD Ontology — human-authored source (TBox + seed individuals)
+# =============================================================================
+# This file + dictionary.json are the two hand-editable sources of truth.
+# `build_ontology.py` merges them into the compiled `ald_ontology.yaml`.
+#
+# Design principles
+#   - TBox (classes, relations, quantity kinds) is separate from ABox
+#     (per-experiment values live in the KG, not here).
+#   - Every class/quantity carries slots for external IRIs so the ontology is
+#     FAIR / interoperable: qudt (units+quantitykinds), emmo (materials),
+#     chebi (chemicals).
+#   - QUDT IRIs are populated directly (stable, predictable pattern).
+#   - EMMO/ChEBI IRIs are OPAQUE identifiers; they are NOT invented here.
+#     They are staged as `emmo_todo` / `chebi_todo` with the concept name and
+#     resolved in a dedicated verification pass against the real browsers.
+# =============================================================================
+
+meta:
+  name: ALD Ontology
+  version: 0.2.0
+  scope: "Broad top-level ALD skeleton; deep on HAR-conformality core. v0.2 audited against Cremers 2019 (conformality) + Kessels 2025 (ALD primer)."
+  namespaces:
+    ald:   "https://w3id.org/psed-ald/ontology#"   # our namespace (w3id placeholder, not yet registered)
+    qk:     "http://qudt.org/vocab/quantitykind/"
+    unit:   "http://qudt.org/vocab/unit/"
+    emmo:   "https://w3id.org/emmo#"
+    chebi:  "http://purl.obolibrary.org/obo/"       # CHEBI_nnnnn
+    rdfs:   "http://www.w3.org/2000/01/rdf-schema#"
+
+# =============================================================================
+# CLASSES  — typed entity taxonomy (the nouns). `parent` gives the is-a tree.
+# Broad skeleton across all of ALD; HAR-conformality branches are populated deep.
+# =============================================================================
+classes:
+  # --- root ------------------------------------------------------------------
+  - {id: Entity, parent: null, definition: "Root of the ALD domain taxonomy."}
+
+  # --- provenance / data-model classes --------------------------------------
+  - {id: Paper,        parent: Entity, definition: "A source publication."}
+  - {id: Experiment,   parent: Entity, definition: "One run at a unique combination of controlled conditions. A profile plot (thickness vs depth) is ONE experiment; a condition sweep (GPC vs temperature) is one experiment PER point."}
+  - {id: ExperimentSeries, parent: Entity, definition: "A group of experiments from one figure/table that sweep a single condition (the per-point case)."}
+  - {id: Figure,       parent: Entity, definition: "A figure/panel an experiment was extracted from."}
+  - {id: QuantityKind, parent: Entity, definition: "A kind of measurable quantity (temperature, GPC, ...). Quantities are instances of this."}
+  - {id: QuantityValue, parent: Entity, definition: "A concrete value of a QuantityKind within one experiment (carries the role: independent/controlled/dependent)."}
+
+  # --- Material (deposited film) --------------------------------------------
+  - {id: Material,   parent: Entity, definition: "A deposited film material.", emmo_todo: "material"}
+  - {id: Oxide,      parent: Material, emmo_todo: "oxide"}
+  - {id: Nitride,    parent: Material, emmo_todo: "nitride"}
+  - {id: Metal,      parent: Material, emmo_todo: "metal"}
+  - {id: Fluoride,   parent: Material, emmo_todo: "fluoride"}
+  - {id: Phosphate,  parent: Material}
+  - {id: Carbide,    parent: Material}
+  - {id: Chalcogenide, parent: Material}
+  - {id: Sulfide,    parent: Chalcogenide, emmo_todo: "sulfide"}
+  - {id: Selenide,   parent: Chalcogenide}
+  - {id: Telluride,  parent: Chalcogenide}
+  - {id: Ternary,    parent: Material, definition: "Multi-cation/anion compound film."}
+  - {id: Quaternary, parent: Material, definition: "Four-element compound film."}
+  - {id: DopedFilm,  parent: Material, definition: "Film produced by supercycle doping."}
+  - {id: TwoDMaterial, parent: Material, definition: "2D material grown by ALD (e.g. dichalcogenide)."}
+  - {id: TransitionMetalDichalcogenide, parent: TwoDMaterial, definition: "MoS2, WS2, ..."}
+  - {id: HybridMaterial, parent: Material, definition: "Organic/inorganic hybrid film (molecular layer deposition; alucone, zincone)."}
+
+  # --- Chemical (precursors, co-reactants, plasma) --------------------------
+  - {id: Chemical,      parent: Entity, definition: "A chemical species involved in the ALD process.", chebi_todo: "chemical entity"}
+  - {id: Precursor,     parent: Chemical, definition: "Metal/main-element source, pulse A."}
+  - {id: HomolepticPrecursor,  parent: Precursor, definition: "All ligands identical."}
+  - {id: HeterolepticPrecursor, parent: Precursor, definition: "Mixed ligand types."}
+  - {id: Coreactant,    parent: Chemical, definition: "Counter-reactant, pulse B."}
+  - {id: Oxidant,       parent: Coreactant, definition: "Oxygen source (H2O, O3, O2 plasma, H2O2)."}
+  - {id: Nitridant,     parent: Coreactant, definition: "Nitrogen source (NH3, hydrazine, N2 plasma)."}
+  - {id: ReducingAgent, parent: Coreactant, definition: "Reductant for metal ALD (H2, B2H6, borane)."}
+  - {id: Chalcogenidant, parent: Coreactant, definition: "S/Se/Te source (H2S, H2Se, alkylsilyl telluride)."}
+  - {id: LigandFamily,  parent: Chemical, definition: "Ligand class of a precursor."}
+  - {id: PlasmaSpecies, parent: Chemical, definition: "Plasma-generated reactive species."}
+  - {id: Radical,       parent: PlasmaSpecies, definition: "Reactive radical (O, N, H)."}
+  - {id: PurgeGas,      parent: Chemical, definition: "Inert purge/carrier gas."}
+  - {id: CoreactantReaction, parent: Entity, definition: "Reaction pathway a coreactant induces."}
+  - {id: LigandExchange, parent: CoreactantReaction, definition: "Acid-base ligand exchange (e.g. water)."}
+  - {id: CombustionReaction, parent: CoreactantReaction, definition: "Combustion (O3, O2 plasma)."}
+  - {id: RedoxReaction,  parent: CoreactantReaction, definition: "Reduction-oxidation (metal ALD)."}
+
+  # --- Substrate / surface ---------------------------------------------------
+  - {id: Substrate, parent: Entity, definition: "Growth surface / substrate material and termination."}
+  - {id: SurfaceTermination, parent: Entity, definition: "Chemical termination of the growth surface (-OH, -H, ...)."}
+
+  # --- Reactor ---------------------------------------------------------------
+  - {id: Reactor,             parent: Entity, definition: "ALD reactor configuration."}
+  - {id: CrossFlowReactor,    parent: Reactor}
+  - {id: ShowerheadReactor,   parent: Reactor}
+  - {id: BatchReactor,        parent: Reactor}
+  - {id: SpatialReactor,      parent: Reactor, definition: "Reaction zones separated in space, not time."}
+  - {id: SheetToSheetReactor, parent: SpatialReactor, definition: "Spatial ALD, rigid substrates (S2S)."}
+  - {id: RollToRollReactor,   parent: SpatialReactor, definition: "Spatial ALD, flexible substrates (R2R)."}
+  - {id: RotatingSemiBatchReactor, parent: SpatialReactor}
+  - {id: DirectPlasmaReactor, parent: Reactor}
+  - {id: RemotePlasmaReactor, parent: Reactor}
+  - {id: ParticleReactor,     parent: Reactor, definition: "ALD on powders/particles."}
+  - {id: FluidizedBedReactor, parent: ParticleReactor}
+  - {id: RotatingDrumReactor, parent: ParticleReactor}
+  # pressure-based classification (Cremers): cross-cuts temporal/spatial
+  - {id: PumpTypeReactor,     parent: Reactor, definition: "High-vacuum, molecular flow (10^-3-10^0 Pa)."}
+  - {id: FlowTypeReactor,     parent: Reactor, definition: "Carrier-gas viscous flow (~100 Pa)."}
+  - {id: AtmosphericPressureReactor, parent: Reactor, definition: "AP-type (~10^5 Pa)."}
+  # plasma sources
+  - {id: PlasmaSource,        parent: Entity, definition: "Plasma generation configuration for PE-ALD."}
+  - {id: InductivelyCoupledPlasma,   parent: PlasmaSource}
+  - {id: CapacitivelyCoupledPlasma,  parent: PlasmaSource}
+  - {id: MicrowavePlasma,     parent: PlasmaSource}
+  - {id: HollowCathodePlasma, parent: PlasmaSource}
+  - {id: RadicalEnhanced,     parent: PlasmaSource}
+  # gas transport regime (Cremers §II.B) — the foundation of conformality analysis
+  - {id: FlowRegime,          parent: Entity, definition: "Gas transport regime set by Knudsen number."}
+  - {id: MolecularFlow,       parent: FlowRegime, definition: "Kn >> 1; particle-surface interactions dominate."}
+  - {id: ViscousFlow,         parent: FlowRegime, definition: "Kn << 1; continuum, particle-particle collisions."}
+  - {id: TransitionFlow,      parent: FlowRegime, definition: "Kn ~ 1; Knudsen/transition regime."}
+
+  # --- Structure / geometry (DEEP: HAR conformality core) -------------------
+  - {id: Structure,     parent: Entity, definition: "Feature geometry where deposition/conformality is studied."}
+  - {id: PlanarStructure, parent: Structure}
+  - {id: HighAspectRatioStructure, parent: Structure, definition: "Any HAR feature (AR >> 1)."}
+  - {id: Trench,        parent: HighAspectRatioStructure}
+  - {id: Via,           parent: HighAspectRatioStructure}
+  - {id: Hole,          parent: HighAspectRatioStructure}
+  - {id: LHARChannel,   parent: HighAspectRatioStructure, definition: "Lateral high-aspect-ratio channel (e.g. PillarHall test chip)."}
+  - {id: Pore,          parent: HighAspectRatioStructure}
+  - {id: PorousMedium,  parent: HighAspectRatioStructure}
+  - {id: Monolith,      parent: PorousMedium}
+  - {id: Particle,      parent: Structure}
+  # Cremers §III test-structure taxonomy: vertical / lateral / porous
+  - {id: VerticalStructure,  parent: Structure, definition: "Vertical HAR test structure."}
+  - {id: LateralStructure,   parent: Structure, definition: "Lateral HAR test structure (easy profiling)."}
+  - {id: AAO,           parent: PorousMedium, definition: "Anodized aluminium oxide, parallel cylindrical pores."}
+  - {id: CapillaryTube, parent: LateralStructure}
+  - {id: MacroscopicLateralTrench, parent: LateralStructure}
+  - {id: AirWedge,      parent: LateralStructure}
+  - {id: Cavity,        parent: LateralStructure, definition: "Centrosymmetric microscopic cavity."}
+  - {id: Opal,          parent: PorousMedium, definition: "Close-packed sphere array."}
+  - {id: InverseOpal,   parent: PorousMedium}
+  - {id: CarbonNanotube, parent: VerticalStructure, definition: "CNT / CNT forest."}
+  - {id: Nanowire,      parent: VerticalStructure}
+  - {id: Nanorod,       parent: VerticalStructure}
+  - {id: Pillar,        parent: VerticalStructure, definition: "Pillar / pillar array."}
+  - {id: MesoporousThinFilm, parent: PorousMedium}
+  - {id: MesoporousPowder,   parent: Particle}
+  - {id: TrackEtchMembrane,  parent: PorousMedium}
+  - {id: MetalOrganicFramework, parent: PorousMedium, definition: "MOF."}
+  - {id: Nanoparticle,  parent: Particle}
+  - {id: Fiber,         parent: Structure, definition: "Fibrous / non-woven substrate."}
+  # device structures (Kessels Applications)
+  - {id: DeviceStructure, parent: Structure, definition: "Application device geometry ALD coats."}
+  - {id: TrenchCapacitor, parent: DeviceStructure, definition: "DRAM capacitor."}
+  - {id: FinFET,        parent: DeviceStructure}
+  - {id: GateAllAroundFET, parent: DeviceStructure}
+  - {id: NANDStructure, parent: DeviceStructure, definition: "3D NAND stack."}
+  # growth mode / regime (Puurunen; distinct from the reaction/transport-limited growth TYPES)
+  - {id: GrowthRegime,  parent: Entity, definition: "Evolution of GPC with cycle count."}
+  - {id: NucleationRegime, parent: GrowthRegime, definition: "Initial, substrate-dependent growth."}
+  - {id: TransitionRegime, parent: GrowthRegime}
+  - {id: LinearRegime,  parent: GrowthRegime, definition: "Steady, constant-GPC growth."}
+  - {id: GrowthMode,    parent: Entity}
+  - {id: LayerByLayerGrowth, parent: GrowthMode}
+  - {id: IslandGrowth,  parent: GrowthMode, definition: "Nanoparticle/island formation (poor nucleation)."}
+  - {id: SubstrateEnhancedGrowth, parent: GrowthMode}
+  - {id: SubstrateInhibitedGrowth, parent: GrowthMode, definition: "Nucleation delay."}
+
+  # --- Process type / cycle design ------------------------------------------
+  - {id: ProcessType, parent: Entity, definition: "ALD chemistry route."}
+  - {id: ThermalALD,  parent: ProcessType}
+  - {id: OzoneALD,    parent: ThermalALD, definition: "Ozone-based thermal ALD."}
+  - {id: PlasmaALD,   parent: ProcessType, definition: "Plasma-enhanced/assisted ALD (PEALD)."}
+  - {id: SpatialALD,  parent: ProcessType}
+  - {id: MolecularLayerDeposition, parent: ProcessType, definition: "MLD: organic/hybrid analogue of ALD."}
+  # related atomic-scale processes (Kessels Outlook)
+  - {id: AtomicScaleProcess, parent: Entity, definition: "Self-limited process family beyond film ALD."}
+  - {id: AreaSelectiveDeposition, parent: AtomicScaleProcess, definition: "ASD: bottom-up selective growth."}
+  - {id: AtomicLayerEtching, parent: AtomicScaleProcess, definition: "ALE."}
+  - {id: VaporPhaseInfiltration, parent: AtomicScaleProcess}
+  - {id: CycleDesign, parent: Entity, definition: "Pulse sequence structure."}
+  - {id: ABCycle,     parent: CycleDesign}
+  - {id: ABCCycle,    parent: CycleDesign}
+  - {id: ABCDCycle,   parent: CycleDesign}
+  - {id: Supercycle,  parent: CycleDesign, definition: "Composite (AB)m(CD)n cycle for doping/ternaries."}
+
+  # --- Measurement method ----------------------------------------------------
+  - {id: MeasurementMethod,     parent: Entity}
+  - {id: InSituMethod,          parent: MeasurementMethod, definition: "Real-time, during deposition."}
+  - {id: ExSituMethod,          parent: MeasurementMethod, definition: "After deposition."}
+  - {id: Ellipsometry,          parent: MeasurementMethod, definition: "Spectroscopic ellipsometry (SE)."}
+  - {id: QCM,                   parent: MeasurementMethod, definition: "Quartz crystal microbalance."}
+  - {id: XPS,                   parent: MeasurementMethod}
+  - {id: XRR,                   parent: MeasurementMethod}
+  - {id: XRD,                   parent: MeasurementMethod, definition: "X-ray diffraction."}
+  - {id: XRF,                   parent: MeasurementMethod, definition: "X-ray fluorescence."}
+  - {id: SEM,                   parent: MeasurementMethod}
+  - {id: TEM,                   parent: MeasurementMethod}
+  - {id: RBS,                   parent: MeasurementMethod}
+  - {id: EDX,                   parent: MeasurementMethod, definition: "Energy-dispersive X-ray (EDX/EDAX)."}
+  - {id: EPMA,                  parent: MeasurementMethod, definition: "Electron probe microanalysis."}
+  - {id: SIMS,                  parent: MeasurementMethod, definition: "Secondary ion mass spectrometry."}
+  - {id: AES,                   parent: MeasurementMethod, definition: "Auger electron spectroscopy."}
+  - {id: FTIR,                  parent: MeasurementMethod, definition: "Fourier-transform IR spectroscopy."}
+  - {id: OpticalMicroscopy,     parent: MeasurementMethod}
+  - {id: Reflectometry,         parent: MeasurementMethod}
+  - {id: GISAXS,                parent: MeasurementMethod, definition: "Grazing-incidence small-angle X-ray scattering."}
+  - {id: EllipsometricPorosimetry, parent: MeasurementMethod}
+  - {id: SANS,                  parent: MeasurementMethod, definition: "Small-angle neutron scattering."}
+  - {id: MassSpectrometry,      parent: MeasurementMethod, definition: "Quadrupole mass spectrometry (QMS)."}
+  - {id: OpticalEmissionSpectroscopy, parent: MeasurementMethod, definition: "OES (plasma)."}
+  - {id: SumFrequencyGeneration, parent: MeasurementMethod, definition: "SFG."}
+  - {id: Calorimetry,           parent: MeasurementMethod}
+  - {id: ResistivityMeasurement, parent: MeasurementMethod}
+
+  # --- Process regime (DEEP: the physics that governs model choice) ---------
+  - {id: ProcessRegime,       parent: Entity, definition: "Dominant physical regime; routes an experiment to a model family."}
+  - {id: SelfLimited,         parent: ProcessRegime}
+  - {id: ReactionLimited,     parent: ProcessRegime}
+  - {id: TransportLimited,    parent: ProcessRegime}
+  - {id: DiffusionLimited,    parent: TransportLimited}
+  - {id: RecombinationLimited, parent: ProcessRegime, definition: "PEALD radical loss by surface recombination limits penetration."}
+  - {id: NucleationLimited,   parent: ProcessRegime}
+  - {id: CVDLike,             parent: ProcessRegime, definition: "Loss of self-limitation (precursor decomposition / overlap)."}
+
+  # --- Model (SKELETON ONLY — deep model-aware layer is v2) -----------------
+  - {id: Model,          parent: Entity, definition: "A predictive/mechanistic model. Deep model-aware layer (equations, assumptions, priors, validity) is deferred to v2; taxonomy seeded here."}
+  - {id: AnalyticalModel, parent: Model, definition: "Closed-form / conductance-formula model (Gordon, Ylilammi)."}
+  - {id: BallisticModel, parent: Model, definition: "Particle-balance flux model, molecular flow."}
+  - {id: ContinuumModel, parent: Model, definition: "Diffusion-equation model (Fick), molecular or viscous."}
+  - {id: MonteCarloModel, parent: Model, definition: "Stochastic particle-tracking model."}
+  - {id: MarkovChainModel, parent: Model}
+  - {id: AtomisticModel, parent: Model, definition: "DFT / first-principles / MD."}
+  - {id: MultiscaleModel, parent: Model, definition: "Couples reactor/feature/molecular scales."}
+  - {id: SurrogateModel, parent: Model, definition: "Data-driven fast predictor (GP, NN)."}
+  - {id: HybridModel,    parent: Model, definition: "Physics + data-driven correction."}
+  - {id: ModelScale,     parent: Entity}
+  - {id: ReactorScale,   parent: ModelScale}
+  - {id: FeatureScale,   parent: ModelScale}
+  - {id: MolecularScale, parent: ModelScale}
+  - {id: ModelAssumption, parent: Entity, definition: "A key modelling assumption (v2 attaches validity)."}
+  - {id: ReEmissionMechanism, parent: Entity, definition: "How a non-adsorbed particle re-emits."}
+  - {id: CosineReEmission,   parent: ReEmissionMechanism}
+  - {id: SpecularReEmission, parent: ReEmissionMechanism}
+  - {id: DiffuseElasticReEmission, parent: ReEmissionMechanism}
+  - {id: ReactionMechanism, parent: Entity, definition: "Surface reaction kinetics model."}
+  - {id: IrreversibleLangmuir, parent: ReactionMechanism}
+  - {id: ReversibleLangmuir, parent: ReactionMechanism}
+  - {id: EleyRideal,     parent: ReactionMechanism}
+
+  # --- Application domains (Kessels Applications) ---------------------------
+  - {id: Application,    parent: Entity, definition: "Application domain / target use of an ALD film."}
+  - {id: Microelectronics, parent: Application}
+  - {id: DRAM,           parent: Microelectronics}
+  - {id: LogicCMOS,      parent: Microelectronics}
+  - {id: NANDFlash,      parent: Microelectronics}
+  - {id: AdvancedPatterning, parent: Microelectronics, definition: "Self-aligned multiple patterning."}
+  - {id: SolarCell,      parent: Application}
+  - {id: Display,        parent: Application, definition: "OLED encapsulation, TFT."}
+  - {id: Battery,        parent: Application}
+  - {id: Catalysis,      parent: Application}
+  - {id: MEMS,           parent: Application}
+  - {id: Optics,         parent: Application}
+  - {id: Sensor,         parent: Application}
+  - {id: BarrierCoating, parent: Application}
+  - {id: DecorativeCoating, parent: Application}
+
+# =============================================================================
+# RELATIONS  — typed object properties (domain -> range). The KG uses these
+# instead of today's generic has_indep/has_ctrl/similar_to edges.
+# =============================================================================
+relations:
+  # experiment -> entity (ABox edges)
+  - {id: from_paper,      domain: Experiment, range: Paper, functional: true, inverse: has_experiment}
+  - {id: shown_in,        domain: Experiment, range: Figure, inverse: shows}
+  - {id: deposits,        domain: Experiment, range: Material, inverse: deposited_by}
+  - {id: uses_precursor,  domain: Experiment, range: Precursor, inverse: precursor_used_in}
+  - {id: with_coreactant, domain: Experiment, range: Coreactant, inverse: coreactant_used_in}
+  - {id: in_reactor,      domain: Experiment, range: Reactor, inverse: hosts}
+  - {id: on_substrate,    domain: Experiment, range: Substrate, inverse: substrate_of}
+  - {id: has_geometry,    domain: Experiment, range: Structure, inverse: geometry_of}
+  - {id: has_process_type, domain: Experiment, range: ProcessType, inverse: process_of}
+  - {id: has_cycle_design, domain: Experiment, range: CycleDesign, inverse: cycle_of}
+  - {id: exhibits_regime, domain: Experiment, range: ProcessRegime, inverse: regime_of}
+  - {id: measured_by,     domain: Experiment, range: MeasurementMethod, inverse: measures}
+  # experiment -> quantity value -> quantity kind (fixes the overloaded 'variable')
+  - {id: reports,         domain: Experiment,    range: QuantityValue, inverse: reported_in}
+  - {id: of_kind,         domain: QuantityValue, range: QuantityKind, functional: true, inverse: instantiated_by}
+  # quantity-kind relations (TBox)
+  - {id: derived_from,    domain: QuantityKind, range: QuantityKind, acyclic: true, definition: "e.g. aspect_ratio derived_from feature_height, feature_width."}
+  - {id: couples,         domain: QuantityKind, range: QuantityKind, symmetric: true, definition: "e.g. damkohler_number couples reaction and transport quantities."}
+  # regime <-> model (skeleton; populated in v2)
+  - {id: applies_to,      domain: Model, range: ProcessRegime, inverse: modeled_by, definition: "a model applies to / simulates a process regime (was governed_by, direction fixed)."}
+  - {id: has_parameter,   domain: Model, range: QuantityKind}
+  # chemistry structure (v0.2)
+  - {id: has_ligand,      domain: Precursor, range: LigandFamily}
+  - {id: forms_material,  domain: Chemical, range: Material, definition: "precursor+coreactant -> deposited material."}
+  - {id: has_reaction_pathway, domain: Coreactant, range: CoreactantReaction}
+  # experiment context (v0.2)
+  - {id: exhibits_flow_regime, domain: Experiment, range: FlowRegime}
+  - {id: exhibits_growth_mode, domain: Experiment, range: GrowthMode}
+  - {id: for_application, domain: Experiment, range: Application}
+  - {id: uses_plasma_source, domain: Experiment, range: PlasmaSource}
+  # experiment granularity / sweeps (v0.3)
+  - {id: varies,        domain: Experiment, range: QuantityKind, inverse: varied_by, definition: "the independent axis this experiment sweeps (a coordinate, for a profile-type experiment)."}
+  - {id: in_series,     domain: Experiment, range: ExperimentSeries, inverse: has_member}
+  - {id: series_varies, domain: ExperimentSeries, range: QuantityKind, definition: "the CONDITION a per-point experiment series sweeps (temperature, pulse_time, ...)."}
+  # competency-gap closers + orphan wiring (Phase A)
+  - {id: imposes_flow_regime, domain: Structure, range: FlowRegime, definition: "structure size + pressure set the transport regime."}
+  - {id: measured_by_method,  domain: QuantityKind, range: MeasurementMethod, definition: "which method(s) measure this quantity."}
+  - {id: used_in,             domain: Material, range: Application, inverse: uses_material}
+  - {id: exhibits_growth_regime, domain: Experiment, range: GrowthRegime}
+  - {id: has_surface_termination, domain: Substrate, range: SurfaceTermination}
+  - {id: uses_atomic_process, domain: Experiment, range: AtomicScaleProcess}
+  # model structure (v0.2, seeds v2)
+  - {id: uses_reaction_mechanism, domain: Model, range: ReactionMechanism}
+  - {id: uses_reemission,  domain: Model, range: ReEmissionMechanism}
+  - {id: operates_at_scale, domain: Model, range: ModelScale}
+  - {id: makes_assumption, domain: Model, range: ModelAssumption}
+  # thesaurus links (SKOS-style) for concept navigation
+  - {id: broader,         domain: Entity, range: Entity, transitive: true, acyclic: true, definition: "SKOS broader concept."}
+  - {id: related,         domain: Entity, range: Entity, symmetric: true, definition: "SKOS related concept."}
+
+# =============================================================================
+# QUANTITY ENRICHMENT  — keyed by canonical_name in dictionary.json.
+# The build script folds every dictionary entry into a QuantityKind; this map
+# adds SI unit + QUDT IRIs + parent quantity-kind where physically clean.
+# Quantities not listed here still appear, tagged only by their dictionary domain.
+# =============================================================================
+quantity_enrichment:
+  # --- lengths (nm-scale) ---
+  feature_height:        {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  feature_width:         {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  feature_depth:         {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  feature_length:        {qudt_qk: "qk:Length", unit: "unit:MicroM"}
+  pore_radius:           {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  hydraulic_diameter:    {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  characteristic_length: {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  diffusion_length:      {qudt_qk: "qk:Length", unit: "unit:MicroM"}
+  mean_free_path:        {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  spatial_coordinate:    {qudt_qk: "qk:Length", unit: "unit:MicroM"}
+  penetration_depth:     {qudt_qk: "qk:Length", unit: "unit:MicroM"}
+  film_thickness:        {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  precursor_molecular_diameter: {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  # --- areas / volumes ---
+  surface_area:          {qudt_qk: "qk:Area",   unit: "unit:M2"}
+  active_surface_area:   {qudt_qk: "qk:Area",   unit: "unit:M2"}
+  cross_section_area:    {qudt_qk: "qk:Area",   unit: "unit:M2"}
+  feature_volume:        {qudt_qk: "qk:Volume", unit: "unit:M3"}
+  # --- temperature / time / pressure ---
+  temperature:           {qudt_qk: "qk:Temperature", unit: "unit:DEG_C"}
+  time:                  {qudt_qk: "qk:Time", unit: "unit:SEC"}
+  process_time:          {qudt_qk: "qk:Time", unit: "unit:SEC"}
+  pulse_time:            {qudt_qk: "qk:Time", unit: "unit:SEC"}
+  purge_time:            {qudt_qk: "qk:Time", unit: "unit:SEC"}
+  total_pressure:        {qudt_qk: "qk:Pressure", unit: "unit:PA"}
+  partial_pressure:      {qudt_qk: "qk:Pressure", unit: "unit:PA"}
+  reactant_A_partial_pressure: {qudt_qk: "qk:Pressure", unit: "unit:PA"}
+  reactant_B_partial_pressure: {qudt_qk: "qk:Pressure", unit: "unit:PA"}
+  # --- transport ---
+  gas_velocity:          {qudt_qk: "qk:Velocity", unit: "unit:M-PER-SEC"}
+  molecular_diffusion_coefficient: {qudt_qk: "qk:DiffusionCoefficient", unit: "unit:M2-PER-SEC"}
+  knudsen_diffusion_coefficient:   {qudt_qk: "qk:DiffusionCoefficient", unit: "unit:M2-PER-SEC"}
+  effective_diffusion_coefficient: {qudt_qk: "qk:DiffusionCoefficient", unit: "unit:M2-PER-SEC"}
+  molecular_mass:        {qudt_qk: "qk:MolarMass", unit: "unit:GM-PER-MOL"}
+  # --- deposition outputs ---
+  growth_per_cycle:      {qudt_qk: null, unit: "nm/cycle", note: "no clean QUDT kind; length per cycle"}
+  thickness_per_cycle:   {qudt_qk: null, unit: "nm/cycle"}
+  growth_rate:           {qudt_qk: null, unit: "nm/s"}
+  normalized_thickness:  {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  # --- counts ---
+  cycle_number:          {qudt_qk: "qk:Dimensionless", unit: "unit:NUM", note: "integer count of cycles"}
+  # --- dimensionless groups & probabilities ---
+  aspect_ratio:            {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS", derived_from: [feature_height, feature_width]}
+  equivalent_aspect_ratio: {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  dimensionless_distance:  {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  channel_filling_fraction: {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  surface_coverage:        {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  maximum_surface_coverage: {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  sticking_probability:    {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  reaction_probability:    {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  damkohler_number:        {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS", couples: [surface_reaction_rate, effective_diffusion_coefficient]}
+  thiele_modulus:          {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  knudsen_number:          {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS", derived_from: [mean_free_path, characteristic_length]}
+  # --- v0.2 additions -------------------------------------------------------
+  # conformality outputs & probabilities (dimensionless)
+  recombination_probability:    {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  initial_sticking_coefficient: {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  cvd_reaction_probability:     {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  transition_probability:       {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  step_coverage:                {qudt_qk: "qk:Dimensionless", unit: "unit:PERCENT"}
+  conformality:                 {qudt_qk: "qk:Dimensionless", unit: "unit:PERCENT"}
+  uniformity:                   {qudt_qk: "qk:Dimensionless", unit: "unit:PERCENT"}
+  crystallinity:                {qudt_qk: "qk:Dimensionless", unit: "unit:PERCENT"}
+  coated_aspect_ratio:          {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  tortuosity:                   {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  porosity:                     {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
+  refractive_index:             {qudt_qk: "qk:RefractiveIndex", unit: "unit:UNITLESS"}
+  dielectric_constant:          {qudt_qk: "qk:RelativePermittivity", unit: "unit:UNITLESS"}
+  composition:                  {qudt_qk: "qk:Dimensionless", unit: "unit:PERCENT", note: "at.%"}
+  dopant_content:               {qudt_qk: "qk:Dimensionless", unit: "unit:PERCENT"}
+  impurity_content:             {qudt_qk: "qk:Dimensionless", unit: "unit:PERCENT"}
+  nucleation_delay:             {qudt_qk: "qk:Dimensionless", unit: "unit:NUM", note: "count of cycles"}
+  # lengths
+  penetration_depth_50:  {qudt_qk: "qk:Length", unit: "unit:MicroM"}
+  penetration_depth_80:  {qudt_qk: "qk:Length", unit: "unit:MicroM"}
+  pore_diameter:         {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  grain_size:            {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  surface_roughness:     {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  equivalent_oxide_thickness: {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  scattering_length:     {qudt_qk: "qk:Length", unit: "unit:NanoM"}
+  # areas / densities
+  collision_cross_section: {qudt_qk: "qk:Area", unit: "unit:M2"}
+  adsorption_site_area:  {qudt_qk: "qk:Area", unit: "unit:M2"}
+  specific_surface_area: {qudt_qk: null, unit: "1/m", note: "area per unit volume"}
+  saturated_coverage:    {qudt_qk: null, unit: "1/m2", note: "molecules per unit area"}
+  areal_density:         {qudt_qk: null, unit: "1/m2", note: "atoms per unit area"}
+  precursor_density:     {qudt_qk: "qk:NumberDensity", unit: "unit:PER-M3"}
+  reactant_flux_to_wall: {qudt_qk: null, unit: "1/(m2 s)"}
+  film_density:          {qudt_qk: "qk:MassDensity", unit: "unit:KiloGM-PER-M3"}
+  # temperature / time
+  decomposition_temperature: {qudt_qk: "qk:Temperature", unit: "unit:DEG_C"}
+  melting_point:         {qudt_qk: "qk:Temperature", unit: "unit:DEG_C"}
+  temperature_window:    {qudt_qk: "qk:Temperature", unit: "unit:DEG_C", note: "min-max ALD window"}
+  residence_time:        {qudt_qk: "qk:Time", unit: "unit:SEC"}
+  mixing_time:           {qudt_qk: "qk:Time", unit: "unit:SEC"}
+  plasma_exposure_time:  {qudt_qk: "qk:Time", unit: "unit:SEC"}
+  # pressure / power / energy
+  vapour_pressure:       {qudt_qk: "qk:Pressure", unit: "unit:PA"}
+  film_stress:           {qudt_qk: "qk:Stress", unit: "unit:PA"}
+  plasma_power:          {qudt_qk: "qk:Power", unit: "unit:W"}
+  work_function:         {qudt_qk: "qk:Energy", unit: "unit:EV"}
+  band_gap:              {qudt_qk: "qk:Energy", unit: "unit:EV"}
+  resistivity:           {qudt_qk: "qk:Resistivity", unit: "unit:OHM-M"}
+  # rates / exposures without a clean QUDT kind
+  deposition_rate:       {qudt_qk: null, unit: "nm/min"}
+  exposure:              {qudt_qk: null, unit: "L", note: "Langmuir = 1e-6 Torr*s = 7500 Pa*s"}
+
+# =============================================================================
+# QUANTITY RELATIONS  — the quantity<->quantity web (thickens the sparse part
+# of the map). Four relation kinds, per the temperature/time/GPC analysis:
+#   specializes : same dimension, different context (a quantity taxonomy)
+#   defined_by  : computed from other quantities via an equation (+ validity)
+#   qualifiers  : context that lives on the QuantityValue, not a new quantity
+#   same_as     : unit-variant / synonymous quantity (reconciles duplicates)
+# All referenced quantities must exist in dictionary.json (checked by evaluate).
+# =============================================================================
+quantity_relations:
+
+  # --- specialization taxonomy: <child>: <parent> ---------------------------
+  specializes:
+    deposition_temperature:       temperature
+    decomposition_temperature:    temperature
+    melting_point:                temperature
+    temperature_window:           temperature
+    pulse_time:                   time
+    purge_time:                   time
+    cycle_time:                   time
+    process_time:                 time
+    plasma_exposure_time:         time
+    residence_time:               time
+    mixing_time:                  time
+    reactant_A_partial_pressure:  partial_pressure
+    reactant_B_partial_pressure:  partial_pressure
+    reactant_A_exposure:          exposure
+    reactant_B_exposure:          exposure
+    penetration_depth_50:         penetration_depth
+    penetration_depth_80:         penetration_depth
+    initial_sticking_coefficient: sticking_probability
+    knudsen_diffusion_coefficient: effective_diffusion_coefficient
+    molecular_diffusion_coefficient: effective_diffusion_coefficient
+    equivalent_aspect_ratio:      aspect_ratio
+    coated_aspect_ratio:          aspect_ratio
+
+  # --- defining equations: quantity = f(inputs), with validity --------------
+  defined_by:
+    - {quantity: cycle_time,     equation: "t_cycle = t_pulse_A + t_purge_A + t_pulse_B + t_purge_B",
+       inputs: [pulse_time, purge_time], kind: aggregate}
+    - {quantity: process_time,   equation: "t_total = t_cycle * N",
+       inputs: [cycle_time, cycle_number]}
+    - {quantity: film_thickness, equation: "d = GPC * (N - N0)",
+       inputs: [growth_per_cycle, cycle_number, nucleation_delay],
+       validity: "linear (steady) growth regime; ignores incubation curvature"}
+    - {quantity: growth_per_cycle, equation: "GPC = d / N",
+       inputs: [film_thickness, cycle_number], validity: "linear regime"}
+    - {quantity: growth_rate,    equation: "r = GPC / t_cycle",
+       inputs: [growth_per_cycle, cycle_time], validity: "thickness per unit time; depends on cycle timing"}
+    - {quantity: exposure,       equation: "E = P_partial * t_pulse",
+       inputs: [partial_pressure, pulse_time], validity: "Langmuir dose driving saturation"}
+    - {quantity: knudsen_number, equation: "Kn = lambda / d_p",
+       inputs: [mean_free_path, pore_diameter]}
+    - {quantity: mean_free_path, equation: "lambda = k_B*T / (sqrt2 * pi * d^2 * P)",
+       inputs: [temperature, precursor_molecular_diameter, total_pressure], validity: "single-species ideal gas"}
+    - {quantity: aspect_ratio,   equation: "AR = L / w  (depth over width; LHAR uses length/height)",
+       inputs: [feature_depth, feature_width]}
+    - {quantity: step_coverage,  equation: "SC = d_bottom / d_top",
+       inputs: [film_thickness], qualified_inputs: [{quantity: film_thickness, of_position: [bottom, top]}]}
+    - {quantity: normalized_thickness, equation: "d_norm(x) = d(x) / d(top)",
+       inputs: [film_thickness], qualified_inputs: [{quantity: film_thickness, of_position: [x, top]}]}
+    - {quantity: coated_aspect_ratio, equation: "coated_EAR = f(PD50, geometry)",
+       inputs: [penetration_depth_50], validity: "from half-thickness penetration depth + structure geometry"}
+    - {quantity: damkohler_number, equation: "Da = surface_reaction_rate / diffusion_rate",
+       inputs: [surface_reaction_rate, effective_diffusion_coefficient], kind: couple}
+
+  # --- qualifiers (context on the QuantityValue, NOT a new quantity) ---------
+  qualifiers:
+    # reactant labels are generic letters (A, B, C, D…) so ternary / supercycle
+    # chemistries — ABC, ABAC, nanolaminates — are representable, not just binary A+B.
+    # A cycle_sequence (e.g. "AB", "ABAC") + a reactants[] list (label→role→species)
+    # live on the Experiment (ABox); pulse/purge/pressure/exposure/mass/diameter are
+    # per-reactant process/species variables carrying an of_reactant label.
+    - {quantity: pulse_time,        by: reactant, values: [A, B, C, D]}
+    - {quantity: purge_time,        by: reactant, values: [A, B, C, D]}
+    - {quantity: partial_pressure,  by: reactant, values: [A, B, C, D]}
+    - {quantity: exposure,          by: reactant, values: [A, B, C, D]}
+    - {quantity: molecular_mass,    by: reactant, values: [A, B, C, D]}
+    - {quantity: precursor_molecular_diameter, by: reactant, values: [A, B, C, D]}
+    - {quantity: film_thickness,    by: position, values: [top, bottom, sidewall, depth_x]}
+    - {quantity: normalized_thickness, by: position, values: [top, depth_x]}
+    - {quantity: surface_coverage,  by: position, values: [top, depth_x]}
+
+  # --- unit-variant / synonymous quantities (reconcile duplicates) ----------
+  same_as:
+    deposition_rate:     growth_rate            # nm/min vs nm/s: same quantity
+    thickness_per_cycle: growth_per_cycle       # GPC expressed in length units
+  related:
+    pore_radius:         pore_diameter          # factor-of-2, not identical
+
+  # --- measurand FAMILIES: quantities that quantify the SAME physical concept
+  # (comparable after a transform). `canonical` = the common basis to align on.
+  # Two experiments are comparability-candidates when their measurands share a
+  # family and their coordinates share a family. See COMPARABILITY_STRATEGY.md.
+  families:
+    film_amount:                                # "how much film grew"
+      canonical: normalized_thickness
+      members: [film_thickness, normalized_thickness, growth_per_cycle,
+                thickness_per_cycle, areal_density]
+    coverage:                                   # "fraction of surface/sites covered"
+      canonical: surface_coverage
+      members: [surface_coverage, maximum_surface_coverage, saturated_coverage,
+                step_coverage, conformality]
+    position:                                   # "location along / into the feature"
+      canonical: dimensionless_distance
+      members: [spatial_coordinate, dimensionless_distance, aspect_ratio,
+                coated_aspect_ratio, penetration_depth, penetration_depth_50,
+                penetration_depth_80]
+    dose:                                       # "precursor dose driving saturation"
+      canonical: exposure
+      members: [exposure, plasma_exposure_time]
+    rate:                                       # "growth speed"
+      canonical: growth_rate
+      members: [growth_rate, deposition_rate]
+    reaction_efficiency:                        # "per-collision reaction/loss chance"
+      canonical: reaction_probability
+      members: [reaction_probability, recombination_probability, sticking_probability,
+                initial_sticking_coefficient]
+    process_temperature:
+      canonical: deposition_temperature
+      members: [temperature, deposition_temperature]
+    pressure:
+      canonical: partial_pressure
+      members: [partial_pressure, total_pressure, reactant_A_partial_pressure,
+                reactant_B_partial_pressure]
+    exposure_time:                              # "duration of a reactant exposure"
+      canonical: pulse_time                     # (enables penetration-vs-pulse_time comparison)
+      members: [pulse_time, plasma_exposure_time]
+
+  # --- TRANSFORMS between family members: target = source (op) bridge.
+  # `bridge` names the quantity the app must find in a record to align the two;
+  # if present in both experiments -> Tier-2 (aligned), else Tier-3 (latent).
+  transforms:
+    - {from: film_thickness,     to: normalized_thickness, family: film_amount,
+       op: divide,   bridge: reference_thickness,
+       validity: "ref = thickness at feature mouth (top) or saturated value; MUST be named"}
+    - {from: film_thickness,     to: growth_per_cycle,     family: film_amount,
+       op: divide,   bridge: cycle_number, validity: "linear (steady) growth regime"}
+    - {from: film_thickness,     to: areal_density,        family: film_amount,
+       op: multiply, bridge: film_density, validity: "areal mass = thickness x density (value<->value/area bridge)"}
+    - {from: spatial_coordinate, to: dimensionless_distance, family: position,
+       op: divide,   bridge: feature_height,
+       validity: "x/H; feature_height is usually a controlled condition -> works today"}
+    - {from: spatial_coordinate, to: aspect_ratio,         family: position,
+       op: divide,   bridge: feature_width, validity: "local AR = x / width"}
+    - {from: partial_pressure,   to: exposure,             family: dose,
+       op: multiply, bridge: pulse_time, validity: "Langmuir dose; already auto-derived"}
+
+  # --- semantic CATEGORIES: coarse grouping of quantities by WHAT THEY DESCRIBE
+  # (material property / process parameter / geometry / observable / coordinate).
+  # Coarser than families; drives categorised grouping+colour in the knowledge graph.
+  categories:
+    material_property: [sticking_probability, initial_sticking_coefficient, reaction_probability,
+      recombination_probability, site_density, adsorption_rate_constant, adsorption_site_area,
+      molecular_mass, precursor_molecular_diameter, mean_free_path, collision_flux,
+      film_density, refractive_index, resistivity, dielectric_constant, work_function,
+      band_gap, crystallinity, grain_size, surface_roughness]
+    process_parameter: [pulse_time, purge_time, plasma_exposure_time, cycle_time, process_time,
+      cycle_number, temperature, deposition_temperature, partial_pressure, total_pressure,
+      reactant_A_partial_pressure, reactant_B_partial_pressure, exposure, flow_rate]
+    geometry: [feature_height, feature_width, feature_length, aspect_ratio, coated_aspect_ratio,
+      pore_diameter, pore_radius, generation, channel_filling_fraction]
+    observable: [film_thickness, normalized_thickness, thickness_per_cycle, growth_per_cycle,
+      growth_rate, deposition_rate, surface_coverage, maximum_surface_coverage, saturated_coverage,
+      step_coverage, conformality, penetration_depth, penetration_depth_50, penetration_depth_80,
+      uniformity, areal_density, composition, dopant_content, impurity_content, film_stress,
+      nucleation_delay, equivalent_oxide_thickness, atomic_concentration, adsorbed_species_density]
+    coordinate: [spatial_coordinate, dimensionless_distance, time, diffusion_length]
+    dimensionless_number: [knudsen_number, damkohler_number, thiele_modulus]
+
+  # --- recipe_role: is a quantity a RECIPE setting (a reactor control knob)?
+  # 'control_setting' -> IN the recipe. Everything else is structure (sample) /
+  # species_property (intrinsic) / model_parameter (a fit) / derived / observable /
+  # coordinate — NOT the recipe. Default derives from `category`; the overrides
+  # below refine the two ambiguous cases (derived process params, model fits vs
+  # intrinsic species props). See SCHEMA_DESIGN.md.
+  recipe_role_overrides:
+    derived: [exposure, cycle_time, process_time]
+    model_parameter: [reaction_probability, recombination_probability, sticking_probability,
+      initial_sticking_coefficient, site_density, adsorption_rate_constant, saturated_coverage,
+      collision_flux, mean_free_path, adsorption_site_area, maximum_surface_coverage]
+    species_property: [molecular_mass, precursor_molecular_diameter]
+
+  # --- axis role: decides experiment GRANULARITY -----------------------------
+  # When a quantity is the INDEPENDENT (x) axis of a plot:
+  #   coordinate -> within-run position/time => the LINE is ONE experiment,
+  #                 its points are that experiment's profile/curve.
+  #   condition  -> a process setting varied across runs => EACH POINT is a
+  #                 SEPARATE experiment (its own controlled value).
+  #   output     -> dependent/measured; should not be an independent axis.
+  # Anything not listed defaults to 'condition' (the safe split-into-points case).
+  # NOTE ambiguous: cycle_number / time can be either (one monitored run vs
+  # separate depositions) -> extractor should check whether other conditions
+  # also differ across points before splitting.
+  axis_role:
+    coordinate: [spatial_coordinate, dimensionless_distance, time, process_time, diffusion_length]
+    output: [film_thickness, thickness_per_cycle, normalized_thickness, growth_per_cycle,
+             growth_rate, deposition_rate, areal_density, penetration_depth,
+             penetration_depth_50, penetration_depth_80, step_coverage, conformality,
+             coated_aspect_ratio, uniformity, sticking_probability,
+             initial_sticking_coefficient, recombination_probability, reaction_probability,
+             surface_coverage, saturated_coverage, adsorbed_species_density, film_density,
+             resistivity, refractive_index, dielectric_constant, equivalent_oxide_thickness,
+             work_function, band_gap, crystallinity, grain_size, surface_roughness,
+             impurity_content, composition, dopant_content, film_stress, nucleation_delay,
+             damkohler_number, thiele_modulus, knudsen_number]
+
+# =============================================================================
+# INDIVIDUALS  — canonical reference instances (seed ABox). These are the shared
+# nodes that let different papers/experiments LINK instead of minting duplicates.
+# chebi_todo / emmo_todo hold the human name to resolve to a real IRI later.
+# =============================================================================
+individuals:
+  # material physical properties (molar_mass g/mol, density g/cm^3, metal_atoms
+  # per formula unit) parameterise the conformality twin (channelModel) — see
+  # INTEGRATION_STRATEGY.md M1. Values are standard bulk references.
+  materials:
+    - {id: Al2O3, class: Oxide,   formula: Al2O3, emmo_todo: "aluminium oxide", molar_mass: 101.96, density: 3.99, metal_atoms: 2}
+    - {id: HfO2,  class: Oxide,   formula: HfO2,  emmo_todo: "hafnium dioxide", molar_mass: 210.49, density: 9.68, metal_atoms: 1}
+    - {id: TiO2,  class: Oxide,   formula: TiO2,  emmo_todo: "titanium dioxide", molar_mass: 79.87, density: 4.23, metal_atoms: 1}
+    - {id: ZnO,   class: Oxide,   formula: ZnO,   emmo_todo: "zinc oxide", molar_mass: 81.38, density: 5.61, metal_atoms: 1}
+    - {id: SiO2,  class: Oxide,   formula: SiO2,  emmo_todo: "silicon dioxide", molar_mass: 60.08, density: 2.20, metal_atoms: 1}
+    - {id: ZrO2,  class: Oxide,   formula: ZrO2}
+    - {id: Ta2O5, class: Oxide,   formula: Ta2O5}
+    - {id: Nb2O5, class: Oxide,   formula: Nb2O5}
+    - {id: V2O5,  class: Oxide,   formula: V2O5}
+    - {id: Fe2O3, class: Oxide,   formula: Fe2O3}
+    - {id: Fe3O4, class: Oxide,   formula: Fe3O4}
+    - {id: NiO,   class: Oxide,   formula: NiO}
+    - {id: Co3O4, class: Oxide,   formula: Co3O4}
+    - {id: SnO2,  class: Oxide,   formula: SnO2, aka: ["SnOx"]}
+    - {id: Y2O3,  class: Oxide,   formula: Y2O3}
+    - {id: In2O3, class: Oxide,   formula: In2O3}
+    - {id: RuO2,  class: Oxide,   formula: RuO2}
+    - {id: IrO2,  class: Oxide,   formula: IrO2}
+    - {id: SrTiO3, class: Ternary, formula: SrTiO3, aka: ["STO"]}
+    - {id: TiN,   class: Nitride, formula: TiN}
+    - {id: AlN,   class: Nitride, formula: AlN}
+    - {id: BN,    class: Nitride, formula: BN}
+    - {id: SiNx,  class: Nitride, formula: SiNx, aka: ["Si3N4", "silicon nitride"]}
+    - {id: TaN,   class: Nitride, formula: TaN, aka: ["TaNx"]}
+    - {id: Mo2N,  class: Nitride, formula: Mo2N}
+    - {id: Pt,    class: Metal,   formula: Pt}
+    - {id: Ru,    class: Metal,   formula: Ru}
+    - {id: Ir,    class: Metal,   formula: Ir}
+    - {id: Pd,    class: Metal,   formula: Pd}
+    - {id: W,     class: Metal,   formula: W}
+    - {id: Cu,    class: Metal,   formula: Cu}
+    - {id: Co,    class: Metal,   formula: Co}
+    - {id: Ni,    class: Metal,   formula: Ni}
+    - {id: Ag,    class: Metal,   formula: Ag}
+    - {id: Ta,    class: Metal,   formula: Ta}
+    - {id: Al,    class: Metal,   formula: Al}
+    - {id: ZnS,   class: Sulfide, formula: ZnS}
+    - {id: MoS2,  class: TransitionMetalDichalcogenide, formula: MoS2}
+    - {id: WS2,   class: TransitionMetalDichalcogenide, formula: WS2}
+    - {id: GeTe,  class: Telluride, formula: GeTe}
+    - {id: GST,   class: Telluride, formula: Ge2Sb2Te5, aka: ["Ge2Sb2Te5", "GST"]}
+    - {id: LiPON, class: Phosphate, formula: LiPON, definition: "Lithium phosphorus oxynitride (solid electrolyte)."}
+  # intrinsic precursor properties (molar_mass g/mol, central_atoms = metal atoms
+  # per molecule that end up in the film [=b_a in the conformality twin],
+  # molecular_diameter pm = collision diameter). These belong to the SPECIES, not
+  # to each experiment — the twin/recipe read them here (INTEGRATION_STRATEGY.md,
+  # fix #1). molecular_diameter is a collision estimate; refine per source.
+  precursors:
+    - {id: TMA,      class: HomolepticPrecursor, full_name: trimethylaluminium, aka: ["Al(CH3)3", "AlMe3", "trimethylaluminum"], has_ligand: alkyl, chebi_todo: "trimethylaluminium", molar_mass: 72.09, central_atoms: 1, molecular_diameter: 591,
+        sticking_probability: 1.2e-3, sticking_ref: "arts2019_sticking (10.1116/1.5093620)", sticking_note: "initial s0 on Al2O3, (0.5-2)e-3 at Tsub~220C"}
+    - {id: DEZ, deposits: ZnO,      class: HomolepticPrecursor, full_name: diethylzinc, has_ligand: alkyl, chebi_todo: "diethylzinc", molar_mass: 123.53, central_atoms: 1}
+    - {id: DMAI, deposits: Al2O3,     class: HeterolepticPrecursor, full_name: "dimethylaluminium isopropoxide", has_ligand: alkyl, molar_mass: 116.14, central_atoms: 1}
+    - {id: AlCl3,    class: HomolepticPrecursor, full_name: "aluminium chloride", has_ligand: halide, molar_mass: 133.34, central_atoms: 1}
+    - {id: TiCl4,    class: HomolepticPrecursor, full_name: "titanium tetrachloride", has_ligand: halide, molar_mass: 189.68, central_atoms: 1}
+    - {id: HfCl4,    class: HomolepticPrecursor, full_name: "hafnium tetrachloride", has_ligand: halide, molar_mass: 320.30, central_atoms: 1}
+    - {id: ZrCl4,    class: HomolepticPrecursor, full_name: "zirconium tetrachloride", has_ligand: halide, molar_mass: 233.03, central_atoms: 1}
+    - {id: WF6,      class: HomolepticPrecursor, full_name: "tungsten hexafluoride", has_ligand: halide, molar_mass: 297.83, central_atoms: 1}
+    - {id: TDMAH, deposits: HfO2,    class: HomolepticPrecursor, full_name: "tetrakis(dimethylamido)hafnium", has_ligand: amide, molar_mass: 354.80, central_atoms: 1}
+    - {id: TEMAHf, deposits: HfO2,   class: HomolepticPrecursor, full_name: "tetrakis(ethylmethylamido)hafnium", has_ligand: amide, molar_mass: 410.89, central_atoms: 1}
+    - {id: TDMAT, deposits: TiN,    class: HomolepticPrecursor, full_name: "tetrakis(dimethylamido)titanium", has_ligand: amide, molar_mass: 224.19, central_atoms: 1}
+    - {id: TEMAZ, deposits: ZrO2,    class: HomolepticPrecursor, full_name: "tetrakis(ethylmethylamido)zirconium", has_ligand: amide, molar_mass: 372.66, central_atoms: 1}
+    - {id: PDMAT, deposits: TaN,    class: HomolepticPrecursor, full_name: "pentakis(dimethylamido)tantalum", has_ligand: amide}
+    - {id: CpZr_NMe2_3, class: HeterolepticPrecursor, full_name: "CpZr(NMe2)3", has_ligand: cyclopentadienyl}
+    - {id: TTIP, deposits: TiO2,     class: HomolepticPrecursor, full_name: "titanium tetraisopropoxide", has_ligand: alkoxide}
+    - {id: Ir_acac_3, class: HomolepticPrecursor, full_name: "iridium(III) acetylacetonate", has_ligand: betadiketonate}
+    - {id: MeCpPtMe3, deposits: Pt, class: HeterolepticPrecursor, full_name: "trimethyl(methylcyclopentadienyl)platinum", has_ligand: cyclopentadienyl}
+    - {id: Pd_hfac_2, class: HomolepticPrecursor, full_name: "palladium hexafluoroacetylacetonate", has_ligand: betadiketonate}
+    - {id: ferrocene, deposits: Fe2O3, class: HomolepticPrecursor, full_name: "bis(cyclopentadienyl)iron", has_ligand: cyclopentadienyl}
+    - {id: VOTP, deposits: V2O5,     class: Precursor, full_name: "vanadium oxytripropoxide", has_ligand: alkoxide}
+  coreactants:
+    - {id: H2O,      class: Oxidant,    full_name: water, reaction_pathway: LigandExchange, chebi_todo: "water", molar_mass: 18.02, molecular_diameter: 265,
+        sticking_probability: 1.3e-4, sticking_ref: "arts2019_sticking (10.1116/1.5093620)",
+        sticking_vs_T: {150: 1.9e-5, 220: 1.3e-4, 300: 1.0e-3}, sticking_note: "initial s0 on Al2O3, strongly T-dependent (~10x from 150 to 300C); soft-saturation at low T"}
+    - {id: O3,       class: Oxidant,    full_name: ozone, reaction_pathway: CombustionReaction, chebi_todo: "ozone", molar_mass: 48.00}
+    - {id: O2,       class: Oxidant,    full_name: "molecular oxygen", chebi_todo: "dioxygen", molar_mass: 32.00, molecular_diameter: 346}
+    - {id: H2O2,     class: Oxidant,    full_name: "hydrogen peroxide", chebi_todo: "hydrogen peroxide", molar_mass: 34.01}
+    - {id: NH3,      class: Nitridant,  full_name: ammonia, reaction_pathway: LigandExchange, chebi_todo: "ammonia", molar_mass: 17.03, molecular_diameter: 260}
+    - {id: N2H4,     class: Nitridant,  full_name: hydrazine, chebi_todo: "hydrazine", molar_mass: 32.05}
+    - {id: H2,       class: ReducingAgent, full_name: "molecular hydrogen", reaction_pathway: RedoxReaction, chebi_todo: "dihydrogen", molar_mass: 2.02, molecular_diameter: 289}
+    - {id: B2H6,     class: ReducingAgent, full_name: diborane, chebi_todo: "diborane", molar_mass: 27.67}
+    - {id: H2S,      class: Chalcogenidant, full_name: "hydrogen sulfide", chebi_todo: "hydrogen sulfide"}
+    - {id: H2Se,     class: Chalcogenidant, full_name: "hydrogen selenide"}
+    - {id: O2_plasma, class: PlasmaSpecies, full_name: "oxygen plasma"}
+    - {id: O_radical, class: Radical,   full_name: "oxygen radical", chebi_todo: "oxygen atom"}
+    - {id: N_radical, class: Radical,   full_name: "nitrogen radical", chebi_todo: "nitrogen atom"}
+    - {id: H_radical, class: Radical,   full_name: "hydrogen radical", chebi_todo: "hydrogen atom"}
+    # PurgeGas = carrier / background gas. In transport models (e.g. Ylilammi) the
+    # precursor diffuses through this gas, so the model's collision-partner mass /
+    # diameter are the CARRIER's (N2: 28, ~375 pm), NOT the coreactant's (H2O 18).
+    - {id: N2,       class: PurgeGas,   full_name: "nitrogen (purge/carrier)", aka: ["nitrogen", "dinitrogen"], chebi_todo: "dinitrogen", molar_mass: 28.01, molecular_diameter: 375}
+    - {id: Ar,       class: PurgeGas,   full_name: argon, aka: ["argon"], chebi_todo: "argon", molar_mass: 39.95, molecular_diameter: 340}
+  ligand_families:
+    - {id: alkyl,          class: LigandFamily}
+    - {id: alkoxide,       class: LigandFamily}
+    - {id: amide,          class: LigandFamily, aka: ["amide/imide"]}
+    - {id: cyclopentadienyl, class: LigandFamily, aka: ["Cp"]}
+    - {id: halide,         class: LigandFamily}
+    - {id: betadiketonate, class: LigandFamily, aka: ["beta-diketonate"]}
+    - {id: amidinate,      class: LigandFamily, aka: ["amidinate/guanidinate", "guanidinate"]}
+    - {id: alkylamine,     class: LigandFamily}
+    - {id: carboxylate,    class: LigandFamily}
+    - {id: betaketoiminate, class: LigandFamily, aka: ["beta-ketoiminate"]}
+    - {id: betadiketiminate, class: LigandFamily, aka: ["beta-diketiminate"]}
+    - {id: diazadiene,     class: LigandFamily}
+    - {id: alkylsilyl,     class: LigandFamily}
+    - {id: carbonyl,       class: LigandFamily}
+    - {id: carbene,        class: LigandFamily}
+    - {id: dithiocarbamate, class: LigandFamily}
+    - {id: alkoxyether,    class: LigandFamily}
+    - {id: alkoxyamine,    class: LigandFamily}
+    - {id: amidate,        class: LigandFamily}
+  structures:
+    - {id: pillarhall_lhar, class: LHARChannel, aka: ["PillarHall", "PillarHall LHAR structures", "PillarHall LHAR", "LHAR test chip"]}
+    - {id: lhar_channel,    class: LHARChannel, aka: ["channel", "cavity", "LHAR channel", "lateral channel", "rectangular LHAR channels", "lateral high-aspect-ratio structure", "narrow channel"]}
+    - {id: trench,          class: Trench, aka: ["micron trench", "nano trench", "silicon trench"]}
+    - {id: via,             class: Via}
+    - {id: hole,            class: Hole, aka: ["elliptical hole", "square hole", "cylindrical hole", "circular hole"]}
+    - {id: cylindrical_pore, class: Pore}
+    - {id: planar_wafer,    class: PlanarStructure, aka: ["planar", "flat wafer", "planar substrate"]}
+    - {id: aao,             class: AAO, aka: ["anodized alumina", "anodic aluminium oxide", "anodized aluminum oxide", "AAO membrane"]}
+    - {id: capillary_tube,  class: CapillaryTube, aka: ["capillary", "silica capillary tube", "fused silica capillary"]}
+    - {id: macro_lateral,   class: MacroscopicLateralTrench, aka: ["macroscopic lateral trench", "macro lateral"]}
+    - {id: air_wedge,       class: AirWedge}
+    - {id: cavity_structure, class: Cavity, aka: ["centrosymmetric cavity", "microscopic cavity"]}
+    - {id: opal,            class: Opal, aka: ["opal structure", "inverse opal"]}
+    - {id: cnt,             class: CarbonNanotube, aka: ["carbon nanotube", "CNT", "CNT forest", "VACNT"]}
+    - {id: nanowire,        class: Nanowire}
+    - {id: nanorod,         class: Nanorod}
+    - {id: pillar_array,    class: Pillar, aka: ["pillars", "pillar array", "silicon pillars", "square pillar"]}
+    - {id: mesoporous_film, class: MesoporousThinFilm, aka: ["mesoporous thin film", "mesoporous titania film"]}
+    - {id: mesoporous_powder, class: MesoporousPowder, aka: ["mesoporous powder", "silica gel", "Zeotile", "porous powder"]}
+    - {id: track_etch_membrane, class: TrackEtchMembrane}
+    - {id: mof,             class: MetalOrganicFramework, aka: ["MOF", "metal-organic framework"]}
+    - {id: nonwoven_fiber,  class: Fiber, aka: ["non-woven fibrous substrate", "polyester fiber", "fibrous material"]}
+  regimes:
+    - {id: reaction_limited,      class: ReactionLimited}
+    - {id: transport_limited,     class: TransportLimited, aka: ["diffusion limited", "diffusion-limited"]}
+    - {id: recombination_limited, class: RecombinationLimited}
+    - {id: nucleation_limited,    class: NucleationLimited}
+    - {id: self_limited,          class: SelfLimited}
+    - {id: cvd_like,              class: CVDLike, aka: ["CVD-type", "CVD contribution"]}
+  flow_regimes:
+    - {id: molecular_flow, class: MolecularFlow, aka: ["molecular flow", "molecular flow regime", "free molecular flow"]}
+    - {id: viscous_flow,   class: ViscousFlow, aka: ["viscous flow", "continuum flow"]}
+    - {id: transition_flow, class: TransitionFlow, aka: ["transition flow", "Knudsen flow"]}
+  methods:
+    - {id: ellipsometry, class: Ellipsometry, aka: ["SE", "spectroscopic ellipsometry"]}
+    - {id: qcm,          class: QCM}
+    - {id: tem,          class: TEM, aka: ["XTEM", "cross-sectional TEM"]}
+    - {id: sem,          class: SEM, aka: ["FE-SEM", "cross-sectional SEM"]}
+    - {id: edx,          class: EDX, aka: ["EDAX", "EDS", "EDX mapping"]}
+    - {id: xrf,          class: XRF}
+    - {id: xrr,          class: XRR}
+    - {id: xps,          class: XPS}
+    - {id: rbs,          class: RBS}
+    - {id: epma,         class: EPMA}
+    - {id: sims,         class: SIMS}
+    - {id: reflectometry, class: Reflectometry}
+    - {id: optical_microscopy, class: OpticalMicroscopy, aka: ["optical microscope", "IR microscopy"]}
+    - {id: gisaxs,       class: GISAXS}
+    - {id: qms,          class: MassSpectrometry, aka: ["quadrupole mass spectrometry", "QMS"]}
+    - {id: oes,          class: OpticalEmissionSpectroscopy}
+    - {id: sfg,          class: SumFrequencyGeneration}
+  reactors:
+    - {id: pump_type,   class: PumpTypeReactor, aka: ["pump-type reactor", "high-vacuum reactor"]}
+    - {id: flow_type,   class: FlowTypeReactor, aka: ["flow-type reactor"]}
+    - {id: ap_type,     class: AtmosphericPressureReactor, aka: ["AP-type", "atmospheric pressure reactor"]}
+    - {id: cross_flow,  class: CrossFlowReactor}
+    - {id: showerhead,  class: ShowerheadReactor}
+    - {id: batch,       class: BatchReactor}
+    - {id: fluidized_bed, class: FluidizedBedReactor}
+  applications:
+    - {id: dram,        class: DRAM, aka: ["dynamic random-access memory"]}
+    - {id: logic_cmos,  class: LogicCMOS, aka: ["CMOS", "FinFET", "logic"]}
+    - {id: nand_flash,  class: NANDFlash, aka: ["3D NAND", "NAND"]}
+    - {id: solar_cell,  class: SolarCell, aka: ["photovoltaics", "PERC", "TOPCon"]}
+    - {id: display,     class: Display, aka: ["OLED", "TFT"]}
+    - {id: battery,     class: Battery, aka: ["Li-ion battery", "lithium-ion battery"]}
+    - {id: catalysis,   class: Catalysis, aka: ["catalyst", "catalytic"]}
+    - {id: mems,        class: MEMS}
+  process_types:
+    - {id: thermal_ald, class: ThermalALD, aka: ["ALD", "thermal ALD"]}
+    - {id: ozone_ald,   class: OzoneALD, aka: ["ozone-based ALD", "O3 ALD"]}
+    - {id: plasma_ald,  class: PlasmaALD,  aka: ["PEALD", "PE-ALD", "plasma-assisted ALD", "plasma-enhanced ALD"]}
+    - {id: spatial_ald, class: SpatialALD, aka: ["spatial ALD", "SALD"]}
+
+# =============================================================================
+# models — kinetic/transport MODELS as first-class ontology objects (M3 / Phase 3)
+# Each model is traceable (paper + equations) and links to the quantities it
+# consumes (Ylilammi also to the code that implements it). One family, one base
+# (first-order Langmuir uptake), TWO branches: a 0-D saturation model used for dose
+# optimization, and 1-D channel models that add diffusion to predict conformality.
+# =============================================================================
+model_families:
+  ald_surface_kinetics:
+    name: ALD surface-reaction (Langmuir) kinetics
+    base: "first-order Langmuir precursor uptake dtheta/dt = k(1-theta) (Yanguas-Gil & Elam)"
+    shared: self-limited saturation of the growth per cycle from Langmuir adsorption
+    members: [yanguas_gil_saturation, ylilammi_langmuir_channel, aguinsky_reversible_levelset, arts_recombination]
+    branches:
+      saturation_0D:       # GPC vs dose time; NO spatial transport (dose optimization)
+        of: growth_per_cycle
+        members: [yanguas_gil_saturation]
+      conformality_1D:     # SAME uptake + channel diffusion -> penetration depth (THERMAL)
+        of: penetration_depth
+        phenomenon: incomplete conformality in high-aspect-ratio features (precursor-diffusion-limited)
+        adds:
+          - Knudsen + gas-phase diffusion combined via the Bosanquet interpolation
+          - hydraulic-diameter mapping of the real geometry to a cylinder/channel
+        members: [ylilammi_langmuir_channel, aguinsky_reversible_levelset]
+      recombination_1D:    # PLASMA: radical transport + surface recombination loss
+        of: penetration_depth
+        phenomenon: recombination-limited conformality in plasma-assisted ALD
+        adds:
+          - a first-order surface-recombination loss term (-eta*r*n) on top of Langmuir sticking
+          - penetration set by radical recombination, not precursor diffusion
+        members: [arts_recombination]
+
+models:
+  - id: yanguas_gil_saturation
+    name: Yanguas-Gil multi-pathway saturation model (self-limited + CVD component)
+    aka: [saturation-curve model, GPC model, agent-optimization benchmark]
+    family: ald_surface_kinetics
+    branch: saturation_0D
+    shares_base_kinetics_with: [ylilammi_langmuir_channel, aguinsky_reversible_levelset]  # same Langmuir uptake dtheta/dt=k(1-theta)
+    reference:
+      authors: "Yanguas-Gil"
+      year: 2026
+      title: "Performance of AI agents based on reasoning language models on ALD process optimization tasks"
+      doi: "10.1116/6.0005313"
+      ref_tag: yanguas_gil2026
+      builds_on: "Yanguas-Gil & Elam surface kinetics"
+    predicts: [growth per cycle GPC as a function of precursor/coreactant dose times, whether the process is self-limited]
+    used_by: "the Argonne reasoning-LLM agent as the simulated ALD tool it optimizes (dose-time search)"
+    dimensionality: 0-D (no spatial transport) — a per-cycle saturation curve, not a conformality profile
+    reactant_roles:
+      A: precursor          # dose time t1, rate k1
+      B: coreactant         # dose time t2, rate k2
+    approximations:
+      kinetics: "first-order IRREVERSIBLE Langmuir per pathway; total coverage theta = sum_i f_i theta_i (sum f_i = 1)"
+      pathways: "one or more parallel surface reaction pathways i, each with weight f_i (captures fast/slow soft-saturation)"
+      cvd_component: "optional nonself-limited (CVD) term via a background coreactant rate k_c -> asymptotic growth GR0"
+    parameters:
+      - {param: k1, name: precursor uptake rate constant, role: fitted, maps_to_quantity: adsorption_rate_constant}
+      - {param: k2, name: coreactant uptake rate constant, role: fitted}
+      - {param: f_i, name: pathway weights, role: fitted, note: sum to 1}
+      - {param: GPC0, name: saturated growth per cycle, maps_to_quantity: growth_per_cycle}
+      - {param: k_c, name: CVD (background) reaction rate, role: fitted, note: 0 for a fully self-limited process}
+      - {param: GR0, name: asymptotic CVD growth rate, note: nonzero => not self-limited}
+    inputs:
+      - {param: t1, quantity: pulse_time, of: A, symbol: t1}
+      - {param: t2, quantity: pulse_time, of: B, symbol: t2}
+      - {param: GPC0, quantity: growth_per_cycle, symbol: GPC0}
+    equations:
+      - {id: total_coverage,        ref: Eq.1,  expr: "theta = sum_i f_i theta_i ,  sum_i f_i = 1"}
+      - {id: precursor_uptake,      ref: Eq.2,  expr: "dtheta_i/dt = k1_i (1 - theta_i)   (precursor dose)"}
+      - {id: coreactant_uptake,     ref: Eq.3,  expr: "dtheta_i/dt = -k2_i theta_i        (coreactant dose)"}
+      - {id: gpc_integral,          ref: Eq.4,  expr: "GPC = GPC0 integral_0^t1 sum_i f_i k1_i (1 - theta_i) dt"}
+      - {id: uptake_with_cvd,       ref: Eq.5,  expr: "dtheta_i/dt = k1_i (1 - theta_i) - k_c_i theta_i   (background coreactant)"}
+      - {id: asymptotic_cvd_growth, ref: Eq.6,  expr: "GR0 = GPC0 k1_i k_c_i / (k1_i + k_c_i)"}
+      - {id: self_limited_gpc,      ref: Eq.7,  expr: "GPC = GPC0 sum_i f_i (1 - e^{-k1_i t1})(1 - e^{-k2_i t2}) / (1 - e^{-(k1_i + k2_i)})"}
+      - {id: gpc_with_cvd,          ref: Eq.8,  expr: "GPC = GR0 t1 + GPC0 theta_lim (theta_lim - theta_0)(1 - e^{-(k1+k_c)t1})"}
+    benchmark_processes:   # Table I — the five prototypical behaviors the agent must optimize
+      - {name: fast/fast,  k1: 5, k2: 4, GPC0: 1.0}
+      - {name: slow/slow,  k1: 1, k2: 1.2, GPC0: 1.0}
+      - {name: slow/fast,  k1: 1, k2: 4, GPC0: 1.0}
+      - {name: fast/fast_thin, k1: 5, k2: 4, GPC0: 0.3}
+      - {name: soft/fast,  k1_a: 5, k1_b: 1, f_b: 0.2, k2: 4, GPC0: 1.0, note: two pathways -> soft saturation}
+    outputs:
+      - {quantity: growth_per_cycle, as: "GPC(t1, t2) saturation curve"}
+      - {classifies: self_limited, as: "boolean — is the process self-limited?"}  # a regime, not a quantity
+
+  - id: ylilammi_langmuir_channel
+    name: Ylilammi approximate diffusion–Langmuir channel model
+    aka: [conformality twin, channel model]
+    family: ald_surface_kinetics
+    branch: conformality_1D
+    reference:
+      authors: "Ylilammi, Ylivaara, Puurunen"
+      year: 2018
+      title: "Modeling growth kinetics of thin films made by ALD in lateral high-aspect-ratio structures"
+      doi: "10.1063/1.5028178"
+      ref_tag: ylilammi2018
+    implemented_by: "PSED_MPC/channel_model.py"    # MODEL_ID = ylilammi_langmuir_channel
+    predicts: [film thickness profile s(x), half-thickness penetration depth x_p]
+    reactant_roles:
+      A: precursor          # the growth-limiting metal precursor (TMA): da, MA, b_a, pA
+      B: carrier_gas        # background COLLISION PARTNER (nitrogen): db, MB — NOT the coreactant
+    approximations:
+      flux: "analytic two-region pressure profile (linear core + exponential tail); frozen-surface NOT used"
+      kinetics: "Langmuir with lumped sticking coefficient c and equilibrium constant K (desorption Pd >= 0)"
+      diffusion: "Bosanquet(Knudsen + gas-phase); hydraulic-diameter mapping h=2/(1/H+1/W)"
+      geometry: "channel height held constant within a pulse, updated to the inlet value after each cycle"
+      excluded: "the coreactant (water) diffuses too fast to limit transport and is not modeled — only the precursor half-cycle"
+    assumptions:
+      - 1D diffusion along the channel; no gradients across height/width (H << W, fast y-equilibration)
+      - steady-state reactant flow within a pulse (dpA/dt ~ 0)
+      - monomeric TMA above 215 C (dimer neglected)
+    inputs:
+      - {param: c,   quantity: reaction_probability,        symbol: c,       role: fitted}
+      - {param: K,   quantity: adsorption_rate_constant,    symbol: K,       role: fitted}
+      - {param: gpc, quantity: growth_per_cycle,            symbol: gpc_sat, role: measured}
+      - {param: da,  quantity: precursor_molecular_diameter, of: A, symbol: d_A}
+      - {param: MA,  quantity: molecular_mass,              of: A, symbol: M_A}
+      - {param: db,  quantity: precursor_molecular_diameter, of: B, symbol: d_B, note: carrier gas N2}
+      - {param: MB,  quantity: molecular_mass,              of: B, symbol: M_B, note: carrier gas N2}
+      - {param: pA,  quantity: partial_pressure,            of: A, symbol: p_A0}
+      - {param: pB,  quantity: partial_pressure,            of: B, symbol: p_B, note: background gas}
+      - {param: T,   quantity: temperature,                 symbol: T}
+      - {param: t_p, quantity: pulse_time,                  symbol: t_p}
+      - {param: H,   quantity: feature_height,              symbol: H}
+      - {param: W,   quantity: feature_width,               symbol: W}
+    equations:
+      - {id: hydraulic_diameter,    ref: Eq.2,     expr: "h = 2 / (1/H + 1/W)"}
+      - {id: collision_rate_zA,     ref: Eq.3,     expr: "z_A = [ (pi/4)(d_A+d_B)^2 sqrt(8RT/pi (1/M_A+1/M_B)) p_B + pi d_A^2 sqrt(16RT/(pi M_A)) p_A ] / (RT)"}
+      - {id: gas_diffusivity_DA,    ref: Eq.4-5,   expr: "D_A = (3 pi/16) v_A^2 / z_A ;  v_A = sqrt(8RT/(pi M_A))"}
+      - {id: knudsen_diffusivity,   ref: Eq.7,     expr: "D_Kn = h sqrt(8RT/(9 pi M_A))"}
+      - {id: effective_diffusivity, ref: Eq.6,     expr: "1/D_eff = 1/D_A + 1/D_Kn   (Bosanquet)"}
+      - {id: adsorption_density,    ref: sec.II,   expr: "q = (b_film/b_A)(rho gpc / M) N0"}
+      - {id: apparent_diffusion,    ref: Eq.21,    expr: "D = p_A D_eff H / (q k_B T (1 - ln(K p_A + 1)/(K p_A)))"}
+      - {id: front_position_xs,     ref: Eq.19,    expr: "x_s = sqrt(D t_p)"}
+      - {id: linear_length_xt,      ref: Eq.27,    expr: "x_t = max(x_s - sqrt(h N0 D_eff/(4 R T c Q)), 0)"}
+      - {id: pressure_profile,      ref: Eq.18-25, expr: "p_A(x) = p_A0(1 - x/x_s) for x<x_t ; p_t exp(-(x-x_t)/(x_s-x_t)) for x>=x_t"}
+      - {id: langmuir_coverage,     ref: Eq.30,    expr: "theta = K p_A / (1 + K p_A)"}
+      - {id: thickness_profile,     ref: Eq.36,    expr: "s(x) = gpc * sum_i theta_i(x)"}
+      - {id: penetration_depth_xp,  ref: Eq.33,    expr: "s(x_p) = 0.5 s(0)"}
+    outputs:
+      - {quantity: partial_pressure, as: "reactant pressure profile p_A(x)"}
+      - {quantity: surface_coverage, as: "theta(x)"}
+      - {quantity: film_thickness,   as: "thickness profile s(x)"}
+      - {quantity: penetration_depth, as: x_p}
+
+  - id: aguinsky_reversible_levelset
+    name: Aguinsky reversible-Langmuir reaction-diffusion with level-set topography
+    family: ald_surface_kinetics
+    branch: conformality_1D
+    reference:
+      authors: "Aguinsky, Filipovic et al."
+      year: 2023
+      title: "Modeling incomplete conformality during ALD in high aspect ratio structures"
+      ref_tag: aguinsky2023
+    based_on: yanguas_gil_elam      # base model, extended with reversibility + explicit diffusivity
+    related_to: ylilammi_langmuir_channel
+    predicts: [surface coverage theta(r), film thickness profile, penetration depth]
+    reactant_roles:
+      A: reactant           # the single transport-limiting reactant (H2O step shown; TMA step analogous)
+    approximations:
+      flux: "1D continuity (diffusive cylinder) solved by central finite differences; frozen-surface USED (dGamma/dt=0)"
+      kinetics: "REVERSIBLE Langmuir: adsorption beta(theta)=beta0(1-theta), desorption via evaporation flux Gamma_ev; forward Euler to t_p"
+      diffusion: "Bosanquet(Knudsen + Chapman-Enskog gas-phase); hydraulic-diameter mapping h_d=2; default Knudsen-only (D_A -> inf)"
+      topography: "level-set (ViennaLS / Victory Process); cycle-bundled artificial time t* = N_cycles / C"
+    differs_from_ylilammi:
+      - reversible kinetics via an explicit evaporation flux Gamma_ev (Ylilammi uses Pd within Langmuir)
+      - solves the reactant continuity PDE numerically (Ylilammi approximates the profile analytically)
+      - evolving geometry via level-set topography (Ylilammi freezes channel height per pulse)
+    parameters:
+      - {param: beta0,   name: bare sticking coefficient,   role: fitted, maps_to_quantity: reaction_probability}
+      - {param: Gamma_ev, name: evaporation/desorption flux, role: fitted, note: caps max coverage -> limits achievable aspect ratio}
+      - {param: s0,      name: surface site area,           derived_from: [density, growth_per_cycle], note: billiard-ball estimate}
+    inputs:
+      - {param: beta0,  quantity: reaction_probability, symbol: beta0, role: fitted}
+      - {param: T,      quantity: temperature,         symbol: T}
+      - {param: MA,     quantity: molecular_mass,      of: A, symbol: M_A}
+      - {param: dA,     quantity: precursor_molecular_diameter, of: A, symbol: d_A}
+      - {param: pA,     quantity: partial_pressure,    of: A, symbol: p_A}
+      - {param: t_p,    quantity: pulse_time,          symbol: t_p}
+      - {param: d,      quantity: feature_width,       symbol: d,  note: cylinder/trench opening}
+      - {param: L,      quantity: feature_height,      symbol: L,  note: structure depth/length}
+      - {param: gpc,    quantity: growth_per_cycle,    symbol: GPC}
+      - {param: rho,    quantity: film_density,        symbol: rho}
+    equations:
+      - {id: coverage_evolution, ref: Eq.1, expr: "dtheta/dt = s0 [ beta0 (1-theta) Gamma_A(r) - Gamma_ev theta ]"}
+      - {id: flux_continuity,    ref: Eq.2, expr: "d/dz( D dGamma/dz ) = adsorption loss ; frozen surface dGamma/dt = 0"}
+      - {id: knudsen_cylinder,   ref: Eq.3, expr: "D_Kn proportional to (h_d d) v_bar   (long-cylinder)"}
+      - {id: bosanquet,          ref: Eq.4, expr: "1/D = 1/D_A + 1/D_Kn"}
+      - {id: velocity_field,     ref: Eq.6, expr: "V(r) proportional to theta(r)/C   (level-set, cycle-bundled)"}
+    calibrated_H2O_step:        # Table 1, calibrated to Arts et al. 2019
+      - {temperature: 150, Gamma_ev: 6.5e19, beta0: 5.0e-5}
+      - {temperature: 220, Gamma_ev: 5.0e19, beta0: 1.2e-4}
+      - {temperature: 310, Gamma_ev: 3.5e19, beta0: 1.9e-4}
+    validated_against: [ylilammi2018, arts2019, yim2020]   # calibrated to the same TMA-limited Al2O3 profiles
+    outputs:
+      - {quantity: surface_coverage, as: "theta(r)"}
+      - {quantity: film_thickness,   as: thickness profile}
+      - {quantity: penetration_depth, as: penetration depth}
+
+  - id: arts_recombination
+    name: Arts recombination-limited plasma-ALD penetration model
+    family: ald_surface_kinetics
+    branch: recombination_1D
+    based_on: yanguas_gil_elam      # the same continuum reaction-diffusion model, + a recombination loss
+    related_to: [ylilammi_langmuir_channel, aguinsky_reversible_levelset]
+    reference:
+      authors: "Arts, Vandalon, Puurunen, Utriainen, Gao, Kessels, Knoops"
+      year: 2019
+      title: "Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted ALD"
+      ref_tag: arts2019
+    predicts: [film penetration depth vs plasma exposure time, recombination probability r of plasma radicals]
+    regime: recombination_limited   # PLASMA half-cycle — reactive radicals lost to the sidewalls
+    reactant_roles:
+      A: coreactant         # the PLASMA RADICAL (e.g. O atom), not the metal precursor
+    approximations:
+      transport: "1D continuum reaction-diffusion for radical density n(z,t) and coverage theta(z,t); Knudsen (molecular) flow"
+      kinetics: "irreversible Langmuir sticking s0(1-theta) PLUS first-order surface recombination r"
+      loss_terms: "-eta s0 (1-theta) n_tilde (sticking, self-limiting) AND -eta r n_tilde (recombination, continues after saturation)"
+      dominant: "in the recombination-limited regime the recombination loss -eta r n_tilde dominates; n decays exponentially into the channel"
+    parameters:
+      - {param: r,  name: surface recombination probability, role: fitted, note: 1e-5 .. 1e-1; strong material dependence, THE quantity extracted}
+      - {param: s0, name: initial sticking / reaction probability, role: fitted, maps_to_quantity: reaction_probability, note: sets coverage shape, little effect on penetration}
+      - {param: eta, name: collision-vs-diffusion ratio, derived_from: [aspect_ratio, feature_height], note: (S/V)(v_th/4)(L^2/D)}
+    inputs:
+      - {param: t,   quantity: plasma_exposure_time, symbol: t}
+      - {param: L,   quantity: feature_height,       symbol: L, note: structure length/depth}
+      - {param: AR,  quantity: aspect_ratio,         symbol: a}
+      - {param: gpc, quantity: growth_per_cycle,     symbol: GPC, note: sets adsorption-site area A0}
+    equations:
+      - {id: radical_diffusion,  ref: Eq.1, expr: "dn/dtau = d2n/dxi2 - eta s0 (1-theta) n_tilde - eta r n_tilde   (radical density)"}
+      - {id: coverage_evolution, ref: Eq.2, expr: "dtheta/dtau = gamma eta s0 (1-theta) n_tilde                     (surface coverage)"}
+      - {id: exp_radical_decay,  ref: Eq.4, expr: "n(xi) = n0 exp(-sqrt(eta r) xi)   (recombination-limited steady state)"}
+      - {id: penetration_vs_dose, ref: Eq.5-6, expr: "PD50 grows ~ ln(t); AR50 vs ln(t) has slope ∝ 1/sqrt(r) -> extract r"}
+    materials_studied: [SiO2, TiO2, Al2O3, HfO2]   # O-atom recombination, strong material dependence
+    outputs:
+      - {quantity: penetration_depth, as: "PD50(t)"}
+      - {quantity: reaction_probability, as: "recombination probability r"}
