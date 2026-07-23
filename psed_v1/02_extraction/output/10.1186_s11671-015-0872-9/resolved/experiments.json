@@ -23,7 +23,7 @@
   "carrier_gas": {
    "species": "N2"
   },
-  "process_type": "unknown",
+  "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
    {
@@ -36,7 +36,7 @@
    },
    {
     "quantity": "total_pressure",
-    "value": 30.66,
+    "value": 30.664,
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
@@ -44,7 +44,7 @@
    },
    {
     "quantity": "purge_time",
-    "value": 1,
+    "value": 1.0,
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
@@ -65,6 +65,27 @@
     "of_reactant": "B",
     "source": "methods",
     "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 189.68,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species"
    }
   ],
   "measurand": {
@@ -200,7 +221,7 @@
      "role": "precursor",
      "species": "TiCl4",
      "dose_time": 0.25,
-     "purge_time": 1,
+     "purge_time": 1.0,
      "partial_pressure": null
     },
     {
@@ -208,7 +229,7 @@
      "role": "coreactant",
      "species": "H2O",
      "dose_time": 0.25,
-     "purge_time": 1,
+     "purge_time": 1.0,
      "partial_pressure": null
     }
    ],

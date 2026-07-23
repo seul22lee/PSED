@@ -55,16 +55,71 @@ The METHODS prose is primary. Consult the TABLES only when the prose or a figure
 caption indicates a value is given in a table (e.g. 'listed in Table 1'), or when a
 requested value is not in the prose but is clearly stated in a table. When you take a
 value from a table, it must be the STANDARD/baseline process value, not one row of an
-ablation series. Do NOT guess; leave null if not clearly stated. If a value comes from
-a table, note which table in the "_from_table" field."""
+ablation series. Do NOT guess; leave null if not clearly stated.
+- If a condition VARIES across the paper's samples/series (it appears as a range, or
+  as several different values for different samples), leave that paper-level field
+  NULL. Do not pick one of the values. A paper-level field is only for a single value
+  that applies to the whole paper. Example: if films were grown at 70, 120 and 170 C,
+  temperature_C is null — not 120.
+- Do NOT take process conditions from a simulation / model-parameter / fitting table
+  (e.g. a table of modelling inputs, fitted constants, or simulated cases). Only take
+  values that describe how the FILMS WERE ACTUALLY GROWN. If the paper is a modelling
+  study with no real deposition conditions stated, leave the fields null.
+- A condition stated as a WINDOW or RANGE anywhere — in a table OR in the prose (e.g.
+  "a broad temperature window from 175-300 C", "grown at temperatures ranging from
+  175 to 300 C", "0-3 mbar") — is NOT a single value. Leave that paper-level field
+  null. Never take one endpoint of a range (neither the low nor the high one) as the
+  value. Only fill the field if ONE specific value is stated as applying to the films
+  of the whole paper. If a specific value is given only for a particular experiment
+  or figure (e.g. "the saturation study was performed at 225 C"), that belongs to
+  that experiment, NOT to the paper-level card — still leave the paper-level field
+  null.
+If a value comes from a table, note which table in the "_from_table" field."""
+
+
+# --- process-window semantics (INTENDED USE — not implemented in this patch) ---
+# `temperature_window_C = [min,max]` is paper-level process metadata: the range over
+# which the paper reports the process operating. A future integration MAY use it as:
+#     · an admissible range for recipe search / design
+#     · an optimization bound
+#     · a sanity-check constraint on a proposed condition
+#     · a validation constraint on an imputed value (is the impute inside the window?)
+# It MUST NOT be turned back into a point estimate. Specifically, the lower endpoint,
+# the upper endpoint, the midpoint and the median are all forbidden as a paper-level
+# extracted temperature unless a separate source states that scalar explicitly.
+# Collapsing the window to its lower endpoint is exactly the defect this code removed
+# (it put a fabricated growth temperature on 278 experiments across 8 papers).
+def _scalar_from_degenerate_range(value):
+    """A [min,max] window is a paper-level RANGE, not a deposition condition.
+    Return a scalar ONLY when the window is degenerate (min == max, i.e. the paper
+    really states one temperature). A genuine window returns None — taking an
+    endpoint would assert a growth temperature the paper never claims
+    (e.g. [175,300] -> 175 made 8 papers report their window's low end as fact)."""
+    if not isinstance(value, (list, tuple)) or len(value) != 2:
+        return None
+    lo, hi = value
+    if isinstance(lo, bool) or isinstance(hi, bool):          # bools are ints in python
+        return None
+    if not isinstance(lo, (int, float)) or not isinstance(hi, (int, float)):
+        return None
+    return lo if float(lo) == float(hi) else None
 
 
 def base_card(scout):
-    """Process card from the scout alone (no LLM)."""
+    """Process card from the scout alone (no LLM).
+
+    `temperature_window_C` is preserved as-is (paper-level process metadata, list
+    form kept for backward compatibility). `temperature_C` is the paper-level SCALAR
+    deposition condition and is only set when the window is degenerate; otherwise it
+    stays None and the methods/table pass may still fill a genuine single value.
+    FUTURE: an explicit per-field status (e.g. {"temperature_C":"varied_across_samples"})
+    would let a later stage distinguish 'not paper-level' from 'not found'; not in this patch."""
+    window = scout.get("temperature_window_C")
     return {"precursors": scout.get("precursors") or [],
             "coreactants": scout.get("coreactants") or [],
             "process_type": scout.get("process_type") or "unknown",
-            "temperature_C": (scout.get("temperature_window_C") or [None])[0],
+            "temperature_C": _scalar_from_degenerate_range(window),
+            "temperature_window_C": window,
             "pressure_Pa": None, "pulse_time_s": None, "purge_time_s": None,
             "ncycles": None, "carrier_gas": None}
 
