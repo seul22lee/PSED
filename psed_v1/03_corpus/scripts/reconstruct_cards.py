@@ -1,11 +1,41 @@
 #!/usr/bin/env python3
-"""One-off: rebuild extracted/{sd}/card.json from the process conditions already
-methods-filled into output/{pid}/resolved/experiments.json in a prior session, so the
-now-cached card survives the retirement of the methods-fill LLM model — deterministic,
-no LLM. After this, `06_to_kb.py --resolve-only` re-grounds against the ontology for free.
+"""DEPRECATED — DO NOT RUN. Retained for history only; exits non-zero if invoked.
+
+Original purpose (one-off): rebuild extracted/{sd}/card.json from process conditions
+already methods-filled into output/{pid}/resolved/experiments.json, so cached cards would
+survive the retirement of the gemini-2.5-flash methods-fill model.
+
+Why it is retired:
+  1. ALREADY BROKEN — PAIRS maps to SHORT pids ("admi.202000318"), but output dirs have
+     used the full DOI ("10.1002_admi.202000318") since the pid unification. Every path
+     it builds is missing, so it raises on the first paper.
+  2. OBSOLETE — the methods-fill model works again (MODEL = gemini-flash-latest).
+  3. PROVENANCE INVERSION — it derives the CARD from the KB. The card is the upstream
+     source of paper-level conditions; rebuilding it from downstream experiments echoes
+     whatever the KB already holds straight back into the card. Pre-fix that meant a
+     collapsed temperature-window endpoint (source="methods") would be copied back into
+     a card as a scalar. It never read `temperature_window_C` itself, so it did not
+     perform the range->scalar coercion — but it would re-seed the result of one.
+
+Supported rebuild path instead:
+    python3 scripts/06_to_kb.py <doi> [<doi> ...]   # rebuild card.json (LLM) + resolve
+    python3 scripts/06_to_kb.py --resolve-only <doi> ...   # re-ground only, no LLM
 """
 import json, sys
 from pathlib import Path
+
+_DEPRECATED_MSG = """\
+reconstruct_cards.py is DEPRECATED and will not run.
+
+It rebuilds cards FROM the knowledge base, which inverts provenance (the card is the
+source of paper-level conditions, not a derivative of them) and would re-seed any value
+already collapsed in the KB. Its hardcoded short pids are also stale — the corpus has
+used full-DOI ids since the pid unification, so all of its paths are missing.
+
+Use the supported path:
+    python3 scripts/06_to_kb.py <doi> [<doi> ...]          # rebuild card.json + resolve
+    python3 scripts/06_to_kb.py --resolve-only <doi> ...   # re-ground only (no LLM)
+"""
 
 ROOT = Path(__file__).resolve().parent.parent
 EXTRACTED = ROOT / "extracted"
@@ -51,4 +81,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.stderr.write(_DEPRECATED_MSG)
+    sys.exit(2)

@@ -5,18 +5,58 @@
   "precursors": [
    "MoCl4_THD_THF"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "NH3"
+  ],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
     "species": "MoCl4_THD_THF"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "NH3"
    }
   ],
-  "carrier_gas": null,
-  "process_type": "unknown",
-  "cycle_sequence": "A",
-  "controlled": [],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "total_pressure",
+    "value": 66.66,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 17.03,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.26,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species"
+   }
+  ],
   "measurand": {
    "quantity": null,
    "unit": null,
@@ -58,18 +98,28 @@
      "label": "A",
      "role": "precursor",
      "species": "MoCl4_THD_THF",
-     "dose_time": null,
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "NH3",
+     "dose_time": 10,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "A",
+   "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
    "temperature": null,
    "flow_rate": null,
-   "carrier_gas": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
    "structure": null,
    "targets": null,
    "provenance": "extracted",
@@ -78,7 +128,7 @@
    "param_sources": {
     "_exp_id": "10.1116_6.0002154-paper-0"
    },
-   "completeness": 0.4
+   "completeness": 0.5
   }
  }
 ]

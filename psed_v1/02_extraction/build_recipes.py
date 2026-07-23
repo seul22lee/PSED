@@ -41,6 +41,7 @@ def build():
                      ks.impute(tgt, q, r, corpus=experiments, SC=SC))(e)
         rec = recipe_mod.from_experiment(e)
         before = rec.completeness()
+        n_ext, n_tot = _field_counts(rec)          # populated BEFORE any gap-fill
         recipe_mod.fill_gaps(rec, impute_fn, MODEL_DEFAULTS)
         after = rec.completeness()
         d = rec.to_dict()
@@ -48,11 +49,105 @@ def build():
             "exp_id": e.get("exp_id"), "paper": e["_pid"],
             "analysis_ready": bool(e.get("analysis_ready")),
             "completeness_extracted": before, "completeness_filled": after,
+            "fields_extracted_n": n_ext, "fields_total_n": n_tot,
         })
         rows.append(d)
     rows.sort(key=lambda r: (r.get("material") or "", -(r.get("completeness_filled") or 0)))
     (ROOT / "output" / "recipes.json").write_text(json.dumps(rows, indent=2, default=str))
+    (ROOT / "output" / "recipe_accounting.json").write_text(
+        json.dumps(field_accounting(rows, experiments), indent=2, default=str))
     return rows
+
+
+# --- where each recipe field actually came from -----------------------------
+# "filled completeness" alone is NOT recipe readiness: it counts an imputed or
+# defaulted field the same as a measured one. This breakdown keeps the two apart.
+CORPUS_CARDS = ROOT.parent / "03_corpus" / "extracted"
+
+
+def _field_counts(rec):
+    """(populated, total) recipe fields — the count behind completeness(). Called
+    BEFORE fill_gaps so it measures what the literature actually supplied."""
+    have = sum(bool(getattr(rec, f)) for f in rec.FIELDS)
+    tot = rhave = 0
+    for r in rec.reactants:
+        for rf in rec.REACTANT_FIELDS:
+            tot += 1
+            rhave += getattr(r, rf) is not None
+    return have + rhave, len(rec.FIELDS) + tot
+
+
+def _window_papers():
+    """Papers whose card carries a non-degenerate temperature WINDOW.
+
+    A window is paper-level process metadata (an admissible RANGE), NOT a scalar
+    deposition condition — it is deliberately never counted as a completed recipe
+    field. See the process-window semantics note in 03_corpus/scripts/06_to_kb.py."""
+    out = {}
+    if not CORPUS_CARDS.is_dir():
+        return out
+    for d in sorted(CORPUS_CARDS.iterdir()):
+        cf = d / "card.json"
+        if not cf.is_file():
+            continue
+        try:
+            w = json.loads(cf.read_text()).get("temperature_window_C")
+        except Exception:
+            continue
+        if (isinstance(w, list) and len(w) == 2
+                and all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in w)
+                and float(w[0]) != float(w[1])):
+            out[d.name] = w
+    return out
+
+
+def field_accounting(rows, experiments=None):
+    """Per-source field counts + process-window accounting for the recipe report."""
+    win = _window_papers()
+    n_kb = n_model = 0
+    for r in rows:
+        for m in (r.get("param_sources") or {}).values():
+            if not isinstance(m, dict):
+                continue
+            n_kb += m.get("source") == "kb"
+            n_model += m.get("source") == "model"
+    # directly extracted = populated before any gap-fill (param_sources only tags FILLED
+    # fields, so it cannot be used to count extracted ones)
+    n_ext = sum(r.get("fields_extracted_n") or 0 for r in rows)
+    n_tot = sum(r.get("fields_total_n") or 0 for r in rows)
+    win_recipes = [r for r in rows if r.get("paper") in win]
+    # per-experiment temperature (caption/series) is legitimate; a PAPER-LEVEL scalar on a
+    # window paper is the defect this fix removed and must stay at 0.
+    win_per_exp = sum(1 for r in win_recipes
+                      if r.get("temperature") not in (None, "")
+                      and (r.get("param_sources") or {}).get("temperature") is None)
+    win_paper_scalar = 0
+    for e in (experiments or []):
+        if e.get("_pid") not in win:
+            continue
+        if any(c.get("quantity") == "temperature" and c.get("source") == "methods"
+               for c in (e.get("controlled") or [])):
+            win_paper_scalar += 1
+    return {
+        "recipes": len(rows),
+        "fields_directly_extracted": n_ext,
+        "fields_kb_imputed": n_kb,
+        "fields_model_default": n_model,
+        "fields_total": n_tot,
+        "process_window_papers": len(win),
+        "process_window_recipes": len(win_recipes),
+        "window_recipes_with_per_experiment_temperature": win_per_exp,
+        "window_recipes_with_paper_level_scalar_temperature": win_paper_scalar,
+        "windows": win,
+        "note": ("A non-degenerate temperature_window_C is an admissible RANGE, not a "
+                 "scalar condition, and is NOT counted as a completed recipe field. "
+                 "Scalar temperatures previously produced by collapsing such a range to "
+                 "its lower endpoint have been removed; the resulting drop in "
+                 "'filled completeness' is a truthfulness correction, not a regression. "
+                 "'filled completeness' counts imputed and defaulted fields alongside "
+                 "extracted ones and is therefore NOT a measure of recipe readiness — "
+                 "read it together with fields_directly_extracted."),
+    }
 
 
 # =============================================================================
@@ -124,6 +219,7 @@ def render(rows):
     ready = sum(r["analysis_ready"] for r in rows)
     avg_e = round(sum(r["completeness_extracted"] for r in rows) / n, 2) if n else 0
     avg_f = round(sum(r["completeness_filled"] for r in rows) / n, 2) if n else 0
+    acct = field_accounting(rows)
 
     def badge(exp_id, field):
         meta = src.get(exp_id, {}).get(field)
@@ -204,6 +300,19 @@ def render(rows):
  <div class="stat"><b>{len(by_mat)}</b><span>materials</span></div>
  <div class="stat"><b>{avg_e:.2f} → {avg_f:.2f}</b><span>avg completeness (extracted → filled)</span></div>
 </div>
+<div class="bar">
+ <div class="stat"><b>{acct['fields_directly_extracted']}</b><span>fields directly extracted</span></div>
+ <div class="stat"><b>{acct['fields_kb_imputed']}</b><span>fields KB-imputed</span></div>
+ <div class="stat"><b>{acct['fields_model_default']}</b><span>fields model-default</span></div>
+ <div class="stat"><b>{acct['process_window_recipes']}</b><span>recipes with a process window (range, not a scalar)</span></div>
+ <div class="stat"><b>{acct['window_recipes_with_paper_level_scalar_temperature']}</b><span>paper-level scalar temps from a range (must be 0)</span></div>
+</div>
+<div class="sub" style="font-size:12px"><b>Read completeness with care.</b> “Filled completeness” counts KB-imputed and
+model-default fields alongside measured ones, so it is <b>not</b> a measure of recipe readiness — read it together with
+<i>fields directly extracted</i>. A non-degenerate <code>temperature_window_C</code> is an admissible <b>range</b>, not a
+scalar condition, and is never counted as a completed recipe field. Scalar temperatures previously produced by collapsing
+such a range to its lower endpoint have been removed, so any drop in filled completeness here is a
+<b>truthfulness correction, not a model regression</b>.</div>
 <div class="sub" style="font-size:12px">{LEGEND}</div>
 <div class="ctl"><input id="q" placeholder="filter by exp id / species / material…" style="min-width:280px" oninput="flt()"></div>
 {"".join(sections)}
@@ -233,3 +342,11 @@ if __name__ == "__main__":
     print(f"wrote output/recipes.json + recipes.html  ({n} recipes)")
     print(f"  completeness  extracted {ae:.2f}  ->  filled {af:.2f}")
     print(f"  gap-fills: {nkb} from KB medians, {nmodel} from model defaults")
+    a = field_accounting(rows)
+    print(f"  fields: {a['fields_directly_extracted']} extracted · "
+          f"{a['fields_kb_imputed']} kb-imputed · {a['fields_model_default']} model-default")
+    print(f"  process windows: {a['process_window_papers']} papers / "
+          f"{a['process_window_recipes']} recipes (range, NOT counted as a scalar); "
+          f"{a['window_recipes_with_per_experiment_temperature']} have a per-experiment T; "
+          f"{a['window_recipes_with_paper_level_scalar_temperature']} paper-level scalars (must be 0)")
+    print("  NOTE: filled completeness includes imputed+default fields — not recipe readiness.")
