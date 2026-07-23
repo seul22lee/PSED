@@ -49,7 +49,14 @@ conditions actually stated (null if absent — do NOT guess):
 {"precursors":[..],"coreactants":[..],"process_type":"thermal"|"plasma"|"unknown",
  "temperature_C":num|null,"pressure_Pa":num|null,
  "pulse_time_s":{"precursor":num|null,"coreactant":num|null}|null,
- "purge_time_s":num|null,"ncycles":num|null,"carrier_gas":str|null}"""
+ "purge_time_s":num|null,"ncycles":num|null,"carrier_gas":str|null,
+ "_from_table":str|null}
+The METHODS prose is primary. Consult the TABLES only when the prose or a figure
+caption indicates a value is given in a table (e.g. 'listed in Table 1'), or when a
+requested value is not in the prose but is clearly stated in a table. When you take a
+value from a table, it must be the STANDARD/baseline process value, not one row of an
+ablation series. Do NOT guess; leave null if not clearly stated. If a value comes from
+a table, note which table in the "_from_table" field."""
 
 
 def base_card(scout):
@@ -70,9 +77,21 @@ def methods_fill(sd, scout, client):
                                    "materials and methods"], limit=4000)
     if not methods:
         return base, {}
+    # Tables the paper reports (from docling) — given to the SAME card-building call as a
+    # reference the LLM consults only when pointed to a table or when a value is missing
+    # from the prose (e.g. a standard TMA pulse listed only in a pulse-purge-sequence table).
+    st = json.loads((EXTRACTED / sd / "structure.json").read_text())
+    tables_md = "\n\n".join(
+        f"[TABLE {t.get('index')}] {t.get('caption', '')}\n{t.get('markdown', '')}"
+        for t in st.get("tables", []) if t.get("markdown"))
+    contents = f"{METHODS_SCHEMA}\n\n=== METHODS ===\n{methods}"
+    if tables_md:
+        contents += ("\n\n=== TABLES (consult ONLY if the methods/captions refer to a "
+                     "table, or a value above is absent and appears in a table) ===\n"
+                     + tables_md)
     from google.genai import types
     r = client.models.generate_content(
-        model=MODEL, contents=f"{METHODS_SCHEMA}\n\n=== METHODS ===\n{methods}",
+        model=MODEL, contents=contents,
         config=types.GenerateContentConfig(temperature=0, response_mime_type="application/json"))
     u = getattr(r, "usage_metadata", None)
     tok = {"in": getattr(u, "prompt_token_count", 0) or 0, "out": getattr(u, "candidates_token_count", 0) or 0}
@@ -89,6 +108,8 @@ def methods_fill(sd, scout, client):
               "purge_time_s", "ncycles", "carrier_gas"):
         if base.get(k) in (None, "unknown", []) and m.get(k) not in (None, ""):
             base[k] = m[k]
+    if m.get("_from_table"):
+        base["_from_table"] = m["_from_table"]     # provenance: which table a value came from
     return base, tok
 
 

@@ -100,6 +100,11 @@ def impute(target, quantity, reactant=None, corpus=None, SC=None,
             continue
         if ready_only and not e.get("analysis_ready"):
             continue
+        # HARD same-material filter: a donor must be the SAME deposited material, not
+        # merely similar in other conditions. Material is a gate, not a weight — otherwise
+        # a ZrO2 paper's 10 s pulse could win an Al2O3 dose on matching temperature/geometry.
+        if e.get("material") != target.get("material"):
+            continue
         val = None
         for c in e.get("controlled") or []:
             if (c.get("quantity") in qset and isinstance(c.get("value"), (int, float))
