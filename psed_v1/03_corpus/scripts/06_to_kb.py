@@ -226,6 +226,26 @@ def to_experiments(sd, scout, records, card):
         # (attached to its Paper node in the KG) carrying chemistry + conditions + the data
         # modalities the scout saw (XRD, spectra, imaging …), so the paper enters the KB.
         exps.append(paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c, base_ctrl))
+    # Species properties from the ontology for each cycle reactant (A precursor,
+    # B coreactant, …) — ported verbatim from the old s08_resolve, which the new
+    # 06 path never ran, so 662 experiments had lost molecular_mass / diameter that
+    # the twin (and similarity) rely on. Applied to BOTH panel and paper-level records.
+    for e in exps:
+        for r in e.get("reactants") or []:
+            sp, lab = r.get("species"), r.get("label")
+            if not sp:
+                continue
+            mm = lib.species_prop(sp, "molar_mass")
+            dpm = lib.species_prop(sp, "molecular_diameter")
+            e["controlled"] = [c for c in (e.get("controlled") or [])
+                               if not (c.get("quantity") in ("molecular_mass", "precursor_molecular_diameter")
+                                       and c.get("of_reactant") == lab)]
+            if mm is not None:
+                e["controlled"].append({"quantity": "molecular_mass", "value": round(mm, 4),
+                                        "unit": "g/mol", "of_reactant": lab, "source": "species"})
+            if dpm is not None:
+                e["controlled"].append({"quantity": "precursor_molecular_diameter", "value": round(dpm * 1e-3, 4),
+                                        "unit": "nm", "of_reactant": lab, "source": "species"})
     return pid, exps
 
 
