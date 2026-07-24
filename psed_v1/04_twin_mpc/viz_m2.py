@@ -1,6 +1,9 @@
 """
-viz_m2.py — visual review of M2 (recipes in the KB + warm-start). Produces
-`m2_report.html` with two panels:
+viz_m2.py — LEGACY, NON-CANONICAL M2 visualisation.
+
+The canonical M2 report is produced by m2_design.py at 04_twin_mpc/m2_report.html.
+This module no longer writes any artifact; its two figure builders remain importable
+so the canonical report (or an ad-hoc review) can reuse them. Two panels:
 
   1. Recipe grounding — every experiment lifted to a Recipe, gaps filled from the
      KB/model cascade. Per-material completeness (extracted -> filled) + how many
@@ -141,7 +144,7 @@ def solve_fig(material="Al2O3", target_pd=1.2e-4):
         ax.text(D_ref, pd_min, " literature\n reference", color=GREY, fontsize=7.5, va="bottom")
     if sol.feasible:
         ax.plot([sol.dose], [sol.achieved_pd * 1e6], "o", color=GREEN, ms=9, zorder=5,
-                label=f"solved  D={sol.dose:.3g} Pa·s")
+                label=f"solved  effective dose = {sol.effective_dose:.3g} Pa·s")
         ax.vlines(sol.dose, pd_min, sol.achieved_pd * 1e6, color=GREEN, lw=1, ls="--")
         ttl = f"{material}: dose solved by twin inversion"
     else:
@@ -150,7 +153,7 @@ def solve_fig(material="Al2O3", target_pd=1.2e-4):
                 ms=11, zorder=5, label=f"boundary of achievable range ({yb:.0f} µm)")
         ttl = f"{material}: target outside achievable range ({sol.status})"
     ax.set_xscale("log")
-    ax.set_xlabel("dose  D = pA · t_p  (Pa·s)"); ax.set_ylabel("penetration depth PD50 (µm)")
+    ax.set_xlabel("effective dose = pA · t_p  (Pa·s)"); ax.set_ylabel("penetration depth PD50 (µm)")
     ax.set_title(ttl, fontsize=10)
     ax.legend(fontsize=7.5, loc="upper left")
     fig.tight_layout()
@@ -196,7 +199,7 @@ Every filled value is source-tagged (see <span class=mono>recipes.html</span>).<
 <div class=card><h2>2 · Target dose by twin inversion</h2><img src="data:image/png;base64,{img2}">
 <div class=legend>Given a target penetration depth and a fixed pressure-to-pulse-time ratio
 <span class=mono>r = pA/t_p = {r:.0f} Pa/s</span> (source: <b>{ratio_source}</b>), the dose
-<span class=mono>D = pA·t_p</span> is solved directly from the twin by <b>bracketed root finding</b>
+<span class=mono>effective dose = pA·t_p</span> is solved directly from the twin by <b>bracketed root finding</b>
 (<span class=mono>{method}</span>) — not by a controller and not by gradient descent. Feasibility is
 decided from the achievable PD range <b>before</b> solving. The literature reference dose is shown for
 comparison; it is a ratio prior, so the solved dose is <b>model-inverted under a literature-informed
@@ -214,6 +217,16 @@ ratio</b>, not itself literature-derived.</div>
 
 
 def main():
+    """LEGACY / NON-CANONICAL. The canonical M2 report is produced by m2_design.py at
+    04_twin_mpc/m2_report.html. This entry point no longer writes an artifact, so two
+    files can never both look like the official M2 result; the figure builders above
+    remain importable."""
+    print("viz_m2 is legacy and non-canonical — it writes no artifact.\n"
+          "The canonical M2 report is m2_design.py -> 04_twin_mpc/m2_report.html.")
+    return
+
+
+def _legacy_render():
     img1 = grounding_fig()
     img2, s = solve_fig()
     f = s["feasible"]
