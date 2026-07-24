@@ -73,31 +73,139 @@ def _input(exp, q, r=None, impute=True):
     return None, "default"
 
 
+# =============================================================================
+# build_twin input-resolution transparency. Every model input's resolution is
+# recorded INSIDE the resolution path (candidates, precedence, conversion, final
+# value), captured on the SAME twin object used for the prediction (m.resolution_
+# trace). Provenance CATEGORY and resolution OUTCOME are distinct and both kept.
+# The frozen precursor-pressure precedence (pressure_compat) is preserved exactly.
+# =============================================================================
+RESOLUTION_OUTCOMES = ("directly_resolved", "resolved_with_conversion", "resolved_by_derivation",
+                       "resolved_by_imputation", "resolved_by_default", "unresolved",
+                       "conflicting_evidence")
+PROVENANCE_CATEGORIES = ("literature_reported", "extracted", "derived", "imputed",
+                         "model_default", "inverse_fitted", "unresolved")
+_ONTO_QK = ({qk.get("id") for qk in _ONTO.get("quantity_kinds", [])}
+            | {a for qk in _ONTO.get("quantity_kinds", []) for a in (qk.get("aliases") or [])})
+
+
+def _onto_status(name):
+    if name is None:
+        return "model_specific_unresolved_mapping"
+    return "ontology_supported" if name in _ONTO_QK else "not_represented_in_ontology"
+
+
+def _cands(exp, q, r=None):
+    """Every numeric controlled candidate for (quantity, reactant) with its source/unit."""
+    out = []
+    for cc in exp.get("controlled") or []:
+        if cc.get("quantity") == q and (r is None or cc.get("of_reactant") == r):
+            v = cc.get("value")
+            if isinstance(v, (int, float)) and not isinstance(v, bool):
+                out.append({"value": float(v), "unit": cc.get("unit"), "of_reactant": cc.get("of_reactant"),
+                            "source": cc.get("source") or ((cc.get("origin") or {}).get("from")),
+                            "card_status": (((cc.get("origin") or {}).get("card_provenance") or {}).get("status"))})
+    return out
+
+
+def _rec(canonical, canonical_path, attr, value, unit, display, provenance, outcome, **kw):
+    return {"canonical": canonical, "canonical_path": canonical_path, "attr": attr, "value": value,
+            "unit": unit, "display": display, "provenance": provenance, "outcome": outcome,
+            "source": kw.get("source"), "selection_rule": kw.get("selection_rule"),
+            "fallback_chain": kw.get("fallback_chain", []), "candidates": kw.get("candidates", []),
+            "selected": kw.get("selected"), "reason_selected": kw.get("reason_selected"),
+            "rejected": kw.get("rejected", []), "transform": kw.get("transform"),
+            "role": kw.get("role", "fixed"), "assumption": kw.get("assumption", ""),
+            "evidence_status": kw.get("evidence_status"),
+            "ontology_support": kw.get("ontology_support", _onto_status(canonical))}
+
+
+def _kb_rec(m, attr, canonical, unit, display, role="fixed", assumption="", ontology_support=None):
+    """Resolution record for a from_kb-resolved model attribute, read from the twin's own
+    kb_provenance (produced by kb_bridge.params_for at build time — not reconstructed)."""
+    p = (getattr(m, "kb_provenance", {}) or {}).get(attr) or {}
+    s = p.get("source")
+    if s == "kb":
+        prov, out = "literature_reported", ("resolved_with_conversion" if p.get("unit") else "directly_resolved")
+        src = f"KB[{p.get('quantity')}]" + (f" refs {','.join(p.get('refs', []))}" if p.get("refs") else "")
+        ev = f"n={p.get('n')}, sigma={p.get('sigma')}"
+        transform = (f"{p.get('unit')} → SI" if p.get("unit") else None)
+    elif s == "precursor":
+        prov, out = "literature_reported", "resolved_with_conversion"
+        src = f"precursor ontology.{p.get('property')} ({p.get('species')})"; ev = None
+        transform = "ontology unit → SI"
+    elif s == "material":
+        prov, out = "literature_reported", "directly_resolved"
+        src = f"material ontology.{p.get('property')}"; ev = None; transform = None
+    else:
+        prov, out = "model_default", "resolved_by_default"
+        src = "channelModel default"; ev = None; transform = None
+    if ontology_support is None:
+        # precursor/material properties are ontology individuals (grounded even if not a quantity_kind id)
+        ontology_support = "ontology_supported" if s in ("precursor", "material") else _onto_status(canonical)
+    return _rec(canonical, f"KB/ontology[{canonical or attr}]", attr, getattr(m, attr), unit, display,
+                prov, out, source=src, selection_rule="species/material ontology property > KB median > model default",
+                fallback_chain=["precursor/material ontology property", "KB literature median", "model default"],
+                candidates=[], selected=(s or "default"), reason_selected="params_for cascade (kb_bridge)",
+                transform=transform, role=role, assumption=assumption, evidence_status=ev,
+                ontology_support=ontology_support)
+
+
 def build_twin(exp):
-    """Construct a twin for this experiment. Process parameters (dose, T, pA, gpc)
-    are taken from THIS experiment, else covariate-imputed from the KB, else the
-    model default. Geometry (gap height H) is taken or assumed (never imputed —
-    it's structure-specific). Returns the twin, notes, and `prov` = {input: state}
-    where state is extracted | imputed | default."""
+    """Construct a twin for this experiment. Process parameters (dose, T, pA, gpc) are taken
+    from THIS experiment, else covariate-imputed from the KB, else the model default. Geometry
+    (gap height H) is taken or assumed (never imputed). Returns the twin, notes, and
+    `prov` = {input: state}. Also attaches `m.resolution_trace`: a full per-input resolution
+    record captured inside this resolution path."""
     mat = exp.get("material")
     prec = next((r.get("species") for r in exp.get("reactants") or [] if r.get("role") == "precursor"), None)
     carrier = (exp.get("carrier_gas") or {}).get("species") or "N2"
     m = channelModel.from_kb(mat, species={"A": prec} if prec else None, carrier=carrier)
-    notes, prov = [], {}
+    notes, prov, trace = [], {}, []
+    import pressure_compat as _pc
 
+    # ---- pulse time t_p — precedence: A-extracted > A-imputed > B-extracted > B-imputed > default
     tp, prov["dose"] = _input(exp, "pulse_time", "A")
+    slot = "A"
     if prov["dose"] == "default":
         tp, prov["dose"] = _input(exp, "pulse_time", "B")
+        slot = "B" if prov["dose"] != "default" else "A"
     if tp:
         m.t_p = tp
+    cA, cB = _cands(exp, "pulse_time", "A"), _cands(exp, "pulse_time", "B")
+    conflict = len({round(x["value"], 9) for x in (cA if slot == "A" else cB)}) > 1
+    tp_out = ("conflicting_evidence" if conflict else "directly_resolved" if prov["dose"] == "extracted"
+              else "resolved_by_imputation" if prov["dose"] == "imputed" else "resolved_by_default")
+    trace.append(_rec("pulse_time", f"controlled[pulse_time, of_reactant={slot}]", "t_p", m.t_p, "s",
+        f"{m.t_p:.4g} s", _prov_cat(prov["dose"]), tp_out,
+        source=("controlled" if prov["dose"] == "extracted" else "KB impute" if prov["dose"] == "imputed" else "model default"),
+        selection_rule="A-extracted > A-imputed > B-extracted > B-imputed > model default",
+        fallback_chain=["controlled[pulse_time,A]", "KB impute[pulse_time,A]", "controlled[pulse_time,B]",
+                        "KB impute[pulse_time,B]", "model default"],
+        candidates=[{**x, "slot": "A"} for x in cA] + [{**x, "slot": "B"} for x in cB],
+        selected=f"{prov['dose']} (slot {slot})", reason_selected=f"first available by precedence",
+        rejected=([{"value": x["value"], "reason": "same-slot alternate value (not selected)"} for x in (cA if slot == "A" else cB)[1:]]),
+        role=("adjustable (calibration probe)" if prov["dose"] != "extracted" else "fixed"),
+        assumption=("KB estimate (imputed)" if prov["dose"] == "imputed" else "model default t_p" if prov["dose"] == "default" else "")))
+
+    # ---- temperature T — extracted > imputed > default; conversion °C → K
     T, prov["T"] = _input(exp, "temperature")
     if T is not None:
         m.T = T + 273.15
-    # Typed precursor partial pressure (precedence: precursor_partial_pressure >
-    # reactant_A_partial_pressure > partial_pressure) takes priority; a
-    # chamber/working/base/generic pressure can never satisfy this. Falls back to the
-    # legacy imputing path only when no typed precursor pressure exists.
-    import pressure_compat as _pc
+    cT = _cands(exp, "temperature")
+    T_out = ("conflicting_evidence" if len({round(x["value"], 6) for x in cT}) > 1 else
+             "resolved_with_conversion" if prov["T"] == "extracted" else
+             "resolved_by_imputation" if prov["T"] == "imputed" else "resolved_by_default")
+    trace.append(_rec("temperature", "controlled[temperature]", "T", m.T, "K", f"{m.T-273.15:.4g} °C",
+        _prov_cat(prov["T"]), T_out, source=("controlled" if prov["T"] == "extracted" else "KB impute" if prov["T"] == "imputed" else "default"),
+        selection_rule="extracted > KB impute > model default", candidates=cT,
+        fallback_chain=["controlled[temperature]", "KB impute[temperature]", "model default"],
+        selected=prov["T"], reason_selected="first available by precedence",
+        rejected=[{"value": x["value"], "reason": "alternate value (not selected)"} for x in cT[1:]],
+        transform=("+273.15 (°C → K)" if prov["T"] != "default" else None),
+        assumption=("KB estimate (imputed)" if prov["T"] == "imputed" else "")))
+
+    # ---- precursor partial pressure pA — FROZEN pressure_compat precedence, then impute, then default
     _pav, _pac = _pc.precursor_pressure(exp)
     if _pav is not None:
         pA, prov["pA"] = _pav, "extracted"
@@ -105,24 +213,106 @@ def build_twin(exp):
         pA, prov["pA"] = _input(exp, "partial_pressure", "A")
     if pA:
         m.pA = pA
+    press_cands = []
+    for cc in exp.get("controlled") or []:
+        q = cc.get("quantity")
+        v = cc.get("value")
+        if q and "pressure" in q and isinstance(v, (int, float)) and not isinstance(v, bool):
+            accepted = (q in _pc.PRECURSOR_PRESSURE_QUANTITIES and _pc._slot_ok(q, cc.get("of_reactant"), "A"))
+            status = ("accepted" if accepted else "rejected: forbidden type"
+                      if q in _pc.FORBIDDEN_FOR_PARTIAL else "rejected: wrong type/slot")
+            press_cands.append({"value": float(v), "unit": cc.get("unit"), "quantity": q,
+                                "of_reactant": cc.get("of_reactant"), "acceptance": status})
+    pA_out = ("directly_resolved" if prov["pA"] == "extracted" else
+              "resolved_by_imputation" if prov["pA"] == "imputed" else "resolved_by_default")
+    trace.append(_rec("precursor_partial_pressure",
+        f"controlled[{(_pac or {}).get('quantity', 'precursor_partial_pressure')}, of_reactant=A]", "pA", m.pA, "Pa",
+        f"{m.pA:.4g} Pa", _prov_cat(prov["pA"]), pA_out,
+        source=(f"pressure_compat:{(_pac or {}).get('quantity')}" if prov["pA"] == "extracted"
+                else "KB impute[partial_pressure,A]" if prov["pA"] == "imputed" else "model default pA=100 Pa"),
+        selection_rule="FROZEN: precursor_partial_pressure > reactant_A_partial_pressure > partial_pressure "
+                       "(forbidden types excluded) > KB impute > model default",
+        fallback_chain=list(_pc.PRECURSOR_PRESSURE_QUANTITIES) + ["KB impute[partial_pressure,A]", "model default"],
+        candidates=press_cands, selected=((_pac or {}).get("quantity") if prov["pA"] == "extracted" else prov["pA"]),
+        reason_selected=("typed precursor partial pressure accepted by frozen precedence" if prov["pA"] == "extracted"
+                         else "no accepted typed precursor pressure; " + prov["pA"]),
+        rejected=[{"value": c["value"], "reason": c["acceptance"]} for c in press_cands if c["acceptance"].startswith("rejected")],
+        assumption=("KB estimate (imputed)" if prov["pA"] == "imputed" else "model default pA=100 Pa" if prov["pA"] == "default" else "")))
+
+    # ---- growth per cycle gpc — extracted > imputed > default; conversion nm → m
     gpc, prov["gpc"] = _input(exp, "growth_per_cycle")
     if gpc:
         m.gpc = gpc * NM
-    # geometry: gap height H (diffusion-limiting) — extracted or assumed, not imputed
+    cG = _cands(exp, "growth_per_cycle")
+    g_out = ("resolved_with_conversion" if prov["gpc"] == "extracted" else
+             "resolved_by_imputation" if prov["gpc"] == "imputed" else "resolved_by_default")
+    trace.append(_rec("growth_per_cycle", "controlled[growth_per_cycle]", "gpc", m.gpc, "m",
+        f"{m.gpc*1e9:.4g} nm/cyc", _prov_cat(prov["gpc"]), g_out,
+        source=("controlled" if prov["gpc"] == "extracted" else "KB impute" if prov["gpc"] == "imputed" else "default"),
+        selection_rule="extracted > KB impute > model default", candidates=cG,
+        fallback_chain=["controlled[growth_per_cycle]", "KB impute[growth_per_cycle]", "model default"],
+        selected=prov["gpc"], reason_selected="first available by precedence",
+        transform=("×1e-9 (nm → m)" if prov["gpc"] != "default" else None),
+        assumption=("KB estimate (imputed)" if prov["gpc"] == "imputed" else "")))
+
+    # ---- gap height H — extracted (plausibility-checked, NOT imputed) else default; nm → m
     H, _ = _input(exp, "feature_height", impute=False)
     Hm = H * NM if H else None
+    rej_H = []
     if Hm and PLAUSIBLE_GAP_M[0] <= Hm <= PLAUSIBLE_GAP_M[1]:
-        m.H = Hm; prov["H"] = "extracted"
+        m.H = Hm; prov["H"] = "extracted"; H_out = "resolved_with_conversion"
     else:
-        prov["H"] = "default"
-        notes.append(f"feature_height {H:g} nm out of gap range → assumed {DEFAULT_H*1e6:g} µm"
-                     if Hm else f"no feature_height → assumed {DEFAULT_H*1e6:g} µm gap")
-        m.H = DEFAULT_H
-    for k in ("dose", "T", "pA", "gpc"):                 # note imputed process inputs
+        prov["H"] = "default"; H_out = "resolved_by_default"; m.H = DEFAULT_H
+        if Hm:
+            rej_H = [{"value": H, "reason": f"out of plausible gap range [{PLAUSIBLE_GAP_M[0]*1e9:g},{PLAUSIBLE_GAP_M[1]*1e9:g}] nm"}]
+            notes.append(f"feature_height {H:g} nm out of gap range → assumed {DEFAULT_H*1e6:g} µm")
+        else:
+            notes.append(f"no feature_height → assumed {DEFAULT_H*1e6:g} µm gap")
+    trace.append(_rec("feature_height", "controlled[feature_height]", "H", m.H, "m", f"{m.H*1e6:.4g} µm",
+        _prov_cat(prov["H"]), H_out, source=("controlled" if prov["H"] == "extracted" else "model default gap"),
+        selection_rule="extracted-in-plausible-range (NOT imputed — structure-specific) > model default",
+        fallback_chain=["controlled[feature_height] within plausible gap range", "model default DEFAULT_H"],
+        candidates=_cands(exp, "feature_height"), selected=prov["H"],
+        reason_selected=("extracted, within plausible gap range" if prov["H"] == "extracted" else "no accepted extracted value → default"),
+        rejected=rej_H, transform=("×1e-9 (nm → m)" if prov["H"] == "extracted" else None),
+        assumption=("assumed default gap (not extracted)" if prov["H"] == "default" else "")))
+
+    # ---- channel width W — extracted (must exceed H) else default; nm → m
+    W, _ = _input(exp, "feature_width", impute=False)
+    if W and W * NM > m.H:
+        m.W = W * NM; W_prov, W_out, W_rej = "extracted", "resolved_with_conversion", []
+    else:
+        m.W = DEFAULT_W; W_prov, W_out = "default", "resolved_by_default"
+        W_rej = ([{"value": W, "reason": "not greater than gap height H"}] if W else [])
+    trace.append(_rec("feature_width", "controlled[feature_width]", "W", m.W, "m", f"{m.W*1e3:.4g} mm",
+        _prov_cat(W_prov), W_out, source=("controlled" if W_prov == "extracted" else "model default width"),
+        selection_rule="extracted feature_width (must exceed gap height H) > model default",
+        fallback_chain=["controlled[feature_width] with width > H", "model default DEFAULT_W"],
+        candidates=_cands(exp, "feature_width"), selected=W_prov, rejected=W_rej,
+        transform=("×1e-9 (nm → m)" if W_prov == "extracted" else None)))
+
+    # ---- from_kb-resolved model coefficients / species properties (kb_provenance) ----
+    trace.append(_kb_rec(m, "c", None, "dimensionless", f"{m.c:.4g}",
+        role="fixed in forward prediction; adjustable in calibration probe",
+        assumption=f"{C_LABEL}; ontology mapping to sticking_probability: {C_ONTOLOGY_STATUS}",
+        ontology_support="model_specific_unresolved_mapping"))
+    trace.append(_kb_rec(m, "K", "adsorption_rate_constant", "1/Pa", f"{m.K:.4g} 1/Pa"))
+    trace.append(_kb_rec(m, "da", "molecular_diameter", "m", f"{m.da*1e12:.4g} pm"))
+    trace.append(_kb_rec(m, "MA", "molecular_mass", "kg/mol", f"{m.MA*1e3:.4g} g/mol"))
+
+    # ---- derived exposure ----
+    trace.append(_rec(None, "derived", "exposure", m.pA * m.t_p, "Pa·s", f"{m.pA*m.t_p:.4g} Pa·s",
+        "derived", "resolved_by_derivation", source="pA × t_p",
+        selection_rule="derivation from pA and t_p", fallback_chain=["pA × t_p"],
+        selected="derived", reason_selected="exposure = pA × t_p",
+        role=("adjustable via t_p" if prov["dose"] != "extracted" else "fixed"),
+        assumption="DERIVED from pA and t_p; never independently fitted",
+        ontology_support="derived"))
+
+    for k in ("dose", "T", "pA", "gpc"):
         if prov[k] == "imputed":
             notes.append(f"{k} imputed (KB estimate)")
-    W, _ = _input(exp, "feature_width", impute=False)
-    m.W = W * NM if (W and W * NM > m.H) else DEFAULT_W
+    m.resolution_trace = trace
     return m, notes, prov
 
 
@@ -401,8 +591,9 @@ def validate_one(exp, criteria=DEFAULT_CRITERIA):
                  "quantitative_agreement_status": "insufficient_evidence",  # measurement σ unresolved
                  "shape_fit": shape,
                  "t_p": twin.t_p, "T": twin.T - 273.15, "H_um": twin.H * 1e6,
-                 # runtime forward-model input trace, read from the SAME twin used to predict
-                 "model_input_trace": _model_input_trace(exp, twin, prov, dose_free),
+                 # runtime resolution trace, captured on the SAME twin used to predict
+                 "model_resolution_trace": twin.resolution_trace,
+                 "model_input_trace": twin.resolution_trace,   # alias: value table reads the same records
                  "dose_free": dose_free, "predicted_pd50_um": pd_t,
                  "_twin": (xt_um, yt),
                  "verdict": lverdict, "kind": lkind, "agree": lagree})  # dormant legacy
@@ -681,6 +872,8 @@ def analyze(question=DEFAULT_QUESTION, criteria=DEFAULT_CRITERIA, is_default=Tru
         "n_1d_fits": sum(1 for f in invs if not f["dose_free"]),
         "c_ontology_mapping_status": C_ONTOLOGY_STATUS,
     }
+    # run-level Model Resolution Summary + evidence coverage (from the per-experiment traces)
+    mrs, coverage = _resolution_summary(admissible)
     # ===== EVIDENCE CLOSURE =====
     closure = _evidence_closure(comparisons, admissible, interps, exps_all, assumptions,
                                 preserved, frame, diagn, insights)
@@ -689,7 +882,102 @@ def analyze(question=DEFAULT_QUESTION, criteria=DEFAULT_CRITERIA, is_default=Tru
     return {"frame": frame, "comparisons": comparisons, "admissible": admissible,
             "ensemble": {"patterns": patterns, "diagnosability": diagn},
             "input_provenance_summary": input_provenance_summary,
+            "model_resolution_summary": mrs, "evidence_coverage": coverage,
             "closure": closure, "inquiry": inquiry}
+
+
+# descriptive, non-conclusive consequence of each model-consumed input's evidence status
+_INPUT_CONSEQUENCE = {
+    "t_p": "pulse time / exposure scale; sets penetration when adjustable",
+    "pA": "fixed precursor pressure; calibration interpretation depends on fixed pressure provenance",
+    "H": "transport length scale; weakly grounded if defaulted",
+    "gpc": "per-cycle thickness scale",
+    "T": "diffusion / kinetics temperature",
+    "W": "channel width (secondary to the gap height)",
+    "c": "model-specific lumped reaction coefficient; parameterization remains confounded (fitted in the probe)",
+    "K": "adsorption rate constant (model default; transport/uptake)",
+    "da": "precursor molecular diameter (transport scale)",
+    "MA": "precursor molar mass (transport scale)",
+    "exposure": "derived from pA and t_p",
+}
+# inputs whose default/unresolved state is load-bearing for the forward prediction
+_LOAD_BEARING = {"t_p", "pA", "H", "gpc", "c"}
+
+
+def _resolution_summary(admissible):
+    """Run-level resolution counts (by outcome / provenance / parameter / experiment / source) and
+    a per-parameter evidence-coverage table. NO single confidence score — evidence composition only."""
+    from collections import Counter, defaultdict
+    outc, provc = Counter(), Counter()
+    by_param = defaultdict(Counter)
+    by_exp = defaultdict(Counter)
+    by_source = defaultdict(Counter)
+    param_meta = {}
+    total = 0
+    fitted_tp = any(r["_inverse_fit"]["dose_free"] for r in admissible if r.get("_inverse_fit"))
+    for r in admissible:
+        for row in r.get("model_resolution_trace", []):
+            total += 1
+            o, p, a = row["outcome"], row["provenance"], row["attr"]
+            outc[o] += 1; provc[p] += 1
+            by_param[a][o] += 1; by_exp[r["exp_id"]][o] += 1; by_source[r["paper"]][o] += 1
+            pm = param_meta.setdefault(a, {"canonical": row["canonical"], "attr": a,
+                "ontology_support": row["ontology_support"], "accepted_direct": 0, "derived": 0,
+                "imputed": 0, "defaulted": 0, "unresolved": 0, "conflicting": 0, "n": 0})
+            pm["n"] += 1
+            if o in ("directly_resolved", "resolved_with_conversion"):
+                pm["accepted_direct"] += 1
+            elif o == "resolved_by_derivation":
+                pm["derived"] += 1
+            elif o == "resolved_by_imputation":
+                pm["imputed"] += 1
+            elif o == "resolved_by_default":
+                pm["defaulted"] += 1
+            elif o == "unresolved":
+                pm["unresolved"] += 1
+            if o == "conflicting_evidence":
+                pm["conflicting"] += 1
+
+    def cnts(counter, keys):
+        return {k: counter.get(k, 0) for k in keys}
+
+    def defrac(c):
+        t = sum(c.values()); return (c.get("resolved_by_default", 0) / t) if t else 0.0
+
+    def dirfrac(c):
+        t = sum(c.values())
+        return ((c.get("directly_resolved", 0) + c.get("resolved_with_conversion", 0)) / t) if t else 0.0
+
+    coverage = []
+    for a, pm in param_meta.items():
+        pm = dict(pm)
+        pm["fitted_in_probe"] = (a == "c") or (a == "t_p" and fitted_tp)
+        cons = _INPUT_CONSEQUENCE.get(a, "")
+        if pm["defaulted"] >= max(1, pm["n"]) * 0.5:
+            cons = ("prediction depends on a model default; " + cons) if cons else "prediction depends on a model default"
+        if pm["unresolved"] > 0:
+            cons = "no accepted canonical evidence in the current corpus; " + cons
+        pm["consequence"] = cons
+        pm["load_bearing"] = a in _LOAD_BEARING
+        coverage.append(pm)
+    coverage.sort(key=lambda p: -(p["defaulted"] / max(1, p["n"])))
+
+    mrs = {"total_resolved_instances": total,
+           "by_outcome": cnts(outc, RESOLUTION_OUTCOMES),
+           "by_provenance": cnts(provc, PROVENANCE_CATEGORIES),
+           "by_parameter": {k: dict(v) for k, v in by_param.items()},
+           "parameters_most_defaulted": sorted(((k, v.get("resolved_by_default", 0)) for k, v in by_param.items()),
+                                               key=lambda x: -x[1])[:6],
+           "parameters_most_imputed": sorted(((k, v.get("resolved_by_imputation", 0)) for k, v in by_param.items()),
+                                             key=lambda x: -x[1])[:6],
+           "parameters_conflicting": [k for k, v in by_param.items() if v.get("conflicting_evidence", 0) > 0],
+           "parameters_unresolved": [k for k, v in by_param.items() if v.get("unresolved", 0) > 0],
+           "experiments_highest_default_dependence": [(k, round(defrac(v), 2)) for k, v in
+                                                      sorted(by_exp.items(), key=lambda kv: -defrac(kv[1]))[:5]],
+           "experiments_strongest_direct_evidence": [(k, round(dirfrac(v), 2)) for k, v in
+                                                     sorted(by_exp.items(), key=lambda kv: -dirfrac(kv[1]))[:5]],
+           "by_source": {k: dict(v) for k, v in by_source.items()}}
+    return mrs, coverage
 
 
 def run_framed(question=DEFAULT_QUESTION, criteria=DEFAULT_CRITERIA):
@@ -1285,8 +1573,71 @@ def _pbadge(p):
     return f'<span class="badge {_PROV_CLS.get(p, "s-ano")}">{_H.escape(str(p))}</span>'
 
 
+# resolution outcome -> css class (defaults/unresolved/conflicting made prominent)
+_OUTCOME_CLS = {"directly_resolved": "s-sup", "resolved_with_conversion": "s-cmp",
+                "resolved_by_derivation": "s-can", "resolved_by_imputation": "s-ins",
+                "resolved_by_default": "s-ano", "unresolved": "s-ano", "conflicting_evidence": "s-ano"}
+
+
+def _obadge(o):
+    return f'<span class="badge {_OUTCOME_CLS.get(o, "s-ano")}">{_H.escape(str(o))}</span>'
+
+
 def _fmtv(v):
     return f"{v:.4g}" if isinstance(v, (int, float)) else _H.escape(str(v))
+
+
+def _resolution_table_html(c):
+    """The Model Resolution Trace: for every model input, canonical evidence → candidates →
+    precedence/fallback decision → conversion/derivation → final model value → attribute.
+    Provenance AND resolution outcome are readable in the main table (not only tooltips);
+    defaulted / unresolved / conflicting rows are visually prominent."""
+    esc = _H.escape
+    rows = ""
+    for r in c.get("model_resolution_trace", []):
+        cands = r.get("candidates") or []
+        cand_txt = "; ".join(
+            f"{_fmtv(x.get('value'))}{(' ' + str(x.get('unit'))) if x.get('unit') else ''}"
+            + (f" [{esc(str(x.get('quantity')))}]" if x.get("quantity") else "")
+            + (f" ({esc(str(x['acceptance']))})" if x.get("acceptance") else "")
+            for x in cands) or "—"
+        rej = r.get("rejected") or []
+        rej_txt = ("; ".join(f"{_fmtv(x['value'])} — {esc(str(x['reason']))}" for x in rej)) if rej else ""
+        prom = (r["outcome"] in ("resolved_by_default", "unresolved", "conflicting_evidence"))
+        hl = ' style="background:rgba(227,73,72,.05)"' if prom else ''
+        rows += (f"<tr{hl}>"
+                 f"<td class=mono>{esc(str(r['canonical']) if r['canonical'] else '—')}"
+                 f"<div class=mut style='font-size:10.5px'>{esc(r['canonical_path'])}</div></td>"
+                 f"<td class=mono>{esc(r['attr'])}</td>"
+                 f"<td>{_pbadge(r['provenance'])}</td><td>{_obadge(r['outcome'])}</td>"
+                 f"<td class=mono>{esc(r['display'])}</td>"
+                 f"<td class=mut style='font-size:11px'>{esc(r['selection_rule'])}"
+                 f"<div>selected: <b>{esc(str(r['selected']))}</b></div></td>"
+                 f"<td class=mut style='font-size:11px'>{cand_txt}"
+                 + (f"<div style='color:#c62b2b'>rejected: {rej_txt}</div>" if rej_txt else "") + "</td>"
+                 f"<td class=mut style='font-size:11px'>{esc(str(r['transform'])) if r['transform'] else '—'}</td>"
+                 f"<td class=mut style='font-size:11px'>{esc(r['assumption'])}</td></tr>")
+    return (f"<div class=note><b>Model Resolution Trace</b> — how each runtime input was resolved "
+            f"(canonical evidence → candidates → precedence decision → conversion → final value → "
+            f"attribute). Model-default / unresolved / conflicting rows are highlighted.</div>"
+            f"<div style='overflow-x:auto'><table><tr><th>canonical evidence</th><th>attr</th><th>provenance</th>"
+            f"<th>resolution outcome</th><th>final value</th><th>selection rule / selected</th>"
+            f"<th>candidates &amp; rejections</th><th>conversion</th><th>assumption</th></tr>{rows}</table></div>")
+
+
+def _evidence_composition(c):
+    """Per-comparison model-input evidence composition (NOT a confidence score). Counts the
+    comparison's inputs by resolution outcome and names its load-bearing defaulted inputs."""
+    from collections import Counter
+    tr = c.get("model_resolution_trace", [])
+    oc = Counter(r["outcome"] for r in tr)
+    load = [r["attr"] for r in tr if r["outcome"] in ("resolved_by_default", "unresolved")
+            and r["attr"] in _LOAD_BEARING]
+    parts = " · ".join(f"{v} {_obadge(k)}" for k, v in oc.items())
+    lb = (f" <b>Load-bearing defaulted/unresolved inputs:</b> "
+          f"<span class=mono>{_H.escape(', '.join(load))}</span>." if load else "")
+    return (f"<div class=note><b>Model-input evidence composition</b> (not a confidence score; parameters "
+            f"are not equally important): {parts}.{lb}</div>")
 
 
 def _trace_html(c):
@@ -1302,18 +1653,11 @@ def _trace_html(c):
           f"extraction status {esc(str(op.get('extraction_status')))}; measurement uncertainty "
           f"<b>{esc(op['measurement_uncertainty'])}</b>; calibration status <b>{esc(op['calibration_status'])}</b>. "
           f"Observable: normalised thickness vs depth; PD50 = depth at 50% of mouth thickness.</div>")
-    trows = "".join(
-        f"<tr><td class=mono>{esc(str(r['canonical']) if r['canonical'] else '—')}</td>"
-        f"<td class=mono>{esc(r['attr'])}</td><td class=mono>{_fmtv(r['value'])}</td>"
-        f"<td class=mono>{esc(r['unit'])}</td><td>{_pbadge(r['provenance'])}</td>"
-        f"<td class=mut style='font-size:11px'>{esc(r['source'])}</td>"
-        f"<td class=mono style='font-size:11px'>{esc(r['role'])}</td>"
-        f"<td class=mut style='font-size:11px'>{esc(r['assumption'])}</td></tr>"
-        for r in c.get("model_input_trace", []))
-    t2 = (f"<div class=note><b>2 · Forward-model input trace</b> — the actual runtime values passed into "
-          f"<span class=mono>build_twin()</span> and used to produce the prediction:</div>"
-          f"<table><tr><th>canonical evidence</th><th>attr</th><th>value</th><th>unit</th><th>provenance</th>"
-          f"<th>source / fallback</th><th>fixed / adjustable</th><th>assumption</th></tr>{trows}</table>")
+    # 2 · Model Resolution Trace (how each runtime input was resolved) + evidence composition
+    t2 = ("<div class=note><b>2 · Forward-model input resolution.</b> The values below are the actual "
+          "runtime attributes passed into <span class=mono>build_twin()</span> and used to produce the "
+          "prediction, with how each was resolved.</div>"
+          + _resolution_table_html(c) + _evidence_composition(c))
     t3 = (f"<div class=note><b>3 · Forward prediction.</b> chain: canonical evidence → resolved runtime input "
           f"→ model attribute → predicted normalised profile → predicted PD50 = "
           f"<b>{_um(c.get('predicted_pd50_um'))}</b> (observed PD50 = {_um(c.get('pd_meas'))}).</div>"
@@ -1416,12 +1760,34 @@ def render_brief(analysis, out_path=None):
                  f"<span>boundary-limited fits</span></div>"
                  f"<div class=stat><b>{ips.get('ridge_or_broad_fits', 0)}</b>"
                  f"<span>broad / ridge (weak identifiability)</span></div>")
+    # run-level Model Resolution Summary (outcome counts, most-defaulted, per-experiment dependence)
+    mrs = analysis.get("model_resolution_summary", {})
+    bo = mrs.get("by_outcome", {})
+    out_stats = "".join(
+        f"<div class=stat><b>{_obadge(k)}</b><span>{v}</span></div>"
+        for k, v in sorted(bo.items(), key=lambda x: -x[1]) if v)
+    most_def = ", ".join(f"<span class=mono>{esc(a)}</span>×{n}" for a, n in mrs.get("parameters_most_defaulted", []) if n)
+    most_imp = ", ".join(f"<span class=mono>{esc(a)}</span>×{n}" for a, n in mrs.get("parameters_most_imputed", []) if n)
+    confl = mrs.get("parameters_conflicting", [])
+    unres = mrs.get("parameters_unresolved", [])
     s_prov = (f"<div class=note><b>Model-input provenance summary</b> across the {len(adm)} admissible "
-              f"comparisons. Model-default and unresolved inputs are the weakest — the calibration probe "
-              f"(§10 and per-row) then fits the adjustable parameters. Fitted c is a "
-              f"<span class=mono>{esc(C_LABEL)}</span>; its ontology mapping to a literature "
-              f"sticking probability is <b>{esc(ips.get('c_ontology_mapping_status', 'unresolved'))}</b>.</div>"
-              f"<div class=bar>{prov_stats}</div><div class=bar>{fit_stats}</div>")
+              f"comparisons ({mrs.get('total_resolved_instances', 0)} resolved input instances). Model-default "
+              f"and unresolved inputs are the weakest — the calibration probe (§10 and per-row) then fits the "
+              f"adjustable parameters. Fitted c is a <span class=mono>{esc(C_LABEL)}</span>; its ontology "
+              f"mapping to a literature sticking probability is "
+              f"<b>{esc(ips.get('c_ontology_mapping_status', 'unresolved'))}</b>.</div>"
+              f"<div class=note><b>By provenance category:</b></div><div class=bar>{prov_stats}</div>"
+              f"<div class=note><b>By resolution outcome:</b></div><div class=bar>{out_stats}</div>"
+              f"<div class=note><b>Calibration probes:</b></div><div class=bar>{fit_stats}</div>"
+              f"<div class=note><b>Parameters most defaulted:</b> {most_def or '—'} · "
+              f"<b>most imputed:</b> {most_imp or '—'} · <b>conflicting evidence:</b> "
+              f"{('<span class=mono>' + esc(', '.join(confl)) + '</span>') if confl else 'none'} · "
+              f"<b>unresolved:</b> {('<span class=mono>' + esc(', '.join(unres)) + '</span>') if unres else 'none'}.</div>"
+              f"<div class=note><b>Experiments with the highest default dependence:</b> "
+              + ", ".join(f"<span class=mono>{esc(e)}</span> ({int(fr*100)}% default)"
+                          for e, fr in mrs.get("experiments_highest_default_dependence", [])[:3])
+              + ". Evidence composition is shown so the researcher can judge it — no single confidence score "
+              "is computed.</div>")
 
     # ---- 2 what was compared (prediction vs observation) ----
     sc = _brief_scatter(adm)
@@ -1609,6 +1975,37 @@ def render_brief(analysis, out_path=None):
            f"<table><tr><th>experiment</th><th>fitted vars</th><th>R² warm→fit</th>"
            f"<th>c warm→fit [bound]</th><th>derived exposure warm→fit</th><th>identifiability</th></tr>{inv_rows}</table>")
 
+    # ---- 11 Model Input Evidence Coverage (coverage-gap exhibit) ----
+    cov = analysis.get("evidence_coverage", [])
+    _ONTO_LBL = {"ontology_supported": ("ontology-supported", "s-sup"),
+                 "not_represented_in_ontology": ("not in ontology", "s-ins"),
+                 "model_specific_unresolved_mapping": ("model-specific (unresolved mapping)", "s-asm"),
+                 "derived": ("derived", "s-can")}
+    cov_rows = ""
+    for pm in cov:
+        lbl, cls = _ONTO_LBL.get(pm["ontology_support"], (pm["ontology_support"], "s-ano"))
+        weak = (pm["defaulted"] >= max(1, pm["n"]) * 0.5) or pm["unresolved"] > 0 or pm["conflicting"] > 0
+        hlw = ' style="background:rgba(227,73,72,.05)"' if weak else ''
+        cov_rows += (f"<tr{hlw}>"
+                     f"<td class=mono>{esc(str(pm['canonical']) if pm['canonical'] else '—')}</td>"
+                     f"<td class=mono>{esc(pm['attr'])}</td>"
+                     f"<td><span class='badge {cls}'>{esc(lbl)}</span></td>"
+                     f"<td class=mono>{pm['accepted_direct']}</td><td class=mono>{pm['derived']}</td>"
+                     f"<td class=mono>{pm['imputed']}</td>"
+                     f"<td class=mono style='color:#c62b2b'>{pm['defaulted']}</td>"
+                     f"<td class=mono>{pm['unresolved']}</td><td class=mono>{pm['conflicting']}</td>"
+                     f"<td class=mono>{'yes' if pm['fitted_in_probe'] else '—'}</td>"
+                     f"<td class=mut style='font-size:11px'>{esc(pm['consequence'])}</td></tr>")
+    s11 = (f"<div class=note>For every model-consumed parameter: its ontology support status and how its "
+           f"evidence resolved across the {len(adm)} admissible comparisons. Missing evidence is described as "
+           f"<b>no accepted canonical evidence in the current corpus</b> — <b>not</b> as absence from the "
+           f"literature (extraction coverage is incomplete). Defaulted counts are highlighted; the "
+           f"consequence column is descriptive, not a verdict, and parameters are not equally important.</div>"
+           f"<div style='overflow-x:auto'><table><tr><th>canonical</th><th>attr</th><th>ontology support</th>"
+           f"<th>direct/extracted</th><th>derived</th><th>imputed</th><th>defaulted</th><th>unresolved</th>"
+           f"<th>conflicting</th><th>fitted in probe</th><th>consequence of missing evidence</th></tr>"
+           f"{cov_rows}</table></div>")
+
     body = f"""<title>M3 · Interpretation Brief</title><style>{_BRIEF_CSS}</style>{_BRIEF_JS}
 <div class=wrap>
 <div class=eyebrow>PSED · M3 · discovery support</div>
@@ -1625,6 +2022,7 @@ researcher interpretation. Model: <span class=mono>{esc(MODEL_ID)}</span>.</div>
 {card("8 · Evidence closure", s8)}
 {card("9 · Discriminating questions (proposals for the researcher)", s9)}
 {card("10 · Provenance and parameterization exhibit", s10)}
+{card("11 · Model Input Evidence Coverage", s11)}
 </div>"""
     out = Path(out_path) if out_path else HERE / "m3_validation.html"
     out.write_text(body)

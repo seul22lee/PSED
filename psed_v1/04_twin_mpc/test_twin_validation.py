@@ -263,7 +263,7 @@ ok("provenance summary counts model_default and literature_reported distinctly",
 
 print("14) the report exposes the computational trace and never mislabels fitted c")
 hp = h                                     # reuse the Brief rendered in section 12 (expensive to render)
-ok("report has the forward-model input trace", "Forward-model input trace" in hp)
+ok("report has the per-experiment model resolution trace", "Model Resolution Trace" in hp)
 ok("report shows the calibration-probe setup with optimizer + objective",
    "Calibration-probe setup" in hp and "smooth log-sigmoid bounded transform" in hp)
 ok("report shows exposure as derived, not independently fitted",
@@ -278,6 +278,78 @@ ok("report shows boundary-limited status", "boundary-limited" in hp.lower())
 ok("report shows the run-level model-input provenance summary", "Model-input provenance summary" in hp)
 ok("report shows readable input labels (not bare H/T/dose pills)",
    "pulse time" in hp and "gap height" in hp and "precursor pressure" in hp)
+
+print("15) build_twin resolution transparency: trace, provenance vs outcome, precedence, conversions")
+import pressure_compat as pc
+# capture-in-path: the trace lives on the twin object used to predict
+tw, _notes, _prov = tv.build_twin(tv._targets()[0])
+ok("build_twin attaches a resolution_trace", hasattr(tw, "resolution_trace") and len(tw.resolution_trace) > 0)
+ATTRS = ("t_p", "T", "pA", "gpc", "H", "W", "c", "K", "da", "MA")
+ok("every resolution value EXACTLY equals the runtime twin attribute",
+   all(abs(r["value"] - getattr(tw, r["attr"])) < 1e-12 for r in tw.resolution_trace if r["attr"] in ATTRS))
+ok("every resolution row has provenance AND outcome (distinct, both valid)",
+   all(r["provenance"] in tv.PROVENANCE_CATEGORIES and r["outcome"] in tv.RESOLUTION_OUTCOMES
+       for r in tw.resolution_trace))
+ok("every row records a fallback chain, candidates field, and a selected value",
+   all(("fallback_chain" in r and "candidates" in r and "selected" in r) for r in tw.resolution_trace))
+# provenance category and resolution outcome are DISTINCT concepts
+ok("model_default provenance <-> resolved_by_default outcome",
+   all((r["provenance"] == "model_default") == (r["outcome"] == "resolved_by_default")
+       for r in tw.resolution_trace if r["attr"] in ATTRS))
+ok("an extracted value with a unit conversion is resolved_with_conversion (e.g. T °C->K)",
+   any(r["attr"] == "T" and r["provenance"] == "extracted" and r["outcome"] == "resolved_with_conversion"
+       and r["transform"] for r in tw.resolution_trace) or
+   all(r["attr"] != "T" or r["provenance"] != "extracted" for r in tw.resolution_trace))
+# defaults never labelled extracted; imputed never literature_reported
+for r in ADM:
+    for row in r["model_resolution_trace"]:
+        if row["outcome"] == "resolved_by_default":
+            ok(f"default not labelled extracted ({row['attr']})", row["provenance"] in ("model_default",))
+        if row["provenance"] == "imputed":
+            ok(f"imputed not labelled literature ({row['attr']})", row["outcome"] == "resolved_by_imputation")
+# FROZEN precursor-pressure precedence preserved and displayed from the real logic
+pA_rec = next(x for x in tw.resolution_trace if x["attr"] == "pA")
+ok("pA fallback chain begins with the FROZEN precursor-pressure precedence",
+   pA_rec["fallback_chain"][:len(pc.PRECURSOR_PRESSURE_QUANTITIES)] == list(pc.PRECURSOR_PRESSURE_QUANTITIES))
+ok("pulse_time precedence encodes A>B>impute>default",
+   "A-extracted" in next(x for x in tw.resolution_trace if x["attr"] == "t_p")["selection_rule"])
+# a rejected forbidden-type pressure candidate is recorded somewhere in the corpus
+any_rej = any(any(str(rej.get("reason", "")).startswith("rejected: forbidden")
+                  for rej in next(x for x in r["model_resolution_trace"] if x["attr"] == "pA")["rejected"])
+              for r in ADM)
+ok("a forbidden-type pressure candidate is recorded as rejected (frozen precedence visible)", any_rej)
+# run-level counts equal the sum of per-comparison trace rows
+mrs = A["model_resolution_summary"]
+ok("run-level total == sum of per-comparison resolution rows",
+   mrs["total_resolved_instances"] == sum(len(r["model_resolution_trace"]) for r in ADM))
+ok("run-level by_outcome sums to the total",
+   sum(mrs["by_outcome"].values()) == mrs["total_resolved_instances"])
+ok("run-level by_provenance sums to the total",
+   sum(mrs["by_provenance"].values()) == mrs["total_resolved_instances"])
+# coverage exhibit distinguishes ontology support and never claims literature absence
+cov = A["evidence_coverage"]
+ok("coverage lists every model-consumed parameter", len(cov) >= 8)
+ok("coverage records ontology support status per parameter",
+   all(p["ontology_support"] in ("ontology_supported", "not_represented_in_ontology",
+       "model_specific_unresolved_mapping", "derived") for p in cov))
+ok("c keeps model-specific unresolved ontology mapping in coverage",
+   any(p["attr"] == "c" and p["ontology_support"] == "model_specific_unresolved_mapping" for p in cov))
+
+print("16) the report exposes resolution transparency and never claims literature absence")
+ok("report has the per-experiment Model Resolution Trace", "Model Resolution Trace" in hp)
+ok("report has the run-level resolution outcome breakdown", "By resolution outcome" in hp)
+ok("report has the Model Input Evidence Coverage exhibit", "Model Input Evidence Coverage" in hp)
+ok("report shows readable provenance AND resolution outcome in tables",
+   "resolved_by_default" in hp and "resolved_with_conversion" in hp)
+ok("report shows the frozen forbidden-type pressure rejection", "rejected: forbidden type" in hp)
+ok("report describes missing evidence as corpus-absence, NOT literature-absence",
+   "no accepted canonical evidence in the current corpus" in hp)
+for bad in ("does not report", "not reported in the literature"):
+    ok(f"report avoids absence-from-literature wording: {bad!r}", bad.lower() not in hp.lower())
+ok("report explicitly disavows a single confidence score", "not a confidence score" in hp)
+ok("report does NOT introduce an aggregate model-confidence score",
+   "model confidence:" not in hp.lower() and "confidence score:" not in hp.lower())
+ok("report shows per-comparison model-input evidence composition", "Model-input evidence composition" in hp)
 
 print()
 if FAIL:
