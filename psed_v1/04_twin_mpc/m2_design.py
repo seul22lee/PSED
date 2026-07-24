@@ -104,10 +104,25 @@ class DesignContext:
 
 @dataclass
 class Candidate:
-    """One operating family, inverted. `solution` is the solver's DoseSolution."""
+    """One operating family, inverted. `solution` is the solver's DoseSolution.
+
+    TWO provenance axes, deliberately never merged into one label:
+
+      family_definition_source  where the ARCHETYPE came from (always a
+            model-supported operating archetype — a way of spending exposure).
+      ratio_evidence_source     what supports the NUMBER actually used. This is the
+            one that must never read `kb` when nothing was retrieved.
+
+    Collapsing them is what previously let a fallback 1000 Pa/s appear as
+    `model_supported` in the candidate table while the context called it `fallback`."""
     family: str
     ratio: float
-    ratio_source: str
+    family_definition_source: str = "model_supported_archetype"
+    ratio_evidence_source: str = "unresolved"
+    ratio_evidence_confidence: float = 0.0
+    ratio_evidence: str = None
+    base_ratio_source: str = None
+    ratio_multiplier: float = 1.0
     solution: object = None
     scores: dict = field(default_factory=dict)
     robustness: dict = field(default_factory=dict)
@@ -128,13 +143,26 @@ class Candidate:
 # A "family" is a way of spending the same exposure: the SAME effective_dose can be
 # delivered as a short high-pressure pulse or a long low-pressure one. Each family
 # fixes the ratio r = pA/t_p, which turns the 2-D (pA, t_p) problem into the 1-D
-# inversion the solver already handles. These are model-supported operating
-# archetypes, NOT literature values — sources say so.
+# inversion the solver already handles.
+#
+# Families are MULTIPLIERS of the resolved reference ratio, not free-standing numbers.
+# That keeps the dependency honest: if the reference ratio is a fallback, so is every
+# family ratio derived from it — none of them acquires independent support by being
+# multiplied by ten. The archetype is model-supported; the NUMBER is not.
 OPERATING_FAMILIES = (
-    ("long_low_pressure", 100.0, "low pA, long pulse — gentle, precursor-lean"),
-    ("balanced", 1000.0, "reference operating family (also the ratio fallback)"),
-    ("short_high_pressure", 10000.0, "high pA, short pulse — throughput-oriented"),
+    ("long_low_pressure", 0.1, "low pA, long pulse — gentle, precursor-lean"),
+    ("balanced", 1.0, "the resolved reference ratio itself"),
+    ("short_high_pressure", 10.0, "high pA, short pulse — throughput-oriented"),
 )
+
+# A derived ratio inherits its base evidence but adds an unevidenced scaling, so it can
+# never be MORE credible than the base it came from.
+DERIVED_CONFIDENCE_FACTOR = 0.5
+
+RANKING_PROFILE = "balanced_default"
+RANKING_WEIGHTS = {"accuracy": 0.15, "margin": 0.25, "robustness": 0.25,
+                   "throughput": 0.15, "confidence": 0.20}
+NEAR_TIE_THRESHOLD = 0.05          # score gap below which no decisive winner is claimed
 
 PA_BOUNDS_DEFAULT, TP_BOUNDS_DEFAULT = (1.0, 200.0), (0.01, 5.0)
 
@@ -249,31 +277,78 @@ def generate_candidates(ctx, families=OPERATING_FAMILIES, model_factory=None):
     invented."""
     mk = model_factory or (lambda: _model(ctx.value("material")))
     tgt = ctx.value("target_pd")
-    ratio_prior = ctx.priors["ratio"]
-    if ratio_prior.source == "user":
-        families = (("user_specified", ratio_prior.value, "ratio pinned by the caller"),)
+    rp = ctx.priors["ratio"]
+    base_ratio, base_src, base_conf = rp.value, rp.source, rp.confidence
+    if base_src == "user":
+        families = (("user_specified", 1.0, "ratio pinned by the caller"),)
 
     out = []
-    for name, ratio, _desc in families:
-        src = "user" if ratio_prior.source == "user" else (
-            "kb" if (ratio_prior.source == "kb" and abs(ratio - ratio_prior.value) < 1e-12)
-            else "model_supported")
-        cand = Candidate(family=name, ratio=float(ratio), ratio_source=src)
+    for name, mult, _desc in families:
+        ratio = float(base_ratio) * float(mult)
+        if abs(mult - 1.0) < 1e-12:
+            # this family IS the resolved reference ratio — same evidence, same weight
+            ev_src, ev_conf = base_src, base_conf
+            ev = rp.evidence
+        else:
+            # scaled off the base: inherits its evidence class, never outranks it
+            ev_src = f"derived_from_{base_src}"
+            ev_conf = round(base_conf * DERIVED_CONFIDENCE_FACTOR, 4)
+            ev = (f"{mult:g} x the resolved reference ratio "
+                  f"({base_ratio:.4g} Pa/s, source {base_src}); the multiplier is an "
+                  f"operating archetype and carries no independent evidence")
+        cand = Candidate(family=name, ratio=ratio,
+                         family_definition_source=("user" if base_src == "user"
+                                                   else "model_supported_archetype"),
+                         ratio_evidence_source=ev_src, ratio_evidence_confidence=ev_conf,
+                         ratio_evidence=ev, base_ratio_source=base_src,
+                         ratio_multiplier=float(mult))
         if tgt is None:
             cand.rejected = "no target_pd resolved"
             out.append(cand); continue
         cand.solution = inverse_solver.solve_target_dose(
-            mk(), tgt, float(ratio),
+            mk(), tgt, ratio,
             dose_bounds=ctx.value("effective_dose_bounds"),
             pressure_bounds=ctx.value("pressure_bounds"),
             pulse_time_bounds=ctx.value("pulse_time_bounds"),
             reference={"effective_dose": ctx.value("reference_effective_dose")},
-            provenance={"ratio_source": src, "family": name,
+            provenance={"family": name, "family_definition_source": cand.family_definition_source,
+                        "ratio_evidence_source": ev_src, "base_ratio_source": base_src,
                         "bounds_source": ctx.priors["pressure_bounds"].source})
         if not cand.solution.feasible:
             cand.rejected = f"{cand.solution.status}: {cand.solution.reason}"
         out.append(cand)
     return out
+
+
+def family_achievable_ranges(ctx, families=OPERATING_FAMILIES, model_factory=None):
+    """(family, ratio, pd_min, pd_max, bounds) for every allowed family — the union of
+    these is the GLOBAL achievable region, which is strictly wider than the reference
+    family's own range."""
+    mk = model_factory or (lambda: _model(ctx.value("material")))
+    base = ctx.value("ratio")
+    rows = []
+    for name, mult, _d in families:
+        r = float(base) * float(mult)
+        try:
+            lo_pd, hi_pd, bounds = inverse_solver.achievable_pd_range(
+                mk(), r, ctx.value("effective_dose_bounds"),
+                ctx.value("pressure_bounds"), ctx.value("pulse_time_bounds"))
+        except Exception as e:
+            rows.append({"family": name, "ratio": r, "pd_min": None, "pd_max": None,
+                         "bounds": None, "error": f"{type(e).__name__}: {e}"})
+            continue
+        rows.append({"family": name, "ratio": r, "pd_min": lo_pd, "pd_max": hi_pd,
+                     "bounds": bounds, "error": None})
+    return rows
+
+
+def global_achievable_range(rows):
+    """Union of the family ranges. Used to construct a genuinely globally-infeasible
+    target dynamically, instead of hard-coding a threshold that geometry changes
+    silently invalidate."""
+    lo = [r["pd_min"] for r in rows if r["pd_min"] is not None]
+    hi = [r["pd_max"] for r in rows if r["pd_max"] is not None]
+    return (min(lo) if lo else None), (max(hi) if hi else None)
 
 
 def analyse_robustness(cand, ctx, model_factory=None, rel=0.10):
@@ -310,6 +385,56 @@ def analyse_robustness(cand, ctx, model_factory=None, rel=0.10):
             "dose_margin": margin(s.effective_dose, lo, hi)}
 
 
+# the inputs whose provenance actually determines the recipe
+CRITICAL_INPUTS = ("target_pd", "material", "ratio", "pressure_bounds", "pulse_time_bounds",
+                   "reference_effective_dose", "reference_pulse_time")
+
+
+def knowledge_coverage(ctx, best=None):
+    """How much of this design rests on retrieved knowledge versus stand-ins.
+
+    A fallback is explicitly NOT evidence: it is counted in its own bucket and never
+    folded into the KB total. `fallback_dependent_result` is structural — it asks
+    whether a fallback materially reaches the recipe, not whether one merely exists
+    somewhere in the context."""
+    buckets = {k: [] for k in ("user", "kb", "model_supported", "fallback", "unresolved")}
+    for name, p in ctx.priors.items():
+        buckets.setdefault(p.source, []).append(name)
+    critical = {n: {"source": ctx.priors[n].source,
+                    "confidence": ctx.priors[n].confidence,
+                    "value": ctx.priors[n].value,
+                    "unit": ctx.priors[n].unit}
+                for n in CRITICAL_INPUTS if n in ctx.priors}
+
+    # material dependence: the ratio decides pA and t_p for every candidate, so a
+    # fallback ratio makes the whole recipe fallback-dependent even if the solve is exact
+    ratio_src = ctx.priors["ratio"].source if "ratio" in ctx.priors else "unresolved"
+    dep_reasons = []
+    if ratio_src == "fallback" or ratio_src.startswith("derived_from_fallback"):
+        dep_reasons.append("the pressure-to-pulse ratio is a fallback, and it sets pA and t_p")
+    if best is not None and str(best.ratio_evidence_source).endswith("fallback"):
+        dep_reasons.append(f"the selected family '{best.family}' uses a "
+                           f"{best.ratio_evidence_source} ratio")
+    if best is None and ratio_src == "fallback":
+        dep_reasons.append("candidate generation itself ran on a fallback ratio")
+
+    n_kb, n_user = len(buckets["kb"]), len(buckets["user"])
+    n_fb, n_unres = len(buckets["fallback"]), len(buckets["unresolved"])
+    if n_unres == 0 and n_fb == 0:
+        level = "complete"
+    elif (n_kb + n_user) == 0:
+        level = "none"
+    else:
+        level = "partial"
+    return {"level": level, "counts": {k: len(v) for k, v in buckets.items()},
+            "by_source": buckets, "critical_inputs": critical,
+            "kb_supported": n_kb, "user_provided": n_user,
+            "model_supported_defaults": len(buckets["model_supported"]),
+            "fallback_inputs": n_fb, "unresolved_items": buckets["unresolved"],
+            "fallback_dependent_result": bool(dep_reasons),
+            "fallback_dependency_reasons": dep_reasons}
+
+
 def rank_candidates(cands, ctx):
     """Score feasible candidates. Every term is physically motivated and reported:
 
@@ -320,8 +445,7 @@ def rank_candidates(cands, ctx):
       throughput  shorter pulses are cheaper per cycle
       confidence  how well-grounded the ratio behind this candidate is
     """
-    W = {"accuracy": 0.15, "margin": 0.25, "robustness": 0.25,
-         "throughput": 0.15, "confidence": 0.20}
+    W = dict(RANKING_WEIGHTS)
     feas = [c for c in cands if c.feasible]
     if feas:
         tps = [c.solution.pulse_time for c in feas]
@@ -338,25 +462,85 @@ def rank_candidates(cands, ctx):
         sens = max(rb.get("dose_sensitivity", 0.0), rb.get("ratio_sensitivity", 0.0))
         robust = 1.0 / (1.0 + max(0.0, sens))
         thr = 1.0 if t_hi <= t_lo else 1.0 - (s.pulse_time - t_lo) / (t_hi - t_lo)
-        conf = CONFIDENCE.get(c.ratio_source, 0.0)
+        conf = c.ratio_evidence_confidence
         c.scores = {"accuracy": acc, "margin": margin, "robustness": robust,
-                    "throughput": thr, "confidence": conf, "weights": W}
+                    "throughput": thr, "confidence": conf, "weights": W,
+                    "profile": RANKING_PROFILE}
         c.total_score = sum(W[k] * c.scores[k] for k in W)
     return sorted(cands, key=lambda c: (-c.total_score, c.family))
 
 
-def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_FAMILIES):
-    """Full pipeline. Returns a dict carrying every stage's output."""
+def selection_summary(ranked, near_tie_threshold=NEAR_TIE_THRESHOLD):
+    """Selected candidate, runner-up, score gap, near-tie flag, and the actual
+    trade-off between the top two — so the ordering reads as a preference model and
+    not as a physical law."""
+    feas = [c for c in ranked if c.feasible]
+    best = feas[0] if feas else None
+    runner = feas[1] if len(feas) > 1 else None
+    gap = (best.total_score - runner.total_score) if runner else None
+    trade = []
+    if best and runner:
+        for key, label, better_is in (("throughput", "shorter pulse time", "higher"),
+                                      ("margin", "operating margin from the bounds", "higher"),
+                                      ("robustness", "insensitivity to exposure/ratio error", "higher"),
+                                      ("confidence", "ratio evidence", "higher")):
+            b, r = best.scores.get(key, 0.0), runner.scores.get(key, 0.0)
+            if abs(b - r) < 1e-9:
+                continue
+            winner = best if b > r else runner
+            trade.append({"criterion": key, "label": label, "favours": winner.family,
+                          "best": b, "runner_up": r, "delta": b - r})
+        trade.sort(key=lambda t: -abs(t["delta"]))
+    return {"profile": RANKING_PROFILE, "weights": dict(RANKING_WEIGHTS),
+            "selected": best.family if best else None,
+            "runner_up": runner.family if runner else None,
+            "score_gap": gap, "near_tie_threshold": near_tie_threshold,
+            "near_tie": bool(gap is not None and gap < near_tie_threshold),
+            "trade_offs": trade,
+            "note": ("This selection reflects the active decision weights and is not a "
+                     "unique physical optimum.")}
+
+
+def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_FAMILIES,
+           near_tie_threshold=NEAR_TIE_THRESHOLD):
+    """Full pipeline.
+
+    Two feasibility concepts are kept apart and BOTH reported:
+      reference_context_status   can the resolved reference ratio reach the target?
+      global_design_space_status can ANY allowed operating family reach it?
+    The top-level status follows the GLOBAL result — a reference family that cannot
+    reach the target does not make the design infeasible if another family can."""
     ctx = resolve_context(request, warm_start_fn=warm_start_fn)
     mk = model_factory or (lambda: _model(ctx.value("material")))
     feas = assess_feasibility(ctx, model=mk())
+    fam_ranges = family_achievable_ranges(ctx, families=families, model_factory=mk)
+    g_lo, g_hi = global_achievable_range(fam_ranges)
     cands = generate_candidates(ctx, families=families, model_factory=mk)
     for c in cands:
         c.robustness = analyse_robustness(c, ctx, model_factory=mk)
     ranked = rank_candidates(cands, ctx)
+    sel = selection_summary(ranked, near_tie_threshold)
     best = next((c for c in ranked if c.feasible), None)
+
+    reference_context_status = (
+        "unknown" if feas["verdict"] == "unknown" else
+        "feasible" if feas["verdict"] == "within_range" else
+        "infeasible_high" if feas["verdict"] == "above_range" else "infeasible_low")
+    global_design_space_status = "feasible" if best is not None else "infeasible"
+    tgt = ctx.value("target_pd")
+    if best is None and tgt is not None and g_hi is not None:
+        global_design_space_status = ("infeasible_high" if tgt > g_hi else
+                                      "infeasible_low" if (g_lo is not None and tgt < g_lo)
+                                      else "infeasible")
+    cov = knowledge_coverage(ctx, best=best)
     return {"context": ctx, "feasibility": feas, "candidates": ranked, "best": best,
+            "selection": sel, "coverage": cov,
+            "family_ranges": fam_ranges,
+            "global_achievable": {"pd_min": g_lo, "pd_max": g_hi},
+            "reference_context_status": reference_context_status,
+            "global_design_space_status": global_design_space_status,
             "status": "designed" if best else "no_feasible_candidate"}
+
 
 
 # =============================================================================
@@ -406,159 +590,275 @@ def _fmt(v, n=4):
     return html.escape(str(v))
 
 
-def render_report(result, out_path=None, title="M2 · knowledge-guided design"):
-    """Write the provenance-rich HTML report. Every number states where it came from;
-    nothing is presented as literature-derived unless its prior says so."""
-    ctx, feas = result["context"], result["feasibility"]
-    cands, best = result["candidates"], result["best"]
 
+def _pd(v, n=3):
+    return "—" if v is None else f"{v*1e6:.{n}f}"
+
+
+CANONICAL_REPORT = "m2_report.html"      # the ONE committed M2 artifact
+
+
+def render_report(result, out_path=None):
+    """The single canonical M2 report. One renderer, one schema, all result states:
+    feasible reference + feasible global, infeasible reference + feasible global, and
+    globally infeasible. `out_path` lets tests render in memory / tmp_path without
+    creating a second committed artifact."""
+    ctx, feas, cov = result["context"], result["feasibility"], result["coverage"]
+    cands, best, sel = result["candidates"], result["best"], result["selection"]
+    ref_status, glob_status = result["reference_context_status"], result["global_design_space_status"]
+    g = result["global_achievable"]
+    tgt = ctx.value("target_pd")
+
+    fb_dep = cov["fallback_dependent_result"]
+    subtitle = (f"Current execution: {cov['level']} knowledge coverage, "
+                f"{'fallback-dependent' if fb_dep else 'not fallback-dependent'}")
+
+    # 1 request
+    req = ctx.request
+    s1 = (f"<table><tr><th>field</th><th>value</th></tr>"
+          f"<tr><td class=mono>material</td><td class=mono>{html.escape(str(req.material))}</td></tr>"
+          f"<tr><td class=mono>target_pd</td><td class=mono>{_pd(tgt)} µm</td></tr>"
+          f"<tr><td class=mono>constraints</td><td class=mono>"
+          f"{html.escape(json.dumps(req.constraints or {}))}</td></tr></table>")
+
+    # 2 knowledge coverage
+    crit = "".join(
+        f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(v['value'])}</td>"
+        f"<td class=mut>{html.escape(v['unit'] or '')}</td><td>{_tag(v['source'])}</td>"
+        f"<td class=mono>{v['confidence']:.1f}</td></tr>"
+        for k, v in cov["critical_inputs"].items())
+    s2 = (f"<div class=bar>"
+          f"<div class=stat><b class={'ok' if cov['level']=='complete' else 'warn'}>{cov['level']}</b>"
+          f"<span>knowledge coverage</span></div>"
+          f"<div class=stat><b>{cov['kb_supported']}</b><span>KB-supported inputs</span></div>"
+          f"<div class=stat><b>{cov['user_provided']}</b><span>user-provided</span></div>"
+          f"<div class=stat><b>{cov['model_supported_defaults']}</b><span>model-supported defaults</span></div>"
+          f"<div class=stat><b>{cov['fallback_inputs']}</b><span>fallback inputs (not evidence)</span></div>"
+          f"<div class=stat><b class={'bad' if fb_dep else 'ok'}>{'yes' if fb_dep else 'no'}</b>"
+          f"<span>fallback-dependent result</span></div></div>"
+          f"<table><tr><th>critical design variable</th><th>value</th><th>unit</th>"
+          f"<th>source</th><th>conf</th></tr>{crit}</table>"
+          + (f"<div class=note><span class=bad>unresolved:</span> <span class=mono>"
+             f"{html.escape(', '.join(cov['unresolved_items']) or 'none')}</span></div>")
+          + "".join(f'<div class=note><span class=warn>⚠</span> fallback-dependent because '
+                    f'{html.escape(r)}</div>' for r in cov["fallback_dependency_reasons"])
+          + "<div class=note>A <b>fallback</b> is a stand-in, not evidence: it is counted "
+            "separately and never added to the KB total.</div>")
+
+    # 3 + 4 resolved context, provenance and gaps
     prows = "".join(
         f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(p.value)}</td>"
         f"<td class=mut>{html.escape(p.unit or '')}</td><td>{_tag(p.source)}</td>"
-        f"<td class=mono>{p.confidence:.1f}</td>"
-        f"<td class=mut>{html.escape(p.evidence or '')}</td>"
+        f"<td class=mono>{p.confidence:.1f}</td><td class=mut>{html.escape(p.evidence or '')}</td>"
         f"<td class=mut>{'yes' if p.overridable else 'no'}</td></tr>"
         for k, p in ctx.priors.items())
+    s34 = (f"<table><tr><th>prior</th><th>value</th><th>unit</th><th>source</th><th>conf</th>"
+           f"<th>evidence</th><th>overridable</th></tr>{prows}</table>"
+           + "".join(f'<div class=note><span class=warn>⚠</span> {html.escape(w)}</div>'
+                     for w in ctx.warnings)
+           + (f'<div class=note><span class=bad>unresolved:</span> <span class=mono>'
+              f'{html.escape(", ".join(ctx.unresolved))}</span></div>' if ctx.unresolved else "")
+           + '<div class=note><span class="tag s-user">user</span> stated in the request · '
+             '<span class="tag s-kb">kb</span> retrieved from the knowledge base · '
+             '<span class="tag s-model_supported">model_supported</span> operating-envelope default · '
+             '<span class="tag s-fallback">fallback</span> nothing retrieved, a stand-in · '
+             '<span class="tag s-unresolved">unresolved</span> no value at all.</div>')
 
+    # 5 reference-context feasibility
+    ref_cls = "ok" if ref_status == "feasible" else "bad"
+    s5 = (f"<div class=bar>"
+          f"<div class=stat><b class={ref_cls}>{ref_status}</b><span>reference_context_status</span></div>"
+          f"<div class=stat><b>{_pd(feas['pd_min'])} – {_pd(feas['pd_max'])}</b>"
+          f"<span>achievable PD50 (µm) at the reference ratio {feas['ratio']:.4g} Pa/s</span></div>"
+          f"<div class=stat><b>{_pd(tgt)}</b><span>target PD50 (µm)</span></div></div>"
+          f"<div class=note>Feasibility of the <b>resolved reference ratio alone</b>. It is not the "
+          f"design's verdict — see the global status below.</div>")
+
+    # 6 global operating-family feasibility
+    frows = "".join(
+        f"<tr><td class=mono>{html.escape(r['family'])}</td><td class=mono>{r['ratio']:.4g}</td>"
+        f"<td class=mono>{_pd(r['pd_min'])}</td><td class=mono>{_pd(r['pd_max'])}</td>"
+        f"<td class=mono>{_fmt(r['bounds'])}</td>"
+        f"<td class={'ok' if (tgt is not None and r['pd_min'] is not None and r['pd_min'] <= tgt <= r['pd_max']) else 'bad'}>"
+        f"{'reaches target' if (tgt is not None and r['pd_min'] is not None and r['pd_min'] <= tgt <= r['pd_max']) else 'cannot reach'}</td></tr>"
+        for r in result["family_ranges"])
+    glob_cls = "ok" if glob_status == "feasible" else "bad"
+    cross = ""
+    if ref_status != "feasible" and glob_status == "feasible":
+        cross = ('<div class=note><span class=ok><b>The resolved reference context cannot reach the '
+                 'target, but at least one alternative operating family can.</b></span> The design is '
+                 'therefore <b>globally feasible</b>; the alternative family expands the achievable '
+                 'region beyond the reference ratio\'s own range.</div>')
+    elif glob_status.startswith("infeasible"):
+        cross = ('<div class=note><span class=bad><b>No allowed operating family reaches the target.</b>'
+                 '</span> The binding constraints are the pressure and pulse-time bounds, which cap the '
+                 'effective dose available at every ratio — see the per-family brackets above.</div>')
+    s6 = (f"<div class=bar>"
+          f"<div class=stat><b class={glob_cls}>{glob_status}</b><span>global_design_space_status</span></div>"
+          f"<div class=stat><b>{_pd(g['pd_min'])} – {_pd(g['pd_max'])}</b>"
+          f"<span>global achievable PD50 (µm), union of all families</span></div></div>"
+          f"<table><tr><th>family</th><th>r (Pa/s)</th><th>PD min (µm)</th><th>PD max (µm)</th>"
+          f"<th>effective-dose bracket (Pa·s)</th><th>vs target</th></tr>{frows}</table>{cross}")
+
+    # 7 candidates
     def crow(c):
+        prov = (f"<td>{_tag(c.family_definition_source)}</td>"
+                f"<td>{_tag(c.ratio_evidence_source)}</td>"
+                f"<td class=mono>{c.ratio_evidence_confidence:.2f}</td>")
         if not c.feasible:
-            return (f"<tr><td class=mono>{html.escape(c.family)}</td>"
-                    f"<td class=mono>{_fmt(c.ratio)}</td><td>{_tag(c.ratio_source)}</td>"
-                    f"<td colspan=7 class=bad>rejected — {html.escape(c.rejected or '')}</td></tr>")
+            return (f"<tr><td class=mono>{html.escape(c.family)}</td><td class=mono>{c.ratio:.4g}</td>"
+                    f"{prov}<td colspan=6 class=bad>rejected — {html.escape(c.rejected or '')}</td></tr>")
         s, rb = c.solution, c.robustness
         star = " ★" if c is best else ""
         return (f"<tr><td class=mono><b>{html.escape(c.family)}{star}</b></td>"
-                f"<td class=mono>{_fmt(c.ratio)}</td><td>{_tag(c.ratio_source)}</td>"
+                f"<td class=mono>{c.ratio:.4g}</td>{prov}"
                 f"<td class=mono>{_fmt(s.effective_dose)}</td><td class=mono>{_fmt(s.pA)}</td>"
-                f"<td class=mono>{_fmt(s.pulse_time)}</td>"
-                f"<td class=mono>{s.achieved_pd*1e6:.3f}</td>"
+                f"<td class=mono>{_fmt(s.pulse_time)}</td><td class=mono>{_pd(s.achieved_pd)}</td>"
                 f"<td class=mono>{(s.residual or 0)*1e9:+.2g}</td>"
-                f"<td class=mono>{rb.get('dose_sensitivity', float('nan')):.3f}</td>"
                 f"<td class=mono><b>{c.total_score:.3f}</b></td></tr>")
+    crow_all = "".join(crow(c) for c in cands)
+    s7 = (f"<table><tr><th>family</th><th>r (Pa/s)</th><th>family definition</th>"
+          f"<th>ratio evidence</th><th>ratio conf</th><th>effective dose (Pa·s)</th><th>pA (Pa)</th>"
+          f"<th>t_p (s)</th><th>PD50 (µm)</th><th>resid (nm)</th><th>score</th></tr>{crow_all}</table>"
+          f"<div class=note><b>Two separate provenance columns, on purpose.</b> "
+          f"<i>family definition</i> is where the operating archetype came from; "
+          f"<i>ratio evidence</i> is what supports the actual number. A family scaled off the "
+          f"reference ratio reads <span class=mono>derived_from_…</span> and can never be more "
+          f"credible than its base — multiplying a fallback by ten does not create evidence.</div>")
 
-    crows = "".join(crow(c) for c in cands)
-    sc = ("".join(f"<tr><td class=mono>{html.escape(c.family)}</td>" +
-                  "".join(f"<td class=mono>{c.scores.get(k, 0):.3f}</td>"
-                          for k in ("accuracy", "margin", "robustness", "throughput", "confidence"))
-                  + f"<td class=mono><b>{c.total_score:.3f}</b></td></tr>"
-                  for c in cands if c.feasible)) or \
-         '<tr><td colspan=7 class=mut>no feasible candidate</td></tr>'
+    # 8 + 9 + 10 ranking, selection, trade-off
+    wrow = " · ".join(f"{k} {v:g}" for k, v in sel["weights"].items())
+    srows = "".join(
+        f"<tr><td class=mono>{html.escape(c.family)}</td>" +
+        "".join(f"<td class=mono>{c.scores.get(k, 0):.3f}</td>"
+                for k in ("accuracy", "margin", "robustness", "throughput", "confidence")) +
+        f"<td class=mono><b>{c.total_score:.3f}</b></td></tr>"
+        for c in cands if c.feasible) or '<tr><td colspan=7 class=mut>no feasible candidate</td></tr>'
+    trades = "".join(
+        f"<li><b>{html.escape(t['label'])}</b> favours <span class=mono>{html.escape(t['favours'])}</span>"
+        f" ({t['best']:.3f} vs {t['runner_up']:.3f})</li>" for t in sel["trade_offs"])
+    tie = ('<div class=note><span class=warn>⚠ near-tie</span> — the top two scores differ by '
+           f'{sel["score_gap"]:.3f}, below the {sel["near_tie_threshold"]:.2f} threshold. '
+           'Treat these as equally preferred; the ordering is not decisive.</div>'
+           if sel["near_tie"] else "")
+    s89 = (f"<div class=note><b>Ranking profile:</b> <span class=mono>{html.escape(sel['profile'])}</span>"
+           f" — weights: <span class=mono>{html.escape(wrow)}</span></div>"
+           f"<table><tr><th>family</th><th>accuracy</th><th>margin</th><th>robustness</th>"
+           f"<th>throughput</th><th>confidence</th><th>total</th></tr>{srows}</table>{tie}")
 
-    warn_html = "".join(f'<div class=note><span class=warn>⚠</span> {html.escape(w)}</div>'
-                        for w in ctx.warnings)
-    unres = (f'<div class=note><span class=bad>unresolved:</span> '
-             f'<span class=mono>{html.escape(", ".join(ctx.unresolved))}</span></div>'
-             if ctx.unresolved else "")
+    if best:
+        s10 = (f"<div class=bar>"
+               f"<div class=stat><b>{best.solution.effective_dose:.4g}</b>"
+               f"<span>effective dose (Pa·s) = pA · t_p</span></div>"
+               f"<div class=stat><b>{best.solution.pA:.4g}</b><span>precursor partial pressure (Pa)</span></div>"
+               f"<div class=stat><b>{best.solution.pulse_time:.4g}</b><span>pulse time (s)</span></div>"
+               f"<div class=stat><b>{_pd(best.solution.achieved_pd)}</b><span>predicted PD50 (µm)</span></div>"
+               f"<div class=stat><b>{html.escape(best.family)}</b><span>operating family</span></div></div>"
+               f"<div class=note><b>Runner-up:</b> "
+               f"<span class=mono>{html.escape(str(sel['runner_up']))}</span>"
+               + (f", score gap {sel['score_gap']:.3f}." if sel["score_gap"] is not None
+                  else " — none (only one feasible candidate).")
+               + (f"<ul>{trades}</ul>" if trades else "")
+               + f"<b>{html.escape(sel['note'])}</b></div>"
+               f"<div class=note>This is a <b>model-inverted</b> recipe under a "
+               f"{_tag(ctx.priors['ratio'].source)} pressure-to-pulse relationship. "
+               f"{'It is not a literature recipe.' if fb_dep else ''}</div>")
+    else:
+        near = max((r for r in result["family_ranges"] if r["pd_max"] is not None),
+                   key=lambda r: r["pd_max"], default=None)
+        s10 = ('<div class=note><span class=bad><b>No candidate is selected.</b></span> '
+               'No operating family reaches the target, so there is no recipe to recommend.</div>'
+               + (f'<div class=note>Closest attainable boundary: family '
+                  f'<span class=mono>{html.escape(near["family"])}</span> tops out at '
+                  f'<b>{_pd(near["pd_max"])} µm</b> — <span class=bad>this does NOT satisfy the '
+                  f'target</span> and is shown only to indicate how far short the design space '
+                  f'falls.</div>' if near else ""))
 
-    tgt = feas["target_pd"]
-    verdict_cls = {"within_range": "ok", "above_range": "bad",
-                   "below_range": "bad", "unknown": "warn"}[feas["verdict"]]
-    # the resolved-ratio verdict and the candidate outcome can legitimately disagree
-    cross_note = ""
-    if feas["verdict"] != "within_range" and best is not None:
-        cross_note = (f' <span class=ok>Here that happened:</span> the target is outside the range at '
-                      f'r = {feas["ratio"]:.4g} Pa/s, but the <span class=mono>'
-                      f'{html.escape(best.family)}</span> family reaches it.')
-    elif feas["verdict"] == "within_range" and best is None:
-        cross_note = (' <span class=bad>Note:</span> the target is inside the resolved-ratio range, '
-                      'yet no family produced a feasible recipe within its own operating bounds.')
-    best_html = (
-        f'<div class=bar>'
-        f'<div class=stat><b>{best.solution.effective_dose:.4g}</b><span>effective dose (Pa·s) = pA · t_p</span></div>'
-        f'<div class=stat><b>{best.solution.pA:.4g}</b><span>precursor partial pressure (Pa)</span></div>'
-        f'<div class=stat><b>{best.solution.pulse_time:.4g}</b><span>pulse time (s)</span></div>'
-        f'<div class=stat><b>{best.solution.achieved_pd*1e6:.3f}</b><span>predicted PD50 (µm)</span></div>'
-        f'<div class=stat><b>{best.family}</b><span>operating family</span></div>'
-        f'</div>'
-        if best else
-        f'<div class=note><span class=bad>No feasible candidate.</span> '
-        f'Every operating family was rejected — see the table.</div>')
+    # 11 robustness
+    rrows = "".join(
+        f"<tr><td class=mono>{html.escape(c.family)}</td>"
+        f"<td class=mono>{c.robustness.get('dose_sensitivity', float('nan')):.3f}</td>"
+        f"<td class=mono>{c.robustness.get('ratio_sensitivity', float('nan')):.3f}</td>"
+        f"<td class=mono>{c.robustness.get('pressure_margin', float('nan')):.3f}</td>"
+        f"<td class=mono>{c.robustness.get('pulse_time_margin', float('nan')):.3f}</td>"
+        f"<td class=mono>{c.robustness.get('dose_margin', float('nan')):.3f}</td>"
+        f"<td class=mono>{_pd(c.robustness.get('pd_at_minus'))} / {_pd(c.robustness.get('pd_at_plus'))}</td></tr>"
+        for c in cands if c.feasible) or '<tr><td colspan=7 class=mut>no feasible candidate</td></tr>'
+    s11 = (f"<table><tr><th>family</th><th>d ln PD / d ln dose</th><th>ratio sensitivity</th>"
+           f"<th>pA margin</th><th>t_p margin</th><th>dose margin</th>"
+           f"<th>PD at ∓10 % dose (µm)</th></tr>{rrows}</table>"
+           f"<div class=note>Margins are distance from the operating bounds in log space "
+           f"(0 = on a bound, 1 = centred). Sensitivities are local, at ±10 %.</div>")
 
-    body = f"""<title>{html.escape(title)}</title><style>{_CSS}</style>
+    # 12 reproducibility / solver diagnostics
+    drows = "".join(
+        f"<tr><td class=mono>{html.escape(c.family)}</td>"
+        f"<td class=mono>{html.escape(c.solution.status)}</td>"
+        f"<td class=mono>{html.escape(str(c.solution.method or '—'))}</td>"
+        f"<td class=mono>{c.solution.model_evaluations}</td>"
+        f"<td class=mono>{_fmt(c.solution.effective_dose_bounds)}</td>"
+        f"<td class=mono>{c.solution.tolerance_pd:.1g}</td>"
+        f"<td class=mut>{html.escape((c.solution.reason or '')[:90])}</td></tr>"
+        for c in cands if c.solution)
+    s12 = (f"<table><tr><th>family</th><th>solver status</th><th>method</th><th>model evals</th>"
+           f"<th>effective-dose bracket (Pa·s)</th><th>PD tol (m)</th><th>reason</th></tr>{drows}</table>"
+           f"<div class=note>Physics inversion is performed exclusively by "
+           f"<span class=mono>inverse_solver.solve_target_dose</span> — one bracketed root solve per "
+           f"family on the real channel twin. This layer adds no solver of its own.</div>")
+
+    def card(n, title, body):
+        return f"<div class=card><h2>{n} · {html.escape(title)}</h2>{body}</div>"
+
+    body = f"""<title>M2 · knowledge-aware inverse design</title><style>{_CSS}</style>
 <div class=wrap>
 <div class=eyebrow>PSED · M2</div>
-<h1>{html.escape(title)}</h1>
-<div class=sub>An underspecified request is completed from priors, checked against the digital twin,
-inverted into candidate recipes, ranked, and stress-tested. The physics inversion is done by
-<span class=mono>inverse_solver.solve_target_dose</span> — a bracketed root solve on the real channel
-twin — once per operating family.</div>
-
-<div class=card><h2>1 · Request &amp; resolved design context</h2>
-<table><tr><th>prior</th><th>value</th><th>unit</th><th>source</th><th>conf</th><th>evidence</th><th>overridable</th></tr>
-{prows}</table>{warn_html}{unres}
-<div class=note><b>Reading the sources.</b> <span class="tag s-user">user</span> stated in the request ·
-<span class="tag s-kb">kb</span> retrieved from the knowledge base ·
-<span class="tag s-model_supported">model_supported</span> an operating-envelope default ·
-<span class="tag s-fallback">fallback</span> nothing was retrieved, a default is standing in ·
-<span class="tag s-unresolved">unresolved</span> no value at all. A fallback is <b>not</b> evidence.</div></div>
-
-<div class=card><h2>2 · Digital-twin feasibility</h2>
-<div class=bar>
- <div class=stat><b>{feas['pd_min']*1e6:.2f} – {feas['pd_max']*1e6:.2f}</b><span>achievable PD50 (µm) at r = {feas['ratio']:.4g} Pa/s</span></div>
- <div class=stat><b>{(tgt*1e6 if tgt else float('nan')):.2f}</b><span>target PD50 (µm)</span></div>
- <div class=stat><b class={verdict_cls}>{feas['verdict']}</b><span>verdict</span></div>
- <div class=stat><b>{_fmt(feas['effective_dose_bounds'])}</b><span>effective-dose bounds (Pa·s)</span></div>
-</div>
-<div class=note>The range is measured by evaluating the twin at both ends of the effective-dose bracket,
-before any solving. A target outside it is reported as infeasible rather than iterated at.
-<b>This verdict is for the resolved ratio only.</b> Each operating family has its own bracket and its
-own achievable range, so section 3 may still find a feasible recipe at a different ratio — that is the
-point of generating candidates rather than inverting once.{cross_note}</div></div>
-
-<div class=card><h2>3 · Inverse candidates (one solve per operating family)</h2>
-<table><tr><th>family</th><th>r (Pa/s)</th><th>ratio src</th><th>eff. dose (Pa·s)</th><th>pA (Pa)</th>
-<th>t_p (s)</th><th>PD50 (µm)</th><th>resid (nm)</th><th>dose sens.</th><th>score</th></tr>
-{crows}</table>
-<div class=note>An operating family fixes r = pA/t_p, which is what makes the inversion one-dimensional.
-The families are model-supported archetypes, not literature recipes. <b>dose sens.</b> is
-d ln PD / d ln(effective dose) at ±10 %: lower is a more forgiving recipe.</div></div>
-
-<div class=card><h2>4 · Ranking &amp; robustness</h2>
-<table><tr><th>family</th><th>accuracy</th><th>margin</th><th>robustness</th><th>throughput</th>
-<th>confidence</th><th>total</th></tr>{sc}</table>
-<div class=note><b>accuracy</b> residual vs target · <b>margin</b> distance of pA / t_p / exposure from
-their bounds · <b>robustness</b> insensitivity to ±10 % error in exposure and in the assumed ratio ·
-<b>throughput</b> shorter pulses preferred · <b>confidence</b> how well-grounded that family's ratio is.
-Weights: {html.escape(json.dumps({k: v for k, v in (cands[0].scores.get('weights', {}) if cands and cands[0].scores else {}).items()}))}</div></div>
-
-<div class=card><h2>5 · Recommended operating point</h2>{best_html}
-<div class=note>This is a <b>model-inverted</b> recipe under a
-{_tag(ctx.priors['ratio'].source)} pressure-to-pulse ratio. It is not a literature recipe, and it is
-only as good as the priors in section 1 — the ratio in particular.</div></div>
+<h1>M2 · knowledge-aware inverse design</h1>
+<div class=sub>{html.escape(subtitle)}</div>
+{card(1, "Design request", s1)}
+{card(2, "Knowledge coverage", s2)}
+{card(3, "Resolved design context, provenance and unresolved inputs", s34)}
+{card(5, "Reference-context feasibility", s5)}
+{card(6, "Global operating-family feasibility", s6)}
+{card(7, "Candidate recipes", s7)}
+{card(8, "Ranking profile and weights", s89)}
+{card(9, "Selected under the current ranking profile", s10)}
+{card(11, "Robustness analysis", s11)}
+{card(12, "Reproducibility and solver diagnostics", s12)}
 </div>"""
-    out = Path(out_path or (HERE / "m2_design_report.html"))
+    if out_path is None:
+        out_path = HERE / CANONICAL_REPORT
+    out = Path(out_path)
     out.write_text(body)
     return out
 
 
 def main():
-    """Primary knowledge-guided example (60 µm) plus the infeasible-report path (200 µm)."""
+    """Canonical M2 run: the 60 µm primary example -> m2_report.html (the ONE artifact)."""
     res = design(DesignRequest(material="Al2O3", target_pd=60e-6))
     out = render_report(res)
-    ctx, f, best = res["context"], res["feasibility"], res["best"]
-    print(f"wrote {out}")
-    print(f"  context: ratio={ctx.value('ratio'):.4g} Pa/s [{ctx.priors['ratio'].source}] "
-          f"| unresolved={ctx.unresolved or 'none'}")
-    print(f"  feasibility: PD {f['pd_min']*1e6:.2f}–{f['pd_max']*1e6:.2f} µm, "
-          f"target {f['target_pd']*1e6:.1f} µm -> {f['verdict']}")
+    ctx, cov, sel = res["context"], res["coverage"], res["selection"]
+    print(f"wrote {out}   (canonical M2 report)")
+    print(f"  reference_context_status  = {res['reference_context_status']}")
+    print(f"  global_design_space_status= {res['global_design_space_status']}")
+    print(f"  global achievable PD      = {_pd(res['global_achievable']['pd_min'])}"
+          f"–{_pd(res['global_achievable']['pd_max'])} µm")
+    print(f"  knowledge coverage        = {cov['level']} "
+          f"(kb={cov['kb_supported']} user={cov['user_provided']} "
+          f"model={cov['model_supported_defaults']} fallback={cov['fallback_inputs']}); "
+          f"fallback-dependent={cov['fallback_dependent_result']}")
     for c in res["candidates"]:
+        tag = (f"{c.family_definition_source}/{c.ratio_evidence_source}"
+               f"@{c.ratio_evidence_confidence:.2f}")
         if c.feasible:
             s = c.solution
-            print(f"  {c.family:20} score={c.total_score:.3f} effective_dose={s.effective_dose:.4g} Pa·s "
-                  f"pA={s.pA:.4g} Pa t_p={s.pulse_time:.4g} s -> PD {s.achieved_pd*1e6:.3f} µm "
-                  f"({s.model_evaluations} evals)")
+            print(f"  {c.family:20} r={c.ratio:<9.4g} [{tag:48}] score={c.total_score:.3f} "
+                  f"effective_dose={s.effective_dose:.4g} pA={s.pA:.4g} t_p={s.pulse_time:.4g} "
+                  f"-> {s.achieved_pd*1e6:.3f} µm")
         else:
-            print(f"  {c.family:20} rejected: {c.rejected}")
-    if best:
-        print(f"  recommended: {best.family} "
-              f"(effective_dose={best.solution.effective_dose:.5g} Pa·s, "
-              f"pA={best.solution.pA:.4g} Pa, t_p={best.solution.pulse_time:.4g} s)")
-    inf = design(DesignRequest(material="Al2O3", target_pd=200e-6))
-    print(f"\n  infeasible path (200 µm): status={inf['status']}, "
-          f"verdict={inf['feasibility']['verdict']}, "
-          f"statuses={[c.solution.status for c in inf['candidates'] if c.solution]}")
-    render_report(inf, out_path=HERE / "m2_design_report_infeasible.html",
-                  title="M2 · knowledge-guided design (infeasible target)")
+            print(f"  {c.family:20} r={c.ratio:<9.4g} [{tag:48}] rejected: {c.solution.status}")
+    print(f"  selected={sel['selected']} runner_up={sel['runner_up']} "
+          f"gap={sel['score_gap'] if sel['score_gap'] is None else round(sel['score_gap'], 4)} "
+          f"near_tie={sel['near_tie']} profile={sel['profile']}")
 
 
 if __name__ == "__main__":
