@@ -2,7 +2,9 @@
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -10,7 +12,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -22,6 +24,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -236,21 +276,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -273,7 +319,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -291,7 +337,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -301,6 +347,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-0"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -327,15 +379,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-0"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -343,7 +404,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -355,6 +416,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -569,21 +668,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -606,7 +711,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -624,7 +729,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -634,6 +739,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-1"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -660,15 +771,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-1"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -676,7 +796,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -688,6 +808,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -902,21 +1060,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -939,7 +1103,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -957,7 +1121,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -967,6 +1131,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-2"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -993,15 +1163,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-2"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -1009,7 +1188,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -1021,6 +1200,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -1235,21 +1452,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -1272,7 +1495,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -1290,7 +1513,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -1300,6 +1523,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-3"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -1326,15 +1555,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-3"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -1342,7 +1580,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -1354,6 +1592,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -1584,21 +1860,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -1621,7 +1903,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -1639,7 +1921,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -1649,6 +1931,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-4"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -1675,15 +1963,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-4"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -1691,7 +1988,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -1703,6 +2000,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -1933,21 +2268,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -1970,7 +2311,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -1988,7 +2329,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -1998,6 +2339,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-5"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2024,15 +2371,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-5"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -2040,7 +2396,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -2052,6 +2408,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -2282,21 +2676,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -2319,7 +2719,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -2337,7 +2737,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -2347,6 +2747,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-6",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-6"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2373,15 +2779,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-6"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -2389,7 +2804,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -2401,6 +2816,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -2631,21 +3084,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -2668,7 +3127,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -2686,7 +3145,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -2696,6 +3155,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-7",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-7"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2722,15 +3187,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-7"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -2738,7 +3212,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -2750,6 +3224,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -2980,21 +3492,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -3017,7 +3535,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -3035,7 +3553,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -3045,6 +3563,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-8",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-8"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3071,15 +3595,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-8"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -3087,7 +3620,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -3099,6 +3632,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -3301,21 +3872,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -3338,7 +3915,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -3356,7 +3933,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -3368,6 +3945,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-9",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-9"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3394,15 +3977,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-9"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -3410,7 +4002,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -3422,6 +4014,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -3616,21 +4246,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -3653,7 +4289,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -3671,7 +4307,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -3683,6 +4319,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-10",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-10"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3709,15 +4351,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-10"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
-  "precursors": [],
+  "precursors": [
+   "TMA"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -3725,7 +4376,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "TMA"
    },
    {
     "label": "B",
@@ -3737,6 +4388,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -3893,6 +4582,32 @@
      "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
      "parameter_status": "measured"
     }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3927,21 +4642,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "Al2O3",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -3962,7 +4683,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -3980,7 +4701,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -3992,6 +4713,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-11",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-11"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4018,9 +4745,16 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-11"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
@@ -4046,6 +4780,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -4236,21 +5008,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
    "confidence": 0.0,
-   "source_level": "scout",
+   "source_level": null,
    "directly_extracted": false,
    "material_scope": "HfO2",
    "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "ambiguity_reason": "4 precursor candidate(s) ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] and 4 material(s) ['SiO2', 'TiO2', 'Al2O3', 'HfO2']; no unique candidate carries the metal of HfO2 (metals: ['Hf']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -4289,7 +5067,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -4327,15 +5105,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-12"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.357
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -4343,7 +5130,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -4355,6 +5142,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -4557,21 +5382,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -4594,7 +5425,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -4612,7 +5443,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -4624,6 +5455,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F3a-13",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-13"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4650,15 +5487,24 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-13"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  },
  {
   "material": "SiO2",
   "material_raw": "SiO2",
-  "precursors": [],
+  "precursors": [
+   "SiH2(N(C2H5)2)2"
+  ],
   "coreactants": [
    "O2_plasma"
   ],
@@ -4666,7 +5512,7 @@
    {
     "label": "A",
     "role": "precursor",
-    "species": null
+    "species": "SiH2(N(C2H5)2)2"
    },
    {
     "label": "B",
@@ -4678,6 +5524,44 @@
   "process_type": "plasma",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "total_pressure",
+    "value": 6.67,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
    {
     "quantity": "aspect_ratio",
     "value": 2000,
@@ -4872,21 +5756,27 @@
   "structure": "trench",
   "geometry_class": "vertical_structure",
   "chemistry_provenance": {
-   "resolution_status": "co_reactant_only",
-   "resolution_method": "no_candidates",
-   "confidence": 0.0,
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
    "source_level": "scout",
    "directly_extracted": false,
    "material_scope": "SiO2",
-   "supporting_evidence": null,
-   "ambiguity_reason": "no precursor candidate in scout or card",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'Ti(N(CH3)2)4', 'TMA', 'HfCp(N(CH3)2)3'] listed by the paper, only 'SiH2(N(C2H5)2)2' carries the metal of SiO2",
+   "ambiguity_reason": null,
    "candidate_mappings": {
-    "precursors": [],
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "Ti(N(CH3)2)4",
+     "TMA",
+     "HfCp(N(CH3)2)3"
+    ],
     "coreactants": [
      "O2_plasma"
     ],
     "materials": [
      "SiO2",
+     "TiO2",
      "Al2O3",
      "HfO2"
     ]
@@ -4909,7 +5799,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": null,
+     "species": "SiH2(N(C2H5)2)2",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -4927,7 +5817,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": null,
+   "temperature": 200,
    "flow_rate": null,
    "carrier_gas": null,
    "structure": null,
@@ -4939,6 +5829,12 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.jpcc.9b08176-F3a-14",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiH2(N(C2H5)2)2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-14"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4965,9 +5861,16 @@
       "B"
      ],
      "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-14"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
     }
    },
-   "completeness": 0.286
+   "completeness": 0.429
   }
  }
 ]
