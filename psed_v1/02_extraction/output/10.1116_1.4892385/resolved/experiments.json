@@ -32,7 +32,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -40,7 +51,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "cycle_number",
@@ -48,7 +70,18 @@
     "unit": "cycles",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -56,7 +89,18 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -64,7 +108,18 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -72,7 +127,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "reaction_probability",
@@ -80,28 +143,54 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "model_parameter"
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 372.66,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TEMAZ",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 32.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.346,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -216,7 +305,68 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F2a-0"
+    "_exp_id": "10.1116_1.4892385-F2a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TEMAZ",
+     "experiment_id": "10.1116_1.4892385-F2a-0"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2",
+     "experiment_id": "10.1116_1.4892385-F2a-0"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "ZrO2",
+     "experiment_id": "10.1116_1.4892385-F2a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_1.4892385-F2a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_1.4892385-F2a-0"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1135,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.643
   }
@@ -254,7 +404,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -262,7 +423,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "cycle_number",
@@ -270,7 +442,18 @@
     "unit": "cycles",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -278,7 +461,18 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -286,7 +480,18 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -294,7 +499,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "reaction_probability",
@@ -302,28 +515,54 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "model_parameter"
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 372.66,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TEMAZ",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 32.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.346,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -434,7 +673,68 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F2a-1"
+    "_exp_id": "10.1116_1.4892385-F2a-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TEMAZ",
+     "experiment_id": "10.1116_1.4892385-F2a-1"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2",
+     "experiment_id": "10.1116_1.4892385-F2a-1"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "ZrO2",
+     "experiment_id": "10.1116_1.4892385-F2a-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_1.4892385-F2a-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_1.4892385-F2a-1"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1135,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.643
   }
@@ -472,7 +772,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -480,7 +791,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "cycle_number",
@@ -488,7 +810,18 @@
     "unit": "cycles",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -496,7 +829,18 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -504,7 +848,18 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -512,7 +867,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "reaction_probability",
@@ -520,28 +883,54 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "model_parameter"
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 372.66,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TEMAZ",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 32.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.346,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -656,7 +1045,68 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F2a-2"
+    "_exp_id": "10.1116_1.4892385-F2a-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TEMAZ",
+     "experiment_id": "10.1116_1.4892385-F2a-2"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2",
+     "experiment_id": "10.1116_1.4892385-F2a-2"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "ZrO2",
+     "experiment_id": "10.1116_1.4892385-F2a-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_1.4892385-F2a-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_1.4892385-F2a-2"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1135,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.643
   }
@@ -694,7 +1144,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -702,7 +1163,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "cycle_number",
@@ -710,7 +1182,18 @@
     "unit": "cycles",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -718,7 +1201,18 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -726,7 +1220,18 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -734,7 +1239,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F5a-3",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "cycle_number",
@@ -742,28 +1255,54 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F5a-3",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 372.66,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TEMAZ",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 32.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.346,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -906,7 +1445,68 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F5a-3"
+    "_exp_id": "10.1116_1.4892385-F5a-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TEMAZ",
+     "experiment_id": "10.1116_1.4892385-F5a-3"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2",
+     "experiment_id": "10.1116_1.4892385-F5a-3"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "ZrO2",
+     "experiment_id": "10.1116_1.4892385-F5a-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_1.4892385-F5a-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_1.4892385-F5a-3"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1135,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.643
   }
@@ -944,7 +1544,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -952,7 +1563,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "cycle_number",
@@ -960,7 +1582,18 @@
     "unit": "cycles",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -968,7 +1601,18 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -976,7 +1620,18 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -984,7 +1639,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F5a-4",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "cycle_number",
@@ -992,28 +1655,54 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F5a-4",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 372.66,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TEMAZ",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 32.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.346,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1132,7 +1821,68 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F5a-4"
+    "_exp_id": "10.1116_1.4892385-F5a-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TEMAZ",
+     "experiment_id": "10.1116_1.4892385-F5a-4"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2",
+     "experiment_id": "10.1116_1.4892385-F5a-4"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "ZrO2",
+     "experiment_id": "10.1116_1.4892385-F5a-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_1.4892385-F5a-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_1.4892385-F5a-4"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1135,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.643
   }
@@ -1170,7 +1920,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -1178,7 +1939,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "cycle_number",
@@ -1186,7 +1958,18 @@
     "unit": "cycles",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1194,7 +1977,18 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1202,7 +1996,18 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1210,7 +2015,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F5a-5",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "cycle_number",
@@ -1218,28 +2031,54 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_1.4892385",
+     "experiment_id": "10.1116_1.4892385-F5a-5",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 372.66,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TEMAZ",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 32.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.346,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1362,7 +2201,68 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_1.4892385-F5a-5"
+    "_exp_id": "10.1116_1.4892385-F5a-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TEMAZ",
+     "experiment_id": "10.1116_1.4892385-F5a-5"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2",
+     "experiment_id": "10.1116_1.4892385-F5a-5"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "ZrO2",
+     "experiment_id": "10.1116_1.4892385-F5a-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_1.4892385-F5a-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_1.4892385-F5a-5"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1135,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.643
   }

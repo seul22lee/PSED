@@ -32,7 +32,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -40,21 +51,44 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 17.03,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "NH3",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.26,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "NH3",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -126,7 +160,54 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1116_6.0002154-paper-0"
+    "_exp_id": "10.1116_6.0002154-paper-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-paper-0"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "NH3",
+     "experiment_id": "10.1116_6.0002154-paper-0"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-paper-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002154-paper-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002154-paper-0"
+    }
    },
    "completeness": 0.5
   }

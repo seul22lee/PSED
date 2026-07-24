@@ -32,7 +32,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -40,7 +51,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -48,7 +70,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -56,14 +89,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -166,7 +216,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F1a-0"
+    "_exp_id": "10.1002_admi.202000318-F1a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F1a-0"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F1a-0"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F1a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F1a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F1a-0"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -204,7 +322,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -212,7 +341,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -220,7 +360,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -228,14 +379,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -382,7 +550,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F1b-1"
+    "_exp_id": "10.1002_admi.202000318-F1b-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F1b-1"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F1b-1"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F1b-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F1b-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F1b-1"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -420,7 +656,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -428,7 +675,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -436,7 +694,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -444,7 +713,18 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "ozone_pulse_time",
@@ -452,14 +732,28 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_admi.202000318",
+     "experiment_id": "10.1002_admi.202000318-F1c-2",
+     "figure": "Fig 1",
+     "panel": "c"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -558,7 +852,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F1c-2"
+    "_exp_id": "10.1002_admi.202000318-F1c-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F1c-2"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F1c-2"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F1c-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F1c-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F1c-2"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -596,7 +958,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -604,7 +977,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -612,7 +996,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -620,14 +1015,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -722,7 +1134,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F1d-3"
+    "_exp_id": "10.1002_admi.202000318-F1d-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F1d-3"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F1d-3"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F1d-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F1d-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F1d-3"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -760,7 +1240,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -768,7 +1259,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -776,7 +1278,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -784,14 +1297,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -882,7 +1412,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F2a-4"
+    "_exp_id": "10.1002_admi.202000318-F2a-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F2a-4"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-4"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F2a-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F2a-4"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -920,7 +1518,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -928,7 +1537,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -936,7 +1556,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -944,14 +1575,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -1042,7 +1690,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F2a-5"
+    "_exp_id": "10.1002_admi.202000318-F2a-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F2a-5"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-5"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F2a-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F2a-5"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -1080,7 +1796,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -1088,7 +1815,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -1096,7 +1834,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1104,14 +1853,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -1202,7 +1968,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F2a-6"
+    "_exp_id": "10.1002_admi.202000318-F2a-6",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F2a-6"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-6"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-6"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F2a-6"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F2a-6"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -1240,7 +2074,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -1248,7 +2093,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -1256,7 +2112,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1264,14 +2131,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -1362,7 +2246,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F2a-7"
+    "_exp_id": "10.1002_admi.202000318-F2a-7",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F2a-7"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-7"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-7"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F2a-7"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F2a-7"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -1400,7 +2352,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -1408,7 +2371,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -1416,7 +2390,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1424,14 +2409,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -1522,7 +2524,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F2a-8"
+    "_exp_id": "10.1002_admi.202000318-F2a-8",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F2a-8"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-8"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F2a-8"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F2a-8"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F2a-8"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -1560,7 +2630,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -1568,7 +2649,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -1576,7 +2668,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1584,14 +2687,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -1726,7 +2846,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F4a-9"
+    "_exp_id": "10.1002_admi.202000318-F4a-9",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F4a-9"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F4a-9"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F4a-9"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F4a-9"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F4a-9"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -1764,7 +2952,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -1772,7 +2971,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -1780,7 +2990,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1788,14 +3009,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -1926,7 +3164,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F4a-10"
+    "_exp_id": "10.1002_admi.202000318-F4a-10",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F4a-10"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F4a-10"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F4a-10"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F4a-10"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F4a-10"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -1964,7 +3270,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -1972,7 +3289,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -1980,7 +3308,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1988,14 +3327,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -2122,7 +3478,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F4a-11"
+    "_exp_id": "10.1002_admi.202000318-F4a-11",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F4a-11"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F4a-11"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F4a-11"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F4a-11"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F4a-11"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -2160,7 +3584,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -2168,7 +3603,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -2176,7 +3622,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -2184,14 +3641,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -2326,7 +3800,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F4b-12"
+    "_exp_id": "10.1002_admi.202000318-F4b-12",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F4b-12"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F4b-12"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F4b-12"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F4b-12"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F4b-12"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -2364,7 +3906,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -2372,7 +3925,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -2380,7 +3944,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -2388,14 +3963,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -2530,7 +4122,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F6a-13"
+    "_exp_id": "10.1002_admi.202000318-F6a-13",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F6a-13"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F6a-13"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F6a-13"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F6a-13"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F6a-13"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -2568,7 +4228,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -2576,7 +4247,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -2584,7 +4266,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -2592,14 +4285,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -2726,7 +4436,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F6a-14"
+    "_exp_id": "10.1002_admi.202000318-F6a-14",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F6a-14"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F6a-14"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F6a-14"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F6a-14"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F6a-14"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -2764,7 +4542,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -2772,7 +4561,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -2780,7 +4580,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -2788,14 +4599,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -2906,7 +4734,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F6a-15"
+    "_exp_id": "10.1002_admi.202000318-F6a-15",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F6a-15"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F6a-15"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F6a-15"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F6a-15"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F6a-15"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }
@@ -2944,7 +4840,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -2952,7 +4859,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -2960,7 +4878,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -2968,14 +4897,31 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -3086,7 +5032,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_admi.202000318-F6b-16"
+    "_exp_id": "10.1002_admi.202000318-F6b-16",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "tert-butylferrocene",
+     "experiment_id": "10.1002_admi.202000318-F6b-16"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1002_admi.202000318-F6b-16"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 30,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1002_admi.202000318-F6b-16"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_admi.202000318-F6b-16"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_admi.202000318-F6b-16"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 220,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }

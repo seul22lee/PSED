@@ -197,16 +197,98 @@ def _cond(exp, quantity, reactant=None):
     return None
 
 
+# ---- provenance: recorded where the value is chosen, never inferred from it ----
+# One vocabulary, two axes:
+#   source : paper | experiment | derived | kb | model   (which LEVEL supplied it)
+#   from   : methods_prose | table | caption | series | degenerate_range | scout |
+#            experiment_record | kb_imputation | model_default | unknown
+# `experiment_record` covers the recipe fields carried on the experiment itself
+# (material, cycle_sequence, reactants, species) rather than by a controlled condition.
+# `unknown` exists because cards built before this layer recorded no per-field origin;
+# claiming methods_prose for them would be a fabrication (see 06_to_kb §8 backfill).
+PARAM_SOURCES = ("paper", "experiment", "derived", "kb", "model")
+PARAM_FROM = ("methods_prose", "table", "caption", "series", "degenerate_range",
+              "experiment_record", "scout", "kb_imputation", "model_default", "unknown")
+
+# card provenance origin -> (param source, param from)
+_CARD_ORIGIN = {"methods_prose": ("paper", "methods_prose"),
+                "table": ("paper", "table"),
+                "derived": ("derived", "degenerate_range"),
+                "scout": ("paper", "scout"),
+                "scout_window": ("paper", "unknown"),
+                "unknown": ("paper", "unknown")}
+
+
+def _param_source(exp, c):
+    """Translate a controlled condition's own recorded origin into a recipe-level
+    param_sources entry. Reads `origin`/`source` off the condition — the numeric value
+    is never consulted."""
+    o = c.get("origin") or {}
+    label = c.get("source")
+    if label == "methods" or o.get("level") == "paper":
+        cp = o.get("card_provenance") or {}
+        src, frm = _CARD_ORIGIN.get(cp.get("origin"), ("paper", "unknown"))
+        m = {"source": src, "from": frm, "value": c.get("value"),
+             "paper_id": exp.get("_pid"), "card_field": o.get("card_field")}
+        if cp.get("evidence"):
+            m["ref"] = cp["evidence"]
+        if cp.get("transformation"):
+            m["transformation"] = cp["transformation"]
+        return m
+    if label in ("caption", "series"):
+        m = {"source": "experiment", "from": label, "value": c.get("value"),
+             "paper_id": o.get("paper_id") or exp.get("_pid"),
+             "experiment_id": o.get("experiment_id") or exp.get("exp_id")}
+        for k in ("figure", "panel"):
+            if o.get(k):
+                m[k] = o[k]
+        return m
+    return {"source": "experiment", "from": "unknown", "value": c.get("value"),
+            "experiment_id": exp.get("exp_id")}
+
+
+def _cond_meta(exp, quantity, reactant=None):
+    """(value, param_sources entry) for the first matching condition — the same
+    selection `_cond` makes, with the origin it carried. `_cond` is untouched."""
+    for c in exp.get("controlled") or []:
+        if c.get("quantity") == quantity and (reactant is None or c.get("of_reactant") == reactant):
+            return c.get("value"), _param_source(exp, c)
+    return None, None
+
+
+def _first(*pairs):
+    """First truthy value — mirrors the existing `_cond(..) or _cond(..)` chain exactly,
+    including its fall-through to the LAST candidate when none is truthy."""
+    for v, m in pairs:
+        if v:
+            return v, m
+    return pairs[-1]
+
+
 def from_experiment(exp):
+    src = {"_exp_id": exp.get("exp_id")}
+
+    def take(key, *pairs):
+        v, m = _first(*pairs)
+        if v is not None and m is not None:
+            src[key] = m
+        return v
+
     reactants = []
     for r in exp.get("reactants") or []:
         lab = r["label"]
+        if r.get("species"):
+            src[f"species::{lab}"] = {"source": "experiment", "from": "experiment_record",
+                                      "value": r.get("species"), "experiment_id": exp.get("exp_id")}
         reactants.append(Reactant(
             label=lab, role=r.get("role"), species=r.get("species"),
-            dose_time=_cond(exp, "pulse_time", lab) or _cond(exp, "pulse_time"),
-            purge_time=_cond(exp, "purge_time", lab) or _cond(exp, "purge_time"),
-            partial_pressure=_cond(exp, f"reactant_{lab}_partial_pressure")
-            or _cond(exp, "partial_pressure", lab)))
+            dose_time=take(f"pulse_time::{lab}",
+                           _cond_meta(exp, "pulse_time", lab), _cond_meta(exp, "pulse_time")),
+            purge_time=take(f"purge_time::{lab}",
+                            _cond_meta(exp, "purge_time", lab), _cond_meta(exp, "purge_time")),
+            partial_pressure=take(f"partial_pressure::{lab}",
+                                  _cond_meta(exp, f"reactant_{lab}_partial_pressure"),
+                                  _cond_meta(exp, "partial_pressure", lab))))
     H, W = _cond(exp, "feature_height"), _cond(exp, "feature_width")
     meas = (exp.get("measurand") or {}).get("quantity")
     targets = {}
@@ -214,15 +296,25 @@ def from_experiment(exp):
         targets["gpc_sat"] = _cond(exp, "growth_per_cycle")
     if meas == "penetration_depth":
         targets["penetration_depth"] = "measured-in-figure"
+    # `reactants` is itself one of Recipe.FIELDS (the roster, distinct from the per-reactant
+    # species/timing fields), so it needs its own entry or the accounting under-counts by
+    # exactly one field per recipe.
+    for f, v in (("material", exp.get("material")), ("cycle_sequence", exp.get("cycle_sequence")),
+                 ("reactants", [r.label for r in reactants] or None)):
+        if v:
+            src[f"{f}::"] = {"source": "experiment", "from": "experiment_record",
+                             "value": v, "experiment_id": exp.get("exp_id")}
     return Recipe(
         material=exp.get("material"), reactants=reactants,
-        cycle_sequence=exp.get("cycle_sequence"), ncycles=_cond(exp, "cycle_number"),
-        temperature=_cond(exp, "temperature") or _cond(exp, "deposition_temperature"),
-        flow_rate=_cond(exp, "flow_rate"),
+        cycle_sequence=exp.get("cycle_sequence"),
+        ncycles=take("cycle_number::", _cond_meta(exp, "cycle_number")),
+        temperature=take("temperature::", _cond_meta(exp, "temperature"),
+                         _cond_meta(exp, "deposition_temperature")),
+        flow_rate=take("flow_rate::", _cond_meta(exp, "flow_rate")),
         carrier_gas=exp.get("carrier_gas"),
         structure={"H": H, "W": W} if (H or W) else None,
         targets=targets or None, provenance="extracted",
-        param_sources={"_exp_id": exp.get("exp_id")})
+        param_sources=src)
 
 
 # ---- fill missing recipe fields from the KB / model cascade -----------------
@@ -247,14 +339,15 @@ def fill_gaps(recipe, impute_fn, model_defaults=None):
         if rec is not None:
             setter(rec["value"])
             src[key] = {
-                "source": "kb", "quantity": q, "reactant": r,
+                "source": "kb", "from": "kb_imputation", "quantity": q, "reactant": r,
                 "value": rec["value"], "sd": rec.get("sd"),
                 "ci": [rec.get("ci_lo"), rec.get("ci_hi")], "n_eff": rec.get("n_eff"),
                 "n_donors": rec.get("n_donors"), "donors": rec.get("donors"),
                 "method": rec.get("method")}
         elif mdkey and mdkey in md and md[mdkey] is not None:
             setter(md[mdkey])
-            src[key] = {"source": "model", "quantity": q, "reactant": r, "value": md[mdkey]}
+            src[key] = {"source": "model", "from": "model_default",
+                        "quantity": q, "reactant": r, "value": md[mdkey]}
 
     # process-level fields
     fill(lambda: recipe.ncycles, lambda v: setattr(recipe, "ncycles", v), "cycle_number", None, "ncycles")

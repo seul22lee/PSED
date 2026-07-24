@@ -102,25 +102,34 @@ def _window_papers():
 
 
 def field_accounting(rows, experiments=None):
-    """Per-source field counts + process-window accounting for the recipe report."""
+    """Per-source field counts + process-window accounting for the recipe report.
+
+    Counts come from the recipes' own `param_sources`, which since the provenance layer
+    carries an entry for EXTRACTED fields as well as imputed/defaulted ones. Nothing here
+    re-derives a source from a value."""
     win = _window_papers()
-    n_kb = n_model = 0
+    by_src = defaultdict(int)
+    by_from = defaultdict(int)
     for r in rows:
-        for m in (r.get("param_sources") or {}).values():
-            if not isinstance(m, dict):
+        for k, m in (r.get("param_sources") or {}).items():
+            if k == "_exp_id" or not isinstance(m, dict) or not m.get("source"):
                 continue
-            n_kb += m.get("source") == "kb"
-            n_model += m.get("source") == "model"
-    # directly extracted = populated before any gap-fill (param_sources only tags FILLED
-    # fields, so it cannot be used to count extracted ones)
-    n_ext = sum(r.get("fields_extracted_n") or 0 for r in rows)
+            by_src[m["source"]] += 1
+            by_from[m.get("from") or "unknown"] += 1
+    n_paper, n_exp = by_src["paper"], by_src["experiment"]
+    n_derived, n_kb, n_model = by_src["derived"], by_src["kb"], by_src["model"]
+    n_ext = n_paper + n_exp + n_derived          # literature-grounded, however sourced
     n_tot = sum(r.get("fields_total_n") or 0 for r in rows)
+    n_unresolved = max(0, n_tot - (n_ext + n_kb + n_model))
     win_recipes = [r for r in rows if r.get("paper") in win]
     # per-experiment temperature (caption/series) is legitimate; a PAPER-LEVEL scalar on a
     # window paper is the defect this fix removed and must stay at 0.
+    # Now exact: read the temperature's recorded source instead of testing presence.
+    # (The previous form looked up "temperature" while fill_gaps writes "temperature::",
+    # so it never matched and counted KB-imputed temperatures as per-experiment ones.)
     win_per_exp = sum(1 for r in win_recipes
-                      if r.get("temperature") not in (None, "")
-                      and (r.get("param_sources") or {}).get("temperature") is None)
+                      if ((r.get("param_sources") or {}).get("temperature::") or {}
+                          ).get("source") == "experiment")
     win_paper_scalar = 0
     for e in (experiments or []):
         if e.get("_pid") not in win:
@@ -131,9 +140,14 @@ def field_accounting(rows, experiments=None):
     return {
         "recipes": len(rows),
         "fields_directly_extracted": n_ext,
+        "fields_paper_direct": n_paper,
+        "fields_experiment_direct": n_exp,
+        "fields_derived": n_derived,
         "fields_kb_imputed": n_kb,
         "fields_model_default": n_model,
+        "fields_unresolved": n_unresolved,
         "fields_total": n_tot,
+        "fields_by_origin": dict(sorted(by_from.items())),
         "process_window_papers": len(win),
         "process_window_recipes": len(win_recipes),
         "window_recipes_with_per_experiment_temperature": win_per_exp,
@@ -146,7 +160,9 @@ def field_accounting(rows, experiments=None):
                  "'filled completeness' is a truthfulness correction, not a regression. "
                  "'filled completeness' counts imputed and defaulted fields alongside "
                  "extracted ones and is therefore NOT a measure of recipe readiness — "
-                 "read it together with fields_directly_extracted."),
+                 "read it together with fields_directly_extracted. Counts are read from "
+                 "each recipe's param_sources (provenance recorded where the value was "
+                 "created); fields_directly_extracted = paper + experiment + derived."),
     }
 
 
@@ -181,6 +197,9 @@ tr:last-child td{border-bottom:0}
 .lab{display:inline-block;min-width:15px;font-weight:700;color:var(--c4)}
 .badge{display:inline-block;font-size:9.5px;padding:1px 5px;border-radius:6px;margin-left:4px;font-weight:600;letter-spacing:.02em;vertical-align:middle}
 .b-extracted{background:rgba(27,175,122,.16);color:var(--c2)}
+.b-paper{background:rgba(27,175,122,.16);color:var(--c2)}
+.b-exp{background:rgba(27,175,122,.26);color:var(--c2)}
+.b-derived{background:rgba(74,58,167,.16);color:var(--c4)}
 .b-kb{background:rgba(42,120,214,.16);color:var(--accent)}
 .b-model{background:rgba(237,161,0,.18);color:var(--c3)}
 .pbar{position:relative;height:8px;width:96px;background:var(--line2);border-radius:5px;overflow:hidden;display:inline-block;vertical-align:middle}
@@ -190,10 +209,13 @@ tr:last-child td{border-bottom:0}
 .dim{color:var(--ink3)}
 """
 
-LEGEND = ('<span class="badge b-extracted">extracted</span> from the figure/methods · '
+LEGEND = ('<span class="badge b-paper">paper</span> stated for the whole paper (methods/table) · '
+          '<span class="badge b-exp">experiment</span> read from this experiment’s caption or series · '
+          '<span class="badge b-derived">derived</span> deterministic transformation · '
           '<span class="badge b-kb">kb</span> inferred from the most similar experiments '
           '(hover: value, 68% CI, donor experiments) · '
-          '<span class="badge b-model">model</span> filled from a twin default')
+          '<span class="badge b-model">model</span> filled from a twin default'
+          ' — hover any badge for its exact origin')
 
 
 def _fmt(v, unit=""):
@@ -226,6 +248,16 @@ def render(rows):
         if not meta:
             return ""
         s = meta["source"]
+        frm = meta.get("from") or "unknown"
+        if s in ("paper", "experiment", "derived"):
+            where = {"paper": "paper-level", "experiment": "this experiment",
+                     "derived": "deterministic transformation"}[s]
+            tip = f"{where} · {frm}"
+            for k in ("card_field", "figure", "panel", "ref", "transformation"):
+                if meta.get(k):
+                    tip += f" · {k} {meta[k]}"
+            cls = {"paper": "b-paper", "experiment": "b-exp", "derived": "b-derived"}[s]
+            return f'<span class="badge {cls}" title="{tip}">{s}</span>'
         if s == "kb":                              # covariate-conditioned imputation
             ci = meta.get("ci") or [None, None]
             don = meta.get("donors") or []
@@ -301,10 +333,16 @@ def render(rows):
  <div class="stat"><b>{avg_e:.2f} → {avg_f:.2f}</b><span>avg completeness (extracted → filled)</span></div>
 </div>
 <div class="bar">
- <div class="stat"><b>{acct['fields_directly_extracted']}</b><span>fields directly extracted</span></div>
+ <div class="stat"><b>{acct['fields_paper_direct']}</b><span>paper-level direct</span></div>
+ <div class="stat"><b>{acct['fields_experiment_direct']}</b><span>experiment-level direct</span></div>
+ <div class="stat"><b>{acct['fields_derived']}</b><span>deterministically derived</span></div>
  <div class="stat"><b>{acct['fields_kb_imputed']}</b><span>fields KB-imputed</span></div>
  <div class="stat"><b>{acct['fields_model_default']}</b><span>fields model-default</span></div>
+ <div class="stat"><b>{acct['fields_unresolved']}</b><span>unresolved</span></div>
+</div>
+<div class="bar">
  <div class="stat"><b>{acct['process_window_recipes']}</b><span>recipes with a process window (range, not a scalar)</span></div>
+ <div class="stat"><b>{acct['window_recipes_with_per_experiment_temperature']}</b><span>window recipes with a per-experiment T</span></div>
  <div class="stat"><b>{acct['window_recipes_with_paper_level_scalar_temperature']}</b><span>paper-level scalar temps from a range (must be 0)</span></div>
 </div>
 <div class="sub" style="font-size:12px"><b>Read completeness with care.</b> “Filled completeness” counts KB-imputed and
@@ -343,7 +381,10 @@ if __name__ == "__main__":
     print(f"  completeness  extracted {ae:.2f}  ->  filled {af:.2f}")
     print(f"  gap-fills: {nkb} from KB medians, {nmodel} from model defaults")
     a = field_accounting(rows)
-    print(f"  fields: {a['fields_directly_extracted']} extracted · "
+    print(f"  fields by origin: {a['fields_by_origin']}")
+    print(f"  fields: {a['fields_directly_extracted']} extracted "
+          f"(paper {a['fields_paper_direct']} · experiment {a['fields_experiment_direct']} · "
+          f"derived {a['fields_derived']}) · unresolved {a['fields_unresolved']} · "
           f"{a['fields_kb_imputed']} kb-imputed · {a['fields_model_default']} model-default")
     print(f"  process windows: {a['process_window_papers']} papers / "
           f"{a['process_window_recipes']} recipes (range, NOT counted as a scalar); "
