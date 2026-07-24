@@ -12,7 +12,7 @@ The output is a validation report + a ranked list of discrepancies — where the
 (or the literature parameters it was given) disagrees with reality. Those are the
 highest-value next experiments (active learning, INTEGRATION_STRATEGY §5).
 """
-import base64, io, json, sys
+import base64, io, json, math, sys
 from pathlib import Path
 import numpy as np
 import matplotlib
@@ -392,6 +392,7 @@ def validate_one(exp, criteria=DEFAULT_CRITERIA):
     else:
         lverdict, lkind, lagree = "model gap", "dose+gap measured, twin still misses", False
 
+    dose_free = prov.get("dose") != "extracted"
     base.update({"status": "comparison_result",
                  "r2": r2, "nrmse": cm.get("nrmse") if cm else None,
                  "overlap": cm.get("overlap") if cm else None,
@@ -400,6 +401,9 @@ def validate_one(exp, criteria=DEFAULT_CRITERIA):
                  "quantitative_agreement_status": "insufficient_evidence",  # measurement σ unresolved
                  "shape_fit": shape,
                  "t_p": twin.t_p, "T": twin.T - 273.15, "H_um": twin.H * 1e6,
+                 # runtime forward-model input trace, read from the SAME twin used to predict
+                 "model_input_trace": _model_input_trace(exp, twin, prov, dose_free),
+                 "dose_free": dose_free, "predicted_pd50_um": pd_t,
                  "_twin": (xt_um, yt),
                  "verdict": lverdict, "kind": lkind, "agree": lagree})  # dormant legacy
     return base
@@ -470,8 +474,10 @@ def _explanation_space(r, inv):
     recovered = bool(inv and (inv["r2_fit"] - inv["r2_warm"] > 0.05) and inv["r2_fit"] >= 0.7)
     exps = []
     exps.append({"status": "candidate_explanation", "locus": "parameterization",
-                 "evidence_for": (f"a plausible change to exposure / sticking c recovers the profile "
-                                  f"(R² {inv['r2_warm']:.2f}→{inv['r2_fit']:.2f})" if inv else
+                 "evidence_for": (f"a bounded change to the pulse time t_p (where adjustable) and the "
+                                  f"model-specific lumped coefficient c recovers the profile "
+                                  f"(R² {inv['r2_warm']:.2f}→{inv['r2_fit']:.2f}; feasible fit, not a unique estimate)"
+                                  if inv else
                                   "twin kinetics are model defaults, free to be off for this chemistry"),
                  "evidence_against": ("" if recovered or not inv else
                                       "even a fitted parameter change does not fully recover the profile"),
@@ -652,10 +658,29 @@ def analyze(question=DEFAULT_QUESTION, criteria=DEFAULT_CRITERIA, is_default=Tru
                 and (r["_inverse_fit"]["r2_fit"] - r["_inverse_fit"]["r2_warm"] > 0.05)
                 and r["_inverse_fit"]["r2_fit"] >= 0.7)
     insights = [{"status": "insight",
-                 "text": (f"the forward twin on DEFAULT kinetics reproduces few profile shapes; a fitted change "
-                          f"to exposure / sticking c recovers {n_rec}/{len(admissible)} of them, so "
-                          f"'parameterization' is a strongly live explanation for the shortfall — this is a "
-                          f"calibration probe, not out-of-sample support")}]
+                 "text": (f"the forward twin on DEFAULT kinetics reproduces few profile shapes; a fitted change to "
+                          f"the pulse time t_p (where adjustable) and the model-specific lumped coefficient c recovers "
+                          f"{n_rec}/{len(admissible)} of them, so 'parameterization' is a strongly live explanation for "
+                          f"the shortfall — this is a calibration probe (feasible fitted parameterization), not "
+                          f"out-of-sample support and not a unique physical estimate")}]
+    # run-level model-input provenance + fit summary
+    from collections import Counter
+    pcount = Counter()
+    for r in admissible:
+        for row in r.get("model_input_trace", []):
+            pcount[row["provenance"]] += 1
+    invs = [r["_inverse_fit"] for r in admissible if r.get("_inverse_fit")]
+    input_provenance_summary = {
+        "by_provenance": dict(pcount),
+        "fitted_variables": {"c": len(invs), "t_p": sum(1 for f in invs if f["dose_free"])},
+        "boundary_limited_fits": sum(1 for f in invs if f.get("boundary_limited")),
+        "ridge_or_broad_fits": sum(1 for f in invs
+                                   if f.get("identifiability", {}).get("class")
+                                   in ("pulse_time_c_tradeoff_ridge", "broad_feasible_region")),
+        "n_2d_fits": sum(1 for f in invs if f["dose_free"]),
+        "n_1d_fits": sum(1 for f in invs if not f["dose_free"]),
+        "c_ontology_mapping_status": C_ONTOLOGY_STATUS,
+    }
     # ===== EVIDENCE CLOSURE =====
     closure = _evidence_closure(comparisons, admissible, interps, exps_all, assumptions,
                                 preserved, frame, diagn, insights)
@@ -663,6 +688,7 @@ def analyze(question=DEFAULT_QUESTION, criteria=DEFAULT_CRITERIA, is_default=Tru
     # ===== FREEZE ===== (the returned object is immutable by contract)
     return {"frame": frame, "comparisons": comparisons, "admissible": admissible,
             "ensemble": {"patterns": patterns, "diagnosability": diagn},
+            "input_provenance_summary": input_provenance_summary,
             "closure": closure, "inquiry": inquiry}
 
 
@@ -723,19 +749,111 @@ def _profile_png(r):
     return _png(fig)
 
 
-# ---------- inverse fit: recover the ASSUMED (imputed) conditions -------------
+# =============================================================================
+# Calibration probe (inverse_fit) — dimensionally correct, bounded, provenance-
+# aware, and honest about non-identifiability. It fits the ADJUSTABLE model
+# parameter(s) to reproduce the observed profile; it is NOT validation and NOT a
+# unique physical estimate. Fitted variables:
+#   · c   — a MODEL-SPECIFIC lumped reaction coefficient (channelModel.c), always
+#           adjustable; its default is the model default, and its ontology mapping
+#           to a literature sticking_probability is UNRESOLVED (never asserted).
+#   · t_p — pulse time, adjustable ONLY when the dose was NOT extracted (else fixed
+#           and NOT in the optimizer vector). Exposure = pA·t_p is DERIVED.
+# Bounds are explicit and enforced by a smooth log-sigmoid transform (no clipping
+# plateaus). A local objective-surface diagnostic classifies identifiability.
+# =============================================================================
+C_BOUNDS = (1e-5, 1.0)                    # model-supported range for the lumped coefficient c
+C_LABEL = "model-specific lumped reaction coefficient c"
+C_ONTOLOGY_STATUS = "unresolved"          # NOT equated with a literature sticking_probability
+TP_LOG_WINDOW = 2.5                       # fitting policy: t_p may vary within exp(±2.5)·warm
+FIT_OPTIMIZER = "Nelder-Mead in a smooth log-sigmoid bounded transform"
+FIT_OBJECTIVE = "mean squared error of normalised thickness vs observed depth"
+FIT_RESIDUAL = "predicted_norm(x) - observed_norm(x) at each observed depth"
+FIT_WEIGHTING = "uniform (unweighted)"
+
+
 def _r2(y, yt):
     y = np.asarray(y, float); yt = np.asarray(yt, float)
     ss = np.sum((y - y.mean()) ** 2)
     return float(1 - np.sum((y - yt) ** 2) / ss) if ss > 0 else -9.0
 
 
+def _blog(z, lo, hi):
+    """Smooth, strictly-in-bounds log transform: physical value in (lo, hi) for any real z.
+    No clipping, so the objective never develops a large flat plateau at a bound."""
+    ulo, uhi = math.log(lo), math.log(hi)
+    return math.exp(ulo + (uhi - ulo) / (1.0 + math.exp(-z)))
+
+
+def _bz0(p0, lo, hi):
+    ulo, uhi = math.log(lo), math.log(hi)
+    fr = min(max((math.log(p0) - ulo) / (uhi - ulo), 1e-6), 1 - 1e-6)
+    return math.log(fr / (1 - fr))
+
+
+def _prov_cat(state):
+    return {"extracted": "extracted", "imputed": "imputed",
+            "default": "model_default"}.get(state, "unresolved")
+
+
+def _identifiability(sse_fn, wtp, tp_fit, c_fit, dose_free, tpb, cb, sse_fit):
+    """Lightweight LOCAL diagnostic — evaluate the objective around the optimum and classify.
+    NEVER claims formal identifiability. Default label is 'feasible fitted parameterization,
+    not a unique physical parameter estimate'."""
+    c_lo, c_hi = cb; tp_lo, tp_hi = tpb
+    label = "feasible fitted parameterization, not a unique physical parameter estimate"
+    if not dose_free:
+        cs = np.geomspace(c_lo, c_hi, 41)
+        vals = [(c, sse_fn(wtp, c)) for c in cs]
+        gmin = min(v for _, v in vals)              # reference the grid's own minimum
+        tol = max(sse_fit, gmin) * 1.10 + 1e-12     # 'acceptable' = within 10% of the min SSE
+        acc = [c for c, v in vals if v <= tol]
+        if not acc:
+            return {"class": "unassessed", "label": label, "dimensions": 1, "detail": "no acceptable region found"}
+        width = (math.log(max(acc)) - math.log(min(acc))) / (math.log(c_hi) - math.log(c_lo))
+        klass = ("broad_feasible_region" if width > 0.5 else
+                 "narrow_isolated_optimum" if width < 0.12 else "moderate_feasible_interval")
+        return {"class": klass, "label": label, "dimensions": 1,
+                "acceptable_c_logfrac_width": round(width, 3),
+                "acceptable_c_range": [float(min(acc)), float(max(acc))],
+                "detail": f"1-D c fit; acceptable-c region spans {width*100:.0f}% of the log-c range"}
+    tol = sse_fit * 1.10 + 1e-12                    # 2-D: within 10% of the min SSE
+    dl = 0.6
+    tps = [math.exp(math.log(tp_fit) + d) for d in np.linspace(-dl, dl, 7)]
+    cs = [math.exp(math.log(c_fit) + d) for d in np.linspace(-dl, dl, 7)]
+    acc = []
+    for tp in tps:
+        for c in cs:
+            if tp_lo <= tp <= tp_hi and c_lo <= c <= c_hi and sse_fn(tp, c) <= tol:
+                acc.append((math.log(tp) - math.log(tp_fit), math.log(c) - math.log(c_fit)))
+    if len(acc) <= 1:
+        klass = "narrow_isolated_optimum"
+    else:
+        dtp = [a for a, _ in acc]; dc = [b for _, b in acc]
+        span_tp, span_c = max(dtp) - min(dtp), max(dc) - min(dc)
+        corr = 0.0
+        if len(acc) >= 3 and span_tp > 1e-9 and span_c > 1e-9:
+            mt, mc = sum(dtp) / len(dtp), sum(dc) / len(dc)
+            num = sum((a - mt) * (b - mc) for a, b in acc)
+            den = (sum((a - mt) ** 2 for a in dtp) * sum((b - mc) ** 2 for b in dc)) ** 0.5
+            corr = num / den if den else 0.0
+        if span_tp > 0.8 and span_c > 0.8 and corr < -0.5:
+            klass = "pulse_time_c_tradeoff_ridge"
+        elif span_tp > 0.8 or span_c > 0.8:
+            klass = "broad_feasible_region"
+        else:
+            klass = "narrow_isolated_optimum"
+    return {"class": klass, "label": label, "dimensions": 2, "n_acceptable_local": len(acc),
+            "detail": f"2-D (t_p,c) local surface; {len(acc)}/49 neighbours within 10% of the min SSE"}
+
+
 def inverse_fit(exp):
-    """Hold the EXTRACTED conditions fixed, warm-start the IMPUTED ones, and optimise the
-    two identifiable free parameters — exposure (pA·t_p) and the lumped sticking coefficient
-    c — to reproduce the measured profile on its own coordinate. This mirrors how the source
-    papers extract c by fitting the Ylilammi model to the saturation profile. Returns the
-    recovered values, the warm→fit R², and the search trajectory for visualisation."""
+    """Calibration probe for the 'parameterization' locus (§4). Holds the EXTRACTED conditions
+    fixed and fits the ADJUSTABLE model parameter(s) to reproduce the observed profile on its own
+    depth grid. Correct dimensionality: 1-D over c when the dose was extracted (t_p fixed, not in
+    the vector); 2-D over (t_p, c) when the dose was not extracted. Explicit bounds via a smooth
+    log-sigmoid transform. Returns a FEASIBLE fitted parameterization with full traceability and a
+    local identifiability diagnostic — never a unique physical estimate."""
     twin, notes, prov = build_twin(exp)
     meas = measured_profile(exp)
     if not meas:
@@ -743,41 +861,156 @@ def inverse_fit(exp):
     xm, ym = meas
     xg = np.array(xm) * 1e-6
     ym = np.array(ym, float)
-    wtp, wc, pA = twin.t_p, twin.c, twin.pA
-    dose_free = prov.get("dose") != "extracted"     # free exposure only if dose was NOT extracted
+    n_obs = len(xm)
+    wtp, wc, pA = float(twin.t_p), float(twin.c), float(twin.pA)
+    dose_free = prov.get("dose") != "extracted"     # t_p adjustable only if dose was NOT extracted
 
-    def curve(lm, lc):
-        twin.t_p = wtp * np.exp(lm) if dose_free else wtp
-        twin.c = float(np.clip(wc * np.exp(lc), 1e-5, 1.0))
-        twin.prepare()
+    c_lo, c_hi = C_BOUNDS
+    tp_lo, tp_hi = wtp * math.exp(-TP_LOG_WINDOW), wtp * math.exp(TP_LOG_WINDOW)
+
+    def predict(tp, c):
+        twin.t_p = float(tp); twin.c = float(c); twin.prepare()
         th, _, _ = twin.approx(xg, np.zeros_like(xg))
         t0 = th[0] if th[0] > 0 else (th.max() or 1)
         return np.clip(th / t0, 0, None)
 
-    lm_grid = np.linspace(-2.5, 2.5, 11) if dose_free else np.array([0.0])
-    grid = [(lm, lc) for lm in lm_grid for lc in np.linspace(-2.5, 2.5, 11)]
-    best = min(grid, key=lambda p: float(np.mean((curve(*p) - ym) ** 2)))   # robust warm-start
-    traj = []
-    def sse(p):
-        yt = curve(p[0], p[1]); traj.append((float(p[0]), float(p[1]), _r2(ym, yt)))
-        return float(np.mean((yt - ym) ** 2))
-    res = minimize(sse, list(best), method="Nelder-Mead",
-                   options={"maxiter": 120, "xatol": 1e-3, "fatol": 1e-7})
-    lm, lc = res.x
-    # ~7 representative curves along the search, ordered warm→converged by R²
-    cand = {(0.0, 0.0), tuple(best), (lm, lc)} | {(a, b) for a, b, _ in traj}
-    scored = sorted((_r2(ym, curve(a, b)), a, b) for a, b in cand)
-    picks = [scored[int(i)] for i in np.linspace(0, len(scored) - 1, min(7, len(scored)))]
-    curves = [(round(r, 3), list(curve(a, b))) for r, a, b in picks]
+    def sse(tp, c):
+        return float(np.mean((predict(tp, c) - ym) ** 2))
+
+    evals = {"n": 0}
+    if dose_free:                                    # ---- 2-D over (t_p, c) ----
+        active = ["t_p", "c"]
+        def obj(z):
+            evals["n"] += 1
+            return sse(_blog(z[0], tp_lo, tp_hi), _blog(z[1], c_lo, c_hi))
+        best_tp, best_c = min(((tp, c) for tp in np.geomspace(tp_lo, tp_hi, 9)
+                               for c in np.geomspace(c_lo, c_hi, 13)), key=lambda p: sse(*p))
+        z0 = [_bz0(best_tp, tp_lo, tp_hi), _bz0(best_c, c_lo, c_hi)]
+        res = minimize(obj, z0, method="Nelder-Mead",
+                       options={"maxiter": 200, "xatol": 1e-3, "fatol": 1e-9})
+        tp_fit = _blog(res.x[0], tp_lo, tp_hi); c_fit = _blog(res.x[1], c_lo, c_hi)
+    else:                                            # ---- 1-D over c (t_p fixed) ----
+        active = ["c"]
+        def obj(z):
+            evals["n"] += 1
+            return sse(wtp, _blog(z[0], c_lo, c_hi))
+        best_c = min(np.geomspace(c_lo, c_hi, 21), key=lambda c: sse(wtp, c))
+        z0 = [_bz0(best_c, c_lo, c_hi)]
+        res = minimize(obj, z0, method="Nelder-Mead",
+                       options={"maxiter": 200, "xatol": 1e-3, "fatol": 1e-9})
+        tp_fit = wtp; c_fit = _blog(res.x[0], c_lo, c_hi)
+
+    r2_warm, r2_fit = _r2(ym, predict(wtp, wc)), _r2(ym, predict(tp_fit, c_fit))
+    sse_warm, sse_fit = sse(wtp, wc), sse(tp_fit, c_fit)
+
+    def _pos(p, lo, hi):
+        return (math.log(p) - math.log(lo)) / (math.log(hi) - math.log(lo))
+    c_pos = _pos(c_fit, c_lo, c_hi)
+    c_bound = "at_lower" if c_pos <= 0.02 else "at_upper" if c_pos >= 0.98 else "interior"
+    if dose_free:
+        tp_pos = _pos(tp_fit, tp_lo, tp_hi)
+        tp_bound = "at_lower" if tp_pos <= 0.02 else "at_upper" if tp_pos >= 0.98 else "interior"
+    else:
+        tp_bound = "fixed"
+    boundary_limited = (c_bound != "interior") or (tp_bound in ("at_lower", "at_upper"))
+    ident = _identifiability(sse, wtp, tp_fit, c_fit, dose_free, (tp_lo, tp_hi), (c_lo, c_hi), sse_fit)
+
+    # representative warm→fit curves for the exhibit figure (log-interpolated)
+    def _blend(a, b, t):
+        return math.exp(math.log(a) + t * (math.log(b) - math.log(a)))
+    ts = np.linspace(0, 1, 6)
+    curves = [(round(_r2(ym, predict(_blend(wtp, tp_fit, t) if dose_free else wtp, _blend(wc, c_fit, t))), 3),
+               list(predict(_blend(wtp, tp_fit, t) if dose_free else wtp, _blend(wc, c_fit, t)))) for t in ts]
+
     return {
         "exp_id": exp["exp_id"], "geometry_class": exp.get("geometry_class"),
-        "dose_free": dose_free, "niter": len(traj),
-        "r2_warm": _r2(ym, curve(0, 0)), "r2_fit": _r2(ym, curve(lm, lc)),
-        "expo_warm": wtp * pA, "expo_fit": (wtp * np.exp(lm) if dose_free else wtp) * pA,
-        "c_warm": wc, "c_fit": float(np.clip(wc * np.exp(lc), 1e-5, 1)),
-        "xm": list(xm), "ym": list(ym), "curves": curves,
-        "r2track": [t[2] for t in traj],
+        "dose_free": dose_free,
+        "active_variables": active,
+        "fixed_variables": (["pulse_time_t_p"] if not dose_free else []) + ["precursor_partial_pressure_pA"],
+        "variables": {
+            "t_p": {"canonical": "pulse_time", "meaning": "precursor pulse time", "unit": "s",
+                    "role": ("adjustable" if dose_free else "fixed"),
+                    "initial": wtp, "lower": (tp_lo if dose_free else wtp),
+                    "upper": (tp_hi if dose_free else wtp), "fitted": tp_fit,
+                    "bound_status": tp_bound, "provenance": _prov_cat(prov.get("dose"))},
+            "c": {"canonical": None, "meaning": C_LABEL, "unit": "dimensionless (probability-like)",
+                  "role": "adjustable", "initial": wc, "lower": c_lo, "upper": c_hi, "fitted": c_fit,
+                  "bound_status": c_bound, "provenance_initial": "model_default",
+                  "provenance_fitted": "inverse_fitted", "ontology_mapping_status": C_ONTOLOGY_STATUS},
+        },
+        "pA": {"value": pA, "provenance": _prov_cat(prov.get("pA")), "role": "fixed",
+               "canonical": "precursor_partial_pressure"},
+        "exposure_warm": wtp * pA, "exposure_fit": tp_fit * pA,
+        "exposure_note": "exposure = pA x t_p (DERIVED; pA fixed, never independently fitted)",
+        "optimizer": FIT_OPTIMIZER, "objective": FIT_OBJECTIVE, "residual": FIT_RESIDUAL,
+        "weighting": FIT_WEIGHTING, "n_obs": n_obs, "n_eval": evals["n"], "converged": bool(res.success),
+        "sse_before": sse_warm, "sse_after": sse_fit,
+        "boundary_limited": boundary_limited, "identifiability": ident,
+        # legacy-compatible keys for the existing exhibit figure/table
+        "niter": evals["n"], "r2_warm": r2_warm, "r2_fit": r2_fit,
+        "expo_warm": wtp * pA, "expo_fit": tp_fit * pA, "c_warm": wc, "c_fit": c_fit,
+        "xm": list(xm), "ym": list(ym), "curves": curves, "r2track": [c[0] for c in curves],
     }
+
+
+def _model_input_trace(exp, twin, prov, dose_free):
+    """Every runtime input actually used by the forward model for THIS prediction, read from the
+    SAME twin object that produced the profile. Chain: canonical evidence -> resolved runtime input
+    -> model attribute -> predicted profile -> predicted PD50."""
+    kp = getattr(twin, "kb_provenance", {}) or {}
+
+    def kbcat(attr):
+        s = (kp.get(attr) or {}).get("source")
+        return {"kb": "literature_reported", "precursor": "literature_reported",
+                "material": "literature_reported"}.get(s, "model_default")
+
+    def kbsrc(attr, fallback):
+        m = kp.get(attr) or {}
+        return m.get("quantity") or m.get("property") or fallback
+
+    rows = [
+        {"canonical": "pulse_time", "attr": "t_p", "value": twin.t_p, "unit": "s",
+         "provenance": _prov_cat(prov.get("dose")),
+         "source": "controlled[pulse_time A/B] else KB impute else model default",
+         "role": ("adjustable (calibration probe)" if dose_free else "fixed"),
+         "assumption": ("KB estimate (imputed)" if prov.get("dose") == "imputed"
+                        else "model default t_p" if prov.get("dose") == "default" else "")},
+        {"canonical": "temperature", "attr": "T", "value": twin.T - 273.15, "unit": "°C",
+         "provenance": _prov_cat(prov.get("T")), "source": "controlled[temperature] else KB impute else default",
+         "role": "fixed", "assumption": ("KB estimate (imputed)" if prov.get("T") == "imputed" else "")},
+        {"canonical": "precursor_partial_pressure", "attr": "pA", "value": twin.pA, "unit": "Pa",
+         "provenance": _prov_cat(prov.get("pA")),
+         "source": "pressure_compat.precursor_pressure else controlled[partial_pressure A] else default",
+         "role": "fixed",
+         "assumption": ("KB estimate (imputed)" if prov.get("pA") == "imputed"
+                        else "model default pA=100 Pa" if prov.get("pA") == "default" else "")},
+        {"canonical": "growth_per_cycle", "attr": "gpc", "value": twin.gpc * 1e9, "unit": "nm/cycle",
+         "provenance": _prov_cat(prov.get("gpc")), "source": "controlled[growth_per_cycle] else KB impute else default",
+         "role": "fixed", "assumption": ("KB estimate (imputed)" if prov.get("gpc") == "imputed" else "")},
+        {"canonical": "feature_height", "attr": "H", "value": twin.H * 1e6, "unit": "µm",
+         "provenance": _prov_cat(prov.get("H")), "source": "controlled[feature_height] (not imputed) else default",
+         "role": "fixed", "assumption": ("assumed default gap (not extracted)" if prov.get("H") == "default" else "")},
+        {"canonical": None, "attr": "c", "value": twin.c, "unit": "dimensionless",
+         "provenance": ("literature_reported" if (kp.get("c") or {}).get("source") == "kb" else "model_default"),
+         "source": "KB reaction_probability (absent here) else channelModel default",
+         "role": "fixed in forward prediction; adjustable in calibration probe",
+         "assumption": f"{C_LABEL}; ontology mapping to sticking_probability: {C_ONTOLOGY_STATUS}"},
+        {"canonical": "adsorption_rate_constant", "attr": "K", "value": twin.K, "unit": "1/Pa",
+         "provenance": ("literature_reported" if (kp.get("K") or {}).get("source") == "kb" else "model_default"),
+         "source": kbsrc("K", "KB adsorption_rate_constant else channelModel default"),
+         "role": "fixed", "assumption": ""},
+        {"canonical": "molecular_diameter(A)", "attr": "da", "value": twin.da * 1e12, "unit": "pm",
+         "provenance": kbcat("da"), "source": kbsrc("da", "precursor ontology / model default"),
+         "role": "fixed", "assumption": ""},
+        {"canonical": "molar_mass(A)", "attr": "MA", "value": twin.MA * 1e3, "unit": "g/mol",
+         "provenance": kbcat("MA"), "source": kbsrc("MA", "precursor ontology / model default"),
+         "role": "fixed", "assumption": ""},
+        {"canonical": None, "attr": "exposure = pA·t_p", "value": twin.pA * twin.t_p, "unit": "Pa·s",
+         "provenance": "derived", "source": "pA × t_p",
+         "role": ("adjustable via t_p" if dose_free else "fixed"),
+         "assumption": "DERIVED from pA and t_p; not independently fitted"},
+    ]
+    return rows
 
 
 def inverse_png(f):
@@ -1040,6 +1273,97 @@ def _brief_profile_png(r):
     fig.tight_layout(); return _png(fig)
 
 
+# provenance category -> css class (defaults / unresolved are made prominent)
+_PROV_CLS = {"literature_reported": "s-sup", "extracted": "s-cmp", "derived": "s-can",
+             "imputed": "s-ins", "model_default": "s-ano", "inverse_fitted": "s-asm",
+             "unresolved": "s-ano"}
+_KEY_INPUT = {"t_p": "pulse time", "T": "temperature", "pA": "precursor pressure",
+              "gpc": "GPC", "H": "gap height"}
+
+
+def _pbadge(p):
+    return f'<span class="badge {_PROV_CLS.get(p, "s-ano")}">{_H.escape(str(p))}</span>'
+
+
+def _fmtv(v):
+    return f"{v:.4g}" if isinstance(v, (int, float)) else _H.escape(str(v))
+
+
+def _trace_html(c):
+    """The per-comparison expandable computational trace (8 parts): observed-data provenance,
+    forward-model inputs, forward prediction, comparison metrics, calibration-probe setup,
+    calibration-probe result, bounds & convergence, identifiability & provenance caveats."""
+    esc = _H.escape
+    f = c.get("_inverse_fit")
+    op = c["observation_provenance"]
+    t1 = (f"<div class=note><b>1 · Observed-data trace.</b> profile extracted from "
+          f"<span class=mono>{esc(str(op.get('doi')))} {esc(str(op.get('figure')))}</span> by "
+          f"<span class=mono>{esc(str(op.get('extractor')))}</span> — a fallible extraction, not ground truth. "
+          f"extraction status {esc(str(op.get('extraction_status')))}; measurement uncertainty "
+          f"<b>{esc(op['measurement_uncertainty'])}</b>; calibration status <b>{esc(op['calibration_status'])}</b>. "
+          f"Observable: normalised thickness vs depth; PD50 = depth at 50% of mouth thickness.</div>")
+    trows = "".join(
+        f"<tr><td class=mono>{esc(str(r['canonical']) if r['canonical'] else '—')}</td>"
+        f"<td class=mono>{esc(r['attr'])}</td><td class=mono>{_fmtv(r['value'])}</td>"
+        f"<td class=mono>{esc(r['unit'])}</td><td>{_pbadge(r['provenance'])}</td>"
+        f"<td class=mut style='font-size:11px'>{esc(r['source'])}</td>"
+        f"<td class=mono style='font-size:11px'>{esc(r['role'])}</td>"
+        f"<td class=mut style='font-size:11px'>{esc(r['assumption'])}</td></tr>"
+        for r in c.get("model_input_trace", []))
+    t2 = (f"<div class=note><b>2 · Forward-model input trace</b> — the actual runtime values passed into "
+          f"<span class=mono>build_twin()</span> and used to produce the prediction:</div>"
+          f"<table><tr><th>canonical evidence</th><th>attr</th><th>value</th><th>unit</th><th>provenance</th>"
+          f"<th>source / fallback</th><th>fixed / adjustable</th><th>assumption</th></tr>{trows}</table>")
+    t3 = (f"<div class=note><b>3 · Forward prediction.</b> chain: canonical evidence → resolved runtime input "
+          f"→ model attribute → predicted normalised profile → predicted PD50 = "
+          f"<b>{_um(c.get('predicted_pd50_um'))}</b> (observed PD50 = {_um(c.get('pd_meas'))}).</div>"
+          f"<div style='text-align:center'><img class=pfit src='data:image/png;base64,{_brief_profile_png(c)}'></div>")
+    r2 = c.get("r2")
+    t4 = (f"<div class=note><b>4 · Comparison metrics (descriptive).</b> "
+          f"R²={r2:.3f}, shape fit <b>{esc(str(c.get('shape_fit')))}</b>, severity "
+          f"{(c.get('severity') or {}).get('level')}. Quantitative agreement: <b>insufficient_evidence</b> "
+          f"(measurement σ unresolved) — not uncertainty-relative and not truth.</div>")
+    if not f:
+        return t1 + t2 + t3 + t4
+    v = f["variables"]
+    t5 = (f"<div class=note><b>5 · Calibration-probe setup.</b> optimizer: "
+          f"<span class=mono>{esc(f['optimizer'])}</span>; objective: {esc(f['objective'])}; residual: "
+          f"{esc(f['residual'])}; weighting: {esc(f['weighting'])}; n_obs={f['n_obs']}. "
+          f"<b>active fitted variables:</b> {esc(', '.join(f['active_variables']))}; "
+          f"<b>fixed:</b> {esc(', '.join(f['fixed_variables']))}.</div>"
+          f"<table><tr><th>variable</th><th>meaning</th><th>unit</th><th>role</th><th>initial</th>"
+          f"<th>lower</th><th>upper</th><th>fitted</th><th>bound</th></tr>"
+          f"<tr><td class=mono>t_p</td><td>{esc(v['t_p']['meaning'])}</td><td class=mono>s</td>"
+          f"<td class=mono>{esc(v['t_p']['role'])}</td><td class=mono>{_fmtv(v['t_p']['initial'])}</td>"
+          f"<td class=mono>{_fmtv(v['t_p']['lower'])}</td><td class=mono>{_fmtv(v['t_p']['upper'])}</td>"
+          f"<td class=mono>{_fmtv(v['t_p']['fitted'])}</td><td class=mono>{esc(v['t_p']['bound_status'])}</td></tr>"
+          f"<tr><td class=mono>c</td><td>{esc(v['c']['meaning'])} <i>(ontology mapping: "
+          f"{esc(v['c']['ontology_mapping_status'])})</i></td><td class=mono>—</td>"
+          f"<td class=mono>{esc(v['c']['role'])}</td><td class=mono>{_fmtv(v['c']['initial'])}</td>"
+          f"<td class=mono>{v['c']['lower']:.0e}</td><td class=mono>{v['c']['upper']:.1f}</td>"
+          f"<td class=mono>{_fmtv(v['c']['fitted'])}</td><td class=mono>{esc(v['c']['bound_status'])}</td></tr></table>")
+    t6 = (f"<div class=note><b>6 · Calibration-probe result.</b> "
+          f"t_p (fitted) = {_fmtv(v['t_p']['fitted'])} s [{_pbadge(v['t_p']['provenance'])}], "
+          f"pA (fixed) = {_fmtv(f['pA']['value'])} Pa [{_pbadge(f['pA']['provenance'])}], "
+          f"<b>derived exposure = pA×t_p = {_fmtv(f['exposure_warm'])} → {_fmtv(f['exposure_fit'])} Pa·s</b> "
+          f"(<i>{esc(f['exposure_note'])}</i>); c = {_fmtv(v['c']['initial'])} → {_fmtv(v['c']['fitted'])} "
+          f"[{_pbadge('inverse_fitted')}]. SSE {f['sse_before']:.4g}→{f['sse_after']:.4g}; "
+          f"R² {f['r2_warm']:.2f}→{f['r2_fit']:.2f}.</div>"
+          f"<div style='text-align:center'><img class=pfit style='max-width:640px' "
+          f"src='data:image/png;base64,{inverse_png(f)}'></div>")
+    t7 = (f"<div class=note><b>7 · Bounds & convergence.</b> converged={f['converged']}, "
+          f"evaluations={f['n_eval']}; boundary-limited: <b>{f['boundary_limited']}</b>"
+          + (" — the fit sits ON a bound (a boundary solution, not an interior optimum)"
+             if f['boundary_limited'] else "") + ".</div>")
+    idn = f["identifiability"]
+    t8 = (f"<div class=note><b>8 · Identifiability & provenance caveats.</b> local diagnostic: "
+          f"<b>{esc(idn['class'])}</b> — {esc(idn.get('detail', ''))}. <b>{esc(idn['label'])}</b>. "
+          f"c is a {esc(C_LABEL)} (ontology mapping {esc(C_ONTOLOGY_STATUS)}); an inverse-fitted c is "
+          f"<b>never</b> a literature-reported sticking probability. A better fit does not validate the "
+          f"model; a failed fit is not proof of model failure.</div>")
+    return t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8
+
+
 def render_brief(analysis, out_path=None):
     """Render the frozen analysis into the canonical Interpretation Brief. Composition
     only — it changes no status, collapses no plural set, and adds no conclusion."""
@@ -1080,6 +1404,25 @@ def render_brief(analysis, out_path=None):
           f"<div class=note><b>Diagnosability: {esc(diag['verdict'])}.</b> {esc(diag['basis'])}. "
           f"Because of this, no unique cause is attributed and no anomaly is over-claimed.</div>")
 
+    # ---- run-level Model Input Provenance Summary (defaults/unresolved made prominent) ----
+    ips = analysis.get("input_provenance_summary", {})
+    bp = ips.get("by_provenance", {})
+    prov_stats = "".join(
+        f"<div class=stat><b>{_pbadge(k)}</b><span>{v} model inputs</span></div>"
+        for k, v in sorted(bp.items(), key=lambda x: -x[1]))
+    fit_stats = (f"<div class=stat><b>{ips.get('n_1d_fits', 0)}</b><span>1-D fits (c only, dose extracted)</span></div>"
+                 f"<div class=stat><b>{ips.get('n_2d_fits', 0)}</b><span>2-D fits (t_p &amp; c)</span></div>"
+                 f"<div class=stat><b style='color:#c62b2b'>{ips.get('boundary_limited_fits', 0)}</b>"
+                 f"<span>boundary-limited fits</span></div>"
+                 f"<div class=stat><b>{ips.get('ridge_or_broad_fits', 0)}</b>"
+                 f"<span>broad / ridge (weak identifiability)</span></div>")
+    s_prov = (f"<div class=note><b>Model-input provenance summary</b> across the {len(adm)} admissible "
+              f"comparisons. Model-default and unresolved inputs are the weakest — the calibration probe "
+              f"(§10 and per-row) then fits the adjustable parameters. Fitted c is a "
+              f"<span class=mono>{esc(C_LABEL)}</span>; its ontology mapping to a literature "
+              f"sticking probability is <b>{esc(ips.get('c_ontology_mapping_status', 'unresolved'))}</b>.</div>"
+              f"<div class=bar>{prov_stats}</div><div class=bar>{fit_stats}</div>")
+
     # ---- 2 what was compared (prediction vs observation) ----
     sc = _brief_scatter(adm)
     rows = ""
@@ -1088,12 +1431,15 @@ def render_brief(analysis, out_path=None):
     for c in order:
         st = c["status"]
         if st == "comparison_result":
-            prov_in = " ".join(f"<span class=pill>{esc(k)}</span>" for k in c["measured"]) \
-                + "".join(f"<span class=pill>{esc(k)}~</span>" for k in c["imputed"])
-            png = _brief_profile_png(c)
-            detail = (f"<tr class=disc><td colspan=7><img class=pfit src='data:image/png;base64,{png}'>"
-                      f"<div class=note>shape fit is descriptive only; quantitative agreement is "
-                      f"<b>insufficient_evidence</b> (no measurement uncertainty).</div></td></tr>")
+            # readable input chips (name shown; value/unit/provenance in the tooltip)
+            chips = []
+            for r in c.get("model_input_trace", []):
+                if r["attr"] in _KEY_INPUT:
+                    title = f"{_KEY_INPUT[r['attr']]} = {_fmtv(r['value'])} {r['unit']} · {r['provenance']}"
+                    chips.append(f'<span class="badge {_PROV_CLS.get(r["provenance"], "s-ano")}" '
+                                 f'title="{esc(title)}">{esc(_KEY_INPUT[r["attr"]])}</span>')
+            prov_in = " ".join(chips)
+            detail = (f"<tr class=disc><td colspan=7>{_trace_html(c)}</td></tr>")
             rows += (f"<tr class=prow onclick='tog(this)'><td class=mono>▸ {esc(c['exp_id'])}</td>"
                      f"<td class=mono>{esc(c['paper'])}</td><td>{_badge(st)}</td>"
                      f"<td class=mono>{esc(str(c.get('shape_fit')))}</td>"
@@ -1106,14 +1452,16 @@ def render_brief(analysis, out_path=None):
             rows += (f"<tr><td class=mono>{esc(c['exp_id'])}</td><td class=mono>{esc(c['paper'])}</td>"
                      f"<td>{_badge(st)}</td><td colspan=4 class=mut>{esc(why)} "
                      f"→ <i>{esc(bq.get('text',''))}</i></td></tr>")
-    s2 = (f"<div class=note>Each admissible pairing is a <b>prediction versus observation</b> on the "
-          f"same observable, evaluated relative to the available uncertainty. Non-comparable pairings "
-          f"are <b>refused as tests</b> (never scored) and yield a boundary question instead. Observed "
-          f"profiles are extractions, not ground truth.</div>"
+    s2 = (s_prov
+          + f"<div class=note style='margin-top:12px'>Each admissible pairing is a <b>prediction versus "
+          f"observation</b> on the same observable. Non-comparable pairings are <b>refused as tests</b> "
+          f"(never scored) and yield a boundary question instead. Observed profiles are extractions, not "
+          f"ground truth. <b>Click any row</b> for its full computational trace (observed data → model "
+          f"inputs → prediction → metrics → calibration probe → bounds → identifiability).</div>"
           f"<div style='text-align:center;margin:6px 0'><img style='max-width:460px' "
           f"src='data:image/png;base64,{sc}'></div>"
           f"<table><tr><th>experiment</th><th>source</th><th>status</th><th>shape fit</th>"
-          f"<th>severity</th><th>PD50 obs / pred</th><th>input provenance</th></tr>{rows}</table>")
+          f"<th>severity</th><th>PD50 obs / pred</th><th>key inputs (hover)</th></tr>{rows}</table>")
 
     # ---- 3 what the evidence supports ----
     if clo["supports"]:
@@ -1229,14 +1577,19 @@ def render_brief(analysis, out_path=None):
     show = recs[:8]
     inv_rows = ""
     for c in show:
-        fjson = c["_inverse_fit"]
-        png = inverse_png(fjson)
+        fj = c["_inverse_fit"]
+        v = fj["variables"]
+        png = inverse_png(fj)
+        bl = ("<span class='badge s-ano'>boundary-limited</span>" if fj["boundary_limited"] else "")
         inv_rows += (f"<tr class=prow onclick='tog(this)'><td class=mono>▸ {esc(c['exp_id'])}</td>"
-                     f"<td class=mono>R² {fjson['r2_warm']:.2f}→{fjson['r2_fit']:.2f}</td>"
-                     f"<td class=mono>exposure {fjson['expo_warm']:.1f}→{fjson['expo_fit']:.1f} Pa·s</td>"
-                     f"<td class=mono>c {fjson['c_warm']:.3f}→{fjson['c_fit']:.4f}</td></tr>"
-                     f"<tr class=disc><td colspan=4><img class=pfit style='max-width:640px' "
-                     f"src='data:image/png;base64,{png}'></td></tr>")
+                     f"<td class=mono>{esc('+'.join(fj['active_variables']))} "
+                     f"({'2-D' if fj['dose_free'] else '1-D'})</td>"
+                     f"<td class=mono>R² {fj['r2_warm']:.2f}→{fj['r2_fit']:.2f}</td>"
+                     f"<td class=mono>c {v['c']['initial']:.3f}→{v['c']['fitted']:.4f} "
+                     f"[{esc(v['c']['bound_status'])}]</td>"
+                     f"<td class=mono>{_fmtv(fj['exposure_warm'])}→{_fmtv(fj['exposure_fit'])} Pa·s</td>"
+                     f"<td>{esc(fj['identifiability']['class'])} {bl}</td></tr>"
+                     f"<tr class=disc><td colspan=6>{_trace_html(c)}</td></tr>")
     prov_note = ("<div class=note>Observed profiles are digitised extractions "
                  f"(extractor: <span class=mono>{esc(str((comps[0].get('observation_provenance') or {}).get('extractor')))}</span>), "
                  "each a fallible hypothesis. The corpus carries <b>no measurement uncertainty</b> and "
@@ -1244,13 +1597,17 @@ def render_brief(analysis, out_path=None):
                  "partial-pressure evidence being absent <i>in this processed corpus</i> is NOT a claim that "
                  "it is absent from the literature — full pressure extraction is not complete.</div>")
     s10 = (prov_note
-           + "<div class=note style='margin-top:8px'><b>Parameterization exhibit</b> — holding extracted "
-           "conditions fixed and fitting exposure + sticking c (the same inverse procedure the source "
-           "papers use to extract c). This is a <b>calibration probe</b> that evidences the "
-           "'parameterization' explanation; it is not out-of-sample support. "
-           f"Showing {len(show)} of {len(recs)} admissible profiles (largest recovery first).</div>"
-           f"<table><tr><th>experiment</th><th>R² warm→fit</th><th>exposure warm→fit</th>"
-           f"<th>c warm→fit</th></tr>{inv_rows}</table>")
+           + "<div class=note style='margin-top:8px'><b>Parameterization exhibit (calibration probe).</b> "
+           "Holding the extracted conditions fixed and fitting the ADJUSTABLE model parameter(s): the "
+           f"<span class=mono>{esc(C_LABEL)}</span> (always), and the pulse time t_p only when the dose was "
+           "not extracted. <b>Exposure = pA×t_p is DERIVED, never independently fitted.</b> Bounds are "
+           "explicit; the fit reports a <b>feasible fitted parameterization, not a unique physical "
+           "estimate</b>. This evidences the 'parameterization' explanation; it is not out-of-sample support, "
+           "and an inverse-fitted c is never a literature sticking probability. "
+           f"Showing {len(show)} of {len(recs)} admissible profiles (largest recovery first); "
+           "click a row for the full computational trace.</div>"
+           f"<table><tr><th>experiment</th><th>fitted vars</th><th>R² warm→fit</th>"
+           f"<th>c warm→fit [bound]</th><th>derived exposure warm→fit</th><th>identifiability</th></tr>{inv_rows}</table>")
 
     body = f"""<title>M3 · Interpretation Brief</title><style>{_BRIEF_CSS}</style>{_BRIEF_JS}
 <div class=wrap>
