@@ -70,7 +70,11 @@ def fake_factory():
     return FakeTwin()
 
 
-REQ60 = md.DesignRequest(material="Al2O3", target_pd=60e-6)
+# Phase 2 changed the default: a material-only request no longer silently acquires a
+# nominal ratio. The fallback path now requires an explicit opt-in, so the Phase-1
+# checks below exercise it deliberately; REQ60_STRICT covers the refusing default.
+REQ60 = md.DesignRequest(material="Al2O3", target_pd=60e-6, allow_chemistry_fallback=True)
+REQ60_STRICT = md.DesignRequest(material="Al2O3", target_pd=60e-6)
 
 print("1) underspecified request is completed, and gaps are declared")
 ctx = md.resolve_context(REQ60, warm_start_fn=ws_no_pressure)
@@ -81,31 +85,68 @@ check("target is user-sourced", ctx.priors["target_pd"].source, "user")
 ok("target is not overridable", ctx.priors["target_pd"].overridable is False)
 check("bounds are model_supported", ctx.priors["pressure_bounds"].source, "model_supported")
 
-print("2) the fallback ratio is NEVER dressed up as literature")
+print("2a) without an opt-in, a material-only request REFUSES to invent a ratio")
+strict = md.resolve_context(REQ60_STRICT, warm_start_fn=ws_no_pressure)
+check("strict ratio source", strict.priors["ratio"].source, "unresolved")
+check("strict ratio value", strict.priors["ratio"].value, None)
+ok("and says an opt-in is needed",
+   any("allow_chemistry_fallback" in w for w in strict.warnings), strict.warnings)
+
+print("2) the opted-in fallback ratio is NEVER dressed up as literature")
 p = ctx.priors["ratio"]
 check("source", p.source, "fallback")
 check("confidence", p.confidence, md.CONFIDENCE["fallback"])
 ok("confidence is low", p.confidence <= 0.2, p.confidence)
 ok("source is not kb/user", p.source not in ("kb", "user"))
-ok("evidence explains the absence", "no KB precursor partial pressure" in (p.evidence or ""), p.evidence)
+ok("evidence explains the absence",
+   "cannot be claimed as precursor_partial_pressure" in (p.evidence or "")
+   or "no KB precursor partial pressure" in (p.evidence or ""), p.evidence)
 ok("warned explicitly", any("FALLBACK" in w for w in ctx.warnings), ctx.warnings)
 ok("recorded as unresolved", "ratio_from_literature" in ctx.unresolved, ctx.unresolved)
+ok("precursor chemistry is also unresolved for a material-only request",
+   "precursor" in ctx.unresolved, ctx.unresolved)
 ok("reference exposure is unresolved without pA0",
    ctx.priors["reference_effective_dose"].source == "unresolved",
    ctx.priors["reference_effective_dose"].source)
-ok("but the KB pulse time is still credited",
-   ctx.priors["reference_pulse_time"].source == "kb")
+# Phase 2: with no chemistry resolved there is no species-scoped pulse either, so
+# this is unresolved rather than credited — a material-only pulse would not be a
+# precursor pulse.
+ok("no chemistry -> no credited precursor pulse time",
+   ctx.priors["reference_pulse_time"].source == "unresolved",
+   ctx.priors["reference_pulse_time"].source)
+ctx_chem = md.resolve_context(md.DesignRequest("Al2O3", 60e-6, precursor="TMA",
+                                               co_reactant="H2O"))
+ok("but WITH a chemistry the KB pulse time IS credited",
+   ctx_chem.priors["reference_pulse_time"].source == "kb",
+   ctx_chem.priors["reference_pulse_time"].source)
 
-print("3) real KB evidence, when it exists, IS credited")
-ctx2 = md.resolve_context(REQ60, warm_start_fn=ws_with_pressure)
+print("3) real chemistry-scoped KB evidence, when it exists, IS credited")
+# Phase 2: the ratio no longer comes from a material-keyed warm start. It is built
+# from a species-scoped pressure and pulse of the SAME chemistry, so the credited
+# case needs records that actually carry that scope.
+def _exp(pid, mat, prec, core, conds):
+    return {"_pid": pid, "material": mat, "precursors": [prec], "coreactants": [core],
+            "reactants": [{"label": "A", "role": "precursor", "species": prec},
+                          {"label": "B", "role": "coreactant", "species": core}],
+            "controlled": conds}
+
+
+SYNTH_KB = [_exp("synth", "Al2O3", "TMA", "H2O",
+                 [{"quantity": "pressure", "value": 150.0, "of_reactant": "A", "unit": "Pa"},
+                  {"quantity": "pulse_time", "value": 0.3, "of_reactant": "A", "unit": "s"}])]
+ctx2 = md.resolve_context(md.DesignRequest("Al2O3", 60e-6, precursor="TMA",
+                                           co_reactant="H2O"),
+                          experiments_fn=lambda: SYNTH_KB)
 check("ratio source", ctx2.priors["ratio"].source, "kb")
-check("ratio value", ctx2.priors["ratio"].value, 500.0)
+ok("ratio = 150/0.3 = 500", abs(ctx2.priors["ratio"].value - 500.0) < 1e-9,
+   ctx2.priors["ratio"].value)
 ok("confidence higher than fallback",
    ctx2.priors["ratio"].confidence > md.CONFIDENCE["fallback"])
 ok("no fallback warning", not any("FALLBACK" in w for w in ctx2.warnings), ctx2.warnings)
 check("reference exposure resolved", ctx2.priors["reference_effective_dose"].source, "kb")
 ok("reference exposure = pA0*tp0",
-   abs(ctx2.priors["reference_effective_dose"].value - 45.0) < 1e-9)
+   abs(ctx2.priors["reference_effective_dose"].value - 45.0) < 1e-9,
+   ctx2.priors["reference_effective_dose"].value)
 
 print("4) user constraints override priors")
 ctx3 = md.resolve_context(
@@ -149,10 +190,13 @@ ok("to_dict carries effective_dose", "effective_dose" in c.solution.to_dict())
 print("8) feasibility is assessed before solving, at the resolved ratio")
 ctxf = md.resolve_context(REQ60, warm_start_fn=ws_no_pressure)
 f = md.assess_feasibility(ctxf, model=FakeTwin())
+fnr = md.assess_feasibility(md.resolve_context(REQ60_STRICT), model=FakeTwin())
+check("no ratio -> unknown verdict, no crash", fnr["verdict"], "unknown")
 ok("range reported", f["pd_min"] < f["pd_max"], (f["pd_min"], f["pd_max"]))
 check("verdict", f["verdict"], "within_range" if f["pd_min"] <= 60e-6 <= f["pd_max"] else "above_range")
 check("ratio source carried", f["ratio_source"], "fallback")
-f2 = md.assess_feasibility(md.resolve_context(md.DesignRequest("Al2O3", 1.0),
+f2 = md.assess_feasibility(md.resolve_context(md.DesignRequest(
+    "Al2O3", 1.0, allow_chemistry_fallback=True),
                                               warm_start_fn=ws_no_pressure), model=FakeTwin())
 check("absurd target -> above_range", f2["verdict"], "above_range")
 
@@ -186,7 +230,8 @@ for c in ranked:
        rb["pd_at_minus"] <= c.solution.achieved_pd <= rb["pd_at_plus"])
 
 print("11) no target -> no invention")
-res0 = md.design(md.DesignRequest("Al2O3", None), model_factory=fake_factory,
+res0 = md.design(md.DesignRequest("Al2O3", None, allow_chemistry_fallback=True),
+                 model_factory=fake_factory,
                  warm_start_fn=ws_no_pressure)
 check("status", res0["status"], "no_feasible_candidate")
 ok("target flagged unresolved", "target_pd" in res0["context"].unresolved)
@@ -208,7 +253,7 @@ with tempfile.TemporaryDirectory() as td:
 
 print("13) real-twin integration: 60 µm primary, 200 µm infeasible path")
 try:
-    res60 = md.design(md.DesignRequest("Al2O3", 60e-6))
+    res60 = md.design(md.DesignRequest("Al2O3", 60e-6, allow_chemistry_fallback=True))
     f = res60["feasibility"]
     print(f"       achievable {f['pd_min']*1e6:.2f}–{f['pd_max']*1e6:.2f} µm; verdict {f['verdict']}")
     ok("60 µm is designed", res60["status"] == "designed", res60["status"])
@@ -220,7 +265,7 @@ try:
        abs(b.solution.effective_dose - b.solution.pA * b.solution.pulse_time) < 1e-9)
     ok("ratio still a fallback today", res60["context"].priors["ratio"].source == "fallback",
        res60["context"].priors["ratio"].source)
-    res200 = md.design(md.DesignRequest("Al2O3", 200e-6))
+    res200 = md.design(md.DesignRequest("Al2O3", 200e-6, allow_chemistry_fallback=True))
     st = [c.solution.status for c in res200["candidates"] if c.solution]
     print(f"       200 µm family statuses: {st}")
     ok("200 µm is above the resolved-ratio range",
@@ -261,7 +306,9 @@ for name in ("long_low_pressure", "short_high_pressure"):
 ok("two provenance axes are distinct fields",
    bal.family_definition_source != bal.ratio_evidence_source)
 # with a REAL kb ratio, derived families say derived_from_kb (still not plain 'kb')
-ck = md.resolve_context(REQ60, warm_start_fn=ws_with_pressure)
+ck = md.resolve_context(md.DesignRequest("Al2O3", 60e-6, precursor="TMA",
+                                        co_reactant="H2O"),
+                        experiments_fn=lambda: SYNTH_KB)
 ck_c = {c.family: c for c in md.generate_candidates(ck, model_factory=fake_factory)}
 check("kb base: balanced evidence", ck_c["balanced"].ratio_evidence_source, "kb")
 check("kb base: derived evidence", ck_c["long_low_pressure"].ratio_evidence_source, "derived_from_kb")
@@ -284,7 +331,8 @@ ref_max = next(r["pd_max"] for r in rows if r["family"] == "balanced")
 g_lo, g_hi = md.global_achievable_range(rows)
 if g_hi > ref_max:
     tB = 0.5 * (ref_max + g_hi)          # above the reference family, inside the global union
-    resB = md.design(md.DesignRequest("Al2O3", tB), model_factory=fake_factory,
+    resB = md.design(md.DesignRequest("Al2O3", tB, allow_chemistry_fallback=True),
+                     model_factory=fake_factory,
                      warm_start_fn=ws_no_pressure)
     ok("reference is infeasible", resB["reference_context_status"].startswith("infeasible"),
        resB["reference_context_status"])
@@ -304,7 +352,8 @@ else:
 print("17) case C — globally infeasible target derived from actual family limits")
 MARGIN = 1.5                                   # documented: 50 % above the global maximum
 tC = g_hi * MARGIN
-resC = md.design(md.DesignRequest("Al2O3", tC), model_factory=fake_factory,
+resC = md.design(md.DesignRequest("Al2O3", tC, allow_chemistry_fallback=True),
+                 model_factory=fake_factory,
                  warm_start_fn=ws_no_pressure)
 ok("no family reaches it", all(not c.feasible for c in resC["candidates"]))
 ok("global status is infeasible", resC["global_design_space_status"].startswith("infeasible"),
@@ -325,7 +374,8 @@ ok("critical inputs enumerated",
 check("primary result IS fallback-dependent", cov["fallback_dependent_result"], True)
 ok("and says why", bool(cov["fallback_dependency_reasons"]), cov["fallback_dependency_reasons"])
 # synthetic fully-supported context must NOT be fallback-dependent
-resK = md.design(md.DesignRequest("Al2O3", 60e-6, constraints={"ratio": 500.0}),
+resK = md.design(md.DesignRequest("Al2O3", 60e-6, precursor="TMA", co_reactant="H2O",
+                                  constraints={"ratio": 500.0}),
                  model_factory=fake_factory, warm_start_fn=ws_with_pressure)
 check("user-pinned ratio -> not fallback-dependent",
       resK["coverage"]["fallback_dependent_result"], False)
@@ -384,7 +434,7 @@ ok("only one canonical M2 artifact on disk",
 
 print("21) real twin: canonical numbers recomputed")
 try:
-    r60 = md.design(md.DesignRequest("Al2O3", 60e-6))
+    r60 = md.design(md.DesignRequest("Al2O3", 60e-6, allow_chemistry_fallback=True))
     print(f"       ref={r60['reference_context_status']} global={r60['global_design_space_status']} "
           f"globalPD={r60['global_achievable']['pd_min']*1e6:.2f}-"
           f"{r60['global_achievable']['pd_max']*1e6:.2f} µm")
@@ -399,7 +449,7 @@ try:
        "fallback" in r60["best"].ratio_evidence_source, r60["best"].ratio_evidence_source)
     rows = md.family_achievable_ranges(r60["context"])
     g_lo2, g_hi2 = md.global_achievable_range(rows)
-    rC = md.design(md.DesignRequest("Al2O3", g_hi2 * 1.5))
+    rC = md.design(md.DesignRequest("Al2O3", g_hi2 * 1.5, allow_chemistry_fallback=True))
     ok("real-twin derived target is globally infeasible",
        rC["global_design_space_status"].startswith("infeasible"),
        rC["global_design_space_status"])
@@ -412,8 +462,8 @@ print("22) report information hierarchy: summary vs ledger")
 import tempfile
 with tempfile.TemporaryDirectory() as td:
     h = md.render_report(res, out_path=Path(td) / "h.html").read_text()
-    ok("section 2 renamed", "2 · Input support summary" in h)
-    ok("section 3 renamed", "3 · Resolved context and provenance ledger" in h)
+    ok("input-support section renamed", "· Input support summary" in h)
+    ok("ledger section renamed", "· Resolved context and provenance ledger" in h)
     ok("old title gone", "Knowledge coverage" not in h)
     sec2 = h.split("Input support summary")[1].split("<h2>")[0]
     sec3 = h.split("Resolved context and provenance ledger")[1].split("<h2>")[0]
@@ -444,11 +494,21 @@ with tempfile.TemporaryDirectory() as td:
 print("23) decision criticality is distinct from raw source counts")
 cov = res["coverage"]
 ok("critical_by_source present", "critical_by_source" in cov)
-ok("kb_supported counts ALL kb inputs", cov["kb_supported"] >= 1, cov["kb_supported"])
-check("but no kb input is decision-critical here", cov["kb_supported_critical"], [])
-ok("so count != critical contribution",
-   cov["kb_supported"] != len(cov["kb_supported_critical"]),
-   (cov["kb_supported"], cov["kb_supported_critical"]))
+# Demonstrated on a chemistry-resolved run, where a KB-backed input actually exists:
+# reference_pulse_time is KB-supported but is context, not decision-critical.
+covK = md.design(md.DesignRequest("Al2O3", 60e-6, precursor="TMA", co_reactant="H2O"),
+                 model_factory=fake_factory,
+                 experiments_fn=lambda: SYNTH_KB)["coverage"]
+ok("kb_supported counts ALL kb inputs", covK["kb_supported"] >= 1, covK["kb_supported"])
+ok("reference_pulse_time is among them",
+   "reference_pulse_time" in covK["by_source"]["kb"], covK["by_source"]["kb"])
+ok("but it is NOT decision-critical",
+   "reference_pulse_time" not in covK["kb_supported_critical"],
+   covK["kb_supported_critical"])
+ok("so a raw count overstates the KB's control of the recipe",
+   covK["kb_supported"] > len([n for n in covK["kb_supported_critical"]
+                               if n == "reference_pulse_time"]),
+   (covK["kb_supported"], covK["kb_supported_critical"]))
 ok("the fallback ratio IS decision-critical",
    "ratio" in [c["name"] for c in cov["critical_by_source"]["fallback"]],
    cov["critical_by_source"]["fallback"])
