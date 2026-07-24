@@ -325,16 +325,16 @@ def scoped_condition_prior(experiments, prior_name, quantity, of_reactant,
     if not vals:
         p.source = "unresolved"
         if species_ambiguous:
-            p.evidence = (f"no literature-supported species-attributed partial-pressure "
-                          f"evidence exists for this chemistry: the {species_ambiguous} "
-                          f"{quantity} record(s) found describe chamber or unspecified "
+            p.evidence = (f"no species-attributed partial-pressure value has been extracted "
+                          f"for this chemistry so far: the {species_ambiguous} "
+                          f"{quantity} record(s) processed describe chamber or unspecified "
                           f"pressure and carry no reactant attribution, so none can serve "
-                          f"as {prior_name}")
+                          f"as {prior_name} (full pressure extraction is incomplete)")
             p.match_quality = "species_ambiguous"
         else:
             p.evidence = (f"no {quantity} record for {of_reactant or 'this quantity'} in this "
-                          f"chemistry (the corpus contains no species-attributed partial "
-                          f"pressure at all)")
+                          f"chemistry has been extracted yet (full pressure extraction is "
+                          f"incomplete, so this is not a corpus-wide conclusion)")
         return p
     if quality == "material_only" and prior_name in CHEMISTRY_DEPENDENT:
         p.source = "unresolved"

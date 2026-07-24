@@ -215,22 +215,25 @@ ok("chemistry NOT ambiguous", not res3["coverage"]["chemistry_ambiguous"])
 ok("but twin still unverified -> not quantitatively safe",
    res3["coverage"]["safe_for_quantitative_use"] is False)
 
-print("15) canonical report identifies precursor and co-reactant status")
+print("15) certificate report identifies precursor / co-reactant and branch comparison")
+# MIGRATED: frozen requirement 11 reorganises the report. The chemistry information now
+# lives in the branch-comparison (§6) and supporting-evidence (§7) sections; the
+# material-only case renders one independently-evaluated branch per chemistry.
 import tempfile
 with tempfile.TemporaryDirectory() as td:
     h = md.render_report(res3, out_path=Path(td) / "c.html").read_text()
-    ok("chemistry section present", "Deposited material vs process chemistry" in h)
-    ok("states material does not determine chemistry",
-       "does not uniquely determine the precursor chemistry" in h)
+    ok("branch-comparison section present", "Chemistry alternatives and branch comparison" in h)
+    ok("supporting-evidence section present", "Supporting evidence" in h)
     ok("shows precursor", "TMA" in h)
     ok("shows co-reactant", "H2O" in h)
-    ok("shows chemistry_resolution_status", "chemistry_resolution_status" in h)
-    ok("shows twin compatibility", "twin-chemistry compatibility" in h)
-    ok("lists KB chemistry alternatives", "KB chemistry alternative" in h)
-    ok("states cross-chemistry safety", "safe for quantitative" in h)
+    ok("shows twin-kinetics compatibility level", "compatibility" in h)
+    ok("states cross-chemistry comparison safety", "cross-chemistry comparison" in h)
     h2 = md.render_report(res, out_path=Path(td) / "a.html").read_text()
-    ok("ambiguous case renders", "ambiguous" in h2)
-    ok("ambiguous case names both systems", "TMA + H2O" in h2 and "TMA + O3" in h2)
+    ok("material-only renders a branch comparison table",
+       "Chemistry alternatives and branch comparison" in h2)
+    ok("branch comparison names both systems", "TMA + H2O" in h2 and "TMA + O3" in h2)
+    ok("branch comparison states independent evaluation (no pooling)",
+       "evaluated" in h2 and "independently" in h2)
 check("one canonical artifact name", md.CANONICAL_REPORT, "m2_report.html")
 
 print()

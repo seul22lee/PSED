@@ -61,8 +61,14 @@ data precisely. Return ONLY JSON:
   }}
 ]}}
 Rules: x.quantity in {COORDINATES}; y.quantity in {MEASURANDS} (pick the closest; if none
-fits, use the axis label verbatim). Read every visible data point in order; if a curve is
-dense, sample ~10-20 representative points. Use the numeric axis scales (mind log axes).
+fits, use the axis label verbatim).
+For each series, read approximately 50 points evenly spaced across the curve's full
+x-range (mouth to tail). If the curve has fewer than ~50 visible markers, read every
+marker. Space the ~50 points to capture the shape faithfully — put more of them on
+steep/curved sections (the knee and the decay) and fewer on flat plateaus. Read the
+ACTUAL axis values; do not invent. Preserve x-order. Do NOT summarize a curve with a
+handful of points, and do NOT exceed ~60.
+Use the numeric axis scales (mind log axes).
 Return one entry for EVERY panel shown in the figure — if the figure has panels
 (a),(b),(c),(d),(e),(f), return all of them, including panels that are rescaled or
 normalized versions of another panel. Do NOT invent panels that aren't shown, and do

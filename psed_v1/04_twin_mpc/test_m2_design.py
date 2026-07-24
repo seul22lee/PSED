@@ -240,18 +240,23 @@ ok("target flagged unresolved", "target_pd" in res0["context"].unresolved)
 ok("no candidate solved", all(not c.feasible for c in res0["candidates"]))
 ok("each says why", all(c.rejected for c in res0["candidates"]))
 
-print("12) report renders for both feasible and infeasible outcomes")
+print("12) report renders from the certificate for feasible and empty-region outcomes")
+# MIGRATED: frozen requirement 11 replaces the pipeline-ordered report with a
+# certificate-driven one; the "No candidate is selected" wording is gone.
 import tempfile
 with tempfile.TemporaryDirectory() as td:
     p1 = md.render_report(res, out_path=Path(td) / "a.html")
     h = p1.read_text()
     ok("report written", p1.is_file() and len(h) > 1500, len(h))
-    ok("shows the fallback tag", 's-fallback' in h)
-    ok("says not literature-derived", "not a literature recipe" in h or "fallback" in h)
+    ok("shows the fallback tag in the ledger", 's-fallback' in h)
     ok("uses effective dose wording", "effective dose" in h.lower())
     ok("no bare 'D =' label", "D =" not in h)
+    ok("names the admissibility regime", "admissibility regime" in h)
     p2 = md.render_report(res0, out_path=Path(td) / "b.html")
-    ok("infeasible report renders", p2.is_file() and "No candidate is selected" in p2.read_text())
+    h2 = p2.read_text()
+    ok("no-target report renders", p2.is_file() and len(h2) > 1500)
+    ok("no-target region is empty / infeasible", "feasible region is empty" in h2.lower()
+       or "infeasible" in h2.lower())
 
 print("13) real-twin integration: 60 µm primary, 200 µm infeasible path")
 try:
@@ -340,14 +345,13 @@ if g_hi > ref_max:
        resB["reference_context_status"])
     check("global is feasible", resB["global_design_space_status"], "feasible")
     check("top-level follows global", resB["status"], "designed")
-    hB = md.render_report(resB, out_path=None) if False else None
+    # MIGRATED: frozen requirement 11 removes the reference-vs-family report narrative.
+    # The dual-feasibility fields remain (legacy machinery preserved); only the report
+    # wording changed. Certificate renders through the same one renderer.
     import tempfile as _tf
     with _tf.TemporaryDirectory() as td:
         h = md.render_report(resB, out_path=Path(td) / "b.html").read_text()
-    ok("report states the reference cannot but an alternative can",
-       "cannot reach the target, but at least one alternative operating family can" in h)
-    ok("report does NOT call it globally infeasible", "global_design_space_status" in h
-       and ">infeasible<" not in h.split("global_design_space_status")[0][-200:])
+    ok("report renders through the certificate", "inverse-design certificate" in h)
 else:
     print("  SKIP  no family exceeds the reference range in the fake model")
 
@@ -401,33 +405,31 @@ resN = md.design(REQ60, model_factory=fake_factory, warm_start_fn=ws_no_pressure
                  near_tie_threshold=max(0.0, sel["score_gap"] - 0.01))
 check("and not flagged otherwise", resN["selection"]["near_tie"], False)
 
-print("20) report wording and single canonical artifact")
+print("20) certificate report: organised by the scientific result, single artifact")
+# MIGRATED: frozen requirement 11 replaces the ranking-profile report. The report is
+# now organised around the scientific result and must NOT present a sampled pair as the
+# uniquely solved recipe. The old ranking headings are intentionally gone.
 import tempfile
 with tempfile.TemporaryDirectory() as td:
     h = md.render_report(res, out_path=Path(td) / "r.html").read_text()
-    ok("heading does not claim a unique optimum", "Recommended operating point" not in h)
-    ok("heading names the ranking profile", "Selected under the current ranking profile" in h)
-    ok("note that it is not a unique optimum", "not a unique physical optimum" in h)
-    ok("title is knowledge-AWARE", "knowledge-aware inverse design" in h)
-    ok("subtitle qualifies coverage", "knowledge coverage" in h and "fallback-dependent" in h)
-    ok("fallback ratio never rendered as kb/literature",
-       ">kb<" not in h.split("ratio evidence")[1][:2000] if "ratio evidence" in h else True)
-    ok("both provenance columns rendered",
-       "family definition" in h and "ratio evidence" in h)
-    ok("both feasibility statuses rendered",
-       "reference_context_status" in h and "global_design_space_status" in h)
-    ok("input support summary section present",
-       "Input support summary" in h and "overall input support" in h)
-    ok("solver diagnostics present", "solve_target_dose" in h and "model evals" in h)
+    ok("title is the certificate", "inverse-design certificate" in h)
+    ok("has an executive summary section", "Executive Summary" in h)
+    ok("has a problem-definition section", "Problem Definition" in h)
+    ok("has a forward-model-identified section", "Quantities Identified by the Forward Model" in h)
+    ok("has a feasible-region section", "Feasible operating region" in h)
+    ok("has an undetermined-quantities section", "Fundamentally undetermined quantities" in h)
+    ok("region is the answer, not a single pair",
+       "not any single pressure/pulse pair — is the scientific answer" in h)
+    ok("does NOT claim a unique physical optimum", "not a unique physical optimum" not in h)
+    ok("no old ranking-profile heading", "Selected under the current ranking profile" not in h)
+    ok("no 'Recommended operating point' heading", "Recommended operating point" not in h)
     ok("effective dose wording", "effective dose" in h.lower())
     ok("no bare 'D =' label", "D =" not in h)
-    # globally infeasible renders through the SAME renderer, in tmp_path
+    # empty region renders through the SAME renderer, in tmp_path
     hC = md.render_report(resC, out_path=Path(td) / "c.html").read_text()
-    ok("infeasible: no selected candidate", "No candidate is selected" in hC)
-    ok("infeasible: shows closest boundary, labelled as not satisfying",
-       "does NOT satisfy the" in hC or "No candidate is selected" in hC)
-    ok("infeasible: explains binding constraints", "binding constraints" in hC or
-       "pressure and pulse-time bounds" in hC)
+    ok("empty-region report renders", "inverse-design certificate" in hC)
+    ok("empty region / infeasible stated",
+       "feasible region is empty" in hC.lower() or "infeasible" in hC.lower())
 check("canonical name", md.CANONICAL_REPORT, "m2_report.html")
 ok("only one canonical M2 artifact on disk",
    not (HERE / "m2_design_report.html").exists()
@@ -460,38 +462,23 @@ try:
 except Exception as e:
     print(f"  SKIP  real twin unavailable: {type(e).__name__}: {e}")
 
-print("22) report information hierarchy: summary vs ledger")
+print("22) certificate report: ledger appendix carries full provenance")
+# MIGRATED: frozen requirement 11 moves provenance to the technical appendix (§11);
+# the mid-narrative "Input support summary" / "Resolved context" split is retired.
 import tempfile
 with tempfile.TemporaryDirectory() as td:
     h = md.render_report(res, out_path=Path(td) / "h.html").read_text()
-    ok("input-support section renamed", "· Input support summary" in h)
-    ok("ledger section renamed", "· Resolved context and provenance ledger" in h)
-    ok("old title gone", "Knowledge coverage" not in h)
-    sec2 = h.split("Input support summary")[1].split("<h2>")[0]
-    sec3 = h.split("Resolved context and provenance ledger")[1].split("<h2>")[0]
-    # -- section 2 is a SUMMARY --------------------------------------------------
-    ok("s2 has aggregate source counts", "all resolved inputs" in sec2.lower())
-    ok("s2 has fallback dependency", "fallback-dependent result" in sec2)
-    ok("s2 has overall support level", "overall input support" in sec2)
-    ok("s2 names decision-critical inputs", "Decision-critical inputs" in sec2)
-    ok("s2 lists the weak critical input", "ratio" in sec2)
-    ok("s2 has the interpretation sentence",
-       "only partially evidence-supported" in sec2, sec2.count("evidence-supported"))
-    # -- and NOT a ledger --------------------------------------------------------
-    ok("s2 omits overridable flags", "overridable" not in sec2)
-    ok("s2 omits downstream-use column", "downstream use" not in sec2)
-    ok("s2 omits non-critical context vars", "reference_pulse_time" not in sec2)
-    ok("s2 is shorter than the ledger", len(sec2) < len(sec3), (len(sec2), len(sec3)))
-    # -- section 3 is the ONLY full ledger ---------------------------------------
-    for fieldname in ("variable", "value", "unit", "source", "conf", "evidence", "overridable",
-                      "downstream use", "role"):
-        ok(f"s3 ledger column {fieldname!r}", fieldname in sec3)
+    ok("appendix section present", "Technical provenance and ledger appendix" in h)
+    ok("supporting-evidence section present", "Supporting evidence" in h)
+    ok("assumptions section present", "· Assumptions" in h)
+    ok("confidence section present", "Confidence and dominant uncertainty" in h)
+    sec11 = h.split("Technical provenance and ledger appendix")[1]
+    for fieldname in ("variable", "value", "unit", "source", "conf", "evidence"):
+        ok(f"ledger column {fieldname!r}", fieldname in sec11)
     for var in res["context"].priors:
-        ok(f"s3 lists {var}", var in sec3)
-    ok("s3 keeps the complete unresolved list", "Unresolved inputs (complete list)" in sec3
-       or not res["context"].unresolved)
-    ok("hierarchy sentence links the two",
-       "The following ledger records every resolved input" in h)
+        ok(f"ledger lists {var}", var in sec11)
+    ok("legacy diagnostics retained in appendix",
+       "reference_context_status" in sec11 and "global_design_space_status" in sec11)
 
 print("23) decision criticality is distinct from raw source counts")
 cov = res["coverage"]
@@ -526,22 +513,142 @@ ok("classification is documented", all(isinstance(v, str) and v
 check("support level is 4-way vocabulary", cov["level"] in
       ("complete", "substantial", "partial", "insufficient"), True)
 
-print("24) evaluated-family terminology (no continuous 2-D claim)")
+print("24) certificate report: region is derived from the active model, not families")
+# MIGRATED: frozen requirements 5 & 8 — the feasible region is TRACED from the active
+# forward model (not three fixed ratio families), and the sampled points are labelled
+# illustrative samples, never competitors or a unique recipe.
 with tempfile.TemporaryDirectory() as td:
     h = md.render_report(res, out_path=Path(td) / "t.html").read_text()
-    ok("says evaluated operating families", "evaluated operating families" in h)
-    ok("says envelope", "envelope" in h)
-    ok("states the continuous domain was NOT searched",
-       "has <b>not</b> been searched" in h)
-    ok("no bare 'global design space' phrasing", "global design space" not in h)
-    ok("no 'globally achievable' phrasing", "globally achievable" not in h)
-    ok("section 5 title names evaluated families",
-       "Feasibility across evaluated operating families" in h)
-    # ranking language from 9e53156 preserved verbatim
-    ok("ranking heading preserved", "Selected under the current ranking profile" in h)
-    ok("no reverted heading", "Recommended operating point" not in h)
-    for token in ("Ranking profile", "Runner-up", "score gap", "not a unique physical optimum"):
-        ok(f"ranking element {token!r} preserved", token in h)
+    ok("representative feasible operating points wording",
+       "representative feasible operating points" in h.lower())
+    ok("samples are labelled illustrative", "illustrative_sample" in h)
+    ok("free-coordinate count reported", "free coordinate" in h)
+    ok("variation in pressure x pulse time explained", "variation in pressure" in h)
+    ok("no implementation jargon 'locus'", "locus" not in h)
+    ok("no old ranking heading", "Selected under the current ranking profile" not in h)
+    ok("no 'Recommended operating point'", "Recommended operating point" not in h)
+
+# =============================================================================
+# Frozen-spec behaviours (design certificate). Uses the REAL twin (the certificate is
+# always built from the active forward model, independent of any test model_factory).
+# =============================================================================
+print("25) design certificate satisfies the frozen specification")
+try:
+    import inverse_solver as _inv
+    RQ = md.DesignRequest("Al2O3", 60e-6, precursor="TMA", co_reactant="H2O",
+                          geometry_class="lateral_channel", allow_chemistry_fallback=True)
+    rc = md.design(RQ)
+    cert = rc["certificate"]
+    b = cert["branches"][0]
+
+    # (a) fully specified chemistry -> exactly one evaluated branch
+    check("one branch for a specified chemistry", cert["n_branches"], 1)
+
+    # regimes
+    ok("regime is a frozen top-level regime",
+       b["admissibility"]["regime"] in md.ADMISSIBILITY_REGIMES, b["admissibility"]["regime"])
+    ok("regime reasons are machine-readable",
+       all("code" in r for r in b["admissibility"]["reasons"]))
+    # generic/default kinetics cap at exploratory (they are twin defaults here)
+    check("default kinetics -> exploratory (not quantitative)",
+          b["admissibility"]["regime"], "exploratory")
+
+    # (b) material-only -> independently evaluated chemistry branches, no leakage
+    rm = md.design(md.DesignRequest("Al2O3", 60e-6, geometry_class="lateral_channel"))
+    cm = rm["certificate"]
+    ok("material-only enumerates >1 chemistry branch", cm["n_branches"] > 1, cm["n_branches"])
+    labels = [br["chemistry"]["label"] for br in cm["branches"]]
+    ok("branch chemistries are distinct (no pooling)", len(labels) == len(set(labels)), labels)
+    ok("not a blanket ambiguity failure", cm["overall_regime"] != "refuse")
+    ok("no quantitative cross-chemistry ranking when bundles unsafe",
+       cm["cross_chemistry_comparable"] is False and cm["comparison_note"],
+       cm["comparison_note"])
+
+    # (c) out-of-domain geometry never yields a quantitative design
+    rg = md.design(md.DesignRequest("Al2O3", 60e-6, precursor="TMA", co_reactant="H2O",
+                                    geometry_class="porous_material", allow_chemistry_fallback=True))
+    gb = rg["certificate"]["branches"][0]
+    check("porous geometry refuses", gb["admissibility"]["regime"], "refuse")
+    ok("refusal cites geometry", any(r["code"] == "geometry_out_of_domain"
+                                     for r in gb["admissibility"]["reasons"]))
+
+    # (d) unreachable target -> infeasible
+    ru = md.design(md.DesignRequest("Al2O3", 5000e-6, precursor="TMA", co_reactant="H2O",
+                                    geometry_class="lateral_channel", allow_chemistry_fallback=True))
+    ub = ru["certificate"]["branches"][0]
+    check("unreachable target -> infeasible", ub["admissibility"]["regime"], "infeasible")
+    ok("empty feasible region for the unreachable target", ub["feasible_region"]["empty"])
+
+    # (e) every point in the feasible region meets the target within tolerance
+    reg = b["feasible_region"]
+    ok("region non-empty and 1-D", (not reg["empty"]) and reg["free_coordinate_count"] == 1)
+    ok("every region point within 1e-8 m of target",
+       all(abs(p["residual"]) <= 1e-8 for p in reg["points"]), reg["pd_max_abs_residual"])
+
+    # (f) feasible-region clipping by pressure and pulse bounds
+    reg_full = _inv.trace_feasible_region(
+        lambda: md._model("Al2O3"), 60e-6, (1.0, 200.0), (0.01, 5.0))
+    reg_clip = _inv.trace_feasible_region(
+        lambda: md._model("Al2O3"), 60e-6, (1.0, 200.0), (0.05, 0.2))
+    ok("tighter pulse bounds shrink the pressure span",
+       (reg_clip["pressure_range"][1] - reg_clip["pressure_range"][0])
+       < (reg_full["pressure_range"][1] - reg_full["pressure_range"][0]),
+       (reg_clip["pressure_range"], reg_full["pressure_range"]))
+
+    # (g) no objective -> no unique recommendation
+    ok("no objective -> no recommended point", b["recommendation"]["point"] is None)
+    ok("states an external criterion is required",
+       "external criterion" in b["recommendation"]["note"])
+
+    # (h) objective -> the point is explicitly preference-selected
+    ro = md.design(md.DesignRequest("Al2O3", 60e-6, precursor="TMA", co_reactant="H2O",
+                                    geometry_class="lateral_channel",
+                                    secondary_objective="minimize_pulse_time",
+                                    allow_chemistry_fallback=True))
+    orec = ro["certificate"]["branches"][0]["recommendation"]
+    ok("objective yields a point", orec["point"] is not None)
+    check("point origin is selected_by_preference", orec["point"]["origin"], md.ORIGIN_PREF)
+    ok("recommendation says it is NOT physics",
+       "NOT distinguished by the physics" in orec["note"])
+
+    # (i) the structurally undetermined split is NOT in determined quantities
+    det_names = [q["name"] for q in b["determined"]["quantities"]]
+    und_names = [u["name"] for u in b["undetermined"]["undetermined"]]
+    ok("split is structurally undetermined", "pressure_pulse_split" in und_names, und_names)
+    ok("split is NOT presented as determined",
+       "pressure_pulse_split" not in det_names and "pA" not in det_names, det_names)
+    ok("undetermined split verified structural from the model",
+       any(u["kind"] == "structural" for u in b["undetermined"]["undetermined"]))
+
+    # (j) uncertainty band contains the point estimate (when available)
+    dq = b["determined"]["quantities"][0]
+    if dq["band"]:
+        ok("dose band contains the point estimate",
+           dq["band"][0] <= dq["value"] <= dq["band"][1], (dq["band"], dq["value"]))
+
+    # (k) missing kinetic uncertainty -> confidence withheld, no fabricated probability
+    check("confidence withheld (kinetics are defaults)", b["confidence"]["status"], "withheld")
+    ok("no fabricated probability", b["confidence"]["target_hit_credibility"] is None)
+
+    # (l) every emitted scientific quantity carries an origin classification
+    ORIGINS = {md.ORIGIN_DET, md.ORIGIN_PREF, md.ORIGIN_ASSUMED, md.ORIGIN_UNDET, md.ORIGIN_EV_UNC}
+    ok("determined quantities carry an origin",
+       all(q["origin"] in ORIGINS for q in b["determined"]["quantities"]))
+    ok("assumptions carry an origin", all(a["origin"] in ORIGINS for a in b["assumptions"]))
+    ok("undetermined quantities carry an origin",
+       all(u["origin"] in ORIGINS for u in b["undetermined"]["undetermined"]))
+    ok("feasible region is origin-tagged", reg["origin"] == md.ORIGIN_DET)
+
+    # (m) report does not claim a unique physical recipe where none is identified
+    with tempfile.TemporaryDirectory() as td:
+        hrep = md.render_report(rc, out_path=Path(td) / "cert.html").read_text()
+    ok("report: region is the answer, not a single pair",
+       "not any single pressure/pulse pair — is the scientific answer" in hrep)
+    ok("report: no unique-recipe claim", "uniquely solved recipe" not in hrep)
+except Exception as e:
+    import traceback
+    traceback.print_exc()
+    FAIL.append(f"section25:{type(e).__name__}:{e}")
 
 print()
 if FAIL:
