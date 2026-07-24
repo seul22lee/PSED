@@ -67,8 +67,19 @@ class DoseSolution:
     roots: list = field(default_factory=list)
     root_policy: str = None
 
+    @property
+    def effective_dose(self):
+        """Explicit alias for `dose` = pA · pulse_time [Pa·s].
+
+        Named apart from the `D` inside channel_model.approx(), which is an internal
+        transport coefficient in different units. The two must never be conflated in
+        code, labels or report text, so the layer above always says effective_dose."""
+        return self.dose
+
     def to_dict(self):
-        return asdict(self)
+        d = asdict(self)
+        d["effective_dose"] = self.dose
+        return d
 
 
 class _Evaluator:
