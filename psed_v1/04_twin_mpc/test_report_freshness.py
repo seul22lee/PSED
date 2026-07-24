@@ -32,6 +32,7 @@ print("1) M2 report is regenerated from CURRENT inputs (in-memory byte-compare)"
 # same call main() makes
 res = md.design(md.DesignRequest(material="Al2O3", target_pd=60e-6,
                                  precursor="TMA", co_reactant="H2O",
+                                 geometry_class="lateral_channel",
                                  allow_chemistry_fallback=True))
 with tempfile.TemporaryDirectory() as td:
     fresh = md.render_report(res, out_path=Path(td) / "fresh.html").read_text()
@@ -61,20 +62,29 @@ for tok in ("fully_specified", "partial_chemistry", "pressure_unresolved",
             "s-fallback", "reference_context_status"):
     ok(f"{tok} present", tok in committed)
 
-print("5) M3 report exists, renders current twin behaviour, no typed pressure feeds pA")
-ok("M3 report exists and is non-trivial", M3.is_file() and M3.stat().st_size > 2000)
+print("5) M3 is the canonical Interpretation Brief — neutral, no validation-against-reality language")
+ok("M3 report exists and is non-trivial", M3.is_file() and M3.stat().st_size > 5000)
 m3 = M3.read_text()
-ok("M3 twin does not feed a co-reactant pressure into pA",
-   "co_reactant_partial_pressure" not in m3)
-ok("M3 twin does not feed chamber/working/base pressure into pA",
+# frozen-spec presentation guards
+ok("M3 is the Interpretation Brief", "Interpretation Brief" in m3)
+ok("M3 uses neutral 'prediction versus observation'", "prediction versus observation" in m3)
+for bad in ("versus reality", "vs reality", "validation against", "twin disagrees with reality"):
+    ok(f"M3 avoids validation-against-reality language: {bad!r}", bad.lower() not in m3.lower())
+ok("M3 carries the discovery-support disclaimer", "discovery-support brief, not a verdict" in m3)
+ok("M3 states the evidence-closure statement", "No additional interpretation may be extracted" in m3)
+# pressure-semantics guards preserved: no forbidden pressure type feeds pA
+ok("M3 does not feed a co-reactant pressure into pA", "co_reactant_partial_pressure" not in m3)
+ok("M3 does not feed chamber/working/base pressure into pA",
    not any(f">{t}<" in m3 for t in ("chamber_total_pressure", "working_pressure", "base_pressure")))
 ok("M3 renders twin inputs incl. geometry height and dose", ">H<" in m3 and "dose" in m3)
+ok("M3 does not claim corpus-wide pressure absence",
+   "in this processed corpus" in m3 and "NOT a claim that it is absent" in m3)
 
-print("6) M3 report is byte-stable under regeneration (deterministic, detects staleness)")
+print("6) M3 Brief is byte-stable under regeneration (deterministic, detects staleness)")
 try:
     before = M3.read_bytes()
     r = subprocess.run([sys.executable, str(HERE / "twin_validation.py")],
-                       cwd=str(HERE), capture_output=True, timeout=120)
+                       cwd=str(HERE), capture_output=True, timeout=300)
     after = M3.read_bytes()
     if r.returncode != 0:
         print(f"  SKIP  M3 generator returned {r.returncode}: {r.stderr.decode()[:120]}")

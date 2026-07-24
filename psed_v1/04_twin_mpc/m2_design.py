@@ -95,6 +95,8 @@ class DesignRequest:
     reactor_type: str = None
     allow_chemistry_fallback: bool = False
     allow_cross_chemistry_ranking: bool = False
+    geometry_class: str = None                    # feature geometry (model-validity context)
+    secondary_objective: str = None               # external preference that may select ONE point
     constraints: dict = field(default_factory=dict)   # user overrides, e.g. {"ratio": 500.0}
 
     def to_dict(self):
@@ -651,6 +653,386 @@ def selection_summary(ranked, near_tie_threshold=NEAR_TIE_THRESHOLD):
                      "unique physical optimum.")}
 
 
+# =============================================================================
+# Design certificate — the frozen-spec deliverable, assembled AROUND the existing
+# solver / chemistry / evidence code. Every scientific quantity it emits carries an
+# `origin` tag. Nothing here re-derives a root or re-pools chemistry.
+# =============================================================================
+# origin classification for every emitted scientific quantity
+ORIGIN_DET = "determined_by_physics"
+ORIGIN_PREF = "selected_by_preference"
+ORIGIN_ASSUMED = "assumed_condition"
+ORIGIN_UNDET = "structurally_undetermined"
+ORIGIN_EV_UNC = "evidence_uncertain"
+ORIGIN_EVIDENCE = "retrieved_evidence"
+
+# The active forward model (Ylilammi channel) is a HIGH-ASPECT-RATIO transport model.
+# Its validity domain is a property of the model, not of M2.
+GEOMETRY_APPLICABILITY = {"lateral_channel": "valid", "vertical_structure": "valid",
+                          "porous_material": "out_of_domain", "planar": "trivial"}
+ADMISSIBILITY_REGIMES = ("quantitative", "exploratory", "infeasible", "refuse")
+# secondary objectives that may select ONE point on the feasible locus (all are
+# external preferences, never physics)
+SECONDARY_OBJECTIVES = {
+    "minimize_pulse_time": ("t_p", "min", "shortest pulse (throughput)"),
+    "minimize_pressure": ("pA", "min", "lowest precursor partial pressure"),
+    "maximize_pressure": ("pA", "max", "highest precursor partial pressure"),
+    "maximize_bound_distance": (None, None, "maximum distance from the operating bounds"),
+    "minimize_sensitivity": (None, None, "least sensitive point (bound-distance proxy)"),
+}
+
+
+def resolve_geometry(request, experiments):
+    """Feature geometry is a DESIGN INPUT and the model-validity context — never
+    inferred from the corpus majority (most ALD is planar; that says nothing about the
+    feature being designed). Stated → user; otherwise the model's native HAR channel is
+    ASSUMED and recorded as such."""
+    if request.geometry_class:
+        gc, src, ev = request.geometry_class, "user", "geometry class stated in the request"
+    else:
+        gc, src, ev = ("lateral_channel", "assumed",
+                       "no geometry class stated; assumed the model's native high-aspect-ratio "
+                       "lateral-channel geometry (recorded as an assumption)")
+    appl = GEOMETRY_APPLICABILITY.get(gc, "unknown")
+    seen = any(e.get("material") == request.material and e.get("geometry_class") == gc
+               for e in (experiments or []))
+    return {"geometry_class": gc, "applicability": appl, "model_valid": appl == "valid",
+            "source": src, "evidence": ev, "corpus_precedent": seen}
+
+
+def classify_admissibility(chem_status, geometry, bundle, reachable, uncertainty):
+    """The regime that decides what KIND of answer is honest. Built from the existing
+    compatibility/evidence signals — never hidden inside a coverage score."""
+    reasons = []
+    appl = geometry["applicability"]
+    level = getattr(bundle, "compatibility_level", "unresolved")
+    if appl == "out_of_domain":
+        reasons.append({"code": "geometry_out_of_domain",
+                        "detail": f"{geometry['geometry_class']} is outside the channel model's "
+                                  "validated high-aspect-ratio regime"})
+        return {"regime": "refuse", "reasons": reasons, "model_valid": False,
+                "kinetics_level": level, "reachable": reachable}
+    if appl == "trivial":
+        reasons.append({"code": "geometry_trivial",
+                        "detail": f"{geometry['geometry_class']} conformality is trivial; the "
+                                  "transport-limited channel model does not apply"})
+        return {"regime": "refuse", "reasons": reasons, "model_valid": False,
+                "kinetics_level": level, "reachable": reachable}
+    if chem_status == "unsupported":
+        reasons.append({"code": "chemistry_unsupported",
+                        "detail": "the requested chemistry has no evidence in the corpus"})
+        return {"regime": "refuse", "reasons": reasons, "model_valid": True,
+                "kinetics_level": level, "reachable": reachable}
+    if not reachable:
+        reasons.append({"code": "target_unreachable",
+                        "detail": "no operating point within the pressure/pulse bounds meets the target"})
+        return {"regime": "infeasible", "reasons": reasons, "model_valid": True,
+                "kinetics_level": level, "reachable": False}
+    caps = []
+    if level != "exact_chemistry":
+        caps.append({"code": "kinetics_not_chemistry_specific",
+                     "detail": f"twin kinetics are '{level}'; the sticking / adsorption / GPC "
+                               "coefficients are not resolved for this exact chemistry"})
+    if uncertainty.get("withheld"):
+        caps.append({"code": "kinetic_uncertainty_withheld",
+                     "detail": uncertainty.get("note", "kinetic uncertainty is unavailable")})
+    if appl == "unknown":
+        caps.append({"code": "geometry_assumed",
+                     "detail": f"geometry '{geometry['geometry_class']}' validity is unverified"})
+    if caps:
+        return {"regime": "exploratory", "reasons": caps, "model_valid": True,
+                "kinetics_level": level, "reachable": True}
+    return {"regime": "quantitative",
+            "reasons": [{"code": "chemistry_specific_reachable",
+                         "detail": "chemistry-specific kinetics, valid geometry, a reachable target "
+                                   "and propagated evidence uncertainty"}],
+            "model_valid": True, "kinetics_level": level, "reachable": True}
+
+
+def determined_quantities(region, dose_solution, uncertainty):
+    """The coordinate(s) the model actually identifies. For this model that is the
+    effective dose; the pressure/pulse split is NOT here (it is undetermined). The band
+    is evidence-based and may be withheld; the dose invariance is MEASURED off the
+    region, not assumed."""
+    if not region or region.get("empty"):
+        return {"quantities": [], "note": "feasible region empty — no quantity is determined"}
+    doses = region["dose_values"]
+    d_region = sum(doses) / len(doses)
+    d_val = dose_solution.effective_dose if (dose_solution and dose_solution.feasible) else d_region
+    band = uncertainty.get("dose_band")
+    band_basis = ("evidence" if uncertainty.get("kinetic_uncertainty")
+                  else "geometry_temperature_only" if band else "withheld")
+    return {"quantities": [{
+        "name": "effective_dose", "symbol": "pA·t_p", "unit": "Pa·s",
+        "origin": ORIGIN_DET, "value": d_val,
+        "band": list(band) if band else None, "band_basis": band_basis,
+        "model_invariance": {
+            "dose_spread_frac": region["dose_spread_frac"],
+            "detail": f"the effective dose (pA·t_p) varies by only {region['dose_spread_frac']*100:.2f}% "
+                      "across the representative feasible operating points — measured against the "
+                      "active model, not assumed"}}]}
+
+
+def undetermined_quantities(region):
+    """Coordinates the inverse problem leaves free. Structural (the model does not
+    determine them) vs contingent (evidence-limited) are kept distinct. Verified from
+    the region trace, never asserted."""
+    out = []
+    if region and region.get("split_structural"):
+        pr, tr = region["pressure_range"], region["pulse_range"]
+        out.append({
+            "name": "pressure_pulse_split", "origin": ORIGIN_UNDET, "kind": "structural",
+            "free_coordinate_count": region["free_coordinate_count"],
+            "detail": (f"penetration depth stays on target (max deviation ≤ "
+                       f"{region['pd_max_abs_residual']:.1e} m) while precursor pressure spans "
+                       f"{pr[0]:.3g}–{pr[1]:.3g} Pa and pulse time spans {tr[0]:.3g}–{tr[1]:.3g} s; the "
+                       "model does not determine which operating point within the feasible region to use"),
+            "resolvable_by": "a secondary objective or an equipment constraint"})
+    return {"undetermined": out}
+
+
+def branch_assumptions(ctx, geometry, uncertainty, bundle, objective):
+    """One consolidated assumption set; every entry states which conclusion depends on it."""
+    a = []
+    if geometry["source"] == "assumed":
+        a.append({"name": "geometry_class", "value": geometry["geometry_class"],
+                  "origin": ORIGIN_ASSUMED,
+                  "affects": "model validity and therefore the entire admissibility verdict"})
+    for key, what in (("pressure_bounds", "the extent of the feasible region and its clipping"),
+                      ("pulse_time_bounds", "the extent of the feasible region and its clipping")):
+        p = ctx.priors.get(key)
+        if p and p.source == "model_supported":
+            a.append({"name": key, "value": list(p.value) if p.value else None,
+                      "origin": ORIGIN_ASSUMED, "affects": what})
+    rp = ctx.priors.get("ratio")
+    if rp and (rp.source == "fallback" or str(rp.source).startswith("fallback")):
+        a.append({"name": "pA_tp_ratio", "value": rp.value, "origin": ORIGIN_ASSUMED,
+                  "affects": "the reference sample point and the uncertainty probe only — NOT the "
+                             "feasible region or the determined effective dose"})
+    weak = [p for p, lvl in (getattr(bundle, "chemistry_match_levels", {}) or {}).items()
+            if lvl in ("model_default", "material_generic", "unresolved")]
+    if weak:
+        a.append({"name": "kinetic_parameters", "value": weak, "origin": ORIGIN_ASSUMED,
+                  "affects": "the absolute effective-dose value; caps the admissibility regime at "
+                             "exploratory"})
+    if uncertainty.get("withheld"):
+        a.append({"name": "kinetic_uncertainty", "value": "withheld", "origin": ORIGIN_EV_UNC,
+                  "affects": "target-hit credibility, which cannot be quantified from the evidence"})
+    if objective:
+        a.append({"name": "secondary_objective", "value": objective, "origin": ORIGIN_ASSUMED,
+                  "affects": "which single operating point (if any) is recommended"})
+    return a
+
+
+def _region_samples(region):
+    """Three labelled illustrative samples taken FROM the true locus (low / mid / high
+    pressure). They are samples, never competitors, and never substitute for the region."""
+    pts = sorted(region["points"], key=lambda p: p["pA"]) if region and region["points"] else []
+    if not pts:
+        return []
+    idx = sorted(set([0, len(pts) // 2, len(pts) - 1]))
+    names = {0: "low_pressure_long_pulse", len(pts) // 2: "balanced", len(pts) - 1: "high_pressure_short_pulse"}
+    return [{**pts[i], "label": names.get(i, "sample"), "role": "illustrative_sample"} for i in idx]
+
+
+def _bound_distance(pt, pab, tpb):
+    def m(v, a, b):
+        return min(math.log(v / a), math.log(b / v)) / math.log(b / a) if (v > 0 and b > a) else 0.0
+    return min(m(pt["pA"], *pab), m(pt["t_p"], *tpb))
+
+
+def recommend_operating_point(region, objective, pressure_bounds, pulse_time_bounds):
+    """The feasible region is the answer. A single point is returned ONLY when an
+    external preference selects it, or the bounds collapse the region to a singleton.
+    A preference-selected point is tagged selected_by_preference, never determined."""
+    if not region or region.get("empty"):
+        return {"point": None, "is_unique": False, "chosen_by": None, "origin": None,
+                "note": "no feasible region — nothing to recommend", "samples": []}
+    pts = region["points"]
+    samples = _region_samples(region)
+    if region["free_coordinate_count"] == 0 and region["n_points"] == 1:
+        return {"point": {**pts[0], "origin": ORIGIN_DET}, "is_unique": True,
+                "chosen_by": "constraints_reduce_region_to_singleton", "origin": ORIGIN_DET,
+                "note": "the operating bounds reduce the feasible region to a single point",
+                "samples": samples}
+    if not objective:
+        return {"point": None, "is_unique": False, "chosen_by": None, "origin": None,
+                "note": ("The feasible region is the scientific answer. Selecting a single operating "
+                         "point requires an external criterion (a secondary objective or an equipment "
+                         "limit); none was supplied."),
+                "samples": samples}
+    if objective not in SECONDARY_OBJECTIVES:
+        return {"point": None, "is_unique": False, "chosen_by": None, "origin": None,
+                "note": f"unknown secondary objective {objective!r}; the region is returned without a "
+                        "selected point", "samples": samples}
+    attr, how, label = SECONDARY_OBJECTIVES[objective]
+    if attr is None:                       # bound-distance family
+        pick = max(pts, key=lambda p: _bound_distance(p, pressure_bounds, pulse_time_bounds))
+    else:
+        pick = (min if how == "min" else max)(pts, key=lambda p: p[attr])
+    return {"point": {**pick, "origin": ORIGIN_PREF}, "is_unique": False,
+            "chosen_by": objective, "objective_label": label, "origin": ORIGIN_PREF,
+            "note": (f"This point is SELECTED BY PREFERENCE ({label}). It is one of infinitely many "
+                     "within the feasible operating region and is NOT distinguished by the physics."),
+            "samples": samples}
+
+
+def branch_confidence(admissibility, uncertainty):
+    """Confidence is a property OF the deliverable. We never fabricate a probability:
+    target_hit_credibility stays None and we report the evidence band + dominant
+    contributor, or explicitly withhold."""
+    if uncertainty.get("withheld"):
+        return {"target_hit_credibility": None, "status": "withheld",
+                "dose_band": None, "dominant_uncertainty": uncertainty.get("dominant"),
+                "note": uncertainty.get("note"), "regime": admissibility["regime"]}
+    return {"target_hit_credibility": None, "status": "band_available",
+            "dose_band": list(uncertainty["dose_band"]) if uncertainty.get("dose_band") else None,
+            "sigma_dose": uncertainty.get("sigma_dose"),
+            "dominant_uncertainty": uncertainty.get("dominant"),
+            "note": uncertainty.get("note"), "regime": admissibility["regime"]}
+
+
+def evaluate_branch(request, precursor, co_reactant, geometry, experiments):
+    """Evaluate ONE chemistry independently — the reusable core: resolve → retrieve →
+    trace region → admissibility → determined/undetermined/uncertainty/recommendation.
+    Evidence is never pooled across chemistries (each call is scoped to one)."""
+    br = DesignRequest(material=request.material, target_pd=request.target_pd,
+                       precursor=precursor, co_reactant=co_reactant,
+                       temperature=request.temperature, reactor_type=request.reactor_type,
+                       allow_chemistry_fallback=True, geometry_class=request.geometry_class,
+                       secondary_objective=request.secondary_objective,
+                       constraints=dict(request.constraints or {}))
+    ctx = resolve_context(br, experiments_fn=lambda: experiments)
+    mk = lambda: _model(ctx.value("deposited_material") or request.material)
+    try:
+        bundle = chemistry_params.params_for_chemistry(
+            experiments, request.material, precursor, co_reactant,
+            process_mode=(request.constraints or {}).get("process_mode"),
+            temperature=request.temperature, reactor_family=request.reactor_type)
+    except Exception as e:
+        bundle = chemistry_params.TwinParameterBundle(
+            requested_chemistry=(request.material, precursor, co_reactant, None),
+            compatibility_level="unresolved", diagnostics=[f"bundle unavailable: {e}"])
+    tgt = ctx.value("target_pd")
+    pab, tpb = ctx.value("pressure_bounds"), ctx.value("pulse_time_bounds")
+    ratio = ctx.value("ratio")
+    prov = getattr(mk(), "kb_provenance", {})
+
+    if tgt is None:
+        region = {"empty": True, "n_points": 0, "points": [], "reason": "no target penetration depth",
+                  "split_structural": False, "free_coordinate_count": 0, "pressure_range": None,
+                  "pulse_range": None, "dose_values": [], "dose_range": None,
+                  "dose_spread_frac": None, "pd_max_abs_residual": None}
+    else:
+        region = inverse_solver.trace_feasible_region(mk, tgt, pab, tpb)
+    reachable = (tgt is not None) and (not region.get("empty"))
+
+    dose_sol = None
+    if ratio and tgt is not None:
+        dose_sol = inverse_solver.solve_target_dose(mk(), tgt, ratio, pressure_bounds=pab,
+                                                    pulse_time_bounds=tpb)
+    if ratio and tgt is not None:
+        uncertainty = inverse_solver.propagate_dose_uncertainty(
+            mk, tgt, ratio, prov, pressure_bounds=pab, pulse_time_bounds=tpb)
+    else:
+        uncertainty = {"withheld": True, "dose_band": None, "kinetic_uncertainty": False,
+                       "dominant": None, "contributions": {},
+                       "note": "no ratio/target to propagate uncertainty through"}
+
+    adm = classify_admissibility(ctx.chemistry_resolution_status, geometry, bundle, reachable, uncertainty)
+    det = determined_quantities(region, dose_sol, uncertainty)
+    undet = undetermined_quantities(region)
+    assumptions = branch_assumptions(ctx, geometry, uncertainty, bundle, request.secondary_objective)
+    rec = recommend_operating_point(region, request.secondary_objective, pab, tpb)
+    conf = branch_confidence(adm, uncertainty)
+    evidence = {
+        "chemistry": ctx.chemistry.to_dict(),
+        "chemistry_priors": {k: v.to_dict() for k, v in (ctx.chemistry_priors or {}).items()},
+        "twin_parameter_bundle": bundle.to_dict(),
+        "safe_for_cross_chemistry_comparison": bool(
+            getattr(bundle, "safe_for_cross_chemistry_comparison", False)),
+        "ledger": {k: v.to_dict() for k, v in ctx.priors.items()}}
+    infeasibility = None
+    if tgt is not None and region.get("empty"):
+        infeasibility = {"reason": region.get("reason"), "target_pd": tgt}
+
+    region_public = {k: region[k] for k in ("n_points", "empty", "pressure_range", "pulse_range",
+                                            "dose_range", "dose_spread_frac", "free_coordinate_count",
+                                            "pd_max_abs_residual", "split_structural") if k in region}
+    region_public["points"] = region.get("points", [])
+    region_public["target_pd"] = tgt
+    region_public["origin"] = ORIGIN_DET
+    return {"chemistry": {"precursor": precursor, "co_reactant": co_reactant,
+                          "label": ctx.chemistry.label, "status": ctx.chemistry_resolution_status,
+                          "source": ctx.chemistry.chemistry_source},
+            "admissibility": adm, "determined": det, "feasible_region": region_public,
+            "recommendation": rec, "undetermined": undet, "assumptions": assumptions,
+            "confidence": conf, "evidence": evidence, "infeasibility": infeasibility,
+            "ratio_status": ctx.ratio_status}
+
+
+def build_certificate(request, experiments):
+    """Assemble the design certificate: problem framing → geometry → per-chemistry
+    branches → cross-branch policy. Material-only / ambiguous requests are evaluated by
+    chemistry branch (never a blanket ambiguity failure), unless NONE can be evaluated."""
+    geometry = resolve_geometry(request, experiments)
+    problem = {
+        "target_observable": "penetration_depth_pd50",
+        "target_value": request.target_pd, "target_unit": "m",
+        "controllable_variables": ["precursor_partial_pressure_pA", "pulse_time_tp"],
+        "fixed_conditions": {"temperature": request.temperature,
+                             "reactor_type": request.reactor_type},
+        "operating_bounds": {"pressure_bounds": list(PA_BOUNDS_DEFAULT),
+                             "pulse_time_bounds": list(TP_BOUNDS_DEFAULT)},
+        "geometry": geometry,
+        "secondary_objective": request.secondary_objective,
+        "requested_chemistry": {"precursor": request.precursor, "co_reactant": request.co_reactant},
+        "unresolved_inputs": [] if request.target_pd is not None else ["target_pd"]}
+
+    chem_ctx, chem_status, alts, notes = chem.resolve_chemistry(
+        experiments, request.material, precursor=request.precursor,
+        co_reactant=request.co_reactant, temperature=request.temperature,
+        reactor_type=request.reactor_type)
+
+    if chem_status == "unsupported":
+        return {"problem": problem, "geometry": geometry, "chemistry_status": chem_status,
+                "chemistry_notes": notes, "branches": [], "n_branches": 0,
+                "overall_regime": "refuse",
+                "refusal": {"code": "chemistry_unsupported",
+                            "detail": (notes[0] if notes else "requested chemistry has no evidence")},
+                "cross_chemistry_comparable": False, "comparison_note": None, "status": "refused"}
+
+    if chem_status in ("material_only", "ambiguous"):
+        resolved = [a for a in alts if a["resolved"]]
+        if not resolved:
+            return {"problem": problem, "geometry": geometry, "chemistry_status": chem_status,
+                    "chemistry_notes": notes, "branches": [], "n_branches": 0,
+                    "overall_regime": "refuse",
+                    "refusal": {"code": "no_evaluable_chemistry",
+                                "detail": f"no resolved chemistry for {request.material} to evaluate"},
+                    "cross_chemistry_comparable": False, "comparison_note": None, "status": "refused"}
+        specs = [(a["precursor"], a["co_reactant"]) for a in resolved]
+    else:
+        specs = [(chem_ctx.precursor_identity, chem_ctx.co_reactant_identity)]
+
+    branches = [evaluate_branch(request, p, c, geometry, experiments) for (p, c) in specs]
+    multi = len(branches) > 1
+    comparable = multi and all(b["evidence"]["safe_for_cross_chemistry_comparison"] for b in branches)
+    comparison_note = None
+    if multi:
+        comparison_note = ("branches share cross-chemistry-safe bundles; quantitative comparison is "
+                           "permitted" if comparable else
+                           "branches are evaluated independently; their kinetic bundles are NOT safe "
+                           "for cross-chemistry comparison, so no defensible quantitative ranking is "
+                           "offered")
+    overall = (branches[0]["admissibility"]["regime"] if not multi else "branches_evaluated")
+    return {"problem": problem, "geometry": geometry, "chemistry_status": chem_status,
+            "chemistry_notes": notes, "branches": branches, "n_branches": len(branches),
+            "overall_regime": overall, "refusal": None,
+            "cross_chemistry_comparable": bool(comparable), "comparison_note": comparison_note,
+            "status": "certified"}
+
+
 def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_FAMILIES,
            near_tie_threshold=NEAR_TIE_THRESHOLD, experiments_fn=None):
     """Full pipeline.
@@ -665,12 +1047,13 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
     mk = model_factory or (lambda: _model(ctx.value("deposited_material")
                                           or request.material))
 
+    _exps = (experiments_fn or _experiments)()
+
     # Twin-parameter gate: chemistry-scoped priors are not enough. If the twin's
     # kinetics were pooled over every chemistry of the material, the prediction is
     # generic and must not be sold as chemistry-validated or compared across
     # chemistries.
     try:
-        _exps = (experiments_fn or _experiments)()
         _bundle = chemistry_params.params_for_chemistry(
             _exps, ctx.value("deposited_material") or request.material,
             ctx.chemistry.precursor_identity, ctx.chemistry.co_reactant_identity,
@@ -679,10 +1062,17 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
         twin_compat = chem.assess_twin_compatibility(
             ctx.chemistry, getattr(mk(), "kb_provenance", {}), _exps, bundle=_bundle)
     except Exception as e:
+        _bundle = None
         twin_compat = chem.TwinChemistryCompatibility(
             evidence=f"twin unavailable: {type(e).__name__}: {e}")
 
-    # No ratio -> no inversion. Refuse rather than invent one.
+    # The design certificate is the frozen-spec deliverable; it is assembled around the
+    # same solver/chemistry/evidence code and is the ONLY thing the report renders.
+    certificate = build_certificate(request, _exps)
+
+    # No ratio -> the legacy 1-D family pipeline cannot run; the certificate still does
+    # (it traces the region directly). Return the certificate PLUS legacy-compatible
+    # fields so existing consumers keep working during migration.
     if ctx.value("ratio") is None:
         cov0 = knowledge_coverage(ctx, best=None)
         cov0["twin_compatibility"] = twin_compat.to_dict()
@@ -691,12 +1081,14 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
                   else "chemistry_unsupported"
                   if ctx.chemistry_resolution_status == "unsupported"
                   else "ratio_unresolved")
-        return {"context": ctx, "feasibility": None, "candidates": [], "best": None,
-                "selection": selection_summary([], near_tie_threshold),
-                "coverage": cov0, "family_ranges": [], "twin_compatibility": twin_compat,
-                "global_achievable": {"pd_min": None, "pd_max": None},
-                "reference_context_status": "unknown",
-                "global_design_space_status": "unknown", "status": status}
+        return _with_certificate(
+            {"context": ctx, "feasibility": None, "candidates": [], "best": None,
+             "selection": selection_summary([], near_tie_threshold),
+             "coverage": cov0, "family_ranges": [], "twin_compatibility": twin_compat,
+             "global_achievable": {"pd_min": None, "pd_max": None},
+             "reference_context_status": "unknown",
+             "global_design_space_status": "unknown", "status": status},
+            certificate)
     feas = assess_feasibility(ctx, model=mk())
     fam_ranges = family_achievable_ranges(ctx, families=families, model_factory=mk)
     g_lo, g_hi = global_achievable_range(fam_ranges)
@@ -725,13 +1117,36 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
     cov["twin_chemistry_unverified"] = not twin_compat.compatible
     cov["safe_for_quantitative_use"] = bool(
         twin_compat.safe_for_quantitative_comparison and not cov["fallback_dependent_result"])
-    return {"context": ctx, "twin_compatibility": twin_compat, "feasibility": feas, "candidates": ranked, "best": best,
-            "selection": sel, "coverage": cov,
-            "family_ranges": fam_ranges,
-            "global_achievable": {"pd_min": g_lo, "pd_max": g_hi},
-            "reference_context_status": reference_context_status,
-            "global_design_space_status": global_design_space_status,
-            "status": "designed" if best else "no_feasible_candidate"}
+    return _with_certificate(
+        {"context": ctx, "twin_compatibility": twin_compat, "feasibility": feas,
+         "candidates": ranked, "best": best, "selection": sel, "coverage": cov,
+         "family_ranges": fam_ranges,
+         "global_achievable": {"pd_min": g_lo, "pd_max": g_hi},
+         "reference_context_status": reference_context_status,
+         "global_design_space_status": global_design_space_status,
+         "status": "designed" if best else "no_feasible_candidate"},
+        certificate)
+
+
+def _with_certificate(legacy, certificate):
+    """Merge the design certificate into a legacy result dict and mirror the primary
+    branch's sections at top level, so both the report and programmatic callers read the
+    certificate without digging into `branches`."""
+    out = dict(legacy)
+    out["certificate"] = certificate
+    out["problem"] = certificate["problem"]
+    out["geometry"] = certificate["geometry"]
+    out["branches"] = certificate["branches"]
+    out["overall_regime"] = certificate["overall_regime"]
+    primary = certificate["branches"][0] if certificate["branches"] else None
+    if primary is not None:
+        for key in ("admissibility", "determined", "feasible_region", "recommendation",
+                    "undetermined", "assumptions", "confidence"):
+            out[key] = primary[key]
+    else:
+        out["admissibility"] = {"regime": certificate["overall_regime"],
+                                "reasons": [certificate.get("refusal") or {}]}
+    return out
 
 
 
@@ -790,339 +1205,335 @@ def _pd(v, n=3):
 CANONICAL_REPORT = "m2_report.html"      # the ONE committed M2 artifact
 
 
+def _regime_badge(regime):
+    cls = {"quantitative": "ok", "exploratory": "warn", "infeasible": "bad",
+           "refuse": "bad", "branches_evaluated": "warn"}.get(regime, "warn")
+    return f'<b class={cls}>{html.escape(str(regime))}</b>'
+
+
+# origin -> reused source-tag colour (determined=blue like kb, preference=purple,
+# assumed=amber like fallback, undetermined=red, evidence_uncertain=amber)
+_ORIGIN_CLASS = {ORIGIN_DET: "kb", ORIGIN_PREF: "model_supported", ORIGIN_ASSUMED: "fallback",
+                 ORIGIN_UNDET: "unresolved", ORIGIN_EV_UNC: "fallback", ORIGIN_EVIDENCE: "kb"}
+
+
+def _otag(origin):
+    return (f'<span class="tag s-{_ORIGIN_CLASS.get(origin, "unresolved")}">'
+            f'{html.escape(str(origin))}</span>')
+
+
+def _pt(p, n=4):
+    return "—" if not p else f"pA={p['pA']:.4g} Pa · t_p={p['t_p']:.4g} s"
+
+
 def render_report(result, out_path=None):
-    """The single canonical M2 report. One renderer, one schema, all result states:
-    feasible reference + feasible global, infeasible reference + feasible global, and
-    globally infeasible. `out_path` lets tests render in memory / tmp_path without
-    creating a second committed artifact."""
-    ctx, feas, cov = result["context"], result["feasibility"], result["coverage"]
-    if feas is None:                       # chemistry unresolved: nothing was inverted
-        feas = {"pd_min": None, "pd_max": None, "ratio": None, "verdict": "unknown",
-                "effective_dose_bounds": None, "target_pd": ctx.value("target_pd"),
-                "ratio_source": "unresolved"}
-    cands, best, sel = result["candidates"], result["best"], result["selection"]
-    ref_status, glob_status = result["reference_context_status"], result["global_design_space_status"]
-    g = result["global_achievable"]
-    tgt = ctx.value("target_pd")
-
-    fb_dep = cov["fallback_dependent_result"]
-    subtitle = (f"Current execution: {cov['level']} knowledge coverage, "
-                f"{'fallback-dependent' if fb_dep else 'not fallback-dependent'}")
-
-    # 1 request
-    req = ctx.request
-    s1 = (f"<table><tr><th>field</th><th>value</th></tr>"
-          f"<tr><td class=mono>material</td><td class=mono>{html.escape(str(req.material))}</td></tr>"
-          f"<tr><td class=mono>target_pd</td><td class=mono>{_pd(tgt)} µm</td></tr>"
-          f"<tr><td class=mono>constraints</td><td class=mono>"
-          f"{html.escape(json.dumps(req.constraints or {}))}</td></tr></table>")
-
-    # 2 deposited material vs process chemistry ------------------------------
-    cc = ctx.chemistry
-    tc = result.get("twin_compatibility")
-    alt_rows = "".join(
-        f"<tr><td class=mono>{html.escape(a['label'])}</td>"
-        f"<td class=mono>{a['n_experiments']}</td>"
-        f"<td class=mut>{html.escape(', '.join(a['papers']) or '—')}</td>"
-        f"<td>{'<span class=ok>resolved</span>' if a['resolved'] else '<span class=bad>no chemistry identified</span>'}</td></tr>"
-        for a in (ctx.chemistry_alternatives or []))
-    st_cls = {"fully_specified": "ok", "partially_specified": "warn",
-              "ambiguous": "bad", "material_only": "bad", "unsupported": "bad"}.get(
-        ctx.chemistry_resolution_status, "warn")
-    tc_level = tc.compatibility_level if tc else "unknown"
-    schem = (f"<div class=note><b>The deposited material does not uniquely determine the "
-             f"precursor chemistry.</b> Partial pressure, pulse time, the pressure-to-pulse "
-             f"relationship and the kinetic parameters belong to the CHEMISTRY, not to the "
-             f"film. Priors below are scoped accordingly, and evidence from different "
-             f"precursor/co-reactant systems is never combined.</div>"
-             f"<div class=bar>"
-             f"<div class=stat><b>{html.escape(str(ctx.value('deposited_material')))}</b>"
-             f"<span>deposited material (the film)</span></div>"
-             f"<div class=stat><b>{html.escape(str(cc.precursor_identity or '—'))}</b>"
-             f"<span>precursor {_tag(ctx.priors['precursor'].source)}</span></div>"
-             f"<div class=stat><b>{html.escape(str(cc.co_reactant_identity or '—'))}</b>"
-             f"<span>co-reactant {_tag(ctx.priors['co_reactant'].source)}</span></div>"
-             f"<div class=stat><b class={st_cls}>{html.escape(ctx.chemistry_resolution_status)}</b>"
-             f"<span>chemistry_resolution_status</span></div>"
-             f"<div class=stat><b class={'ok' if tc_level=='exact_chemistry' else 'bad'}>"
-             f"{html.escape(tc_level)}</b><span>twin-chemistry compatibility</span></div>"
-             f"</div>"
-             f"<table><tr><th>KB chemistry alternative for this film</th><th>experiments</th>"
-             f"<th>papers</th><th>status</th></tr>{alt_rows}</table>"
-             + (f"<div class=note><b>Chemistry-scoped operating priors</b><table>"
-                f"<tr><th>prior</th><th>value</th><th>species</th><th>source</th>"
-                f"<th>match quality</th><th>evidence</th></tr>"
-                + "".join(
-                    f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(v.value)}</td>"
-                    f"<td class=mono>{html.escape(str(v.species_scope))}</td>"
-                    f"<td>{_tag(v.source)}</td><td class=mono>{html.escape(v.match_quality)}</td>"
-                    f"<td class=mut>{html.escape(v.evidence or '')}</td></tr>"
-                    for k, v in (ctx.chemistry_priors or {}).items())
-                + "</table></div>")
-             + (f"<div class=note><span class=warn>⚠</span> ratio status: "
-                f"<span class=mono>{html.escape(str(ctx.ratio_status))}</span>"
-                + ("  — <b>no literature-supported species-attributed partial-pressure "
-                   "evidence exists</b> in this corpus. The pressure records it does hold "
-                   "are chamber-total or unspecified, and the A/B reactant pressures shown "
-                   "in recipes are model assumptions (source=model), not measurements."
-                   if "pressure" in str(ctx.ratio_status) else "")
-                + "</div>" if ctx.ratio_status else "")
-             + (f"<div class=note><span class=bad>Twin parameterisation:</span> "
-                f"{html.escape(tc.evidence or '')} — <b>safe for quantitative "
-                f"cross-chemistry comparison: {'yes' if tc.safe_for_quantitative_comparison else 'no'}"
-                f"</b>.</div>" if tc else ""))
-
-    # 3 input support SUMMARY — aggregate + risk only. No per-variable ledger here;
-    # that is section 3's job, and duplicating it was what made the two sections
-    # indistinguishable to a reader.
-    lvl_cls = {"complete": "ok", "substantial": "ok",
-               "partial": "warn", "insufficient": "bad"}.get(cov["level"], "warn")
-    crit = cov["critical_by_source"]
-
-    def crit_line(bucket, label, cls):
-        items = crit.get(bucket) or []
-        if not items:
-            return ""
-        names = ", ".join(f"<span class=mono>{html.escape(c['name'])}</span>" for c in items)
-        return f"<tr><td>{_tag(bucket)}</td><td>{names}</td><td class=mut>{label}</td></tr>"
-
-    crit_rows = "".join([
-        crit_line("user", "stated in the request", "ok"),
-        crit_line("kb", "retrieved evidence", "ok"),
-        crit_line("model_supported", "operating-envelope default", "warn"),
-        crit_line("fallback", "stand-in — no evidence retrieved", "bad"),
-        crit_line("unresolved", "no value at all", "bad")])
-    weak_rows = "".join(
-        f"<li><span class=mono>{html.escape(c['name'])}</span> — {html.escape(c['why'])}</li>"
-        for c in cov["critical_weak"]) or "<li>none</li>"
-    s2 = (f"<div class=note>This summary highlights the evidence gaps that affect the design. "
-          f"The following ledger records every resolved input and its provenance.</div>"
-          f"<div class=bar>"
-          f"<div class=stat><b class={lvl_cls}>{cov['level']}</b><span>overall input support</span></div>"
-          f"<div class=stat><b class={'bad' if fb_dep else 'ok'}>{'yes' if fb_dep else 'no'}</b>"
-          f"<span>fallback-dependent result</span></div>"
-          f"<div class=stat><b>{cov['counts']['user']} · {cov['counts']['kb']} · "
-          f"{cov['counts']['model_supported']} · {cov['counts']['fallback']} · "
-          f"{cov['counts']['unresolved']}</b>"
-          f"<span>all resolved inputs — user · KB · model · fallback · unresolved</span></div>"
-          f"</div>"
-          f"<div class=note><b>Decision-critical inputs</b> — those that materially affect the "
-          f"selected family, the solved pressure and pulse time, the effective dose, feasibility "
-          f"or the ranking. A raw source count does not capture this: an input can be "
-          f"KB-supported and still never reach the solve.</div>"
-          f"<table><tr><th>support</th><th>decision-critical inputs</th><th></th></tr>"
-          f"{crit_rows}</table>"
-          f"<div class=note><b>Unsupported or fallback-supported where it matters:</b>"
-          f"<ul>{weak_rows}</ul></div>"
-          + (f"<div class=note><span class=bad>critical unresolved:</span> <span class=mono>"
-             f"{html.escape(', '.join(cov['critical_unresolved']))}</span></div>"
-             if cov["critical_unresolved"] else "")
-          + f"<div class=note><b>{html.escape(cov['interpretation'])}</b></div>")
-
-    # 3 the ONE detailed ledger: every resolved input, with provenance and downstream use
-    def use_of(name):
-        if name in DECISION_CRITICAL:
-            return DECISION_CRITICAL[name]
-        return NON_CRITICAL_NOTE.get(name, "")
-
-    prows = "".join(
-        f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(p.value)}</td>"
-        f"<td class=mut>{html.escape(p.unit or '')}</td><td>{_tag(p.source)}</td>"
-        f"<td class=mono>{p.confidence:.1f}</td>"
-        f"<td>{'<b>critical</b>' if k in DECISION_CRITICAL else '<span class=mut>context</span>'}</td>"
-        f"<td class=mut>{html.escape(use_of(k))}</td>"
-        f"<td class=mut>{html.escape(p.evidence or '')}</td>"
-        f"<td class=mut>{'yes' if p.overridable else 'no'}</td></tr>"
-        for k, p in ctx.priors.items())
-    s34 = (f"<div class=note>The complete audit record — every value that entered the "
-           f"calculation and where it came from. The summary above reports only the gaps that "
-           f"change the design.</div>"
-           f"<table><tr><th>variable</th><th>value</th><th>unit</th><th>source</th><th>conf</th>"
-           f"<th>role</th><th>downstream use</th><th>evidence</th><th>overridable</th></tr>"
-           f"{prows}</table>"
-           + "".join(f'<div class=note><span class=warn>⚠</span> {html.escape(w)}</div>'
-                     for w in ctx.warnings)
-           + (f'<div class=note><b>Unresolved inputs (complete list):</b> <span class=mono>'
-              f'{html.escape(", ".join(ctx.unresolved))}</span></div>' if ctx.unresolved else "")
-           + '<div class=note><span class="tag s-user">user</span> stated in the request · '
-             '<span class="tag s-kb">kb</span> retrieved from the knowledge base · '
-             '<span class="tag s-model_supported">model_supported</span> operating-envelope default · '
-             '<span class="tag s-fallback">fallback</span> nothing retrieved, a stand-in · '
-             '<span class="tag s-unresolved">unresolved</span> no value at all.</div>')
-
-    # 5 reference-context feasibility
-    ref_cls = "ok" if ref_status == "feasible" else "bad"
-    ratio_lbl = (f"{feas['ratio']:.4g} Pa/s" if feas.get("ratio") else "— (unresolved)")
-    s5 = (f"<div class=bar>"
-          f"<div class=stat><b class={ref_cls}>{ref_status}</b><span>reference_context_status</span></div>"
-          f"<div class=stat><b>{_pd(feas['pd_min'])} – {_pd(feas['pd_max'])}</b>"
-          f"<span>achievable PD50 (µm) at the reference ratio {ratio_lbl}</span></div>"
-          f"<div class=stat><b>{_pd(tgt)}</b><span>target PD50 (µm)</span></div></div>"
-          f"<div class=note>Feasibility of the <b>resolved reference ratio alone</b>. It is not the "
-          f"design's verdict — see the status across evaluated families below.</div>")
-
-    # 6 global operating-family feasibility
-    frows = "".join(
-        f"<tr><td class=mono>{html.escape(r['family'])}</td><td class=mono>{r['ratio']:.4g}</td>"
-        f"<td class=mono>{_pd(r['pd_min'])}</td><td class=mono>{_pd(r['pd_max'])}</td>"
-        f"<td class=mono>{_fmt(r['bounds'])}</td>"
-        f"<td class={'ok' if (tgt is not None and r['pd_min'] is not None and r['pd_min'] <= tgt <= r['pd_max']) else 'bad'}>"
-        f"{'reaches target' if (tgt is not None and r['pd_min'] is not None and r['pd_min'] <= tgt <= r['pd_max']) else 'cannot reach'}</td></tr>"
-        for r in result["family_ranges"])
-    glob_cls = "ok" if glob_status == "feasible" else "bad"
-    cross = ""
-    if ref_status != "feasible" and glob_status == "feasible":
-        cross = ('<div class=note><span class=ok><b>The resolved reference context cannot reach the '
-                 'target, but at least one alternative operating family can.</b></span> The design is '
-                 'therefore <b>feasible across the evaluated operating families</b>; the '
-                 'alternative family expands the achievable envelope beyond the reference '
-                 'ratio\'s own range.</div>')
-    elif glob_status.startswith("infeasible"):
-        cross = ('<div class=note><span class=bad><b>None of the evaluated operating families reaches the '
-                 'target.</b>'
-                 '</span> The binding constraints are the pressure and pulse-time bounds, which cap the '
-                 'effective dose available at every ratio — see the per-family brackets above.</div>')
-    s6 = (f"<div class=note>This is the union over the <b>{len(result['family_ranges'])} operating "
-          f"families evaluated here</b> — a finite set of fixed pA/t_p ratios. The continuous "
-          f"pressure x pulse-time domain has <b>not</b> been searched; a ratio between or beyond "
-          f"these families could widen the envelope.</div>"
-          f"<div class=bar>"
-          f"<div class=stat><b class={glob_cls}>{glob_status}</b>"
-          f"<span>status across evaluated families "
-          f"(field: <span class=mono>global_design_space_status</span>)</span></div>"
-          f"<div class=stat><b>{_pd(g['pd_min'])} – {_pd(g['pd_max'])}</b>"
-          f"<span>achievable PD50 envelope (µm) across the evaluated operating families</span></div></div>"
-          f"<table><tr><th>family</th><th>r (Pa/s)</th><th>PD min (µm)</th><th>PD max (µm)</th>"
-          f"<th>effective-dose bracket (Pa·s)</th><th>vs target</th></tr>{frows}</table>{cross}")
-
-    # 7 candidates
-    def crow(c):
-        prov = (f"<td>{_tag(c.family_definition_source)}</td>"
-                f"<td>{_tag(c.ratio_evidence_source)}</td>"
-                f"<td class=mono>{c.ratio_evidence_confidence:.2f}</td>")
-        if not c.feasible:
-            return (f"<tr><td class=mono>{html.escape(c.family)}</td><td class=mono>{c.ratio:.4g}</td>"
-                    f"{prov}<td colspan=6 class=bad>rejected — {html.escape(c.rejected or '')}</td></tr>")
-        s, rb = c.solution, c.robustness
-        star = " ★" if c is best else ""
-        return (f"<tr><td class=mono><b>{html.escape(c.family)}{star}</b></td>"
-                f"<td class=mono>{c.ratio:.4g}</td>{prov}"
-                f"<td class=mono>{_fmt(s.effective_dose)}</td><td class=mono>{_fmt(s.pA)}</td>"
-                f"<td class=mono>{_fmt(s.pulse_time)}</td><td class=mono>{_pd(s.achieved_pd)}</td>"
-                f"<td class=mono>{(s.residual or 0)*1e9:+.2g}</td>"
-                f"<td class=mono><b>{c.total_score:.3f}</b></td></tr>")
-    crow_all = "".join(crow(c) for c in cands)
-    s7 = (f"<table><tr><th>family</th><th>r (Pa/s)</th><th>family definition</th>"
-          f"<th>ratio evidence</th><th>ratio conf</th><th>effective dose (Pa·s)</th><th>pA (Pa)</th>"
-          f"<th>t_p (s)</th><th>PD50 (µm)</th><th>resid (nm)</th><th>score</th></tr>{crow_all}</table>"
-          f"<div class=note><b>Two separate provenance columns, on purpose.</b> "
-          f"<i>family definition</i> is where the operating archetype came from; "
-          f"<i>ratio evidence</i> is what supports the actual number. A family scaled off the "
-          f"reference ratio reads <span class=mono>derived_from_…</span> and can never be more "
-          f"credible than its base — multiplying a fallback by ten does not create evidence.</div>")
-
-    # 8 + 9 + 10 ranking, selection, trade-off
-    wrow = " · ".join(f"{k} {v:g}" for k, v in sel["weights"].items())
-    srows = "".join(
-        f"<tr><td class=mono>{html.escape(c.family)}</td>" +
-        "".join(f"<td class=mono>{c.scores.get(k, 0):.3f}</td>"
-                for k in ("accuracy", "margin", "robustness", "throughput", "confidence")) +
-        f"<td class=mono><b>{c.total_score:.3f}</b></td></tr>"
-        for c in cands if c.feasible) or '<tr><td colspan=7 class=mut>no feasible candidate</td></tr>'
-    trades = "".join(
-        f"<li><b>{html.escape(t['label'])}</b> favours <span class=mono>{html.escape(t['favours'])}</span>"
-        f" ({t['best']:.3f} vs {t['runner_up']:.3f})</li>" for t in sel["trade_offs"])
-    tie = ('<div class=note><span class=warn>⚠ near-tie</span> — the top two scores differ by '
-           f'{sel["score_gap"]:.3f}, below the {sel["near_tie_threshold"]:.2f} threshold. '
-           'Treat these as equally preferred; the ordering is not decisive.</div>'
-           if sel["near_tie"] else "")
-    s89 = (f"<div class=note><b>Ranking profile:</b> <span class=mono>{html.escape(sel['profile'])}</span>"
-           f" — weights: <span class=mono>{html.escape(wrow)}</span></div>"
-           f"<table><tr><th>family</th><th>accuracy</th><th>margin</th><th>robustness</th>"
-           f"<th>throughput</th><th>confidence</th><th>total</th></tr>{srows}</table>{tie}")
-
-    if best:
-        s10 = (f"<div class=bar>"
-               f"<div class=stat><b>{best.solution.effective_dose:.4g}</b>"
-               f"<span>effective dose (Pa·s) = pA · t_p</span></div>"
-               f"<div class=stat><b>{best.solution.pA:.4g}</b><span>precursor partial pressure (Pa)</span></div>"
-               f"<div class=stat><b>{best.solution.pulse_time:.4g}</b><span>pulse time (s)</span></div>"
-               f"<div class=stat><b>{_pd(best.solution.achieved_pd)}</b><span>predicted PD50 (µm)</span></div>"
-               f"<div class=stat><b>{html.escape(best.family)}</b><span>operating family</span></div></div>"
-               f"<div class=note><b>Runner-up:</b> "
-               f"<span class=mono>{html.escape(str(sel['runner_up']))}</span>"
-               + (f", score gap {sel['score_gap']:.3f}." if sel["score_gap"] is not None
-                  else " — none (only one feasible candidate).")
-               + (f"<ul>{trades}</ul>" if trades else "")
-               + f"<b>{html.escape(sel['note'])}</b></div>"
-               f"<div class=note>This is a <b>model-inverted</b> recipe under a "
-               f"{_tag(ctx.priors['ratio'].source)} pressure-to-pulse relationship. "
-               f"{'It is not a literature recipe.' if fb_dep else ''}</div>")
-    else:
-        near = max((r for r in result["family_ranges"] if r["pd_max"] is not None),
-                   key=lambda r: r["pd_max"], default=None)
-        s10 = ('<div class=note><span class=bad><b>No candidate is selected.</b></span> '
-               'No operating family reaches the target, so there is no recipe to recommend.</div>'
-               + (f'<div class=note>Closest attainable boundary: family '
-                  f'<span class=mono>{html.escape(near["family"])}</span> tops out at '
-                  f'<b>{_pd(near["pd_max"])} µm</b> — <span class=bad>this does NOT satisfy the '
-                  f'target</span> and is shown only to indicate how far short the design space '
-                  f'falls.</div>' if near else ""))
-
-    # 11 robustness
-    rrows = "".join(
-        f"<tr><td class=mono>{html.escape(c.family)}</td>"
-        f"<td class=mono>{c.robustness.get('dose_sensitivity', float('nan')):.3f}</td>"
-        f"<td class=mono>{c.robustness.get('ratio_sensitivity', float('nan')):.3f}</td>"
-        f"<td class=mono>{c.robustness.get('pressure_margin', float('nan')):.3f}</td>"
-        f"<td class=mono>{c.robustness.get('pulse_time_margin', float('nan')):.3f}</td>"
-        f"<td class=mono>{c.robustness.get('dose_margin', float('nan')):.3f}</td>"
-        f"<td class=mono>{_pd(c.robustness.get('pd_at_minus'))} / {_pd(c.robustness.get('pd_at_plus'))}</td></tr>"
-        for c in cands if c.feasible) or '<tr><td colspan=7 class=mut>no feasible candidate</td></tr>'
-    s11 = (f"<table><tr><th>family</th><th>d ln PD / d ln dose</th><th>ratio sensitivity</th>"
-           f"<th>pA margin</th><th>t_p margin</th><th>dose margin</th>"
-           f"<th>PD at ∓10 % dose (µm)</th></tr>{rrows}</table>"
-           f"<div class=note>Margins are distance from the operating bounds in log space "
-           f"(0 = on a bound, 1 = centred). Sensitivities are local, at ±10 %.</div>")
-
-    # 12 reproducibility / solver diagnostics
-    drows = "".join(
-        f"<tr><td class=mono>{html.escape(c.family)}</td>"
-        f"<td class=mono>{html.escape(c.solution.status)}</td>"
-        f"<td class=mono>{html.escape(str(c.solution.method or '—'))}</td>"
-        f"<td class=mono>{c.solution.model_evaluations}</td>"
-        f"<td class=mono>{_fmt(c.solution.effective_dose_bounds)}</td>"
-        f"<td class=mono>{c.solution.tolerance_pd:.1g}</td>"
-        f"<td class=mut>{html.escape((c.solution.reason or '')[:90])}</td></tr>"
-        for c in cands if c.solution)
-    s12 = (f"<table><tr><th>family</th><th>solver status</th><th>method</th><th>model evals</th>"
-           f"<th>effective-dose bracket (Pa·s)</th><th>PD tol (m)</th><th>reason</th></tr>{drows}</table>"
-           f"<div class=note>Physics inversion is performed exclusively by "
-           f"<span class=mono>inverse_solver.solve_target_dose</span> — one bracketed root solve per "
-           f"family on the real channel twin. This layer adds no solver of its own.</div>")
+    """The single canonical M2 report, rendered FROM the design certificate and
+    organised around the scientific result (frozen-spec section order), not the internal
+    pipeline. It presents the FEASIBLE REGION as the answer and never a single sampled
+    pressure/pulse pair as the uniquely solved recipe. `out_path` lets tests render to
+    tmp_path without touching the committed artifact."""
+    cert = result["certificate"]
+    ctx = result["context"]
+    problem = cert["problem"]
+    geom = cert["geometry"]
+    branches = cert["branches"]
+    primary = branches[0] if branches else None
+    tgt = problem["target_value"]
+    material = ctx.value("deposited_material") or ctx.value("material") or "—"
 
     def card(n, title, body):
         return f"<div class=card><h2>{n} · {html.escape(title)}</h2>{body}</div>"
 
-    body = f"""<title>M2 · knowledge-aware inverse design</title><style>{_CSS}</style>
+    # ---- 1 Executive Summary -------------------------------------------------
+    # Leads with everything a reader needs to know what the report is about and how it
+    # came out: target, outcome, chemistry, geometry, reachability, classification.
+    if primary is None:                     # refusal
+        ref = cert.get("refusal") or {}
+        s1 = (f"<div class=bar>"
+              f"<div class=stat><b>{_pd(tgt)} µm</b><span>requested penetration depth</span></div>"
+              f"<div class=stat>{_regime_badge(cert['overall_regime'])}<span>outcome classification</span></div>"
+              f"<div class=stat><b>{html.escape(str(material))}</b><span>material</span></div>"
+              f"<div class=stat><b class={'ok' if geom['model_valid'] else 'bad'}>"
+              f"{html.escape(geom['geometry_class'])}</b><span>geometry</span></div></div>"
+              f"<div class=note><span class=bad>Refused.</span> "
+              f"{html.escape(ref.get('detail', 'no evaluable design'))} "
+              f"(<span class=mono>{html.escape(ref.get('code', 'refuse'))}</span>).</div>")
+    else:
+        adm = primary["admissibility"]
+        reasons = "".join(
+            f"<li><span class=mono>{html.escape(r.get('code', ''))}</span> — "
+            f"{html.escape(r.get('detail', ''))}</li>" for r in adm["reasons"])
+        reg = primary["feasible_region"]
+        outcome_line = (
+            f"A feasible operating region was found" if not reg.get("empty")
+            else "No feasible operating region was found")
+        s1 = (f"<div class=bar>"
+              f"<div class=stat><b>{_pd(tgt)} µm</b><span>requested penetration depth</span></div>"
+              f"<div class=stat>{_regime_badge(adm['regime'])}<span>outcome classification (admissibility regime)</span></div>"
+              f"<div class=stat><b>{html.escape(str(material))}</b><span>material</span></div>"
+              f"<div class=stat><b>{html.escape(primary['chemistry']['label'])}</b><span>chemistry</span></div>"
+              f"<div class=stat><b class={'ok' if geom['model_valid'] else 'bad'}>"
+              f"{html.escape(geom['geometry_class'])}</b><span>geometry (model {'valid' if geom['model_valid'] else 'INVALID'})</span></div>"
+              f"<div class=stat><b>{'reachable' if adm['reachable'] else 'unreachable'}</b>"
+              f"<span>target reachability</span></div></div>"
+              f"<div class=note><b>{outcome_line}</b> for depositing "
+              f"{html.escape(str(material))} to a {_pd(tgt)} µm penetration depth in a "
+              f"{html.escape(geom['geometry_class'])} feature using {html.escape(primary['chemistry']['label'])}. "
+              f"The design is classified <b>{html.escape(adm['regime'])}</b>.</div>"
+              f"<div class=note><b>Why this classification:</b><ul>{reasons}</ul></div>"
+              + ("<div class=note>A <b>quantitative</b> design requires chemistry-specific "
+                 "kinetics, a valid geometry, a reachable target and propagated evidence "
+                 "uncertainty. Anything less is reported as <b>exploratory</b> — the same "
+                 "structured result, with quantitative confidence withheld.</div>"
+                 if adm['regime'] == 'exploratory' else ""))
+
+    subtitle = (f"{cert['overall_regime']} · "
+                + (f"{cert['n_branches']} chemistry branch(es)" if cert["n_branches"] else "refused"))
+
+    # ---- 2 Problem Definition -----------------------------------------------
+    # Explicitly defines the inverse-design problem, including material and chemistry.
+    fixed = problem["fixed_conditions"]
+    rq = problem["requested_chemistry"]
+    chem_label = (primary["chemistry"]["label"] if primary
+                  else f"{rq.get('precursor') or '?'} + {rq.get('co_reactant') or '?'}")
+    s2 = (f"<div class=note>The inverse-design problem this report solves: find operating "
+          f"conditions that achieve the target observable for the stated material, chemistry and "
+          f"geometry.</div>"
+          f"<table>"
+          f"<tr><th>element</th><th>value</th></tr>"
+          f"<tr><td class=mono>target observable</td><td class=mono>{html.escape(problem['target_observable'])}</td></tr>"
+          f"<tr><td class=mono>target value</td><td class=mono>{_pd(tgt)} µm</td></tr>"
+          f"<tr><td class=mono>material (deposited film)</td><td class=mono>{html.escape(str(material))}</td></tr>"
+          f"<tr><td class=mono>chemistry (precursor + co-reactant)</td><td class=mono>{html.escape(chem_label)}</td></tr>"
+          f"<tr><td class=mono>geometry</td><td class=mono>{html.escape(geom['geometry_class'])} "
+          f"{_tag(geom['source'])} <span class=mut>{html.escape(geom['evidence'])}</span></td></tr>"
+          f"<tr><td class=mono>decision variables</td><td class=mono>{html.escape(', '.join(problem['controllable_variables']))}</td></tr>"
+          f"<tr><td class=mono>fixed conditions</td><td class=mono>T={_fmt(fixed['temperature'])} · reactor={_fmt(fixed['reactor_type'])}</td></tr>"
+          f"<tr><td class=mono>operating bounds</td><td class=mono>pA {_fmt(problem['operating_bounds']['pressure_bounds'])} Pa · "
+          f"t_p {_fmt(problem['operating_bounds']['pulse_time_bounds'])} s</td></tr>"
+          f"<tr><td class=mono>secondary objective</td><td class=mono>{_fmt(problem['secondary_objective'])}</td></tr>"
+          f"<tr><td class=mono>unresolved inputs</td><td class=mono>{_fmt(problem['unresolved_inputs']) if problem['unresolved_inputs'] else '—'}</td></tr>"
+          f"</table>")
+
+    if primary is None:
+        body = f"""<title>M2 · inverse-design certificate</title><style>{_CSS}</style>
+<div class=wrap><div class=eyebrow>PSED · M2</div>
+<h1>M2 · inverse-design certificate</h1><div class=sub>{html.escape(subtitle)}</div>
+{card(1, "Executive Summary", s1)}
+{card(2, "Problem Definition", s2)}
+</div>"""
+        out = Path(out_path) if out_path else HERE / CANONICAL_REPORT
+        out.write_text(body)
+        return out
+
+    det = primary["determined"]
+    region = primary["feasible_region"]
+    rec = primary["recommendation"]
+    undet = primary["undetermined"]["undetermined"]
+    conf = primary["confidence"]
+    ev = primary["evidence"]
+    bundle = ev["twin_parameter_bundle"]
+
+    # ---- 3 Quantities Identified by the Forward Model -----------------------
+    drows = "".join(
+        f"<tr><td class=mono>{html.escape(q['name'])} ({html.escape(q['symbol'])})</td>"
+        f"<td class=mono>{_fmt(q['value'])}</td><td class=mono>{html.escape(q['unit'])}</td>"
+        f"<td class=mono>{_fmt(q['band']) if q['band'] else '—'}</td>"
+        f"<td class=mono>{html.escape(q['band_basis'])}</td>"
+        f"<td>{_otag(q['origin'])}</td></tr>" for q in det["quantities"]) \
+        or "<tr><td colspan=6 class=mut>no identified quantity (empty region)</td></tr>"
+    inv = det["quantities"][0]["model_invariance"] if det["quantities"] else None
+    s3 = ("<div class=note>The quantities below are the ones the <b>currently active forward "
+          "model</b> (a diffusion–Langmuir channel model) can pin down from the target. For this "
+          "model that quantity is the <b>effective dose</b> (precursor pressure × pulse time). "
+          "This is a property of the active model, <b>not</b> a claim that effective dose is "
+          "universally the fundamental process variable — a different forward model could identify "
+          "a different quantity.</div>"
+          f"<table><tr><th>quantity</th><th>value</th><th>unit</th><th>band</th>"
+          f"<th>band basis</th><th>origin</th></tr>{drows}</table>"
+          + (f"<div class=note><b>Consistency across the feasible region (measured, not assumed):</b> "
+             f"{html.escape(inv['detail'])}</div>" if inv else "")
+          + "<div class=note>Precursor pressure and pulse time are <b>not</b> identified separately by "
+            "this model — only their combination (the effective dose) is. How the dose is split between "
+            "them is left open (see §10).</div>")
+
+    # ---- 4 feasible operating region ----------------------------------------
+    samp = rec.get("samples") or []
+    srows = "".join(
+        f"<tr><td class=mono>{html.escape(s['label'])}</td><td class=mono>{s['pA']:.4g}</td>"
+        f"<td class=mono>{s['t_p']:.4g}</td><td class=mono>{s['effective_dose']:.4g}</td>"
+        f"<td class=mono>{_pd(s['achieved_pd'])}</td>"
+        f"<td class=mut>illustrative_sample</td></tr>" for s in samp)
+    pr, tr = region.get("pressure_range"), region.get("pulse_range")
+    if region.get("empty"):
+        s4 = ("<div class=note><span class=bad><b>The feasible region is empty.</b></span> "
+              "No operating conditions within the pressure and pulse-time ranges meet the target — see "
+              "the infeasibility explanation.</div>")
+    else:
+        s4 = (f"<div class=bar>"
+              f"<div class=stat><b>{region['n_points']}</b><span>representative feasible operating points</span></div>"
+              f"<div class=stat><b>{region['free_coordinate_count']}</b><span>free coordinate(s)</span></div>"
+              f"<div class=stat><b>{pr[0]:.3g} – {pr[1]:.3g}</b><span>precursor pressure range (Pa)</span></div>"
+              f"<div class=stat><b>{tr[0]:.3g} – {tr[1]:.3g}</b><span>pulse-time range (s)</span></div>"
+              f"<div class=stat><b>{region['dose_spread_frac']*100:.2f}%</b><span>variation in pressure × pulse time</span></div></div>"
+              f"<div class=note>The feasible region is the <b>set of operating conditions that achieve the "
+              f"target</b>, computed from the active forward model and limited to the allowed pressure and "
+              f"pulse-time ranges. Every representative point below meets the target to within "
+              f"{region['pd_max_abs_residual']:.1e} m (numerically exact). <b>This region — not any single "
+              f"pressure/pulse pair — is the scientific answer.</b></div>"
+              f"<div class=note>Across these points, the effective dose (precursor pressure × pulse time) "
+              f"varies by only <b>{region['dose_spread_frac']*100:.2f}%</b>: the same total exposure reaches "
+              f"the target regardless of how it is divided between a higher pressure with a shorter pulse or "
+              f"a lower pressure with a longer pulse.</div>"
+              f"<div class=note><b>Representative feasible operating points</b> (examples spanning the "
+              f"region, not competing recipes):</div>"
+              f"<table><tr><th>example</th><th>precursor pressure (Pa)</th><th>pulse time (s)</th>"
+              f"<th>effective dose (Pa·s)</th><th>PD50 (µm)</th><th>role</th></tr>{srows}</table>")
+
+    # ---- 5 recommendation ----------------------------------------------------
+    if rec.get("point"):
+        p = rec["point"]
+        s5 = (f"<div class=bar><div class=stat><b>{_pt(p)}</b>"
+              f"<span>selected operating point</span></div>"
+              f"<div class=stat>{_otag(rec['origin'])}<span>origin</span></div>"
+              f"<div class=stat><b>{html.escape(str(rec.get('chosen_by')))}</b><span>chosen by</span></div></div>"
+              f"<div class=note><b>{html.escape(rec['note'])}</b></div>")
+    else:
+        s5 = (f"<div class=note><span class=warn><b>No unique recommendation.</b></span> "
+              f"{html.escape(rec['note'])}</div>"
+              f"<div class=note>Supported external criteria: "
+              f"<span class=mono>{html.escape(', '.join(SECONDARY_OBJECTIVES))}</span>.</div>")
+
+    # ---- 6 chemistry alternatives / branch comparison -----------------------
+    if cert["n_branches"] > 1:
+        brows = "".join(
+            f"<tr><td class=mono>{html.escape(b['chemistry']['label'])}</td>"
+            f"<td>{_regime_badge(b['admissibility']['regime'])}</td>"
+            f"<td class=mono>{b['admissibility']['kinetics_level']}</td>"
+            f"<td class=mono>{'yes' if b['admissibility']['reachable'] else 'no'}</td></tr>"
+            for b in branches)
+        s6 = (f"<div class=note>The deposited material does not determine the chemistry; each "
+              f"candidate chemistry is evaluated <b>independently</b> (no evidence is pooled).</div>"
+              f"<table><tr><th>chemistry</th><th>regime</th><th>kinetics level</th>"
+              f"<th>reachable</th></tr>{brows}</table>"
+              f"<div class=note><span class={'ok' if cert['cross_chemistry_comparable'] else 'warn'}>"
+              f"{html.escape(cert['comparison_note'] or '')}</span></div>")
+    else:
+        s6 = (f"<div class=note>Chemistry <b>{html.escape(primary['chemistry']['label'])}</b> evaluated "
+              f"as a single branch (status <span class=mono>{html.escape(primary['chemistry']['status'])}</span>). "
+              f"Twin-kinetics compatibility level: <b class="
+              f"{'ok' if bundle['compatibility_level']=='exact_chemistry' else 'bad'}>"
+              f"{html.escape(bundle['compatibility_level'])}</b>.</div>")
+
+    # ---- 7 supporting evidence ----------------------------------------------
+    cp_rows = "".join(
+        f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(v.get('value'))}</td>"
+        f"<td class=mono>{html.escape(str(v.get('species_scope')))}</td>"
+        f"<td>{_tag(v.get('source'))}</td><td class=mono>{html.escape(str(v.get('match_quality')))}</td>"
+        f"<td class=mut>{html.escape(str(v.get('evidence') or ''))}</td></tr>"
+        for k, v in (ev["chemistry_priors"] or {}).items())
+    ratio_status = primary.get("ratio_status")
+    s7 = (f"<div class=note>This section is about <b>the evidence behind the design, not the design "
+          f"outputs</b>. The values in the table are <b>literature-derived operating priors</b> "
+          f"(conditions reported in prior experiments) and reference inputs — they are <b>not</b> the "
+          f"optimized pressure or pulse: a value such as a precursor pulse time here is an input drawn "
+          f"from the literature, not a recommended operating point (the design outputs are the feasible "
+          f"region in §4).</div>"
+          f"<div class=note><b>Chemistry-scoped operating evidence</b> (never pooled across "
+          f"chemistries) — source <span class=mono>kb</span> = from literature, "
+          f"<span class=mono>model_supported</span> = model default, "
+          f"<span class=mono>unresolved</span> = no evidence found:</div>"
+          f"<table><tr><th>prior (literature input)</th><th>value</th><th>species</th><th>source</th>"
+          f"<th>match quality</th><th>evidence / status</th></tr>{cp_rows}</table>"
+          f"<div class=note>Twin parameter bundle: compatibility "
+          f"<b>{html.escape(bundle['compatibility_level'])}</b>; "
+          f"safe for cross-chemistry comparison: "
+          f"<b>{'yes' if ev['safe_for_cross_chemistry_comparison'] else 'no'}</b>. The kinetic "
+          f"coefficients (sticking, adsorption, growth-per-cycle) come from the model defaults here, "
+          f"not from chemistry-specific measurements — which is why this branch is exploratory.</div>"
+          + (f"<div class=note><span class=warn>⚠</span> ratio status: "
+             f"<span class=mono>{html.escape(str(ratio_status))}</span> — <b>no species-attributed "
+             f"precursor partial-pressure value has been extracted for this chemistry in the evidence "
+             f"processed so far</b> (full pressure extraction is not yet complete, so this is not a "
+             f"corpus-wide conclusion). The pressure records processed to date are chamber-total or "
+             f"unspecified, and the A/B reactant pressures shown in recipes are model assumptions "
+             f"(source=model), not measurements.</div>"
+             if ratio_status else "")
+          + "<div class=note>The full provenance ledger is in the appendix (§11).</div>")
+
+    # ---- 8 assumptions -------------------------------------------------------
+    arows = "".join(
+        f"<tr><td class=mono>{html.escape(a['name'])}</td><td class=mono>{_fmt(a['value'])}</td>"
+        f"<td>{_otag(a['origin'])}</td><td class=mut>{html.escape(a['affects'])}</td></tr>"
+        for a in primary["assumptions"]) or "<tr><td colspan=4 class=mut>none</td></tr>"
+    s8 = (f"<div class=note>Every default, fallback, generic parameter and assumed condition the "
+          f"result rests on — each states which conclusion depends on it.</div>"
+          f"<table><tr><th>assumption</th><th>value</th><th>origin</th><th>affects</th></tr>{arows}</table>")
+
+    # ---- 9 confidence and dominant uncertainty ------------------------------
+    if conf["status"] == "withheld":
+        s9 = (f"<div class=bar><div class=stat><b class=warn>withheld</b><span>target-hit credibility</span></div>"
+              f"<div class=stat><b>{_fmt(conf.get('dominant_uncertainty'))}</b><span>dominant contributor</span></div></div>"
+              f"<div class=note><span class=warn><b>Confidence withheld.</b></span> "
+              f"{html.escape(conf.get('note') or '')} No probability is fabricated.</div>")
+    else:
+        s9 = (f"<div class=bar><div class=stat><b>{_fmt(conf.get('dose_band'))}</b>"
+              f"<span>effective-dose band (Pa·s)</span></div>"
+              f"<div class=stat><b>{_fmt(conf.get('dominant_uncertainty'))}</b><span>dominant contributor</span></div></div>"
+              f"<div class=note>{html.escape(conf.get('note') or '')}</div>")
+
+    # ---- 10 fundamentally undetermined quantities ---------------------------
+    urows = "".join(
+        f"<tr><td class=mono>{html.escape(u['name'])}</td><td>{_otag(u['origin'])}</td>"
+        f"<td class=mono>{html.escape(u['kind'])}</td>"
+        f"<td class=mut>{html.escape(u['detail'])}</td>"
+        f"<td class=mut>{html.escape(u.get('resolvable_by', ''))}</td></tr>" for u in undet) \
+        or "<tr><td colspan=5 class=mut>none — the target determines every operating coordinate</td></tr>"
+    s10 = (f"<div class=note>Coordinates the inverse problem leaves free. <b>Structural</b> = the model "
+           f"and target do not determine them (no evidence can); <b>contingent</b> = evidence-limited. "
+           f"None of these appears in the determined-quantities section (§3).</div>"
+           f"<table><tr><th>coordinate</th><th>origin</th><th>kind</th><th>evidence</th>"
+           f"<th>resolvable by</th></tr>{urows}</table>")
+
+    # ---- 11 technical provenance / ledger appendix --------------------------
+    prows = "".join(
+        f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(p.value)}</td>"
+        f"<td class=mut>{html.escape(p.unit or '')}</td><td>{_tag(p.source)}</td>"
+        f"<td class=mono>{p.confidence:.1f}</td>"
+        f"<td class=mut>{html.escape(p.evidence or '')}</td></tr>"
+        for k, p in ctx.priors.items())
+    s11 = (f"<div class=note>Complete provenance ledger — every value that entered the calculation and "
+           f"where it came from. Legacy diagnostics: "
+           f"<span class=mono>reference_context_status={html.escape(str(result.get('reference_context_status')))}</span>, "
+           f"<span class=mono>global_design_space_status={html.escape(str(result.get('global_design_space_status')))}</span>.</div>"
+           f"<table><tr><th>variable</th><th>value</th><th>unit</th><th>source</th><th>conf</th>"
+           f"<th>evidence</th></tr>{prows}</table>"
+           + "".join(f'<div class=note><span class=warn>⚠</span> {html.escape(w)}</div>'
+                     for w in ctx.warnings)
+           + '<div class=note><span class="tag s-user">user</span> stated · '
+             '<span class="tag s-kb">kb</span> retrieved · '
+             '<span class="tag s-model_supported">model_supported</span> envelope default · '
+             '<span class="tag s-fallback">fallback</span> stand-in · '
+             '<span class="tag s-unresolved">unresolved</span> no value.</div>')
+
+    body = f"""<title>M2 · inverse-design certificate</title><style>{_CSS}</style>
 <div class=wrap>
 <div class=eyebrow>PSED · M2</div>
-<h1>M2 · knowledge-aware inverse design</h1>
+<h1>M2 · inverse-design certificate</h1>
 <div class=sub>{html.escape(subtitle)}</div>
-{card(1, "Design request", s1)}
-{card(2, "Deposited material vs process chemistry", schem)}\n{card(3, "Input support summary", s2)}
-{card(4, "Resolved context and provenance ledger", s34)}
-{card(5, "Reference-context feasibility", s5)}
-{card(6, "Feasibility across evaluated operating families", s6)}
-{card(7, "Candidate recipes", s7)}
-{card(8, "Ranking profile and weights", s89)}
-{card(9, "Selected under the current ranking profile", s10)}
-{card(10, "Robustness analysis", s11)}
-{card(11, "Reproducibility and solver diagnostics", s12)}
+{card(1, "Executive Summary", s1)}
+{card(2, "Problem Definition", s2)}
+{card(3, "Quantities Identified by the Forward Model", s3)}
+{card(4, "Feasible operating region", s4)}
+{card(5, "Recommendation and its objective", s5)}
+{card(6, "Chemistry alternatives and branch comparison", s6)}
+{card(7, "Supporting evidence", s7)}
+{card(8, "Assumptions", s8)}
+{card(9, "Confidence and dominant uncertainty", s9)}
+{card(10, "Fundamentally undetermined quantities", s10)}
+{card(11, "Technical provenance and ledger appendix", s11)}
 </div>"""
-    if out_path is None:
-        out_path = HERE / CANONICAL_REPORT
-    out = Path(out_path)
+    out = Path(out_path) if out_path else HERE / CANONICAL_REPORT
     out.write_text(body)
     return out
 
@@ -1134,38 +1545,33 @@ def main():
     # corpus has no species-attributed precursor pressure — the report says so.
     res = design(DesignRequest(material="Al2O3", target_pd=60e-6,
                                precursor="TMA", co_reactant="H2O",
+                               geometry_class="lateral_channel",
                                allow_chemistry_fallback=True))
     out = render_report(res)
-    ctx, cov, sel = res["context"], res["coverage"], res["selection"]
-    print(f"wrote {out}   (canonical M2 report)")
-    cc, tc = ctx.chemistry, res["twin_compatibility"]
-    print(f"  chemistry                 = {cc.label} [{ctx.chemistry_resolution_status}] "
-          f"src={cc.chemistry_source}")
-    print(f"  ratio                     = {ctx.priors['ratio'].source} "
-          f"(ratio_status={ctx.ratio_status})")
-    print(f"  twin chemistry compat     = {tc.compatibility_level} "
-          f"(safe for quantitative use: {cov.get('safe_for_quantitative_use')})")
-    print(f"  reference_context_status  = {res['reference_context_status']}")
-    print(f"  global_design_space_status= {res['global_design_space_status']}")
-    print(f"  global achievable PD      = {_pd(res['global_achievable']['pd_min'])}"
-          f"–{_pd(res['global_achievable']['pd_max'])} µm")
-    print(f"  knowledge coverage        = {cov['level']} "
-          f"(kb={cov['kb_supported']} user={cov['user_provided']} "
-          f"model={cov['model_supported_defaults']} fallback={cov['fallback_inputs']}); "
-          f"fallback-dependent={cov['fallback_dependent_result']}")
-    for c in res["candidates"]:
-        tag = (f"{c.family_definition_source}/{c.ratio_evidence_source}"
-               f"@{c.ratio_evidence_confidence:.2f}")
-        if c.feasible:
-            s = c.solution
-            print(f"  {c.family:20} r={c.ratio:<9.4g} [{tag:48}] score={c.total_score:.3f} "
-                  f"effective_dose={s.effective_dose:.4g} pA={s.pA:.4g} t_p={s.pulse_time:.4g} "
-                  f"-> {s.achieved_pd*1e6:.3f} µm")
-        else:
-            print(f"  {c.family:20} r={c.ratio:<9.4g} [{tag:48}] rejected: {c.solution.status}")
-    print(f"  selected={sel['selected']} runner_up={sel['runner_up']} "
-          f"gap={sel['score_gap'] if sel['score_gap'] is None else round(sel['score_gap'], 4)} "
-          f"near_tie={sel['near_tie']} profile={sel['profile']}")
+    print(f"wrote {out}   (canonical M2 inverse-design certificate)")
+
+    # Lead with the certificate — the frozen-spec deliverable.
+    b = res["certificate"]["branches"][0]
+    adm, det, reg = b["admissibility"], b["determined"], b["feasible_region"]
+    conf, rec = b["confidence"], b["recommendation"]
+    print(f"  admissibility regime      = {adm['regime']}  "
+          f"({', '.join(r['code'] for r in adm['reasons'])})")
+    print(f"  chemistry / geometry      = {b['chemistry']['label']} / "
+          f"{res['geometry']['geometry_class']} (model_valid={res['geometry']['model_valid']})")
+    for q in det["quantities"]:
+        band = f" band={tuple(round(x, 3) for x in q['band'])} [{q['band_basis']}]" if q["band"] else " band=—"
+        print(f"  determined                = {q['name']} = {q['value']:.4g} {q['unit']}{band}; "
+              f"pA·t_p varies only {reg['dose_spread_frac']*100:.2f}% across the feasible points")
+    if not reg["empty"]:
+        print(f"  feasible region           = {reg['n_points']} pts, {reg['free_coordinate_count']} free "
+              f"coord; pA {reg['pressure_range'][0]:.3g}–{reg['pressure_range'][1]:.3g} Pa, "
+              f"t_p {reg['pulse_range'][0]:.3g}–{reg['pulse_range'][1]:.3g} s")
+    for u in b["undetermined"]["undetermined"]:
+        print(f"  undetermined              = {u['name']} ({u['kind']}) — resolvable by {u['resolvable_by']}")
+    print(f"  recommendation            = {'—' if rec['point'] is None else rec['point']} "
+          f"(chosen_by={rec['chosen_by']}; region is the answer)")
+    print(f"  confidence                = {conf['status']} (dominant={conf.get('dominant_uncertainty')})")
+    print(f"  assumptions               = {', '.join(a['name'] for a in b['assumptions'])}")
 
 
 if __name__ == "__main__":
