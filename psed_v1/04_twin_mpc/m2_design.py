@@ -385,9 +385,32 @@ def analyse_robustness(cand, ctx, model_factory=None, rel=0.10):
             "dose_margin": margin(s.effective_dose, lo, hi)}
 
 
-# the inputs whose provenance actually determines the recipe
+# The inputs the ledger reports on. "Critical" below is a NARROWER set.
 CRITICAL_INPUTS = ("target_pd", "material", "ratio", "pressure_bounds", "pulse_time_bounds",
                    "reference_effective_dose", "reference_pulse_time")
+
+# --- decision criticality -----------------------------------------------------
+# A raw source count is misleading on its own: today the corpus supplies exactly one
+# KB-backed input (`reference_pulse_time`) and exactly one fallback (`ratio`) — but the
+# KB one never enters the solve, while the fallback one sets pA and t_p for every
+# candidate. Counting them as one-each would suggest a balance that does not exist.
+#
+# Criticality is therefore an explicit, documented classification of the current M2
+# design variables rather than an invented score. An input is decision-critical when
+# it materially affects the selected family, the solved pressure, the solved pulse
+# time, the effective dose, feasibility, or the ranking:
+DECISION_CRITICAL = {
+    "ratio": "sets pA and t_p for every candidate, and scales every family",
+    "target_pd": "is the root the solver matches",
+    "material": "selects the twin's geometry, temperature and species parameters",
+    "pressure_bounds": "binds the effective-dose bracket and can make a family infeasible",
+    "pulse_time_bounds": "binds the effective-dose bracket and can make a family infeasible",
+}
+# Deliberately NOT critical — recorded in the ledger, but they do not reach the solve:
+NON_CRITICAL_NOTE = {
+    "reference_effective_dose": "reported for comparison only; the root does not depend on it",
+    "reference_pulse_time": "reported for comparison only; not consumed by the inversion",
+}
 
 
 def knowledge_coverage(ctx, best=None):
@@ -420,17 +443,53 @@ def knowledge_coverage(ctx, best=None):
 
     n_kb, n_user = len(buckets["kb"]), len(buckets["user"])
     n_fb, n_unres = len(buckets["fallback"]), len(buckets["unresolved"])
+
+    # decision-critical inputs, grouped by how well each is actually supported. This is
+    # what the summary leads with — a count over ALL inputs hides which ones matter.
+    crit_by_source = {k: [] for k in ("user", "kb", "model_supported", "fallback", "unresolved")}
+    for name, why in DECISION_CRITICAL.items():
+        p = ctx.priors.get(name)
+        if p is None:
+            crit_by_source["unresolved"].append({"name": name, "why": why, "confidence": 0.0})
+            continue
+        crit_by_source.setdefault(p.source, []).append(
+            {"name": name, "why": why, "confidence": p.confidence,
+             "value": p.value, "unit": p.unit})
+    weak = crit_by_source["fallback"] + crit_by_source["unresolved"]
+    critical_unresolved = [c["name"] for c in crit_by_source["unresolved"]]
+
+    # Four-way support level. Same computed meaning as before (complete / partial /
+    # nothing-supported), with `substantial` separating "gaps exist, but none of them
+    # touch a decision-critical input" from "a gap sits on a critical input".
     if n_unres == 0 and n_fb == 0:
         level = "complete"
     elif (n_kb + n_user) == 0:
-        level = "none"
+        level = "insufficient"
+    elif not weak:
+        level = "substantial"
     else:
         level = "partial"
+
+    lead = []
+    for c in crit_by_source["fallback"]:
+        lead.append(f"{c['name']} is fallback-supported and {c['why']}")
+    for c in crit_by_source["unresolved"]:
+        lead.append(f"{c['name']} is unresolved and {c['why']}")
+    interpretation = (
+        "All decision-critical inputs are evidence-supported."
+        if not lead else
+        "The design is only partially evidence-supported because "
+        + "; ".join(lead) + ".")
+
     return {"level": level, "counts": {k: len(v) for k, v in buckets.items()},
             "by_source": buckets, "critical_inputs": critical,
+            "critical_by_source": crit_by_source,
+            "critical_weak": weak, "critical_unresolved": critical_unresolved,
+            "interpretation": interpretation,
             "kb_supported": n_kb, "user_provided": n_user,
             "model_supported_defaults": len(buckets["model_supported"]),
             "fallback_inputs": n_fb, "unresolved_items": buckets["unresolved"],
+            "kb_supported_critical": [c["name"] for c in crit_by_source["kb"]],
             "fallback_dependent_result": bool(dep_reasons),
             "fallback_dependency_reasons": dep_reasons}
 
@@ -621,42 +680,77 @@ def render_report(result, out_path=None):
           f"<tr><td class=mono>constraints</td><td class=mono>"
           f"{html.escape(json.dumps(req.constraints or {}))}</td></tr></table>")
 
-    # 2 knowledge coverage
-    crit = "".join(
-        f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(v['value'])}</td>"
-        f"<td class=mut>{html.escape(v['unit'] or '')}</td><td>{_tag(v['source'])}</td>"
-        f"<td class=mono>{v['confidence']:.1f}</td></tr>"
-        for k, v in cov["critical_inputs"].items())
-    s2 = (f"<div class=bar>"
-          f"<div class=stat><b class={'ok' if cov['level']=='complete' else 'warn'}>{cov['level']}</b>"
-          f"<span>knowledge coverage</span></div>"
-          f"<div class=stat><b>{cov['kb_supported']}</b><span>KB-supported inputs</span></div>"
-          f"<div class=stat><b>{cov['user_provided']}</b><span>user-provided</span></div>"
-          f"<div class=stat><b>{cov['model_supported_defaults']}</b><span>model-supported defaults</span></div>"
-          f"<div class=stat><b>{cov['fallback_inputs']}</b><span>fallback inputs (not evidence)</span></div>"
-          f"<div class=stat><b class={'bad' if fb_dep else 'ok'}>{'yes' if fb_dep else 'no'}</b>"
-          f"<span>fallback-dependent result</span></div></div>"
-          f"<table><tr><th>critical design variable</th><th>value</th><th>unit</th>"
-          f"<th>source</th><th>conf</th></tr>{crit}</table>"
-          + (f"<div class=note><span class=bad>unresolved:</span> <span class=mono>"
-             f"{html.escape(', '.join(cov['unresolved_items']) or 'none')}</span></div>")
-          + "".join(f'<div class=note><span class=warn>⚠</span> fallback-dependent because '
-                    f'{html.escape(r)}</div>' for r in cov["fallback_dependency_reasons"])
-          + "<div class=note>A <b>fallback</b> is a stand-in, not evidence: it is counted "
-            "separately and never added to the KB total.</div>")
+    # 2 input support SUMMARY — aggregate + risk only. No per-variable ledger here;
+    # that is section 3's job, and duplicating it was what made the two sections
+    # indistinguishable to a reader.
+    lvl_cls = {"complete": "ok", "substantial": "ok",
+               "partial": "warn", "insufficient": "bad"}.get(cov["level"], "warn")
+    crit = cov["critical_by_source"]
 
-    # 3 + 4 resolved context, provenance and gaps
+    def crit_line(bucket, label, cls):
+        items = crit.get(bucket) or []
+        if not items:
+            return ""
+        names = ", ".join(f"<span class=mono>{html.escape(c['name'])}</span>" for c in items)
+        return f"<tr><td>{_tag(bucket)}</td><td>{names}</td><td class=mut>{label}</td></tr>"
+
+    crit_rows = "".join([
+        crit_line("user", "stated in the request", "ok"),
+        crit_line("kb", "retrieved evidence", "ok"),
+        crit_line("model_supported", "operating-envelope default", "warn"),
+        crit_line("fallback", "stand-in — no evidence retrieved", "bad"),
+        crit_line("unresolved", "no value at all", "bad")])
+    weak_rows = "".join(
+        f"<li><span class=mono>{html.escape(c['name'])}</span> — {html.escape(c['why'])}</li>"
+        for c in cov["critical_weak"]) or "<li>none</li>"
+    s2 = (f"<div class=note>This summary highlights the evidence gaps that affect the design. "
+          f"The following ledger records every resolved input and its provenance.</div>"
+          f"<div class=bar>"
+          f"<div class=stat><b class={lvl_cls}>{cov['level']}</b><span>overall input support</span></div>"
+          f"<div class=stat><b class={'bad' if fb_dep else 'ok'}>{'yes' if fb_dep else 'no'}</b>"
+          f"<span>fallback-dependent result</span></div>"
+          f"<div class=stat><b>{cov['counts']['user']} · {cov['counts']['kb']} · "
+          f"{cov['counts']['model_supported']} · {cov['counts']['fallback']} · "
+          f"{cov['counts']['unresolved']}</b>"
+          f"<span>all resolved inputs — user · KB · model · fallback · unresolved</span></div>"
+          f"</div>"
+          f"<div class=note><b>Decision-critical inputs</b> — those that materially affect the "
+          f"selected family, the solved pressure and pulse time, the effective dose, feasibility "
+          f"or the ranking. A raw source count does not capture this: an input can be "
+          f"KB-supported and still never reach the solve.</div>"
+          f"<table><tr><th>support</th><th>decision-critical inputs</th><th></th></tr>"
+          f"{crit_rows}</table>"
+          f"<div class=note><b>Unsupported or fallback-supported where it matters:</b>"
+          f"<ul>{weak_rows}</ul></div>"
+          + (f"<div class=note><span class=bad>critical unresolved:</span> <span class=mono>"
+             f"{html.escape(', '.join(cov['critical_unresolved']))}</span></div>"
+             if cov["critical_unresolved"] else "")
+          + f"<div class=note><b>{html.escape(cov['interpretation'])}</b></div>")
+
+    # 3 the ONE detailed ledger: every resolved input, with provenance and downstream use
+    def use_of(name):
+        if name in DECISION_CRITICAL:
+            return DECISION_CRITICAL[name]
+        return NON_CRITICAL_NOTE.get(name, "")
+
     prows = "".join(
         f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(p.value)}</td>"
         f"<td class=mut>{html.escape(p.unit or '')}</td><td>{_tag(p.source)}</td>"
-        f"<td class=mono>{p.confidence:.1f}</td><td class=mut>{html.escape(p.evidence or '')}</td>"
+        f"<td class=mono>{p.confidence:.1f}</td>"
+        f"<td>{'<b>critical</b>' if k in DECISION_CRITICAL else '<span class=mut>context</span>'}</td>"
+        f"<td class=mut>{html.escape(use_of(k))}</td>"
+        f"<td class=mut>{html.escape(p.evidence or '')}</td>"
         f"<td class=mut>{'yes' if p.overridable else 'no'}</td></tr>"
         for k, p in ctx.priors.items())
-    s34 = (f"<table><tr><th>prior</th><th>value</th><th>unit</th><th>source</th><th>conf</th>"
-           f"<th>evidence</th><th>overridable</th></tr>{prows}</table>"
+    s34 = (f"<div class=note>The complete audit record — every value that entered the "
+           f"calculation and where it came from. The summary above reports only the gaps that "
+           f"change the design.</div>"
+           f"<table><tr><th>variable</th><th>value</th><th>unit</th><th>source</th><th>conf</th>"
+           f"<th>role</th><th>downstream use</th><th>evidence</th><th>overridable</th></tr>"
+           f"{prows}</table>"
            + "".join(f'<div class=note><span class=warn>⚠</span> {html.escape(w)}</div>'
                      for w in ctx.warnings)
-           + (f'<div class=note><span class=bad>unresolved:</span> <span class=mono>'
+           + (f'<div class=note><b>Unresolved inputs (complete list):</b> <span class=mono>'
               f'{html.escape(", ".join(ctx.unresolved))}</span></div>' if ctx.unresolved else "")
            + '<div class=note><span class="tag s-user">user</span> stated in the request · '
              '<span class="tag s-kb">kb</span> retrieved from the knowledge base · '
@@ -687,16 +781,24 @@ def render_report(result, out_path=None):
     if ref_status != "feasible" and glob_status == "feasible":
         cross = ('<div class=note><span class=ok><b>The resolved reference context cannot reach the '
                  'target, but at least one alternative operating family can.</b></span> The design is '
-                 'therefore <b>globally feasible</b>; the alternative family expands the achievable '
-                 'region beyond the reference ratio\'s own range.</div>')
+                 'therefore <b>feasible across the evaluated operating families</b>; the '
+                 'alternative family expands the achievable envelope beyond the reference '
+                 'ratio\'s own range.</div>')
     elif glob_status.startswith("infeasible"):
-        cross = ('<div class=note><span class=bad><b>No allowed operating family reaches the target.</b>'
+        cross = ('<div class=note><span class=bad><b>None of the evaluated operating families reaches the '
+                 'target.</b>'
                  '</span> The binding constraints are the pressure and pulse-time bounds, which cap the '
                  'effective dose available at every ratio — see the per-family brackets above.</div>')
-    s6 = (f"<div class=bar>"
-          f"<div class=stat><b class={glob_cls}>{glob_status}</b><span>global_design_space_status</span></div>"
+    s6 = (f"<div class=note>This is the union over the <b>{len(result['family_ranges'])} operating "
+          f"families evaluated here</b> — a finite set of fixed pA/t_p ratios. The continuous "
+          f"pressure x pulse-time domain has <b>not</b> been searched; a ratio between or beyond "
+          f"these families could widen the envelope.</div>"
+          f"<div class=bar>"
+          f"<div class=stat><b class={glob_cls}>{glob_status}</b>"
+          f"<span>status across evaluated families "
+          f"(field: <span class=mono>global_design_space_status</span>)</span></div>"
           f"<div class=stat><b>{_pd(g['pd_min'])} – {_pd(g['pd_max'])}</b>"
-          f"<span>global achievable PD50 (µm), union of all families</span></div></div>"
+          f"<span>achievable PD50 envelope (µm) across the evaluated operating families</span></div></div>"
           f"<table><tr><th>family</th><th>r (Pa/s)</th><th>PD min (µm)</th><th>PD max (µm)</th>"
           f"<th>effective-dose bracket (Pa·s)</th><th>vs target</th></tr>{frows}</table>{cross}")
 
@@ -815,15 +917,15 @@ def render_report(result, out_path=None):
 <h1>M2 · knowledge-aware inverse design</h1>
 <div class=sub>{html.escape(subtitle)}</div>
 {card(1, "Design request", s1)}
-{card(2, "Knowledge coverage", s2)}
-{card(3, "Resolved design context, provenance and unresolved inputs", s34)}
-{card(5, "Reference-context feasibility", s5)}
-{card(6, "Global operating-family feasibility", s6)}
-{card(7, "Candidate recipes", s7)}
-{card(8, "Ranking profile and weights", s89)}
-{card(9, "Selected under the current ranking profile", s10)}
-{card(11, "Robustness analysis", s11)}
-{card(12, "Reproducibility and solver diagnostics", s12)}
+{card(2, "Input support summary", s2)}
+{card(3, "Resolved context and provenance ledger", s34)}
+{card(4, "Reference-context feasibility", s5)}
+{card(5, "Feasibility across evaluated operating families", s6)}
+{card(6, "Candidate recipes", s7)}
+{card(7, "Ranking profile and weights", s89)}
+{card(8, "Selected under the current ranking profile", s10)}
+{card(9, "Robustness analysis", s11)}
+{card(10, "Reproducibility and solver diagnostics", s12)}
 </div>"""
     if out_path is None:
         out_path = HERE / CANONICAL_REPORT

@@ -364,7 +364,8 @@ with tempfile.TemporaryDirectory() as td:
        "family definition" in h and "ratio evidence" in h)
     ok("both feasibility statuses rendered",
        "reference_context_status" in h and "global_design_space_status" in h)
-    ok("knowledge coverage section present", "KB-supported inputs" in h)
+    ok("input support summary section present",
+       "Input support summary" in h and "overall input support" in h)
     ok("solver diagnostics present", "solve_target_dose" in h and "model evals" in h)
     ok("effective dose wording", "effective dose" in h.lower())
     ok("no bare 'D =' label", "D =" not in h)
@@ -406,6 +407,79 @@ try:
           f"(1.5 x global max {g_hi2*1e6:.1f} µm)")
 except Exception as e:
     print(f"  SKIP  real twin unavailable: {type(e).__name__}: {e}")
+
+print("22) report information hierarchy: summary vs ledger")
+import tempfile
+with tempfile.TemporaryDirectory() as td:
+    h = md.render_report(res, out_path=Path(td) / "h.html").read_text()
+    ok("section 2 renamed", "2 · Input support summary" in h)
+    ok("section 3 renamed", "3 · Resolved context and provenance ledger" in h)
+    ok("old title gone", "Knowledge coverage" not in h)
+    sec2 = h.split("Input support summary")[1].split("<h2>")[0]
+    sec3 = h.split("Resolved context and provenance ledger")[1].split("<h2>")[0]
+    # -- section 2 is a SUMMARY --------------------------------------------------
+    ok("s2 has aggregate source counts", "all resolved inputs" in sec2.lower())
+    ok("s2 has fallback dependency", "fallback-dependent result" in sec2)
+    ok("s2 has overall support level", "overall input support" in sec2)
+    ok("s2 names decision-critical inputs", "Decision-critical inputs" in sec2)
+    ok("s2 lists the weak critical input", "ratio" in sec2)
+    ok("s2 has the interpretation sentence",
+       "only partially evidence-supported" in sec2, sec2.count("evidence-supported"))
+    # -- and NOT a ledger --------------------------------------------------------
+    ok("s2 omits overridable flags", "overridable" not in sec2)
+    ok("s2 omits downstream-use column", "downstream use" not in sec2)
+    ok("s2 omits non-critical context vars", "reference_pulse_time" not in sec2)
+    ok("s2 is shorter than the ledger", len(sec2) < len(sec3), (len(sec2), len(sec3)))
+    # -- section 3 is the ONLY full ledger ---------------------------------------
+    for fieldname in ("variable", "value", "unit", "source", "conf", "evidence", "overridable",
+                      "downstream use", "role"):
+        ok(f"s3 ledger column {fieldname!r}", fieldname in sec3)
+    for var in res["context"].priors:
+        ok(f"s3 lists {var}", var in sec3)
+    ok("s3 keeps the complete unresolved list", "Unresolved inputs (complete list)" in sec3
+       or not res["context"].unresolved)
+    ok("hierarchy sentence links the two",
+       "The following ledger records every resolved input" in h)
+
+print("23) decision criticality is distinct from raw source counts")
+cov = res["coverage"]
+ok("critical_by_source present", "critical_by_source" in cov)
+ok("kb_supported counts ALL kb inputs", cov["kb_supported"] >= 1, cov["kb_supported"])
+check("but no kb input is decision-critical here", cov["kb_supported_critical"], [])
+ok("so count != critical contribution",
+   cov["kb_supported"] != len(cov["kb_supported_critical"]),
+   (cov["kb_supported"], cov["kb_supported_critical"]))
+ok("the fallback ratio IS decision-critical",
+   "ratio" in [c["name"] for c in cov["critical_by_source"]["fallback"]],
+   cov["critical_by_source"]["fallback"])
+ok("reference_pulse_time is NOT decision-critical",
+   "reference_pulse_time" not in md.DECISION_CRITICAL)
+ok("and is not listed among weak critical inputs",
+   "reference_pulse_time" not in [c["name"] for c in cov["critical_weak"]])
+ok("not every context variable is critical",
+   set(md.DECISION_CRITICAL) < set(res["context"].priors),
+   (sorted(md.DECISION_CRITICAL), sorted(res["context"].priors)))
+ok("classification is documented", all(isinstance(v, str) and v
+                                       for v in md.DECISION_CRITICAL.values()))
+check("support level is 4-way vocabulary", cov["level"] in
+      ("complete", "substantial", "partial", "insufficient"), True)
+
+print("24) evaluated-family terminology (no continuous 2-D claim)")
+with tempfile.TemporaryDirectory() as td:
+    h = md.render_report(res, out_path=Path(td) / "t.html").read_text()
+    ok("says evaluated operating families", "evaluated operating families" in h)
+    ok("says envelope", "envelope" in h)
+    ok("states the continuous domain was NOT searched",
+       "has <b>not</b> been searched" in h)
+    ok("no bare 'global design space' phrasing", "global design space" not in h)
+    ok("no 'globally achievable' phrasing", "globally achievable" not in h)
+    ok("section 5 title names evaluated families",
+       "Feasibility across evaluated operating families" in h)
+    # ranking language from 9e53156 preserved verbatim
+    ok("ranking heading preserved", "Selected under the current ranking profile" in h)
+    ok("no reverted heading", "Recommended operating point" not in h)
+    for token in ("Ranking profile", "Runner-up", "score gap", "not a unique physical optimum"):
+        ok(f"ranking element {token!r} preserved", token in h)
 
 print()
 if FAIL:
