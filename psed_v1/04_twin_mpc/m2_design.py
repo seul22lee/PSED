@@ -43,6 +43,8 @@ import numpy as np
 import inverse_solver
 from channel_model import channelModel
 import kb_bridge
+import kb_service
+import m2_chemistry as chem
 
 HERE = Path(__file__).parent
 
@@ -75,9 +77,23 @@ class Prior:
 
 @dataclass
 class DesignRequest:
-    """What a user actually asks for — deliberately underspecified."""
-    material: str = "Al2O3"
+    """What a user actually asks for — deliberately underspecified.
+
+    `material` is the DEPOSITED FILM and does NOT determine the chemistry: Al2O3
+    alone appears under TMA/H2O, DEZ/H2O and a plasma system in this corpus.
+    `precursor` / `co_reactant` name the process chemistry when the caller knows it;
+    neither is ever inferred from the film. `allow_chemistry_fallback` is the
+    explicit opt-in required before a design proceeds on an unresolved chemistry —
+    off by default, so a material-only request cannot silently acquire a
+    chemistry-flavoured ratio."""
+    material: str = "Al2O3"                       # deposited film
     target_pd: float = None                       # m
+    precursor: str = None                         # metal-bearing / film-forming reactant
+    co_reactant: str = None                       # oxidant / nitridant / reductant / plasma
+    temperature: float = None
+    reactor_type: str = None
+    allow_chemistry_fallback: bool = False
+    allow_cross_chemistry_ranking: bool = False
     constraints: dict = field(default_factory=dict)   # user overrides, e.g. {"ratio": 500.0}
 
     def to_dict(self):
@@ -91,6 +107,11 @@ class DesignContext:
     priors: dict = field(default_factory=dict)     # name -> Prior
     warnings: list = field(default_factory=list)
     unresolved: list = field(default_factory=list)
+    chemistry: object = None                       # ProcessChemistryContext
+    chemistry_resolution_status: str = "material_only"
+    chemistry_alternatives: list = field(default_factory=list)
+    chemistry_priors: dict = field(default_factory=dict)   # name -> ScopedPrior
+    ratio_status: str = None
 
     def value(self, name, default=None):
         p = self.priors.get(name)
@@ -162,12 +183,27 @@ DERIVED_CONFIDENCE_FACTOR = 0.5
 RANKING_PROFILE = "balanced_default"
 RANKING_WEIGHTS = {"accuracy": 0.15, "margin": 0.25, "robustness": 0.25,
                    "throughput": 0.15, "confidence": 0.20}
+# Explicitly opt-in-only stand-in ratio. It is NOT a chemistry prior: it exists so a
+# material-only demonstration can still run, and it is always reported as `fallback`.
+RATIO_FALLBACK = 1000.0
 NEAR_TIE_THRESHOLD = 0.05          # score gap below which no decisive winner is claimed
 
 PA_BOUNDS_DEFAULT, TP_BOUNDS_DEFAULT = (1.0, 200.0), (0.01, 5.0)
 
 
-def resolve_context(request, warm_start_fn=None):
+_EXPERIMENTS_FN = None          # tests inject synthetic records here
+
+
+def _experiments():
+    if _EXPERIMENTS_FN is not None:
+        return _EXPERIMENTS_FN()
+    try:
+        return kb_service._load()
+    except Exception:
+        return []
+
+
+def resolve_context(request, warm_start_fn=None, experiments_fn=None):
     """Underspecified request -> completed design context.
 
     Resolution order per field: explicit user constraint > retrieved KB evidence >
@@ -185,52 +221,88 @@ def resolve_context(request, warm_start_fn=None):
     ctx.priors["material"] = Prior.make("material", request.material, None, "user",
                                         evidence="requested by the caller")
 
+    # --- process chemistry (BEFORE any chemistry-dependent prior) --------------
+    # The deposited material is not the chemistry. Resolve which precursor system we
+    # are actually designing for first; every chemistry-dependent prior below is then
+    # scoped to it, and refused when the scope cannot be established.
+    exps = (experiments_fn or _experiments)()
+    chem_ctx, chem_status, alts, chem_notes = chem.resolve_chemistry(
+        exps, request.material, precursor=request.precursor,
+        co_reactant=request.co_reactant, temperature=request.temperature,
+        reactor_type=request.reactor_type)
+    ctx.chemistry, ctx.chemistry_resolution_status = chem_ctx, chem_status
+    ctx.chemistry_alternatives = alts
+    ctx.warnings.extend(chem_notes)
+    ctx.priors["deposited_material"] = Prior.make(
+        "deposited_material", request.material, None, "user",
+        evidence="the film requested; does NOT determine the precursor chemistry")
+    for nm, val, lbl in (("precursor", chem_ctx.precursor_identity, "precursor"),
+                         ("co_reactant", chem_ctx.co_reactant_identity, "co-reactant")):
+        ctx.priors[nm] = Prior.make(
+            nm, val, None, chem_ctx.chemistry_source if val else "unresolved",
+            evidence=(chem_ctx.chemistry_evidence if val else
+                      f"{lbl} not resolved — the deposited material does not imply it"))
+        if not val:
+            ctx.unresolved.append(nm)
+
+    # chemistry-scoped operating priors
+    pp = chem.scoped_condition_prior(
+        exps, "precursor_partial_pressure", "pressure", "A", request.material,
+        chem_ctx.precursor_identity, chem_ctx.co_reactant_identity,
+        temperature=request.temperature, reactor_type=request.reactor_type)
+    pt = chem.scoped_condition_prior(
+        exps, "precursor_pulse_time", "pulse_time", "A", request.material,
+        chem_ctx.precursor_identity, chem_ctx.co_reactant_identity,
+        temperature=request.temperature, reactor_type=request.reactor_type)
+    ctx.chemistry_priors = {"precursor_partial_pressure": pp, "precursor_pulse_time": pt}
+
     # --- pA/tp ratio -----------------------------------------------------------
     w = None
     if "ratio" in c and c["ratio"]:
         ctx.priors["ratio"] = Prior.make("ratio", float(c["ratio"]), "Pa/s", "user",
                                          evidence="explicit user constraint")
     else:
-        try:
-            w = (warm_start_fn or kb_bridge.warm_start)(request.material,
-                                                        target={"aspect_ratio": 30})
-        except Exception as e:                       # KB unavailable is not fatal
-            ctx.warnings.append(f"warm start unavailable ({type(e).__name__}: {e})")
-            w = None
-        r_star = (w or {}).get("r_star")
-        if r_star:
-            prov = (w or {}).get("provenance", {})
+        ratio_prior, ratio_status, why = chem.build_ratio(
+            pp, pt, allow_fallback=request.allow_chemistry_fallback,
+            fallback_value=RATIO_FALLBACK,
+            fallback_reason="no chemistry-supported ratio could be constructed")
+        ctx.ratio_status = ratio_status
+        if ratio_prior.source == "kb":
             ctx.priors["ratio"] = Prior.make(
-                "ratio", float(r_star), "Pa/s", "kb",
-                evidence=f"pA0/tp0 from {prov.get('nearest')} (similarity {prov.get('similarity')})")
-        else:
-            # The KB resolves no precursor partial pressure, so no ratio can be
-            # derived from literature. Say so rather than dressing the default up.
-            prov = (w or {}).get("provenance", {})
+                "ratio", ratio_prior.value, "Pa/s", "kb", evidence=ratio_prior.evidence)
+            ctx.priors["ratio"].confidence = ratio_prior.confidence
+        elif ratio_prior.source == "fallback":
             ctx.priors["ratio"] = Prior.make(
-                "ratio", 1000.0, "Pa/s", "fallback",
-                evidence=("no KB precursor partial pressure for this query "
-                          f"(pA0_source={prov.get('pA0_source', 'none')}, "
-                          f"tp0_source={prov.get('tp0_source', 'none')}); "
-                          "using the reference operating-family default"))
+                "ratio", ratio_prior.value, "Pa/s", "fallback", evidence=ratio_prior.evidence)
             ctx.warnings.append(
-                "pA/tp ratio is a FALLBACK operating-family default, not literature-derived")
+                "pA/tp ratio is a FALLBACK operating-family default, not literature-derived "
+                f"(opted in via allow_chemistry_fallback; reason: {ratio_status})")
             ctx.unresolved.append("ratio_from_literature")
+        else:
+            # No opt-in: refuse to invent a ratio. The design will report
+            # chemistry_unresolved rather than produce a recipe on a fiction.
+            ctx.priors["ratio"] = Prior.make(
+                "ratio", None, "Pa/s", "unresolved", evidence=why)
+            ctx.warnings.append(
+                f"no chemistry-supported pA/t_p ratio ({ratio_status}); set "
+                "allow_chemistry_fallback=True to proceed on an explicit fallback")
+            ctx.unresolved.append("ratio")
 
-    # --- reference exposure (literature, when available) -----------------------
-    pA0, tp0 = (w or {}).get("pA0"), (w or {}).get("tp0")
-    if pA0 and tp0:
+    # --- reference exposure (chemistry-scoped, when available) -----------------
+    if pp.resolved and pt.resolved:
         ctx.priors["reference_effective_dose"] = Prior.make(
-            "reference_effective_dose", pA0 * tp0, "Pa·s", "kb",
-            evidence=f"pA0={pA0} Pa x tp0={tp0} s from the KB warm start")
+            "reference_effective_dose", pp.value * pt.value, "Pa·s", "kb",
+            evidence=f"{pp.evidence} x {pt.evidence}")
     else:
         ctx.priors["reference_effective_dose"] = Prior.make(
             "reference_effective_dose", None, "Pa·s", "unresolved",
-            evidence=f"needs both pA0 and tp0 (have pA0={pA0!r}, tp0={tp0!r})")
-        if tp0 and not pA0:
-            ctx.priors["reference_pulse_time"] = Prior.make(
-                "reference_pulse_time", tp0, "s", "kb",
-                evidence="KB pulse-time estimate; no matching partial pressure")
+            evidence=("needs a species-scoped precursor pressure AND pulse time; "
+                      f"pressure: {pp.evidence}"))
+    ctx.priors["reference_pulse_time"] = Prior.make(
+        "reference_pulse_time", pt.value if pt.resolved else None, "s",
+        "kb" if pt.resolved else "unresolved", evidence=pt.evidence)
+    if pt.resolved:
+        ctx.priors["reference_pulse_time"].confidence = pt.confidence
 
     # --- operating bounds ------------------------------------------------------
     for key, default, unit, why in (
@@ -255,8 +327,16 @@ def _model(material):
 
 def assess_feasibility(ctx, model=None):
     """Achievable PD50 range at the resolved ratio, and where the target sits."""
-    model = model or _model(ctx.value("material"))
     ratio = ctx.value("ratio")
+    if ratio is None:
+        # No chemistry-supported ratio and no opt-in fallback: there is nothing to
+        # evaluate the twin at. Report that, rather than crashing or inventing one.
+        return {"pd_min": None, "pd_max": None, "effective_dose_bounds": None,
+                "target_pd": ctx.value("target_pd"), "verdict": "unknown",
+                "ratio": None,
+                "ratio_source": ctx.priors["ratio"].source if "ratio" in ctx.priors
+                else "unresolved"}
+    model = model or _model(ctx.value("deposited_material") or ctx.value("material"))
     pd_min, pd_max, bounds = inverse_solver.achievable_pd_range(
         model, ratio, ctx.value("effective_dose_bounds"),
         ctx.value("pressure_bounds"), ctx.value("pulse_time_bounds"))
@@ -561,7 +641,7 @@ def selection_summary(ranked, near_tie_threshold=NEAR_TIE_THRESHOLD):
 
 
 def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_FAMILIES,
-           near_tie_threshold=NEAR_TIE_THRESHOLD):
+           near_tie_threshold=NEAR_TIE_THRESHOLD, experiments_fn=None):
     """Full pipeline.
 
     Two feasibility concepts are kept apart and BOTH reported:
@@ -569,8 +649,37 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
       global_design_space_status can ANY allowed operating family reach it?
     The top-level status follows the GLOBAL result — a reference family that cannot
     reach the target does not make the design infeasible if another family can."""
-    ctx = resolve_context(request, warm_start_fn=warm_start_fn)
-    mk = model_factory or (lambda: _model(ctx.value("material")))
+    ctx = resolve_context(request, warm_start_fn=warm_start_fn,
+                          experiments_fn=experiments_fn)
+    mk = model_factory or (lambda: _model(ctx.value("deposited_material")
+                                          or request.material))
+
+    # Twin-parameter gate: chemistry-scoped priors are not enough. If the twin's
+    # kinetics were pooled over every chemistry of the material, the prediction is
+    # generic and must not be sold as chemistry-validated or compared across
+    # chemistries.
+    try:
+        twin_compat = chem.assess_twin_compatibility(
+            ctx.chemistry, getattr(mk(), "kb_provenance", {}), (experiments_fn or _experiments)())
+    except Exception as e:
+        twin_compat = chem.TwinChemistryCompatibility(
+            evidence=f"twin unavailable: {type(e).__name__}: {e}")
+
+    # No ratio -> no inversion. Refuse rather than invent one.
+    if ctx.value("ratio") is None:
+        cov0 = knowledge_coverage(ctx, best=None)
+        cov0["twin_compatibility"] = twin_compat.to_dict()
+        status = ("chemistry_ambiguous"
+                  if ctx.chemistry_resolution_status in ("ambiguous", "material_only")
+                  else "chemistry_unsupported"
+                  if ctx.chemistry_resolution_status == "unsupported"
+                  else "ratio_unresolved")
+        return {"context": ctx, "feasibility": None, "candidates": [], "best": None,
+                "selection": selection_summary([], near_tie_threshold),
+                "coverage": cov0, "family_ranges": [], "twin_compatibility": twin_compat,
+                "global_achievable": {"pd_min": None, "pd_max": None},
+                "reference_context_status": "unknown",
+                "global_design_space_status": "unknown", "status": status}
     feas = assess_feasibility(ctx, model=mk())
     fam_ranges = family_achievable_ranges(ctx, families=families, model_factory=mk)
     g_lo, g_hi = global_achievable_range(fam_ranges)
@@ -592,7 +701,13 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
                                       "infeasible_low" if (g_lo is not None and tgt < g_lo)
                                       else "infeasible")
     cov = knowledge_coverage(ctx, best=best)
-    return {"context": ctx, "feasibility": feas, "candidates": ranked, "best": best,
+    cov["twin_compatibility"] = twin_compat.to_dict()
+    cov["chemistry_ambiguous"] = ctx.chemistry_resolution_status in ("ambiguous", "material_only")
+    cov["chemistry_incomplete"] = ctx.chemistry_resolution_status != "fully_specified"
+    cov["twin_chemistry_unverified"] = not twin_compat.compatible
+    cov["safe_for_quantitative_use"] = bool(
+        twin_compat.safe_for_quantitative_comparison and not cov["fallback_dependent_result"])
+    return {"context": ctx, "twin_compatibility": twin_compat, "feasibility": feas, "candidates": ranked, "best": best,
             "selection": sel, "coverage": cov,
             "family_ranges": fam_ranges,
             "global_achievable": {"pd_min": g_lo, "pd_max": g_hi},
@@ -663,6 +778,10 @@ def render_report(result, out_path=None):
     globally infeasible. `out_path` lets tests render in memory / tmp_path without
     creating a second committed artifact."""
     ctx, feas, cov = result["context"], result["feasibility"], result["coverage"]
+    if feas is None:                       # chemistry unresolved: nothing was inverted
+        feas = {"pd_min": None, "pd_max": None, "ratio": None, "verdict": "unknown",
+                "effective_dose_bounds": None, "target_pd": ctx.value("target_pd"),
+                "ratio_source": "unresolved"}
     cands, best, sel = result["candidates"], result["best"], result["selection"]
     ref_status, glob_status = result["reference_context_status"], result["global_design_space_status"]
     g = result["global_achievable"]
@@ -680,7 +799,57 @@ def render_report(result, out_path=None):
           f"<tr><td class=mono>constraints</td><td class=mono>"
           f"{html.escape(json.dumps(req.constraints or {}))}</td></tr></table>")
 
-    # 2 input support SUMMARY — aggregate + risk only. No per-variable ledger here;
+    # 2 deposited material vs process chemistry ------------------------------
+    cc = ctx.chemistry
+    tc = result.get("twin_compatibility")
+    alt_rows = "".join(
+        f"<tr><td class=mono>{html.escape(a['label'])}</td>"
+        f"<td class=mono>{a['n_experiments']}</td>"
+        f"<td class=mut>{html.escape(', '.join(a['papers']) or '—')}</td>"
+        f"<td>{'<span class=ok>resolved</span>' if a['resolved'] else '<span class=bad>no chemistry identified</span>'}</td></tr>"
+        for a in (ctx.chemistry_alternatives or []))
+    st_cls = {"fully_specified": "ok", "partially_specified": "warn",
+              "ambiguous": "bad", "material_only": "bad", "unsupported": "bad"}.get(
+        ctx.chemistry_resolution_status, "warn")
+    tc_level = tc.compatibility_level if tc else "unknown"
+    schem = (f"<div class=note><b>The deposited material does not uniquely determine the "
+             f"precursor chemistry.</b> Partial pressure, pulse time, the pressure-to-pulse "
+             f"relationship and the kinetic parameters belong to the CHEMISTRY, not to the "
+             f"film. Priors below are scoped accordingly, and evidence from different "
+             f"precursor/co-reactant systems is never combined.</div>"
+             f"<div class=bar>"
+             f"<div class=stat><b>{html.escape(str(ctx.value('deposited_material')))}</b>"
+             f"<span>deposited material (the film)</span></div>"
+             f"<div class=stat><b>{html.escape(str(cc.precursor_identity or '—'))}</b>"
+             f"<span>precursor {_tag(ctx.priors['precursor'].source)}</span></div>"
+             f"<div class=stat><b>{html.escape(str(cc.co_reactant_identity or '—'))}</b>"
+             f"<span>co-reactant {_tag(ctx.priors['co_reactant'].source)}</span></div>"
+             f"<div class=stat><b class={st_cls}>{html.escape(ctx.chemistry_resolution_status)}</b>"
+             f"<span>chemistry_resolution_status</span></div>"
+             f"<div class=stat><b class={'ok' if tc_level=='exact_chemistry' else 'bad'}>"
+             f"{html.escape(tc_level)}</b><span>twin-chemistry compatibility</span></div>"
+             f"</div>"
+             f"<table><tr><th>KB chemistry alternative for this film</th><th>experiments</th>"
+             f"<th>papers</th><th>status</th></tr>{alt_rows}</table>"
+             + (f"<div class=note><b>Chemistry-scoped operating priors</b><table>"
+                f"<tr><th>prior</th><th>value</th><th>species</th><th>source</th>"
+                f"<th>match quality</th><th>evidence</th></tr>"
+                + "".join(
+                    f"<tr><td class=mono>{html.escape(k)}</td><td class=mono>{_fmt(v.value)}</td>"
+                    f"<td class=mono>{html.escape(str(v.species_scope))}</td>"
+                    f"<td>{_tag(v.source)}</td><td class=mono>{html.escape(v.match_quality)}</td>"
+                    f"<td class=mut>{html.escape(v.evidence or '')}</td></tr>"
+                    for k, v in (ctx.chemistry_priors or {}).items())
+                + "</table></div>")
+             + (f"<div class=note><span class=warn>⚠</span> ratio status: "
+                f"<span class=mono>{html.escape(str(ctx.ratio_status))}</span></div>"
+                if ctx.ratio_status else "")
+             + (f"<div class=note><span class=bad>Twin parameterisation:</span> "
+                f"{html.escape(tc.evidence or '')} — <b>safe for quantitative "
+                f"cross-chemistry comparison: {'yes' if tc.safe_for_quantitative_comparison else 'no'}"
+                f"</b>.</div>" if tc else ""))
+
+    # 3 input support SUMMARY — aggregate + risk only. No per-variable ledger here;
     # that is section 3's job, and duplicating it was what made the two sections
     # indistinguishable to a reader.
     lvl_cls = {"complete": "ok", "substantial": "ok",
@@ -760,13 +929,14 @@ def render_report(result, out_path=None):
 
     # 5 reference-context feasibility
     ref_cls = "ok" if ref_status == "feasible" else "bad"
+    ratio_lbl = (f"{feas['ratio']:.4g} Pa/s" if feas.get("ratio") else "— (unresolved)")
     s5 = (f"<div class=bar>"
           f"<div class=stat><b class={ref_cls}>{ref_status}</b><span>reference_context_status</span></div>"
           f"<div class=stat><b>{_pd(feas['pd_min'])} – {_pd(feas['pd_max'])}</b>"
-          f"<span>achievable PD50 (µm) at the reference ratio {feas['ratio']:.4g} Pa/s</span></div>"
+          f"<span>achievable PD50 (µm) at the reference ratio {ratio_lbl}</span></div>"
           f"<div class=stat><b>{_pd(tgt)}</b><span>target PD50 (µm)</span></div></div>"
           f"<div class=note>Feasibility of the <b>resolved reference ratio alone</b>. It is not the "
-          f"design's verdict — see the global status below.</div>")
+          f"design's verdict — see the status across evaluated families below.</div>")
 
     # 6 global operating-family feasibility
     frows = "".join(
@@ -917,15 +1087,15 @@ def render_report(result, out_path=None):
 <h1>M2 · knowledge-aware inverse design</h1>
 <div class=sub>{html.escape(subtitle)}</div>
 {card(1, "Design request", s1)}
-{card(2, "Input support summary", s2)}
-{card(3, "Resolved context and provenance ledger", s34)}
-{card(4, "Reference-context feasibility", s5)}
-{card(5, "Feasibility across evaluated operating families", s6)}
-{card(6, "Candidate recipes", s7)}
-{card(7, "Ranking profile and weights", s89)}
-{card(8, "Selected under the current ranking profile", s10)}
-{card(9, "Robustness analysis", s11)}
-{card(10, "Reproducibility and solver diagnostics", s12)}
+{card(2, "Deposited material vs process chemistry", schem)}\n{card(3, "Input support summary", s2)}
+{card(4, "Resolved context and provenance ledger", s34)}
+{card(5, "Reference-context feasibility", s5)}
+{card(6, "Feasibility across evaluated operating families", s6)}
+{card(7, "Candidate recipes", s7)}
+{card(8, "Ranking profile and weights", s89)}
+{card(9, "Selected under the current ranking profile", s10)}
+{card(10, "Robustness analysis", s11)}
+{card(11, "Reproducibility and solver diagnostics", s12)}
 </div>"""
     if out_path is None:
         out_path = HERE / CANONICAL_REPORT
@@ -936,10 +1106,22 @@ def render_report(result, out_path=None):
 
 def main():
     """Canonical M2 run: the 60 µm primary example -> m2_report.html (the ONE artifact)."""
-    res = design(DesignRequest(material="Al2O3", target_pd=60e-6))
+    # Canonical example: chemistry is stated explicitly, because the deposited
+    # material alone does not identify it. The fallback opt-in is required because the
+    # corpus has no species-attributed precursor pressure — the report says so.
+    res = design(DesignRequest(material="Al2O3", target_pd=60e-6,
+                               precursor="TMA", co_reactant="H2O",
+                               allow_chemistry_fallback=True))
     out = render_report(res)
     ctx, cov, sel = res["context"], res["coverage"], res["selection"]
     print(f"wrote {out}   (canonical M2 report)")
+    cc, tc = ctx.chemistry, res["twin_compatibility"]
+    print(f"  chemistry                 = {cc.label} [{ctx.chemistry_resolution_status}] "
+          f"src={cc.chemistry_source}")
+    print(f"  ratio                     = {ctx.priors['ratio'].source} "
+          f"(ratio_status={ctx.ratio_status})")
+    print(f"  twin chemistry compat     = {tc.compatibility_level} "
+          f"(safe for quantitative use: {cov.get('safe_for_quantitative_use')})")
     print(f"  reference_context_status  = {res['reference_context_status']}")
     print(f"  global_design_space_status= {res['global_design_space_status']}")
     print(f"  global achievable PD      = {_pd(res['global_achievable']['pd_min'])}"
