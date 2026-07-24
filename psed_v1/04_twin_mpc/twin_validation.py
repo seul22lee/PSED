@@ -93,7 +93,16 @@ def build_twin(exp):
     T, prov["T"] = _input(exp, "temperature")
     if T is not None:
         m.T = T + 273.15
-    pA, prov["pA"] = _input(exp, "partial_pressure", "A")
+    # Typed precursor partial pressure (precedence: precursor_partial_pressure >
+    # reactant_A_partial_pressure > partial_pressure) takes priority; a
+    # chamber/working/base/generic pressure can never satisfy this. Falls back to the
+    # legacy imputing path only when no typed precursor pressure exists.
+    import pressure_compat as _pc
+    _pav, _pac = _pc.precursor_pressure(exp)
+    if _pav is not None:
+        pA, prov["pA"] = _pav, "extracted"
+    else:
+        pA, prov["pA"] = _input(exp, "partial_pressure", "A")
     if pA:
         m.pA = pA
     gpc, prov["gpc"] = _input(exp, "growth_per_cycle")

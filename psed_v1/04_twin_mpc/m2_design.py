@@ -247,13 +247,20 @@ def resolve_context(request, warm_start_fn=None, experiments_fn=None):
             ctx.unresolved.append(nm)
 
     # chemistry-scoped operating priors
-    # The corpus quantity is `generic_pressure` since the pressure-ontology cleanup:
-    # those records exist but carry no reactant attribution, which is exactly the state
-    # the prior must report — querying the old name would hide them as simply absent.
-    pp = chem.scoped_condition_prior(
-        exps, "precursor_partial_pressure", "generic_pressure", "A", request.material,
-        chem_ctx.precursor_identity, chem_ctx.co_reactant_identity,
-        temperature=request.temperature, reactor_type=request.reactor_type)
+    # Typed precursor partial pressure by precedence (precursor_partial_pressure >
+    # reactant_A_partial_pressure > partial_pressure). A chamber/working/base/generic
+    # pressure is NOT queried, so it can never be mistaken for a precursor pressure; if
+    # no typed precursor pressure exists the prior stays unresolved (the previous
+    # generic_pressure query resolved to species_ambiguous, i.e. also unresolved).
+    import pressure_compat as _pc
+    pp = None
+    for _pq in _pc.PRECURSOR_PRESSURE_QUANTITIES:
+        pp = chem.scoped_condition_prior(
+            exps, "precursor_partial_pressure", _pq, "A", request.material,
+            chem_ctx.precursor_identity, chem_ctx.co_reactant_identity,
+            temperature=request.temperature, reactor_type=request.reactor_type)
+        if pp.resolved:
+            break
     pt = chem.scoped_condition_prior(
         exps, "precursor_pulse_time", "pulse_time", "A", request.material,
         chem_ctx.precursor_identity, chem_ctx.co_reactant_identity,

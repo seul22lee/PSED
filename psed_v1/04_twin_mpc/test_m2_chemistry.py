@@ -52,10 +52,10 @@ def cond(q, v, r=None, u=None):
 # Two chemistries for ONE film, each with its own operating evidence.
 SYNTH = [
     exp("paperA", "Al2O3", "TMA", "H2O",
-        [cond("generic_pressure", 50.0, "A", "Pa"), cond("pulse_time", 0.10, "A", "s"),
+        [cond("precursor_partial_pressure", 50.0, "A", "Pa"), cond("pulse_time", 0.10, "A", "s"),
          cond("pulse_time", 1.0, "B", "s")]),
     exp("paperB", "Al2O3", "TMA", "O3",
-        [cond("generic_pressure", 200.0, "A", "Pa"), cond("pulse_time", 2.0, "A", "s")]),
+        [cond("precursor_partial_pressure", 200.0, "A", "Pa"), cond("pulse_time", 2.0, "A", "s")]),
     exp("paperC", "Al2O3", None, None, [cond("generic_pressure", 7.0, None, "Pa")]),
 ]
 
@@ -88,7 +88,7 @@ print("4) explicit chemistry filters evidence (Case 2)")
 ctx2, st2, _, _ = mc.resolve_chemistry(SYNTH, "Al2O3", precursor="TMA", co_reactant="H2O")
 check("status", st2, "fully_specified")
 check("source", ctx2.chemistry_source, "user")
-pp = mc.scoped_condition_prior(SYNTH, "precursor_partial_pressure", "generic_pressure", "A",
+pp = mc.scoped_condition_prior(SYNTH, "precursor_partial_pressure", "precursor_partial_pressure", "A",
                                "Al2O3", "TMA", "H2O")
 pt = mc.scoped_condition_prior(SYNTH, "precursor_pulse_time", "pulse_time", "A",
                                "Al2O3", "TMA", "H2O")
@@ -112,7 +112,7 @@ r, status, why = mc.build_ratio(pp, pt)
 check("same-chemistry ratio ok", status, "chemistry_supported")
 ok("value = pA/tp", abs(r.value - 500.0) < 1e-9, r.value)
 check("source", r.source, "kb")
-ppO3 = mc.scoped_condition_prior(SYNTH, "precursor_partial_pressure", "generic_pressure", "A",
+ppO3 = mc.scoped_condition_prior(SYNTH, "precursor_partial_pressure", "precursor_partial_pressure", "A",
                                  "Al2O3", "TMA", "O3")
 r2, st_mix, why2 = mc.build_ratio(ppO3, pt)          # TMA/O3 pressure + TMA/H2O pulse
 check("cross-chemistry rejected", st_mix, "chemistry_mismatch")
@@ -130,7 +130,7 @@ ok("never claims 7.0 Pa as the precursor pressure", ppC.value != 7.0)
 
 print("8) pulse-only evidence does not create a KB-supported ratio (Case 3)")
 NOPRESS = [exp("p", "Al2O3", "TMA", "H2O", [cond("pulse_time", 0.1, "A", "s")])]
-pp3 = mc.scoped_condition_prior(NOPRESS, "precursor_partial_pressure", "generic_pressure", "A",
+pp3 = mc.scoped_condition_prior(NOPRESS, "precursor_partial_pressure", "precursor_partial_pressure", "A",
                                 "Al2O3", "TMA", "H2O")
 pt3 = mc.scoped_condition_prior(NOPRESS, "precursor_pulse_time", "pulse_time", "A",
                                 "Al2O3", "TMA", "H2O")
