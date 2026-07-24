@@ -1,0 +1,47 @@
+{
+ "experiments": 672,
+ "chemistry_experiments": {
+  "complete": 546,
+  "partial": 74,
+  "unresolved": 52
+ },
+ "pressure_records": {
+  "chamber_total_pressure": 28,
+  "generic_pressure": 27
+ },
+ "pressure_total": 55,
+ "pressure_species_attributed": 0,
+ "pressure_species_attributed_pct": 0.0,
+ "pulse_records": {
+  "purge": 140,
+  "co_reactant_pulse": 153,
+  "unspecified_pulse": 60,
+  "precursor_pulse": 137
+ },
+ "pulse_total": 490,
+ "kinetic_parameter_records": {
+  "material_only": 16,
+  "chemistry_scoped": 76
+ },
+ "suspicious_chemistry": [
+  {
+   "k": [
+    "Al2O3",
+    "DEZ",
+    "H2O"
+   ],
+   "n_experiments": 12,
+   "papers": [
+    "10.1116_1.4938104"
+   ],
+   "warning": "DEZ is a known Zn precursor but the film is Al2O3; this grouping is preserved as extracted and needs manual review",
+   "validation_rule": "precursor_metal_conflicts_with_film",
+   "chemistry_consistency_status": "suspicious",
+   "original_value_preserved": true,
+   "requires_manual_review": true
+  }
+ ],
+ "records_changed_by_migration": 0,
+ "records_classified_only": 545,
+ "note": "Dry run. No record was modified: classification is additive metadata. Species attribution for pressure cannot be raised without a re-extraction that captures pressure_type and the named species at source."
+}

@@ -45,6 +45,7 @@ from channel_model import channelModel
 import kb_bridge
 import kb_service
 import m2_chemistry as chem
+import chemistry_params
 
 HERE = Path(__file__).parent
 
@@ -659,8 +660,14 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
     # generic and must not be sold as chemistry-validated or compared across
     # chemistries.
     try:
+        _exps = (experiments_fn or _experiments)()
+        _bundle = chemistry_params.params_for_chemistry(
+            _exps, ctx.value("deposited_material") or request.material,
+            ctx.chemistry.precursor_identity, ctx.chemistry.co_reactant_identity,
+            process_mode=request.constraints.get("process_mode"),
+            temperature=request.temperature, reactor_family=request.reactor_type)
         twin_compat = chem.assess_twin_compatibility(
-            ctx.chemistry, getattr(mk(), "kb_provenance", {}), (experiments_fn or _experiments)())
+            ctx.chemistry, getattr(mk(), "kb_provenance", {}), _exps, bundle=_bundle)
     except Exception as e:
         twin_compat = chem.TwinChemistryCompatibility(
             evidence=f"twin unavailable: {type(e).__name__}: {e}")
@@ -702,6 +709,7 @@ def design(request, model_factory=None, warm_start_fn=None, families=OPERATING_F
                                       else "infeasible")
     cov = knowledge_coverage(ctx, best=best)
     cov["twin_compatibility"] = twin_compat.to_dict()
+    cov["twin_parameter_bundle"] = _bundle.to_dict()
     cov["chemistry_ambiguous"] = ctx.chemistry_resolution_status in ("ambiguous", "material_only")
     cov["chemistry_incomplete"] = ctx.chemistry_resolution_status != "fully_specified"
     cov["twin_chemistry_unverified"] = not twin_compat.compatible

@@ -422,7 +422,7 @@ def build_ratio(pressure_prior, pulse_prior, allow_fallback=False,
 CHEMISTRY_SENSITIVE_TWIN_PARAMS = ("K", "c", "gpc")
 
 
-def assess_twin_compatibility(chem_ctx, twin_provenance, experiments=None):
+def assess_twin_compatibility(chem_ctx, twin_provenance, experiments=None, bundle=None):
     """Is the active twin parameterisation actually about the requested chemistry?
 
     kb_bridge.params_for() keys the KB lookup on (material, process) only, so the
@@ -431,6 +431,21 @@ def assess_twin_compatibility(chem_ctx, twin_provenance, experiments=None):
     parameter set is generic, and a prediction made with it must not be presented
     as chemistry-validated or compared across chemistries."""
     req = chem_ctx.chemistry_key
+    # Preferred path: a chemistry-scoped parameter bundle. It knows per-parameter
+    # match levels, so `exact_chemistry` can only be claimed when EVERY
+    # chemistry-dependent coefficient is exact — one exact parameter never validates
+    # the whole twin.
+    if bundle is not None:
+        return TwinChemistryCompatibility(
+            requested_chemistry=req,
+            model_chemistry=tuple(bundle.requested_chemistry[:2]),
+            parameter_sources=dict(bundle.chemistry_match_levels),
+            compatible=(bundle.compatibility_level == "exact_chemistry"),
+            compatibility_level=bundle.compatibility_level,
+            missing_parameters=tuple(bundle.unresolved_parameters),
+            conflicting_parameters=tuple(bundle.fallback_parameters),
+            evidence="; ".join(bundle.diagnostics) or "all chemistry-dependent parameters are exact",
+            safe_for_quantitative_comparison=bundle.safe_for_cross_chemistry_comparison)
     prov = twin_provenance or {}
     sources = {p: (prov.get(p) or {}).get("source", "default")
                for p in CHEMISTRY_SENSITIVE_TWIN_PARAMS}
