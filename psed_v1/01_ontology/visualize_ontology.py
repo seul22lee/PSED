@@ -67,7 +67,8 @@ code{background:var(--line);padding:1px 5px;border-radius:4px;font-size:11.5px}
   <div class="sub">__SCOPE__</div>
   <div class="counts">
     <div><b>__NC__</b><span>classes</span></div>
-    <div><b>__NR__</b><span>relations</span></div>
+    <div><b>__NR__</b><span>relation types</span></div>
+    <div><b>__NE__</b><span>quantity edges</span></div>
     <div><b>__NQ__</b><span>quantity kinds</span></div>
     <div><b>__NQE__</b><span>QUDT-enriched</span></div>
     <div><b>__NI__</b><span>individuals</span></div>
@@ -86,6 +87,10 @@ code{background:var(--line);padding:1px 5px;border-radius:4px;font-size:11.5px}
     <section style="border-right:none">
       <h2>Relations (typed edges)</h2>
       <table id="rels"><thead><tr><th>domain</th><th>relation</th><th>range</th></tr></thead><tbody></tbody></table>
+      <h2 style="margin-top:20px">Quantity relationships <span class="badge" id="edgeN"></span>
+        &nbsp;·&nbsp;<select id="edgeFilter" style="font:inherit"></select></h2>
+      <div id="edgeWarn" class="def" style="color:#c2410c"></div>
+      <table id="edges"><thead><tr><th>source</th><th>relationship</th><th>target</th></tr></thead><tbody></tbody></table>
       <h2 style="margin-top:20px">Seed individuals</h2>
       <div id="inds" class="chips"></div>
     </section>
@@ -145,6 +150,38 @@ const rb=document.querySelector("#rels tbody");
 DATA.relations.forEach(r=>{const tr=document.createElement("tr");
   tr.innerHTML='<td><code>'+(r.domain||"")+'</code></td><td class="rel-verb">'+r.id+
     '</td><td><code>'+(r.range||"")+'</code></td>';rb.appendChild(tr);});
+// quantity relationships — directed edges the ontology defines
+const EDGES=DATA._edges||[], EWARN=DATA._edge_warnings||[];
+const qById=Object.fromEntries(DATA.quantity_kinds.map(q=>[q.id,q]));
+const outN={},inN={};
+EDGES.forEach(e=>{outN[e.source]=(outN[e.source]||0)+1;inN[e.target]=(inN[e.target]||0)+1;});
+document.getElementById("edgeN").textContent=EDGES.length;
+if(EWARN.length)document.getElementById("edgeWarn").textContent=
+  "⚠ "+EWARN.length+" edge(s) reference an unknown node (shown, not dropped)";
+const eb=document.querySelector("#edges tbody");
+const ARROW={specializes:"↑ specializes",same_as:"= same as",related:"~ related",
+  transforms_to:"→ transforms to",in_family:"∈ in family",defines:"→ defines"};
+function drawEdges(kind){
+  eb.innerHTML="";
+  EDGES.filter(e=>!kind||e.kind===kind).forEach(e=>{
+    const tr=document.createElement("tr");tr.dataset.s=e.source;tr.dataset.t=e.target;
+    tr.innerHTML='<td><code class="qn" data-q="'+e.source+'">'+e.source+'</code></td>'+
+      '<td class="rel-verb">'+(ARROW[e.predicate]||e.predicate)+'</td>'+
+      '<td><code class="qn" data-q="'+e.target+'">'+e.target+'</code></td>';
+    eb.appendChild(tr);});
+  // click a quantity id to highlight every edge it participates in
+  eb.querySelectorAll(".qn").forEach(el=>el.onclick=()=>{
+    const q=el.dataset.q;
+    eb.querySelectorAll("tr").forEach(tr=>
+      tr.style.background=(tr.dataset.s===q||tr.dataset.t===q)?"rgba(75,46,131,.12)":"");
+  });
+}
+const ef=document.getElementById("edgeFilter");
+[["","all types ("+EDGES.length+")"]].concat(
+  [...new Set(EDGES.map(e=>e.kind))].sort().map(k=>[k,k+" ("+EDGES.filter(e=>e.kind===k).length+")"]))
+  .forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;ef.appendChild(o);});
+ef.onchange=()=>drawEdges(ef.value);
+drawEdges("");
 // individuals
 const ib=document.getElementById("inds");
 for(const[grp,items]of Object.entries(DATA.individuals)){
@@ -155,8 +192,64 @@ for(const[grp,items]of Object.entries(DATA.individuals)){
 </script></body></html>"""
 
 
+
+# --- relationship edges -------------------------------------------------------
+# The document viewer already renders the class taxonomy (parent edges as a nested
+# tree) and the relation vocabulary (typed predicate table). This builds the
+# quantity-to-quantity edges the ontology defines but the viewer never drew:
+# specializes, same_as, transforms, in_family, related, defined_by. Every edge comes
+# straight from the ontology — none is inferred, aliases are NOT turned into edges,
+# and endpoints are validated against real node ids.
+def build_relationship_edges(o):
+    node_ids = ({c["id"] for c in o.get("classes", [])}
+                | {q["id"] for q in o.get("quantity_kinds", [])})
+    edges, warnings, seen = [], [], set()
+
+    def add(source, predicate, target, kind, directed=True):
+        if not source or not target or source == target:
+            return
+        key = (source, predicate, target)
+        if key in seen:                      # dedup identical edges
+            return
+        seen.add(key)
+        e = {"source": source, "predicate": predicate, "target": target,
+             "kind": kind, "directed": directed}
+        miss = [end for end, v in (("source", source), ("target", target)) if v not in node_ids]
+        if miss:
+            warnings.append({**e, "missing": miss})   # reported, never dropped silently
+        edges.append(e)
+
+    qr = o.get("quantity_relations", {}) or {}
+    # per-quantity specializes / same_as (authoritative on the quantity record)
+    for q in o.get("quantity_kinds", []):
+        if q.get("specializes"):
+            add(q["id"], "specializes", q["specializes"], "specializes")
+        if q.get("same_as"):
+            add(q["id"], "same_as", q["same_as"], "same_as", directed=False)
+    # quantity_relations block
+    for child, parent in (qr.get("specializes") or {}).items():
+        add(child, "specializes", parent, "specializes")
+    for a, b in (qr.get("same_as") or {}).items():
+        add(a, "same_as", b, "same_as", directed=False)
+    for a, b in (qr.get("related") or {}).items():
+        add(a, "related", b, "related", directed=False)
+    for t in qr.get("transforms", []) or []:
+        add(t.get("from"), "transforms_to", t.get("to"), "transforms")
+    for fam, spec in (qr.get("families") or {}).items():
+        canon = (spec or {}).get("canonical")
+        for m in (spec or {}).get("members", []) or []:
+            add(m, "in_family", canon, "in_family")
+    for d in qr.get("defined_by", []) or []:
+        for inp in d.get("inputs", []) or []:
+            add(inp, "defines", d.get("quantity"), "defines")
+    return edges, warnings
+
+
 def main():
     o = json.loads(ONTO.read_text())
+    edges, warnings = build_relationship_edges(o)
+    o["_edges"] = edges
+    o["_edge_warnings"] = warnings
     counts = o["_counts"]
     html = (HTML
             .replace("__DATA__", json.dumps(o))
@@ -164,6 +257,7 @@ def main():
             .replace("__SCOPE__", o["meta"].get("scope", ""))
             .replace("__NC__", str(counts["classes"]))
             .replace("__NR__", str(counts["relations"]))
+            .replace("__NE__", str(len(edges)))
             .replace("__NQ__", str(counts["quantity_kinds"]))
             .replace("__NQE__", str(counts["quantity_kinds_enriched"]))
             .replace("__NI__", str(counts["individuals"])))
