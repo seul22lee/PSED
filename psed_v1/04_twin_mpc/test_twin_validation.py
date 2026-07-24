@@ -183,6 +183,102 @@ ok("brief carries the disclaimer (organizes and proposes, never concludes)",
    "discovery-support brief, not a verdict" in h)
 ok("pressure caveat is not corpus-wide", "in this processed corpus" in h and "NOT a claim that it is absent" in h)
 
+print("13) inverse-fit correctness: dimensionality, bounds, exposure, c honesty, identifiability")
+invs = [(r, r["_inverse_fit"]) for r in ADM if r.get("_inverse_fit")]
+ok("there are calibration probes", len(invs) > 0)
+# no inert parameter: active vars match dose_free; optimizer vector dimension == #active
+ok("dose-extracted fits optimize ONLY c (1-D, no inert t_p)",
+   all(f["active_variables"] == ["c"] for _, f in invs if not f["dose_free"]))
+ok("dose-free fits optimize t_p AND c (2-D)",
+   all(f["active_variables"] == ["t_p", "c"] for _, f in invs if f["dose_free"]))
+ok("optimizer dimensionality equals the number of active variables",
+   all(len(f["active_variables"]) == (2 if f["dose_free"] else 1) for _, f in invs))
+# fixed vs active matches runtime behaviour
+ok("t_p role is 'fixed' exactly when dose was extracted",
+   all((f["variables"]["t_p"]["role"] == "fixed") == (not f["dose_free"]) for _, f in invs))
+# explicit bounds present for every fitted variable
+ok("every fitted variable has explicit lower & upper bounds",
+   all(isinstance(f["variables"]["c"]["lower"], float) and isinstance(f["variables"]["c"]["upper"], float)
+       and isinstance(f["variables"]["t_p"]["lower"], float) for _, f in invs))
+ok("c bounds are the declared physical range", all(f["variables"]["c"]["lower"] == tv.C_BOUNDS[0]
+   and f["variables"]["c"]["upper"] == tv.C_BOUNDS[1] for _, f in invs))
+# boundary hits reported
+ok("boundary status is reported for c (at_lower/at_upper/interior)",
+   all(f["variables"]["c"]["bound_status"] in ("at_lower", "at_upper", "interior") for _, f in invs))
+ok("boundary_limited flag is set and at least one fit is boundary-limited",
+   any(f["boundary_limited"] for _, f in invs))
+ok("a boundary-limited fit has a c or t_p bound_status at a bound",
+   all((f["variables"]["c"]["bound_status"] in ("at_lower", "at_upper")
+        or f["variables"]["t_p"]["bound_status"] in ("at_lower", "at_upper"))
+       for _, f in invs if f["boundary_limited"]))
+# exposure is DERIVED from pA and t_p (never independently fitted)
+ok("exposure_fit == pA * t_p (derived, not independently fitted)",
+   all(abs(f["exposure_fit"] - f["pA"]["value"] * f["variables"]["t_p"]["fitted"]) < 1e-6 * max(1.0, f["exposure_fit"])
+       for _, f in invs))
+ok("exposure note declares it derived, pA fixed", all("DERIVED" in f["exposure_note"]
+   and "independently fitted" in f["exposure_note"] for _, f in invs))
+# pA provenance retained
+ok("pA provenance is retained on every fit",
+   all(f["pA"]["provenance"] in ("extracted", "imputed", "model_default", "unresolved") for _, f in invs))
+# displayed runtime trace equals actual model inputs (t_p and pA)
+ok("model_input_trace exists per admissible comparison", all("model_input_trace" in r for r in ADM))
+def _trace_val(r, attr):
+    return next((x["value"] for x in r["model_input_trace"] if x["attr"] == attr), None)
+ok("trace t_p equals the runtime t_p used for the prediction",
+   all(abs(_trace_val(r, "t_p") - r["t_p"]) < 1e-12 for r in ADM))
+ok("trace pA equals the inverse-fit fixed pA (same runtime object)",
+   all(abs(_trace_val(r, "pA") - r["_inverse_fit"]["pA"]["value"]) < 1e-9 for r in ADM if r.get("_inverse_fit")))
+ok("every model input has value, unit, provenance and source",
+   all(all(k in row and row[k] is not None for k in ("value", "unit", "provenance", "source"))
+       for r in ADM for row in r["model_input_trace"]))
+# c honesty: never literature-reported; model-specific label + ontology status disclosed
+ok("fitted c provenance is 'inverse_fitted', never literature-reported",
+   all(f["variables"]["c"]["provenance_fitted"] == "inverse_fitted" for _, f in invs))
+ok("c has NO canonical literature field (not equated with a canonical quantity)",
+   all(f["variables"]["c"]["canonical"] is None for _, f in invs))
+ok("c is labelled a model-specific lumped reaction coefficient",
+   "model-specific lumped reaction coefficient" in tv.C_LABEL)
+ok("c ontology mapping status is disclosed on every fit",
+   all(f["variables"]["c"]["ontology_mapping_status"] == tv.C_ONTOLOGY_STATUS for _, f in invs))
+check("c ontology mapping status is unresolved", tv.C_ONTOLOGY_STATUS, "unresolved")
+# optimizer / objective disclosed
+ok("optimizer, objective, residual, weighting disclosed on every fit",
+   all(f["optimizer"] and f["objective"] and f["residual"] and f["weighting"] for _, f in invs))
+ok("objective before/after and metrics before/after are reported",
+   all(all(k in f for k in ("sse_before", "sse_after", "r2_warm", "r2_fit", "n_eval", "converged")) for _, f in invs))
+# identifiability: never a unique estimate
+ok("every fit carries a local identifiability classification",
+   all(f["identifiability"]["class"] in
+       ("narrow_isolated_optimum", "moderate_feasible_interval", "broad_feasible_region",
+        "pulse_time_c_tradeoff_ridge", "unassessed") for _, f in invs))
+ok("every fit uses the non-uniqueness label",
+   all(f["identifiability"]["label"] == "feasible fitted parameterization, not a unique physical parameter estimate"
+       for _, f in invs))
+# run-level provenance summary
+ips = A["input_provenance_summary"]
+ok("run-level input provenance summary present",
+   {"by_provenance", "fitted_variables", "boundary_limited_fits", "ridge_or_broad_fits"} <= set(ips))
+ok("provenance summary counts model_default and literature_reported distinctly",
+   "model_default" in ips["by_provenance"] and "literature_reported" in ips["by_provenance"])
+
+print("14) the report exposes the computational trace and never mislabels fitted c")
+hp = h                                     # reuse the Brief rendered in section 12 (expensive to render)
+ok("report has the forward-model input trace", "Forward-model input trace" in hp)
+ok("report shows the calibration-probe setup with optimizer + objective",
+   "Calibration-probe setup" in hp and "smooth log-sigmoid bounded transform" in hp)
+ok("report shows exposure as derived, not independently fitted",
+   "derived exposure = pA×t_p" in hp and "never independently fitted" in hp)
+ok("report labels c as a model-specific lumped reaction coefficient",
+   "model-specific lumped reaction coefficient c" in hp)
+ok("report never presents fitted c as a literature sticking probability",
+   "never a literature-reported sticking probability" in hp or "never a literature sticking probability" in hp)
+ok("report carries the non-identifiability label",
+   "feasible fitted parameterization, not a unique" in hp)
+ok("report shows boundary-limited status", "boundary-limited" in hp.lower())
+ok("report shows the run-level model-input provenance summary", "Model-input provenance summary" in hp)
+ok("report shows readable input labels (not bare H/T/dose pills)",
+   "pulse time" in hp and "gap height" in hp and "precursor pressure" in hp)
+
 print()
 if FAIL:
     print(f"{len(FAIL)} FAILURE(S): {FAIL}")
