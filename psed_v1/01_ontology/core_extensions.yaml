@@ -443,6 +443,98 @@ quantity_kinds:
     adsorption_rate_constant, conflating an equilibrium constant with a rate constant;
     keeping them apart is why that value is not silently "recovered" under the old name.
     The unit is model-convention dependent (commonly Pa^-1) — keep the printed unit.
+- id: precursor_partial_pressure
+  unit: Pa
+  category: process_parameter
+  family: partial_pressure
+  recipe_role: control_setting
+  aliases:
+  - precursor_partial_pressure
+  domain: process_parameter
+  definition: >-
+    Partial pressure of the PRECURSOR stream, valid only when the source explicitly
+    associates the pressure with a named precursor or an unambiguous precursor stream.
+    NEVER inferred from A/B slot, pulse order, chamber pressure, flow, bubbler temp or
+    the model defaults. of_reactant carries the slot, and the named species is retained
+    on the observation. Populated by the typed pressure-extraction pass, not by scout.
+- id: co_reactant_partial_pressure
+  unit: Pa
+  category: process_parameter
+  family: partial_pressure
+  recipe_role: control_setting
+  aliases:
+  - co_reactant_partial_pressure
+  domain: process_parameter
+  definition: >-
+    Partial pressure of the CO-REACTANT stream, valid only when the source explicitly
+    associates the pressure with a named co-reactant or unambiguous co-reactant stream
+    (e.g. "the partial pressure of ozone was 1.1 Torr"). Same conservative rules as
+    precursor_partial_pressure.
+- id: carrier_gas_partial_pressure
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - carrier_gas_partial_pressure
+  domain: process_parameter
+  definition: >-
+    Partial pressure of the carrier/purge gas itself, valid only when the source
+    reports the carrier gas pressure explicitly. Not the chamber total.
+- id: working_pressure
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - working_pressure
+  - operating_pressure
+  domain: process_parameter
+  definition: >-
+    The reactor operating pressure during deposition ("working pressure of 750 mtorr").
+    A chamber quantity, not a partial pressure of any species.
+- id: base_pressure
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - base_pressure
+  domain: process_parameter
+  definition: >-
+    The chamber base/ultimate pressure before or between processes ("base pressure of
+    1e-7 mbar"). An apparatus setting, NOT a deposition process condition and NOT a
+    partial pressure.
+- id: delivery_line_pressure
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - delivery_line_pressure
+  domain: process_parameter
+  definition: >-
+    Pressure in a precursor/reactant delivery line, when the source reports it. Distinct
+    from the species partial pressure inside the chamber.
+- id: bubbler_pressure
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - bubbler_pressure
+  domain: process_parameter
+  definition: >-
+    Pressure at the precursor bubbler/source vessel. Related to but not equal to the
+    in-chamber partial pressure.
+- id: vapor_pressure
+  unit: Pa
+  category: species_property
+  recipe_role: species_property
+  aliases:
+  - vapor_pressure
+  - vapour_pressure
+  domain: species_property
+  definition: >-
+    Equilibrium vapor pressure of a precursor at a stated source temperature ("vapor
+    pressure of Y(sBuCp)3 was 0.1 Torr at 149 C"). A SPECIES PROPERTY, not a process
+    condition — must never be used as a reactor partial pressure unless the source
+    explicitly says it was the operating condition.
 - id: chamber_total_pressure
   unit: Pa
   category: process_parameter
