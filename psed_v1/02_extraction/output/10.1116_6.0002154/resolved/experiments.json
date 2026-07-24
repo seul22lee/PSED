@@ -5,26 +5,19 @@
   "precursors": [
    "MoCl4_THD_THF"
   ],
-  "coreactants": [
-   "NH3"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
     "species": "MoCl4_THD_THF"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "NH3"
    }
   ],
   "carrier_gas": {
    "species": "Ar"
   },
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "total_pressure",
@@ -63,32 +56,6 @@
       "evidence": null
      }
     }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 17.03,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "NH3",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "precursor_molecular_diameter",
-    "value": 0.26,
-    "unit": "nm",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "NH3",
-     "property": "molecular_diameter"
-    }
    }
   ],
   "measurand": {
@@ -119,8 +86,31 @@
   },
   "series_name": null,
   "phase": null,
-  "structure": "planar_wafer",
   "varies": [],
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
   "dependent": [],
   "issues": [
    "paper-level (no figure data extracted)"
@@ -135,17 +125,9 @@
      "dose_time": 10,
      "purge_time": null,
      "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "NH3",
-     "dose_time": 10,
-     "purge_time": null,
-     "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -174,19 +156,6 @@
      "paper_id": null,
      "card_field": "pulse_time_s"
     },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "NH3",
-     "experiment_id": "10.1116_6.0002154-paper-0"
-    },
-    "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
-     "value": 10,
-     "paper_id": null,
-     "card_field": "pulse_time_s"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -196,21 +165,19 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_6.0002154-paper-0"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_6.0002154-paper-0"
     }
    },
    "completeness": 0.5
-  },
-  "geometry_class": "planar"
+  }
  }
 ]

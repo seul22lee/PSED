@@ -25,6 +25,7 @@ sys.path.insert(0, str(PIPE))
 import lib                                   # canon_*, family, recipe_role, species_prop
 import recipe as recipe_mod
 sys.path.insert(0, str(ROOT / "scripts"))
+import chemistry_propagation as cprop
 import importlib.util
 _spec = importlib.util.spec_from_file_location("ex", ROOT / "scripts" / "04_extract.py")
 ex = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(ex)   # section_text, _load_key
@@ -402,12 +403,38 @@ def short_pid(sd):
 
 
 def to_experiments(sd, scout, records, card):
-    prec = (scout.get("precursors") or card.get("precursors") or [None])[0]
-    core = (scout.get("coreactants") or card.get("coreactants") or [None])[0]
-    prec_c, core_c = lib.canon_precursor(prec) or prec, lib.canon_coreactant(core) or core
-    reactants = [{"label": "A", "role": "precursor", "species": prec_c}]
-    if core_c:
-        reactants.append({"label": "B", "role": "coreactant", "species": core_c})
+    # Chemistry is resolved PER MATERIAL, never by list position. The scout emits
+    # materials/precursors/coreactants as three independent lists, so `[0]` carried no
+    # information — it assigned DEZ to an Al2O3 experiment in 10.1116_1.4938104 simply
+    # because DEZ sorted first. Ambiguity is preferred over an unsupported guess.
+    # Resolved per EXPERIMENT MATERIAL (cached), so a multi-material paper gives each
+    # film its own chemistry instead of all of them sharing element zero.
+    _chem_cache = {}
+
+    def _chem_for(material):
+        if material not in _chem_cache:
+            _chem_cache[material] = cprop.resolve_experiment_chemistry(
+                material, None, card, scout,
+                canon_precursor=lib.canon_precursor, canon_coreactant=lib.canon_coreactant)
+        return _chem_cache[material]
+
+    def _reactants_for(ch):
+        rs = [{"label": "A", "role": "precursor", "species": ch.precursor}]
+        if ch.co_reactant:
+            rs.append({"label": "B", "role": "coreactant", "species": ch.co_reactant})
+        return rs
+
+    def _chem_prov(ch):
+        # Inferred chemistry stays distinguishable from explicitly stated chemistry:
+        # material_element_match is a deterministic inference, NOT a source mapping.
+        return {"resolution_status": ch.resolution_status,
+                "resolution_method": ch.resolution_method,
+                "confidence": ch.confidence, "source_level": ch.source_level,
+                "directly_extracted": ch.directly_extracted,
+                "material_scope": ch.material_scope,
+                "supporting_evidence": ch.supporting_evidence,
+                "ambiguity_reason": ch.ambiguity_reason,
+                "candidate_mappings": ch.candidate_mappings}
     carrier = {"species": card.get("carrier_gas")} if card.get("carrier_gas") else None
     ptype = lib.canon_process(card.get("process_type")) or card.get("process_type")
     base_ctrl = paper_conditions(card)
@@ -421,6 +448,9 @@ def to_experiments(sd, scout, records, card):
         mv, mu = _norm_unit(mq, None, (r.get("measurand") or {}).get("unit"))
         pts = [p for p in (r.get("points") or []) if isinstance(p, list) and len(p) == 2]
         mat = lib.canon_material(r.get("material")) or (scout.get("materials") or [None])[0]
+        _ch = _chem_for(mat)
+        prec_c, core_c = _ch.precursor, _ch.co_reactant
+        reactants = _reactants_for(_ch)
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
         panel = (r.get("provenance") or {}).get("panel") or ""
         panel = panel.lower() if re.fullmatch(r"[A-Za-z]", str(panel).strip()) else ""   # only a real panel letter
@@ -466,6 +496,7 @@ def to_experiments(sd, scout, records, card):
             "series_name": series_name,             # display only; built from structure, never re-parsed
             "phase": r.get("phase"),                # crystallographic phase (e.g. "c-MoS2") or None
             "structure": geom_struct, "geometry_class": geom_class,
+            "chemistry_provenance": _chem_prov(_ch),
             # dependent = the measured output; varies = the swept coordinate (profiles).
             # Populated so the shared 0706 consumers (evaluate_kb, kg, similarity) see the
             # measured/swept quantities the same way as old-pipeline records.
@@ -481,8 +512,13 @@ def to_experiments(sd, scout, records, card):
         # No figure data digitized — still admit the paper as ONE paper-level experiment
         # (attached to its Paper node in the KG) carrying chemistry + conditions + the data
         # modalities the scout saw (XRD, spectra, imaging …), so the paper enters the KB.
-        exps.append(paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c,
-                                       base_ctrl, geom_struct, geom_class))
+        _pm = lib.canon_material((scout.get("materials") or [None])[0]) \
+            or (scout.get("materials") or [None])[0]
+        _pch = _chem_for(_pm)
+        exps.append(paper_level_experiment(sd, scout, card, pid, _reactants_for(_pch), carrier,
+                                           ptype, _pch.precursor, _pch.co_reactant,
+                                           base_ctrl, geom_struct, geom_class,
+                                           _chem_prov(_pch)))
     # Species properties from the ontology for each cycle reactant (A precursor,
     # B coreactant, …) — ported verbatim from the old s08_resolve, which the new
     # 06 path never ran, so 662 experiments had lost molecular_mass / diameter that
@@ -512,7 +548,7 @@ def to_experiments(sd, scout, records, card):
 
 
 def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c,
-                           base_ctrl, geom_struct=None, geom_class=None):
+                           base_ctrl, geom_struct=None, geom_class=None, chem_prov=None):
     raw_mat = (scout.get("materials") or [None])[0]
     mat = lib.canon_material(raw_mat) or raw_mat
     gpc = scout.get("gpc_nm")
@@ -536,6 +572,7 @@ def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec
                        "study_type": scout.get("study_type"), "modalities": modalities},
         "series_name": None, "phase": None, "varies": [],
         "structure": geom_struct, "geometry_class": geom_class,
+        "chemistry_provenance": chem_prov,
         "dependent": ([{"quantity": mq, "value": gpc, "unit": "nm", "family": lib.family(mq)}]
                       if mq else []),
         "issues": ["paper-level (no figure data extracted)"],
