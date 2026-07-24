@@ -27,6 +27,8 @@ import recipe as recipe_mod
 sys.path.insert(0, str(ROOT / "scripts"))
 import chemistry_propagation as cprop
 import importlib.util
+_p10 = importlib.util.spec_from_file_location('p10', ROOT / 'scripts' / '10_pressure.py')
+pressure10 = importlib.util.module_from_spec(_p10); _p10.loader.exec_module(pressure10)
 _spec = importlib.util.spec_from_file_location("ex", ROOT / "scripts" / "04_extract.py")
 ex = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(ex)   # section_text, _load_key
 
@@ -455,6 +457,7 @@ def to_experiments(sd, scout, records, card):
         _ch = _chem_for(mat)
         prec_c, core_c = _ch.precursor, _ch.co_reactant
         reactants = _reactants_for(_ch)
+        press_ctrl = pressure10.pressure_facts(sd, reactants)
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
         panel = (r.get("provenance") or {}).get("panel") or ""
         panel = panel.lower() if re.fullmatch(r"[A-Za-z]", str(panel).strip()) else ""   # only a real panel letter
@@ -487,7 +490,7 @@ def to_experiments(sd, scout, records, card):
             "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
             "reactants": reactants, "carrier_gas": carrier, "process_type": ptype,
             "cycle_sequence": "AB" if core_c else "A",
-            "controlled": base_ctrl + panel_ctrl + series_ctrl,
+            "controlled": base_ctrl + panel_ctrl + series_ctrl + press_ctrl,
             "measurand": {"quantity": mq, "unit": (r.get("measurand") or {}).get("unit"),
                           "family": lib.family(mq)},
             "coordinate": cq, "coordinate_family": lib.family(cq),
@@ -564,7 +567,7 @@ def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec
         "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
         "reactants": reactants, "carrier_gas": carrier, "process_type": ptype,
         "cycle_sequence": "AB" if core_c else "A",
-        "controlled": base_ctrl,
+        "controlled": base_ctrl + pressure10.pressure_facts(sd, reactants),
         "measurand": {"quantity": mq, "unit": "nm" if mq else None,
                       "family": lib.family(mq) if mq else None},
         "coordinate": None, "coordinate_family": None,
