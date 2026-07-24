@@ -408,6 +408,37 @@ def short_pid(sd):
     return sd
 
 
+
+_PRESSURE_Q = ("chamber_total_pressure", "generic_pressure", "total_pressure", "pressure",
+               "working_pressure", "base_pressure", "precursor_partial_pressure",
+               "co_reactant_partial_pressure", "carrier_gas_partial_pressure")
+
+
+def _dedup_pressures(conds):
+    """Cross-source pressure dedup. When a pressure from the pressure-extraction pass and
+    a card/methods pressure share the same normalised value, the extraction one wins
+    (it is typed and evidence-backed) and the card duplicate is dropped. Non-pressure
+    conditions and genuinely different pressure values are untouched."""
+    ext_vals = [c["value"] for c in conds
+                if c.get("source") == "pressure_extraction"
+                and isinstance(c.get("value"), (int, float))]
+
+    def _matches_ext(v):
+        # relative tolerance: the card often rounds (750 mtorr -> exactly 99.99 Pa) while
+        # the pass computes 99.9915 Pa from the unit conversion. 1% catches that without
+        # merging genuinely distinct values (0.01 vs 1 mbar stay separate).
+        return any(abs(v - e) <= 0.01 * max(abs(v), abs(e), 1e-12) for e in ext_vals)
+
+    out = []
+    for c in conds:
+        q, v = c.get("quantity"), c.get("value")
+        if (c.get("source") != "pressure_extraction" and q in _PRESSURE_Q
+                and isinstance(v, (int, float)) and _matches_ext(v)):
+            continue                        # card/methods duplicate of a typed pressure
+        out.append(c)
+    return out
+
+
 def to_experiments(sd, scout, records, card):
     # Chemistry is resolved PER MATERIAL, never by list position. The scout emits
     # materials/precursors/coreactants as three independent lists, so `[0]` carried no
@@ -490,7 +521,7 @@ def to_experiments(sd, scout, records, card):
             "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
             "reactants": reactants, "carrier_gas": carrier, "process_type": ptype,
             "cycle_sequence": "AB" if core_c else "A",
-            "controlled": base_ctrl + panel_ctrl + series_ctrl + press_ctrl,
+            "controlled": _dedup_pressures(base_ctrl + panel_ctrl + series_ctrl + press_ctrl),
             "measurand": {"quantity": mq, "unit": (r.get("measurand") or {}).get("unit"),
                           "family": lib.family(mq)},
             "coordinate": cq, "coordinate_family": lib.family(cq),
@@ -567,7 +598,7 @@ def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec
         "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
         "reactants": reactants, "carrier_gas": carrier, "process_type": ptype,
         "cycle_sequence": "AB" if core_c else "A",
-        "controlled": base_ctrl + pressure10.pressure_facts(sd, reactants),
+        "controlled": _dedup_pressures(base_ctrl + pressure10.pressure_facts(sd, reactants)),
         "measurand": {"quantity": mq, "unit": "nm" if mq else None,
                       "family": lib.family(mq) if mq else None},
         "coordinate": None, "coordinate_family": None,

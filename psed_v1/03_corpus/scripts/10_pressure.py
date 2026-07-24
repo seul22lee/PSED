@@ -103,6 +103,14 @@ STRICT RULES — follow exactly, they decide whether a value is trustworthy:
 - If a partial pressure is named but VARIES across experiments with no single value
   ("the partial pressure of TMA depended on pulse time"), report it with value=null and
   ambiguity_reason describing the variation — do NOT invent a number.
+- TABLES: a bare number in a table cell is NOT a pressure unless that column's HEADER
+  explicitly names a pressure (e.g. "p (Pa)", "pressure", "chamber pressure"). Do not
+  read a numeric cell as pressure just because a nearby column or the caption mentions
+  pressure. If you cannot point to a pressure-named header for the cell, omit it.
+- An isolated number with no pressure word next to it is never a pressure. Every entry
+  must have an evidence_text that contains BOTH the number AND an explicit pressure
+  term (pressure / p_A / partial pressure / mbar-of-pressure / etc.). If the quote
+  would not contain a pressure word, do not emit the entry.
 - A missing pressure is a valid result. Never manufacture a value. Keep the exact
   evidence quote for every entry."""
 
@@ -136,8 +144,16 @@ def extract_pressures(sd, client):
     except Exception:
         obs = []
     out = []
+    _PWORDS = ("pressure", "p_a", "p a", "p_b", "p b", "mbar", "torr", "pa", "bar", "psi")
     for o in obs or []:
         if not isinstance(o, dict):
+            continue
+        # Deterministic backstop for the table-cell false positive: an observation whose
+        # own evidence quote contains no pressure word is not a pressure statement, no
+        # matter what type the model assigned. Recall is unaffected — a genuine pressure
+        # sentence always names a pressure unit or the word "pressure".
+        _ev = (o.get("evidence_text") or "").lower()
+        if not any(w in _ev for w in _PWORDS):
             continue
         pt = o.get("pressure_type")
         pt = pt if pt in PRESSURE_TYPES else "unknown_pressure_type"
@@ -161,9 +177,20 @@ def extract_pressures(sd, client):
                     "evidence_text": (o.get("evidence_text") or "")[:400],
                     "confidence": o.get("confidence") if isinstance(o.get("confidence"), (int, float)) else None,
                     "ambiguity_reason": (o.get("ambiguity_reason") or None)})
+    # Observation-level dedup: identical (type, value, unit, species, context, evidence)
+    # entries are the same statement returned twice (the model sometimes repeats p_A0 /
+    # p_B). Distinct observations differ on at least one key and are all kept.
+    deduped, seen = [], set()
+    for o in out:
+        k = (o["pressure_type"], o["value"], (o["unit"] or "").lower(),
+             (o["named_species"] or "").lower(), o["context"],
+             (o["evidence_text"] or "").strip().lower())
+        if k in seen:
+            continue
+        seen.add(k); deduped.append(o)
     (EXTRACTED / sd / "pressure.json").write_text(
-        json.dumps({"pressures": out}, indent=1))
-    return out, tok
+        json.dumps({"pressures": deduped}, indent=1))
+    return deduped, tok
 
 
 # --- deterministic normaliser (read by 06_to_kb at resolve time) -------------
@@ -191,12 +218,22 @@ def pressure_facts(sd, reactants=None):
     except Exception:
         return []
     cs = []
+    _seen = set()
     for i, o in enumerate(obs):
         if o.get("context") not in FACT_CONTEXTS:
             continue
         v = o.get("value_pa")
         if not isinstance(v, (int, float)) or isinstance(v, bool):
             continue
+        # Deterministic within-paper dedup: two observations that agree on paper, type,
+        # normalised value, unit, species AND evidence quote are the same statement read
+        # twice (e.g. a base pressure quoted in two sentences). Genuinely different
+        # observations differ on at least one key and are both kept.
+        key = (o.get("pressure_type"), round(v, 6), (o.get("named_species") or "").lower(),
+               (o.get("evidence_text") or "").strip().lower())
+        if key in _seen:
+            continue
+        _seen.add(key)
         pt = o.get("pressure_type")
         react = _slot_for(o.get("reactant_role"), reactants) if pt in PARTIAL_TYPES else None
         origin = {"level": "paper", "from": "pressure_extraction",

@@ -154,6 +154,30 @@ with tempfile.TemporaryDirectory() as td:
     finally:
         p10.EXTRACTED = orig
 
+print("13) within-file dedup: identical process observations collapse to one")
+o1 = obs(pressure_type="base_pressure", context="apparatus_setting", value_pa=1e-5,
+         evidence_text="base pressure of 1e-7 mbar")
+cs = facts([o1, dict(o1)])                        # same statement twice
+check("collapsed to one", len(cs), 1)
+o2 = obs(pressure_type="base_pressure", context="apparatus_setting", value_pa=1e-5,
+         evidence_text="a DIFFERENT sentence")    # different evidence -> kept
+check("distinct evidence kept", len(facts([o1, o2])), 2)
+
+print("14) legitimate table pressure under a pressure header is kept, but excluded as fact")
+# 147/25.7 sit under a real 'p A0 (Pa)' header -> genuine pressures, measured_response.
+cs = facts([obs(pressure_type="generic_pressure", context="measured_response",
+                value_pa=147.0, evidence_text="Material Al2O3 | p A0 (Pa): 147")])
+check("measured_response never a process condition", len(cs), 0)
+
+print("15) evidence-word guard: an entry whose quote has no pressure word is dropped")
+_PWORDS = ("pressure", "p_a", "p a", "p_b", "p b", "mbar", "torr", "pa", "bar", "psi")
+for quote, kept in (("reactor working pressure of 750 mtorr", True),
+                    ("N = 500 cycles, x = 147", False),
+                    ("partial pressure of ozone 1.1 Torr", True),
+                    ("the sticking coefficient c was 0.005", False)):
+    has = any(w in quote.lower() for w in _PWORDS)
+    ok(f"{quote[:34]!r} kept={has}", has == kept, has)
+
 print()
 if FAIL:
     print(f"{len(FAIL)} FAILURE(S): {FAIL}")
