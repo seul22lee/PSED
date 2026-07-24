@@ -10,6 +10,28 @@
 @media (prefers-color-scheme:dark){:root{
   --bg:#15151d; --panel:#1e1e29; --ink:#e8e8ef; --muted:#9aa0aa; --line:#2c2c3a; --accent:#b79cff;}}
 *{box-sizing:border-box}
+/* --- relationship graph panel --- */
+.graphpanel{margin:0;padding:16px 28px;border-bottom:1px solid var(--line)}
+.graphpanel h2{margin:0 0 8px}
+.gctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.gctrl input,.gctrl button{font:inherit;padding:4px 8px;border:1px solid var(--line);
+  border-radius:6px;background:var(--panel);color:var(--ink)}
+.gctrl button{cursor:pointer}
+.glegend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px}
+.glegend label{display:inline-flex;gap:5px;align-items:center;cursor:pointer;user-select:none}
+.glegend .sw{width:22px;height:0;border-top:3px solid #888;display:inline-block}
+#graph{width:100%;height:560px;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel);display:block;touch-action:none}
+#graph text{font:10px -apple-system,sans-serif;fill:var(--ink);pointer-events:none;user-select:none}
+#graph .nlabel{opacity:0}
+#graph.showlabels .nlabel,#graph .nfocus{opacity:1}
+#graph circle{cursor:pointer;stroke:var(--panel);stroke-width:1.2}
+#graph .edge{fill:none;stroke-opacity:.55}
+#graph .edge.dim{stroke-opacity:.06}
+#graph circle.dim{opacity:.15}
+#graph .elabel{font-size:10px;fill:var(--ink)}
+.gdetail{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:20px}
+.gfoot{font-size:11px;color:var(--muted);padding:8px 28px}
 body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   background:var(--bg);color:var(--ink)}
 header{padding:22px 28px;border-bottom:1px solid var(--line)}
@@ -59,6 +81,19 @@ code{background:var(--line);padding:1px 5px;border-radius:4px;font-size:11.5px}
     <div><b>201</b><span>individuals</span></div>
   </div>
 </header>
+<section class="graphpanel">
+  <h2>Relationship Graph <span class="badge" id="gedgeN"></span>
+    &nbsp;·&nbsp;<span class="sub" style="font-size:12px">real node-link view · scroll to zoom · drag to pan · click a node to focus</span></h2>
+  <div class="gctrl">
+    <input id="gsearch" placeholder="search quantity…" size="20">
+    <button id="glabels">labels: off</button>
+    <button id="giso">show isolated</button>
+    <button id="greset">reset view</button>
+    <span class="glegend" id="glegend"></span>
+  </div>
+  <svg id="graph" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div class="gdetail" id="gdetail">Click a node to see its incoming / outgoing relationships.</div>
+</section>
 <div class="wrap">
   <section style="border-right:1px solid var(--line)">
     <h2>Class taxonomy &nbsp;·&nbsp; click to collapse</h2>
@@ -174,4 +209,186 @@ for(const[grp,items]of Object.entries(DATA.individuals)){
     c.style.borderColor=color(it.class);
     c.innerHTML=it.id+'<span class="u">'+it.class+'</span>';ib.appendChild(c);});
 }
-</script></body></html>
+
+// ============================ relationship graph =============================
+(function(){
+  const KIND_COLOR={specializes:"#7c3aed",same_as:"#0e7490",related:"#6b7280",
+    transforms:"#c2410c",in_family:"#0f9d6f",defines:"#1d4ed8"};
+  const DIRECTED={specializes:1,transforms:1,in_family:1,defines:1};
+  const svg=document.getElementById("graph");
+  if(!svg) return;
+  const NS="http://www.w3.org/2000/svg";
+  const rawEdges=(DATA._edges||[]);
+  const warn=(DATA._edge_warnings||[]);
+  // node set = quantities touched by at least one edge; isolated added on toggle
+  const nodeIds=new Set();
+  const good=[];
+  rawEdges.forEach(e=>{
+    if(e.missing){return;}                 // malformed endpoint -> skipped (warned below)
+    nodeIds.add(e.source);nodeIds.add(e.target);good.push(e);
+  });
+  const allQ=DATA.quantity_kinds.map(q=>q.id);
+  const isolated=allQ.filter(id=>!nodeIds.has(id));
+  document.getElementById("gedgeN").textContent=good.length+" edges";
+  // --- <defs> arrowhead markers, one per directed relationship type ----------
+  const defs=document.createElementNS(NS,"defs");
+  Object.keys(DIRECTED).forEach(k=>{
+    const mk=document.createElementNS(NS,"marker");
+    mk.setAttribute("id","arw-"+k);mk.setAttribute("viewBox","0 0 10 10");
+    mk.setAttribute("refX","19");mk.setAttribute("refY","5");
+    mk.setAttribute("markerWidth","7");mk.setAttribute("markerHeight","7");
+    mk.setAttribute("orient","auto-start-reverse");
+    const pa=document.createElementNS(NS,"path");
+    pa.setAttribute("d","M0,0L10,5L0,10z");pa.setAttribute("fill",KIND_COLOR[k]);
+    mk.appendChild(pa);defs.appendChild(mk);
+  });
+  svg.appendChild(defs);
+  const root=document.createElementNS(NS,"g");svg.appendChild(root);
+  const gEdges=document.createElementNS(NS,"g");root.appendChild(gEdges);
+  const gNodes=document.createElementNS(NS,"g");root.appendChild(gNodes);
+  const gELabel=document.createElementNS(NS,"g");root.appendChild(gELabel);
+
+  let W=svg.clientWidth||960, H=svg.clientHeight||560;
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);
+
+  // --- build node objects with a DETERMINISTIC initial layout (seeded circle) -
+  let showIso=false;
+  function activeNodes(){return showIso?allQ:[...nodeIds];}
+  const N={};
+  allQ.forEach((id,i)=>{
+    const a=2*Math.PI*i/allQ.length;
+    N[id]={id, x:W/2+Math.cos(a)*Math.min(W,H)*0.36,
+               y:H/2+Math.sin(a)*Math.min(W,H)*0.36, vx:0, vy:0,
+               deg:0, inn:0, out:0};
+  });
+  good.forEach(e=>{N[e.source].out++;N[e.target].inn++;N[e.source].deg++;N[e.target].deg++;});
+
+  // --- deterministic force relaxation (no Math.random) -----------------------
+  function simulate(nodes,edges,iters){
+    const idx=new Set(nodes.map(n=>n.id));
+    const es=edges.filter(e=>idx.has(e.source)&&idx.has(e.target));
+    for(let t=0;t<iters;t++){
+      const k=1-t/iters;
+      for(let i=0;i<nodes.length;i++){
+        const a=nodes[i];a.vx*=0.85;a.vy*=0.85;
+        for(let j=i+1;j<nodes.length;j++){
+          const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y;let d2=dx*dx+dy*dy||0.01;
+          const f=1400/d2;const d=Math.sqrt(d2);dx/=d;dy/=d;
+          a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;
+        }
+      }
+      es.forEach(e=>{const a=N[e.source],b=N[e.target];
+        let dx=b.x-a.x,dy=b.y-a.y;const d=Math.sqrt(dx*dx+dy*dy)||0.01;
+        const f=(d-70)*0.02;dx/=d;dy/=d;
+        a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;});
+      nodes.forEach(n=>{n.vx+=(W/2-n.x)*0.002;n.vy+=(H/2-n.y)*0.002;
+        n.x+=n.vx*k*3;n.y+=n.vy*k*3;
+        n.x=Math.max(16,Math.min(W-16,n.x));n.y=Math.max(16,Math.min(H-16,n.y));});
+    }
+  }
+
+  const edgeEls=[], nodeEls={}, selKinds=new Set(Object.keys(KIND_COLOR));
+  function draw(){
+    gEdges.innerHTML="";gNodes.innerHTML="";gELabel.innerHTML="";
+    edgeEls.length=0;
+    const nodes=activeNodes().map(id=>N[id]);
+    simulate(nodes,good,nodes.length>90?160:280);
+    // edges
+    good.forEach(e=>{
+      if(!selKinds.has(e.kind))return;
+      const a=N[e.source],b=N[e.target];
+      const ln=document.createElementNS(NS,"line");
+      ln.setAttribute("x1",a.x);ln.setAttribute("y1",a.y);
+      ln.setAttribute("x2",b.x);ln.setAttribute("y2",b.y);
+      ln.setAttribute("class","edge");ln.setAttribute("stroke",KIND_COLOR[e.kind]);
+      ln.setAttribute("stroke-width","1.6");
+      if(DIRECTED[e.kind])ln.setAttribute("marker-end","url(#arw-"+e.kind+")");
+      ln.dataset.s=e.source;ln.dataset.t=e.target;ln.dataset.kind=e.kind;
+      ln.dataset.pred=e.predicate;
+      const tip=document.createElementNS(NS,"title");
+      tip.textContent=e.source+" —"+e.predicate+"→ "+e.target;ln.appendChild(tip);
+      gEdges.appendChild(ln);edgeEls.push(ln);
+    });
+    // nodes
+    nodes.forEach(n=>{
+      const c=document.createElementNS(NS,"circle");
+      c.setAttribute("cx",n.x);c.setAttribute("cy",n.y);
+      c.setAttribute("r",Math.min(11,4+n.deg));
+      c.setAttribute("fill", n.deg?"#4b2e83":"#9aa0aa");
+      c.dataset.id=n.id;const tt=document.createElementNS(NS,"title");
+      tt.textContent=n.id+" (in "+n.inn+" / out "+n.out+")";c.appendChild(tt);
+      c.onclick=ev=>{ev.stopPropagation();focus(n.id);};
+      gNodes.appendChild(c);nodeEls[n.id]=c;
+      const tx=document.createElementNS(NS,"text");
+      tx.setAttribute("x",n.x+9);tx.setAttribute("y",n.y+3);
+      tx.setAttribute("class","nlabel");tx.textContent=n.id;
+      tx.dataset.id=n.id;gNodes.appendChild(tx);
+    });
+    applyTransform();
+  }
+  function focus(id){
+    const nbr=new Set([id]);
+    edgeEls.forEach(ln=>{
+      const on=(ln.dataset.s===id||ln.dataset.t===id);
+      ln.classList.toggle("dim",!on);
+      if(on){nbr.add(ln.dataset.s);nbr.add(ln.dataset.t);}
+    });
+    Object.entries(nodeEls).forEach(([nid,el])=>el.classList.toggle("dim",!nbr.has(nid)));
+    gNodes.querySelectorAll("text").forEach(t=>t.classList.toggle("nfocus",nbr.has(t.dataset.id)));
+    const n=N[id];
+    const outs=good.filter(e=>e.source===id).map(e=>e.predicate+" → "+e.target);
+    const ins=good.filter(e=>e.target===id).map(e=>e.source+" "+e.predicate+" →");
+    document.getElementById("gdetail").innerHTML="<b>"+id+"</b> — outgoing: "+
+      (outs.join(", ")||"none")+" · incoming: "+(ins.join(", ")||"none");
+  }
+  function clearFocus(){edgeEls.forEach(l=>l.classList.remove("dim"));
+    Object.values(nodeEls).forEach(e=>e.classList.remove("dim"));
+    gNodes.querySelectorAll("text").forEach(t=>t.classList.remove("nfocus"));}
+
+  // --- zoom / pan ------------------------------------------------------------
+  let tx=0,ty=0,sc=1;
+  function applyTransform(){root.setAttribute("transform","translate("+tx+","+ty+") scale("+sc+")");}
+  svg.addEventListener("wheel",e=>{e.preventDefault();
+    const f=e.deltaY<0?1.1:1/1.1;const r=svg.getBoundingClientRect();
+    const mx=e.clientX-r.left,my=e.clientY-r.top;
+    tx=mx-(mx-tx)*f;ty=my-(my-ty)*f;sc*=f;applyTransform();},{passive:false});
+  let pan=null;
+  svg.addEventListener("mousedown",e=>{if(e.target===svg||e.target===root){pan=[e.clientX-tx,e.clientY-ty];clearFocus();
+    document.getElementById("gdetail").textContent="Click a node to see its incoming / outgoing relationships.";}});
+  window.addEventListener("mousemove",e=>{if(pan){tx=e.clientX-pan[0];ty=e.clientY-pan[1];applyTransform();}});
+  window.addEventListener("mouseup",()=>pan=null);
+  document.getElementById("greset").onclick=()=>{tx=0;ty=0;sc=1;applyTransform();};
+
+  // --- labels toggle / isolated toggle / search ------------------------------
+  const lb=document.getElementById("glabels");
+  lb.onclick=()=>{svg.classList.toggle("showlabels");
+    lb.textContent="labels: "+(svg.classList.contains("showlabels")?"on":"off");};
+  const ib=document.getElementById("giso");
+  ib.onclick=()=>{showIso=!showIso;ib.textContent=showIso?"hide isolated":"show isolated";draw();};
+  document.getElementById("gsearch").addEventListener("input",e=>{
+    const q=e.target.value.trim().toLowerCase();if(!q){clearFocus();return;}
+    const hit=activeNodes().find(id=>id.toLowerCase().includes(q));
+    if(hit&&nodeEls[hit]){focus(hit);
+      const n=N[hit];tx=W/2-n.x*sc;ty=H/2-n.y*sc;applyTransform();}});
+
+  // --- legend + per-type filter ---------------------------------------------
+  const lg=document.getElementById("glegend");
+  Object.keys(KIND_COLOR).forEach(k=>{
+    const cnt=good.filter(e=>e.kind===k).length;
+    const lab=document.createElement("label");
+    lab.innerHTML='<input type="checkbox" checked data-k="'+k+'">'+
+      '<span class="sw" style="border-color:'+KIND_COLOR[k]+'"></span>'+k+' ('+cnt+')';
+    lab.querySelector("input").onchange=ev=>{
+      ev.target.checked?selKinds.add(k):selKinds.delete(k);draw();};
+    lg.appendChild(lab);
+  });
+  if(warn.length){const w=document.createElement("span");w.style.color="#c2410c";
+    w.textContent=" ⚠ "+warn.length+" edge(s) skipped (unknown endpoint)";lg.appendChild(w);}
+  draw();
+  window.__GRAPH_READY__=true;
+  window.__GRAPH_STATS__={nodes:Object.keys(nodeEls).length,edges:edgeEls.length,
+    markers:defs.querySelectorAll("marker").length};
+})();
+</script>
+<div class="gfoot">ontology build 62485b2afeb8 · 201 classes · 161 quantity kinds · 80 quantity edges</div>
+</body></html>

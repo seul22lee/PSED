@@ -87,6 +87,24 @@ for t in ("chamber_total_pressure", "generic_pressure", "precursor_partial_press
           "co_reactant_partial_pressure", "working_pressure", "base_pressure"):
     ok(f"{t} present", t in HTML)
 
+print("9) graph panel emitted in ontology.html")
+ok("graph <svg> container present", '<svg id="graph"' in HTML or "id=\"graph\"" in HTML)
+ok("graph container has non-zero height CSS", "#graph{" in HTML and "height:560px" in HTML)
+ok("Relationship Graph panel present", "Relationship Graph" in HTML)
+ok("arrowhead marker code present", 'setAttribute("id","arw-"' in HTML or "arw-" in HTML)
+ok("force layout present (no CDN/library)", "function simulate(" in HTML)
+import re as _re
+_loads = _re.findall(r'(?:src|href)\s*=\s*["\']https?://[^"\']+', HTML)
+ok("no remote resource loads (portable/offline; QUDT/OBO strings are data, not loads)",
+   not _loads, _loads[:3])
+ok("legend/type-filter present", "glegend" in HTML and "selKinds" in HTML)
+ok("connected-edge highlighting present", "function focus(" in HTML)
+ok("zoom/pan present", "applyTransform" in HTML and "wheel" in HTML)
+ok("browser test hooks exposed", "__GRAPH_READY__" in HTML and "__GRAPH_STATS__" in HTML)
+ok("deterministic build fingerprint in footer",
+   "ontology build " in HTML and __import__("re").search(r"ontology build [0-9a-f]{12}", HTML) is not None)
+ok("relationship TABLE still present (secondary view)", 'id="edges"' in HTML and "drawEdges" in HTML)
+
 print()
 if FAIL:
     print(f"{len(FAIL)} FAILURE(S): {FAIL}")
