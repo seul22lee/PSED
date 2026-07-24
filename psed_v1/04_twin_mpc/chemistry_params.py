@@ -109,11 +109,11 @@ def classify_pressure(exp, cond):
     q, slot = cond.get("quantity"), cond.get("of_reactant")
     c = RecordClassification(quantity=q, value=cond.get("value"), unit=cond.get("unit"),
                              of_reactant=slot, chemistry=chemistry_key(exp))
-    if q == "total_pressure":
+    if q in ("total_pressure", "chamber_total_pressure"):
         c.kind, c.confidence = "chamber_total_pressure", 0.9
         c.ambiguity_reason = "total pressure is a chamber quantity, never a partial pressure"
         return c
-    if q in ("pressure", "partial_pressure", "reactant_A_partial_pressure"):
+    if q in ("pressure", "generic_pressure", "partial_pressure", "reactant_A_partial_pressure"):
         if slot is None:
             c.kind, c.confidence = "generic_pressure", 0.0
             c.ambiguity_reason = ("no reactant attribution on the record; the species cannot "
@@ -386,7 +386,8 @@ def migration_report(experiments):
                 s["papers"].add(e["_pid"])
         for cond in e.get("controlled") or []:
             q = cond.get("quantity")
-            if q in ("pressure", "partial_pressure", "total_pressure", "reactant_A_partial_pressure"):
+            if q in ("pressure", "generic_pressure", "partial_pressure",
+                     "total_pressure", "chamber_total_pressure", "reactant_A_partial_pressure"):
                 pres[classify_pressure(e, cond).kind] += 1
             elif q in ("pulse_time", "purge_time", "plasma_exposure_time"):
                 pulse[classify_pulse(e, cond).kind] += 1

@@ -247,8 +247,11 @@ def resolve_context(request, warm_start_fn=None, experiments_fn=None):
             ctx.unresolved.append(nm)
 
     # chemistry-scoped operating priors
+    # The corpus quantity is `generic_pressure` since the pressure-ontology cleanup:
+    # those records exist but carry no reactant attribution, which is exactly the state
+    # the prior must report — querying the old name would hide them as simply absent.
     pp = chem.scoped_condition_prior(
-        exps, "precursor_partial_pressure", "pressure", "A", request.material,
+        exps, "precursor_partial_pressure", "generic_pressure", "A", request.material,
         chem_ctx.precursor_identity, chem_ctx.co_reactant_identity,
         temperature=request.temperature, reactor_type=request.reactor_type)
     pt = chem.scoped_condition_prior(
@@ -850,8 +853,13 @@ def render_report(result, out_path=None):
                     for k, v in (ctx.chemistry_priors or {}).items())
                 + "</table></div>")
              + (f"<div class=note><span class=warn>⚠</span> ratio status: "
-                f"<span class=mono>{html.escape(str(ctx.ratio_status))}</span></div>"
-                if ctx.ratio_status else "")
+                f"<span class=mono>{html.escape(str(ctx.ratio_status))}</span>"
+                + ("  — <b>no literature-supported species-attributed partial-pressure "
+                   "evidence exists</b> in this corpus. The pressure records it does hold "
+                   "are chamber-total or unspecified, and the A/B reactant pressures shown "
+                   "in recipes are model assumptions (source=model), not measurements."
+                   if "pressure" in str(ctx.ratio_status) else "")
+                + "</div>" if ctx.ratio_status else "")
              + (f"<div class=note><span class=bad>Twin parameterisation:</span> "
                 f"{html.escape(tc.evidence or '')} — <b>safe for quantitative "
                 f"cross-chemistry comparison: {'yes' if tc.safe_for_quantitative_comparison else 'no'}"
