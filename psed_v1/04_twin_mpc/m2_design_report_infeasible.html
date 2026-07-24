@@ -1,0 +1,79 @@
+<title>M2 · knowledge-guided design (infeasible target)</title><style>
+body{margin:0;background:#f4f6f8;color:#14161a;font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+@media(prefers-color-scheme:dark){body{background:#131417;color:#eceef2}
+ .card{background:#1c1e22 !important;border-color:#2b2e34 !important}
+ th{color:#a8adb7 !important} td{border-color:#2b2e34 !important} .mut{color:#8b919b !important}}
+.wrap{max-width:1080px;margin:0 auto;padding:26px 22px 60px}
+h1{font-size:22px;margin:0 0 2px}h2{font-size:14px;margin:0 0 10px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8b919b;font-weight:600}
+.sub{color:#565c66;margin-bottom:18px}
+.card{background:#fff;border:1px solid #e6e8ec;border-radius:12px;padding:16px;margin-bottom:16px}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th{text-align:left;padding:6px 8px;border-bottom:1px solid #e6e8ec;color:#565c66;font-size:10.5px;
+   text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid #eef0f3;vertical-align:top}
+.tag{display:inline-block;font-size:9.5px;padding:1px 6px;border-radius:6px;font-weight:700;letter-spacing:.02em}
+.s-user{background:rgba(27,175,122,.18);color:#1baf7a}
+.s-kb{background:rgba(42,120,214,.18);color:#2a78d6}
+.s-model_supported{background:rgba(74,58,167,.16);color:#4a3aa7}
+.s-fallback{background:rgba(237,161,0,.20);color:#b37a00}
+.s-unresolved{background:rgba(227,73,72,.16);color:#e34948}
+.ok{color:#1baf7a;font-weight:700}.bad{color:#e34948;font-weight:700}.warn{color:#b37a00;font-weight:700}
+.mut{color:#8b919b}.bar{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.stat{background:#fff;border:1px solid #e6e8ec;border-radius:10px;padding:9px 14px}
+@media(prefers-color-scheme:dark){.stat{background:#1c1e22;border-color:#2b2e34}}
+.stat b{font-size:18px;display:block}.stat span{font-size:11px;color:#8b919b}
+.note{font-size:12px;color:#565c66;margin-top:10px}
+</style>
+<div class=wrap>
+<div class=eyebrow>PSED · M2</div>
+<h1>M2 · knowledge-guided design (infeasible target)</h1>
+<div class=sub>An underspecified request is completed from priors, checked against the digital twin,
+inverted into candidate recipes, ranked, and stress-tested. The physics inversion is done by
+<span class=mono>inverse_solver.solve_target_dose</span> — a bracketed root solve on the real channel
+twin — once per operating family.</div>
+
+<div class=card><h2>1 · Request &amp; resolved design context</h2>
+<table><tr><th>prior</th><th>value</th><th>unit</th><th>source</th><th>conf</th><th>evidence</th><th>overridable</th></tr>
+<tr><td class=mono>target_pd</td><td class=mono>0.0002</td><td class=mut>m</td><td><span class="tag s-user">user</span></td><td class=mono>1.0</td><td class=mut>requested by the caller</td><td class=mut>no</td></tr><tr><td class=mono>material</td><td class=mono>Al2O3</td><td class=mut></td><td><span class="tag s-user">user</span></td><td class=mono>1.0</td><td class=mut>requested by the caller</td><td class=mut>yes</td></tr><tr><td class=mono>ratio</td><td class=mono>1000</td><td class=mut>Pa/s</td><td><span class="tag s-fallback">fallback</span></td><td class=mono>0.2</td><td class=mut>no KB precursor partial pressure for this query (pA0_source=none, tp0_source=kb); using the reference operating-family default</td><td class=mut>yes</td></tr><tr><td class=mono>reference_effective_dose</td><td class=mono><span class="mut">—</span></td><td class=mut>Pa·s</td><td><span class="tag s-unresolved">unresolved</span></td><td class=mono>0.0</td><td class=mut>needs both pA0 and tp0 (have pA0=None, tp0=0.1)</td><td class=mut>yes</td></tr><tr><td class=mono>reference_pulse_time</td><td class=mono>0.1</td><td class=mut>s</td><td><span class="tag s-kb">kb</span></td><td class=mono>0.8</td><td class=mut>KB pulse-time estimate; no matching partial pressure</td><td class=mut>yes</td></tr><tr><td class=mono>pressure_bounds</td><td class=mono>1, 200</td><td class=mut>Pa</td><td><span class="tag s-model_supported">model_supported</span></td><td class=mono>0.4</td><td class=mut>reactor-plausible pA window; demonstration default, not extracted</td><td class=mut>yes</td></tr><tr><td class=mono>pulse_time_bounds</td><td class=mono>0.01, 5</td><td class=mut>s</td><td><span class="tag s-model_supported">model_supported</span></td><td class=mono>0.4</td><td class=mut>reactor-plausible pulse window; demonstration default, not extracted</td><td class=mut>yes</td></tr></table><div class=note><span class=warn>⚠</span> pA/tp ratio is a FALLBACK operating-family default, not literature-derived</div><div class=note><span class=bad>unresolved:</span> <span class=mono>ratio_from_literature</span></div>
+<div class=note><b>Reading the sources.</b> <span class="tag s-user">user</span> stated in the request ·
+<span class="tag s-kb">kb</span> retrieved from the knowledge base ·
+<span class="tag s-model_supported">model_supported</span> an operating-envelope default ·
+<span class="tag s-fallback">fallback</span> nothing was retrieved, a default is standing in ·
+<span class="tag s-unresolved">unresolved</span> no value at all. A fallback is <b>not</b> evidence.</div></div>
+
+<div class=card><h2>2 · Digital-twin feasibility</h2>
+<div class=bar>
+ <div class=stat><b>6.79 – 135.32</b><span>achievable PD50 (µm) at r = 1000 Pa/s</span></div>
+ <div class=stat><b>200.00</b><span>target PD50 (µm)</span></div>
+ <div class=stat><b class=bad>above_range</b><span>verdict</span></div>
+ <div class=stat><b>0.1, 40</b><span>effective-dose bounds (Pa·s)</span></div>
+</div>
+<div class=note>The range is measured by evaluating the twin at both ends of the effective-dose bracket,
+before any solving. A target outside it is reported as infeasible rather than iterated at.
+<b>This verdict is for the resolved ratio only.</b> Each operating family has its own bracket and its
+own achievable range, so section 3 may still find a feasible recipe at a different ratio — that is the
+point of generating candidates rather than inverting once. <span class=ok>Here that happened:</span> the target is outside the range at r = 1000 Pa/s, but the <span class=mono>long_low_pressure</span> family reaches it.</div></div>
+
+<div class=card><h2>3 · Inverse candidates (one solve per operating family)</h2>
+<table><tr><th>family</th><th>r (Pa/s)</th><th>ratio src</th><th>eff. dose (Pa·s)</th><th>pA (Pa)</th>
+<th>t_p (s)</th><th>PD50 (µm)</th><th>resid (nm)</th><th>dose sens.</th><th>score</th></tr>
+<tr><td class=mono><b>long_low_pressure ★</b></td><td class=mono>100</td><td><span class="tag s-model_supported">model_supported</span></td><td class=mono>87.33</td><td class=mono>93.45</td><td class=mono>0.9345</td><td class=mono>200.000</td><td class=mono>+8.1e-11</td><td class=mono>0.500</td><td class=mono><b>0.618</b></td></tr><tr><td class=mono>balanced</td><td class=mono>1000</td><td><span class="tag s-model_supported">model_supported</span></td><td colspan=7 class=bad>rejected — infeasible_high: target 0.0002 m exceeds the maximum achievable 0.000135324 m at dose 40</td></tr><tr><td class=mono>short_high_pressure</td><td class=mono>1e+04</td><td><span class="tag s-model_supported">model_supported</span></td><td colspan=7 class=bad>rejected — infeasible_high: target 0.0002 m exceeds the maximum achievable 4.27932e-05 m at dose 4</td></tr></table>
+<div class=note>An operating family fixes r = pA/t_p, which is what makes the inversion one-dimensional.
+The families are model-supported archetypes, not literature recipes. <b>dose sens.</b> is
+d ln PD / d ln(effective dose) at ±10 %: lower is a more forgiving recipe.</div></div>
+
+<div class=card><h2>4 · Ranking &amp; robustness</h2>
+<table><tr><th>family</th><th>accuracy</th><th>margin</th><th>robustness</th><th>throughput</th>
+<th>confidence</th><th>total</th></tr><tr><td class=mono>long_low_pressure</td><td class=mono>1.000</td><td class=mono>0.287</td><td class=mono>0.666</td><td class=mono>1.000</td><td class=mono>0.400</td><td class=mono><b>0.618</b></td></tr></table>
+<div class=note><b>accuracy</b> residual vs target · <b>margin</b> distance of pA / t_p / exposure from
+their bounds · <b>robustness</b> insensitivity to ±10 % error in exposure and in the assumed ratio ·
+<b>throughput</b> shorter pulses preferred · <b>confidence</b> how well-grounded that family's ratio is.
+Weights: {&quot;accuracy&quot;: 0.15, &quot;margin&quot;: 0.25, &quot;robustness&quot;: 0.25, &quot;throughput&quot;: 0.15, &quot;confidence&quot;: 0.2}</div></div>
+
+<div class=card><h2>5 · Recommended operating point</h2><div class=bar><div class=stat><b>87.33</b><span>effective dose (Pa·s) = pA · t_p</span></div><div class=stat><b>93.45</b><span>precursor partial pressure (Pa)</span></div><div class=stat><b>0.9345</b><span>pulse time (s)</span></div><div class=stat><b>200.000</b><span>predicted PD50 (µm)</span></div><div class=stat><b>long_low_pressure</b><span>operating family</span></div></div>
+<div class=note>This is a <b>model-inverted</b> recipe under a
+<span class="tag s-fallback">fallback</span> pressure-to-pulse ratio. It is not a literature recipe, and it is
+only as good as the priors in section 1 — the ratio in particular.</div></div>
+</div>
