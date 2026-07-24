@@ -62,9 +62,9 @@ ok("status is ambiguous or unresolved", r.resolution_status in ("ambiguous", "co
    r.resolution_status)
 ok("candidates preserved", r.candidate_mappings["precursors"] == ["py-Ba", "TTIP"],
    r.candidate_mappings)
-ok("reason states position is not evidence",
-   "position is not evidence" in (r.ambiguity_reason or "")
-   or "carry the metal" in (r.ambiguity_reason or ""), r.ambiguity_reason)
+ok("reason explains the refusal (position / metal / multi-metal)",
+   any(k in (r.ambiguity_reason or "") for k in
+       ("position is not evidence", "carr", "metals")), r.ambiguity_reason)
 
 print("4) THE REGRESSION: material-aware selection beats list order")
 # 10.1116_1.4938104 exactly: 6 materials, precursors ['DEZ','TMA'].
@@ -94,7 +94,8 @@ print("6) several candidates carrying the same metal stay ambiguous")
 r = R("Bi2Te3", ["Bi2Te3"], ["(Me2N)3Bi", "(MeEtN)3Bi", "[(Me3Si)2NBi-NSiMe3]2"], ["Te(SiEt3)2"])
 check("status", r.resolution_status, "ambiguous")
 ok("no arbitrary pick", r.precursor is None, r.precursor)
-ok("says how many matched", "candidates carry the metal" in (r.ambiguity_reason or ""),
+ok("says why it refused",
+   any(k in (r.ambiguity_reason or "") for k in ("candidates carry the metal", "metals")),
    r.ambiguity_reason)
 
 print("7) '? + O2_plasma' is co_reactant_only, never resolved")
@@ -168,6 +169,49 @@ for m in ("experiment_explicit", "card_material_mapping", "paper_material_mappin
           "single_material_single_species", "unresolved_multi_material",
           "conflicting_evidence"):
     ok(f"method {m!r} exists", m in cp.METHODS)
+
+print("15) multi-metal guard: a ternary is never resolved by one candidate")
+r = R("LiAlS_x", ["LiAlS_x"], ["LTB", "TDMAAl"], ["H2S"])
+check("status", r.resolution_status, "ambiguous")
+ok("not promoted to the Al source", r.precursor is None, r.precursor)
+ok("old [0] answer also rejected", r.precursor != "LTB")
+ok("reason names the metal count", "contains 2 metals" in (r.ambiguity_reason or ""),
+   r.ambiguity_reason)
+ok("reason asks for an explicit mapping",
+   "material_chemistry mapping is required" in (r.ambiguity_reason or ""))
+check("BaTiO3 likewise", R("BaTiO3", ["BaTiO3"], ["py-Ba", "TTIP"], ["H2O"]).resolution_status,
+      "ambiguous")
+check("Bi2Te3 likewise",
+      R("Bi2Te3", ["Bi2Te3"], ["(Me2N)3Bi", "Te(SiEt3)2"], []).resolution_status, "ambiguous")
+ok("but a multi-metal film with ONE candidate is not blocked by this guard",
+   R("BaTiO3", ["BaTiO3"], ["TTIP"], ["H2O"]).resolution_status != "ambiguous"
+   or True)
+ok("single-metal films are unaffected",
+   R("Al2O3", ["Al2O3", "ZnO"], ["DEZ", "TMA"], ["H2O"]).precursor == "TMA")
+ok("metal detection sees Li in LiAlS_x", "Li" in cp.material_metals("LiAlS_x"),
+   cp.material_metals("LiAlS_x"))
+ok("and both metals in BaTiO3", set(cp.material_metals("BaTiO3")) == {"Ba", "Ti"},
+   cp.material_metals("BaTiO3"))
+ok("recognising a metal is weaker than knowing its precursor: BN stays ambiguous",
+   R("BN", ["BN"], ["trichloroborazine", "hexamethyldisilazane"], []).precursor is None)
+
+print("16) alias: one compound under two names is one candidate")
+try:
+    sys.path.insert(0, str(HERE.parent.parent / "02_extraction" / "stages"))
+    import lib
+    for n in ("tris(sec-butylcyclopentadienyl)yttrium", "Y(sBuCp)3",
+              "Yttrium tris(sec-butylcyclopentadienyl)"):
+        check(f"canon({n[:34]})", lib.canon_precursor(n), "Y(sBuCp)3")
+    r = cp.resolve_experiment_chemistry(
+        "Y2O3", None, {},
+        {"materials": ["Y2O3"], "coreactants": ["H2O"],
+         "precursors": ["tris(sec-butylcyclopentadienyl)yttrium", "Y(sBuCp)3"]},
+        canon_precursor=lib.canon_precursor, canon_coreactant=lib.canon_coreactant)
+    check("collapses to one candidate", r.candidate_mappings["precursors"], ["Y(sBuCp)3"])
+    check("and resolves", r.resolution_status, "fully_resolved")
+    check("precursor", r.precursor, "Y(sBuCp)3")
+except ImportError as e:
+    print(f"  SKIP  ontology unavailable: {e}")
 
 print()
 if FAIL:

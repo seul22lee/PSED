@@ -2,27 +2,18 @@
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "pulse_time",
@@ -38,32 +29,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1a-0",
      "figure": "Fig 1",
      "panel": "a"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -113,6 +78,32 @@
   "series_name": null,
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -130,21 +121,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": 25.0,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": 25.0,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -158,28 +141,7 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F1a-0",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1a-0"
-    },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "caption",
-     "value": 25.0,
-     "paper_id": "10.1021_acs.chemmater.2c02292",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1a-0",
-     "figure": "Fig 1",
-     "panel": "a"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1a-0"
-    },
-    "pulse_time::B": {
      "source": "experiment",
      "from": "caption",
      "value": 25.0,
@@ -197,47 +159,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1a-0"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1a-0"
     }
    },
-   "completeness": 0.5
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "pulse_time",
@@ -253,32 +204,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1b-1",
      "figure": "Fig 1",
      "panel": "b"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -328,6 +253,32 @@
   "series_name": null,
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -345,21 +296,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": 40.0,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": 40.0,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -373,28 +316,7 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F1b-1",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1b-1"
-    },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "caption",
-     "value": 40.0,
-     "paper_id": "10.1021_acs.chemmater.2c02292",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1b-1",
-     "figure": "Fig 1",
-     "panel": "b"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1b-1"
-    },
-    "pulse_time::B": {
      "source": "experiment",
      "from": "caption",
      "value": 40.0,
@@ -412,75 +334,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1b-1"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1b-1"
     }
    },
-   "completeness": 0.5
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "growth_per_cycle",
    "unit": "\u00c5",
@@ -523,6 +407,32 @@
   "series_name": null,
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "deposition_temperature"
   ],
@@ -540,21 +450,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -568,18 +470,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F1c-2",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1c-2"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1c-2"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -589,47 +479,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1c-2"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1c-2"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "temperature",
@@ -645,32 +524,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-3",
      "figure": "Fig 1",
      "panel": "d"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -724,6 +577,32 @@
   "series_name": "substrate: Si-H",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -741,21 +620,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -769,18 +640,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F1d-3",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-3"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-3"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -790,15 +649,14 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-3"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-3"
     },
@@ -812,34 +670,24 @@
      "panel": "d"
     }
    },
-   "completeness": 0.429
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "temperature",
@@ -855,32 +703,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-4",
      "figure": "Fig 1",
      "panel": "d"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -926,6 +748,32 @@
   "series_name": "substrate: Si with native oxide",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -943,21 +791,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -971,18 +811,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F1d-4",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-4"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-4"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -992,15 +820,14 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-4"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1d-4"
     },
@@ -1014,62 +841,25 @@
      "panel": "d"
     }
    },
-   "completeness": 0.429
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "spatial_coordinate",
    "unit": "\u00b5m",
@@ -1120,6 +910,32 @@
   "series_name": null,
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Ru L intensity"
   ],
@@ -1137,21 +953,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1165,18 +973,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F1f-5",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1f-5"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F1f-5"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -1186,75 +982,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1f-5"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F1f-5"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -1337,6 +1095,32 @@
   "series_name": "material: Ru metal (RuO4-H2)",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -1354,21 +1138,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1382,18 +1158,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2a-6",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-6"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-6"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -1403,75 +1167,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-6"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-6"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -1546,6 +1272,32 @@
   "series_name": "material: RuO2 (RuO4-methanol)",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -1563,21 +1315,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1591,18 +1335,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2a-7",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-7"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-7"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -1612,75 +1344,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-7"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2a-7"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -1727,6 +1421,32 @@
   "series_name": "peak component: Ru 3d5/2",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -1744,21 +1464,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1772,18 +1484,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2b-8",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-8"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-8"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -1793,75 +1493,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-8"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-8"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -1908,6 +1570,32 @@
   "series_name": "peak component: Ru 3d5/2 satellite",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -1925,21 +1613,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1953,18 +1633,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2b-9",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-9"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-9"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -1974,75 +1642,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-9"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-9"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -2089,6 +1719,32 @@
   "series_name": "peak component: Ru 3d3/2",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -2106,21 +1762,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2134,18 +1782,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2b-10",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-10"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-10"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2155,75 +1791,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-10"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-10"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -2270,6 +1868,32 @@
   "series_name": "peak component: Ru 3d3/2 satellite",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -2287,21 +1911,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2315,18 +1931,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2b-11",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-11"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-11"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2336,75 +1940,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-11"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-11"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -2443,6 +2009,32 @@
   "series_name": "peak component: C 1s",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -2460,21 +2052,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2488,18 +2072,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2b-12",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-12"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-12"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2509,75 +2081,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-12"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2b-12"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -2632,6 +2166,32 @@
   "series_name": "peak component: O 1s",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -2649,21 +2209,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2677,18 +2229,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2c-13",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-13"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-13"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2698,75 +2238,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-13"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-13"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "CPS",
@@ -2813,6 +2315,32 @@
   "series_name": "peak component: OH",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "Binding energy"
   ],
@@ -2830,21 +2358,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2858,18 +2378,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F2c-14",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-14"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-14"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -2879,47 +2387,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-14"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F2c-14"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "film_thickness",
@@ -2935,32 +2432,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-15",
      "figure": "Fig 3",
      "panel": "a"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -3050,6 +2521,32 @@
   "series_name": "annealing condition: Annealed in He",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "2\u0398"
   ],
@@ -3067,21 +2564,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -3095,18 +2584,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F3a-15",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-15"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-15"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3116,47 +2593,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-15"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-15"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "film_thickness",
@@ -3172,32 +2638,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-16",
      "figure": "Fig 3",
      "panel": "a"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -3287,6 +2727,32 @@
   "series_name": "annealing condition: Annealed in air",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "2\u0398"
   ],
@@ -3304,21 +2770,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -3332,18 +2790,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F3a-16",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-16"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-16"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3353,47 +2799,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-16"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-16"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "film_thickness",
@@ -3409,32 +2844,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-17",
      "figure": "Fig 3",
      "panel": "a"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -3532,6 +2941,32 @@
   "series_name": "annealing condition: As deposited",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "2\u0398"
   ],
@@ -3549,21 +2984,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -3577,18 +3004,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F3a-17",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-17"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-17"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3598,47 +3013,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-17"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3a-17"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "film_thickness",
@@ -3654,32 +3058,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-18",
      "figure": "Fig 3",
      "panel": "b"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -3717,6 +3095,32 @@
   "series_name": "diffraction peak: RuO2 (110)",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "deposition_temperature"
   ],
@@ -3734,21 +3138,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -3762,18 +3158,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F3b-18",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-18"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-18"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3783,47 +3167,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-18"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-18"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "film_thickness",
@@ -3839,32 +3212,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-19",
      "figure": "Fig 3",
      "panel": "b"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -3902,6 +3249,32 @@
   "series_name": "diffraction peak: RuO2 (101)",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "deposition_temperature"
   ],
@@ -3919,21 +3292,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -3947,18 +3312,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F3b-19",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-19"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-19"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -3968,47 +3321,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-19"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3b-19"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "film_thickness",
@@ -4024,32 +3366,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-20",
      "figure": "Fig 3",
      "panel": "c"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -4087,6 +3403,32 @@
   "series_name": "diffraction peak: RuO2 (110)",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "deposition_temperature"
   ],
@@ -4104,21 +3446,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -4132,18 +3466,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F3c-20",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-20"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-20"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4153,47 +3475,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-20"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-20"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "film_thickness",
@@ -4209,32 +3520,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-21",
      "figure": "Fig 3",
      "panel": "c"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -4272,6 +3557,32 @@
   "series_name": "diffraction peak: RuO2 (101)",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "deposition_temperature"
   ],
@@ -4289,21 +3600,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -4317,18 +3620,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F3c-21",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-21"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-21"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4338,75 +3629,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-21"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F3c-21"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "q_z",
    "unit": "nm^-1",
@@ -4449,6 +3702,32 @@
   "series_name": "series: As deposited",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "q_r"
   ],
@@ -4466,21 +3745,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -4494,18 +3765,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4a-22",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4a-22"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4a-22"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4515,75 +3774,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4a-22"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4a-22"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "q_z",
    "unit": "nm^-1",
@@ -4626,6 +3847,32 @@
   "series_name": "series: Annealed",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "q_r"
   ],
@@ -4643,21 +3890,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -4671,18 +3910,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4b-23",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4b-23"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4b-23"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4692,75 +3919,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4b-23"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4b-23"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "a.u.",
@@ -4831,6 +4020,32 @@
   "series_name": "sample condition: Annealed",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "site_density"
   ],
@@ -4848,21 +4063,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -4876,18 +4083,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4c-24",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-24"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-24"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -4897,75 +4092,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-24"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-24"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "intensity",
    "unit": "a.u.",
@@ -5036,6 +4193,32 @@
   "series_name": "sample condition: As deposited",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "site_density"
   ],
@@ -5053,21 +4236,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -5081,18 +4256,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4c-25",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-25"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-25"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -5102,75 +4265,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-25"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4c-25"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "G(r)",
    "unit": "\u00c5^-2",
@@ -5245,6 +4370,32 @@
   "series_name": "data type: As deposited",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "spatial_coordinate"
   ],
@@ -5262,21 +4413,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -5290,18 +4433,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4d-26",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-26"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-26"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -5311,75 +4442,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-26"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-26"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "G(r)",
    "unit": "\u00c5^-2",
@@ -5450,6 +4543,32 @@
   "series_name": "data type: Fit",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "spatial_coordinate"
   ],
@@ -5467,21 +4586,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -5495,18 +4606,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4d-27",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-27"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-27"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -5516,75 +4615,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-27"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4d-27"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "G(r)",
    "unit": "\u00c5^-2",
@@ -5659,6 +4720,32 @@
   "series_name": "data type: Annealed",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "spatial_coordinate"
   ],
@@ -5676,21 +4763,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -5704,18 +4783,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4e-28",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-28"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-28"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -5725,75 +4792,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-28"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-28"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "G(r)",
    "unit": "\u00c5^-2",
@@ -5868,6 +4897,32 @@
   "series_name": "data type: Fit",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "spatial_coordinate"
   ],
@@ -5885,21 +4940,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -5913,18 +4960,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F4e-29",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-29"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-29"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -5934,75 +4969,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-29"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F4e-29"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "film_thickness",
    "unit": "nm",
@@ -6053,6 +5050,32 @@
   "series_name": "coreactant: Methanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -6070,21 +5093,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -6098,18 +5113,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5a-30",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-30"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-30"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -6119,75 +5122,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-30"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-30"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "film_thickness",
    "unit": "nm",
@@ -6230,6 +5195,32 @@
   "series_name": "coreactant: Ethanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -6247,21 +5238,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -6275,18 +5258,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5a-31",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-31"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-31"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -6296,75 +5267,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-31"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-31"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "film_thickness",
    "unit": "nm",
@@ -6407,6 +5340,32 @@
   "series_name": "coreactant: 2-propanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -6424,21 +5383,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -6452,18 +5403,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5a-32",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-32"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-32"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -6473,75 +5412,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-32"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-32"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "film_thickness",
    "unit": "nm",
@@ -6584,6 +5485,32 @@
   "series_name": "coreactant: 1-propanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -6601,21 +5528,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -6629,18 +5548,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5a-33",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-33"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-33"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -6650,75 +5557,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-33"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5a-33"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "growth_per_cycle",
    "unit": "\u00c5",
@@ -6765,6 +5634,32 @@
   "series_name": "coreactant: Methanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -6782,21 +5677,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -6810,18 +5697,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5b-34",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-34"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-34"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -6831,75 +5706,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-34"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-34"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "growth_per_cycle",
    "unit": "\u00c5",
@@ -6938,6 +5775,32 @@
   "series_name": "coreactant: Ethanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -6955,21 +5818,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -6983,18 +5838,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5b-35",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-35"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-35"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -7004,75 +5847,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-35"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-35"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "growth_per_cycle",
    "unit": "\u00c5",
@@ -7111,6 +5916,32 @@
   "series_name": "coreactant: 2-propanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -7128,21 +5959,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -7156,18 +5979,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5b-36",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-36"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-36"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -7177,75 +5988,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-36"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5b-36"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "growth_per_cycle",
    "unit": "\u00c5",
@@ -7288,6 +6061,32 @@
   "series_name": "coreactant: Methanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -7305,21 +6104,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -7333,18 +6124,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5c-37",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-37"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-37"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -7354,75 +6133,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-37"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-37"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "growth_per_cycle",
    "unit": "\u00c5",
@@ -7461,6 +6202,32 @@
   "series_name": "coreactant: Ethanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -7478,21 +6245,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -7506,18 +6265,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5c-38",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-38"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-38"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -7527,75 +6274,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-38"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-38"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "growth_per_cycle",
    "unit": "\u00c5",
@@ -7634,6 +6343,32 @@
   "series_name": "coreactant: 2-propanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "pulse_time"
   ],
@@ -7651,21 +6386,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -7679,18 +6406,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F5c-39",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-39"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-39"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -7700,47 +6415,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-39"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F5c-39"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "m/z",
@@ -7756,32 +6460,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-40",
      "figure": "Fig 6",
      "panel": "a"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -7871,6 +6549,32 @@
   "series_name": "m/z: 15",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "time"
   ],
@@ -7888,21 +6592,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -7916,18 +6612,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6a-40",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-40"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-40"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -7937,47 +6621,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-40"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-40"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "m/z",
@@ -7993,32 +6666,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-41",
      "figure": "Fig 6",
      "panel": "a"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -8108,6 +6755,32 @@
   "series_name": "m/z: 18",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "time"
   ],
@@ -8125,21 +6798,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -8153,18 +6818,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6a-41",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-41"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-41"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -8174,47 +6827,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-41"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-41"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "m/z",
@@ -8230,32 +6872,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-42",
      "figure": "Fig 6",
      "panel": "a"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -8345,6 +6961,32 @@
   "series_name": "m/z: 44",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "time"
   ],
@@ -8362,21 +7004,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -8390,18 +7024,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6a-42",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-42"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-42"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -8411,47 +7033,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-42"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6a-42"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "m/z",
@@ -8467,32 +7078,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-43",
      "figure": "Fig 6",
      "panel": "b"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -8586,6 +7171,32 @@
   "series_name": "m/z: 32",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "time"
   ],
@@ -8603,21 +7214,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -8631,18 +7234,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6b-43",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-43"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-43"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -8652,47 +7243,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-43"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-43"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "m/z",
@@ -8708,32 +7288,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-44",
      "figure": "Fig 6",
      "panel": "b"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -8823,6 +7377,32 @@
   "series_name": "m/z: 44",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "time"
   ],
@@ -8840,21 +7420,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -8868,18 +7440,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6b-44",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-44"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-44"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -8889,47 +7449,36 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-44"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-44"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "m/z",
@@ -8945,32 +7494,6 @@
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-45",
      "figure": "Fig 6",
      "panel": "b"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
     }
    }
   ],
@@ -9064,6 +7587,32 @@
   "series_name": "m/z: 81",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "time"
   ],
@@ -9081,21 +7630,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -9109,18 +7650,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6b-45",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-45"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-45"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -9130,75 +7659,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-45"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6b-45"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "Transmittance (a.u.)",
    "unit": "a.u.",
@@ -9257,6 +7748,32 @@
   "series_name": "pulse sequence: After RuO4 pulse",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "wavenumber"
   ],
@@ -9274,21 +7791,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -9302,18 +7811,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6c-46",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-46"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-46"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -9323,75 +7820,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-46"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-46"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "Transmittance (a.u.)",
    "unit": "a.u.",
@@ -9450,6 +7909,32 @@
   "series_name": "pulse sequence: After methanol pulse",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "wavenumber"
   ],
@@ -9467,21 +7952,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -9495,18 +7972,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6c-47",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-47"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-47"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -9516,75 +7981,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-47"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6c-47"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "Intensity (a.u.)",
    "unit": "a.u.",
@@ -9635,6 +8062,32 @@
   "series_name": "surface termination: Ending with RuO4",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "binding_energy"
   ],
@@ -9652,21 +8105,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -9680,18 +8125,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6d-48",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-48"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-48"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -9701,75 +8134,37 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-48"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-48"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  },
  {
   "material": "RuO2",
   "material_raw": "RuO2",
-  "precursors": [
-   "RuO4"
-  ],
-  "coreactants": [
-   "methanol"
-  ],
+  "precursors": [],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "RuO4"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "methanol"
+    "species": null
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
-  "controlled": [
-   {
-    "quantity": "molecular_mass",
-    "value": 165.07,
-    "unit": "g/mol",
-    "of_reactant": "A",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "RuO4",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 32.04,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "methanol",
-     "property": "molar_mass"
-    }
-   }
-  ],
+  "cycle_sequence": "A",
+  "controlled": [],
   "measurand": {
    "quantity": "Intensity (a.u.)",
    "unit": "a.u.",
@@ -9820,6 +8215,32 @@
   "series_name": "surface termination: Ending with methanol",
   "phase": null,
   "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "RuO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "1 precursor candidate(s) ['RuO4'] and 2 material(s) ['RuO2', 'Ru']; no unique candidate carries the metal of RuO2 (metals: ['Ru']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "RuO4"
+    ],
+    "coreactants": [
+     "methanol",
+     "ethanol",
+     "1-propanol",
+     "2-propanol"
+    ],
+    "materials": [
+     "RuO2",
+     "Ru"
+    ]
+   }
+  },
   "varies": [
    "binding_energy"
   ],
@@ -9837,21 +8258,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "RuO4",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "methanol",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -9865,18 +8278,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1021_acs.chemmater.2c02292-F6d-49",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "RuO4",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-49"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "methanol",
-     "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-49"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -9886,21 +8287,19 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-49"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1021_acs.chemmater.2c02292-F6d-49"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.3
+  }
  }
 ]

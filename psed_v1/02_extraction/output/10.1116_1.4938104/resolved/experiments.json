@@ -3,63 +3,43 @@
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -150,6 +130,36 @@
   "series_name": "temperature and substrate: 38 \u00b0C (Cotton Fibers)",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -167,21 +177,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -198,13 +200,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F4d-0"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F4d-0"
     },
     "material::": {
@@ -216,84 +212,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F4d-0"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F4d-0"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -360,6 +334,36 @@
   "series_name": "temperature and substrate: 60 \u00b0C (Cotton Fibers)",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -377,21 +381,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -408,13 +404,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F4d-1"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F4d-1"
     },
     "material::": {
@@ -426,84 +416,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F4d-1"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F4d-1"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -542,6 +510,36 @@
   "series_name": "temperature and substrate: 90 \u00b0C (Cotton Fibers)",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -559,21 +557,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -590,13 +580,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F4d-2"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F4d-2"
     },
     "material::": {
@@ -608,84 +592,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F4d-2"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F4d-2"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -756,6 +718,36 @@
   "series_name": "temperature and substrate: Cellulose Films",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "cycle_number"
   ],
@@ -773,21 +765,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -804,13 +788,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F4d-3"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F4d-3"
     },
     "material::": {
@@ -822,84 +800,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F4d-3"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F4d-3"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -998,6 +954,36 @@
   "series_name": "coating: Untreated PA-6",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "Wavenumbers"
   ],
@@ -1015,21 +1001,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1046,13 +1024,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F7a-4"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F7a-4"
     },
     "material::": {
@@ -1064,84 +1036,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F7a-4"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F7a-4"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -1208,6 +1158,36 @@
   "series_name": "coating: 25 cycles ZnO",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "Wavenumbers"
   ],
@@ -1225,21 +1205,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1256,13 +1228,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F7a-5"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F7a-5"
     },
     "material::": {
@@ -1274,84 +1240,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F7a-5"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F7a-5"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -1434,6 +1378,36 @@
   "series_name": "coating: 25 cycles ZnO+ 75 cycles Gly/TMA",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "Wavenumbers"
   ],
@@ -1451,21 +1425,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1482,13 +1448,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F7a-6"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F7a-6"
     },
     "material::": {
@@ -1500,84 +1460,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F7a-6"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F7a-6"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -1652,6 +1590,36 @@
   "series_name": "coating: 25 cycles ZnO+ 75 cycles Gly/TMA+ 25 cycles Al2O3",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "Wavenumbers"
   ],
@@ -1669,21 +1637,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1700,13 +1660,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F7a-7"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F7a-7"
     },
     "material::": {
@@ -1718,84 +1672,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F7a-7"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F7a-7"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -1866,6 +1798,36 @@
   "series_name": "sample: paper",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "UV irradiation time"
   ],
@@ -1883,21 +1845,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -1914,13 +1868,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F12b-8"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F12b-8"
     },
     "material::": {
@@ -1932,84 +1880,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F12b-8"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F12b-8"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -2084,6 +2010,36 @@
   "series_name": "sample: TiO2/cellulose",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "UV irradiation time"
   ],
@@ -2101,21 +2057,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2132,13 +2080,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F12b-9"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F12b-9"
     },
     "material::": {
@@ -2150,84 +2092,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F12b-9"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F12b-9"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -2302,6 +2222,36 @@
   "series_name": "sample: Ag/TiO2/cellulose",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "UV irradiation time"
   ],
@@ -2319,21 +2269,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2350,13 +2292,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F12b-10"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F12b-10"
     },
     "material::": {
@@ -2368,84 +2304,62 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F12b-10"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F12b-10"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  },
  {
   "material": "Al2O3",
   "material_raw": "Al2O3",
   "precursors": [
-   "DEZ"
+   "TMA"
   ],
-  "coreactants": [
-   "H2O"
-  ],
+  "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "DEZ"
-   },
-   {
-    "label": "B",
-    "role": "coreactant",
-    "species": "H2O"
+    "species": "TMA"
    }
   ],
   "carrier_gas": null,
   "process_type": "thermal",
-  "cycle_sequence": "AB",
+  "cycle_sequence": "A",
   "controlled": [
    {
     "quantity": "molecular_mass",
-    "value": 123.53,
+    "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "DEZ",
-     "property": "molar_mass"
-    }
-   },
-   {
-    "quantity": "molecular_mass",
-    "value": 18.02,
-    "unit": "g/mol",
-    "of_reactant": "B",
-    "source": "species",
-    "origin": {
-     "level": "ontology",
-     "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molar_mass"
     }
    },
    {
     "quantity": "precursor_molecular_diameter",
-    "value": 0.265,
+    "value": 0.591,
     "unit": "nm",
-    "of_reactant": "B",
+    "of_reactant": "A",
     "source": "species",
     "origin": {
      "level": "ontology",
      "from": "species_property",
-     "species": "H2O",
+     "species": "TMA",
      "property": "molecular_diameter"
     }
    }
@@ -2520,6 +2434,36 @@
   "series_name": "sample: Ir/TiO2/cellulose",
   "phase": null,
   "structure": null,
+  "geometry_class": null,
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['DEZ', 'TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": "3 co-reactants listed with no material mapping: ['H2O', 'O3', 'O2_plasma']",
+   "candidate_mappings": {
+    "precursors": [
+     "DEZ",
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O",
+     "O3",
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3",
+     "TiO2",
+     "TiN",
+     "ZnO",
+     "W",
+     "Pt"
+    ]
+   }
+  },
   "varies": [
    "UV irradiation time"
   ],
@@ -2537,21 +2481,13 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "DEZ",
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    },
-    {
-     "label": "B",
-     "role": "coreactant",
-     "species": "H2O",
+     "species": "TMA",
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
    ],
-   "cycle_sequence": "AB",
+   "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
@@ -2568,13 +2504,7 @@
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "DEZ",
-     "experiment_id": "10.1116_1.4938104-F12b-11"
-    },
-    "species::B": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "H2O",
+     "value": "TMA",
      "experiment_id": "10.1116_1.4938104-F12b-11"
     },
     "material::": {
@@ -2586,21 +2516,19 @@
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
-     "value": "AB",
+     "value": "A",
      "experiment_id": "10.1116_1.4938104-F12b-11"
     },
     "reactants::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": [
-      "A",
-      "B"
+      "A"
      ],
      "experiment_id": "10.1116_1.4938104-F12b-11"
     }
    },
-   "completeness": 0.357
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  }
 ]

@@ -2,15 +2,13 @@
  {
   "material": "BN",
   "material_raw": "BN",
-  "precursors": [
-   "trichloroborazine"
-  ],
+  "precursors": [],
   "coreactants": [],
   "reactants": [
    {
     "label": "A",
     "role": "precursor",
-    "species": "trichloroborazine"
+    "species": null
    }
   ],
   "carrier_gas": null,
@@ -62,8 +60,29 @@
   },
   "series_name": null,
   "phase": null,
-  "structure": "planar_wafer",
   "varies": [],
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
   "dependent": [
    {
     "quantity": "growth_per_cycle",
@@ -81,7 +100,7 @@
     {
      "label": "A",
      "role": "precursor",
-     "species": "trichloroborazine",
+     "species": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -101,12 +120,6 @@
    "channel_map": null,
    "param_sources": {
     "_exp_id": "10.1002_cnma.201700148-paper-0",
-    "species::A": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": "trichloroborazine",
-     "experiment_id": "10.1002_cnma.201700148-paper-0"
-    },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
@@ -135,8 +148,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.5
-  },
-  "geometry_class": "planar"
+   "completeness": 0.4
+  }
  }
 ]

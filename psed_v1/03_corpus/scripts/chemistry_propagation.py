@@ -52,6 +52,18 @@ ELEMENT_HINTS = {
     "W":  ("WF6",),
 }
 
+# Metal symbols we can RECOGNISE in a formula even when we have no precursor hint for
+# them. material_metals must count these too: without Li, "LiAlS_x" reads as a
+# single-metal (Al) film and the element rule would promote the Al source as though it
+# alone resolved a ternary. Recognising the metal is a weaker claim than knowing its
+# precursor, and it is exactly what the multi-metal guard needs.
+KNOWN_METALS = set(ELEMENT_HINTS) | {
+    "Li", "Na", "K", "Mg", "Ca", "Sc", "V", "Cr", "Mn", "Co", "Ni", "Cu", "Ga", "Ge",
+    "As", "Se", "Rb", "Nb", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sb", "Te", "Cs",
+    "La", "Ce", "Nd", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu",
+    "Ta", "Re", "Os", "Ir", "Pt", "Au", "Pb", "Th", "U", "B", "Al", "Zn", "Sn",
+}
+
 
 @dataclass
 class ChemistryResolution:
@@ -104,7 +116,7 @@ def material_metals(material):
     if not m:
         return []
     syms = set(re.findall(r"[A-Z][a-z]?", m))
-    return [el for el in ELEMENT_HINTS if el in syms]
+    return sorted(el for el in KNOWN_METALS if el in syms)
 
 
 def _element_candidates(material, candidates):
@@ -116,7 +128,12 @@ def _element_candidates(material, candidates):
     metals = material_metals(material)
     if len(metals) != 1:
         return [], False
-    hints = ELEMENT_HINTS[metals[0]]
+    hints = ELEMENT_HINTS.get(metals[0])
+    if not hints:
+        # We can recognise the metal but have no precursor hints for it, so we cannot
+        # tell which candidate supplies it. Recognising a metal is not knowing its
+        # precursor — fall through to the conservative branches.
+        return [], False
     return [c for c in candidates if any(h in c.upper() for h in hints)], True
 
 
@@ -200,6 +217,19 @@ def resolve_experiment_chemistry(deposited_material, experiment_reactants=None,
         r.resolution_method = "no_candidates"
         r.ambiguity_reason = r.ambiguity_reason or "no precursor candidate in scout or card"
         r.source_level = "scout" if r.co_reactant else None
+        return r
+    metals = material_metals(deposited_material)
+    if len(metals) > 1 and len(precs) > 1:
+        # A multi-metal film needs one precursor PER metal. Choosing a single candidate
+        # by element match would assert that it alone supplies the film, so this
+        # requires an explicit material_chemistry mapping (checked above) and is
+        # otherwise ambiguous.
+        r.resolution_status, r.resolution_method = "ambiguous", "unresolved_multi_material"
+        r.ambiguity_reason = (
+            f"{deposited_material} contains {len(metals)} metals {metals} and the source "
+            f"lists {len(precs)} precursor candidates {precs}; a multi-metal film needs one "
+            f"precursor per metal, so no single candidate resolves it — an explicit "
+            f"material_chemistry mapping is required")
         return r
     hits, rule_applied = _element_candidates(deposited_material, precs)
     if len(hits) == 1:
