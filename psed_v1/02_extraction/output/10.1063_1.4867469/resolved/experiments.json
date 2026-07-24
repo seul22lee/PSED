@@ -30,21 +30,46 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "derived",
+      "status": "derived",
+      "evidence": null,
+      "transformation": "degenerate_range_to_scalar",
+      "from_field": "temperature_window_C"
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -173,7 +198,48 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.4867469-F1c-0"
+    "_exp_id": "10.1063_1.4867469-F1c-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "barium_bis_triisopropylcyclopentadienyl",
+     "experiment_id": "10.1063_1.4867469-F1c-0"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.4867469-F1c-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaTiO3",
+     "experiment_id": "10.1063_1.4867469-F1c-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.4867469-F1c-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.4867469-F1c-0"
+    },
+    "temperature::": {
+     "source": "derived",
+     "from": "degenerate_range",
+     "value": 225,
+     "paper_id": null,
+     "card_field": "temperature_C",
+     "transformation": "degenerate_range_to_scalar"
+    }
    },
    "completeness": 0.429
   }
@@ -209,21 +275,46 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "derived",
+      "status": "derived",
+      "evidence": null,
+      "transformation": "degenerate_range_to_scalar",
+      "from_field": "temperature_window_C"
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -348,7 +439,48 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.4867469-F1c-1"
+    "_exp_id": "10.1063_1.4867469-F1c-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "barium_bis_triisopropylcyclopentadienyl",
+     "experiment_id": "10.1063_1.4867469-F1c-1"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.4867469-F1c-1"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaTiO3",
+     "experiment_id": "10.1063_1.4867469-F1c-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.4867469-F1c-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.4867469-F1c-1"
+    },
+    "temperature::": {
+     "source": "derived",
+     "from": "degenerate_range",
+     "value": 225,
+     "paper_id": null,
+     "card_field": "temperature_C",
+     "transformation": "degenerate_range_to_scalar"
+    }
    },
    "completeness": 0.429
   }
@@ -384,21 +516,46 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "derived",
+      "status": "derived",
+      "evidence": null,
+      "transformation": "degenerate_range_to_scalar",
+      "from_field": "temperature_window_C"
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -523,7 +680,48 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.4867469-F1c-2"
+    "_exp_id": "10.1063_1.4867469-F1c-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "barium_bis_triisopropylcyclopentadienyl",
+     "experiment_id": "10.1063_1.4867469-F1c-2"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.4867469-F1c-2"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaTiO3",
+     "experiment_id": "10.1063_1.4867469-F1c-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.4867469-F1c-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.4867469-F1c-2"
+    },
+    "temperature::": {
+     "source": "derived",
+     "from": "degenerate_range",
+     "value": 225,
+     "paper_id": null,
+     "card_field": "temperature_C",
+     "transformation": "degenerate_range_to_scalar"
+    }
    },
    "completeness": 0.429
   }
@@ -559,7 +757,20 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "derived",
+      "status": "derived",
+      "evidence": null,
+      "transformation": "degenerate_range_to_scalar",
+      "from_field": "temperature_window_C"
+     }
+    }
    },
    {
     "quantity": "film_thickness",
@@ -567,21 +778,41 @@
     "unit": "nm",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "observable"
+    "recipe_role": "observable",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.4867469",
+     "experiment_id": "10.1063_1.4867469-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -746,7 +977,48 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.4867469-F2a-3"
+    "_exp_id": "10.1063_1.4867469-F2a-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "barium_bis_triisopropylcyclopentadienyl",
+     "experiment_id": "10.1063_1.4867469-F2a-3"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.4867469-F2a-3"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaTiO3",
+     "experiment_id": "10.1063_1.4867469-F2a-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.4867469-F2a-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.4867469-F2a-3"
+    },
+    "temperature::": {
+     "source": "derived",
+     "from": "degenerate_range",
+     "value": 225,
+     "paper_id": null,
+     "card_field": "temperature_C",
+     "transformation": "degenerate_range_to_scalar"
+    }
    },
    "completeness": 0.429
   }
@@ -782,7 +1054,20 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "derived",
+      "status": "derived",
+      "evidence": null,
+      "transformation": "degenerate_range_to_scalar",
+      "from_field": "temperature_window_C"
+     }
+    }
    },
    {
     "quantity": "frequency",
@@ -790,21 +1075,41 @@
     "unit": "kHz",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.4867469",
+     "experiment_id": "10.1063_1.4867469-F4a-4",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -937,7 +1242,48 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.4867469-F4a-4"
+    "_exp_id": "10.1063_1.4867469-F4a-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "barium_bis_triisopropylcyclopentadienyl",
+     "experiment_id": "10.1063_1.4867469-F4a-4"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.4867469-F4a-4"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaTiO3",
+     "experiment_id": "10.1063_1.4867469-F4a-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.4867469-F4a-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.4867469-F4a-4"
+    },
+    "temperature::": {
+     "source": "derived",
+     "from": "degenerate_range",
+     "value": 225,
+     "paper_id": null,
+     "card_field": "temperature_C",
+     "transformation": "degenerate_range_to_scalar"
+    }
    },
    "completeness": 0.429
   }
@@ -973,7 +1319,20 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "derived",
+      "status": "derived",
+      "evidence": null,
+      "transformation": "degenerate_range_to_scalar",
+      "from_field": "temperature_window_C"
+     }
+    }
    },
    {
     "quantity": "frequency",
@@ -981,21 +1340,41 @@
     "unit": "kHz",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.4867469",
+     "experiment_id": "10.1063_1.4867469-F4a-5",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1128,7 +1507,48 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.4867469-F4a-5"
+    "_exp_id": "10.1063_1.4867469-F4a-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "barium_bis_triisopropylcyclopentadienyl",
+     "experiment_id": "10.1063_1.4867469-F4a-5"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.4867469-F4a-5"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaTiO3",
+     "experiment_id": "10.1063_1.4867469-F4a-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.4867469-F4a-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.4867469-F4a-5"
+    },
+    "temperature::": {
+     "source": "derived",
+     "from": "degenerate_range",
+     "value": 225,
+     "paper_id": null,
+     "card_field": "temperature_C",
+     "transformation": "degenerate_range_to_scalar"
+    }
    },
    "completeness": 0.429
   }

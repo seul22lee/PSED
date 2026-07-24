@@ -1,12 +1,25 @@
 {
   "recipes": 672,
   "fields_directly_extracted": 4363,
+  "fields_paper_direct": 805,
+  "fields_experiment_direct": 3552,
+  "fields_derived": 6,
   "fields_kb_imputed": 626,
   "fields_model_default": 2046,
+  "fields_unresolved": 2161,
   "fields_total": 9196,
+  "fields_by_origin": {
+    "caption": 278,
+    "degenerate_range": 6,
+    "experiment_record": 3182,
+    "kb_imputation": 626,
+    "model_default": 2046,
+    "series": 92,
+    "unknown": 805
+  },
   "process_window_papers": 8,
   "process_window_recipes": 278,
-  "window_recipes_with_per_experiment_temperature": 278,
+  "window_recipes_with_per_experiment_temperature": 134,
   "window_recipes_with_paper_level_scalar_temperature": 0,
   "windows": {
     "10.1021_acs.chemmater.2c02292": [
@@ -42,5 +55,5 @@
       450
     ]
   },
-  "note": "A non-degenerate temperature_window_C is an admissible RANGE, not a scalar condition, and is NOT counted as a completed recipe field. Scalar temperatures previously produced by collapsing such a range to its lower endpoint have been removed; the resulting drop in 'filled completeness' is a truthfulness correction, not a regression. 'filled completeness' counts imputed and defaulted fields alongside extracted ones and is therefore NOT a measure of recipe readiness \u2014 read it together with fields_directly_extracted."
+  "note": "A non-degenerate temperature_window_C is an admissible RANGE, not a scalar condition, and is NOT counted as a completed recipe field. Scalar temperatures previously produced by collapsing such a range to its lower endpoint have been removed; the resulting drop in 'filled completeness' is a truthfulness correction, not a regression. 'filled completeness' counts imputed and defaulted fields alongside extracted ones and is therefore NOT a measure of recipe readiness \u2014 read it together with fields_directly_extracted. Counts are read from each recipe's param_sources (provenance recorded where the value was created); fields_directly_extracted = paper + experiment + derived."
 }

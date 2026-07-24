@@ -32,7 +32,18 @@
     "unit": "C",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "total_pressure",
@@ -40,7 +51,18 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pressure_Pa",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "purge_time",
@@ -48,7 +70,18 @@
     "unit": "s",
     "of_reactant": null,
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -56,7 +89,18 @@
     "unit": "s",
     "of_reactant": "A",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "pulse_time",
@@ -64,28 +108,57 @@
     "unit": "s",
     "of_reactant": "B",
     "source": "methods",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "unknown",
+      "status": "direct",
+      "evidence": null
+     }
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 189.68,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TiCl4",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -248,7 +321,75 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1186_s11671-015-0872-9-F3a-0"
+    "_exp_id": "10.1186_s11671-015-0872-9-F3a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TiCl4",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 0.25,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1.0,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 0.25,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 1.0,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TiO2",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
    },
    "completeness": 0.714
   }

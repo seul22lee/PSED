@@ -30,7 +30,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -38,7 +46,15 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -46,35 +62,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -211,7 +259,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F2a-0"
+    "_exp_id": "10.1063_1.5028178-F2a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F2a-0"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F2a-0"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F2a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F2a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F2a-0"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-0",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -247,7 +355,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -255,7 +371,15 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -263,35 +387,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -416,7 +572,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F2a-1"
+    "_exp_id": "10.1063_1.5028178-F2a-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F2a-1"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.05,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F2a-1"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.05,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F2a-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F2a-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F2a-1"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-1",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -452,7 +668,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -460,7 +684,15 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -468,35 +700,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -609,7 +873,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F2a-2"
+    "_exp_id": "10.1063_1.5028178-F2a-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F2a-2"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.02,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F2a-2"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.02,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F2a-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F2a-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F2a-2"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -645,7 +969,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -653,7 +985,15 @@
     "unit": "Pa",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -661,35 +1001,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -794,7 +1166,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F2a-3"
+    "_exp_id": "10.1063_1.5028178-F2a-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F2a-3"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.01,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F2a-3"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.01,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F2a-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F2a-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F2a-3"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -830,7 +1262,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-4",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -838,35 +1278,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-4",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -979,7 +1451,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F3a-4"
+    "_exp_id": "10.1063_1.5028178-F3a-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F3a-4"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-4",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F3a-4"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-4",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F3a-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F3a-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F3a-4"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-4",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -1015,7 +1547,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-5",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1023,35 +1563,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-5",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1160,7 +1732,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F3a-5"
+    "_exp_id": "10.1063_1.5028178-F3a-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F3a-5"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.05,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-5",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F3a-5"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.05,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-5",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F3a-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F3a-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F3a-5"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-5",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -1196,7 +1828,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-6",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1204,35 +1844,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-6",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1345,7 +2017,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F3a-6"
+    "_exp_id": "10.1063_1.5028178-F3a-6",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F3a-6"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.02,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-6",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F3a-6"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.02,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-6",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F3a-6"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F3a-6"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F3a-6"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-6",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -1381,7 +2113,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-7",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1389,35 +2129,67 @@
     "unit": "s",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-7",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1530,7 +2302,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F3a-7"
+    "_exp_id": "10.1063_1.5028178-F3a-7",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F3a-7"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.01,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-7",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F3a-7"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "series",
+     "value": 0.01,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-7",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F3a-7"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F3a-7"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F3a-7"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F3a-7",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -1566,7 +2398,15 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-8",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1574,7 +2414,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-8",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "temperature",
@@ -1582,35 +2430,67 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-8",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1731,7 +2611,76 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F4a-8"
+    "_exp_id": "10.1063_1.5028178-F4a-8",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F4a-8"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-8",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F4a-8"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-8",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F4a-8"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F4a-8"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F4a-8"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 1000.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-8",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-8",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    "completeness": 0.643
   }
@@ -1767,7 +2716,15 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1775,7 +2732,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "temperature",
@@ -1783,7 +2748,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "feature_height",
@@ -1791,35 +2764,67 @@
     "unit": "\u03bcm",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "structure"
+    "recipe_role": "structure",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1927,7 +2932,76 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F4a-9"
+    "_exp_id": "10.1063_1.5028178-F4a-9",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F4a-9"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F4a-9"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F4a-9"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F4a-9"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F4a-9"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 1000.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-9",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    "completeness": 0.643
   }
@@ -1963,7 +3037,15 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -1971,7 +3053,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "temperature",
@@ -1979,7 +3069,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "feature_height",
@@ -1987,35 +3085,67 @@
     "unit": "\u03bcm",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "structure"
+    "recipe_role": "structure",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2123,7 +3253,76 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F4a-10"
+    "_exp_id": "10.1063_1.5028178-F4a-10",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F4a-10"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F4a-10"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F4a-10"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F4a-10"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F4a-10"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 1000.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-10",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    "completeness": 0.643
   }
@@ -2159,7 +3358,15 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -2167,7 +3374,15 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "temperature",
@@ -2175,7 +3390,15 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "feature_height",
@@ -2183,35 +3406,67 @@
     "unit": "\u03bcm",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": "structure"
+    "recipe_role": "structure",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2315,7 +3570,76 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F4a-11"
+    "_exp_id": "10.1063_1.5028178-F4a-11",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F4a-11"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F4a-11"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F4a-11"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F4a-11"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F4a-11"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 1000.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    "completeness": 0.643
   }
@@ -2351,35 +3675,67 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F5a-12",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2502,7 +3858,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F5a-12"
+    "_exp_id": "10.1063_1.5028178-F5a-12",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F5a-12"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F5a-12"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F5a-12"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F5a-12"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F5a-12"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F5a-12",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -2538,35 +3936,67 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F5a-13",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2685,7 +4115,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F5a-13"
+    "_exp_id": "10.1063_1.5028178-F5a-13",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F5a-13"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F5a-13"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F5a-13"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F5a-13"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F5a-13"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F5a-13",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -2721,35 +4193,67 @@
     "unit": "K",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F5a-14",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2864,7 +4368,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F5a-14"
+    "_exp_id": "10.1063_1.5028178-F5a-14",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F5a-14"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F5a-14"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F5a-14"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F5a-14"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F5a-14"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F5a-14",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -2900,35 +4446,67 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F6a-15",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3069,7 +4647,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F6a-15"
+    "_exp_id": "10.1063_1.5028178-F6a-15",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F6a-15"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F6a-15"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F6a-15"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F6a-15"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F6a-15"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F6a-15",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3105,35 +4725,67 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F6a-16",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3302,7 +4954,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F6a-16"
+    "_exp_id": "10.1063_1.5028178-F6a-16",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F6a-16"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F6a-16"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F6a-16"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F6a-16"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F6a-16"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F6a-16",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3338,35 +5032,67 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F7a-17",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3475,7 +5201,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F7a-17"
+    "_exp_id": "10.1063_1.5028178-F7a-17",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F7a-17"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F7a-17"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F7a-17"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F7a-17"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F7a-17"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 1000.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F7a-17",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3511,35 +5279,67 @@
     "unit": null,
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F7a-18",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 72.09,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.591,
     "unit": "nm",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 18.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.265,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3748,7 +5548,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1063_1.5028178-F7a-18"
+    "_exp_id": "10.1063_1.5028178-F7a-18",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.5028178-F7a-18"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1063_1.5028178-F7a-18"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.5028178-F7a-18"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.5028178-F7a-18"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.5028178-F7a-18"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 1000.0,
+     "paper_id": "10.1063_1.5028178",
+     "experiment_id": "10.1063_1.5028178-F7a-18",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }

@@ -50,7 +50,8 @@ conditions actually stated (null if absent — do NOT guess):
  "temperature_C":num|null,"pressure_Pa":num|null,
  "pulse_time_s":{"precursor":num|null,"coreactant":num|null}|null,
  "purge_time_s":num|null,"ncycles":num|null,"carrier_gas":str|null,
- "_from_table":str|null}
+ "_from_table":str|null,
+ "_field_tables":{"<field name above>":"Table N"}|null}
 The METHODS prose is primary. Consult the TABLES only when the prose or a figure
 caption indicates a value is given in a table (e.g. 'listed in Table 1'), or when a
 requested value is not in the prose but is clearly stated in a table. When you take a
@@ -74,7 +75,9 @@ ablation series. Do NOT guess; leave null if not clearly stated.
   or figure (e.g. "the saturation study was performed at 225 C"), that belongs to
   that experiment, NOT to the paper-level card — still leave the paper-level field
   null.
-If a value comes from a table, note which table in the "_from_table" field."""
+If a value comes from a table, note which table in the "_from_table" field, and list
+that field in "_field_tables" ({"purge_time_s":"Table 4"}) so each value can be traced
+to its own source. Fields absent from "_field_tables" are taken to come from the prose."""
 
 
 # --- process-window semantics (INTENDED USE — not implemented in this patch) ---
@@ -105,6 +108,28 @@ def _scalar_from_degenerate_range(value):
     return lo if float(lo) == float(hi) else None
 
 
+# --- paper-level field provenance -------------------------------------------
+# Provenance is CREATED at the stage that creates or transforms the value, never
+# inferred afterwards from the number itself (a value of 175 tells you nothing about
+# whether it was stated, tabulated, or collapsed out of a [175,300] window — that is
+# exactly the confusion this layer removes).
+PAPER_ORIGINS = ("scout", "scout_window", "methods_prose", "table", "derived", "unknown")
+PAPER_STATUSES = ("direct", "range", "derived", "unresolved")
+
+# Card fields the methods/table pass may fill, in merge order.
+CARD_MERGE_FIELDS = ("process_type", "temperature_C", "pressure_Pa", "pulse_time_s",
+                     "purge_time_s", "ncycles", "carrier_gas")
+
+
+def _pprov(origin, status, evidence=None, **extra):
+    """One paper-level provenance record. `evidence` is a human-readable pointer
+    (e.g. a table ref) or None — never a re-derivation of the value."""
+    assert origin in PAPER_ORIGINS and status in PAPER_STATUSES, (origin, status)
+    d = {"level": "paper", "origin": origin, "status": status, "evidence": evidence}
+    d.update(extra)
+    return d
+
+
 def base_card(scout):
     """Process card from the scout alone (no LLM).
 
@@ -112,16 +137,30 @@ def base_card(scout):
     form kept for backward compatibility). `temperature_C` is the paper-level SCALAR
     deposition condition and is only set when the window is degenerate; otherwise it
     stays None and the methods/table pass may still fill a genuine single value.
-    FUTURE: an explicit per-field status (e.g. {"temperature_C":"varied_across_samples"})
-    would let a later stage distinguish 'not paper-level' from 'not found'; not in this patch."""
+
+    `_field_provenance` records, per field, WHERE the value came from. It is written
+    here for the two fields this function itself creates: the window (a scout range)
+    and — only when the window is degenerate — the scalar derived from it. A
+    non-degenerate window yields NO `temperature_C` entry, because no scalar exists."""
     window = scout.get("temperature_window_C")
+    scalar = _scalar_from_degenerate_range(window)
+    prov = {}
+    if scout.get("process_type"):
+        prov["process_type"] = _pprov("scout", "direct")
+    if window is not None:
+        prov["temperature_window_C"] = _pprov("scout_window", "range")
+    if scalar is not None:
+        prov["temperature_C"] = _pprov("derived", "derived",
+                                       transformation="degenerate_range_to_scalar",
+                                       from_field="temperature_window_C")
     return {"precursors": scout.get("precursors") or [],
             "coreactants": scout.get("coreactants") or [],
             "process_type": scout.get("process_type") or "unknown",
-            "temperature_C": _scalar_from_degenerate_range(window),
+            "temperature_C": scalar,
             "temperature_window_C": window,
             "pressure_Pa": None, "pulse_time_s": None, "purge_time_s": None,
-            "ncycles": None, "carrier_gas": None}
+            "ncycles": None, "carrier_gas": None,
+            "_field_provenance": prov}
 
 
 def methods_fill(sd, scout, client):
@@ -159,13 +198,57 @@ def methods_fill(sd, scout, client):
     for k in ("precursors", "coreactants"):
         if not base[k] and m.get(k):
             base[k] = m[k]
-    for k in ("process_type", "temperature_C", "pressure_Pa", "pulse_time_s",
-              "purge_time_s", "ncycles", "carrier_gas"):
+    # Per-field table attribution when the model supplied it; otherwise a card-wide
+    # `_from_table` says a table was consulted but NOT for which field — that is an
+    # honest `unknown`, never an assumed "table" or "methods_prose".
+    ftab = m.get("_field_tables") if isinstance(m.get("_field_tables"), dict) else {}
+    card_wide_table = m.get("_from_table")
+    prov = base.setdefault("_field_provenance", {})
+    for k in CARD_MERGE_FIELDS:
         if base.get(k) in (None, "unknown", []) and m.get(k) not in (None, ""):
-            base[k] = m[k]
-    if m.get("_from_table"):
-        base["_from_table"] = m["_from_table"]     # provenance: which table a value came from
+            base[k] = m[k]                                   # the value …
+            if ftab.get(k):                                  # … and its provenance, together
+                prov[k] = _pprov("table", "direct", evidence=str(ftab[k]))
+            elif card_wide_table:
+                prov[k] = _pprov("unknown", "direct", evidence=str(card_wide_table))
+            else:
+                prov[k] = _pprov("methods_prose", "direct")
+    if card_wide_table:
+        base["_from_table"] = card_wide_table       # retained for backward compatibility
     return base, tok
+
+
+def backfill_card_provenance(card, scout):
+    """Deterministic provenance for a card built BEFORE this layer existed (no LLM).
+
+    Only rules, never the numeric value, decide the origin:
+      · a window in the scout is a scout range;
+      · if that window is DEGENERATE, base_card is what set `temperature_C`, so the
+        scalar is `derived` — this follows from the code path, not from comparing
+        numbers;
+      · every other populated field was filled by the methods/table pass, whose
+        per-field origin was not recorded at the time and is unrecoverable without an
+        LLM rebuild, so it is `unknown` (§8) — `_from_table`, when present, is carried
+        as evidence but is card-wide and does NOT identify which field it explains."""
+    prov = dict(card.get("_field_provenance") or {})
+    scout = scout or {}
+    window = scout.get("temperature_window_C")
+    if window is not None and "temperature_window_C" not in prov:
+        prov["temperature_window_C"] = _pprov("scout_window", "range")
+    if scout.get("process_type") and "process_type" not in prov:
+        prov["process_type"] = _pprov("scout", "direct")   # base_card, not the merge
+    degenerate = _scalar_from_degenerate_range(window) is not None
+    for k in CARD_MERGE_FIELDS:
+        if k in prov or card.get(k) in (None, "", [], {}, "unknown"):
+            continue
+        if k == "temperature_C" and degenerate:
+            prov[k] = _pprov("derived", "derived",
+                             transformation="degenerate_range_to_scalar",
+                             from_field="temperature_window_C")
+        else:
+            prov[k] = _pprov("unknown", "direct", evidence=card.get("_from_table"))
+    card["_field_provenance"] = prov
+    return card
 
 
 def get_card(sd, scout, client):
@@ -173,7 +256,10 @@ def get_card(sd, scout, client):
     On re-resolve (client=None) it loads the cache (or the scout base), NO LLM."""
     cf = EXTRACTED / sd / "card.json"
     if cf.exists():
-        return json.loads(cf.read_text()), {}
+        card = json.loads(cf.read_text())
+        if "_field_provenance" not in card:       # legacy card: backfill, no LLM
+            cf.write_text(json.dumps(backfill_card_provenance(card, scout), indent=1))
+        return card, {}
     card, tok = (methods_fill(sd, scout, client) if client else (base_card(scout), {}))
     cf.write_text(json.dumps(card, indent=1))
     return card, tok
@@ -185,40 +271,73 @@ def get_card(sd, scout, client):
 _NUMU = re.compile(r"\s*([-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?)\s*([A-Za-zµμÅ°%/·^]*)\s*\Z")
 
 
-def _num_cond(k, v):
+def _num_cond(k, v, origin=None):
     """Caption condition -> controlled entry, ONLY when the value is a complete number.
     Without this, _num('Al2O3') returns 2.0 and a categorical caption field becomes a
     fabricated measurement."""
     m = _NUMU.fullmatch(str(v))
     if not m:
         return None
-    return _ctrl(k, float(m.group(1)), (m.group(2) or None), source="caption")
+    return _ctrl(k, float(m.group(1)), (m.group(2) or None), source="caption", origin=origin)
 
 
-def _ctrl(q, v, u, react=None, source="methods"):
+def _ctrl(q, v, u, react=None, source="methods", origin=None):
+    """One controlled condition. `origin` (optional) is the structured record of WHERE
+    the value came from — paper card vs this experiment's caption/series — carried
+    alongside the existing free-standing `source` label, which is left untouched."""
     if v is None:
         return None
     cq = lib.canon_quantity(q) or q
     v, u = _norm_unit(cq, v, u)
-    return {"quantity": cq, "value": v, "unit": u, "of_reactant": react,
-            "source": source, "recipe_role": lib.recipe_role(cq)}
+    c = {"quantity": cq, "value": v, "unit": u, "of_reactant": react,
+         "source": source, "recipe_role": lib.recipe_role(cq)}
+    if origin:
+        c["origin"] = origin
+    return c
+
+
+def _exp_origin(kind, pid, exp_id, prov=None):
+    """Experiment-level origin. Figure/panel are included only when the record
+    actually carries them — never invented."""
+    o = {"level": "experiment", "from": kind, "paper_id": pid, "experiment_id": exp_id}
+    fig = (prov or {}).get("figure")
+    panel = (prov or {}).get("panel")
+    if fig:
+        o["figure"] = fig
+    if panel:
+        o["panel"] = panel
+    return o
 
 
 def paper_conditions(card):
-    """Paper-level controlled conditions from the (gap-filled) process card."""
+    """Paper-level controlled conditions from the (gap-filled) process card.
+
+    Each carries a paper-level origin naming the CARD FIELD it came from, plus that
+    field's own provenance when the card records one — so a condition can say not just
+    'methods' but 'card.temperature_C, which was derived from a degenerate window'."""
+    fp = card.get("_field_provenance") or {}
+
+    def po(card_field):
+        o = {"level": "paper", "from": "card", "card_field": card_field}
+        if fp.get(card_field):
+            o["card_provenance"] = fp[card_field]
+        return o
+
     cs = []
     for c in [
-        _ctrl("temperature", card.get("temperature_C"), "C"),
-        _ctrl("total_pressure", card.get("pressure_Pa"), "Pa"),
-        _ctrl("cycle_number", card.get("ncycles"), "cycles"),
-        _ctrl("purge_time", card.get("purge_time_s"), "s"),
+        _ctrl("temperature", card.get("temperature_C"), "C", origin=po("temperature_C")),
+        _ctrl("total_pressure", card.get("pressure_Pa"), "Pa", origin=po("pressure_Pa")),
+        _ctrl("cycle_number", card.get("ncycles"), "cycles", origin=po("ncycles")),
+        _ctrl("purge_time", card.get("purge_time_s"), "s", origin=po("purge_time_s")),
     ]:
         if c:
             cs.append(c)
     pt = card.get("pulse_time_s") or {}
     if isinstance(pt, dict):
-        cs += [x for x in (_ctrl("pulse_time", pt.get("precursor"), "s", "A"),
-                           _ctrl("pulse_time", pt.get("coreactant"), "s", "B")) if x]
+        cs += [x for x in (_ctrl("pulse_time", pt.get("precursor"), "s", "A",
+                                 origin=po("pulse_time_s")),
+                           _ctrl("pulse_time", pt.get("coreactant"), "s", "B",
+                                 origin=po("pulse_time_s"))) if x]
     return cs
 
 
@@ -245,12 +364,16 @@ def to_experiments(sd, scout, records, card):
         cq = lib.canon_quantity(r.get("coordinate")) or r.get("coordinate")
         mv, mu = _norm_unit(mq, None, (r.get("measurand") or {}).get("unit"))
         pts = [p for p in (r.get("points") or []) if isinstance(p, list) and len(p) == 2]
-        panel_ctrl = [c for c in (_num_cond(k, v)
-                                  for k, v in (r.get("controlled") or {}).items()) if c]
         mat = lib.canon_material(r.get("material")) or (scout.get("materials") or [None])[0]
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
         panel = (r.get("provenance") or {}).get("panel") or ""
         panel = panel.lower() if re.fullmatch(r"[A-Za-z]", str(panel).strip()) else ""   # only a real panel letter
+        # exp_id is resolved BEFORE the conditions so each condition's origin can name
+        # the experiment it belongs to (unchanged value — same expression as before).
+        exp_id = f"{pid}-{fig}{panel}-{len(exps)}"
+        panel_ctrl = [c for c in (
+            _num_cond(k, v, origin=_exp_origin("caption", pid, exp_id, r.get("provenance")))
+            for k, v in (r.get("controlled") or {}).items()) if c]
         # Series identity arrives STRUCTURED from 05 — no string is parsed here. Only a
         # numeric_sweep contributes a controlled condition; categorical/material series
         # never do. This is what makes value fabrication (LTB:H2S -> 2.0, 2-propanol ->
@@ -262,7 +385,8 @@ def to_experiments(sd, scout, records, card):
             # a meaningless 'series_value'.
             _axis = (r.get("series_axis") or "").strip() or "unnamed_series_axis"
             series_ctrl = [_ctrl(_axis, r.get("series_value_num"), r.get("series_unit"),
-                                 source="series")]
+                                 source="series",
+                                 origin=_exp_origin("series", pid, exp_id, r.get("provenance")))]
         series_ctrl = [c for c in series_ctrl if c]
         # display metadata only — never split or coerced downstream
         series_name = (f'{r.get("series_axis") or "series"}: {r.get("series_value")}'
@@ -281,7 +405,7 @@ def to_experiments(sd, scout, records, card):
             "relevance": "experimental" if r.get("source") == "measured" else "model",
             "is_model_result": r.get("source") == "simulated",
             "analysis_ready": bool(pts and mq),
-            "exp_id": f"{pid}-{fig}{panel}-{len(exps)}",
+            "exp_id": exp_id,
             "provenance": {**(r.get("provenance") or {}), "doi": sd},
             "series_name": series_name,             # display only; built from structure, never re-parsed
             "phase": r.get("phase"),                # crystallographic phase (e.g. "c-MoS2") or None
@@ -316,12 +440,17 @@ def to_experiments(sd, scout, records, card):
             e["controlled"] = [c for c in (e.get("controlled") or [])
                                if not (c.get("quantity") in ("molecular_mass", "precursor_molecular_diameter")
                                        and c.get("of_reactant") == lab)]
+            # ontology reference data, not a measurement of this paper — the origin
+            # names the species it was looked up for
+            so = {"level": "ontology", "from": "species_property", "species": sp}
             if mm is not None:
                 e["controlled"].append({"quantity": "molecular_mass", "value": round(mm, 4),
-                                        "unit": "g/mol", "of_reactant": lab, "source": "species"})
+                                        "unit": "g/mol", "of_reactant": lab, "source": "species",
+                                        "origin": {**so, "property": "molar_mass"}})
             if dpm is not None:
                 e["controlled"].append({"quantity": "precursor_molecular_diameter", "value": round(dpm * 1e-3, 4),
-                                        "unit": "nm", "of_reactant": lab, "source": "species"})
+                                        "unit": "nm", "of_reactant": lab, "source": "species",
+                                        "origin": {**so, "property": "molecular_diameter"}})
     return pid, exps
 
 

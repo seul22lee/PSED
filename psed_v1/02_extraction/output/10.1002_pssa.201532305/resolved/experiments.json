@@ -31,21 +31,39 @@
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -236,7 +254,40 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F2a-0"
+    "_exp_id": "10.1002_pssa.201532305-F2a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F2a-0"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F2a-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F2a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F2a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F2a-0"
+    }
    },
    "completeness": 0.357
   }
@@ -274,7 +325,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -282,7 +341,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -290,28 +357,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -414,7 +507,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4a-1"
+    "_exp_id": "10.1002_pssa.201532305-F4a-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4a-1"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-1",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -452,7 +587,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -460,7 +603,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -468,28 +619,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -592,7 +769,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4a-2"
+    "_exp_id": "10.1002_pssa.201532305-F4a-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4a-2"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-2",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -630,7 +849,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -638,7 +865,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -646,28 +881,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "series",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -770,7 +1031,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4a-3"
+    "_exp_id": "10.1002_pssa.201532305-F4a-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4a-3"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4a-3",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -808,7 +1111,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -816,7 +1127,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "pressure",
@@ -824,28 +1143,54 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -952,7 +1297,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4b-4"
+    "_exp_id": "10.1002_pssa.201532305-F4b-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4b-4"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-4",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    "completeness": 0.429
   }
@@ -990,7 +1377,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -998,7 +1393,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "pressure",
@@ -1006,28 +1409,54 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1134,7 +1563,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4b-5"
+    "_exp_id": "10.1002_pssa.201532305-F4b-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4b-5"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-5",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    "completeness": 0.429
   }
@@ -1172,7 +1643,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -1180,7 +1659,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "pressure",
@@ -1188,28 +1675,54 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1316,7 +1829,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4b-6"
+    "_exp_id": "10.1002_pssa.201532305-F4b-6",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4b-6"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4b-6",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
    },
    "completeness": 0.429
   }
@@ -1354,7 +1909,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -1362,7 +1925,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    {
     "quantity": "pressure",
@@ -1370,28 +1941,54 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1502,7 +2099,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4c-7"
+    "_exp_id": "10.1002_pssa.201532305-F4c-7",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4c-7"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-7",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    "completeness": 0.429
   }
@@ -1540,7 +2179,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -1548,7 +2195,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    {
     "quantity": "pressure",
@@ -1556,28 +2211,54 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1688,7 +2369,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4c-8"
+    "_exp_id": "10.1002_pssa.201532305-F4c-8",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4c-8"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4c-8",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
    },
    "completeness": 0.429
   }
@@ -1726,7 +2449,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -1734,7 +2465,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    {
     "quantity": "pressure",
@@ -1742,28 +2481,54 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -1870,7 +2635,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4d-9"
+    "_exp_id": "10.1002_pssa.201532305-F4d-9",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4d-9"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-9",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    "completeness": 0.429
   }
@@ -1908,7 +2715,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -1916,7 +2731,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    {
     "quantity": "pressure",
@@ -1924,28 +2747,54 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2052,7 +2901,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F4d-10"
+    "_exp_id": "10.1002_pssa.201532305-F4d-10",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F4d-10"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F4d-10",
+     "figure": "Fig 4",
+     "panel": "d"
+    }
    },
    "completeness": 0.429
   }
@@ -2090,7 +2981,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-11",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -2098,28 +2997,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-11",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2254,7 +3179,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F5a-11"
+    "_exp_id": "10.1002_pssa.201532305-F5a-11",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F5a-11"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F5a-11"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F5a-11"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F5a-11"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F5a-11"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-11",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -2292,7 +3259,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-12",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -2300,28 +3275,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-12",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2456,7 +3457,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F5a-12"
+    "_exp_id": "10.1002_pssa.201532305-F5a-12",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F5a-12"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F5a-12"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F5a-12"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F5a-12"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F5a-12"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-12",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -2494,7 +3537,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-13",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -2502,28 +3553,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-13",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2682,7 +3759,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F5a-13"
+    "_exp_id": "10.1002_pssa.201532305-F5a-13",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F5a-13"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F5a-13"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F5a-13"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F5a-13"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F5a-13"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-13",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -2720,7 +3839,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-14",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -2728,28 +3855,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-14",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -2880,7 +4033,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F5a-14"
+    "_exp_id": "10.1002_pssa.201532305-F5a-14",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F5a-14"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F5a-14"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F5a-14"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F5a-14"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F5a-14"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-14",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -2918,7 +4113,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-15",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -2926,28 +4129,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-15",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3106,7 +4335,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F5a-15"
+    "_exp_id": "10.1002_pssa.201532305-F5a-15",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F5a-15"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F5a-15"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F5a-15"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F5a-15"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F5a-15"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-15",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3144,7 +4415,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-16",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -3152,28 +4431,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-16",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3340,7 +4645,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F5a-16"
+    "_exp_id": "10.1002_pssa.201532305-F5a-16",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F5a-16"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F5a-16"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F5a-16"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F5a-16"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F5a-16"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F5a-16",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3378,7 +4725,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F6a-17",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -3386,28 +4741,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F6a-17",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3494,7 +4875,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F6a-17"
+    "_exp_id": "10.1002_pssa.201532305-F6a-17",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F6a-17"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F6a-17"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F6a-17"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F6a-17"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F6a-17"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F6a-17",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3532,7 +4955,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -3540,7 +4971,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -3548,28 +4987,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3724,7 +5189,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F7a-18"
+    "_exp_id": "10.1002_pssa.201532305-F7a-18",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F7a-18"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 325.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F7a-18",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3762,7 +5269,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F9a-19",
+     "figure": "Fig 9",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -3770,28 +5285,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F9a-19",
+     "figure": "Fig 9",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -3882,7 +5423,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F9a-19"
+    "_exp_id": "10.1002_pssa.201532305-F9a-19",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F9a-19"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F9a-19"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F9a-19"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F9a-19"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F9a-19"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F9a-19",
+     "figure": "Fig 9",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -3920,7 +5503,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20",
+     "figure": "Fig 10",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -3928,7 +5519,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20",
+     "figure": "Fig 10",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -3936,28 +5535,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20",
+     "figure": "Fig 10",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -4092,7 +5717,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F10a-20"
+    "_exp_id": "10.1002_pssa.201532305-F10a-20",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F10a-20"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10a-20",
+     "figure": "Fig 10",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -4130,7 +5797,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21",
+     "figure": "Fig 10",
+     "panel": "b"
+    }
    },
    {
     "quantity": "pressure",
@@ -4138,7 +5813,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21",
+     "figure": "Fig 10",
+     "panel": "b"
+    }
    },
    {
     "quantity": "hot_wire_temperature",
@@ -4146,28 +5829,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21",
+     "figure": "Fig 10",
+     "panel": "b"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -4302,7 +6011,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F10b-21"
+    "_exp_id": "10.1002_pssa.201532305-F10b-21",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F10b-21"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F10b-21",
+     "figure": "Fig 10",
+     "panel": "b"
+    }
    },
    "completeness": 0.429
   }
@@ -4340,7 +6091,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22",
+     "figure": "Fig 11",
+     "panel": "a"
+    }
    },
    {
     "quantity": "temperature",
@@ -4348,7 +6107,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22",
+     "figure": "Fig 11",
+     "panel": "a"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -4356,28 +6123,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22",
+     "figure": "Fig 11",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -4480,7 +6273,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F11a-22"
+    "_exp_id": "10.1002_pssa.201532305-F11a-22",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F11a-22"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11a-22",
+     "figure": "Fig 11",
+     "panel": "a"
+    }
    },
    "completeness": 0.429
   }
@@ -4518,7 +6353,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11b-23",
+     "figure": "Fig 11",
+     "panel": "b"
+    }
    },
    {
     "quantity": "temperature",
@@ -4526,28 +6369,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11b-23",
+     "figure": "Fig 11",
+     "panel": "b"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -4646,7 +6515,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F11b-23"
+    "_exp_id": "10.1002_pssa.201532305-F11b-23",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F11b-23"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F11b-23"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F11b-23"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F11b-23"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F11b-23"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11b-23",
+     "figure": "Fig 11",
+     "panel": "b"
+    }
    },
    "completeness": 0.429
   }
@@ -4684,7 +6595,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24",
+     "figure": "Fig 11",
+     "panel": "c"
+    }
    },
    {
     "quantity": "temperature",
@@ -4692,7 +6611,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24",
+     "figure": "Fig 11",
+     "panel": "c"
+    }
    },
    {
     "quantity": "hot-wire temperature",
@@ -4700,28 +6627,54 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24",
+     "figure": "Fig 11",
+     "panel": "c"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -4816,7 +6769,49 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F11c-24"
+    "_exp_id": "10.1002_pssa.201532305-F11c-24",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F11c-24"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F11c-24",
+     "figure": "Fig 11",
+     "panel": "c"
+    }
    },
    "completeness": 0.429
   }
@@ -4854,7 +6849,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -4862,7 +6865,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -4870,28 +6881,54 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -5050,7 +7087,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F12a-25"
+    "_exp_id": "10.1002_pssa.201532305-F12a-25",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F12a-25"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-25",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -5088,7 +7185,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -5096,7 +7201,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -5104,28 +7217,54 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -5308,7 +7447,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F12a-26"
+    "_exp_id": "10.1002_pssa.201532305-F12a-26",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F12a-26"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-26",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -5346,7 +7545,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -5354,7 +7561,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -5362,28 +7577,54 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -5570,7 +7811,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F12a-27"
+    "_exp_id": "10.1002_pssa.201532305-F12a-27",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F12a-27"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-27",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }
@@ -5608,7 +7909,15 @@
     "unit": "\u00b0C",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pressure",
@@ -5616,7 +7925,15 @@
     "unit": "mbar",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": null
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "pulse_time",
@@ -5624,28 +7941,54 @@
     "unit": "s",
     "of_reactant": null,
     "source": "caption",
-    "recipe_role": "control_setting"
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 297.83,
     "unit": "g/mol",
     "of_reactant": "A",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "WF6",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "molecular_mass",
     "value": 2.02,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molar_mass"
+    }
    },
    {
     "quantity": "precursor_molecular_diameter",
     "value": 0.289,
     "unit": "nm",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2",
+     "property": "molecular_diameter"
+    }
    }
   ],
   "measurand": {
@@ -5760,7 +8103,67 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1002_pssa.201532305-F12a-28"
+    "_exp_id": "10.1002_pssa.201532305-F12a-28",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "WF6",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28"
+    },
+    "pulse_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28"
+    },
+    "pulse_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 0.1,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28",
+     "figure": "Fig 12",
+     "panel": "a"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "W",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1002_pssa.201532305-F12a-28"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 315.0,
+     "paper_id": "10.1002_pssa.201532305",
+     "experiment_id": "10.1002_pssa.201532305-F12a-28",
+     "figure": "Fig 12",
+     "panel": "a"
+    }
    },
    "completeness": 0.571
   }

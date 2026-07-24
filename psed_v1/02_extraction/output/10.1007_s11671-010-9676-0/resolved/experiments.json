@@ -29,7 +29,13 @@
     "value": 48.0,
     "unit": "g/mol",
     "of_reactant": "B",
-    "source": "species"
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
    }
   ],
   "measurand": {
@@ -96,7 +102,40 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1007_s11671-010-9676-0-paper-0"
+    "_exp_id": "10.1007_s11671-010-9676-0-paper-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "iron acetylacetonate",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    }
    },
    "completeness": 0.357
   }
