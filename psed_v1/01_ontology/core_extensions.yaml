@@ -443,6 +443,57 @@ quantity_kinds:
     adsorption_rate_constant, conflating an equilibrium constant with a rate constant;
     keeping them apart is why that value is not silently "recovered" under the old name.
     The unit is model-convention dependent (commonly Pa^-1) — keep the printed unit.
+- id: chamber_total_pressure
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - chamber_total_pressure
+  - total_pressure
+  - chamber pressure
+  - reactor pressure
+  - working pressure
+  - process pressure
+  domain: process_parameter
+  definition: >-
+    Total gas pressure in the reactor chamber. Explicitly NOT a partial pressure of
+    any species: it is the sum over all gases present. Renamed from the older
+    `total_pressure` so that a reader cannot mistake it for a reactant property.
+    Measured corpus support: 43 records across 8 papers, all paper-sourced.
+- id: generic_pressure
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - generic_pressure
+  - pressure
+  domain: process_parameter
+  definition: >-
+    A pressure the source states without saying which pressure it is — no species, no
+    reactant role, no chamber-vs-partial distinction. It must never be promoted to a
+    partial pressure. Measured corpus support: 27 records, all from figure captions,
+    none carrying reactant attribution.
+- id: unknown_pressure_type
+  unit: Pa
+  category: process_parameter
+  recipe_role: control_setting
+  aliases:
+  - unknown_pressure_type
+  domain: process_parameter
+  definition: >-
+    A pressure whose semantics could not be established at all. Distinct from
+    generic_pressure, which is a pressure the source states plainly but without type.
+# --- FUTURE TARGETS, deliberately NOT populated -------------------------------
+# precursor_partial_pressure, co_reactant_partial_pressure and
+# carrier_gas_partial_pressure are intentionally absent as canonical evidence terms.
+# A full lineage audit of the corpus measured ZERO literature-supported,
+# species-attributed partial-pressure records: the scout schema has no pressure field
+# at all, METHODS_SCHEMA asks only for a bare paper-level `pressure_Pa`, and all 70
+# pressure records carry of_reactant=None. The 1162 A/B reactant pressures visible in
+# recipes are model assumptions (MODEL_DEFAULTS pA=100, pB=300) tagged source=model,
+# and they never enter the KB evidence pool. Adding these three terms now would create
+# empty slots that later look like evidence. They require new extraction support
+# first, which was reviewed and deliberately not approved.
 categories:
   process_parameter:
   - ozone_exposure

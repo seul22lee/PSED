@@ -3341,6 +3341,51 @@ quantity_kinds:
   recipe_role: model_parameter
   axis_role: condition
   source: auto-proposed
+- id: chamber_total_pressure
+  iri: https://w3id.org/psed-ald/ontology#chamber_total_pressure
+  domain: process_parameter
+  symbols: []
+  aliases:
+  - chamber_total_pressure
+  - total_pressure
+  - chamber pressure
+  - reactor pressure
+  - working pressure
+  - process pressure
+  qudt_quantitykind: null
+  unit: Pa
+  category: process_parameter
+  family: null
+  recipe_role: control_setting
+  axis_role: condition
+  source: auto-proposed
+- id: generic_pressure
+  iri: https://w3id.org/psed-ald/ontology#generic_pressure
+  domain: process_parameter
+  symbols: []
+  aliases:
+  - generic_pressure
+  - pressure
+  qudt_quantitykind: null
+  unit: Pa
+  category: process_parameter
+  family: null
+  recipe_role: control_setting
+  axis_role: condition
+  source: auto-proposed
+- id: unknown_pressure_type
+  iri: https://w3id.org/psed-ald/ontology#unknown_pressure_type
+  domain: process_parameter
+  symbols: []
+  aliases:
+  - unknown_pressure_type
+  qudt_quantitykind: null
+  unit: Pa
+  category: process_parameter
+  family: null
+  recipe_role: control_setting
+  axis_role: condition
+  source: auto-proposed
 quantity_relations:
   specializes:
     deposition_temperature: temperature
@@ -5620,17 +5665,17 @@ models:
 _counts:
   classes: 201
   relations: 40
-  quantity_kinds: 150
-  quantity_kinds_enriched: 119
+  quantity_kinds: 153
+  quantity_kinds_enriched: 122
   quantity_specializations: 22
   quantity_equations: 13
   quantity_families: 9
   quantity_in_family: 44
   quantity_categories: 9
-  quantity_categorized: 100
+  quantity_categorized: 103
   quantity_transforms: 6
   axis_coordinate: 7
-  axis_condition: 94
+  axis_condition: 97
   axis_output: 49
   individuals: 201
   models: 4

@@ -99,7 +99,7 @@ check("confidence", p.confidence, md.CONFIDENCE["fallback"])
 ok("confidence is low", p.confidence <= 0.2, p.confidence)
 ok("source is not kb/user", p.source not in ("kb", "user"))
 ok("evidence explains the absence",
-   "cannot be claimed as precursor_partial_pressure" in (p.evidence or "")
+   "can serve as precursor_partial_pressure" in (p.evidence or "")
    or "no KB precursor partial pressure" in (p.evidence or ""), p.evidence)
 ok("warned explicitly", any("FALLBACK" in w for w in ctx.warnings), ctx.warnings)
 ok("recorded as unresolved", "ratio_from_literature" in ctx.unresolved, ctx.unresolved)
@@ -132,7 +132,7 @@ def _exp(pid, mat, prec, core, conds):
 
 
 SYNTH_KB = [_exp("synth", "Al2O3", "TMA", "H2O",
-                 [{"quantity": "pressure", "value": 150.0, "of_reactant": "A", "unit": "Pa"},
+                 [{"quantity": "generic_pressure", "value": 150.0, "of_reactant": "A", "unit": "Pa"},
                   {"quantity": "pulse_time", "value": 0.3, "of_reactant": "A", "unit": "s"}])]
 ctx2 = md.resolve_context(md.DesignRequest("Al2O3", 60e-6, precursor="TMA",
                                            co_reactant="H2O"),

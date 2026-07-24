@@ -339,7 +339,11 @@ def paper_conditions(card):
     cs = []
     for c in [
         _ctrl("temperature", card.get("temperature_C"), "C", origin=po("temperature_C")),
-        _ctrl("total_pressure", card.get("pressure_Pa"), "Pa", origin=po("pressure_Pa")),
+        # `pressure_Pa` on the card is the reactor's TOTAL pressure — METHODS_SCHEMA asks
+        # for one paper-level pressure with no species and no reactant role. Emitting it
+        # as chamber_total_pressure names that plainly, so it can never be read as a
+        # reactant partial pressure.
+        _ctrl("chamber_total_pressure", card.get("pressure_Pa"), "Pa", origin=po("pressure_Pa")),
         _ctrl("cycle_number", card.get("ncycles"), "cycles", origin=po("ncycles")),
         _ctrl("purge_time", card.get("purge_time_s"), "s", origin=po("purge_time_s")),
     ]:
