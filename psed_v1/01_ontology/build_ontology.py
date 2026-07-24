@@ -16,6 +16,7 @@ Prefixed IRIs (qk:Length, unit:NanoM, ald:Oxide) are expanded to full IRIs.
 """
 
 import json
+import sys
 from pathlib import Path
 
 
@@ -296,6 +297,20 @@ def main():
     for k, v in compiled["_counts"].items():
         print(f"  {k:28s} {v}")
     print(f"  -> {OUT_YAML.name}, {OUT_JSON.name}")
+
+    # Keep the rendered HTML in lock-step with the JSON. Previously build_ontology
+    # rebuilt only the JSON/YAML, so ontology.html drifted (it missed ~11 commits of
+    # ontology changes, incl. every pressure term). Regenerating here — via the same
+    # canonical generators, never a hand-edit — means the artifact can no longer go
+    # stale silently. Failures are non-fatal so the JSON build still succeeds headless.
+    import subprocess
+    for gen in ("visualize_ontology.py", "build_onto_viz.py"):
+        try:
+            subprocess.run([sys.executable, str(ROOT / gen)], check=True,
+                           capture_output=True, cwd=str(ROOT))
+            print(f"  -> regenerated {gen.replace('.py', '.html' if gen == 'visualize_ontology.py' else '')}")
+        except Exception as e:
+            print(f"  [warn] could not regenerate via {gen}: {e}")
     return compiled
 
 
