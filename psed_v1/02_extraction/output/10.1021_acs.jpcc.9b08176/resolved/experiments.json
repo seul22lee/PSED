@@ -21,7 +21,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "film_density",
    "unit": "",
@@ -75,7 +233,8 @@
   },
   "series_name": "recombination probability: 10^-5",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -174,7 +333,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "film_density",
    "unit": "",
@@ -228,7 +545,8 @@
   },
   "series_name": "recombination probability: 10^-4",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -327,7 +645,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "film_density",
    "unit": "",
@@ -381,7 +857,8 @@
   },
   "series_name": "recombination probability: 10^-3",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -480,7 +957,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "film_density",
    "unit": "",
@@ -534,7 +1169,8 @@
   },
   "series_name": "recombination probability: 10^-2",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -635,6 +1271,163 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
     "quantity": "recombination_probability",
     "value": 5e-05,
     "unit": null,
@@ -704,7 +1497,8 @@
   },
   "series_name": "exposure time: 10^0",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -805,6 +1599,163 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
     "quantity": "recombination_probability",
     "value": 5e-05,
     "unit": null,
@@ -874,7 +1825,8 @@
   },
   "series_name": "exposure time: 10^1",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -975,6 +1927,163 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
     "quantity": "recombination_probability",
     "value": 5e-05,
     "unit": null,
@@ -1044,7 +2153,8 @@
   },
   "series_name": "exposure time: 10^2",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -1145,6 +2255,163 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
     "quantity": "recombination_probability",
     "value": 5e-05,
     "unit": null,
@@ -1214,7 +2481,8 @@
   },
   "series_name": "exposure time: 10^3",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -1315,6 +2583,163 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
     "quantity": "recombination_probability",
     "value": 5e-05,
     "unit": null,
@@ -1384,7 +2809,8 @@
   },
   "series_name": "exposure time: 10^4",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "spatial_coordinate"
   ],
@@ -1483,7 +2909,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "penetration_depth",
    "unit": "",
@@ -1525,7 +3109,8 @@
   },
   "series_name": null,
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "pulse_time"
   ],
@@ -1626,7 +3211,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "penetration_depth",
    "unit": "",
@@ -1660,7 +3403,8 @@
   },
   "series_name": "material: TiO2",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "pulse_time"
   ],
@@ -1761,7 +3505,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "penetration_depth",
    "unit": "",
@@ -1791,7 +3693,8 @@
   },
   "series_name": null,
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [],
   "dependent": [
    {
@@ -1890,7 +3793,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "penetration_depth",
    "unit": "",
@@ -1920,7 +3981,8 @@
   },
   "series_name": null,
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [],
   "dependent": [
    {
@@ -2019,7 +4081,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "penetration_depth",
    "unit": "",
@@ -2061,7 +4281,8 @@
   },
   "series_name": null,
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "exposure"
   ],
@@ -2162,7 +4383,165 @@
   "carrier_gas": null,
   "process_type": "plasma",
   "cycle_sequence": "AB",
-  "controlled": [],
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s 0",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of SiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5 and (7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "plasma ALD of TiO2",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 900,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::5",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "films of SiO2 and TiO2 penetrated extremely deep up to an aspect ratio (AR) of \u223c 900",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 80,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::6",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 40,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::7",
+     "raw_label": "ARs",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Growth of Al2O3 and HfO2 was conformal up to depths corresponding to ARs of \u223c 80 and \u223c 40",
+     "parameter_status": "measured"
+    }
+   }
+  ],
   "measurand": {
    "quantity": "penetration_depth",
    "unit": "",
@@ -2196,7 +4575,8 @@
   },
   "series_name": "film: TiO2",
   "phase": null,
-  "structure": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "varies": [
    "exposure"
   ],

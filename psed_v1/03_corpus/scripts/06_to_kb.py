@@ -33,6 +33,16 @@ MODEL = "gemini-flash-latest"
 OUT = PIPE / "output"
 
 # light unit normalisation to KB conventions
+# Feature dimensions are canonically nm in the ontology (feature_height/width are NanoM),
+# so a channel width printed as "0.1 mm" and one printed as "100000 nm" must not sit in the
+# KB as incomparable raw numbers. Only LENGTH units are converted here; dimensionless and
+# model-parameter units (Pa^-1, m^-2) are left exactly as printed.
+_LEN_TO_NM = {"nm": 1.0, "å": 0.1, "a": 0.1, "angstrom": 0.1,
+              "µm": 1e3, "um": 1e3, "μm": 1e3, "micron": 1e3,
+              "mm": 1e6, "cm": 1e7, "m": 1e9}
+_LEN_Q = ("feature_height", "feature_width", "feature_length", "pore_diameter", "pore_radius")
+
+
 def _norm_unit(q, val, unit):
     u = (unit or "").strip().lower()
     if val is None:
@@ -41,6 +51,8 @@ def _norm_unit(q, val, unit):
         return val * 0.1, "nm"           # Å → nm
     if q in ("film_thickness", "penetration_depth") and u in ("µm", "um", "μm"):
         return val * 1000.0, "nm"        # µm → nm
+    if q in _LEN_Q and u in _LEN_TO_NM:
+        return val * _LEN_TO_NM[u], "nm"  # feature dimensions → nm (ontology canonical)
     return val, unit
 
 
@@ -341,6 +353,48 @@ def paper_conditions(card):
     return cs
 
 
+# --- test-structure geometry + model parameters (from 09_geometry) ------------
+# Read at RESOLVE time rather than patched in afterwards: 09_geometry used to tag
+# experiments.json directly, so every re-resolve silently erased the structure class
+# (all 672 experiments carried structure=None). Reading the cached geometry.json here
+# makes the geometry survive re-grounding, deterministically and at zero token cost.
+FACTUAL_STATUS = ("directly_reported", "derived_from_reported_dimensions")
+
+
+def geometry_facts(sd):
+    """(structure, geometry_class, [controlled conditions]) from extracted/{sd}/geometry.json.
+
+    Only `directly_reported` / `derived_from_reported_dimensions` quantities become
+    conditions — an `inferred_from_context` value stays in geometry.json for audit but is
+    never asserted as fact. Each condition keeps its raw label, evidence quote and status,
+    and all copies share ONE evidence id so paper-level fan-out is not mistaken for
+    independent observations."""
+    gf = EXTRACTED / sd / "geometry.json"
+    if not gf.exists():
+        return None, None, []
+    try:
+        g = json.loads(gf.read_text())
+    except Exception:
+        return None, None, []
+    cs = []
+    for i, q in enumerate(g.get("quantities") or []):
+        if q.get("status") not in FACTUAL_STATUS:
+            continue
+        origin = {"level": "paper", "from": "geometry",
+                  "evidence_id": f"{sd}::geometry::{q.get('quantity')}::{i}",
+                  "raw_label": q.get("raw_label"), "symbol": q.get("symbol"),
+                  "status": q.get("status"), "scope": q.get("scope"),
+                  "evidence": q.get("evidence")}
+        for k in ("basis", "model_context", "parameter_status"):
+            if q.get(k):
+                origin[k] = q[k]
+        c = _ctrl(q.get("quantity"), q.get("value"), q.get("unit"),
+                  react=q.get("of_reactant"), source="geometry", origin=origin)
+        if c:
+            cs.append(c)
+    return (g.get("structure") or None), (g.get("geometry_class") or None), cs
+
+
 def short_pid(sd):
     # Unified paper id = the filesystem-safe full DOI (the extracted dir name),
     # so extracted/ and output/ share ONE identifier: the DOI.
@@ -357,6 +411,8 @@ def to_experiments(sd, scout, records, card):
     carrier = {"species": card.get("carrier_gas")} if card.get("carrier_gas") else None
     ptype = lib.canon_process(card.get("process_type")) or card.get("process_type")
     base_ctrl = paper_conditions(card)
+    geom_struct, geom_class, geom_ctrl = geometry_facts(sd)
+    base_ctrl = base_ctrl + geom_ctrl
     pid = short_pid(sd)
     exps = []
     for r in records:
@@ -409,7 +465,7 @@ def to_experiments(sd, scout, records, card):
             "provenance": {**(r.get("provenance") or {}), "doi": sd},
             "series_name": series_name,             # display only; built from structure, never re-parsed
             "phase": r.get("phase"),                # crystallographic phase (e.g. "c-MoS2") or None
-            "structure": None,
+            "structure": geom_struct, "geometry_class": geom_class,
             # dependent = the measured output; varies = the swept coordinate (profiles).
             # Populated so the shared 0706 consumers (evaluate_kb, kg, similarity) see the
             # measured/swept quantities the same way as old-pipeline records.
@@ -425,7 +481,8 @@ def to_experiments(sd, scout, records, card):
         # No figure data digitized — still admit the paper as ONE paper-level experiment
         # (attached to its Paper node in the KG) carrying chemistry + conditions + the data
         # modalities the scout saw (XRD, spectra, imaging …), so the paper enters the KB.
-        exps.append(paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c, base_ctrl))
+        exps.append(paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c,
+                                       base_ctrl, geom_struct, geom_class))
     # Species properties from the ontology for each cycle reactant (A precursor,
     # B coreactant, …) — ported verbatim from the old s08_resolve, which the new
     # 06 path never ran, so 662 experiments had lost molecular_mass / diameter that
@@ -454,7 +511,8 @@ def to_experiments(sd, scout, records, card):
     return pid, exps
 
 
-def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c, base_ctrl):
+def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec_c, core_c,
+                           base_ctrl, geom_struct=None, geom_class=None):
     raw_mat = (scout.get("materials") or [None])[0]
     mat = lib.canon_material(raw_mat) or raw_mat
     gpc = scout.get("gpc_nm")
@@ -476,7 +534,8 @@ def paper_level_experiment(sd, scout, card, pid, reactants, carrier, ptype, prec
         "exp_id": f"{pid}-paper-0",
         "provenance": {"doi": sd, "source": "paper-level", "figure": "paper",
                        "study_type": scout.get("study_type"), "modalities": modalities},
-        "series_name": None, "phase": None, "structure": None, "varies": [],
+        "series_name": None, "phase": None, "varies": [],
+        "structure": geom_struct, "geometry_class": geom_class,
         "dependent": ([{"quantity": mq, "value": gpc, "unit": "nm", "family": lib.family(mq)}]
                       if mq else []),
         "issues": ["paper-level (no figure data extracted)"],

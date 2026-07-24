@@ -418,6 +418,24 @@ quantity_kinds:
   aliases:
   - wavelength
   domain: optical
+- id: adsorption_equilibrium_constant
+  unit: Pa^-1
+  category: model_parameter
+  family: reaction_efficiency
+  recipe_role: model_parameter
+  aliases:
+  - adsorption equilibrium constant
+  - equilibrium constant of adsorption
+  - Langmuir equilibrium constant
+  - equilibrium constant K
+  domain: model_parameter
+  definition: >-
+    Langmuir adsorption EQUILIBRIUM constant K (surface coverage per unit precursor
+    pressure at equilibrium). Deliberately distinct from adsorption_rate_constant, which
+    is kinetic. The legacy 0604_kg pipeline mapped Ylilammi's K onto
+    adsorption_rate_constant, conflating an equilibrium constant with a rate constant;
+    keeping them apart is why that value is not silently "recovered" under the old name.
+    The unit is model-convention dependent (commonly Pa^-1) — keep the printed unit.
 categories:
   process_parameter:
   - ozone_exposure

@@ -25,6 +25,202 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
     "quantity": "temperature",
     "value": 500.0,
     "unit": "K",
@@ -214,7 +410,8 @@
   },
   "series_name": "pulse_time: 0.1 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -253,7 +450,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -349,6 +549,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -527,7 +923,8 @@
   },
   "series_name": "pulse_time: 0.05 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -566,7 +963,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -662,6 +1062,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -828,7 +1424,8 @@
   },
   "series_name": "pulse_time: 0.02 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -867,7 +1464,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -963,6 +1563,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -1121,7 +1917,8 @@
   },
   "series_name": "pulse_time: 0.01 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -1160,7 +1957,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -1256,6 +2056,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -1406,7 +2402,8 @@
   },
   "series_name": "pulse time: 0.1 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -1445,7 +2442,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -1541,6 +2541,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -1687,7 +2883,8 @@
   },
   "series_name": "pulse time: 0.05 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -1726,7 +2923,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -1822,6 +3022,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -1972,7 +3368,8 @@
   },
   "series_name": "pulse time: 0.02 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -2011,7 +3408,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -2107,6 +3507,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -2257,7 +3853,8 @@
   },
   "series_name": "pulse time: 0.01 s",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -2296,7 +3893,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -2392,6 +3992,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "cycle_number",
     "value": 1000.0,
@@ -2566,7 +4362,8 @@
   },
   "series_name": "channel height: H= 2 \u03bcm",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -2605,7 +4402,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -2711,6 +4511,202 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
     "quantity": "cycle_number",
     "value": 1000.0,
     "unit": null,
@@ -2760,8 +4756,8 @@
    },
    {
     "quantity": "feature_height",
-    "value": 1.0,
-    "unit": "\u03bcm",
+    "value": 1000.0,
+    "unit": "nm",
     "of_reactant": null,
     "source": "series",
     "recipe_role": "structure",
@@ -2884,7 +4880,8 @@
   },
   "series_name": "channel height: 1 \u03bcm",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -2924,8 +4921,8 @@
    "flow_rate": null,
    "carrier_gas": null,
    "structure": {
-    "H": 1.0,
-    "W": null
+    "H": 1000.0,
+    "W": 100000.0
    },
    "targets": null,
    "provenance": "extracted",
@@ -3032,6 +5029,202 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
     "quantity": "cycle_number",
     "value": 1000.0,
     "unit": null,
@@ -3081,8 +5274,8 @@
    },
    {
     "quantity": "feature_height",
-    "value": 0.5,
-    "unit": "\u03bcm",
+    "value": 500.0,
+    "unit": "nm",
     "of_reactant": null,
     "source": "series",
     "recipe_role": "structure",
@@ -3205,7 +5398,8 @@
   },
   "series_name": "channel height: 0.5 \u03bcm",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -3245,8 +5439,8 @@
    "flow_rate": null,
    "carrier_gas": null,
    "structure": {
-    "H": 0.5,
-    "W": null
+    "H": 1000.0,
+    "W": 100000.0
    },
    "targets": null,
    "provenance": "extracted",
@@ -3353,6 +5547,202 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
     "quantity": "cycle_number",
     "value": 1000.0,
     "unit": null,
@@ -3402,8 +5792,8 @@
    },
    {
     "quantity": "feature_height",
-    "value": 0.2,
-    "unit": "\u03bcm",
+    "value": 200.0,
+    "unit": "nm",
     "of_reactant": null,
     "source": "series",
     "recipe_role": "structure",
@@ -3522,7 +5912,8 @@
   },
   "series_name": "channel height: 0.2 \u03bcm",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -3562,8 +5953,8 @@
    "flow_rate": null,
    "carrier_gas": null,
    "structure": {
-    "H": 0.2,
-    "W": null
+    "H": 1000.0,
+    "W": 100000.0
    },
    "targets": null,
    "provenance": "extracted",
@@ -3669,6 +6060,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -3811,7 +6398,8 @@
   },
   "series_name": "model: Gordon model",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "pulse_time"
   ],
@@ -3850,7 +6438,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": {
     "penetration_depth": "measured-in-figure"
    },
@@ -3930,6 +6521,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -4068,7 +6855,8 @@
   },
   "series_name": "model: Approximation",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "pulse_time"
   ],
@@ -4107,7 +6895,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": {
     "penetration_depth": "measured-in-figure"
    },
@@ -4187,6 +6978,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "temperature",
     "value": 500.0,
@@ -4321,7 +7308,8 @@
   },
   "series_name": "model: Numerical",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "pulse_time"
   ],
@@ -4360,7 +7348,10 @@
    "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": {
     "penetration_depth": "measured-in-figure"
    },
@@ -4440,6 +7431,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "cycle_number",
     "value": 500.0,
@@ -4602,7 +7789,8 @@
   },
   "series_name": "method: Fitting result",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -4641,7 +7829,10 @@
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -4719,6 +7910,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "cycle_number",
     "value": 500.0,
@@ -4909,7 +8296,8 @@
   },
   "series_name": "method: Measured",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -4948,7 +8336,10 @@
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -5026,6 +8417,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "cycle_number",
     "value": 1000.0,
@@ -5156,7 +8743,8 @@
   },
   "series_name": "data type: Fitting result",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -5195,7 +8783,10 @@
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
@@ -5273,6 +8864,202 @@
   "process_type": "thermal",
   "cycle_sequence": "AB",
   "controlled": [
+   {
+    "quantity": "feature_height",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::0",
+     "raw_label": "channel height",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "where the channel height H \u00bc 1 l m",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_height::1",
+     "raw_label": "H (nm)",
+     "symbol": "H",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_length",
+    "value": 1000000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_length::2",
+     "raw_label": "length L of the channel",
+     "symbol": "L",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "The length L of the channel was 1 mm which gives a structural aspect ratio of 2000."
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::aspect_ratio::3",
+     "raw_label": "structural aspect ratio",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "which gives a structural aspect ratio of 2000.",
+     "basis": "channel length / channel height"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 100000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::feature_width::4",
+     "raw_label": "W",
+     "symbol": "W",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "W \u00bc 0.1 mm",
+     "model_context": "diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.00572,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::5",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 219,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::6",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219 | 105.6 | 0.974 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "sticking_probability",
+    "value": 0.1,
+    "unit": null,
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::sticking_probability::7",
+     "raw_label": "c",
+     "symbol": "c",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "adsorption_equilibrium_constant",
+    "value": 0.252,
+    "unit": "Pa^-1",
+    "of_reactant": "A",
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::adsorption equilibrium constant::8",
+     "raw_label": "K (Pa /C0 1 )",
+     "symbol": "K",
+     "status": "directly_reported",
+     "scope": "model",
+     "evidence": "| TiO 2 | 1000 | 500 | 25.7 | 0.1 | 0.252 | 54.4 | 1.525 |",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "site_density",
+    "value": 5e+18,
+    "unit": "m^-2",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1063_1.5028178::geometry::site_density::9",
+     "raw_label": "q",
+     "symbol": "q",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "q \u00bc 5 /C2 10 18 m /C0 2",
+     "model_context": "Langmuir adsorption model",
+     "parameter_status": "assumed"
+    }
+   },
    {
     "quantity": "cycle_number",
     "value": 1000.0,
@@ -5503,7 +9290,8 @@
   },
   "series_name": "data type: Measured",
   "phase": null,
-  "structure": null,
+  "structure": "pillarhall_lhar",
+  "geometry_class": "lateral_channel",
   "varies": [
    "spatial_coordinate"
   ],
@@ -5542,7 +9330,10 @@
    "temperature": null,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 1000.0,
+    "W": 100000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
