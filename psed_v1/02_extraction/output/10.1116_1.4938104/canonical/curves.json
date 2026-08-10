@@ -1,0 +1,2498 @@
+{
+ "doi": "10.1116_1.4938104",
+ "generator": "02_extraction/canonical/build_canonical.py",
+ "code_version": "e673785+dirty",
+ "created_at": 1784891489,
+ "ontology": "01_ontology/ald_ontology.json",
+ "n_curves": 12,
+ "curves": [
+  {
+   "curve_id": "10.1116_1.4938104::F4::d::0",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "4",
+    "figure_index": "9",
+    "panel": "d",
+    "series": "Cotton Fibers, 38 °C",
+    "series_index": 0,
+    "series_axis": "substrate and ALD temperature",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 4. (Color online) a) Flow-over and flow-through configurations for ALD on fibers. (b) A cross-sectional TEM image of a cotton fiber showing uniform Al2O3 ALD on the complex bean shape. Reprinted with permission from Hyde et al ., Langmuir 26 , 2550 (2010). Copyright 2010, American Chemical Society. (c) Water droplet on hydrophobic cotton after a few ALD cycles. (d) Water contact angle on cotton fibers and cellulose films after ALD coating. Reprinted with permission from Hyde et al ., Langmuir 23 , 9844 (2007). Copyright 2007, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Water Contact Angle",
+     "quantity": "Water Contact Angle",
+     "unit": "°",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      1.5,
+      120.5
+     ],
+     [
+      5.0,
+      110.8
+     ],
+     [
+      7.0,
+      120.5
+     ],
+     [
+      10.0,
+      48.0
+     ],
+     [
+      12.0,
+      0
+     ],
+     [
+      15.0,
+      0
+     ],
+     [
+      20.0,
+      0
+     ],
+     [
+      25.0,
+      0
+     ],
+     [
+      30.0,
+      0
+     ],
+     [
+      35.0,
+      0
+     ],
+     [
+      37.0,
+      0
+     ],
+     [
+      38.0,
+      0
+     ],
+     [
+      40.0,
+      0
+     ],
+     [
+      45.0,
+      0
+     ],
+     [
+      50.0,
+      0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Water Contact Angle",
+     "raw_unit": "°",
+     "raw_label": "Water Contact Angle",
+     "unit": "°",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cotton Fibers, 38 °C",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "°",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cotton Fibers, 38 °C",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'cycle_number' is an ontology condition; each point is one experiment",
+    "n_points": 16
+   },
+   "context_available": [
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F4::d::1",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "4",
+    "figure_index": "9",
+    "panel": "d",
+    "series": "Cotton Fibers, 60 °C",
+    "series_index": 1,
+    "series_axis": "substrate and ALD temperature",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 4. (Color online) a) Flow-over and flow-through configurations for ALD on fibers. (b) A cross-sectional TEM image of a cotton fiber showing uniform Al2O3 ALD on the complex bean shape. Reprinted with permission from Hyde et al ., Langmuir 26 , 2550 (2010). Copyright 2010, American Chemical Society. (c) Water droplet on hydrophobic cotton after a few ALD cycles. (d) Water contact angle on cotton fibers and cellulose films after ALD coating. Reprinted with permission from Hyde et al ., Langmuir 23 , 9844 (2007). Copyright 2007, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Water Contact Angle",
+     "quantity": "Water Contact Angle",
+     "unit": "°",
+     "log": false
+    },
+    "points": [
+     [
+      1.0,
+      120.0
+     ],
+     [
+      10.0,
+      0
+     ],
+     [
+      15.0,
+      0
+     ],
+     [
+      25.0,
+      0
+     ],
+     [
+      50.0,
+      0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Water Contact Angle",
+     "raw_unit": "°",
+     "raw_label": "Water Contact Angle",
+     "unit": "°",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cotton Fibers, 60 °C",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "°",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cotton Fibers, 60 °C",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'cycle_number' is an ontology condition; each point is one experiment",
+    "n_points": 5
+   },
+   "context_available": [
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F4::d::2",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "4",
+    "figure_index": "9",
+    "panel": "d",
+    "series": "Cotton Fibers, 90 °C",
+    "series_index": 2,
+    "series_axis": "substrate and ALD temperature",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/2",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 4. (Color online) a) Flow-over and flow-through configurations for ALD on fibers. (b) A cross-sectional TEM image of a cotton fiber showing uniform Al2O3 ALD on the complex bean shape. Reprinted with permission from Hyde et al ., Langmuir 26 , 2550 (2010). Copyright 2010, American Chemical Society. (c) Water droplet on hydrophobic cotton after a few ALD cycles. (d) Water contact angle on cotton fibers and cellulose films after ALD coating. Reprinted with permission from Hyde et al ., Langmuir 23 , 9844 (2007). Copyright 2007, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Water Contact Angle",
+     "quantity": "Water Contact Angle",
+     "unit": "°",
+     "log": false
+    },
+    "points": [
+     [
+      10.0,
+      32.0
+     ],
+     [
+      10.0,
+      26.0
+     ],
+     [
+      15.0,
+      0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Water Contact Angle",
+     "raw_unit": "°",
+     "raw_label": "Water Contact Angle",
+     "unit": "°",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cotton Fibers, 90 °C",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/2/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "°",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cotton Fibers, 90 °C",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/2/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'cycle_number' is an ontology condition; each point is one experiment",
+    "n_points": 3
+   },
+   "context_available": [
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F4::d::3",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "4",
+    "figure_index": "9",
+    "panel": "d",
+    "series": "Cellulose Films",
+    "series_index": 3,
+    "series_axis": "substrate and ALD temperature",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/3",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 4. (Color online) a) Flow-over and flow-through configurations for ALD on fibers. (b) A cross-sectional TEM image of a cotton fiber showing uniform Al2O3 ALD on the complex bean shape. Reprinted with permission from Hyde et al ., Langmuir 26 , 2550 (2010). Copyright 2010, American Chemical Society. (c) Water droplet on hydrophobic cotton after a few ALD cycles. (d) Water contact angle on cotton fibers and cellulose films after ALD coating. Reprinted with permission from Hyde et al ., Langmuir 23 , 9844 (2007). Copyright 2007, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Water Contact Angle",
+     "quantity": "Water Contact Angle",
+     "unit": "°",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      35.0
+     ],
+     [
+      2.0,
+      26.0
+     ],
+     [
+      10.0,
+      13.0
+     ],
+     [
+      15.0,
+      22.0
+     ],
+     [
+      25.0,
+      17.0
+     ],
+     [
+      50.0,
+      13.0
+     ],
+     [
+      50.0,
+      21.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Water Contact Angle",
+     "raw_unit": "°",
+     "raw_label": "Water Contact Angle",
+     "unit": "°",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cellulose Films",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/3/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "°",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Water Contact Angle' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "4",
+      "panel": "d",
+      "series": "Cellulose Films",
+      "series_index": 3,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/3/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'cycle_number' is an ontology condition; each point is one experiment",
+    "n_points": 7
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F7::a::0",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "7",
+    "figure_index": "13",
+    "panel": "a",
+    "series": "Untreated PA-6",
+    "series_index": 0,
+    "series_axis": "coating",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/0",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 7. (Color online) (a) FT-IR spectra of untreated nylon-6 nanofibers show almost no change after ZnO ALD coating, suggesting little chemical interaction of DEZ with the polyamide material. A subsequent glycidol/TMA MLD layer interacts with the carbonyl and amide modes, although no strong spectral difference is observed if an additional layer of Al2O3 follows the alucone, suggesting the MLD coating protects the nylon nanofibers from further degradation. (b) SEM images of the untreated nylon show that (c) degradation after TMA exposure is (d) minimized with the protective combination of ZnO and glycidol/ TMA coating. Reprinted with permission from Oldham et al ., J. Electrochem. Soc. 158 , D549 (2011). Copyright 2011, The Electrochemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "wavenumber",
+     "unit": "cm^-1",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "absorbance",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      4000,
+      0.098
+     ],
+     [
+      3800,
+      0.098
+     ],
+     [
+      3600,
+      0.098
+     ],
+     [
+      3400,
+      0.103
+     ],
+     [
+      3300,
+      0.141
+     ],
+     [
+      3200,
+      0.108
+     ],
+     [
+      3050,
+      0.1
+     ],
+     [
+      2930,
+      0.138
+     ],
+     [
+      2860,
+      0.121
+     ],
+     [
+      2700,
+      0.1
+     ],
+     [
+      2500,
+      0.1
+     ],
+     [
+      2200,
+      0.1
+     ],
+     [
+      1900,
+      0.1
+     ],
+     [
+      1750,
+      0.102
+     ],
+     [
+      1650,
+      0.172
+     ],
+     [
+      1550,
+      0.172
+     ],
+     [
+      1450,
+      0.115
+     ],
+     [
+      1370,
+      0.102
+     ],
+     [
+      1260,
+      0.114
+     ],
+     [
+      1200,
+      0.109
+     ],
+     [
+      1100,
+      0.1
+     ],
+     [
+      900,
+      0.1
+     ],
+     [
+      750,
+      0.1
+     ],
+     [
+      600,
+      0.1
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "wavenumber",
+     "raw_unit": "cm^-1",
+     "raw_label": null,
+     "unit": "cm^-1",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "absorbance",
+     "raw_unit": "a.u.",
+     "raw_label": null,
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "cm^-1",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "Untreated PA-6",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "Untreated PA-6",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 24
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F7::a::1",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "7",
+    "figure_index": "13",
+    "panel": "a",
+    "series": "25 cycles ZnO",
+    "series_index": 1,
+    "series_axis": "coating",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/1",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 7. (Color online) (a) FT-IR spectra of untreated nylon-6 nanofibers show almost no change after ZnO ALD coating, suggesting little chemical interaction of DEZ with the polyamide material. A subsequent glycidol/TMA MLD layer interacts with the carbonyl and amide modes, although no strong spectral difference is observed if an additional layer of Al2O3 follows the alucone, suggesting the MLD coating protects the nylon nanofibers from further degradation. (b) SEM images of the untreated nylon show that (c) degradation after TMA exposure is (d) minimized with the protective combination of ZnO and glycidol/ TMA coating. Reprinted with permission from Oldham et al ., J. Electrochem. Soc. 158 , D549 (2011). Copyright 2011, The Electrochemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "wavenumber",
+     "unit": "cm^-1",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "absorbance",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      4000,
+      0.24
+     ],
+     [
+      3700,
+      0.24
+     ],
+     [
+      3400,
+      0.24
+     ],
+     [
+      3100,
+      0.24
+     ],
+     [
+      2800,
+      0.24
+     ],
+     [
+      2500,
+      0.24
+     ],
+     [
+      2200,
+      0.24
+     ],
+     [
+      1900,
+      0.24
+     ],
+     [
+      1600,
+      0.238
+     ],
+     [
+      1300,
+      0.24
+     ],
+     [
+      1000,
+      0.24
+     ],
+     [
+      700,
+      0.24
+     ],
+     [
+      600,
+      0.24
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "wavenumber",
+     "raw_unit": "cm^-1",
+     "raw_label": null,
+     "unit": "cm^-1",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "absorbance",
+     "raw_unit": "a.u.",
+     "raw_label": null,
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "cm^-1",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "25 cycles ZnO",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "25 cycles ZnO",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 13
+   },
+   "context_available": [
+    "cycle_number"
+   ]
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F7::a::2",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "7",
+    "figure_index": "13",
+    "panel": "a",
+    "series": "25 cycles ZnO+ 75 cycles Gly/TMA",
+    "series_index": 2,
+    "series_axis": "coating",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/2",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 7. (Color online) (a) FT-IR spectra of untreated nylon-6 nanofibers show almost no change after ZnO ALD coating, suggesting little chemical interaction of DEZ with the polyamide material. A subsequent glycidol/TMA MLD layer interacts with the carbonyl and amide modes, although no strong spectral difference is observed if an additional layer of Al2O3 follows the alucone, suggesting the MLD coating protects the nylon nanofibers from further degradation. (b) SEM images of the untreated nylon show that (c) degradation after TMA exposure is (d) minimized with the protective combination of ZnO and glycidol/ TMA coating. Reprinted with permission from Oldham et al ., J. Electrochem. Soc. 158 , D549 (2011). Copyright 2011, The Electrochemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "wavenumber",
+     "unit": "cm^-1",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "absorbance",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      4000,
+      0.328
+     ],
+     [
+      3700,
+      0.328
+     ],
+     [
+      3400,
+      0.321
+     ],
+     [
+      3300,
+      0.319
+     ],
+     [
+      3100,
+      0.328
+     ],
+     [
+      2930,
+      0.355
+     ],
+     [
+      2850,
+      0.348
+     ],
+     [
+      2600,
+      0.328
+     ],
+     [
+      2300,
+      0.328
+     ],
+     [
+      2000,
+      0.328
+     ],
+     [
+      1750,
+      0.328
+     ],
+     [
+      1650,
+      0.345
+     ],
+     [
+      1550,
+      0.298
+     ],
+     [
+      1450,
+      0.328
+     ],
+     [
+      1350,
+      0.332
+     ],
+     [
+      1260,
+      0.364
+     ],
+     [
+      1150,
+      0.338
+     ],
+     [
+      1000,
+      0.328
+     ],
+     [
+      800,
+      0.316
+     ],
+     [
+      600,
+      0.328
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "wavenumber",
+     "raw_unit": "cm^-1",
+     "raw_label": null,
+     "unit": "cm^-1",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "absorbance",
+     "raw_unit": "a.u.",
+     "raw_label": null,
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "cm^-1",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "25 cycles ZnO+ 75 cycles Gly/TMA",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/2/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "25 cycles ZnO+ 75 cycles Gly/TMA",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/2/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 20
+   },
+   "context_available": [
+    "cycle_number"
+   ]
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F7::a::3",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "7",
+    "figure_index": "13",
+    "panel": "a",
+    "series": "25 cycles ZnO+ 75 cycles Gly/TMA+ 25 cycles Al2O3",
+    "series_index": 3,
+    "series_axis": "coating",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/3",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 7. (Color online) (a) FT-IR spectra of untreated nylon-6 nanofibers show almost no change after ZnO ALD coating, suggesting little chemical interaction of DEZ with the polyamide material. A subsequent glycidol/TMA MLD layer interacts with the carbonyl and amide modes, although no strong spectral difference is observed if an additional layer of Al2O3 follows the alucone, suggesting the MLD coating protects the nylon nanofibers from further degradation. (b) SEM images of the untreated nylon show that (c) degradation after TMA exposure is (d) minimized with the protective combination of ZnO and glycidol/ TMA coating. Reprinted with permission from Oldham et al ., J. Electrochem. Soc. 158 , D549 (2011). Copyright 2011, The Electrochemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "wavenumber",
+     "unit": "cm^-1",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "absorbance",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      4000,
+      0.441
+     ],
+     [
+      3700,
+      0.441
+     ],
+     [
+      3400,
+      0.434
+     ],
+     [
+      3300,
+      0.432
+     ],
+     [
+      3100,
+      0.441
+     ],
+     [
+      2930,
+      0.467
+     ],
+     [
+      2850,
+      0.46
+     ],
+     [
+      2600,
+      0.441
+     ],
+     [
+      2300,
+      0.441
+     ],
+     [
+      2000,
+      0.441
+     ],
+     [
+      1750,
+      0.441
+     ],
+     [
+      1650,
+      0.458
+     ],
+     [
+      1600,
+      0.413
+     ],
+     [
+      1500,
+      0.441
+     ],
+     [
+      1380,
+      0.445
+     ],
+     [
+      1260,
+      0.482
+     ],
+     [
+      1150,
+      0.45
+     ],
+     [
+      1000,
+      0.441
+     ],
+     [
+      800,
+      0.43
+     ],
+     [
+      600,
+      0.441
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "wavenumber",
+     "raw_unit": "cm^-1",
+     "raw_label": null,
+     "unit": "cm^-1",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "absorbance",
+     "raw_unit": "a.u.",
+     "raw_label": null,
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "cm^-1",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'wavenumber' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "25 cycles ZnO+ 75 cycles Gly/TMA+ 25 cycles Al2O3",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/3/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'absorbance' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "7",
+      "panel": "a",
+      "series": "25 cycles ZnO+ 75 cycles Gly/TMA+ 25 cycles Al2O3",
+      "series_index": 3,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/3/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 20
+   },
+   "context_available": [
+    "cycle_number"
+   ]
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F12::b::0",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "12",
+    "figure_index": "22",
+    "panel": "b",
+    "series": "paper",
+    "series_index": 0,
+    "series_axis": "material",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/5/panels/0/series/0",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 12. (Color online) (a) SEM image of ALD TiO2 on cellulose fibers shows a rough, high-surface area photocatalytic material. (b) Iridium doped TiO2 on cellulose fibers increases the photocatalytic degradation of methylene blue. Reprinted with permission from Kemell et al ., Chem. Vap. Deposition 12 , 419 (2006). Copyright 2006, John Wiley and Sons. (c) Photocatalytic nylon 6, 6-ZnO core-shell nanofibers before UV treatment and after two cycles of UV treatment, showing flexibility is maintained. Reprinted with permission from Kayaci et al ., ACS Appl. Mater. Interfaces 4 , 6185 (2012). Copyright 2012, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "UV irradiation time (h)",
+     "quantity": "exposure",
+     "unit": "h",
+     "log": false
+    },
+    "y": {
+     "label": "C/C₀",
+     "quantity": "C/C0",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      1.0
+     ],
+     [
+      1.1,
+      0.99
+     ],
+     [
+      3.0,
+      0.98
+     ],
+     [
+      4.0,
+      0.97
+     ],
+     [
+      5.1,
+      0.95
+     ],
+     [
+      6.0,
+      0.93
+     ],
+     [
+      7.0,
+      0.92
+     ],
+     [
+      8.0,
+      0.91
+     ],
+     [
+      9.0,
+      0.9
+     ],
+     [
+      23.1,
+      0.74
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure",
+     "raw_unit": "h",
+     "raw_label": "UV irradiation time (h)",
+     "unit": "h",
+     "unit_recovered": false,
+     "quantity": "exposure",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "C/C0",
+     "raw_unit": "",
+     "raw_label": "C/C₀",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "time_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "original_value": null,
+     "original_unit": "h",
+     "canonical_value": null,
+     "canonical_unit": "Pa.s",
+     "context": {},
+     "unresolved_reason": "declared unit 'h' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "paper",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/0/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "paper",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/0/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+    "n_points": 10
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F12::b::1",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "12",
+    "figure_index": "22",
+    "panel": "b",
+    "series": "TiO2/cellulose",
+    "series_index": 1,
+    "series_axis": "material",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/5/panels/0/series/1",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 12. (Color online) (a) SEM image of ALD TiO2 on cellulose fibers shows a rough, high-surface area photocatalytic material. (b) Iridium doped TiO2 on cellulose fibers increases the photocatalytic degradation of methylene blue. Reprinted with permission from Kemell et al ., Chem. Vap. Deposition 12 , 419 (2006). Copyright 2006, John Wiley and Sons. (c) Photocatalytic nylon 6, 6-ZnO core-shell nanofibers before UV treatment and after two cycles of UV treatment, showing flexibility is maintained. Reprinted with permission from Kayaci et al ., ACS Appl. Mater. Interfaces 4 , 6185 (2012). Copyright 2012, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "UV irradiation time (h)",
+     "quantity": "exposure",
+     "unit": "h",
+     "log": false
+    },
+    "y": {
+     "label": "C/C₀",
+     "quantity": "C/C0",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      1.0
+     ],
+     [
+      1.0,
+      0.8
+     ],
+     [
+      2.0,
+      0.64
+     ],
+     [
+      3.0,
+      0.53
+     ],
+     [
+      4.0,
+      0.46
+     ],
+     [
+      5.0,
+      0.41
+     ],
+     [
+      6.0,
+      0.37
+     ],
+     [
+      7.0,
+      0.34
+     ],
+     [
+      8.0,
+      0.32
+     ],
+     [
+      9.0,
+      0.29
+     ],
+     [
+      23.1,
+      0.11
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure",
+     "raw_unit": "h",
+     "raw_label": "UV irradiation time (h)",
+     "unit": "h",
+     "unit_recovered": false,
+     "quantity": "exposure",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "C/C0",
+     "raw_unit": "",
+     "raw_label": "C/C₀",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "time_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "original_value": null,
+     "original_unit": "h",
+     "canonical_value": null,
+     "canonical_unit": "Pa.s",
+     "context": {},
+     "unresolved_reason": "declared unit 'h' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "TiO2/cellulose",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/1/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "TiO2/cellulose",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/1/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+    "n_points": 11
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F12::b::2",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "12",
+    "figure_index": "22",
+    "panel": "b",
+    "series": "Ag/TiO2/cellulose",
+    "series_index": 2,
+    "series_axis": "material",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/5/panels/0/series/2",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 12. (Color online) (a) SEM image of ALD TiO2 on cellulose fibers shows a rough, high-surface area photocatalytic material. (b) Iridium doped TiO2 on cellulose fibers increases the photocatalytic degradation of methylene blue. Reprinted with permission from Kemell et al ., Chem. Vap. Deposition 12 , 419 (2006). Copyright 2006, John Wiley and Sons. (c) Photocatalytic nylon 6, 6-ZnO core-shell nanofibers before UV treatment and after two cycles of UV treatment, showing flexibility is maintained. Reprinted with permission from Kayaci et al ., ACS Appl. Mater. Interfaces 4 , 6185 (2012). Copyright 2012, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "UV irradiation time (h)",
+     "quantity": "exposure",
+     "unit": "h",
+     "log": false
+    },
+    "y": {
+     "label": "C/C₀",
+     "quantity": "C/C0",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      1.0
+     ],
+     [
+      1.0,
+      0.78
+     ],
+     [
+      2.0,
+      0.62
+     ],
+     [
+      3.0,
+      0.48
+     ],
+     [
+      4.0,
+      0.42
+     ],
+     [
+      5.0,
+      0.37
+     ],
+     [
+      6.0,
+      0.31
+     ],
+     [
+      7.0,
+      0.28
+     ],
+     [
+      8.0,
+      0.25
+     ],
+     [
+      9.0,
+      0.24
+     ],
+     [
+      23.1,
+      0.09
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure",
+     "raw_unit": "h",
+     "raw_label": "UV irradiation time (h)",
+     "unit": "h",
+     "unit_recovered": false,
+     "quantity": "exposure",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "C/C0",
+     "raw_unit": "",
+     "raw_label": "C/C₀",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "time_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "original_value": null,
+     "original_unit": "h",
+     "canonical_value": null,
+     "canonical_unit": "Pa.s",
+     "context": {},
+     "unresolved_reason": "declared unit 'h' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "Ag/TiO2/cellulose",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/2/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "Ag/TiO2/cellulose",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/2/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+    "n_points": 11
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1116_1.4938104::F12::b::3",
+   "source": {
+    "paper_id": "10.1116_1.4938104",
+    "doi": "10.1116_1.4938104",
+    "figure": "12",
+    "figure_index": "22",
+    "panel": "b",
+    "series": "Ir/TiO2/cellulose",
+    "series_index": 3,
+    "series_axis": "material",
+    "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+    "json_pointer": "/figures/5/panels/0/series/3",
+    "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 12. (Color online) (a) SEM image of ALD TiO2 on cellulose fibers shows a rough, high-surface area photocatalytic material. (b) Iridium doped TiO2 on cellulose fibers increases the photocatalytic degradation of methylene blue. Reprinted with permission from Kemell et al ., Chem. Vap. Deposition 12 , 419 (2006). Copyright 2006, John Wiley and Sons. (c) Photocatalytic nylon 6, 6-ZnO core-shell nanofibers before UV treatment and after two cycles of UV treatment, showing flexibility is maintained. Reprinted with permission from Kayaci et al ., ACS Appl. Mater. Interfaces 4 , 6185 (2012). Copyright 2012, American Chemical Society."
+   },
+   "raw": {
+    "x": {
+     "label": "UV irradiation time (h)",
+     "quantity": "exposure",
+     "unit": "h",
+     "log": false
+    },
+    "y": {
+     "label": "C/C₀",
+     "quantity": "C/C0",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      1.0
+     ],
+     [
+      1.0,
+      0.79
+     ],
+     [
+      2.0,
+      0.62
+     ],
+     [
+      3.0,
+      0.44
+     ],
+     [
+      4.0,
+      0.31
+     ],
+     [
+      5.0,
+      0.21
+     ],
+     [
+      6.0,
+      0.15
+     ],
+     [
+      7.0,
+      0.11
+     ],
+     [
+      8.0,
+      0.07
+     ],
+     [
+      9.0,
+      0.05
+     ],
+     [
+      23.1,
+      0.01
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure",
+     "raw_unit": "h",
+     "raw_label": "UV irradiation time (h)",
+     "unit": "h",
+     "unit_recovered": false,
+     "quantity": "exposure",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "C/C0",
+     "raw_unit": "",
+     "raw_label": "C/C₀",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "time_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "original_value": null,
+     "original_unit": "h",
+     "canonical_value": null,
+     "canonical_unit": "Pa.s",
+     "context": {},
+     "unresolved_reason": "declared unit 'h' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "Ir/TiO2/cellulose",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/3/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'C/C0' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1116_1.4938104",
+      "doi": "10.1116_1.4938104",
+      "figure": "12",
+      "panel": "b",
+      "series": "Ir/TiO2/cellulose",
+      "series_index": 3,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1116_1.4938104/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/3/points",
+      "source_checksum": "sha256:27a9ff290ec1f5af084a0decfcca8fe94c7a781603a3883c323e76a793b94db4",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+    "n_points": 11
+   },
+   "context_available": []
+  }
+ ]
+}

@@ -1,0 +1,121 @@
+{
+ "design": "3-stage unequal-probability: 2/paper quota + proportional allocation (15% cap) + deterministic coverage top-ups",
+ "estimator": "Horvitz-Thompson ratio estimator with Monte-Carlo inclusion probabilities",
+ "uncertainty": "paper-level (cluster) bootstrap, 2000 replicates",
+ "mc_replicates_for_inclusion_probabilities": 400,
+ "coverage_topup_records_excluded_from_estimation": 0,
+ "note": "Binomial/Wilson intervals were REMOVED: they assume i.i.d. draws, which this design violates. The quota over-samples small papers, so the sample share and the population estimate differ systematically.",
+ "population_n": 2457,
+ "estimates": [
+  {
+   "metric": "record_supported_as_physical_experiment",
+   "sample_count": 13,
+   "sample_n": 120,
+   "sample_share": 0.1083,
+   "ht_population_estimate": 0.1071,
+   "cluster_bootstrap_95": [
+    0.042,
+    0.1862
+   ]
+  },
+  {
+   "metric": "record_not_a_physical_experiment",
+   "sample_count": 56,
+   "sample_n": 120,
+   "sample_share": 0.4667,
+   "ht_population_estimate": 0.4908,
+   "cluster_bootstrap_95": [
+    0.3045,
+    0.6661
+   ]
+  },
+  {
+   "metric": "record_uncertain",
+   "sample_count": 51,
+   "sample_n": 120,
+   "sample_share": 0.425,
+   "ht_population_estimate": 0.4021,
+   "cluster_bootstrap_95": [
+    0.2468,
+    0.5926
+   ]
+  },
+  {
+   "metric": "record_is_model_or_simulation",
+   "sample_count": 18,
+   "sample_n": 120,
+   "sample_share": 0.15,
+   "ht_population_estimate": 0.1431,
+   "cluster_bootstrap_95": [
+    0.0316,
+    0.3026
+   ]
+  },
+  {
+   "metric": "record_is_one_point_of_a_continuous_run",
+   "sample_count": 30,
+   "sample_n": 120,
+   "sample_share": 0.25,
+   "ht_population_estimate": 0.3173,
+   "cluster_bootstrap_95": [
+    0.1056,
+    0.5127
+   ]
+  },
+  {
+   "metric": "verdict_backed_by_an_exact_span",
+   "sample_count": 53,
+   "sample_n": 120,
+   "sample_share": 0.4417,
+   "ht_population_estimate": 0.5246,
+   "cluster_bootstrap_95": [
+    0.3253,
+    0.691
+   ]
+  },
+  {
+   "metric": "verdict_heuristic_only",
+   "sample_count": 51,
+   "sample_n": 120,
+   "sample_share": 0.425,
+   "ht_population_estimate": 0.4021,
+   "cluster_bootstrap_95": [
+    0.2468,
+    0.5926
+   ]
+  },
+  {
+   "metric": "has_missing_source_supported_condition",
+   "sample_count": 38,
+   "sample_n": 120,
+   "sample_share": 0.3167,
+   "ht_population_estimate": 0.3533,
+   "cluster_bootstrap_95": [
+    0.1313,
+    0.5539
+   ]
+  },
+  {
+   "metric": "has_over_broadcast_condition",
+   "sample_count": 39,
+   "sample_n": 120,
+   "sample_share": 0.325,
+   "ht_population_estimate": 0.3511,
+   "cluster_bootstrap_95": [
+    0.1138,
+    0.6027
+   ]
+  },
+  {
+   "metric": "pressure_applicable_and_lost",
+   "sample_count": 30,
+   "sample_n": 120,
+   "sample_share": 0.25,
+   "ht_population_estimate": 0.2702,
+   "cluster_bootstrap_95": [
+    0.0831,
+    0.4602
+   ]
+  }
+ ]
+}

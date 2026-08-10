@@ -1,0 +1,113 @@
+{
+ "doi": "10.1116_6.0002804",
+ "schema_version": 1,
+ "kind": "selective_figure_axis_reextraction",
+ "generator": "02_extraction/canonical/reextract_figures.py",
+ "model": "gemini-flash-latest",
+ "code_version": "e673785+dirty",
+ "created_at": 1785771212,
+ "note": "Axis METADATA only. Digitized points are NOT re-read and NOT replaced; figure_data.json is never modified.",
+ "n_panels": 2,
+ "panels": [
+  {
+   "figure": "5",
+   "figure_index": "23",
+   "panel": "a",
+   "x": {
+    "label_raw": "Depth (nm)",
+    "unit_raw": "nm",
+    "is_normalized": false,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "axis_scale": "linear"
+   },
+   "y": {
+    "label_raw": "Concentration (atoms/cm^3)",
+    "unit_raw": "atoms/cm^3",
+    "is_normalized": false,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "axis_scale": "log"
+   },
+   "series_legend": [
+    {
+     "label": "O",
+     "condition": null
+    },
+    {
+     "label": "Cl",
+     "condition": null
+    },
+    {
+     "label": "N",
+     "condition": null
+    },
+    {
+     "label": "Si",
+     "condition": null
+    },
+    {
+     "label": "C",
+     "condition": null
+    }
+   ],
+   "annotations": [
+    "Thin film",
+    "Substrate"
+   ],
+   "recovery": {
+    "method": "selective_vision_reextraction",
+    "model": "gemini-flash-latest",
+    "source": "figure_image",
+    "source_file": "03_corpus/extracted/10.1116_6.0002804/figures/fig_23.png",
+    "source_location": "figure 5 panel a",
+    "triggered_by": [
+     "x_comparison_target_without_usable_unit",
+     "x_unit_unparseable:10^15 at/cm^2",
+     "y_quantity_unknown",
+     "y_unit_unparseable:atoms/cm^3"
+    ],
+    "automatic": true,
+    "points_replaced": false
+   }
+  },
+  {
+   "figure": "5",
+   "figure_index": "23",
+   "panel": "b",
+   "x": {
+    "label_raw": "Temperature (°C)",
+    "unit_raw": "°C",
+    "is_normalized": false,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "axis_scale": "linear"
+   },
+   "y": {
+    "label_raw": "Concentration (atoms/cm^3)",
+    "unit_raw": "atoms/cm^3",
+    "is_normalized": false,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "axis_scale": "log"
+   },
+   "series_legend": [],
+   "annotations": [],
+   "recovery": {
+    "method": "selective_vision_reextraction",
+    "model": "gemini-flash-latest",
+    "source": "figure_image",
+    "source_file": "03_corpus/extracted/10.1116_6.0002804/figures/fig_23.png",
+    "source_location": "figure 5 panel b",
+    "triggered_by": [
+     "x_comparison_target_without_usable_unit",
+     "x_unit_unparseable:10^15 at/cm^2",
+     "y_quantity_unknown",
+     "y_unit_unparseable:atoms/cm^3"
+    ],
+    "automatic": true,
+    "points_replaced": false
+   }
+  }
+ ]
+}

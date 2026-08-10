@@ -1,0 +1,195 @@
+
+########## REPORTS ##########
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/02_extraction/build_recipes.py  (cwd=02_extraction)
+ds by origin: {'caption': 365, 'experiment_record': 2946, 'kb_imputation': 520, 'methods_prose': 178, 'model_default': 2062, 'series': 139, 'table': 128}
+  fields: 3756 extracted (paper 306 · experiment 3450 · derived 0) · unresolved 2300 · 520 kb-imputed · 2062 model-default
+  process windows: 8 papers / 253 recipes (range, NOT counted as a scalar); 128 have a per-experiment T; 0 paper-level scalars (must be 0)
+  NOTE: filled completeness includes imputed+default fields — not recipe readiness.
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/02_extraction/build_analysis.py  (cwd=02_extraction)
+wrote analysis_dashboard.html  (1621 KB)  663 experiments, 24 materials, 161 quantities
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/02_extraction/build_kg.py  (cwd=02_extraction)
+663, 'Carrier': 4, 'Paper': 31, 'Material': 24, 'Precursor': 16, 'Coreactant': 8, 'Condition': 55, 'Dependent': 61, 'Independent': 45, 'Family': 9, 'Category': 9, 'ModelFamily': 1, 'Model': 4}
+   edge types: {'carrier_gas': 230, 'from_paper': 663, 'deposits': 663, 'uses_precursor': 455, 'with_coreactant': 502, 'varies': 659, 'measures': 660, 'controls': 2876, 'in_family': 18, 'in_category': 47, 'transforms_to': 4, 'specializes': 5, 'in_model_family': 4, 'model_consumes': 24, 'model_related': 5}
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/02_extraction/build_dashboard.py  (cwd=02_extraction)
+wrote experiment_dashboard.html  (581 KB)
+  663 experiments  status={'partial': 479, 'ready': 184}
+  check pass-rates: {'material': '663/663', 'quantities': '222/663', 'units': '444/663', 'granularity': '663/663', 'provenance': '663/663', 'linked': '663/663'}
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/build_corpus_dashboard.py  (cwd=scripts)
+wrote 03_corpus/corpus_dashboard.html  (14 KB)
+       2  Review papers
+     980  Cited references (rows)
+     967  Unique DOIs resolved
+     957  Triaged: relevant
+      78  Open-access PDF fetchable
+      83  PDFs collected
+      32  Docling-parsed
+      31  Scouted (abstract/figs)
+      27  Figure-extracted
+      31  In knowledge base
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/status.py  (cwd=scripts)
+e)
+precursors: Al(CH3)3 [1]; Mo(iPrCp)2H2 [1]; MoCl4(THD)(THF) [1]; [(Me3Si)2NBiμ-NSiMe3]2 [1]; barium bis(triisopropylcyclopentadienyl) [1]; bis-isopropylcyclopentyldienyl molybdenum dihydride [1]; lithium tert-butoxide [1]; titanium tetraisopropoxide [1]; trimethylaluminum [2]; tris(1-(dimethylamino)-3,3-dimethylbut-1-en-2-olate)erbium(III) [1]; tris(sec-butylcyclopentadienyl)yttrium [1]
+coreactants: O2 plasma [4]; at-H [1]
+
+wrote /home/ftk3187/github/PSED/psed_v1/03_corpus/corpus_status.html
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/04_twin_mpc/m2_design.py  (cwd=04_twin_mpc)
+ varies only 4.62% across the feasible points
+  feasible region           = 25 pts, 1 free coord; pA 1–200 Pa, t_p 0.0176–3.36 s
+  undetermined              = pressure_pulse_split (structural) — resolvable by a secondary objective or an equipment constraint
+  recommendation            = — (chosen_by=None; region is the answer)
+  confidence                = withheld (dominant=H)
+  assumptions               = pressure_bounds, pulse_time_bounds, pA_tp_ratio, kinetic_parameters, kinetic_uncertainty
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/04_twin_mpc/twin_validation.py  (cwd=04_twin_mpc)
+ion.html   (M3 Interpretation Brief)
+  research question    = Does the KB-parameterised Ylilammi channel twin reproduce the measured…
+  candidates           = 44 (4 sources); untested = ['vertical_structure']
+  admissible / refused = 36 / 8
+  diagnosability       = weak
+  supports/challenges  = 0 / 36  insufficient=36 preserved_anomalies=0
+  live explanations    = ['auxiliary_assumptions', 'extraction', 'measurement', 'model_structure', 'ontology', 'parameterization']
+  discriminating Qs    = 5
+
+
+########## VALIDATION ##########
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/test_pressure_extraction.py  (cwd=scripts)
+vidence kept: got 2, want 2
+14) legitimate table pressure under a pressure header is kept, but excluded as fact
+  PASS  measured_response never a process condition: got 0, want 0
+15) evidence-word guard: an entry whose quote has no pressure word is dropped
+  PASS  'reactor working pressure of 750 mt' kept=True — True
+  PASS  'N = 500 cycles, x = 147' kept=False
+  PASS  'partial pressure of ozone 1.1 Torr' kept=True — True
+  PASS  'the sticking coefficient c was 0.0' kept=False
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/test_geometry_model_params.py  (cwd=scripts)
+
+  PASS  10.1021_acs.jpcc.9b08176 carries ['aspect_ratio', 'initial_sticking_coefficient', 'recombination_probability'] — missing []
+  PASS  10.1039_d0cp03358h structure — {'pillarhall_lhar'}
+  PASS  10.1039_d0cp03358h geometry_class — {'lateral_channel'}
+  PASS  10.1039_d0cp03358h carries ['feature_height'] — missing []
+9) Yim reports only aspect-ratio RANGES — none may be asserted as a scalar
+  PASS  no fabricated aspect_ratio for Yim
+  PASS  and none reached its experiments
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/test_chemistry_propagation.py  (cwd=scripts)
+s
+16) alias: one compound under two names is one candidate
+  PASS  canon(tris(sec-butylcyclopentadienyl)ytt): got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+  PASS  canon(Y(sBuCp)3): got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+  PASS  canon(Yttrium tris(sec-butylcyclopentadi): got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+  PASS  collapses to one candidate: got ['Y(sBuCp)3'], want ['Y(sBuCp)3']
+  PASS  and resolves: got 'fully_resolved', want 'fully_resolved'
+  PASS  precursor: got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/test_provenance.py  (cwd=scripts)
+ c6dt keeps a RANGE at paper level; recipe T comes from the experiment
+  PASS  c6dt window is non-degenerate — [175, 300]
+  PASS  c6dt window has range provenance — {'level': 'paper', 'origin': 'scout_window', 'status': 'range', 'evidence': None}
+  PASS  c6dt has NO paper-level temperature scalar
+  PASS  c6dt has no temperature_C provenance — ['process_type', 'purge_time_s', 'temperature_window_C']
+  PASS  c6dt temperatures come from caption/series only — {'caption', 'series'}
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/test_card_temperature.py  (cwd=scripts)
+ase)
+  PASS  d0cp temperature_C = 300: got 300, want 300
+  PASS  d0cp pulse preserved: got {'precursor': 0.1, 'coreactant': 0.1}, want {'precursor': 0.1, 'coreactant': 0.1}
+  PASS  d0cp purge preserved: got 4.0, want 4.0
+  PASS  d0cp cycles preserved: got 500, want 500
+7) a window paper still accepts a genuine scalar from methods, if stated
+  PASS  window paper can be filled by methods: got 225, want 225
+  PASS  window still preserved alongside: got [175, 300], want [175, 300]
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/03_corpus/scripts/check_card_invariants.py  (cwd=scripts)
+papers with a non-degenerate temperature window: 8
+
+HARD — scout path must not promote an endpoint:
+  PASS — no window endpoint promoted from the scout path
+
+ADVISORY — merged temperature_C equals a window endpoint:
+  none
+
+INVARIANT HOLDS
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/04_twin_mpc/test_report_freshness.py  (cwd=04_twin_mpc)
+reality'
+  PASS  M3 carries the discovery-support disclaimer
+  PASS  M3 states the evidence-closure statement
+  PASS  M3 does not feed a co-reactant pressure into pA
+  PASS  M3 does not feed chamber/working/base pressure into pA
+  PASS  M3 renders twin inputs incl. geometry height and dose
+  PASS  M3 does not claim corpus-wide pressure absence
+6) M3 Brief is byte-stable under regeneration (deterministic, detects staleness)
+  PASS  committed M3 == fresh regeneration (not stale)
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 /home/ftk3187/github/PSED/psed_v1/04_twin_mpc/test_twin_validation.py  (cwd=04_twin_mpc)
+en forbidden-type pressure rejection
+  PASS  report describes missing evidence as corpus-absence, NOT literature-absence
+  PASS  report avoids absence-from-literature wording: 'does not report'
+  PASS  report avoids absence-from-literature wording: 'not reported in the literature'
+  PASS  report explicitly disavows a single confidence score
+  PASS  report does NOT introduce an aggregate model-confidence score
+  PASS  report shows per-comparison model-input evidence composition
+
+ALL TESTS PASSED
+
+
+report/validation return codes:
+{
+ "reports": {
+  "02_extraction/build_recipes.py": 0,
+  "02_extraction/build_analysis.py": 0,
+  "02_extraction/build_kg.py": 0,
+  "02_extraction/build_dashboard.py": 0,
+  "03_corpus/build_corpus_dashboard.py": 0,
+  "03_corpus/status.py": 0,
+  "m2:m2_design.py": 0,
+  "m3:twin_validation.py": 0
+ },
+ "validation": {
+  "test_pressure_extraction.py": 0,
+  "test_geometry_model_params.py": 0,
+  "test_chemistry_propagation.py": 0,
+  "test_provenance.py": 0,
+  "test_card_temperature.py": 0,
+  "check_card_invariants.py": 0,
+  "test_report_freshness.py": 0,
+  "test_twin_validation.py": 0
+ }
+}
+
+[run_reextract] phase --reports complete

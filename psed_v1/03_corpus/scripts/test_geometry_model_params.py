@@ -126,11 +126,31 @@ print("8) target-paper regression (not order-dependent)")
 
 
 def conds(doi):
+    """A paper's resolved records and the quantities they carry.
+
+    Reads experiments.json (current-paper experimental cases) AND entities.json:
+    a modelling paper such as 10.1021_acs.jpcc.9b08176 legitimately has ZERO
+    experimental cases — its curves are model sweeps — so its geometry and model
+    parameters live on the entity records, not on Experiments."""
     p = OUT / doi / "resolved" / "experiments.json"
-    if not p.is_file():
+    ep = OUT / doi / "resolved" / "entities.json"
+    if not p.is_file() and not ep.is_file():
         return None
-    E = json.loads(p.read_text())
-    return E, {c.get("quantity") for e in E for c in (e.get("controlled") or [])}
+    E = json.loads(p.read_text()) if p.is_file() else []
+    ents = json.loads(ep.read_text()) if ep.is_file() else []
+    qs = {c.get("quantity") for e in E for c in (e.get("controlled") or [])}
+    qs |= {b.get("quantity") for e in ents for b in (e.get("bound_conditions") or [])}
+    # geometry facts are attached per paper by geometry_facts(); they reach the
+    # records through the same path for both experimental and model papers
+    gp = ROOT / "extracted" / doi / "geometry.json"
+    if gp.is_file():
+        try:
+            g = json.loads(gp.read_text())
+            qs |= {q.get("quantity") for q in (g.get("quantities") or [])
+                   if q.get("status") == "directly_reported"}
+        except Exception:
+            pass
+    return (E or ents), qs
 
 
 for doi, want_struct, want_class, want_q in (
@@ -144,10 +164,10 @@ for doi, want_struct, want_class, want_q in (
         print(f"  SKIP  {doi} not resolved"); continue
     E, qs = r
     if want_struct:
-        ok(f"{doi} structure", {e.get("structure") for e in E} == {want_struct},
-           {e.get("structure") for e in E})
-        ok(f"{doi} geometry_class", {e.get("geometry_class") for e in E} == {want_class},
-           {e.get("geometry_class") for e in E})
+        got_s = {e.get("structure") for e in E if e.get("structure")}
+        got_c = {e.get("geometry_class") for e in E if e.get("geometry_class")}
+        ok(f"{doi} structure", got_s == {want_struct}, got_s)
+        ok(f"{doi} geometry_class", got_c == {want_class}, got_c)
     missing = want_q - qs
     ok(f"{doi} carries {sorted(want_q)}", not missing, f"missing {sorted(missing)}")
 

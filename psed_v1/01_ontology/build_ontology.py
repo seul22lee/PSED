@@ -29,7 +29,10 @@ def _molar_mass(formula):
 
 import yaml
 
-ROOT = Path(__file__).parent
+# resolve() matters: the HTML regeneration at the end runs the viz generators with
+# cwd=ROOT, so a RELATIVE ROOT (from `python3 01_ontology/build_ontology.py`) made the
+# script path resolve against the new cwd and every regeneration silently warned out.
+ROOT = Path(__file__).resolve().parent
 CORE = ROOT / "core.yaml"
 DICT = ROOT / "dictionary.json"
 OUT_YAML = ROOT / "ald_ontology.yaml"
@@ -149,6 +152,75 @@ def main():
             q = t.get(key)
             if q and q not in qk_ids:
                 print(f"  [warn] transform {t.get('from')}->{t.get('to')}: unknown {key} '{q}'")
+    # --- comparability layer validation (transformation rules / normalization
+    # definitions / comparison groups). Structural errors here are FATAL: the
+    # canonical layer binds to these declarations, so a dangling reference would
+    # silently disable a transformation instead of failing loudly.
+    fatal = []
+    STATUS_IDS = {s["id"] for s in qr.get("transformation_statuses", []) or []}
+    TYPE_IDS = {t["id"] for t in qr.get("transformation_types", []) or []}
+    groups = qr.get("comparison_groups", {}) or {}
+    normdefs = qr.get("normalization_definitions", []) or []
+    normdef_ids = set()
+    for nd in normdefs:
+        if nd["id"] in normdef_ids:
+            fatal.append(f"duplicate normalization_definition id: {nd['id']}")
+        normdef_ids.add(nd["id"])
+        for key in ("numerator", "denominator"):
+            if nd.get(key) and nd[key] not in qk_ids:
+                fatal.append(f"normalization_definition '{nd['id']}': unknown {key} quantity '{nd[key]}'")
+        for rc in nd.get("requires_context", []) or []:
+            if rc not in qk_ids:
+                fatal.append(f"normalization_definition '{nd['id']}': unknown required context '{rc}'")
+        if nd.get("comparison_group") and nd["comparison_group"] not in groups:
+            fatal.append(f"normalization_definition '{nd['id']}': unknown comparison_group '{nd['comparison_group']}'")
+    for gid, g in groups.items():
+        cq = g.get("canonical_quantity")
+        if cq and cq not in qk_ids:
+            fatal.append(f"comparison_group '{gid}': unknown canonical_quantity '{cq}'")
+        if not g.get("canonical_unit"):
+            fatal.append(f"comparison_group '{gid}': missing canonical_unit")
+        nd = g.get("normalization_definition")
+        if nd and nd not in normdef_ids:
+            fatal.append(f"comparison_group '{gid}': unknown normalization_definition '{nd}'")
+    rule_ids = set()
+    for r in qr.get("transformation_rules", []) or []:
+        rid = r.get("id")
+        if rid in rule_ids:
+            fatal.append(f"duplicate transformation_rule id: {rid}")
+        rule_ids.add(rid)
+        if not r.get("implementation_id"):
+            fatal.append(f"transformation_rule '{rid}': missing implementation_id")
+        if not r.get("version"):
+            fatal.append(f"transformation_rule '{rid}': missing version")
+        if r.get("type") not in TYPE_IDS:
+            fatal.append(f"transformation_rule '{rid}': unknown type '{r.get('type')}'")
+        if not r.get("output_unit"):
+            fatal.append(f"transformation_rule '{rid}': missing output_unit")
+        if not r.get("input_units"):
+            fatal.append(f"transformation_rule '{rid}': missing input_units")
+        for key in ("source_quantity_kind", "target_quantity_kind"):
+            q = r.get(key)
+            if q and q not in qk_ids:
+                fatal.append(f"transformation_rule '{rid}': unknown {key} '{q}'")
+        for rc in (r.get("required_context") or []) + (r.get("optional_context") or []):
+            if rc not in qk_ids:
+                fatal.append(f"transformation_rule '{rid}': unknown context quantity '{rc}'")
+        nd = r.get("normalization_definition")
+        if nd and nd not in normdef_ids:
+            fatal.append(f"transformation_rule '{rid}': unknown normalization_definition '{nd}'")
+        tspec = next((t for t in qr.get("transformation_types", []) or [] if t["id"] == r.get("type")), {})
+        if r.get("invertible") and not tspec.get("invertible", True):
+            fatal.append(f"transformation_rule '{rid}': claims invertible but type '{r.get('type')}' is not")
+        if tspec.get("needs_context") and not r.get("required_context") and not r.get("self_contained"):
+            fatal.append(f"transformation_rule '{rid}': type '{r.get('type')}' needs context but required_context is empty")
+    if not STATUS_IDS:
+        fatal.append("transformation_statuses is empty")
+    if fatal:
+        for m in fatal:
+            print(f"  [FATAL] {m}")
+        raise SystemExit(f"ontology compile failed: {len(fatal)} comparability-layer error(s)")
+
     # axis_role: coordinate / condition / output (drives experiment granularity)
     axis = qr.get("axis_role", {}) or {}
     coord, outp = set(axis.get("coordinate", [])), set(axis.get("output", []))
@@ -280,6 +352,11 @@ def main():
             "quantity_categories": len(qr.get("categories", {}) or {}),
             "quantity_categorized": sum(1 for q in quantity_kinds if q.get("category")),
             "quantity_transforms": len(qr.get("transforms", []) or []),
+            "transformation_rules": len(qr.get("transformation_rules", []) or []),
+            "transformation_types": len(qr.get("transformation_types", []) or []),
+            "transformation_statuses": len(qr.get("transformation_statuses", []) or []),
+            "normalization_definitions": len(qr.get("normalization_definitions", []) or []),
+            "comparison_groups": len(qr.get("comparison_groups", {}) or {}),
             "axis_coordinate": sum(1 for q in quantity_kinds if q.get("axis_role") == "coordinate"),
             "axis_condition": sum(1 for q in quantity_kinds if q.get("axis_role") == "condition"),
             "axis_output": sum(1 for q in quantity_kinds if q.get("axis_role") == "output"),

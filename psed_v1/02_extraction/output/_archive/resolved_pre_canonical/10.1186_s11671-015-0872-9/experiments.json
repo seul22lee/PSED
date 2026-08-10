@@ -1,0 +1,641 @@
+[
+ {
+  "material": "TiO2",
+  "material_raw": "TiO2",
+  "precursors": [
+   "TiCl4"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TiCl4"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "purge_time",
+    "value": 1,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "purge_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 7.5,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1186_s11671-015-0872-9::geometry::aspect_ratio::0",
+     "raw_label": "high-aspect-ratio (7.5:1)",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "To investigate the high-aspect-ratio (7.5:1) filling process, both sputtering and atomic layer deposition (ALD) were used to form TiO2 nanowires.",
+     "basis": "template thickness / pore diameter"
+    }
+   },
+   {
+    "quantity": "feature_width",
+    "value": 67.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1186_s11671-015-0872-9::geometry::feature_width::1",
+     "raw_label": "67 nm in diameter",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "ALD-deposited TiO2 nanowire arrays that were 67 nm in diameter and 400 nm high were transferred from the AAO template.",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 500.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1186_s11671-015-0872-9::geometry::feature_height::2",
+     "raw_label": "500-nm-thick",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "Next, a 500-nm-thick fine, self-ordered, hexagonal, nanoporous structure formed on the aluminum foil surface as a patterned template for nanorods, nanotubes, or nanowires.",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "feature_height",
+    "value": 400.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1186_s11671-015-0872-9::geometry::feature_height::3",
+     "raw_label": "400 nm high",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "ALD-deposited TiO2 nanowire arrays that were 67 nm in diameter and 400 nm high were transferred from the AAO template.",
+     "parameter_status": "measured"
+    }
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 0.000533288,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1186_s11671-015-0872-9::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "chamber pressure were 2 kW, 80 sccm, and 4e -6 Torr, respectively.",
+     "original_value": 4e-06,
+     "original_unit": "Torr"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 30.66406,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1186_s11671-015-0872-9::pressure::working_pressure::1",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "grown at 200\u00b0C and 230 mTorr using TiCl4 and H2O as the precursor vapors",
+     "original_value": 230,
+     "original_unit": "mTorr"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 189.68,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TiCl4",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a. u.",
+   "family": null
+  },
+  "coordinate": "2 Theta",
+  "coordinate_family": null,
+  "points": [
+   [
+    20.0,
+    13.0
+   ],
+   [
+    21.0,
+    13.5
+   ],
+   [
+    21.5,
+    17.0
+   ],
+   [
+    22.0,
+    32.0
+   ],
+   [
+    22.5,
+    55.0
+   ],
+   [
+    23.0,
+    31.0
+   ],
+   [
+    23.5,
+    15.0
+   ],
+   [
+    24.0,
+    12.8
+   ],
+   [
+    24.8,
+    13.0
+   ],
+   [
+    25.1,
+    23.0
+   ],
+   [
+    25.3,
+    72.0
+   ],
+   [
+    25.5,
+    30.0
+   ],
+   [
+    25.8,
+    13.5
+   ],
+   [
+    27.0,
+    13.0
+   ],
+   [
+    29.0,
+    13.5
+   ],
+   [
+    31.0,
+    13.5
+   ],
+   [
+    33.0,
+    14.0
+   ],
+   [
+    35.0,
+    14.0
+   ],
+   [
+    36.5,
+    14.5
+   ],
+   [
+    37.1,
+    19.5
+   ],
+   [
+    37.8,
+    14.5
+   ],
+   [
+    38.7,
+    18.0
+   ],
+   [
+    39.5,
+    14.5
+   ],
+   [
+    41.0,
+    16.0
+   ],
+   [
+    42.5,
+    18.0
+   ],
+   [
+    43.5,
+    23.0
+   ],
+   [
+    44.0,
+    37.0
+   ],
+   [
+    44.5,
+    93.0
+   ],
+   [
+    45.0,
+    95.0
+   ],
+   [
+    45.5,
+    33.0
+   ],
+   [
+    46.0,
+    22.0
+   ],
+   [
+    47.0,
+    17.0
+   ],
+   [
+    48.0,
+    23.0
+   ],
+   [
+    49.0,
+    14.5
+   ],
+   [
+    51.0,
+    13.5
+   ],
+   [
+    53.0,
+    13.5
+   ],
+   [
+    54.0,
+    18.0
+   ],
+   [
+    54.6,
+    14.0
+   ],
+   [
+    55.2,
+    16.5
+   ],
+   [
+    56.0,
+    13.5
+   ],
+   [
+    58.0,
+    13.0
+   ],
+   [
+    60.0,
+    13.5
+   ],
+   [
+    61.5,
+    13.5
+   ],
+   [
+    62.1,
+    16.5
+   ],
+   [
+    62.8,
+    17.5
+   ],
+   [
+    63.5,
+    13.5
+   ],
+   [
+    64.5,
+    13.5
+   ],
+   [
+    65.1,
+    16.5
+   ],
+   [
+    66.0,
+    13.5
+   ],
+   [
+    68.0,
+    13.0
+   ],
+   [
+    70.0,
+    13.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1186_s11671-015-0872-9-F3a-0",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "a",
+   "caption": "Figure 3 XRD profile for the AAO template on Al substrate and TiO2 coated via the ALD process.",
+   "extractor": "vision-llm",
+   "doi": "10.1186_s11671-015-0872-9"
+  },
+  "series_name": "series: XRD profile",
+  "phase": null,
+  "structure": "aao",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "TiO2",
+   "supporting_evidence": "of the candidates ['TiCl4'] listed by the paper, only 'TiCl4' carries the metal of TiO2",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TiCl4"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "TiO2"
+    ]
+   }
+  },
+  "varies": [
+   "2 Theta"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a. u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "TiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TiCl4",
+     "dose_time": 0.25,
+     "purge_time": 1,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 0.25,
+     "purge_time": 1,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": {
+    "H": 500.0,
+    "W": 67.0
+   },
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1186_s11671-015-0872-9-F3a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TiCl4",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 0.25,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 1,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 0.25,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 1,
+     "paper_id": null,
+     "card_field": "purge_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TiO2",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1186_s11671-015-0872-9-F3a-0"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.714
+  }
+ }
+]

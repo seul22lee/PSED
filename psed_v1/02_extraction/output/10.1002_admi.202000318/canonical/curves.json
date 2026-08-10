@@ -1,0 +1,3996 @@
+{
+ "doi": "10.1002_admi.202000318",
+ "generator": "02_extraction/canonical/build_canonical.py",
+ "code_version": "e673785+dirty",
+ "created_at": 1784891489,
+ "ontology": "01_ontology/ald_ontology.json",
+ "n_curves": 17,
+ "curves": [
+  {
+   "curve_id": "10.1002_admi.202000318::F1::a::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "1",
+    "figure_index": "1",
+    "panel": "a",
+    "series": "",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E000-C00"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1. Growth of iron oxide flms as measured by VASE. a) The growth per cycle as a function of ozone exposure with a saturating exposure of TBF.Because the TBF exposure required to reach saturation increases with ozone exposure,at each data point in (a),the TBF exposure was increased sufficiently to ensure TBF saturation for each ozone pulse length.b) The growth per cycle as a function of TBF exposure with a saturating exposure of ozone. Similar to (a), the ozone exposure used to generate each data point was increased sufficiently to ensure ozone saturation for each TBF exposure. c) The flm thickness as a function of number of cycles.All films were deposited with 10 s of ozone and 90-100 torr-s ofTBF per cycle (this TBF dose corresponds to saturation for this particular ozone exposure). The dotted line is the linearleast squares best fit to the data,the indicated"
+   },
+   "raw": {
+    "x": {
+     "label": "Total Ozone Pulse (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Growth Per Cycle (Å/cyc)",
+     "quantity": "growth_per_cycle",
+     "unit": "Å/cyc",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      3.5,
+      0.6
+     ],
+     [
+      10.5,
+      1.48
+     ],
+     [
+      20.0,
+      2.6
+     ],
+     [
+      30.0,
+      3.25
+     ],
+     [
+      60.0,
+      3.98
+     ],
+     [
+      80.5,
+      4.09
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "Total Ozone Pulse (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å/cyc",
+     "raw_label": "Growth Per Cycle (Å/cyc)",
+     "unit": "Å/cyc",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0.0,
+      3.5,
+      10.5,
+      20.0,
+      30.0,
+      60.0,
+      80.5
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.0,
+      0.06,
+      0.148,
+      0.26,
+      0.325,
+      0.398,
+      0.40900000000000003
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "a",
+      "series": "",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E000-C00"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "growth_per_cycle_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å/cyc",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "a",
+      "series": "",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E000-C00"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 7
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "cycle_number",
+    "deposition_temperature",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F1::b::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "1",
+    "figure_index": "1",
+    "panel": "b",
+    "series": "",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/0/panels/1/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Figure 1. Growth of iron oxide flms as measured by VASE. a) The growth per cycle as a function of ozone exposure with a saturating exposure of TBF.Because the TBF exposure required to reach saturation increases with ozone exposure,at each data point in (a),the TBF exposure was increased sufficiently to ensure TBF saturation for each ozone pulse length.b) The growth per cycle as a function of TBF exposure with a saturating exposure of ozone. Similar to (a), the ozone exposure used to generate each data point was increased sufficiently to ensure ozone saturation for each TBF exposure. c) The flm thickness as a function of number of cycles.All films were deposited with 10 s of ozone and 90-100 torr-s ofTBF per cycle (this TBF dose corresponds to saturation for this particular ozone exposure). The dotted line is the linearleast squares best fit to the data,the indicated"
+   },
+   "raw": {
+    "x": {
+     "label": "Integrated Metal Precursor Pulse (torr-s)",
+     "quantity": "exposure",
+     "unit": "torr-s",
+     "log": false
+    },
+    "y": {
+     "label": "Growth Per Cycle (Å/cyc)",
+     "quantity": "growth_per_cycle",
+     "unit": "Å/cyc",
+     "log": false
+    },
+    "points": [
+     [
+      1.8,
+      0.01
+     ],
+     [
+      4.5,
+      0.42
+     ],
+     [
+      10.0,
+      0.51
+     ],
+     [
+      13.8,
+      0.7
+     ],
+     [
+      20.5,
+      0.83
+     ],
+     [
+      23.5,
+      0.95
+     ],
+     [
+      28.0,
+      1.3
+     ],
+     [
+      35.0,
+      1.28
+     ],
+     [
+      38.0,
+      1.15
+     ],
+     [
+      64.5,
+      2.08
+     ],
+     [
+      94.0,
+      2.82
+     ],
+     [
+      95.5,
+      2.67
+     ],
+     [
+      106.0,
+      2.92
+     ],
+     [
+      143.0,
+      3.18
+     ],
+     [
+      151.0,
+      3.45
+     ],
+     [
+      163.0,
+      2.89
+     ],
+     [
+      165.0,
+      3.19
+     ],
+     [
+      222.0,
+      3.32
+     ],
+     [
+      236.0,
+      3.96
+     ],
+     [
+      288.0,
+      3.99
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure",
+     "raw_unit": "torr-s",
+     "raw_label": "Integrated Metal Precursor Pulse (torr-s)",
+     "unit": "torr-s",
+     "unit_recovered": false,
+     "quantity": "exposure",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å/cyc",
+     "raw_label": "Growth Per Cycle (Å/cyc)",
+     "unit": "Å/cyc",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.001,
+      0.042,
+      0.051000000000000004,
+      0.06999999999999999,
+      0.083,
+      0.095,
+      0.13,
+      0.128,
+      0.11499999999999999,
+      0.20800000000000002,
+      0.282,
+      0.267,
+      0.292,
+      0.31800000000000006,
+      0.34500000000000003,
+      0.28900000000000003,
+      0.319,
+      0.332,
+      0.396,
+      0.399
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "original_value": null,
+     "original_unit": "torr-s",
+     "canonical_value": null,
+     "canonical_unit": "Pa.s",
+     "context": {},
+     "unresolved_reason": "no declared unit-conversion rule for dimension exposure",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "b",
+      "series": "",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "growth_per_cycle_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å/cyc",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "b",
+      "series": "",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+    "n_points": 20
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F1::c::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "1",
+    "figure_index": "1",
+    "panel": "c",
+    "series": "",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/0/panels/2/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Figure 1. Growth of iron oxide flms as measured by VASE. a) The growth per cycle as a function of ozone exposure with a saturating exposure of TBF.Because the TBF exposure required to reach saturation increases with ozone exposure,at each data point in (a),the TBF exposure was increased sufficiently to ensure TBF saturation for each ozone pulse length.b) The growth per cycle as a function of TBF exposure with a saturating exposure of ozone. Similar to (a), the ozone exposure used to generate each data point was increased sufficiently to ensure ozone saturation for each TBF exposure. c) The flm thickness as a function of number of cycles.All films were deposited with 10 s of ozone and 90-100 torr-s ofTBF per cycle (this TBF dose corresponds to saturation for this particular ozone exposure). The dotted line is the linearleast squares best fit to the data,the indicated"
+   },
+   "raw": {
+    "x": {
+     "label": "# of ALD Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Film Thickness (Å)",
+     "quantity": "film_thickness",
+     "unit": "Å",
+     "log": false
+    },
+    "points": [
+     [
+      5.5,
+      6.0
+     ],
+     [
+      10.0,
+      8.5
+     ],
+     [
+      20.0,
+      31.0
+     ],
+     [
+      35.0,
+      42.0
+     ],
+     [
+      50.0,
+      82.5
+     ],
+     [
+      75.5,
+      127.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "# of ALD Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "Å",
+     "raw_label": "Film Thickness (Å)",
+     "unit": "Å",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": {
+     "comparison_group": "film_thickness",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "values": [
+      0.6000000000000001,
+      0.8500000000000001,
+      3.1,
+      4.2,
+      8.25,
+      12.700000000000001
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "c",
+      "series": "",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å -> nm",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "Å",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "c",
+      "series": "",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'cycle_number' is an ontology condition; each point is one experiment",
+    "n_points": 6
+   },
+   "context_available": [
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F1::d::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "1",
+    "figure_index": "1",
+    "panel": "d",
+    "series": "",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/0/panels/3/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E003-C00"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1. Growth of iron oxide flms as measured by VASE. a) The growth per cycle as a function of ozone exposure with a saturating exposure of TBF.Because the TBF exposure required to reach saturation increases with ozone exposure,at each data point in (a),the TBF exposure was increased sufficiently to ensure TBF saturation for each ozone pulse length.b) The growth per cycle as a function of TBF exposure with a saturating exposure of ozone. Similar to (a), the ozone exposure used to generate each data point was increased sufficiently to ensure ozone saturation for each TBF exposure. c) The flm thickness as a function of number of cycles.All films were deposited with 10 s of ozone and 90-100 torr-s ofTBF per cycle (this TBF dose corresponds to saturation for this particular ozone exposure). The dotted line is the linearleast squares best fit to the data,the indicated"
+   },
+   "raw": {
+    "x": {
+     "label": "Temperature (°C)",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "Growth Per Cycle (Å/cyc)",
+     "quantity": "growth_per_cycle",
+     "unit": "Å/cyc",
+     "log": false
+    },
+    "points": [
+     [
+      160.0,
+      1.98
+     ],
+     [
+      180.0,
+      1.91
+     ],
+     [
+      200.0,
+      2.01
+     ],
+     [
+      220.0,
+      2.3
+     ],
+     [
+      240.0,
+      1.52
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Temperature (°C)",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å/cyc",
+     "raw_label": "Growth Per Cycle (Å/cyc)",
+     "unit": "Å/cyc",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      433.15,
+      453.15,
+      473.15,
+      493.15,
+      513.15
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.198,
+      0.191,
+      0.20099999999999998,
+      0.22999999999999998,
+      0.15200000000000002
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "d",
+      "series": "",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E003-C00"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "growth_per_cycle_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å/cyc",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "1",
+      "panel": "d",
+      "series": "",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E003-C00"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 5
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "cycle_number",
+    "deposition_temperature",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F2::a::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "2",
+    "figure_index": "2",
+    "panel": "a",
+    "series": "10s Ozone",
+    "series_index": 0,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E004"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Film compositions calculated from angle-resolved XPS measurements of Fe2O3 films grown with varying levels of ozone exposure. All samples were grown with 20-50 torr-s of TBF exposure except for the x10 TBF flm which was grown using 400 torr-s TBF exposure.Film thicknesses are 160, 135, 215, 50, and 90 A, in order of legend appearance. Angles are given with respect to the sample surface plane, so smaller angles are at more grazing incidence and thus more surface sensitive."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "Angle",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "O/[Fe+O]",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      30.0,
+      59.8
+     ],
+     [
+      45.0,
+      58.7
+     ],
+     [
+      60.0,
+      58.7
+     ],
+     [
+      75.0,
+      59.1
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Angle",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": "angle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "O/[Fe+O]",
+     "raw_unit": "%",
+     "raw_label": null,
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "oxygen_iron_ratio",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "10s Ozone",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E004"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "10s Ozone",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E004"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": "multi_output",
+    "resolved_representation": "correlation",
+    "changed": true,
+    "reason": "x axis 'angle' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 4
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "exposure",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F2::a::1",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "2",
+    "figure_index": "2",
+    "panel": "a",
+    "series": "60s Ozone",
+    "series_index": 1,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/1",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E005"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Film compositions calculated from angle-resolved XPS measurements of Fe2O3 films grown with varying levels of ozone exposure. All samples were grown with 20-50 torr-s of TBF exposure except for the x10 TBF flm which was grown using 400 torr-s TBF exposure.Film thicknesses are 160, 135, 215, 50, and 90 A, in order of legend appearance. Angles are given with respect to the sample surface plane, so smaller angles are at more grazing incidence and thus more surface sensitive."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "Angle",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "O/[Fe+O]",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      30.0,
+      61.5
+     ],
+     [
+      45.0,
+      58.7
+     ],
+     [
+      60.0,
+      58.7
+     ],
+     [
+      75.0,
+      58.8
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Angle",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": "angle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "O/[Fe+O]",
+     "raw_unit": "%",
+     "raw_label": null,
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "oxygen_iron_ratio",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "60s Ozone",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E005"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "60s Ozone",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E005"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": "multi_output",
+    "resolved_representation": "correlation",
+    "changed": true,
+    "reason": "x axis 'angle' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 4
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "exposure",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F2::a::2",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "2",
+    "figure_index": "2",
+    "panel": "a",
+    "series": "100s Ozone",
+    "series_index": 2,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/2",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E006"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Film compositions calculated from angle-resolved XPS measurements of Fe2O3 films grown with varying levels of ozone exposure. All samples were grown with 20-50 torr-s of TBF exposure except for the x10 TBF flm which was grown using 400 torr-s TBF exposure.Film thicknesses are 160, 135, 215, 50, and 90 A, in order of legend appearance. Angles are given with respect to the sample surface plane, so smaller angles are at more grazing incidence and thus more surface sensitive."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "Angle",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "O/[Fe+O]",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      30.0,
+      63.2
+     ],
+     [
+      45.0,
+      60.7
+     ],
+     [
+      60.0,
+      59.9
+     ],
+     [
+      75.0,
+      58.8
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Angle",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": "angle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "O/[Fe+O]",
+     "raw_unit": "%",
+     "raw_label": null,
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "oxygen_iron_ratio",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "100s Ozone",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/2/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E006"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "100s Ozone",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/2/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E006"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": "multi_output",
+    "resolved_representation": "correlation",
+    "changed": true,
+    "reason": "x axis 'angle' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 4
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "exposure",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F2::a::3",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "2",
+    "figure_index": "2",
+    "panel": "a",
+    "series": "120s Ozone",
+    "series_index": 3,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/3",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E007"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Film compositions calculated from angle-resolved XPS measurements of Fe2O3 films grown with varying levels of ozone exposure. All samples were grown with 20-50 torr-s of TBF exposure except for the x10 TBF flm which was grown using 400 torr-s TBF exposure.Film thicknesses are 160, 135, 215, 50, and 90 A, in order of legend appearance. Angles are given with respect to the sample surface plane, so smaller angles are at more grazing incidence and thus more surface sensitive."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "Angle",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "O/[Fe+O]",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      30.0,
+      70.3
+     ],
+     [
+      45.0,
+      63.2
+     ],
+     [
+      55.0,
+      60.3
+     ],
+     [
+      65.0,
+      59.1
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Angle",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": "angle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "O/[Fe+O]",
+     "raw_unit": "%",
+     "raw_label": null,
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "oxygen_iron_ratio",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "120s Ozone",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/3/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E007"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "120s Ozone",
+      "series_index": 3,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/3/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E007"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": "multi_output",
+    "resolved_representation": "correlation",
+    "changed": true,
+    "reason": "x axis 'angle' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 4
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "exposure",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F2::a::4",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "2",
+    "figure_index": "2",
+    "panel": "a",
+    "series": "120s Ozone, x10 TBF",
+    "series_index": 4,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/4",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E008"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Film compositions calculated from angle-resolved XPS measurements of Fe2O3 films grown with varying levels of ozone exposure. All samples were grown with 20-50 torr-s of TBF exposure except for the x10 TBF flm which was grown using 400 torr-s TBF exposure.Film thicknesses are 160, 135, 215, 50, and 90 A, in order of legend appearance. Angles are given with respect to the sample surface plane, so smaller angles are at more grazing incidence and thus more surface sensitive."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "Angle",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "O/[Fe+O]",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      30.0,
+      59.5
+     ],
+     [
+      45.0,
+      58.1
+     ],
+     [
+      60.0,
+      58.2
+     ],
+     [
+      75.0,
+      58.4
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Angle",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": "angle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "O/[Fe+O]",
+     "raw_unit": "%",
+     "raw_label": null,
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "oxygen_iron_ratio",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'angle' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "120s Ozone, x10 TBF",
+      "series_index": 4,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/4/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E008"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'oxygen_iron_ratio' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "2",
+      "panel": "a",
+      "series": "120s Ozone, x10 TBF",
+      "series_index": 4,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/4/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E008"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": "multi_output",
+    "resolved_representation": "correlation",
+    "changed": true,
+    "reason": "x axis 'angle' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 4
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "exposure",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F4::a::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "4",
+    "figure_index": "4",
+    "panel": "a",
+    "series": "Reflectivity",
+    "series_index": 0,
+    "series_axis": "model type",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E009"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. a) XRR measurement of a 24.0 nm thick Fe2O3 flm,shown in orange. Calculated intensity shown in red is generated from a bilayer model reflecting a gradient of density within the flm,in which the surface region of the film is less dense than the bulk. The blue curve is generatedfromasimplermodelwheredensityisassumedtobeconstant throughout the flm.Data are truncated below θ= 0.04° to omit sample edge effects from the analysis.b)A plot of the electron density of the bilayer model used in (a),reflecting the thicknesses, densities, and roughnesses found from ftting the model in (a). The lower density region of excess oxygen is visible near the surface with a gradual transition to the bulk Fe2O3 region, followed by the SiO2/Si substrate of lower electron density.Thesmoothcontoursatthesurface and atinterfaces arisefrom surface and interfacial roughness."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "2θ",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "Intensity",
+     "unit": "cps",
+     "log": true
+    },
+    "points": [
+     [
+      0.1,
+      4000000
+     ],
+     [
+      0.2,
+      10000000
+     ],
+     [
+      0.3,
+      15000000
+     ],
+     [
+      0.4,
+      18000000
+     ],
+     [
+      0.5,
+      15000000
+     ],
+     [
+      0.6,
+      10000000
+     ],
+     [
+      0.65,
+      5000000
+     ],
+     [
+      0.7,
+      200000
+     ],
+     [
+      0.75,
+      300000
+     ],
+     [
+      0.8,
+      500000
+     ],
+     [
+      0.85,
+      700000
+     ],
+     [
+      0.9,
+      500000
+     ],
+     [
+      0.95,
+      100000
+     ],
+     [
+      1.0,
+      80000
+     ],
+     [
+      1.05,
+      100000
+     ],
+     [
+      1.1,
+      120000
+     ],
+     [
+      1.15,
+      100000
+     ],
+     [
+      1.2,
+      50000
+     ],
+     [
+      1.25,
+      30000
+     ],
+     [
+      1.3,
+      27000
+     ],
+     [
+      1.35,
+      30000
+     ],
+     [
+      1.4,
+      28000
+     ],
+     [
+      1.45,
+      24000
+     ],
+     [
+      1.5,
+      20000
+     ],
+     [
+      1.6,
+      12000
+     ],
+     [
+      1.7,
+      10000
+     ],
+     [
+      1.8,
+      8000
+     ],
+     [
+      1.9,
+      6000
+     ],
+     [
+      2.0,
+      4500
+     ],
+     [
+      2.2,
+      3000
+     ],
+     [
+      2.4,
+      2000
+     ],
+     [
+      2.6,
+      1500
+     ],
+     [
+      2.8,
+      1000
+     ],
+     [
+      3.0,
+      700
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "2θ",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity '2θ' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "cps",
+     "raw_label": null,
+     "unit": "cps",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity '2θ' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "a",
+      "series": "Reflectivity",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E009"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "cps",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "a",
+      "series": "Reflectivity",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E009"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": "multi_output",
+    "resolved_representation": "unresolved",
+    "changed": true,
+    "reason": "x axis role could not be determined",
+    "n_points": 34
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F4::a::1",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "4",
+    "figure_index": "4",
+    "panel": "a",
+    "series": "Single Layer Model",
+    "series_index": 1,
+    "series_axis": "model type",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/1",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E009"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. a) XRR measurement of a 24.0 nm thick Fe2O3 flm,shown in orange. Calculated intensity shown in red is generated from a bilayer model reflecting a gradient of density within the flm,in which the surface region of the film is less dense than the bulk. The blue curve is generatedfromasimplermodelwheredensityisassumedtobeconstant throughout the flm.Data are truncated below θ= 0.04° to omit sample edge effects from the analysis.b)A plot of the electron density of the bilayer model used in (a),reflecting the thicknesses, densities, and roughnesses found from ftting the model in (a). The lower density region of excess oxygen is visible near the surface with a gradual transition to the bulk Fe2O3 region, followed by the SiO2/Si substrate of lower electron density.Thesmoothcontoursatthesurface and atinterfaces arisefrom surface and interfacial roughness."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "2θ",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "Intensity",
+     "unit": "cps",
+     "log": true
+    },
+    "points": [
+     [
+      0.1,
+      4000000
+     ],
+     [
+      0.2,
+      10000000
+     ],
+     [
+      0.3,
+      15000000
+     ],
+     [
+      0.4,
+      18000000
+     ],
+     [
+      0.5,
+      15000000
+     ],
+     [
+      0.6,
+      10000000
+     ],
+     [
+      0.65,
+      5000000
+     ],
+     [
+      0.7,
+      1000000
+     ],
+     [
+      0.75,
+      150000
+     ],
+     [
+      0.8,
+      700000
+     ],
+     [
+      0.85,
+      600000
+     ],
+     [
+      0.9,
+      500000
+     ],
+     [
+      0.95,
+      70000
+     ],
+     [
+      1.0,
+      75000
+     ],
+     [
+      1.05,
+      100000
+     ],
+     [
+      1.1,
+      80000
+     ],
+     [
+      1.15,
+      60000
+     ],
+     [
+      1.2,
+      45000
+     ],
+     [
+      1.25,
+      30000
+     ],
+     [
+      1.3,
+      26000
+     ],
+     [
+      1.35,
+      28000
+     ],
+     [
+      1.4,
+      25000
+     ],
+     [
+      1.5,
+      20000
+     ],
+     [
+      1.6,
+      12000
+     ],
+     [
+      1.7,
+      10000
+     ],
+     [
+      1.8,
+      8000
+     ],
+     [
+      1.9,
+      6000
+     ],
+     [
+      2.0,
+      4500
+     ],
+     [
+      2.2,
+      3000
+     ],
+     [
+      2.4,
+      2000
+     ],
+     [
+      2.6,
+      1500
+     ],
+     [
+      2.8,
+      1000
+     ],
+     [
+      3.0,
+      700
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "2θ",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity '2θ' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "cps",
+     "raw_label": null,
+     "unit": "cps",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity '2θ' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "a",
+      "series": "Single Layer Model",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E009"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "cps",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "a",
+      "series": "Single Layer Model",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E009"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": "multi_output",
+    "resolved_representation": "unresolved",
+    "changed": true,
+    "reason": "x axis role could not be determined",
+    "n_points": 33
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F4::a::2",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "4",
+    "figure_index": "4",
+    "panel": "a",
+    "series": "Bilayer Model",
+    "series_index": 2,
+    "series_axis": "model type",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/2",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [
+     "10.1002_admi.202000318-E009"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. a) XRR measurement of a 24.0 nm thick Fe2O3 flm,shown in orange. Calculated intensity shown in red is generated from a bilayer model reflecting a gradient of density within the flm,in which the surface region of the film is less dense than the bulk. The blue curve is generatedfromasimplermodelwheredensityisassumedtobeconstant throughout the flm.Data are truncated below θ= 0.04° to omit sample edge effects from the analysis.b)A plot of the electron density of the bilayer model used in (a),reflecting the thicknesses, densities, and roughnesses found from ftting the model in (a). The lower density region of excess oxygen is visible near the surface with a gradual transition to the bulk Fe2O3 region, followed by the SiO2/Si substrate of lower electron density.Thesmoothcontoursatthesurface and atinterfaces arisefrom surface and interfacial roughness."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "2θ",
+     "unit": "degrees",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "Intensity",
+     "unit": "cps",
+     "log": true
+    },
+    "points": [
+     [
+      0.1,
+      4000000
+     ],
+     [
+      0.2,
+      10000000
+     ],
+     [
+      0.3,
+      15000000
+     ],
+     [
+      0.4,
+      18000000
+     ],
+     [
+      0.5,
+      15000000
+     ],
+     [
+      0.6,
+      10000000
+     ],
+     [
+      0.65,
+      5000000
+     ],
+     [
+      0.7,
+      800000
+     ],
+     [
+      0.75,
+      300000
+     ],
+     [
+      0.8,
+      700000
+     ],
+     [
+      0.85,
+      600000
+     ],
+     [
+      0.9,
+      500000
+     ],
+     [
+      0.95,
+      90000
+     ],
+     [
+      1.0,
+      80000
+     ],
+     [
+      1.05,
+      100000
+     ],
+     [
+      1.1,
+      120000
+     ],
+     [
+      1.15,
+      90000
+     ],
+     [
+      1.2,
+      50000
+     ],
+     [
+      1.25,
+      30000
+     ],
+     [
+      1.3,
+      27000
+     ],
+     [
+      1.35,
+      28000
+     ],
+     [
+      1.4,
+      26000
+     ],
+     [
+      1.5,
+      20000
+     ],
+     [
+      1.6,
+      12000
+     ],
+     [
+      1.7,
+      10000
+     ],
+     [
+      1.8,
+      8000
+     ],
+     [
+      1.9,
+      6000
+     ],
+     [
+      2.0,
+      4500
+     ],
+     [
+      2.2,
+      3000
+     ],
+     [
+      2.4,
+      2000
+     ],
+     [
+      2.6,
+      1500
+     ],
+     [
+      2.8,
+      1000
+     ],
+     [
+      3.0,
+      700
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "2θ",
+     "raw_unit": "degrees",
+     "raw_label": null,
+     "unit": "degrees",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity '2θ' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "cps",
+     "raw_label": null,
+     "unit": "cps",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "degrees",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity '2θ' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "a",
+      "series": "Bilayer Model",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/2/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E009"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "cps",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "a",
+      "series": "Bilayer Model",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/2/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": "10.1002_admi.202000318-E009"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": "multi_output",
+    "resolved_representation": "unresolved",
+    "changed": true,
+    "reason": "x axis role could not be determined",
+    "n_points": 33
+   },
+   "context_available": [
+    "co_reactant_partial_pressure",
+    "deposition_temperature",
+    "flow_rate",
+    "molecular_mass",
+    "pulse_time",
+    "purge_time",
+    "temperature",
+    "working_pressure"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F4::b::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "4",
+    "figure_index": "4",
+    "panel": "b",
+    "series": "Electron Density",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/2/panels/1/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [],
+    "data_source": "simulated",
+    "caption": "Figure 4. a) XRR measurement of a 24.0 nm thick Fe2O3 flm,shown in orange. Calculated intensity shown in red is generated from a bilayer model reflecting a gradient of density within the flm,in which the surface region of the film is less dense than the bulk. The blue curve is generatedfromasimplermodelwheredensityisassumedtobeconstant throughout the flm.Data are truncated below θ= 0.04° to omit sample edge effects from the analysis.b)A plot of the electron density of the bilayer model used in (a),reflecting the thicknesses, densities, and roughnesses found from ftting the model in (a). The lower density region of excess oxygen is visible near the surface with a gradual transition to the bulk Fe2O3 region, followed by the SiO2/Si substrate of lower electron density.Thesmoothcontoursatthesurface and atinterfaces arisefrom surface and interfacial roughness."
+   },
+   "raw": {
+    "x": {
+     "label": null,
+     "quantity": "spatial_coordinate",
+     "unit": "Å",
+     "log": false
+    },
+    "y": {
+     "label": null,
+     "quantity": "density",
+     "unit": "Å^-3",
+     "log": false
+    },
+    "points": [
+     [
+      -100,
+      0.0
+     ],
+     [
+      -80,
+      0.0
+     ],
+     [
+      -60,
+      0.01
+     ],
+     [
+      -40,
+      0.07
+     ],
+     [
+      -20,
+      0.22
+     ],
+     [
+      0,
+      0.53
+     ],
+     [
+      10,
+      0.68
+     ],
+     [
+      20,
+      0.82
+     ],
+     [
+      30,
+      0.93
+     ],
+     [
+      40,
+      1.03
+     ],
+     [
+      60,
+      1.14
+     ],
+     [
+      80,
+      1.22
+     ],
+     [
+      100,
+      1.32
+     ],
+     [
+      120,
+      1.42
+     ],
+     [
+      140,
+      1.5
+     ],
+     [
+      160,
+      1.57
+     ],
+     [
+      180,
+      1.63
+     ],
+     [
+      200,
+      1.68
+     ],
+     [
+      220,
+      1.71
+     ],
+     [
+      230,
+      1.71
+     ],
+     [
+      235,
+      1.68
+     ],
+     [
+      238,
+      1.0
+     ],
+     [
+      240,
+      0.63
+     ],
+     [
+      245,
+      0.62
+     ],
+     [
+      255,
+      0.67
+     ],
+     [
+      270,
+      0.68
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "Å",
+     "raw_label": null,
+     "unit": "Å",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "density",
+     "raw_unit": "Å^-3",
+     "raw_label": null,
+     "unit": "Å^-3",
+     "unit_recovered": false,
+     "quantity": "film_density",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      -0.01,
+      -0.008,
+      -0.006,
+      -0.004,
+      -0.002,
+      0.0,
+      0.001,
+      0.002,
+      0.003,
+      0.004,
+      0.006,
+      0.008,
+      0.01,
+      0.012,
+      0.014,
+      0.016,
+      0.018000000000000002,
+      0.02,
+      0.022000000000000002,
+      0.023,
+      0.0235,
+      0.0238,
+      0.024,
+      0.0245,
+      0.025500000000000002,
+      0.027
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å -> µm",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "Å",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "b",
+      "series": "Electron Density",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "Å^-3",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "4",
+      "panel": "b",
+      "series": "Electron Density",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": null,
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 26
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F6::a::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "6",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "100s Ozone",
+    "series_index": 0,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/3/panels/0/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Figure 6.a) Integrated 2D GIWAXS scans of Fe2O3 flms, summed over all measured angles X as a function of Q. Three scans of flms grown using 100,60,and 20 s of ozone exposure under saturated TBF doses are shown,together with the primary peaks of α-Fe2O3 andFe2O3 indicated with black triangles and gray circles, respectively.65,71 Film thicknesses for the 20,60, and 100 s ozone samples are 90, 138, and 140 A, respectively. b) Approximate phase composition between the α and yphases, as calculated from the ratio of the area of the 2.13 A-1 peak to the area of the 2.49 A-1 peak. Films here were grown using a wide range of TBF exposures.Error bars indicating one standard deviation are shown for ozone exposures at which multiple samples were grown; points shown at 10, 20, 80, and 140 s consist of a single sample."
+   },
+   "raw": {
+    "x": {
+     "label": "Q (1/Å)",
+     "quantity": "Q",
+     "unit": "1/Å",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity (a.u.)",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      1.0,
+      3.4
+     ],
+     [
+      1.1,
+      3.2
+     ],
+     [
+      1.2,
+      3.1
+     ],
+     [
+      1.3,
+      2.9
+     ],
+     [
+      1.4,
+      2.8
+     ],
+     [
+      1.5,
+      2.7
+     ],
+     [
+      1.6,
+      2.7
+     ],
+     [
+      1.65,
+      3.1
+     ],
+     [
+      1.71,
+      5.6
+     ],
+     [
+      1.77,
+      3.5
+     ],
+     [
+      1.85,
+      2.7
+     ],
+     [
+      2.0,
+      2.5
+     ],
+     [
+      2.1,
+      2.5
+     ],
+     [
+      2.2,
+      2.6
+     ],
+     [
+      2.25,
+      3.5
+     ],
+     [
+      2.33,
+      9.7
+     ],
+     [
+      2.38,
+      5.0
+     ],
+     [
+      2.47,
+      6.2
+     ],
+     [
+      2.55,
+      3.1
+     ],
+     [
+      2.65,
+      2.5
+     ],
+     [
+      2.75,
+      2.7
+     ],
+     [
+      2.83,
+      3.4
+     ],
+     [
+      2.9,
+      2.9
+     ],
+     [
+      3.0,
+      2.5
+     ],
+     [
+      3.1,
+      2.3
+     ],
+     [
+      3.2,
+      2.3
+     ],
+     [
+      3.3,
+      2.5
+     ],
+     [
+      3.39,
+      3.9
+     ],
+     [
+      3.48,
+      2.5
+     ],
+     [
+      3.6,
+      2.5
+     ],
+     [
+      3.7,
+      4.3
+     ],
+     [
+      3.8,
+      2.8
+     ],
+     [
+      3.91,
+      2.5
+     ],
+     [
+      4.0,
+      2.2
+     ],
+     [
+      4.1,
+      2.3
+     ],
+     [
+      4.21,
+      2.6
+     ],
+     [
+      4.3,
+      2.2
+     ],
+     [
+      4.4,
+      1.9
+     ],
+     [
+      4.5,
+      1.6
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Q",
+     "raw_unit": "1/Å",
+     "raw_label": "Q (1/Å)",
+     "unit": "1/Å",
+     "unit_recovered": false,
+     "quantity": "site_density",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "1/Å",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "a",
+      "series": "100s Ozone",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "a",
+      "series": "100s Ozone",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'site_density' is an ontology condition; each point is one experiment",
+    "n_points": 39
+   },
+   "context_available": [
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F6::a::1",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "6",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "60s Ozone",
+    "series_index": 1,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/3/panels/0/series/1",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Figure 6.a) Integrated 2D GIWAXS scans of Fe2O3 flms, summed over all measured angles X as a function of Q. Three scans of flms grown using 100,60,and 20 s of ozone exposure under saturated TBF doses are shown,together with the primary peaks of α-Fe2O3 andFe2O3 indicated with black triangles and gray circles, respectively.65,71 Film thicknesses for the 20,60, and 100 s ozone samples are 90, 138, and 140 A, respectively. b) Approximate phase composition between the α and yphases, as calculated from the ratio of the area of the 2.13 A-1 peak to the area of the 2.49 A-1 peak. Films here were grown using a wide range of TBF exposures.Error bars indicating one standard deviation are shown for ozone exposures at which multiple samples were grown; points shown at 10, 20, 80, and 140 s consist of a single sample."
+   },
+   "raw": {
+    "x": {
+     "label": "Q (1/Å)",
+     "quantity": "Q",
+     "unit": "1/Å",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity (a.u.)",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      1.0,
+      2.0
+     ],
+     [
+      1.2,
+      1.9
+     ],
+     [
+      1.4,
+      1.8
+     ],
+     [
+      1.6,
+      1.7
+     ],
+     [
+      1.71,
+      2.1
+     ],
+     [
+      1.8,
+      1.8
+     ],
+     [
+      2.0,
+      1.8
+     ],
+     [
+      2.2,
+      1.9
+     ],
+     [
+      2.35,
+      2.5
+     ],
+     [
+      2.49,
+      2.7
+     ],
+     [
+      2.6,
+      2.0
+     ],
+     [
+      2.8,
+      1.9
+     ],
+     [
+      2.83,
+      2.1
+     ],
+     [
+      3.0,
+      1.8
+     ],
+     [
+      3.2,
+      1.7
+     ],
+     [
+      3.39,
+      2.0
+     ],
+     [
+      3.5,
+      1.8
+     ],
+     [
+      3.7,
+      2.1
+     ],
+     [
+      3.9,
+      1.9
+     ],
+     [
+      4.21,
+      1.9
+     ],
+     [
+      4.5,
+      1.4
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Q",
+     "raw_unit": "1/Å",
+     "raw_label": "Q (1/Å)",
+     "unit": "1/Å",
+     "unit_recovered": false,
+     "quantity": "site_density",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "1/Å",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "a",
+      "series": "60s Ozone",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/1/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "a",
+      "series": "60s Ozone",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/1/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'site_density' is an ontology condition; each point is one experiment",
+    "n_points": 21
+   },
+   "context_available": [
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F6::a::2",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "6",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "20s Ozone",
+    "series_index": 2,
+    "series_axis": "ozone exposure time",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/3/panels/0/series/2",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Figure 6.a) Integrated 2D GIWAXS scans of Fe2O3 flms, summed over all measured angles X as a function of Q. Three scans of flms grown using 100,60,and 20 s of ozone exposure under saturated TBF doses are shown,together with the primary peaks of α-Fe2O3 andFe2O3 indicated with black triangles and gray circles, respectively.65,71 Film thicknesses for the 20,60, and 100 s ozone samples are 90, 138, and 140 A, respectively. b) Approximate phase composition between the α and yphases, as calculated from the ratio of the area of the 2.13 A-1 peak to the area of the 2.49 A-1 peak. Films here were grown using a wide range of TBF exposures.Error bars indicating one standard deviation are shown for ozone exposures at which multiple samples were grown; points shown at 10, 20, 80, and 140 s consist of a single sample."
+   },
+   "raw": {
+    "x": {
+     "label": "Q (1/Å)",
+     "quantity": "Q",
+     "unit": "1/Å",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity (a.u.)",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      1.0,
+      1.2
+     ],
+     [
+      1.2,
+      1.2
+     ],
+     [
+      1.4,
+      1.2
+     ],
+     [
+      1.6,
+      1.2
+     ],
+     [
+      1.8,
+      1.2
+     ],
+     [
+      2.0,
+      1.3
+     ],
+     [
+      2.2,
+      1.4
+     ],
+     [
+      2.5,
+      1.8
+     ],
+     [
+      2.8,
+      1.4
+     ],
+     [
+      3.0,
+      1.3
+     ],
+     [
+      3.2,
+      1.2
+     ],
+     [
+      3.4,
+      1.2
+     ],
+     [
+      3.7,
+      1.3
+     ],
+     [
+      4.0,
+      1.3
+     ],
+     [
+      4.3,
+      1.2
+     ],
+     [
+      4.5,
+      1.1
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Q",
+     "raw_unit": "1/Å",
+     "raw_label": "Q (1/Å)",
+     "unit": "1/Å",
+     "unit_recovered": false,
+     "quantity": "site_density",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "1/Å",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "a",
+      "series": "20s Ozone",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/2/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "a",
+      "series": "20s Ozone",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/2/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'site_density' is an ontology condition; each point is one experiment",
+    "n_points": 16
+   },
+   "context_available": [
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_admi.202000318::F6::b::0",
+   "source": {
+    "paper_id": "10.1002_admi.202000318",
+    "doi": "10.1002_admi.202000318",
+    "figure": "6",
+    "figure_index": "6",
+    "panel": "b",
+    "series": "Fraction γ Phase",
+    "series_index": 0,
+    "series_axis": "phase composition",
+    "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+    "json_pointer": "/figures/3/panels/1/series/0",
+    "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Figure 6.a) Integrated 2D GIWAXS scans of Fe2O3 flms, summed over all measured angles X as a function of Q. Three scans of flms grown using 100,60,and 20 s of ozone exposure under saturated TBF doses are shown,together with the primary peaks of α-Fe2O3 andFe2O3 indicated with black triangles and gray circles, respectively.65,71 Film thicknesses for the 20,60, and 100 s ozone samples are 90, 138, and 140 A, respectively. b) Approximate phase composition between the α and yphases, as calculated from the ratio of the area of the 2.13 A-1 peak to the area of the 2.49 A-1 peak. Films here were grown using a wide range of TBF exposures.Error bars indicating one standard deviation are shown for ozone exposures at which multiple samples were grown; points shown at 10, 20, 80, and 140 s consist of a single sample."
+   },
+   "raw": {
+    "x": {
+     "label": "Ozone Exposure per Cycle (s)",
+     "quantity": "exposure",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Fraction γ Phase (%)",
+     "quantity": "Fraction γ Phase",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      5.0,
+      100.0
+     ],
+     [
+      10.0,
+      100.0
+     ],
+     [
+      20.0,
+      100.0
+     ],
+     [
+      30.0,
+      76.0
+     ],
+     [
+      60.0,
+      35.0
+     ],
+     [
+      80.0,
+      0.0
+     ],
+     [
+      100.0,
+      12.0
+     ],
+     [
+      120.0,
+      10.0
+     ],
+     [
+      140.0,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure",
+     "raw_unit": "s",
+     "raw_label": "Ozone Exposure per Cycle (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "exposure",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Fraction γ Phase",
+     "raw_unit": "%",
+     "raw_label": "Fraction γ Phase (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "gamma_phase_fraction",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'gamma_phase_fraction' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "time_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "exposure",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "Pa.s",
+     "context": {},
+     "unresolved_reason": "declared unit 's' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "b",
+      "series": "Fraction γ Phase",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/1/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'gamma_phase_fraction' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_admi.202000318",
+      "doi": "10.1002_admi.202000318",
+      "figure": "6",
+      "panel": "b",
+      "series": "Fraction γ Phase",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "03_corpus/extracted/10.1002_admi.202000318/figure_data.json",
+      "json_pointer": "/figures/3/panels/1/series/0/points",
+      "source_checksum": "sha256:d04f9926a7bbcb105e0c2919e1272b346ac7e7e185c24bf8d65960934c11408f",
+      "experiment_id": null
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "e673785+dirty",
+     "created_at": 1784891489
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": null,
+    "resolved_representation": "series",
+    "changed": false,
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+    "n_points": 9
+   },
+   "context_available": []
+  }
+ ]
+}

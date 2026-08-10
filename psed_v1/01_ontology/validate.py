@@ -3,12 +3,14 @@ validate.py
 -----------
 1. Integrity checks on the compiled ontology (broken parents, dangling
    domain/range, unresolved derived_from/couples, duplicate ids, bad IRIs).
-2. Coverage report against the existing KG (0604_kg): how many of the KG's
+2. Coverage report against the LIVE ontology-grounded KG: how many of its
    `variable` and `material` nodes resolve to an ontology QuantityKind /
    individual, and which do NOT (== ontology gaps to fill next).
 
 Run after build_ontology.py.
 """
+
+from __future__ import annotations   # this repo runs on Python 3.8; `list[str]` needs it
 
 import json
 import re
@@ -16,13 +18,53 @@ from pathlib import Path
 
 import yaml
 
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).resolve().parent
 ONTO = ROOT / "ald_ontology.json"
-KG = ROOT.parent / "0604_kg" / "output" / "knowledge_graph.json"
+# The live KG is the ontology-grounded one built by 02_extraction/build_kg.py.
+# The old 0604_kg path no longer exists in this repo layout.
+KG = ROOT.parent / "02_extraction" / "output" / "knowledge_graph_onto.json"
 
 
 def load_onto():
     return json.loads(ONTO.read_text())
+
+
+def comparability(o) -> list[str]:
+    """Integrity of the comparability layer (transformation rules, normalization
+    definitions, comparison groups). build_ontology.py already fails hard on these,
+    so anything found here means a hand-edited ald_ontology.json."""
+    errors = []
+    qr = o.get("quantity_relations", {}) or {}
+    qk_ids = {q["id"] for q in o["quantity_kinds"]}
+    class_ids = {c["id"] for c in o["classes"]}
+    for need in ("TransformationRule", "TransformationExecution",
+                 "NormalizationDefinition", "ComparisonGroup", "ContextBinding",
+                 "AxisSemantics"):
+        if need not in class_ids:
+            errors.append(f"comparability class missing: {need}")
+    groups = qr.get("comparison_groups", {}) or {}
+    ndefs = {n["id"]: n for n in qr.get("normalization_definitions", []) or []}
+    if not groups:
+        errors.append("no comparison_groups declared")
+    if not ndefs:
+        errors.append("no normalization_definitions declared")
+    for nid, n in ndefs.items():
+        for slot in ("numerator", "denominator"):
+            if n.get(slot) and n[slot] not in qk_ids:
+                errors.append(f"normalization_definition {nid}: {slot} '{n[slot]}' not a quantity")
+        if n.get("comparison_group") not in groups:
+            errors.append(f"normalization_definition {nid}: unknown comparison_group")
+    seen_rule = set()
+    for r in qr.get("transformation_rules", []) or []:
+        if r["id"] in seen_rule:
+            errors.append(f"duplicate transformation_rule id: {r['id']}")
+        seen_rule.add(r["id"])
+        if r.get("normalization_definition") and r["normalization_definition"] not in ndefs:
+            errors.append(f"transformation_rule {r['id']}: unknown normalization_definition")
+    for gid, g in groups.items():
+        if g.get("canonical_quantity") not in qk_ids:
+            errors.append(f"comparison_group {gid}: canonical_quantity not a quantity")
+    return errors
 
 
 def integrity(o) -> list[str]:
@@ -96,17 +138,21 @@ def coverage(o):
     kg = json.loads(KG.read_text())
     vars_, mats = set(), set()
     for n in kg["nodes"]:
-        if n.get("ntype") == "variable":
-            vars_.add(n["name"])
-        elif n.get("ntype") == "material":
-            mats.add(n["name"])
+        # live KG (build_kg.py) types: QuantityKind / Material. The pre-ontology
+        # 0604_kg names (variable / material) are accepted too so an older graph
+        # still reports instead of silently scoring 0/0.
+        nt = n.get("ntype")
+        if nt in ("QuantityKind", "variable"):
+            vars_.add(n.get("name") or n.get("id"))
+        elif nt in ("Material", "material"):
+            mats.add(n.get("name") or n.get("id"))
 
     v_hit = {v for v in vars_ if norm(v) in qindex}
     v_miss = sorted(vars_ - v_hit)
     m_hit = {m for m in mats if norm(m) in mindex}
     m_miss = sorted(mats - m_hit)
 
-    print("\n=== COVERAGE vs existing KG (0604_kg) ===")
+    print("\n=== COVERAGE vs live KG (02_extraction/output/knowledge_graph_onto.json) ===")
     print(f"variables : {len(v_hit)}/{len(vars_)} resolve to a QuantityKind")
     if v_miss:
         print("  UNMAPPED variables (ontology gaps):")
@@ -121,7 +167,7 @@ def coverage(o):
 
 def main():
     o = load_onto()
-    errs = integrity(o)
+    errs = integrity(o) + comparability(o)
     print("=== INTEGRITY ===")
     if errs:
         for e in errs:
@@ -129,6 +175,11 @@ def main():
         print(f"  {len(errs)} error(s)")
     else:
         print("  OK — no structural errors")
+    c = o.get("_counts", {})
+    print("=== COMPARABILITY LAYER ===")
+    for k in ("transformation_rules", "transformation_types", "transformation_statuses",
+              "normalization_definitions", "comparison_groups"):
+        print(f"  {k:<28}{c.get(k)}")
     coverage(o)
     return errs
 

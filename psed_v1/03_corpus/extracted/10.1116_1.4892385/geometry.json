@@ -2,5 +2,77 @@
  "geometry_class": "porous_material",
  "structure": "mesoporous_film",
  "method": "deterministic",
- "evidence": "keyword: porous/AAO/membrane"
+ "evidence": "keyword: porous/AAO/membrane",
+ "quantities": [
+  {
+   "quantity": "feature_width",
+   "raw_label": "Mean pore radius r",
+   "symbol": "r",
+   "value": 1.2e-06,
+   "unit": "m",
+   "basis": "2 * mean pore radius",
+   "status": "derived_from_reported_dimensions",
+   "scope": "paper",
+   "of_reactant": null,
+   "model_context": null,
+   "parameter_status": "measured",
+   "evidence": "Mean pore radius r | 6 /C2 10 /C0 7 m(Refs. 49 and 50)"
+  },
+  {
+   "quantity": "porosity",
+   "raw_label": "Porosity",
+   "symbol": null,
+   "value": 0.33,
+   "unit": null,
+   "basis": null,
+   "status": "directly_reported",
+   "scope": "paper",
+   "of_reactant": null,
+   "model_context": null,
+   "parameter_status": "literature",
+   "evidence": "Porosity /C15 | 0.33 (Ref. 38)"
+  },
+  {
+   "quantity": "tortuosity",
+   "raw_label": "Tortuosity s",
+   "symbol": "s",
+   "value": 8.28,
+   "unit": null,
+   "basis": null,
+   "status": "directly_reported",
+   "scope": "paper",
+   "of_reactant": null,
+   "model_context": null,
+   "parameter_status": "literature",
+   "evidence": "Tortuosity s | 8.28 (Ref. 49)"
+  },
+  {
+   "quantity": "site_density",
+   "raw_label": "Maximum density of particles which may adhere to the surface r P",
+   "symbol": "r_P",
+   "value": 2.86e+18,
+   "unit": "m^-2",
+   "basis": null,
+   "status": "directly_reported",
+   "scope": "model",
+   "of_reactant": "A",
+   "model_context": "model developed by Yanguas-Gil and Elam",
+   "parameter_status": "literature",
+   "evidence": "Maximum density of particles which may adhere to the surface r P | 2.86 /C2 10 18 m /C0 2 (Ref. 42)"
+  },
+  {
+   "quantity": "reaction_probability",
+   "raw_label": "Reaction probability b 0",
+   "symbol": "b_0",
+   "value": 0.0002,
+   "unit": null,
+   "basis": null,
+   "status": "directly_reported",
+   "scope": "model",
+   "of_reactant": "A",
+   "model_context": "model developed by Yanguas-Gil and Elam",
+   "parameter_status": "fitted",
+   "evidence": "Reaction probability b 0 | 2 /C2 10 /C0 4"
+  }
+ ]
 }

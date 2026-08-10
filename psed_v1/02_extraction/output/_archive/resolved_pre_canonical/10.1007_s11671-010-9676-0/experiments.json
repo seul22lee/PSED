@@ -1,0 +1,165 @@
+[
+ {
+  "material": "Fe2O3",
+  "material_raw": "Fe2O3",
+  "precursors": [
+   "iron acetylacetonate"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "iron acetylacetonate"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "unknown",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": null,
+   "unit": null,
+   "family": null
+  },
+  "coordinate": null,
+  "coordinate_family": null,
+  "points": [],
+  "granularity": "single",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "is_paper_level": true,
+  "analysis_ready": false,
+  "exp_id": "10.1007_s11671-010-9676-0-paper-0",
+  "provenance": {
+   "doi": "10.1007_s11671-010-9676-0",
+   "source": "paper-level",
+   "figure": "paper",
+   "study_type": "experimental",
+   "modalities": [
+    "xrd_or_spectrum"
+   ]
+  },
+  "series_name": null,
+  "phase": null,
+  "varies": [],
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Fe2O3",
+   "supporting_evidence": "the paper reports one material (['Fe2O3']) and one precursor ('iron acetylacetonate')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "iron acetylacetonate"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Fe2O3"
+    ]
+   }
+  },
+  "dependent": [],
+  "issues": [
+   "paper-level (no figure data extracted)"
+  ],
+  "recipe": {
+   "material": "Fe2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "iron acetylacetonate",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1007_s11671-010-9676-0-paper-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "iron acetylacetonate",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Fe2O3",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1007_s11671-010-9676-0-paper-0"
+    }
+   },
+   "completeness": 0.357
+  }
+ }
+]

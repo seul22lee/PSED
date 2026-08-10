@@ -42,8 +42,22 @@ VISION_SCHEMA = f"""You are digitizing a DATA figure from an ALD paper. Read the
 data precisely. Return ONLY JSON:
 {{"panels":[
   {{"panel":"a",
-    "x":{{"quantity":"<coordinate>","unit":"<unit>","log":false}},
-    "y":{{"quantity":"<measurand>","unit":"<unit>","log":false}},
+    "x":{{"quantity":"<coordinate>","unit":"<unit>","log":false,
+       "label_raw":"<the axis label EXACTLY as printed, including any expression
+          and unit: 'x/H', 'x̃ = x/H', 'Distance (µm)', 'GPC (Å/cycle)'.
+          Transcribe symbols faithfully; null if the axis has no label.>",
+       "unit_raw":"<the unit EXACTLY as printed, '' if none is shown>",
+       "is_normalized":true|false,
+       "normalization_expression":"<the ratio EXACTLY as printed if this axis is
+          normalized/dimensionless: 'x/H','x/L','t(x)/t(0)','t/tmax'. null otherwise.>",
+       "normalization_denominator_symbol":"<just the denominator symbol: 'H','L',
+          'D_h','t(0)','tmax'. null otherwise.>"}},
+    "y":{{"quantity":"<measurand>","unit":"<unit>","log":false,
+       "label_raw":"<as above, for the y axis>",
+       "unit_raw":"<as printed>",
+       "is_normalized":true|false,
+       "normalization_expression":"<as above>",
+       "normalization_denominator_symbol":"<as above>"}},
     "series_axis":"<REQUIRED for any multi-curve panel: the NAME of the variable that
        distinguishes the curves. Read it from the caption, legend title, or — if the
        curve labels themselves carry a unit — from that unit. Examples: labels
@@ -62,6 +76,14 @@ data precisely. Return ONLY JSON:
 ]}}
 Rules: x.quantity in {COORDINATES}; y.quantity in {MEASURANDS} (pick the closest; if none
 fits, use the axis label verbatim).
+LABELS ARE MANDATORY. `label_raw` must always be filled from the printed axis text —
+it is what makes a dimensionless axis interpretable later. Transcribe, do not
+interpret: an axis reading 'x/H' is 'x/H', NOT 'distance divided by feature height'.
+`normalization_denominator_symbol` must be a symbol actually PRINTED on the axis or
+in the plot. If the axis only says 'Normalized thickness' with no ratio shown, set
+is_normalized true and leave BOTH normalization fields null — never guess the
+denominator. Without these fields a normalized axis cannot be compared across papers
+(see docs/DATA_RECOVERY.md).
 For each series, read approximately 50 points evenly spaced across the curve's full
 x-range (mouth to tail). If the curve has fewer than ~50 visible markers, read every
 marker. Space the ~50 points to capture the shape faithfully — put more of them on
@@ -200,6 +222,10 @@ def extract_paper(sd, client):
             last_raw = r.text
             try:
                 cand = _loads_json(r.text)
+                if isinstance(cand, list):        # some replies return the panels array at top level
+                    cand = {"panels": cand}
+                if not isinstance(cand, dict):
+                    raise ValueError(f"non-object JSON ({type(cand).__name__})")
             except Exception as e:
                 print(f"    [parse retry {attempt+1}/3] {g['fig']}: {type(e).__name__} {str(e)[:60]}")
                 continue

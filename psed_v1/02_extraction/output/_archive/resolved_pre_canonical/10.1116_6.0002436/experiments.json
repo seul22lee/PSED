@@ -1,0 +1,9030 @@
+[
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    0,
+    0.07
+   ],
+   [
+    5,
+    1.04
+   ],
+   [
+    10,
+    1.15
+   ],
+   [
+    20,
+    1.35
+   ],
+   [
+    30,
+    1.42
+   ],
+   [
+    40,
+    1.51
+   ],
+   [
+    50,
+    1.46
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F1a-0",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "17",
+   "panel": "a",
+   "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 \u00b0C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s pu",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "series: Average GPC",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F1a-0",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F1a-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F1a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F1a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F1a-0"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F1b-1",
+     "figure": "Fig 1",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "SUP",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    0,
+    14.0
+   ],
+   [
+    5,
+    4.0
+   ],
+   [
+    10,
+    1.0
+   ],
+   [
+    20,
+    6.5
+   ],
+   [
+    30,
+    1.0
+   ],
+   [
+    40,
+    4.0
+   ],
+   [
+    50,
+    3.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F1b-1",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "17",
+   "panel": "b",
+   "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 \u00b0C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s pu",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "series: SUP",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "SUP",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F1b-1",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F1b-1"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F1b-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F1b-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F1b-1"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F1b-1",
+     "figure": "Fig 1",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "Mo(iPrCp)2H2 pulse time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "O3 pulse time",
+    "value": 40.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-2",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.25
+   ],
+   [
+    125,
+    1.39
+   ],
+   [
+    150,
+    1.51
+   ],
+   [
+    175,
+    1.45
+   ],
+   [
+    200,
+    1.59
+   ],
+   [
+    225,
+    1.68
+   ],
+   [
+    250,
+    1.78
+   ],
+   [
+    300,
+    2.38
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-2",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "position: Average GPC",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F2a-2",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F2a-2"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F2a-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F2a-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F2a-2"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "Mo(iPrCp)2H2 pulse time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "O3 pulse time",
+    "value": 40.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-3",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.3
+   ],
+   [
+    125,
+    1.4
+   ],
+   [
+    150,
+    1.44
+   ],
+   [
+    175,
+    1.39
+   ],
+   [
+    200,
+    1.51
+   ],
+   [
+    225,
+    1.58
+   ],
+   [
+    250,
+    1.57
+   ],
+   [
+    300,
+    2.6
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-3",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "position: Inlet GPC",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F2a-3",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F2a-3"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F2a-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F2a-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F2a-3"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "Mo(iPrCp)2H2 pulse time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-4",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "O3 pulse time",
+    "value": 40.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-4",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.21
+   ],
+   [
+    125,
+    1.4
+   ],
+   [
+    150,
+    1.51
+   ],
+   [
+    175,
+    1.46
+   ],
+   [
+    200,
+    1.61
+   ],
+   [
+    225,
+    1.69
+   ],
+   [
+    250,
+    1.79
+   ],
+   [
+    300,
+    2.53
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-4",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "position: Middle GPC",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F2a-4",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F2a-4"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F2a-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F2a-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F2a-4"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "Mo(iPrCp)2H2 pulse time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-5",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "O3 pulse time",
+    "value": 40.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2a-5",
+     "figure": "Fig 2",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    1.25
+   ],
+   [
+    125,
+    1.37
+   ],
+   [
+    150,
+    1.57
+   ],
+   [
+    175,
+    1.49
+   ],
+   [
+    200,
+    1.66
+   ],
+   [
+    225,
+    1.78
+   ],
+   [
+    250,
+    1.98
+   ],
+   [
+    300,
+    2.02
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2a-5",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
+   "panel": "a",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "position: Outlet GPC",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F2a-5",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F2a-5"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F2a-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F2a-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F2a-5"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "Mo(iPrCp)2H2 pulse time",
+    "value": 0.25,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2b-6",
+     "figure": "Fig 2",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "O3 pulse time",
+    "value": 40.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F2b-6",
+     "figure": "Fig 2",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "SUP",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    100,
+    3.8
+   ],
+   [
+    125,
+    1.6
+   ],
+   [
+    150,
+    4.1
+   ],
+   [
+    175,
+    3.5
+   ],
+   [
+    200,
+    5.1
+   ],
+   [
+    225,
+    5.8
+   ],
+   [
+    250,
+    11.3
+   ],
+   [
+    300,
+    13.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F2b-6",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "18",
+   "panel": "b",
+   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 \u00d7 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "series: SUP",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "SUP",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F2b-6",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F2b-6"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F2b-6"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F2b-6"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F2b-6"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "2\u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    24.0,
+    76.5
+   ],
+   [
+    24.1,
+    75.2
+   ],
+   [
+    24.2,
+    77.8
+   ],
+   [
+    24.3,
+    74.1
+   ],
+   [
+    24.4,
+    76.3
+   ],
+   [
+    24.5,
+    75.8
+   ],
+   [
+    24.6,
+    74.9
+   ],
+   [
+    24.7,
+    77.2
+   ],
+   [
+    24.8,
+    76.0
+   ],
+   [
+    24.9,
+    74.8
+   ],
+   [
+    25.0,
+    78.1
+   ],
+   [
+    25.1,
+    77.9
+   ],
+   [
+    25.2,
+    82.4
+   ],
+   [
+    25.3,
+    87.6
+   ],
+   [
+    25.4,
+    94.2
+   ],
+   [
+    25.5,
+    98.1
+   ],
+   [
+    25.6,
+    93.5
+   ],
+   [
+    25.7,
+    85.3
+   ],
+   [
+    25.8,
+    81.2
+   ],
+   [
+    25.9,
+    78.9
+   ],
+   [
+    26.0,
+    76.8
+   ],
+   [
+    26.1,
+    74.3
+   ],
+   [
+    26.2,
+    75.7
+   ],
+   [
+    26.3,
+    73.9
+   ],
+   [
+    26.4,
+    75.1
+   ],
+   [
+    26.5,
+    73.2
+   ],
+   [
+    26.6,
+    74.5
+   ],
+   [
+    26.7,
+    75.8
+   ],
+   [
+    26.8,
+    73.1
+   ],
+   [
+    26.9,
+    72.4
+   ],
+   [
+    27.0,
+    73.5
+   ],
+   [
+    27.1,
+    74.2
+   ],
+   [
+    27.2,
+    72.0
+   ],
+   [
+    27.3,
+    73.1
+   ],
+   [
+    27.4,
+    71.8
+   ],
+   [
+    27.5,
+    72.9
+   ],
+   [
+    27.6,
+    72.1
+   ],
+   [
+    27.7,
+    73.3
+   ],
+   [
+    27.8,
+    71.9
+   ],
+   [
+    27.9,
+    72.8
+   ],
+   [
+    28.0,
+    71.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F3a-7",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample condition: 200 \u00b0C, 350 \u00b0C Annealed",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "2\u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "Relative Intensity",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F3a-7",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F3a-7"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F3a-7"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F3a-7"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F3a-7"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "2\u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    24.0,
+    55.8
+   ],
+   [
+    24.2,
+    56.4
+   ],
+   [
+    24.4,
+    55.2
+   ],
+   [
+    24.6,
+    56.1
+   ],
+   [
+    24.8,
+    55.5
+   ],
+   [
+    25.0,
+    56.8
+   ],
+   [
+    25.2,
+    55.1
+   ],
+   [
+    25.4,
+    56.3
+   ],
+   [
+    25.6,
+    55.7
+   ],
+   [
+    25.8,
+    56.2
+   ],
+   [
+    26.0,
+    55.4
+   ],
+   [
+    26.2,
+    56.6
+   ],
+   [
+    26.4,
+    55.3
+   ],
+   [
+    26.6,
+    56.0
+   ],
+   [
+    26.8,
+    55.8
+   ],
+   [
+    27.0,
+    56.5
+   ],
+   [
+    27.2,
+    55.2
+   ],
+   [
+    27.4,
+    56.1
+   ],
+   [
+    27.6,
+    54.8
+   ],
+   [
+    27.8,
+    55.9
+   ],
+   [
+    28.0,
+    55.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F3a-8",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample condition: As-Deposited 200 \u00b0C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "2\u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "Relative Intensity",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F3a-8",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F3a-8"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F3a-8"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F3a-8"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F3a-8"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "2\u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    24.0,
+    36.2
+   ],
+   [
+    24.2,
+    35.8
+   ],
+   [
+    24.4,
+    36.5
+   ],
+   [
+    24.6,
+    35.7
+   ],
+   [
+    24.8,
+    36.9
+   ],
+   [
+    25.0,
+    36.1
+   ],
+   [
+    25.2,
+    36.4
+   ],
+   [
+    25.4,
+    35.9
+   ],
+   [
+    25.6,
+    36.7
+   ],
+   [
+    25.8,
+    35.5
+   ],
+   [
+    26.0,
+    36.8
+   ],
+   [
+    26.2,
+    36.0
+   ],
+   [
+    26.4,
+    36.3
+   ],
+   [
+    26.6,
+    35.8
+   ],
+   [
+    26.8,
+    36.6
+   ],
+   [
+    27.0,
+    35.7
+   ],
+   [
+    27.2,
+    36.4
+   ],
+   [
+    27.4,
+    35.9
+   ],
+   [
+    27.6,
+    36.2
+   ],
+   [
+    27.8,
+    35.6
+   ],
+   [
+    28.0,
+    36.1
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F3a-9",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample condition: As-Deposited 150 \u00b0C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "2\u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "Relative Intensity",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F3a-9",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F3a-9"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F3a-9"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F3a-9"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F3a-9"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Relative Intensity",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "2\u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    24.0,
+    17.2
+   ],
+   [
+    24.2,
+    16.8
+   ],
+   [
+    24.4,
+    17.5
+   ],
+   [
+    24.6,
+    16.9
+   ],
+   [
+    24.8,
+    17.8
+   ],
+   [
+    25.0,
+    17.1
+   ],
+   [
+    25.2,
+    17.4
+   ],
+   [
+    25.4,
+    16.8
+   ],
+   [
+    25.6,
+    17.6
+   ],
+   [
+    25.8,
+    16.7
+   ],
+   [
+    26.0,
+    17.9
+   ],
+   [
+    26.2,
+    17.0
+   ],
+   [
+    26.4,
+    17.3
+   ],
+   [
+    26.6,
+    16.8
+   ],
+   [
+    26.8,
+    17.7
+   ],
+   [
+    27.0,
+    16.9
+   ],
+   [
+    27.2,
+    17.5
+   ],
+   [
+    27.4,
+    17.0
+   ],
+   [
+    27.6,
+    17.3
+   ],
+   [
+    27.8,
+    16.7
+   ],
+   [
+    28.0,
+    17.1
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F3a-10",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "20",
+   "panel": "a",
+   "caption": "FIG. 3. X-ray diffraction pattern for as-deposited and annealed MoOx growth with the Mo(iPrCp)2H2 precursor for 2 \u0398 = 24\u00b0 -28\u00b0. The annealed sample was heated to 350 \u00b0C in air for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample condition: As-Deposited 100 \u00b0C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "2\u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "Relative Intensity",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F3a-10",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F3a-10"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F3a-10"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F3a-10"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F3a-10"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 100.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    238.0,
+    0.02
+   ],
+   [
+    237.5,
+    0.021
+   ],
+   [
+    237.0,
+    0.024
+   ],
+   [
+    236.5,
+    0.033
+   ],
+   [
+    236.0,
+    0.065
+   ],
+   [
+    235.8,
+    0.092
+   ],
+   [
+    235.5,
+    0.122
+   ],
+   [
+    235.2,
+    0.115
+   ],
+   [
+    235.0,
+    0.088
+   ],
+   [
+    234.5,
+    0.041
+   ],
+   [
+    234.0,
+    0.018
+   ],
+   [
+    233.5,
+    0.012
+   ],
+   [
+    233.2,
+    0.025
+   ],
+   [
+    233.0,
+    0.051
+   ],
+   [
+    232.8,
+    0.098
+   ],
+   [
+    232.5,
+    0.168
+   ],
+   [
+    232.3,
+    0.203
+   ],
+   [
+    232.0,
+    0.182
+   ],
+   [
+    231.8,
+    0.134
+   ],
+   [
+    231.5,
+    0.078
+   ],
+   [
+    231.0,
+    0.026
+   ],
+   [
+    230.5,
+    0.012
+   ],
+   [
+    230.0,
+    0.013
+   ],
+   [
+    229.2,
+    0.01
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F4a-11",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "temperature: 100\u00b0C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s (A.U.)",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F4a-11",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F4a-11"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F4a-11"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F4a-11"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F4a-11"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "series",
+     "value": 100.0,
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F4a-11",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F4a-12",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    238.0,
+    0.218
+   ],
+   [
+    237.5,
+    0.219
+   ],
+   [
+    237.0,
+    0.222
+   ],
+   [
+    236.5,
+    0.233
+   ],
+   [
+    236.0,
+    0.272
+   ],
+   [
+    235.8,
+    0.306
+   ],
+   [
+    235.5,
+    0.344
+   ],
+   [
+    235.2,
+    0.334
+   ],
+   [
+    235.0,
+    0.298
+   ],
+   [
+    234.5,
+    0.241
+   ],
+   [
+    234.0,
+    0.218
+   ],
+   [
+    233.5,
+    0.214
+   ],
+   [
+    233.2,
+    0.228
+   ],
+   [
+    233.0,
+    0.261
+   ],
+   [
+    232.8,
+    0.318
+   ],
+   [
+    232.5,
+    0.402
+   ],
+   [
+    232.3,
+    0.437
+   ],
+   [
+    232.0,
+    0.408
+   ],
+   [
+    231.8,
+    0.342
+   ],
+   [
+    231.5,
+    0.272
+   ],
+   [
+    231.0,
+    0.223
+   ],
+   [
+    230.5,
+    0.214
+   ],
+   [
+    230.0,
+    0.215
+   ],
+   [
+    229.2,
+    0.212
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F4a-12",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "temperature: 150\u00b0C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s (A.U.)",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F4a-12",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F4a-12"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F4a-12"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F4a-12"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F4a-12"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "series",
+     "value": 150.0,
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F4a-12",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F4a-13",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    238.0,
+    0.418
+   ],
+   [
+    237.5,
+    0.419
+   ],
+   [
+    237.0,
+    0.422
+   ],
+   [
+    236.5,
+    0.436
+   ],
+   [
+    236.0,
+    0.485
+   ],
+   [
+    235.8,
+    0.528
+   ],
+   [
+    235.5,
+    0.572
+   ],
+   [
+    235.2,
+    0.559
+   ],
+   [
+    235.0,
+    0.509
+   ],
+   [
+    234.5,
+    0.439
+   ],
+   [
+    234.0,
+    0.419
+   ],
+   [
+    233.5,
+    0.416
+   ],
+   [
+    233.2,
+    0.433
+   ],
+   [
+    233.0,
+    0.474
+   ],
+   [
+    232.8,
+    0.548
+   ],
+   [
+    232.5,
+    0.648
+   ],
+   [
+    232.3,
+    0.686
+   ],
+   [
+    232.0,
+    0.646
+   ],
+   [
+    231.8,
+    0.559
+   ],
+   [
+    231.5,
+    0.475
+   ],
+   [
+    231.0,
+    0.422
+   ],
+   [
+    230.5,
+    0.414
+   ],
+   [
+    230.0,
+    0.415
+   ],
+   [
+    229.2,
+    0.412
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F4a-13",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "temperature: 200\u00b0C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s (A.U.)",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F4a-13",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F4a-13"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F4a-13"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F4a-13"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F4a-13"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "series",
+     "value": 200.0,
+     "paper_id": "10.1116_6.0002436",
+     "experiment_id": "10.1116_6.0002436-F4a-13",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s (A.U.)",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    238.0,
+    0.618
+   ],
+   [
+    237.5,
+    0.619
+   ],
+   [
+    237.0,
+    0.623
+   ],
+   [
+    236.5,
+    0.641
+   ],
+   [
+    236.0,
+    0.702
+   ],
+   [
+    235.8,
+    0.758
+   ],
+   [
+    235.5,
+    0.812
+   ],
+   [
+    235.2,
+    0.795
+   ],
+   [
+    235.0,
+    0.728
+   ],
+   [
+    234.5,
+    0.639
+   ],
+   [
+    234.0,
+    0.618
+   ],
+   [
+    233.5,
+    0.615
+   ],
+   [
+    233.2,
+    0.638
+   ],
+   [
+    233.0,
+    0.692
+   ],
+   [
+    232.8,
+    0.788
+   ],
+   [
+    232.5,
+    0.918
+   ],
+   [
+    232.3,
+    0.963
+   ],
+   [
+    232.0,
+    0.908
+   ],
+   [
+    231.8,
+    0.785
+   ],
+   [
+    231.5,
+    0.678
+   ],
+   [
+    231.0,
+    0.622
+   ],
+   [
+    230.5,
+    0.614
+   ],
+   [
+    230.0,
+    0.615
+   ],
+   [
+    229.2,
+    0.612
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F4a-14",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 4. Mo 3d core-level XPS spectra for XPS ALD MoOx deposited using Mo ( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "temperature: 200\u00b0C Annealed",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s (A.U.)",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F4a-14",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F4a-14"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F4a-14"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F4a-14"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F4a-14"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    5.0
+   ],
+   [
+    534.0,
+    5.0
+   ],
+   [
+    533.2,
+    5.1
+   ],
+   [
+    532.5,
+    5.2
+   ],
+   [
+    532.0,
+    5.5
+   ],
+   [
+    531.6,
+    6.2
+   ],
+   [
+    531.2,
+    8.5
+   ],
+   [
+    530.8,
+    14.0
+   ],
+   [
+    530.5,
+    20.5
+   ],
+   [
+    530.3,
+    26.2
+   ],
+   [
+    530.2,
+    28.0
+   ],
+   [
+    530.0,
+    26.8
+   ],
+   [
+    529.7,
+    21.0
+   ],
+   [
+    529.4,
+    14.2
+   ],
+   [
+    529.1,
+    8.8
+   ],
+   [
+    528.8,
+    6.2
+   ],
+   [
+    528.5,
+    5.3
+   ],
+   [
+    527.8,
+    5.0
+   ],
+   [
+    527.2,
+    5.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-15",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 100\u00b0C (O 1s A)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-15",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-15"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-15"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-15"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-15"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    5.0
+   ],
+   [
+    533.8,
+    5.2
+   ],
+   [
+    533.0,
+    6.1
+   ],
+   [
+    532.4,
+    7.3
+   ],
+   [
+    532.0,
+    8.0
+   ],
+   [
+    531.6,
+    7.5
+   ],
+   [
+    531.0,
+    6.3
+   ],
+   [
+    530.2,
+    5.3
+   ],
+   [
+    529.5,
+    5.0
+   ],
+   [
+    527.2,
+    5.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-16",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 100\u00b0C (O 1s C)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-16",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-16"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-16"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-16"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-16"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    5.0
+   ],
+   [
+    533.8,
+    5.2
+   ],
+   [
+    533.0,
+    6.5
+   ],
+   [
+    532.4,
+    8.8
+   ],
+   [
+    532.0,
+    10.2
+   ],
+   [
+    531.5,
+    11.8
+   ],
+   [
+    531.0,
+    16.0
+   ],
+   [
+    530.6,
+    23.2
+   ],
+   [
+    530.2,
+    29.8
+   ],
+   [
+    530.0,
+    29.0
+   ],
+   [
+    529.6,
+    22.0
+   ],
+   [
+    529.2,
+    12.8
+   ],
+   [
+    528.8,
+    7.2
+   ],
+   [
+    528.2,
+    5.3
+   ],
+   [
+    527.2,
+    5.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-17",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 100\u00b0C (Total)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-17",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-17"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-17"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-17"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-17"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    30.0
+   ],
+   [
+    534.0,
+    30.0
+   ],
+   [
+    533.2,
+    30.1
+   ],
+   [
+    532.5,
+    30.3
+   ],
+   [
+    532.0,
+    30.8
+   ],
+   [
+    531.5,
+    32.2
+   ],
+   [
+    531.1,
+    36.5
+   ],
+   [
+    530.7,
+    44.0
+   ],
+   [
+    530.4,
+    52.0
+   ],
+   [
+    530.3,
+    53.5
+   ],
+   [
+    530.1,
+    51.5
+   ],
+   [
+    529.8,
+    44.5
+   ],
+   [
+    529.4,
+    36.0
+   ],
+   [
+    529.0,
+    31.8
+   ],
+   [
+    528.5,
+    30.3
+   ],
+   [
+    527.2,
+    30.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-18",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 150\u00b0C (O 1s A)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-18",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-18"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-18"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-18"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-18"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    30.0
+   ],
+   [
+    533.5,
+    30.2
+   ],
+   [
+    532.6,
+    31.5
+   ],
+   [
+    532.0,
+    33.0
+   ],
+   [
+    531.4,
+    32.2
+   ],
+   [
+    530.6,
+    30.6
+   ],
+   [
+    529.8,
+    30.1
+   ],
+   [
+    527.2,
+    30.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-19",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 150\u00b0C (O 1s C)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-19",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-19"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-19"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-19"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-19"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    30.0
+   ],
+   [
+    533.8,
+    30.2
+   ],
+   [
+    532.8,
+    31.5
+   ],
+   [
+    532.0,
+    34.2
+   ],
+   [
+    531.5,
+    36.5
+   ],
+   [
+    531.0,
+    41.5
+   ],
+   [
+    530.5,
+    51.0
+   ],
+   [
+    530.3,
+    55.0
+   ],
+   [
+    530.0,
+    52.2
+   ],
+   [
+    529.5,
+    40.5
+   ],
+   [
+    529.0,
+    33.2
+   ],
+   [
+    528.2,
+    30.5
+   ],
+   [
+    527.2,
+    30.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-20",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 150\u00b0C (Total)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-20",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-20"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-20"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-20"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-20"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    55.0
+   ],
+   [
+    533.8,
+    55.0
+   ],
+   [
+    533.0,
+    55.1
+   ],
+   [
+    532.2,
+    55.3
+   ],
+   [
+    531.6,
+    56.5
+   ],
+   [
+    531.2,
+    60.5
+   ],
+   [
+    530.8,
+    68.5
+   ],
+   [
+    530.5,
+    77.0
+   ],
+   [
+    530.4,
+    79.0
+   ],
+   [
+    530.2,
+    77.2
+   ],
+   [
+    529.8,
+    68.5
+   ],
+   [
+    529.4,
+    59.8
+   ],
+   [
+    529.0,
+    56.2
+   ],
+   [
+    528.2,
+    55.2
+   ],
+   [
+    527.2,
+    55.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-21",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 200\u00b0C (O 1s A)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-21",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-21"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-21"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-21"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-21"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    55.0
+   ],
+   [
+    533.5,
+    55.2
+   ],
+   [
+    532.4,
+    56.0
+   ],
+   [
+    532.0,
+    56.5
+   ],
+   [
+    531.5,
+    56.0
+   ],
+   [
+    530.8,
+    55.3
+   ],
+   [
+    527.2,
+    55.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-22",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 200\u00b0C (O 1s C)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-22",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-22"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-22"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-22"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-22"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    55.0
+   ],
+   [
+    533.8,
+    55.2
+   ],
+   [
+    532.8,
+    56.2
+   ],
+   [
+    532.0,
+    58.0
+   ],
+   [
+    531.5,
+    60.0
+   ],
+   [
+    531.0,
+    65.5
+   ],
+   [
+    530.6,
+    75.0
+   ],
+   [
+    530.4,
+    80.5
+   ],
+   [
+    530.1,
+    77.5
+   ],
+   [
+    529.6,
+    65.0
+   ],
+   [
+    529.0,
+    57.2
+   ],
+   [
+    528.0,
+    55.2
+   ],
+   [
+    527.2,
+    55.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-23",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 200\u00b0C (Total)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-23",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-23"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-23"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-23"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-23"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    79.0
+   ],
+   [
+    533.8,
+    79.0
+   ],
+   [
+    533.0,
+    79.1
+   ],
+   [
+    532.0,
+    79.5
+   ],
+   [
+    531.5,
+    81.2
+   ],
+   [
+    531.0,
+    86.8
+   ],
+   [
+    530.6,
+    96.0
+   ],
+   [
+    530.4,
+    103.0
+   ],
+   [
+    530.2,
+    100.5
+   ],
+   [
+    529.8,
+    91.0
+   ],
+   [
+    529.4,
+    82.5
+   ],
+   [
+    529.0,
+    80.0
+   ],
+   [
+    528.0,
+    79.1
+   ],
+   [
+    527.2,
+    79.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-24",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 200\u00b0C Annealed (O 1s A)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-24",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-24"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-24"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-24"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-24"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    79.0
+   ],
+   [
+    533.8,
+    79.5
+   ],
+   [
+    533.0,
+    82.2
+   ],
+   [
+    532.2,
+    88.0
+   ],
+   [
+    532.0,
+    89.0
+   ],
+   [
+    531.6,
+    88.2
+   ],
+   [
+    531.0,
+    84.0
+   ],
+   [
+    530.5,
+    81.2
+   ],
+   [
+    529.8,
+    79.5
+   ],
+   [
+    527.2,
+    79.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-25",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 200\u00b0C Annealed (O 1s C)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-25",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-25"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-25"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-25"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-25"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Counts/s",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Binding Energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    534.8,
+    79.0
+   ],
+   [
+    533.8,
+    79.5
+   ],
+   [
+    533.0,
+    83.0
+   ],
+   [
+    532.2,
+    90.0
+   ],
+   [
+    531.8,
+    91.5
+   ],
+   [
+    531.4,
+    93.0
+   ],
+   [
+    531.0,
+    97.5
+   ],
+   [
+    530.6,
+    104.2
+   ],
+   [
+    530.4,
+    105.0
+   ],
+   [
+    530.0,
+    99.0
+   ],
+   [
+    529.5,
+    87.0
+   ],
+   [
+    529.0,
+    80.8
+   ],
+   [
+    528.0,
+    79.2
+   ],
+   [
+    527.2,
+    79.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F5a-26",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "23",
+   "panel": "a",
+   "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 \u00b0C and a 200 \u00b0C deposited film annealed at 350 \u00b0C for 20 min.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "sample: 200\u00b0C Annealed (Total)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "Binding Energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "Counts/s",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F5a-26",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F5a-26"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F5a-26"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F5a-26"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F5a-26"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    3950,
+    0.61
+   ],
+   [
+    3850,
+    0.6
+   ],
+   [
+    3780,
+    0.62
+   ],
+   [
+    3730,
+    0.72
+   ],
+   [
+    3680,
+    0.6
+   ],
+   [
+    3620,
+    0.71
+   ],
+   [
+    3560,
+    0.72
+   ],
+   [
+    3500,
+    0.77
+   ],
+   [
+    3400,
+    0.74
+   ],
+   [
+    3250,
+    0.7
+   ],
+   [
+    3110,
+    0.74
+   ],
+   [
+    2950,
+    0.6
+   ],
+   [
+    2600,
+    0.6
+   ],
+   [
+    2400,
+    0.6
+   ],
+   [
+    2350,
+    0.71
+   ],
+   [
+    2300,
+    0.6
+   ],
+   [
+    1900,
+    0.6
+   ],
+   [
+    1780,
+    0.64
+   ],
+   [
+    1720,
+    0.71
+   ],
+   [
+    1680,
+    0.64
+   ],
+   [
+    1630,
+    0.96
+   ],
+   [
+    1580,
+    0.95
+   ],
+   [
+    1500,
+    0.63
+   ],
+   [
+    1400,
+    0.68
+   ],
+   [
+    1300,
+    0.52
+   ],
+   [
+    1200,
+    0.58
+   ],
+   [
+    1100,
+    0.6
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6a-27",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: iPrCp-Mo As dep",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6a-27",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6a-27"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6a-27"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6a-27"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6a-27"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    3950,
+    0.48
+   ],
+   [
+    3750,
+    0.48
+   ],
+   [
+    3730,
+    0.51
+   ],
+   [
+    3700,
+    0.47
+   ],
+   [
+    3500,
+    0.47
+   ],
+   [
+    3000,
+    0.47
+   ],
+   [
+    2500,
+    0.47
+   ],
+   [
+    2350,
+    0.53
+   ],
+   [
+    2200,
+    0.47
+   ],
+   [
+    1800,
+    0.47
+   ],
+   [
+    1600,
+    0.48
+   ],
+   [
+    1530,
+    0.53
+   ],
+   [
+    1450,
+    0.48
+   ],
+   [
+    1380,
+    0.53
+   ],
+   [
+    1240,
+    0.55
+   ],
+   [
+    1100,
+    0.45
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6a-28",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: iPrCp-Mo After anneal",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6a-28",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6a-28"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6a-28"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6a-28"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6a-28"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    3950,
+    0.34
+   ],
+   [
+    3750,
+    0.34
+   ],
+   [
+    3500,
+    0.42
+   ],
+   [
+    3300,
+    0.44
+   ],
+   [
+    3100,
+    0.41
+   ],
+   [
+    2970,
+    0.39
+   ],
+   [
+    2800,
+    0.34
+   ],
+   [
+    2500,
+    0.34
+   ],
+   [
+    2350,
+    0.34
+   ],
+   [
+    2340,
+    0.28
+   ],
+   [
+    2330,
+    0.34
+   ],
+   [
+    1800,
+    0.34
+   ],
+   [
+    1700,
+    0.38
+   ],
+   [
+    1600,
+    0.43
+   ],
+   [
+    1500,
+    0.35
+   ],
+   [
+    1420,
+    0.43
+   ],
+   [
+    1300,
+    0.34
+   ],
+   [
+    1200,
+    0.38
+   ],
+   [
+    1100,
+    0.33
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6a-29",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: tBuN-Mo As dep",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6a-29",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6a-29"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6a-29"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6a-29"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6a-29"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    3950,
+    0.22
+   ],
+   [
+    3800,
+    0.2
+   ],
+   [
+    3650,
+    0.28
+   ],
+   [
+    3500,
+    0.29
+   ],
+   [
+    3300,
+    0.2
+   ],
+   [
+    3000,
+    0.21
+   ],
+   [
+    2500,
+    0.21
+   ],
+   [
+    2350,
+    0.21
+   ],
+   [
+    2340,
+    0.14
+   ],
+   [
+    2330,
+    0.21
+   ],
+   [
+    2180,
+    0.23
+   ],
+   [
+    1800,
+    0.21
+   ],
+   [
+    1600,
+    0.26
+   ],
+   [
+    1500,
+    0.24
+   ],
+   [
+    1400,
+    0.21
+   ],
+   [
+    1300,
+    0.15
+   ],
+   [
+    1240,
+    0.28
+   ],
+   [
+    1150,
+    0.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6a-30",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: tBuN-Mo After anneal",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6a-30",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6a-30"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6a-30"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6a-30"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6a-30"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    1080,
+    0.8
+   ],
+   [
+    1020,
+    0.8
+   ],
+   [
+    980,
+    0.82
+   ],
+   [
+    940,
+    0.8
+   ],
+   [
+    850,
+    0.82
+   ],
+   [
+    750,
+    0.83
+   ],
+   [
+    700,
+    0.82
+   ],
+   [
+    650,
+    0.81
+   ],
+   [
+    600,
+    0.79
+   ],
+   [
+    550,
+    0.8
+   ],
+   [
+    500,
+    0.8
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6b-31",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: iPrCp-Mo As dep",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6b-31",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6b-31"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6b-31"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6b-31"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6b-31"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    1080,
+    0.51
+   ],
+   [
+    1020,
+    0.51
+   ],
+   [
+    1005,
+    0.65
+   ],
+   [
+    990,
+    0.51
+   ],
+   [
+    900,
+    0.51
+   ],
+   [
+    860,
+    0.65
+   ],
+   [
+    825,
+    0.82
+   ],
+   [
+    790,
+    0.52
+   ],
+   [
+    700,
+    0.51
+   ],
+   [
+    620,
+    0.54
+   ],
+   [
+    550,
+    0.8
+   ],
+   [
+    500,
+    0.62
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6b-32",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: iPrCp-Mo After anneal",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6b-32",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6b-32"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6b-32"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6b-32"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6b-32"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    1080,
+    0.3
+   ],
+   [
+    1020,
+    0.3
+   ],
+   [
+    980,
+    0.32
+   ],
+   [
+    930,
+    0.33
+   ],
+   [
+    850,
+    0.33
+   ],
+   [
+    750,
+    0.33
+   ],
+   [
+    650,
+    0.32
+   ],
+   [
+    560,
+    0.32
+   ],
+   [
+    500,
+    0.3
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6b-33",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: tBuN-Mo As dep",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6b-33",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6b-33"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6b-33"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6b-33"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6b-33"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "MoOx",
+  "material_raw": "MoOx",
+  "precursors": [],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": {
+   "species": "N2"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "bubbler_pressure",
+    "value": 20,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002436::pressure::bubbler_pressure::0",
+     "pressure_type": "bubbler_pressure",
+     "named_species": "N2",
+     "reactant_role": "carrier",
+     "context": "apparatus_setting",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 0.95,
+     "evidence": "the ALD precursor cylinder was pressurized with N2 (g) to approximately 20 psi (gauge)",
+     "original_value": 20,
+     "original_unit": "psi (gauge)"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Absorbance",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "points": [
+   [
+    1080,
+    0.06
+   ],
+   [
+    1020,
+    0.06
+   ],
+   [
+    1005,
+    0.2
+   ],
+   [
+    990,
+    0.06
+   ],
+   [
+    900,
+    0.06
+   ],
+   [
+    860,
+    0.18
+   ],
+   [
+    825,
+    0.32
+   ],
+   [
+    790,
+    0.06
+   ],
+   [
+    700,
+    0.06
+   ],
+   [
+    620,
+    0.08
+   ],
+   [
+    550,
+    0.33
+   ],
+   [
+    500,
+    0.14
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002436-F6b-34",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "24",
+   "panel": "b",
+   "caption": "FIG. 6. Ex situ FTIR data of as-deposited and annealed MoOx film using Mo ( i PrCp)2H2 and Mo(NtBu)2(NMe2)2 from (a) 4000 -1100 and (b) 1100 -500 cm -1 .",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002436"
+  },
+  "series_name": "precursor and condition: tBuN-Mo After anneal",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "MoOx",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['bis-isopropylcyclopentyldienyl molybdenum dihydride', 'Mo_iPrCp_2H2'] and 1 material(s) ['MoOx']; no unique candidate carries the metal of MoOx (metals: ['Mo']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "bis-isopropylcyclopentyldienyl molybdenum dihydride",
+     "Mo_iPrCp_2H2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "MoOx"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "dependent": [
+   {
+    "quantity": "Absorbance",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "MoOx",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "N2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002436-F6b-34",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1116_6.0002436-F6b-34"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoOx",
+     "experiment_id": "10.1116_6.0002436-F6b-34"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1116_6.0002436-F6b-34"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1116_6.0002436-F6b-34"
+    }
+   },
+   "completeness": 0.286
+  }
+ }
+]

@@ -1,0 +1,3765 @@
+[
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    180.0,
+    0.43
+   ],
+   [
+    195.0,
+    0.446
+   ],
+   [
+    209.6,
+    0.467
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F2a-0",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus boosting time (standard deviation: 7 measurements on 4 inch wafer). The downward arrow indicates the process parameter chosen for fur",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "deposition_temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F2a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F2a-0"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F2a-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F2a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F2a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F2a-0"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "\u00c5/cycle",
+   "family": "film_amount"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    0.0,
+    0.235
+   ],
+   [
+    0.5,
+    0.241
+   ],
+   [
+    1.0,
+    0.455
+   ],
+   [
+    2.0,
+    0.5
+   ],
+   [
+    3.0,
+    0.497
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F2b-1",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "b",
+   "caption": "Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus boosting time (standard deviation: 7 measurements on 4 inch wafer). The downward arrow indicates the process parameter chosen for fur",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F2b-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F2b-1"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F2b-1"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F2b-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F2b-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F2b-1"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 100.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F3a-2",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "\u00c5",
+   "family": "film_amount"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "points": [
+   [
+    1,
+    47.3
+   ],
+   [
+    2,
+    47.7
+   ],
+   [
+    3,
+    48.7
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F3a-2",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "8",
+   "panel": "a",
+   "caption": "Fig. 3 (a) Film thickness plotted versus number of Ba precursor exposures per BaO full cycle (b) thickness variation as a function of number of oxidant (H2O) pulses. A steady state was attained after ",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "exposure"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "\u00c5",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 100.0,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F3a-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F3a-2"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F3a-2"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F3a-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F3a-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F3a-2"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 100.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F3a-2",
+     "figure": "Fig 3",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 100.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F3b-3",
+     "figure": "Fig 3",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "\u00c5",
+   "family": "film_amount"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "points": [
+   [
+    1,
+    33.0
+   ],
+   [
+    3,
+    40.2
+   ],
+   [
+    5,
+    47.7
+   ],
+   [
+    10,
+    50.3
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F3b-3",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "8",
+   "panel": "b",
+   "caption": "Fig. 3 (a) Film thickness plotted versus number of Ba precursor exposures per BaO full cycle (b) thickness variation as a function of number of oxidant (H2O) pulses. A steady state was attained after ",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "exposure"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "\u00c5",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 100.0,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F3b-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F3b-3"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F3b-3"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F3b-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F3b-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F3b-3"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 100.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F3b-3",
+     "figure": "Fig 3",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-4",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "impurity_content",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    27.0
+   ],
+   [
+    0.2,
+    38.0
+   ],
+   [
+    0.4,
+    38.2
+   ],
+   [
+    0.6,
+    39.1
+   ],
+   [
+    0.8,
+    36.5
+   ],
+   [
+    1.0,
+    16.0
+   ],
+   [
+    1.2,
+    5.0
+   ],
+   [
+    1.4,
+    3.5
+   ],
+   [
+    1.6,
+    2.5
+   ],
+   [
+    1.8,
+    1.2
+   ],
+   [
+    2.0,
+    1.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F4a-4",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Fig. 4 (a) XPS depth profile of BaO film obtained at 210 1 C substrate temperature and 2 s boosting time. (b) C 1s, O 1s and Ba 3d5/2 X-ray photoelectron peaks on the surface of the film and post surf",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: Ba",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "impurity_content",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F4a-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F4a-4"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F4a-4"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F4a-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F4a-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F4a-4"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-4",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-5",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "impurity_content",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    57.0
+   ],
+   [
+    0.2,
+    62.0
+   ],
+   [
+    0.4,
+    62.0
+   ],
+   [
+    0.6,
+    61.0
+   ],
+   [
+    0.8,
+    63.5
+   ],
+   [
+    1.0,
+    41.0
+   ],
+   [
+    1.2,
+    18.0
+   ],
+   [
+    1.4,
+    12.5
+   ],
+   [
+    1.6,
+    8.8
+   ],
+   [
+    1.8,
+    1.5
+   ],
+   [
+    2.0,
+    2.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F4a-5",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Fig. 4 (a) XPS depth profile of BaO film obtained at 210 1 C substrate temperature and 2 s boosting time. (b) C 1s, O 1s and Ba 3d5/2 X-ray photoelectron peaks on the surface of the film and post surf",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "impurity_content",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F4a-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F4a-5"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F4a-5"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F4a-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F4a-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F4a-5"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-5",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-6",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "impurity_content",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    16.5
+   ],
+   [
+    0.2,
+    0.0
+   ],
+   [
+    0.4,
+    0.0
+   ],
+   [
+    0.6,
+    0.0
+   ],
+   [
+    0.8,
+    0.0
+   ],
+   [
+    1.0,
+    0.0
+   ],
+   [
+    1.2,
+    0.0
+   ],
+   [
+    1.4,
+    0.0
+   ],
+   [
+    1.6,
+    0.0
+   ],
+   [
+    1.8,
+    0.0
+   ],
+   [
+    2.0,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F4a-6",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Fig. 4 (a) XPS depth profile of BaO film obtained at 210 1 C substrate temperature and 2 s boosting time. (b) C 1s, O 1s and Ba 3d5/2 X-ray photoelectron peaks on the surface of the film and post surf",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "impurity_content",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F4a-6",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F4a-6"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F4a-6"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F4a-6"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F4a-6"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F4a-6"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-6",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-7",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "impurity_content",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.2,
+    0.0
+   ],
+   [
+    0.4,
+    0.0
+   ],
+   [
+    0.6,
+    0.0
+   ],
+   [
+    0.8,
+    0.0
+   ],
+   [
+    1.0,
+    43.0
+   ],
+   [
+    1.2,
+    77.0
+   ],
+   [
+    1.4,
+    84.0
+   ],
+   [
+    1.6,
+    89.0
+   ],
+   [
+    1.8,
+    98.0
+   ],
+   [
+    2.0,
+    98.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F4a-7",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Fig. 4 (a) XPS depth profile of BaO film obtained at 210 1 C substrate temperature and 2 s boosting time. (b) C 1s, O 1s and Ba 3d5/2 X-ray photoelectron peaks on the surface of the film and post surf",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "impurity_content",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F4a-7",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F4a-7"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F4a-7"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F4a-7"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F4a-7"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F4a-7"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F4a-7",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-8",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Atomic Percentage",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering Time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    13.0
+   ],
+   [
+    0.2,
+    24.0
+   ],
+   [
+    0.4,
+    23.5
+   ],
+   [
+    0.6,
+    21.0
+   ],
+   [
+    0.8,
+    19.0
+   ],
+   [
+    1.0,
+    18.0
+   ],
+   [
+    1.2,
+    8.0
+   ],
+   [
+    1.4,
+    6.0
+   ],
+   [
+    1.6,
+    7.5
+   ],
+   [
+    1.8,
+    5.0
+   ],
+   [
+    2.0,
+    3.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F7a-8",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "12",
+   "panel": "a",
+   "caption": "Fig. 7 (a) XPS Depth profile of as deposited BTO grown on Si substrate at 210 1 C. (b) High resolution cross sectional TEM image of B 7 nm thick BTO film with stoichiometry at Ti/(Ba + Ti) = 0.53 (Ba ",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: Ti",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering Time"
+  ],
+  "dependent": [
+   {
+    "quantity": "Atomic Percentage",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F7a-8",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F7a-8"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F7a-8"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F7a-8"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F7a-8"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F7a-8"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-8",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-9",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Atomic Percentage",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering Time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    8.0
+   ],
+   [
+    0.2,
+    15.0
+   ],
+   [
+    0.4,
+    15.0
+   ],
+   [
+    0.6,
+    14.5
+   ],
+   [
+    0.8,
+    16.5
+   ],
+   [
+    1.0,
+    15.5
+   ],
+   [
+    1.2,
+    6.5
+   ],
+   [
+    1.4,
+    1.5
+   ],
+   [
+    1.6,
+    2.0
+   ],
+   [
+    1.8,
+    2.0
+   ],
+   [
+    2.0,
+    1.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F7a-9",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "12",
+   "panel": "a",
+   "caption": "Fig. 7 (a) XPS Depth profile of as deposited BTO grown on Si substrate at 210 1 C. (b) High resolution cross sectional TEM image of B 7 nm thick BTO film with stoichiometry at Ti/(Ba + Ti) = 0.53 (Ba ",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: Ba",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering Time"
+  ],
+  "dependent": [
+   {
+    "quantity": "Atomic Percentage",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F7a-9",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F7a-9"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F7a-9"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F7a-9"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F7a-9"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F7a-9"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-9",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-10",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Atomic Percentage",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering Time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    48.0
+   ],
+   [
+    0.2,
+    63.0
+   ],
+   [
+    0.4,
+    64.0
+   ],
+   [
+    0.6,
+    66.5
+   ],
+   [
+    0.8,
+    65.5
+   ],
+   [
+    1.0,
+    68.0
+   ],
+   [
+    1.2,
+    28.5
+   ],
+   [
+    1.4,
+    6.0
+   ],
+   [
+    1.6,
+    4.5
+   ],
+   [
+    1.8,
+    2.0
+   ],
+   [
+    2.0,
+    2.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F7a-10",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "12",
+   "panel": "a",
+   "caption": "Fig. 7 (a) XPS Depth profile of as deposited BTO grown on Si substrate at 210 1 C. (b) High resolution cross sectional TEM image of B 7 nm thick BTO film with stoichiometry at Ti/(Ba + Ti) = 0.53 (Ba ",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering Time"
+  ],
+  "dependent": [
+   {
+    "quantity": "Atomic Percentage",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F7a-10",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F7a-10"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F7a-10"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F7a-10"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F7a-10"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F7a-10"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-10",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-11",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Atomic Percentage",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering Time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    32.5
+   ],
+   [
+    0.2,
+    0.5
+   ],
+   [
+    0.4,
+    0.5
+   ],
+   [
+    0.6,
+    0.5
+   ],
+   [
+    0.8,
+    0.5
+   ],
+   [
+    1.0,
+    0.5
+   ],
+   [
+    1.2,
+    0.5
+   ],
+   [
+    1.4,
+    0.5
+   ],
+   [
+    1.6,
+    0.5
+   ],
+   [
+    1.8,
+    0.5
+   ],
+   [
+    2.0,
+    0.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F7a-11",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "12",
+   "panel": "a",
+   "caption": "Fig. 7 (a) XPS Depth profile of as deposited BTO grown on Si substrate at 210 1 C. (b) High resolution cross sectional TEM image of B 7 nm thick BTO film with stoichiometry at Ti/(Ba + Ti) = 0.53 (Ba ",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering Time"
+  ],
+  "dependent": [
+   {
+    "quantity": "Atomic Percentage",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F7a-11",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F7a-11"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F7a-11"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F7a-11"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F7a-11"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F7a-11"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-11",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 210.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-12",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Atomic Percentage",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering Time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    0.5
+   ],
+   [
+    0.2,
+    0.5
+   ],
+   [
+    0.4,
+    0.5
+   ],
+   [
+    0.6,
+    0.5
+   ],
+   [
+    0.8,
+    0.5
+   ],
+   [
+    1.0,
+    0.5
+   ],
+   [
+    1.2,
+    62.0
+   ],
+   [
+    1.4,
+    90.0
+   ],
+   [
+    1.6,
+    89.0
+   ],
+   [
+    1.8,
+    94.0
+   ],
+   [
+    2.0,
+    95.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F7a-12",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "12",
+   "panel": "a",
+   "caption": "Fig. 7 (a) XPS Depth profile of as deposited BTO grown on Si substrate at 210 1 C. (b) High resolution cross sectional TEM image of B 7 nm thick BTO film with stoichiometry at Ti/(Ba + Ti) = 0.53 (Ba ",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering Time"
+  ],
+  "dependent": [
+   {
+    "quantity": "Atomic Percentage",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 210.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F7a-12",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F7a-12"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F7a-12"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F7a-12"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F7a-12"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F7a-12"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 210.0,
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F7a-12",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "BaO",
+  "material_raw": "BaO",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "py-Ba"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "aspect_ratio",
+    "value": 0.4,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1039_c5tc03561a::geometry::aspect_ratio::0",
+     "raw_label": "aspect ratio",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "conformal coating of non-planar substrates (aspect ratio B 1:2.5) at step coverages above 90%"
+    }
+   },
+   {
+    "quantity": "film_thickness",
+    "value": 20.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "observable",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5tc03561a",
+     "experiment_id": "10.1039_c5tc03561a-F8a-13",
+     "figure": "Fig 8",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "leakage_current_density",
+   "unit": "A/cm\u00b2",
+   "family": null
+  },
+  "coordinate": "voltage",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.0,
+    1.05e-10
+   ],
+   [
+    0.015,
+    1.8e-10
+   ],
+   [
+    0.03,
+    3e-10
+   ],
+   [
+    0.06,
+    4.3e-10
+   ],
+   [
+    0.09,
+    5.2e-10
+   ],
+   [
+    0.13,
+    6e-10
+   ],
+   [
+    0.16,
+    7e-10
+   ],
+   [
+    0.2,
+    8e-10
+   ],
+   [
+    0.24,
+    9.1e-10
+   ],
+   [
+    0.28,
+    1e-09
+   ],
+   [
+    0.31,
+    1.15e-09
+   ],
+   [
+    0.35,
+    1.3e-09
+   ],
+   [
+    0.38,
+    1.5e-09
+   ],
+   [
+    0.42,
+    1.8e-09
+   ],
+   [
+    0.45,
+    2e-09
+   ],
+   [
+    0.49,
+    2.3e-09
+   ],
+   [
+    0.53,
+    2.7e-09
+   ],
+   [
+    0.56,
+    2.9e-09
+   ],
+   [
+    0.6,
+    3.2e-09
+   ],
+   [
+    0.63,
+    3.5e-09
+   ],
+   [
+    0.67,
+    4e-09
+   ],
+   [
+    0.71,
+    4.6e-09
+   ],
+   [
+    0.74,
+    5.2e-09
+   ],
+   [
+    0.78,
+    5.8e-09
+   ],
+   [
+    0.82,
+    6.2e-09
+   ],
+   [
+    0.85,
+    6.8e-09
+   ],
+   [
+    0.88,
+    7.6e-09
+   ],
+   [
+    0.92,
+    8.5e-09
+   ],
+   [
+    0.95,
+    9.6e-09
+   ],
+   [
+    0.99,
+    1.1e-08
+   ],
+   [
+    1.03,
+    1.25e-08
+   ],
+   [
+    1.06,
+    1.5e-08
+   ],
+   [
+    1.09,
+    1.9e-08
+   ],
+   [
+    1.12,
+    2.1e-08
+   ],
+   [
+    1.16,
+    2.2e-08
+   ],
+   [
+    1.2,
+    2.3e-08
+   ],
+   [
+    1.23,
+    2.4e-08
+   ],
+   [
+    1.27,
+    2.6e-08
+   ],
+   [
+    1.3,
+    2.8e-08
+   ],
+   [
+    1.34,
+    2.8e-08
+   ],
+   [
+    1.38,
+    3e-08
+   ],
+   [
+    1.41,
+    3.3e-08
+   ],
+   [
+    1.45,
+    3.7e-08
+   ],
+   [
+    1.49,
+    4e-08
+   ],
+   [
+    1.53,
+    4.1e-08
+   ],
+   [
+    1.56,
+    4.5e-08
+   ],
+   [
+    1.59,
+    5.1e-08
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5tc03561a-F8a-13",
+  "provenance": {
+   "figure": "Fig 8",
+   "figure_number": "8",
+   "fig_docling_index": "13",
+   "panel": "a",
+   "caption": "Fig. 8 Representative leakage current ( I -V ) characteristics of Pt/BTO/Ru capacitor measured for a 20 nm thick BTO layer. The top electrode defines the capacitor area (0.68 /C2 10 /C0 3 ) 2 m 2 .",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5tc03561a"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "BaO",
+   "supporting_evidence": "of the candidates ['py-Ba', 'TTIP'] listed by the paper, only 'py-Ba' carries the metal of BaO",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "py-Ba",
+     "TTIP"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "BaO",
+     "BaTiO3"
+    ]
+   }
+  },
+  "varies": [
+   "voltage"
+  ],
+  "dependent": [
+   {
+    "quantity": "leakage_current_density",
+    "unit": "A/cm\u00b2",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BaO",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "py-Ba",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5tc03561a-F8a-13",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "py-Ba",
+     "experiment_id": "10.1039_c5tc03561a-F8a-13"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_c5tc03561a-F8a-13"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BaO",
+     "experiment_id": "10.1039_c5tc03561a-F8a-13"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5tc03561a-F8a-13"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5tc03561a-F8a-13"
+    }
+   },
+   "completeness": 0.357
+  }
+ }
+]

@@ -1,0 +1,61 @@
+{
+ "doi": "10.1007_s12274-010-0066-9",
+ "schema_version": 1,
+ "kind": "text_evidence_recovery_audit",
+ "generator": "02_extraction/canonical/recover_axis_semantics.py",
+ "code_version": "e673785+dirty",
+ "created_at": 1785775201,
+ "note": "Audit + work list. Text-evidence recovery is re-derived by build_canonical.py from the same sources; new RAW evidence (verbatim axis labels) is written by reextract_figures.py to figure_semantics_v1.json.",
+ "n_panels": 1,
+ "panels": [
+  {
+   "figure": "1",
+   "figure_index": "2",
+   "panel": "f",
+   "image": "figures/fig_2.png",
+   "caption": "Figure 1 Cross-sectional TEM micrographs analyzing the deposition of Pt thin films by ALD at 300 ° C for different thickness stages: (a) 50 ALD cycles, (b) 100 ALD cycles, (c) 200 ALD cycles, (d) 400 ALD cycles, (e) 1000 ALD cycles, and (f) XRD pattern of a 200 ALD cycle platinum film",
+   "panel_caption": "(f) XRD pattern of a 200 ALD cycle platinum film",
+   "x": {
+    "label_raw": null,
+    "quantity": "2θ",
+    "quantity_canonical": null,
+    "unit_raw": "°",
+    "unit_normalized": "deg",
+    "is_normalized": null,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "normalization_definition": null,
+    "normalization_denominator_role": null,
+    "comparison_group": null,
+    "axis_role": null,
+    "axis_kind": "unknown",
+    "status": "unsupported",
+    "unresolved_reason": "x quantity '2θ' does not resolve to any ontology QuantityKind",
+    "recovery": null
+   },
+   "y": {
+    "label_raw": null,
+    "quantity": "Intensity",
+    "quantity_canonical": "intensity",
+    "unit_raw": "a.u.",
+    "unit_normalized": null,
+    "is_normalized": null,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "normalization_definition": null,
+    "normalization_denominator_role": null,
+    "comparison_group": null,
+    "axis_role": "output",
+    "axis_kind": "output",
+    "status": "not_applicable",
+    "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+    "recovery": null
+   },
+   "needs_image_reextraction": true,
+   "reextraction_reasons": [
+    "x_quantity_unknown",
+    "y_unit_unparseable:a.u."
+   ]
+  }
+ ]
+}

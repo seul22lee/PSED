@@ -130,40 +130,158 @@ def _axis_unit(label):
 
 
 def _plan(e, q, fam, srcunit):
-    """Bring quantity q to its family canonical; returns transform op + bridge value/unit."""
+    """DEPRECATED shim kept only so external callers do not break.
+
+    The family-canonical planner used a per-curve min-max fallback whenever a
+    bridge quantity was missing. That is not a scientific normalization: it maps
+    x/H, x/L, t(x)/t(0) and t/tmax onto the same 0-1 axis and makes
+    semantically different quantities look comparable. Comparison now goes
+    through the canonical layer's comparison groups instead."""
     canon = FAM.get(fam)
-    if not (q and fam and canon): return {"op": "norm", "canon": q}
-    if q == canon: return {"op": "none", "canon": canon}
+    if not (q and fam and canon):
+        return {"op": "unsupported", "canon": q}
+    if q == canon:
+        return {"op": "none", "canon": canon}
     t = next((t for t in TRANS if t["from"] == q and t["to"] == canon), None)
     if t:
         c = next((c for c in e.get("controlled") or [] if c.get("quantity") == t["bridge"]), None)
         bv = c.get("value") if c and isinstance(c.get("value"), (int, float)) else None
-        if bv: return {"op": t["op"], "val": bv, "vunit": c.get("unit"), "sunit": srcunit, "canon": canon}
-    return {"op": "norm", "canon": canon}
+        if bv:
+            return {"op": t["op"], "val": bv, "vunit": c.get("unit"),
+                    "sunit": srcunit, "canon": canon}
+    return {"op": "unsupported", "canon": canon}
 
 
 def _apply(v, p):
-    if p["op"] == "divide": return _tobase(v, p.get("sunit")) / _tobase(p["val"], p.get("vunit"))
-    if p["op"] == "multiply": return v * p["val"]
+    if p["op"] == "divide":
+        return _tobase(v, p.get("sunit")) / _tobase(p["val"], p.get("vunit"))
+    if p["op"] == "multiply":
+        return v * p["val"]
     return v
 
 
-def canonize(e):
-    """Return the curve as (xs, ys) in canonical basis; per-curve 0–1 fallback when a
-    bridge is missing (so shape is still comparable)."""
-    pts = sorted([p for p in (e.get("points") or []) if p and p[0] is not None and p[1] is not None])
-    if len(pts) < 3: return None
-    xun = _axis_unit(e.get("x_label")) or next((c.get("unit") for c in e.get("controlled") or []
-                                                 if c.get("quantity") == e.get("coordinate")), None)
-    yun = (e.get("measurand") or {}).get("unit")
-    pxp = _plan(e, e.get("coordinate"), e.get("coordinate_family"), xun)
-    pyp = _plan(e, (e.get("measurand") or {}).get("quantity"), e.get("measurand_family"), yun)
-    xs = [_apply(p[0], pxp) for p in pts]; ys = [_apply(p[1], pyp) for p in pts]
-    if pxp["op"] == "norm":
-        lo, hi = min(xs), max(xs); xs = [(x - lo) / ((hi - lo) or 1) for x in xs]
-    if pyp["op"] == "norm":
-        lo, hi = min(ys), max(ys); ys = [(y - lo) / ((hi - lo) or 1) for y in ys]
-    return xs, ys
+# ---------------------------------------------------------------------------
+# CANONICAL comparison basis.
+#
+# A curve is comparable only through the canonical layer:
+#   02_extraction/output/{doi}/canonical/curves.json
+# which carries, per axis, the comparison group its values belong to. Two curves
+# may be compared only when BOTH axes sit in the SAME comparison group, or when
+# an explicit transformation (a recorded projection) puts them there.
+#
+# There is deliberately NO min-max fallback. If the semantics or the required
+# context are missing, canonize() returns None and the pair is reported as
+# not comparable — which is the honest answer.
+# ---------------------------------------------------------------------------
+_CANON_INDEX = None
+
+
+def _canonical_index():
+    """{experiment_id: canonical curve record} plus {curve_id: record}."""
+    global _CANON_INDEX
+    if _CANON_INDEX is None:
+        idx = {}
+        import glob
+        for f in sorted(glob.glob(os.path.join(_REPO, "02_extraction", "output",
+                                               "*", "canonical", "curves.json"))):
+            try:
+                with open(f) as fh:
+                    doc = json.load(fh)
+            except Exception:
+                continue
+            for c in doc.get("curves", []):
+                idx[c["curve_id"]] = c
+                for eid in (c.get("source") or {}).get("linked_experiment_ids") or []:
+                    idx.setdefault(eid, c)
+        _CANON_INDEX = idx
+    return _CANON_INDEX
+
+
+def canonical_curve(e):
+    """The canonical record for an experiment, or None."""
+    idx = _canonical_index()
+    eid = e.get("exp_id")
+    if eid and eid in idx:
+        return idx[eid]
+    # a per-point experiment split out of a condition sweep inherits its curve
+    if eid and "-P" in str(eid):
+        return idx.get(str(eid).split("-P")[0].replace("-S", "-S"))
+    return None
+
+
+def comparison_groups(e):
+    """(x_group, y_group) for an experiment, or (None, None) when unresolved."""
+    c = canonical_curve(e)
+    if not c:
+        return None, None
+    cx = (c.get("canonical") or {}).get("x") or {}
+    cy = (c.get("canonical") or {}).get("y") or {}
+    return cx.get("comparison_group"), cy.get("comparison_group")
+
+
+def comparable(a, b):
+    """True only when both curves' x AND y sit in the same comparison group,
+    counting recorded projections as legitimate alternative groups."""
+    return bool(_shared_groups(a, b))
+
+
+def _groups_for(e, axis):
+    """Every comparison group this axis can legitimately be expressed in:
+    its own group plus any recorded (context-resolved) projection."""
+    c = canonical_curve(e)
+    if not c:
+        return set()
+    out = set()
+    can = (c.get("canonical") or {}).get(axis)
+    if can and can.get("comparison_group"):
+        out.add(can["comparison_group"])
+    for p in ((c.get("projections") or {}).get(axis) or []):
+        if p.get("comparison_group"):
+            out.add(p["comparison_group"])
+    return out
+
+
+def _shared_groups(a, b):
+    xs = _groups_for(a, "x") & _groups_for(b, "x")
+    ys = _groups_for(a, "y") & _groups_for(b, "y")
+    if xs and ys:
+        return {"x": sorted(xs)[0], "y": sorted(ys)[0]}
+    return None
+
+
+def _values_in_group(e, axis, group):
+    c = canonical_curve(e)
+    if not c:
+        return None
+    can = (c.get("canonical") or {}).get(axis)
+    if can and can.get("comparison_group") == group:
+        return can.get("values")
+    for p in ((c.get("projections") or {}).get(axis) or []):
+        if p.get("comparison_group") == group:
+            return p.get("values")
+    return None
+
+
+def canonize(e, group=None):
+    """Return (xs, ys) in a shared canonical basis, or None.
+
+    None means "not comparable with the evidence available" — never a rescaled
+    stand-in. Callers must treat None as a refusal, not as a missing value."""
+    c = canonical_curve(e)
+    if not c:
+        return None
+    gx = (group or {}).get("x") if group else ((c.get("canonical") or {}).get("x") or {}).get("comparison_group")
+    gy = (group or {}).get("y") if group else ((c.get("canonical") or {}).get("y") or {}).get("comparison_group")
+    if not (gx and gy):
+        return None
+    xs = _values_in_group(e, "x", gx)
+    ys = _values_in_group(e, "y", gy)
+    if not xs or not ys or len(xs) != len(ys):
+        return None
+    pts = sorted([(x, y) for x, y in zip(xs, ys) if x is not None and y is not None])
+    if len(pts) < 3:
+        return None
+    return [p[0] for p in pts], [p[1] for p in pts]
 
 
 def _interp(xs, ys, xq):
@@ -199,12 +317,22 @@ def curve_metrics(xa, ya, xb, yb, N=40):
 
 
 def curve_similarity(a, b):
-    """Same comparability class only. Resample on the OVERLAPPING x-range -> nRMSE, R²."""
-    if a.get("comparability_key") != b.get("comparability_key"): return None
-    ca, cb = canonize(a), canonize(b)
-    if not ca or not cb: return None
+    """Compare two curves ONLY inside a shared canonical comparison group.
+
+    Returns None when no shared group exists — an x/H profile and an x/L profile
+    are not made comparable by rescaling them onto a common 0-1 axis, and this
+    function will not pretend otherwise."""
+    shared = _shared_groups(a, b)
+    if not shared:
+        return None
+    ca, cb = canonize(a, shared), canonize(b, shared)
+    if not ca or not cb:
+        return None
     (xa, ya), (xb, yb) = ca, cb
-    return curve_metrics(xa, ya, xb, yb)
+    out = curve_metrics(xa, ya, xb, yb)
+    if out is not None:
+        out["comparison_group"] = shared
+    return out
 
 
 # ---- derived scalars (canonical basis) --------------------------------------

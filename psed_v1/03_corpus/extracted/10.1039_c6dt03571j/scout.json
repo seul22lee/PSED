@@ -23,6 +23,12 @@
     "F6a"
    ]
   },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F6b"
+   ]
+  },
   "gpc_vs_dose_saturation": {
    "present": true,
    "where": [
@@ -30,143 +36,103 @@
     "F6d"
    ]
   },
-  "gpc_vs_cycles": {
-   "present": true,
-   "where": [
-    "F6b"
-   ]
-  },
   "xrd_or_spectrum": {
    "present": true,
    "where": [
-    "F5",
     "F7",
     "F8",
     "F9a",
     "F9b",
     "F9c",
-    "F10a"
-   ]
-  },
-  "film_property_vs_condition": {
-   "present": true,
-   "where": [
+    "F10a",
     "F10b"
-   ]
-  },
-  "other": {
-   "present": true,
-   "where": [
-    "F4a",
-    "F4b"
    ]
   }
  },
  "drill": [
   {
-   "where": "F4a",
-   "type": "other",
-   "measurand": "growth_per_cycle",
-   "source": "measured",
-   "why": "Thermogravimetric analysis (TG) curves of zinc ketoiminate compounds"
-  },
-  {
-   "where": "F4b",
-   "type": "other",
-   "measurand": "growth_per_cycle",
-   "source": "measured",
-   "why": "Isothermal thermogravimetric analysis curves of zinc ketoiminates"
-  },
-  {
-   "where": "F5",
-   "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
-   "source": "measured",
-   "why": "NMR spectra for thermal decomposition study of precursor at 220 \u00b0C"
-  },
-  {
    "where": "F6a",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Growth rate as a function of deposition temperature showing ALD window"
+   "why": "growth rate as a function of deposition temperature showing an ALD window"
   },
   {
    "where": "F6b",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "ZnO film thickness as a function of the number of ALD cycles"
+   "why": "film thickness as a function of the number of ALD cycles"
   },
   {
    "where": "F6c",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Growth rate versus zinc precursor pulse length demonstrating saturation"
+   "why": "zinc precursor pulse saturation curve"
   },
   {
    "where": "F6d",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Growth rate versus water pulse length demonstrating saturation"
+   "why": "water pulse saturation curve"
   },
   {
    "where": "F7",
    "type": "xrd_or_spectrum",
-   "measurand": "film_thickness",
+   "measurand": "normalized_thickness",
    "source": "measured",
-   "why": "GI-XRD patterns of ZnO thin films deposited at various temperatures"
+   "why": "GI-XRD patterns of ZnO films deposited at various temperatures"
   },
   {
    "where": "F8",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "RBS spectra of ZnO thin films deposited at 150-300 \u00b0C"
+   "why": "RBS spectra of ZnO films deposited at 150-300 \u00b0C"
   },
   {
    "where": "F9a",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS survey spectra of as-introduced and sputtered ZnO film"
+   "why": "XPS survey spectra before and after sputtering"
   },
   {
    "where": "F9b",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS O 1s binding energy spectra before and after sputtering"
+   "why": "XPS O 1s binding energy spectra"
   },
   {
    "where": "F9c",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS Zn 2p3/2 binding energy spectra before and after sputtering"
+   "why": "XPS Zn 2p3/2 binding energy spectra"
   },
   {
    "where": "F10a",
    "type": "xrd_or_spectrum",
    "measurand": "refractive_index",
    "source": "measured",
-   "why": "Optical transmission spectrum of ZnO film deposited at 225 \u00b0C"
+   "why": "optical transmission spectrum of ZnO film on quartz glass"
   },
   {
    "where": "F10b",
-   "type": "film_property_vs_condition",
+   "type": "xrd_or_spectrum",
    "measurand": "refractive_index",
    "source": "measured",
-   "why": "Tauc plot derived from optical transmission to determine band gap"
+   "why": "derived Tauc plot for optical bandgap determination"
   }
  ],
  "go_deeper": true,
  "_tokens": {
   "in": 3044,
-  "out": 1382,
-  "thoughts": 2499,
+  "out": 1073,
+  "thoughts": 3634,
   "budget": 12288
  },
  "_scout_input_chars": 10970

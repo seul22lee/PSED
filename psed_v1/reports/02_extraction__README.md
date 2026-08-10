@@ -1,3 +1,13 @@
+> **STALE — do not follow the commands in this file.**
+>
+> This README describes the old `0706_pipeline` / `0604_kg` layout. Those
+> directories do not exist in this repository, so `pipeline.py`, `run_all.py` and
+> `config.py` cannot run. The authoritative, working workflow is
+> [`../docs/PIPELINE.md`](../docs/PIPELINE.md); the comparison layer is documented
+> in [`../docs/CANONICALIZATION.md`](../docs/CANONICALIZATION.md).
+>
+> Kept for historical context on the stage design only.
+
 # 0706_pipeline — ontology-first ALD knowledge-graph pipeline
 
 A reorganization of `0604_kg` around the **ontology backbone** in

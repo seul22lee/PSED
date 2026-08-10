@@ -1,0 +1,207 @@
+
+########## REPORTS ##########
+
+$ /usr/bin/python3 build_recipes.py  (cwd=02_extraction)
+fields by origin: {'caption': 365, 'experiment_record': 2946, 'kb_imputation': 520, 'methods_prose': 178, 'model_default': 2062, 'series': 139, 'table': 128}
+  fields: 3756 extracted (paper 306 · experiment 3450 · derived 0) · unresolved 2300 · 520 kb-imputed · 2062 model-default
+  process windows: 0 papers / 0 recipes (range, NOT counted as a scalar); 0 have a per-experiment T; 0 paper-level scalars (must be 0)
+  NOTE: filled completeness includes imputed+default fields — not recipe readiness.
+
+
+$ /usr/bin/python3 build_analysis.py  (cwd=02_extraction)
+
+ERR:y" / "ald_ontology.json").read_text())
+  File "/usr/lib/python3.8/pathlib.py", line 1236, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/usr/lib/python3.8/pathlib.py", line 1222, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/lib/python3.8/pathlib.py", line 1078, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '01_ontology/ald_ontology.json'
+
+
+$ /usr/bin/python3 build_kg.py  (cwd=02_extraction)
+
+ERR:y" / "ald_ontology.json").read_text())
+  File "/usr/lib/python3.8/pathlib.py", line 1236, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/usr/lib/python3.8/pathlib.py", line 1222, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/lib/python3.8/pathlib.py", line 1078, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '01_ontology/ald_ontology.json'
+
+
+$ /usr/bin/python3 build_dashboard.py  (cwd=02_extraction)
+
+ERR:y" / "ald_ontology.json").read_text())
+  File "/usr/lib/python3.8/pathlib.py", line 1236, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/usr/lib/python3.8/pathlib.py", line 1222, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/lib/python3.8/pathlib.py", line 1078, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '01_ontology/ald_ontology.json'
+
+
+$ /usr/bin/python3 build_corpus_dashboard.py  (cwd=scripts)
+wrote 03_corpus/corpus_dashboard.html  (14 KB)
+       2  Review papers
+     980  Cited references (rows)
+     967  Unique DOIs resolved
+     957  Triaged: relevant
+      78  Open-access PDF fetchable
+      83  PDFs collected
+      32  Docling-parsed
+      31  Scouted (abstract/figs)
+      27  Figure-extracted
+      31  In knowledge base
+
+
+$ /usr/bin/python3 status.py  (cwd=scripts)
+e)
+precursors: Al(CH3)3 [1]; Mo(iPrCp)2H2 [1]; MoCl4(THD)(THF) [1]; [(Me3Si)2NBiμ-NSiMe3]2 [1]; barium bis(triisopropylcyclopentadienyl) [1]; bis-isopropylcyclopentyldienyl molybdenum dihydride [1]; lithium tert-butoxide [1]; titanium tetraisopropoxide [1]; trimethylaluminum [2]; tris(1-(dimethylamino)-3,3-dimethylbut-1-en-2-olate)erbium(III) [1]; tris(sec-butylcyclopentadienyl)yttrium [1]
+coreactants: O2 plasma [4]; at-H [1]
+
+wrote /home/ftk3187/github/PSED/psed_v1/03_corpus/corpus_status.html
+
+
+$ /usr/bin/python3 m2_design.py  (cwd=04_twin_mpc)
+ varies only 4.60% across the feasible points
+  feasible region           = 23 pts, 1 free coord; pA 1–129 Pa, t_p 0.0104–1.28 s
+  undetermined              = pressure_pulse_split (structural) — resolvable by a secondary objective or an equipment constraint
+  recommendation            = — (chosen_by=None; region is the answer)
+  confidence                = withheld (dominant=W)
+  assumptions               = pressure_bounds, pulse_time_bounds, pA_tp_ratio, kinetic_parameters, kinetic_uncertainty
+
+
+$ /usr/bin/python3 twin_validation.py  (cwd=04_twin_mpc)
+
+ERR:Traceback (most recent call last):
+  File "twin_validation.py", line 27, in <module>
+    import similarity as sim
+ModuleNotFoundError: No module named 'similarity'
+
+
+########## VALIDATION ##########
+
+$ /usr/bin/python3 test_pressure_extraction.py  (cwd=scripts)
+vidence kept: got 2, want 2
+14) legitimate table pressure under a pressure header is kept, but excluded as fact
+  PASS  measured_response never a process condition: got 0, want 0
+15) evidence-word guard: an entry whose quote has no pressure word is dropped
+  PASS  'reactor working pressure of 750 mt' kept=True — True
+  PASS  'N = 500 cycles, x = 147' kept=False
+  PASS  'partial pressure of ozone 1.1 Torr' kept=True — True
+  PASS  'the sticking coefficient c was 0.0' kept=False
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 test_geometry_model_params.py  (cwd=scripts)
+io for Yim — [{'quantity': 'aspect_ratio', 'raw_label': 'aspect ratio', 'symbol': 'AR', 'value': 2000, 'unit': None, 'basis': 'channel length / channel height', 'status': 'derived_from_reported_dimensions', 'scope': 'figure', 'of_reactant': None, 'model_context': None, 'parameter_status': None, 'evidence': 'channel length L of 1 mm and ... design height of 500 nm'}]
+  FAIL  and none reached its experiments
+
+2 FAILURE(S): ['no fabricated aspect_ratio for Yim', 'and none reached its experiments']
+
+ERR:
+
+$ /usr/bin/python3 test_chemistry_propagation.py  (cwd=scripts)
+s
+16) alias: one compound under two names is one candidate
+  PASS  canon(tris(sec-butylcyclopentadienyl)ytt): got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+  PASS  canon(Y(sBuCp)3): got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+  PASS  canon(Yttrium tris(sec-butylcyclopentadi): got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+  PASS  collapses to one candidate: got ['Y(sBuCp)3'], want ['Y(sBuCp)3']
+  PASS  and resolves: got 'fully_resolved', want 'fully_resolved'
+  PASS  precursor: got 'Y(sBuCp)3', want 'Y(sBuCp)3'
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 test_provenance.py  (cwd=scripts)
+ c6dt keeps a RANGE at paper level; recipe T comes from the experiment
+  PASS  c6dt window is non-degenerate — [175, 300]
+  PASS  c6dt window has range provenance — {'level': 'paper', 'origin': 'scout_window', 'status': 'range', 'evidence': None}
+  PASS  c6dt has NO paper-level temperature scalar
+  PASS  c6dt has no temperature_C provenance — ['process_type', 'purge_time_s', 'temperature_window_C']
+  PASS  c6dt temperatures come from caption/series only — {'series', 'caption'}
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 test_card_temperature.py  (cwd=scripts)
+ase)
+  PASS  d0cp temperature_C = 300: got 300, want 300
+  PASS  d0cp pulse preserved: got {'precursor': 0.1, 'coreactant': 0.1}, want {'precursor': 0.1, 'coreactant': 0.1}
+  PASS  d0cp purge preserved: got 4.0, want 4.0
+  PASS  d0cp cycles preserved: got 500, want 500
+7) a window paper still accepts a genuine scalar from methods, if stated
+  PASS  window paper can be filled by methods: got 225, want 225
+  PASS  window still preserved alongside: got [175, 300], want [175, 300]
+
+ALL TESTS PASSED
+
+
+$ /usr/bin/python3 check_card_invariants.py  (cwd=scripts)
+papers with a non-degenerate temperature window: 8
+
+HARD — scout path must not promote an endpoint:
+  PASS — no window endpoint promoted from the scout path
+
+ADVISORY — merged temperature_C equals a window endpoint:
+  none
+
+INVARIANT HOLDS
+
+
+$ /usr/bin/python3 test_report_freshness.py  (cwd=04_twin_mpc)
+closure statement
+  PASS  M3 does not feed a co-reactant pressure into pA
+  PASS  M3 does not feed chamber/working/base pressure into pA
+  PASS  M3 renders twin inputs incl. geometry height and dose
+  PASS  M3 does not claim corpus-wide pressure absence
+6) M3 Brief is byte-stable under regeneration (deterministic, detects staleness)
+  FAIL  committed M3 == fresh regeneration (not stale) — differs — run: python3 twin_validation.py
+
+1 FAILURE(S): ['committed M3 == fresh regeneration (not stale)']
+
+ERR:
+
+$ /usr/bin/python3 test_twin_validation.py  (cwd=04_twin_mpc)
+en forbidden-type pressure rejection
+  PASS  report describes missing evidence as corpus-absence, NOT literature-absence
+  PASS  report avoids absence-from-literature wording: 'does not report'
+  PASS  report avoids absence-from-literature wording: 'not reported in the literature'
+  PASS  report explicitly disavows a single confidence score
+  PASS  report does NOT introduce an aggregate model-confidence score
+  PASS  report shows per-comparison model-input evidence composition
+
+ALL TESTS PASSED
+
+
+report/validation return codes:
+{
+ "reports": {
+  "02_extraction/build_recipes.py": 0,
+  "02_extraction/build_analysis.py": 1,
+  "02_extraction/build_kg.py": 1,
+  "02_extraction/build_dashboard.py": 1,
+  "03_corpus/build_corpus_dashboard.py": 0,
+  "03_corpus/status.py": 0,
+  "m2:m2_design.py": 0,
+  "m3:twin_validation.py": 1
+ },
+ "validation": {
+  "test_pressure_extraction.py": 0,
+  "test_geometry_model_params.py": 1,
+  "test_chemistry_propagation.py": 0,
+  "test_provenance.py": 0,
+  "test_card_temperature.py": 0,
+  "check_card_invariants.py": 0,
+  "test_report_freshness.py": 1,
+  "test_twin_validation.py": 0
+ }
+}
+
+[run_reextract] phase --reports complete

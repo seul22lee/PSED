@@ -51,11 +51,41 @@ def load():
                 nrec = 0
         kbf = KB / sd / "resolved" / "experiments.json"
         nexp = 0
+        exps = []
         if kbf.exists():
             try:
-                nexp = len(json.loads(kbf.read_text()))
+                exps = json.loads(kbf.read_text())
+                nexp = len(exps)
             except Exception:
-                nexp = 0
+                exps, nexp = [], 0
+        # Since condition sweeps became ExperimentSeries, a bare experiment count
+        # is no longer comparable with the old one: each point of a sweep is now its
+        # own Experiment. Report the breakdown so a granularity correction cannot be
+        # mistaken for corpus growth.
+        nseries = 0
+        sf = KB / sd / "resolved" / "series.json"
+        if sf.exists():
+            try:
+                nseries = len(json.loads(sf.read_text()))
+            except Exception:
+                nseries = 0
+        n_profile = sum(1 for e in exps if e.get("granularity") == "profile")
+        n_in_series = sum(1 for e in exps if e.get("in_series"))
+        # everything that is neither a spatial profile nor a member of a sweep
+        # series: single-point records, output-vs-output correlations, and curves
+        # whose axis role could not be resolved from the available evidence
+        n_other = nexp - n_profile - n_in_series
+        # curves carrying at least one comparison-ready canonical axis
+        ncanon = 0
+        cf = KB / sd / "canonical" / "curves.json"
+        if cf.exists():
+            try:
+                cur = json.loads(cf.read_text()).get("curves", [])
+                ncanon = sum(1 for c in cur
+                             if (c.get("canonical") or {}).get("x")
+                             or (c.get("canonical") or {}).get("y"))
+            except Exception:
+                ncanon = 0
         papers.append({
             "doi": sd,
             "docling": (d / "document.md").exists(),
@@ -64,6 +94,9 @@ def load():
             "material": ((sc.get("materials") or [None])[0] if sc else None),
             "drill": len(sc.get("drill") or []) if sc else 0,
             "records": nrec, "experiments": nexp,
+            "profiles": n_profile, "series": nseries, "in_series": n_in_series,
+            "other": n_other,
+            "canonical": ncanon,
             "in_kb": nexp > 0,
         })
 
@@ -72,6 +105,11 @@ def load():
     n_records = sum(1 for p in papers if p["records"] > 0)
     n_kb = sum(1 for p in papers if p["in_kb"])
     total_exp = sum(p["experiments"] for p in papers)
+    total_profiles = sum(p["profiles"] for p in papers)
+    total_series = sum(p["series"] for p in papers)
+    total_in_series = sum(p["in_series"] for p in papers)
+    total_canonical = sum(p["canonical"] for p in papers)
+    total_other = sum(p["other"] for p in papers)
 
     funnel = [
         {"label": "Review papers", "n": 2, "note": "Cremers 2019 · Popov 2025"},
@@ -83,14 +121,22 @@ def load():
         {"label": "Docling-parsed", "n": n_extracted, "note": "document.md + structure.json"},
         {"label": "Scouted (abstract/figs)", "n": n_scouted, "note": "role-separated process card"},
         {"label": "Figure-extracted", "n": n_records, "note": "vision digitized data points"},
-        {"label": "In knowledge base", "n": n_kb, "note": f"{total_exp} experiments grounded"},
+        {"label": "In knowledge base", "n": n_kb,
+         "note": (f"{total_exp} experiments = {total_profiles} spatial profiles "
+                  f"+ {total_in_series} sweep points in {total_series} series "
+                  f"+ {total_other} single/correlation/unresolved")},
+        {"label": "Comparison-ready curves", "n": total_canonical,
+         "note": "at least one axis in a canonical comparison group"},
     ]
     return {
         "funnel": funnel,
         "reviews": {"cremers": cremers, "popov": popov, "shared": shared, "total": len(merged)},
         "status": dict(status), "oa": dict(oa), "tier": dict(tier),
         "pdfs": len(pdfs), "papers": papers,
-        "totals": {"extracted": n_extracted, "kb": n_kb, "experiments": total_exp},
+        "totals": {"extracted": n_extracted, "kb": n_kb, "experiments": total_exp,
+                   "profiles": total_profiles, "series": total_series,
+                   "in_series": total_in_series, "canonical": total_canonical,
+                   "other": total_other},
     }
 
 
@@ -179,10 +225,10 @@ const D=/*DATA*/;
 const $=id=>document.getElementById(id);
 const COL=["--a1","--a2","--a3","--a4","--a5","--a6","--a7","--a8"];
 const CSS=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
-$("sub").textContent=`${D.reviews.total} unique DOIs from 2 reviews · ${D.pdfs} PDFs collected · ${D.totals.extracted} extracted · ${D.totals.kb} in KB (${D.totals.experiments} experiments)`;
+$("sub").textContent=`${D.reviews.total} unique DOIs from 2 reviews · ${D.pdfs} PDFs collected · ${D.totals.extracted} extracted · ${D.totals.kb} in KB (${D.totals.profiles} profiles + ${D.totals.in_series} sweep points in ${D.totals.series} series)`;
 
 // summary cards
-const cards=[["Unique DOIs",D.reviews.total],["PDFs collected",D.pdfs],["Extracted",D.totals.extracted],["In knowledge base",D.totals.kb],["Experiments",D.totals.experiments]];
+const cards=[["Unique DOIs",D.reviews.total],["PDFs collected",D.pdfs],["Extracted",D.totals.extracted],["In knowledge base",D.totals.kb],["Experiments",D.totals.experiments],["ExperimentSeries",D.totals.series],["Comparison-ready curves",D.totals.canonical]];
 $("cards").innerHTML=cards.map((c,i)=>`<div class="card"><div class="n" style="color:var(${COL[i%COL.length]})">${c[1]}</div><div class="l">${c[0]}</div></div>`).join("");
 
 // funnel — bar width relative to the max (DOIs)
@@ -219,9 +265,10 @@ $("statustab").innerHTML=`<tr><th>fetch status</th><th class="n">count</th></tr>
 
 // extracted papers table
 const P=D.papers.filter(p=>p.docling).sort((a,b)=>b.experiments-a.experiments);
-$("papertab").innerHTML=`<tr><th>DOI</th><th>study</th><th>material</th><th class="n">drill</th><th class="n">records</th><th class="n">experiments</th><th>KB</th></tr>`+
+$("papertab").innerHTML=`<tr><th>DOI</th><th>study</th><th>material</th><th class="n">drill</th><th class="n">records</th><th class="n">experiments</th><th class="n">profiles</th><th class="n">series</th><th class="n">canon</th><th>KB</th></tr>`+
   P.map(p=>`<tr><td>${p.doi}</td><td>${p.study||'—'}</td><td>${p.material||'—'}</td>
     <td class="n">${p.drill}</td><td class="n">${p.records}</td><td class="n">${p.experiments}</td>
+    <td class="n">${p.profiles}</td><td class="n">${p.series}</td><td class="n">${p.canonical}</td>
     <td><span class="pill ${p.in_kb?'ok':'no'}">${p.in_kb?'in KB':'—'}</span></td></tr>`).join("");
 </script>
 """
