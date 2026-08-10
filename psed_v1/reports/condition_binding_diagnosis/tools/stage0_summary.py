@@ -8,7 +8,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis" / "stage0"
 DIAG = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
+KB = REPO / "papers"              # papers/<doi>/resolved/
 
 
 def J(p, d=None):

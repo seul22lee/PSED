@@ -478,5 +478,245 @@
       ],
       "alternatives": 3
     }
+  },
+  {
+    "query": "What process deposits Al2O3 on a reactor with TMA and water?",
+    "intent": "identify",
+    "material": "Al2O3",
+    "target": {},
+    "result": {
+      "ok": true,
+      "recipe": {
+        "precursor": "TMA",
+        "coreactant": "H2O",
+        "cycle": "AB",
+        "argonne_json": {
+          "possible": 1,
+          "precursor": 1,
+          "coreactant": 2
+        },
+        "installable": true,
+        "channels": {
+          "A": 1,
+          "B": 2
+        }
+      },
+      "grounding": {
+        "support_n": 102,
+        "source": "kb"
+      },
+      "citations": [
+        "10.1016_j.sse.2022.108584",
+        "10.1039_d0cp03358h",
+        "10.1063_1.5028178"
+      ],
+      "alternatives": 1
+    }
+  },
+  {
+    "query": "Predict the conformality of Al2O3 in an aspect-ratio 50 feature",
+    "intent": "predict_conformality",
+    "material": "Al2O3",
+    "target": {
+      "aspect_ratio": 50.0
+    },
+    "result": {
+      "ok": true,
+      "model": "ylilammi_langmuir_channel",
+      "material": "Al2O3",
+      "precursor": "TMA",
+      "carrier": "N2",
+      "penetration_depth_um": 85.74,
+      "aspect_ratio": 50.0,
+      "param_provenance": {
+        "kb": 4,
+        "precursor": 5,
+        "material": 3,
+        "default": 5
+      },
+      "citations": [
+        "10.1021_acs.jpcc.9b08176",
+        "10.1039_d0cp03358h",
+        "10.1063_1.5028178"
+      ]
+    }
+  },
+  {
+    "query": "How long should the TMA dose be to saturate Al2O3?",
+    "intent": "optimize_dose",
+    "material": "Al2O3",
+    "target": {},
+    "result": {
+      "ok": false,
+      "msg": "KB lacks the kinetic data (sticking/pressure/site density) to derive a dose for Al2O3"
+    }
+  },
+  {
+    "query": "Warm-start the controller for TiO2",
+    "intent": "warm_start",
+    "material": "TiO2",
+    "target": {},
+    "result": {
+      "ok": true,
+      "material": "TiO2",
+      "pA0": null,
+      "tp0": 1.66511,
+      "r_star": null,
+      "gpc_expected_nm": null,
+      "self_limited": false,
+      "nearest_process": null,
+      "similarity": 0.833,
+      "citations": []
+    }
+  },
+  {
+    "query": "Grow HfO2 on a reactor with only TMA and water",
+    "intent": "identify",
+    "material": "HfO2",
+    "target": {},
+    "result": {
+      "ok": true,
+      "recipe": {
+        "precursor": "TDMACpH",
+        "coreactant": "O2_plasma",
+        "cycle": "AB",
+        "argonne_json": {
+          "possible": 0
+        },
+        "installable": false,
+        "channels": {
+          "A": null,
+          "B": null
+        }
+      },
+      "grounding": {
+        "support_n": 1,
+        "source": "kb"
+      },
+      "citations": [
+        "10.1021_acs.jpcc.9b08176"
+      ],
+      "alternatives": 3
+    }
+  },
+  {
+    "query": "What process deposits Al2O3 on a reactor with TMA and water?",
+    "intent": "identify",
+    "material": "Al2O3",
+    "target": {},
+    "result": {
+      "ok": true,
+      "recipe": {
+        "precursor": "TMA",
+        "coreactant": "H2O",
+        "cycle": "AB",
+        "argonne_json": {
+          "possible": 1,
+          "precursor": 1,
+          "coreactant": 2
+        },
+        "installable": true,
+        "channels": {
+          "A": 1,
+          "B": 2
+        }
+      },
+      "grounding": {
+        "support_n": 102,
+        "source": "kb"
+      },
+      "citations": [
+        "10.1016_j.sse.2022.108584",
+        "10.1039_d0cp03358h",
+        "10.1063_1.5028178"
+      ],
+      "alternatives": 1
+    }
+  },
+  {
+    "query": "Predict the conformality of Al2O3 in an aspect-ratio 50 feature",
+    "intent": "predict_conformality",
+    "material": "Al2O3",
+    "target": {
+      "aspect_ratio": 50.0
+    },
+    "result": {
+      "ok": true,
+      "model": "ylilammi_langmuir_channel",
+      "material": "Al2O3",
+      "precursor": "TMA",
+      "carrier": "N2",
+      "penetration_depth_um": 85.74,
+      "aspect_ratio": 50.0,
+      "param_provenance": {
+        "kb": 4,
+        "precursor": 5,
+        "material": 3,
+        "default": 5
+      },
+      "citations": [
+        "10.1021_acs.jpcc.9b08176",
+        "10.1039_d0cp03358h",
+        "10.1063_1.5028178"
+      ]
+    }
+  },
+  {
+    "query": "How long should the TMA dose be to saturate Al2O3?",
+    "intent": "optimize_dose",
+    "material": "Al2O3",
+    "target": {},
+    "result": {
+      "ok": false,
+      "msg": "KB lacks the kinetic data (sticking/pressure/site density) to derive a dose for Al2O3"
+    }
+  },
+  {
+    "query": "Warm-start the controller for TiO2",
+    "intent": "warm_start",
+    "material": "TiO2",
+    "target": {},
+    "result": {
+      "ok": true,
+      "material": "TiO2",
+      "pA0": null,
+      "tp0": 1.66511,
+      "r_star": null,
+      "gpc_expected_nm": null,
+      "self_limited": false,
+      "nearest_process": null,
+      "similarity": 0.833,
+      "citations": []
+    }
+  },
+  {
+    "query": "Grow HfO2 on a reactor with only TMA and water",
+    "intent": "identify",
+    "material": "HfO2",
+    "target": {},
+    "result": {
+      "ok": true,
+      "recipe": {
+        "precursor": "TDMACpH",
+        "coreactant": "O2_plasma",
+        "cycle": "AB",
+        "argonne_json": {
+          "possible": 0
+        },
+        "installable": false,
+        "channels": {
+          "A": null,
+          "B": null
+        }
+      },
+      "grounding": {
+        "support_n": 1,
+        "source": "kb"
+      },
+      "citations": [
+        "10.1021_acs.jpcc.9b08176"
+      ],
+      "alternatives": 3
+    }
   }
 ]

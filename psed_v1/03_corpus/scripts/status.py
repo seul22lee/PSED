@@ -8,6 +8,7 @@ import json, glob, html
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+PAPERS = ROOT.parent / "papers"    # papers/<doi>/{resolved,canonical}/
 PIPE = ROOT.parent / "02_extraction"
 ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 O_MAT = {m["id"] for m in ONTO["individuals"]["materials"]}
@@ -18,7 +19,7 @@ rows, miss_m, miss_p, miss_c = [], {}, {}, {}
 for pdf in sorted(glob.glob(str(ROOT / "pdfs" / "*.pdf"))):
     sd = Path(pdf).stem
     d = ROOT / "extracted" / sd
-    kbf = PIPE / "output" / sd / "resolved" / "experiments.json"
+    kbf = PAPERS / sd / "resolved" / "experiments.json"
     st = {
         "doc":  (d / "document.md").exists(),
         "scout":(d / "scout.json").exists(),
@@ -51,10 +52,10 @@ for pdf in sorted(glob.glob(str(ROOT / "pdfs" / "*.pdf"))):
         # ExperimentSeries, so the raw count alone would read as corpus growth.
         # Show the spatial-profile count and the series count next to it.
         info["prof"] = str(sum(1 for e in exps if e.get("granularity") == "profile"))
-        sf = PIPE / "output" / sd / "resolved" / "series.json"
+        sf = PAPERS / sd / "resolved" / "series.json"
         if sf.exists():
             info["ser"] = str(len(json.loads(sf.read_text())))
-        cf = PIPE / "output" / sd / "canonical" / "curves.json"
+        cf = PAPERS / sd / "canonical" / "curves.json"
         if cf.exists():
             cur = json.loads(cf.read_text()).get("curves", [])
             info["canon"] = str(sum(1 for c in cur

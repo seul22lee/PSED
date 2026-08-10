@@ -33,7 +33,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                     # 03_corpus
 REPO = ROOT.parent                     # psed_v1
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 PIPE = REPO / "02_extraction"
 TWIN = REPO / "04_twin_mpc"
 MANIFEST = ROOT / "extraction_manifest.json"
@@ -75,7 +75,7 @@ def _sha(b):
 
 def _src_hash(sd):
     """Hash of the REUSED source artifacts (Docling markdown + structure + figure images)."""
-    d = EXTRACTED / sd
+    d = EXTRACTED / sd / "extracted"
     h = hashlib.sha256()
     for f in ("document.md", "structure.json"):
         p = d / f
@@ -95,7 +95,7 @@ def _load_manifest():
 
 
 def _figures_ok(sd):
-    fd = EXTRACTED / sd / "figure_data.json"
+    fd = EXTRACTED / sd / "extracted" / "figure_data.json"
     if not fd.exists():
         return False
     try:
@@ -159,7 +159,7 @@ def extract():
 
     def run_geometry(sd):
         gc, st, why = m09.classify_deterministic(sd)              # deterministic, NO LLM
-        (EXTRACTED / sd / "geometry.json").write_text(json.dumps(
+        (EXTRACTED / sd / "extracted" / "geometry.json").write_text(json.dumps(
             {"geometry_class": gc, "structure": st, "method": "deterministic", "evidence": why}, indent=1))
         qs, (i, o) = m09.extract_quantities(sd, client)           # LLM, merges quantities
         return f"class={gc} quantities={len(qs)}"
@@ -169,10 +169,10 @@ def extract():
         return f"observations={len(obs)}"
 
     def run_card(sd):
-        cf = EXTRACTED / sd / "card.json"
+        cf = EXTRACTED / sd / "extracted" / "card.json"
         if cf.exists():
             cf.unlink()                                           # obsolete cache -> force LLM rebuild
-        scout = json.loads((EXTRACTED / sd / "scout.json").read_text())
+        scout = json.loads((EXTRACTED / sd / "extracted" / "scout.json").read_text())
         card, tok = m06.get_card(sd, scout, client)              # LLM methods-fill
         nonempty = sum(1 for k, v in card.items() if v not in (None, [], {}, ""))
         if nonempty == 0:

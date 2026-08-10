@@ -16,7 +16,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-EX = REPO / "03_corpus" / "extracted"
+EX = REPO / "papers"    # papers/<doi>/extracted/
 
 PUNIT = r"(?:mTorr|Torr|mbar|hPa|kPa|MPa|Pa|atm|bar)"
 NUM = r"[-+]?\d*\.?\d+(?:\s*[x×]\s*10\s*[-–]?\d+)?(?:[eE][-+]?\d+)?"

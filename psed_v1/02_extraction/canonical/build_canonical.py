@@ -4,12 +4,12 @@ build_canonical.py — post-process the existing figure-derived JSON into a
 comparison-ready canonical layer.
 
 Reads (read-only):
-    03_corpus/extracted/{doi}/figure_data.json  + records/card/geometry/pressure/document
-    03_corpus/extracted/{doi}/recovery/figure_semantics_v1.json   (if built)
-    02_extraction/output/{doi}/resolved/experiments.json
+    papers/{doi}/extracted/figure_data.json  + records/card/geometry/pressure/document
+    papers/{doi}/extracted/recovery/figure_semantics_v1.json   (if built)
+    papers/{doi}/resolved/experiments.json
 
 Writes (new files only — no raw file is touched):
-    02_extraction/output/{doi}/canonical/curves.json
+    papers/{doi}/canonical/curves.json
 
 Usage:
     python3 02_extraction/canonical/build_canonical.py --all
@@ -97,7 +97,7 @@ def _norm_rep(r):
 
 def build_paper(doi, out_root=None):
     curves = [build_curve(c) for c in S.iter_curves(doi)]
-    out_root = out_root or (REPO / "02_extraction" / "output")
+    out_root = out_root or (REPO / "papers")
     outdir = Path(out_root) / doi / "canonical"
     outdir.mkdir(parents=True, exist_ok=True)
     doc = {
@@ -131,7 +131,7 @@ def main(argv=None):
         total += doc["n_curves"]
         print("  %-38s %4d curves" % (doi, doc["n_curves"]))
     print("\nwrote canonical curves for %d paper(s), %d curves total" % (len(ids), total))
-    print("-> 02_extraction/output/<doi>/canonical/curves.json")
+    print("-> papers/<doi>/canonical/curves.json")
     return 0
 
 

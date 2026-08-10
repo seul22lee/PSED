@@ -62,7 +62,7 @@ def build():
 # --- where each recipe field actually came from -----------------------------
 # "filled completeness" alone is NOT recipe readiness: it counts an imputed or
 # defaulted field the same as a measured one. This breakdown keeps the two apart.
-CORPUS_CARDS = ROOT.parent / "03_corpus" / "extracted"
+CORPUS_CARDS = ROOT.parent / "papers"    # papers/<doi>/extracted/
 
 
 def _field_counts(rec):
@@ -86,7 +86,7 @@ def _window_papers():
     out = {}
     if not CORPUS_CARDS.is_dir():
         return out
-    for d in sorted(CORPUS_CARDS.iterdir()):
+    for d in sorted((d / "extracted" for d in CORPUS_CARDS.iterdir() if d.is_dir())):
         cf = d / "card.json"
         if not cf.is_file():
             continue
@@ -97,7 +97,7 @@ def _window_papers():
         if (isinstance(w, list) and len(w) == 2
                 and all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in w)
                 and float(w[0]) != float(w[1])):
-            out[d.name] = w
+            out[d.parent.name] = w
     return out
 
 

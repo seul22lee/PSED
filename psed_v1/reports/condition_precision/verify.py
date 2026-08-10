@@ -25,8 +25,8 @@ _s = _u.spec_from_file_location("kb6", REPO / "03_corpus" / "scripts" / "06_to_k
 kb6 = _u.module_from_spec(_s)
 _s.loader.exec_module(kb6)
 
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 OUT = REPO / "reports" / "condition_precision"
 
 # what scope each evidence source may legitimately support
@@ -54,7 +54,7 @@ def _series_axis(rec):
     key = (rec["paper_id"], str(rec["fig_docling_index"]), str(rec["panel"] or ""))
     if key not in _AXIS_CACHE:
         axis = None
-        fd = json.loads((EX / rec["paper_id"] / "figure_data.json").read_text())
+        fd = json.loads((EX / rec["paper_id"] / "extracted" / "figure_data.json").read_text())
         for f in fd.get("figures", []):
             if str(f.get("figure")) != str(rec["fig_docling_index"]):
                 continue
@@ -85,7 +85,7 @@ def source_text(rec):
         return kb6._methods(doi), "methods section"
     if rec["source_kind"] == "series_label":
         return C.fold_math(rec["source_series"] or ""), "series label"
-    fd = json.loads((EX / doi / "figure_data.json").read_text())
+    fd = json.loads((EX / doi / "extracted" / "figure_data.json").read_text())
     cap = ""
     for f in fd.get("figures", []):
         if str(f.get("figure")) == str(rec["fig_docling_index"]):
@@ -111,7 +111,7 @@ def source_text(rec):
         return cap, "caption (full)"
     if rec["source_kind"] == "body":
         if "reference-scoped" in loc:
-            return C.fold_math((EX / doi / "document.md").read_text(errors="replace")), "document body"
+            return C.fold_math((EX / doi / "extracted" / "document.md").read_text(errors="replace")), "document body"
         return C.fold_math(kb6._figure_body(doi, rec["printed_figure_number"])), "figure body"
     return "", "unknown"
 

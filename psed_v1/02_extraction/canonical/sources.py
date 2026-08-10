@@ -10,15 +10,15 @@ Nothing in this module writes. It assembles, per digitized curve:
   * a scope-tagged ContextPool (panel/curve/figure/experiment/method/paper).
 
 Inputs (all pre-existing):
-    03_corpus/extracted/{doi}/figure_data.json    panels, axes, series, points
-    03_corpus/extracted/{doi}/records.json        flattened curves (keeps coordinate_unit)
-    03_corpus/extracted/{doi}/card.json           paper-level process card
-    03_corpus/extracted/{doi}/geometry.json       geometry quantities (paper scope)
-    03_corpus/extracted/{doi}/pressure.json       pressure observations
-    03_corpus/extracted/{doi}/document.md         parsed full text
-    03_corpus/extracted/{doi}/structure.json      figure/section structure
-    03_corpus/extracted/{doi}/recovery/figure_semantics_v1.json   (optional, Stage D)
-    02_extraction/output/{doi}/resolved/experiments.json          resolved experiments
+    papers/{doi}/extracted/figure_data.json    panels, axes, series, points
+    papers/{doi}/extracted/records.json        flattened curves (keeps coordinate_unit)
+    papers/{doi}/extracted/card.json           paper-level process card
+    papers/{doi}/extracted/geometry.json       geometry quantities (paper scope)
+    papers/{doi}/extracted/pressure.json       pressure observations
+    papers/{doi}/extracted/document.md         parsed full text
+    papers/{doi}/extracted/structure.json      figure/section structure
+    papers/{doi}/extracted/recovery/figure_semantics_v1.json   (optional, Stage D)
+    papers/{doi}/resolved/experiments.json          resolved experiments
 """
 from __future__ import annotations
 
@@ -30,8 +30,8 @@ from pathlib import Path
 from .context import ContextPool
 from .schema import REPO
 
-CORPUS = REPO / "03_corpus" / "extracted"
-OUTPUT = REPO / "02_extraction" / "output"
+CORPUS = REPO / "papers"          # papers/<doi>/extracted/
+OUTPUT = REPO / "papers"          # papers/<doi>/{resolved,canonical}/
 MANIFEST = REPO / "03_corpus" / "extraction_manifest.json"
 
 _CACHE = {}
@@ -67,11 +67,12 @@ def papers():
     ids = sorted((m.get("papers") or {}).keys())
     if ids:
         return ids
-    return sorted(d.name for d in CORPUS.iterdir() if d.is_dir())
+    return sorted(d.name for d in CORPUS.iterdir()
+                  if d.is_dir() and (d / "extracted").is_dir())
 
 
 def paper_paths(doi):
-    d = CORPUS / doi
+    d = CORPUS / doi / "extracted"
     return {
         "figure_data": d / "figure_data.json",
         "records": d / "records.json",
@@ -135,19 +136,27 @@ def equation_context(doi):
 def recovery_index(doi):
     """{(figure_key, panel): axis-recovery record} from the Stage-D output.
 
-    Indexed under BOTH the docling figure index (what figure_data.json uses as
-    its `figure` key) and the paper's printed figure number, because the two
-    numbering systems differ and callers hold one or the other."""
+    Returns {"by_docling": {...}, "by_printed": {...}} -- two SEPARATE
+    namespaces.
+
+    They used to share one dict, keyed under both numbers at once. The two
+    numbering systems differ (in 10.1002_pssa.201532305 printed 5 is docling 7,
+    printed 7 is docling 9), so a lookup of printed "7" collided with docling
+    "7" and silently returned a different figure's axis labels -- which is how
+    an XPS depth profile acquired the axes of an in-situ thickness trace.
+    Callers must look up with the key type they actually hold.
+    """
     rec = _read_json(paper_paths(doi)["recovery"])
     if not rec:
-        return {}
-    idx = {}
+        return {"by_docling": {}, "by_printed": {}}
+    by_docling, by_printed = {}, {}
     for e in rec.get("panels", []) or []:
         panel = str(e.get("panel") or "")
-        for k in (e.get("figure_index"), e.get("figure")):
-            if k is not None:
-                idx.setdefault((str(k), panel), e)
-    return idx
+        if e.get("figure_index") is not None:
+            by_docling.setdefault((str(e["figure_index"]), panel), e)
+        if e.get("figure") is not None:
+            by_printed.setdefault((str(e["figure"]), panel), e)
+    return {"by_docling": by_docling, "by_printed": by_printed}
 
 
 # --- resolved experiments -------------------------------------------------
@@ -346,7 +355,8 @@ def iter_curves(doi):
             pname = str(panel.get("panel") or "")
             x = dict(panel.get("x") or {})
             y = dict(panel.get("y") or {})
-            rec = recov.get((fignum, pname)) or {}
+            # `fignum` is figure_data's own key, i.e. the DOCLING index
+            rec = recov["by_docling"].get((fignum, pname)) or {}
             # recovered verbatim labels take priority as evidence source 1
             x_label = rec.get("x", {}).get("label_raw") or x.get("label_raw") or x.get("label")
             y_label = rec.get("y", {}).get("label_raw") or y.get("label_raw") or y.get("label")

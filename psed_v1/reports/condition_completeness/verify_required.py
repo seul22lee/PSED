@@ -5,7 +5,7 @@ import json, sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-KB = REPO / "02_extraction" / "output"
+KB = REPO / "papers"              # papers/<doi>/resolved/
 FAIL = []
 
 

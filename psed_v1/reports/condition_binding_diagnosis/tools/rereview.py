@@ -18,8 +18,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 
 
 def J(p, d=None):
@@ -80,7 +80,7 @@ SAMPLE_ID = re.compile(r"\b(?:sample|run|specimen)s?\s+((?:\d+\s*,?\s*(?:and\s*)
 
 def caption_of(doi, exp):
     fi = str((exp.get("provenance") or {}).get("fig_docling_index") or "")
-    for f in (J(EX / doi / "figure_data.json", {}) or {}).get("figures", []):
+    for f in (J(EX / doi / "extracted" / "figure_data.json", {}) or {}).get("figures", []):
         if str(f.get("figure")) == fi:
             return f.get("caption") or ""
     return ""
@@ -88,7 +88,7 @@ def caption_of(doi, exp):
 
 def doc_section_for_figure(doi, fignum):
     """Body text around 'Fig. N' mentions — the local paper evidence we have."""
-    txt = T(EX / doi / "document.md")
+    txt = T(EX / doi / "extracted" / "document.md")
     if not fignum:
         return ""
     out = []

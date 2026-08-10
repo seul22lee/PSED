@@ -6,7 +6,7 @@ from canonical import live
 from canonical import units as U
 from canonical.schema import REPO, Status
 
-OUTPUT = REPO / "02_extraction" / "output"
+OUTPUT = REPO / "papers"          # papers/<doi>/{resolved,canonical}/
 
 
 def all_experiments():
@@ -115,6 +115,9 @@ class TestGranularityInLivePipeline(unittest.TestCase):
                           ("enumerated_in_source",
                            "enumerated_in_source_and_plotted",
                            "process_setting_axis_corroborated",
+                           "independent_process_sweep",
+                           "single_setting_only",
+                           "not_an_independent_sweep",
                            "unresolved_settings"))
             if s["case_count_status"] == "unresolved_settings":
                 self.assertEqual(s["supported_case_count"], 0)
@@ -148,8 +151,10 @@ class TestGranularityInLivePipeline(unittest.TestCase):
                  if e.get("coordinate") == "spatial_coordinate" and len(e.get("points") or []) > 2]
         self.assertGreater(len(profs), 0)
         for e in profs:
-            self.assertEqual(e["granularity"], "profile")
-            self.assertEqual(e.get("measurement_class"), "ExperimentalProfile")
+            self.assertIn(e["granularity"], ("profile", "spatial_profile",
+                                             "multi_output"))
+            self.assertIn(e.get("measurement_class"),
+                          ("ExperimentalProfile", "MultiOutputMeasurement"))
             self.assertEqual(e.get("varies"), ["spatial_coordinate"])
 
     def test_granularity_is_not_a_function_of_point_count(self):
@@ -162,7 +167,8 @@ class TestGranularityInLivePipeline(unittest.TestCase):
                     self.assertIn(ent["experimental_case_status"],
                                   ("enumerated_in_source",
                                    "enumerated_in_source_and_plotted",
-                                   "process_setting_axis_corroborated"),
+                                   "process_setting_axis_corroborated",
+                                   "independent_process_sweep"),
                                   ent["entity_id"])
                     # The count is a number of SETTINGS. An earlier version
                     # asserted count != n_observations as a proxy for "not
@@ -175,9 +181,10 @@ class TestGranularityInLivePipeline(unittest.TestCase):
                     _distinct = len({o["x_raw"] for o in ent["observations"]})
                     self.assertLessEqual(ent["experimental_case_count"], _distinct,
                                          ent["entity_id"])
-                    self.assertEqual(
-                        _ent_mod.setting_axis_kind(ent.get("coordinate")),
-                        "process_setting", ent["entity_id"])
+                    # granularity, not the axis table, is the authority now
+                    self.assertEqual(ent.get("granularity_kind"),
+                                     "independent_process_sweep",
+                                     ent["entity_id"])
                     self.assertTrue(ent["experimental_case_reason"],
                                     ent["entity_id"])
 

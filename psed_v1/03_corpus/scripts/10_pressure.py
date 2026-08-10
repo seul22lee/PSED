@@ -21,7 +21,7 @@ import json, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 PIPE = ROOT.parent / "02_extraction"
 sys.path.insert(0, str(PIPE / "stages"))
 import lib
@@ -116,12 +116,12 @@ STRICT RULES — follow exactly, they decide whether a value is trustworthy:
 
 
 def extract_pressures(sd, client):
-    md = (EXTRACTED / sd / "document.md").read_text()
+    md = (EXTRACTED / sd / "extracted" / "document.md").read_text()
     ab = ex.abstract_of(md)
     methods = ex.section_text(md, ["experimental", "methods", "deposition", "apparatus",
                                    "reactor", "setup", "film growth"], limit=6000)
-    st = json.loads((EXTRACTED / sd / "structure.json").read_text()) \
-        if (EXTRACTED / sd / "structure.json").exists() else {}
+    st = json.loads((EXTRACTED / sd / "extracted" / "structure.json").read_text()) \
+        if (EXTRACTED / sd / "extracted" / "structure.json").exists() else {}
     tables = "\n\n".join(f"[TABLE {t.get('index')}] {t.get('caption','')}\n{t.get('markdown','')}"
                          for t in st.get("tables", []) if t.get("markdown"))[:4000]
     caps = "\n".join(f"[{f.get('index')}] {f.get('caption','')}"
@@ -188,7 +188,7 @@ def extract_pressures(sd, client):
         if k in seen:
             continue
         seen.add(k); deduped.append(o)
-    (EXTRACTED / sd / "pressure.json").write_text(
+    (EXTRACTED / sd / "extracted" / "pressure.json").write_text(
         json.dumps({"pressures": deduped}, indent=1))
     return deduped, tok
 
@@ -210,7 +210,7 @@ def pressure_facts(sd, reactants=None):
     a chamber/working/base pressure never carries a species. Every condition keeps a
     verbatim evidence quote and paper provenance, and shares one evidence id per
     observation. Returns []; the model defaults are untouched (they live in recipes)."""
-    pf = EXTRACTED / sd / "pressure.json"
+    pf = EXTRACTED / sd / "extracted" / "pressure.json"
     if not pf.exists():
         return []
     try:
@@ -254,7 +254,7 @@ def pressure_facts(sd, reactants=None):
 def main(argv):
     if argv and argv[0] == "--show":
         for sd in argv[1:]:
-            pf = EXTRACTED / sd / "pressure.json"
+            pf = EXTRACTED / sd / "extracted" / "pressure.json"
             print(f"\n=== {sd} ===")
             print(pf.read_text() if pf.exists() else "  (no pressure.json)")
         return

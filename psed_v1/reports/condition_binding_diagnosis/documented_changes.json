@@ -1,5 +1,5 @@
 {
- "n_improvements": 109,
+ "n_improvements": 85,
  "n_regressions": 0,
  "rule": "a change is justified only when Stage 0 was NOT corroborated and the rebuilt classifier IS",
  "improvements": [
@@ -9,7 +9,7 @@
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'angle' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
@@ -18,7 +18,7 @@
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'angle' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
@@ -27,7 +27,7 @@
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'angle' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
@@ -36,7 +36,7 @@
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'angle' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
@@ -45,286 +45,268 @@
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'angle' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1002_admi.202000318|4|a|Reflectivity|primary|2\u03b8",
-   "stage0": "discrete_experimental_sweep",
+   "entity": "10.1002_pssa.201532305|8|a|<single>|primary|partial_pressure",
+   "stage0": "continuous_trace",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "discrete_experimental_sweep",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'process_condition'",
+   "cases": 3
+  },
+  {
+   "entity": "10.1002_pssa.201532305|12|a|<single>|primary|partial_pressure",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "discrete_experimental_sweep",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'process_condition'",
+   "cases": 4
+  },
+  {
+   "entity": "10.1002_pssa.201532305|15|a|O|primary|spatial_coordinate",
+   "stage0": "experimental_profile",
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'multi_output_measurement' from the x-axis role 'spatial_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1007_s12274-010-0066-9|2|f|200 ALD cycles|primary|2\u03b8",
+   "entity": "10.1002_pssa.201532305|15|a|Si|primary|spatial_coordinate",
+   "stage0": "experimental_profile",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'multi_output_measurement' from the x-axis role 'spatial_coordinate'",
+   "cases": 0
+  },
+  {
+   "entity": "10.1002_pssa.201532305|15|a|<single>|primary|spatial_coordinate",
+   "stage0": "experimental_profile",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'multi_output_measurement' from the x-axis role 'spatial_coordinate'",
+   "cases": 0
+  },
+  {
+   "entity": "10.1002_pssa.201532305|15|a|F|primary|spatial_coordinate",
+   "stage0": "experimental_profile",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'multi_output_measurement' from the x-axis role 'spatial_coordinate'",
+   "cases": 0
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|a|0|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|a|0.20|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|a|0.50|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|a|0.65|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|a|0.80|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|a|0.94|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|b|0|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|b|0.20|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|b|0.35|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|b|0.50|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|b|0.65|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|b|0.80|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c01154|16|b|0.94|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c02292|4|c|Annealed|primary|site_density",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c02292|4|c|As deposited|primary|site_density",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c02292|4|d|As deposited|primary|recombination_probability",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c02292|4|e|Annealed|primary|recombination_probability",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1021_acs.chemmater.2c02292|6|a|15|primary|time",
    "stage0": "unknown",
    "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
+   "rebuilt": "continuous_trace",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1021_acs.chemmater.2c01154|10|a|0|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
+   "entity": "10.1021_acs.chemmater.2c02292|6|a|18|primary|time",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "continuous_trace",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1021_acs.chemmater.2c01154|10|a|0.20|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
+   "entity": "10.1021_acs.chemmater.2c02292|6|a|44|primary|time",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "continuous_trace",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1021_acs.chemmater.2c01154|10|a|0.50|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
+   "entity": "10.1021_acs.chemmater.2c02292|6|b|32|primary|time",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "continuous_trace",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1021_acs.chemmater.2c01154|10|a|0.65|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
+   "entity": "10.1021_acs.chemmater.2c02292|6|b|44|primary|time",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "continuous_trace",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1021_acs.chemmater.2c01154|10|a|0.80|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
+   "entity": "10.1021_acs.chemmater.2c02292|6|b|81|primary|time",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "continuous_trace",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|10|a|0.94|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|10|b|SiO2/Si|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|10|b|10 cyc (0.9 nm)|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|10|b|20 cyc (1.6 nm)|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|10|b|30 cyc (2.6 nm)|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|10|b|50 cyc (4.8 nm)|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|a|0.94|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|a|0.80|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|a|0.65|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|a|0.50|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|a|0.20|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|b|0.94|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|b|0.80|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|b|0.65|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|b|0.50|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|14|b|0.20|primary|Binding energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|18|a|0.80|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|18|a|0|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|18|b|0.50|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|18|b|Thermal ALD|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c01154|18|b|0|primary|Raman shift",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Raman shift' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c02292|3|a|Annealed in He|primary|2\u0398",
-   "stage0": "continuous_trace",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u0398' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c02292|3|a|Annealed in air|primary|2\u0398",
-   "stage0": "continuous_trace",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u0398' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1021_acs.chemmater.2c02292|3|a|As deposited|primary|2\u0398",
-   "stage0": "continuous_trace",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u0398' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
    "cases": 1
   },
   {
@@ -333,7 +315,7 @@
    "stage0_confidence": "conflicting_signals",
    "rebuilt": "discrete_experimental_sweep",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'pulse_time' is a process setting; each point is a separately prepared run, not a point on one specimen",
+   "rebuilt_evidence": "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'process_condition'",
    "cases": 1
   },
   {
@@ -346,571 +328,265 @@
    "cases": 0
   },
   {
-   "entity": "10.1039_c5tc03561a|9|a|Ba|primary|sputtering time",
+   "entity": "10.1039_c6dt03571j|8|a|150\u00b0C|primary|Energy",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|8|a|175\u00b0C|primary|Energy",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|8|a|200\u00b0C|primary|Energy",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|8|a|225\u00b0C|primary|Energy",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|8|a|250\u00b0C|primary|Energy",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|8|a|275\u00b0C|primary|Energy",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|8|a|300\u00b0C|primary|Energy",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|10|a|<single>|primary|wavelength",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c6dt03571j|10|b|<single>|primary|hv",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|4||<single>|primary|pulse_time",
+   "stage0": "continuous_trace",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "discrete_experimental_sweep",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'process_condition'",
+   "cases": 6
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|a|Thermal 150 \u00b0C|primary|cycle_number",
    "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|a|Plasma 50 \u00b0C|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|a|Plasma 200 \u00b0C|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|a|Plasma 275 \u00b0C|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|a|Plasma 300 \u00b0C|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|b|SE, thermal|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|b|SE, plasma|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|b|EBS, thermal|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|5|b|EBS, plasma|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'process_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|6|a|250 \u00b0C|primary|Measurement number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|6|a|275 \u00b0C|primary|Measurement number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|6|a|300 \u00b0C|primary|Measurement number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|7|a|3 s plasma|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|7|a|5 s plasma|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_c7ra07722j|7|a|20 s plasma|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1039_d0cp03358h|6|d|<single>|normalized|spatial_coordinate",
+   "stage0": "experimental_profile",
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'sputtering time' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'derived_representation'",
    "cases": 1
   },
   {
-   "entity": "10.1039_c5tc03561a|9|a|O|primary|sputtering time",
-   "stage0": "discrete_experimental_sweep",
+   "entity": "10.1039_d0cp03358h|10|b|Si|primary|spatial_coordinate",
+   "stage0": "experimental_profile",
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'sputtering time' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'multi_output_measurement' from the x-axis role 'spatial_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1039_c5tc03561a|9|a|C|primary|sputtering time",
-   "stage0": "discrete_experimental_sweep",
+   "entity": "10.1039_d0cp03358h|10|b|O|primary|spatial_coordinate",
+   "stage0": "experimental_profile",
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'sputtering time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
+   "rebuilt_evidence": "G: granularity resolved as 'multi_output_measurement' from the x-axis role 'spatial_coordinate'",
+   "cases": 0
   },
   {
-   "entity": "10.1039_c5tc03561a|9|a|Si|primary|sputtering time",
-   "stage0": "discrete_experimental_sweep",
+   "entity": "10.1039_d0cp03358h|10|b|Al|primary|spatial_coordinate",
+   "stage0": "experimental_profile",
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'sputtering time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c5tc03561a|12|a|Ti|primary|Sputtering Time",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Sputtering Time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c5tc03561a|12|a|Ba|primary|Sputtering Time",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Sputtering Time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c5tc03561a|12|a|O|primary|Sputtering Time",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Sputtering Time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c5tc03561a|12|a|C|primary|Sputtering Time",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Sputtering Time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c5tc03561a|12|a|Si|primary|Sputtering Time",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Sputtering Time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c6dt03571j|7|a|150\u00b0C|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c6dt03571j|7|a|175\u00b0C|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c6dt03571j|7|a|200\u00b0C|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c6dt03571j|7|a|225\u00b0C|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c6dt03571j|7|a|250\u00b0C|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c6dt03571j|7|a|275\u00b0C|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c6dt03571j|7|a|300\u00b0C|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c7ra07722j|9|a|Thermal 300 \u00b0C|primary|2-theta",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2-theta' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c7ra07722j|9|a|Thermal 150 \u00b0C|primary|2-theta",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2-theta' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c7ra07722j|9|a|Thermal 100 \u00b0C|primary|2-theta",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2-theta' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c7ra07722j|9|a|Plasma 250 \u00b0C|primary|2-theta",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2-theta' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c7ra07722j|9|a|Plasma 150 \u00b0C|primary|2-theta",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2-theta' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_c7ra07722j|9|a|Plasma 50 \u00b0C|primary|2-theta",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2-theta' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d0cp03358h|7|b|experimental profile|scaled|spatial_coordinate",
-   "stage0": "simulation",
-   "stage0_confidence": "single_definitional_signal",
-   "rebuilt": "experimental_profile",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'spatial_coordinate' is a spatial coordinate; this curve is one specimen's profile",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|a|ET=0 min|primary|Binding energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|a|ET=2min|primary|Binding energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|a|ET=5 min|primary|Binding energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|a|ET=10 min|primary|Binding energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|a|ET=15 min|primary|Binding energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|b|ET=0min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|b|ET=2min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|b|ET=5min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|b|ET=10min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|b|ET=15min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|c|ET=0min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|c|ET=2min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|c|ET=5min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|c|ET=10min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3dt01824e|11|c|ET=15min|primary|Binding Energy",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|a|C1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|a|N1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|a|O1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|a|Si2p|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|a|Y3d|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|b|C1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|b|N1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|b|O1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|b|Si2p|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|b|Y3d|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|c|C1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|c|N1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|c|O1s|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|c|Si2p|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|c|Y3d|primary|Etching time",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Etching time' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|d|200 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|d|250 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|d|300 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|e|200 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|e|250 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|e|300 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|f|200 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|f|250 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|11|f|300 \u00b0C|primary|Binding Energy",
-   "stage0": "discrete_experimental_sweep",
-   "stage0_confidence": "corroborated",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'Binding Energy' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
-  },
-  {
-   "entity": "10.1039_d3ra05217f|12|c|<single>|primary|2\u03b8",
-   "stage0": "unknown",
-   "stage0_confidence": "conflicting_signals",
-   "rebuilt": "multi_output_measurement",
-   "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u03b8' is a measurement coordinate; this curve is one specimen's scan",
-   "cases": 1
+   "rebuilt_evidence": "G: granularity resolved as 'multi_output_measurement' from the x-axis role 'spatial_coordinate'",
+   "cases": 0
   },
   {
    "entity": "10.1063_1.4867469|6|c|STO-buffered Si(001)|primary|binding_energy",
@@ -918,7 +594,7 @@
    "stage0_confidence": "conflicting_signals",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'binding_energy' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
@@ -927,7 +603,7 @@
    "stage0_confidence": "conflicting_signals",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'binding_energy' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
@@ -936,7 +612,7 @@
    "stage0_confidence": "conflicting_signals",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis 'binding_energy' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
@@ -958,30 +634,138 @@
    "cases": 0
   },
   {
-   "entity": "10.1116_6.0002154|27|b|(a) As-dep|primary|2\u0398",
+   "entity": "10.1116_1.4938104|9|d|Cotton Fibers, 38 \u00b0C|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_1.4938104|9|d|Cotton Fibers, 60 \u00b0C|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_1.4938104|9|d|Cotton Fibers, 90 \u00b0C|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_1.4938104|9|d|Cellulose Films|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_1.4938104|13|a|Untreated PA-6|primary|wavenumber",
    "stage0": "unknown",
    "stage0_confidence": "conflicting_signals",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u0398' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
    "cases": 1
   },
   {
-   "entity": "10.1116_6.0002154|27|b|(b) 500\u00b0C anneal|primary|2\u0398",
+   "entity": "10.1116_1.4938104|13|a|25 cycles ZnO|primary|wavenumber",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_1.4938104|13|a|25 cycles ZnO+ 75 cycles Gly/TMA|primary|wavenumber",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_1.4938104|13|a|25 cycles ZnO+ 75 cycles Gly/TMA+ 25 cycles Al2O3|primary|wavenumber",
+   "stage0": "unknown",
+   "stage0_confidence": "conflicting_signals",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_6.0002804|20|a|Thickness|primary|cycle_number",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_6.0002804|21|a|HCl|primary|time",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_6.0002804|21|b|H2O|primary|time",
+   "stage0": "unknown",
+   "stage0_confidence": "insufficient_corroboration",
+   "rebuilt": "continuous_trace",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'continuous_or_longitudinal_run' from the x-axis role 'progression_coordinate'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_6.0002804|23||Cl|primary|deposition_temperature",
    "stage0": "discrete_experimental_sweep",
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u0398' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_condition'",
    "cases": 1
   },
   {
-   "entity": "10.1116_6.0002154|27|b|(c) 600\u00b0C anneal|primary|2\u0398",
+   "entity": "10.1116_6.0002804|23||C|primary|deposition_temperature",
    "stage0": "discrete_experimental_sweep",
    "stage0_confidence": "corroborated",
    "rebuilt": "multi_output_measurement",
    "rebuilt_confidence": "corroborated",
-   "rebuilt_evidence": "X: x axis '2\u0398' is a measurement coordinate; this curve is one specimen's scan",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_6.0002804|23||N|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_condition'",
+   "cases": 1
+  },
+  {
+   "entity": "10.1116_6.0002804|23||H|primary|deposition_temperature",
+   "stage0": "discrete_experimental_sweep",
+   "stage0_confidence": "corroborated",
+   "rebuilt": "multi_output_measurement",
+   "rebuilt_confidence": "corroborated",
+   "rebuilt_evidence": "G: granularity resolved as 'measurement_scan' from the x-axis role 'measurement_condition'",
    "cases": 1
   }
  ],

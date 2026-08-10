@@ -16,6 +16,7 @@ from collections import Counter
 # resolve(): without it every path here is relative to the caller's cwd, so the
 # script only ran from inside 02_extraction/ and failed from the repo root.
 ROOT = Path(__file__).resolve().parent
+PAPER_ROOT = ROOT.parent / "papers"   # papers/<doi>/resolved/
 ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 MAT = {m["id"] for m in ONTO["individuals"]["materials"]}
 STR = {s["id"] for s in ONTO["individuals"]["structures"]}
@@ -31,8 +32,8 @@ def _corpus():
     """The active DOI-named KB (all output/*/resolved dirs; _archive excluded)."""
     import glob
     rows = []
-    for f in sorted(glob.glob(str(ROOT / "output" / "*" / "resolved" / "experiments.json"))):
-        pid = f.split("/output/")[1].split("/")[0]
+    for f in sorted(glob.glob(str(ROOT.parent / "papers" / "*" / "resolved" / "experiments.json"))):
+        pid = f.split("/papers/")[1].split("/")[0]
         rows.append({"paper_id": pid, "paper": pid})
     return rows
 
@@ -71,7 +72,7 @@ def main():
     for p in PAPERS:
         pid = p["paper_id"]
         pp = Counter()
-        for e in json.loads((ROOT / "output" / pid / "resolved" / "experiments.json").read_text()):
+        for e in json.loads((PAPER_ROOT / pid / "resolved" / "experiments.json").read_text()):
             checks, status, nres, nq = conformance(e)
             status_ct[status] += 1; pp[status] += 1
             for k, v in checks.items():

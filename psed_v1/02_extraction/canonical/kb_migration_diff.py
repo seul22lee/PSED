@@ -31,7 +31,7 @@ if __package__ in (None, ""):
 from .schema import REPO, code_version                          # noqa: E402
 from . import sources as S                                      # noqa: E402
 
-OUTPUT = REPO / "02_extraction" / "output"
+OUTPUT = REPO / "papers"          # papers/<doi>/{resolved,canonical}/
 
 
 def load(path):

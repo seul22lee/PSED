@@ -38,8 +38,8 @@ Use the supported path:
 """
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
-OUT = ROOT.parent / "02_extraction" / "output"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
+OUT = ROOT.parent / "papers"      # papers/<doi>/resolved/
 
 # doi-dir  ->  short output pid
 PAIRS = {
@@ -56,7 +56,7 @@ Q2CARD = {"temperature": "temperature_C", "total_pressure": "pressure_Pa",
 
 def main():
     for sd, pid in PAIRS.items():
-        scout = json.loads((EXTRACTED / sd / "scout.json").read_text())
+        scout = json.loads((EXTRACTED / sd / "extracted" / "scout.json").read_text())
         exps = json.loads((OUT / pid / "resolved" / "experiments.json").read_text())
         e0 = exps[0] if exps else {}
         card = {"precursors": scout.get("precursors") or [],
@@ -76,7 +76,7 @@ def main():
                 pulse["precursor" if c.get("of_reactant") == "A" else "coreactant"] = c["value"]
         if pulse:
             card["pulse_time_s"] = pulse
-        (EXTRACTED / sd / "card.json").write_text(json.dumps(card, indent=1))
+        (EXTRACTED / sd / "extracted" / "card.json").write_text(json.dumps(card, indent=1))
         print(f"[reconstruct] {pid:20} card={ {k:v for k,v in card.items() if v not in (None,[],{})} }")
 
 

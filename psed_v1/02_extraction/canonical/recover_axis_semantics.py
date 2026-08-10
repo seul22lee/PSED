@@ -9,7 +9,7 @@ Evidence priority (spec §2.2), all local, no network, no OCR:
     4 figure discussion in document.md               5 equations in document.md
 
 Writes, per paper:
-    03_corpus/extracted/{doi}/recovery/axis_semantics_v1.json
+    papers/{doi}/extracted/recovery/axis_semantics_v1.json
 
 That file is an AUDIT + WORK LIST. It does not add raw evidence — text recovery
 is re-derived deterministically by build_canonical.py from the same sources, so

@@ -23,8 +23,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis" / "stage0"
-EX = REPO / "03_corpus" / "extracted"
-KB = REPO / "02_extraction" / "output"
+EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = REPO / "papers"              # papers/<doi>/resolved/
 
 def J(p, d=None):
     try:
@@ -440,7 +440,7 @@ def main():
     for ent in ents:
         doi = ent["paper_id"]
         if doi not in docs:
-            p = EX / doi / "document.md"
+            p = EX / doi / "extracted" / "document.md"
             t = p.read_text(errors="replace") if p.exists() else ""
             from_stage0 = sys.modules[__name__]
             docs[doi] = t

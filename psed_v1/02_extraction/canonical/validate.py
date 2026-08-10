@@ -38,7 +38,7 @@ from . import sources as S                                     # noqa: E402
 from .schema import (REPO, Status, COMPARISON_GROUPS,           # noqa: E402
                      NORMALIZATION_DEFINITIONS, RULE_DECLS)
 
-OUTPUT = REPO / "02_extraction" / "output"
+OUTPUT = REPO / "papers"          # papers/<doi>/{resolved,canonical}/
 
 # statuses that legitimately carry NO canonical value
 NO_VALUE_STATUSES = {Status.AMBIGUOUS, Status.MISSING_CONTEXT, Status.UNSUPPORTED,

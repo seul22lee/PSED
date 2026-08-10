@@ -1,0 +1,613 @@
+{
+ "doi": "10.1016_j.jcrysgro.2017.04.019",
+ "generator": "02_extraction/canonical/build_canonical.py",
+ "code_version": "c3a2b33+dirty",
+ "created_at": 1786382176,
+ "ontology": "01_ontology/ald_ontology.json",
+ "n_curves": 3,
+ "curves": [
+  {
+   "curve_id": "10.1016_j.jcrysgro.2017.04.019::F6::a::0",
+   "source": {
+    "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+    "doi": "10.1016_j.jcrysgro.2017.04.019",
+    "figure": "6",
+    "figure_index": "7",
+    "panel": "a",
+    "series": "Al2O3",
+    "series_index": 0,
+    "series_axis": "substrate",
+    "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+    "linked_experiment_ids": [
+     "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 6. Diagram of the film thickness as a function of cycle numbers. The large change of the nominal growth rate vs. film thickness most likely results from a non-ideal 2D nucleation on the substrate."
+   },
+   "raw": {
+    "x": {
+     "label": "No of cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Film thickness",
+     "quantity": "film_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      50.0
+     ],
+     [
+      200,
+      60.5
+     ],
+     [
+      500,
+      75.7
+     ],
+     [
+      1000,
+      101.0
+     ],
+     [
+      1500,
+      126.3
+     ],
+     [
+      2000,
+      155.0
+     ],
+     [
+      2500,
+      182.0
+     ],
+     [
+      3000,
+      209.0
+     ],
+     [
+      3500,
+      236.0
+     ],
+     [
+      4000,
+      263.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "No of cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "",
+     "raw_label": "Film thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+      "doi": "10.1016_j.jcrysgro.2017.04.019",
+      "figure": "6",
+      "panel": "a",
+      "series": "Al2O3",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+      "experiment_id": "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+      "doi": "10.1016_j.jcrysgro.2017.04.019",
+      "figure": "6",
+      "panel": "a",
+      "series": "Al2O3",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+      "experiment_id": "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 10
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass"
+   ]
+  },
+  {
+   "curve_id": "10.1016_j.jcrysgro.2017.04.019::F6::a::1",
+   "source": {
+    "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+    "doi": "10.1016_j.jcrysgro.2017.04.019",
+    "figure": "6",
+    "figure_index": "7",
+    "panel": "a",
+    "series": "Si",
+    "series_index": 1,
+    "series_axis": "substrate",
+    "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+    "linked_experiment_ids": [
+     "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 6. Diagram of the film thickness as a function of cycle numbers. The large change of the nominal growth rate vs. film thickness most likely results from a non-ideal 2D nucleation on the substrate."
+   },
+   "raw": {
+    "x": {
+     "label": "No of cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Film thickness",
+     "quantity": "film_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      36.0
+     ],
+     [
+      200,
+      55.6
+     ],
+     [
+      500,
+      85.0
+     ],
+     [
+      1000,
+      134.0
+     ],
+     [
+      1500,
+      183.0
+     ],
+     [
+      2000,
+      232.0
+     ],
+     [
+      2500,
+      281.0
+     ],
+     [
+      3000,
+      330.0
+     ],
+     [
+      3500,
+      379.0
+     ],
+     [
+      4000,
+      428.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "No of cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "",
+     "raw_label": "Film thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+      "doi": "10.1016_j.jcrysgro.2017.04.019",
+      "figure": "6",
+      "panel": "a",
+      "series": "Si",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+      "experiment_id": "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+      "doi": "10.1016_j.jcrysgro.2017.04.019",
+      "figure": "6",
+      "panel": "a",
+      "series": "Si",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+      "experiment_id": "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 10
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass"
+   ]
+  },
+  {
+   "curve_id": "10.1016_j.jcrysgro.2017.04.019::F6::a::2",
+   "source": {
+    "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+    "doi": "10.1016_j.jcrysgro.2017.04.019",
+    "figure": "6",
+    "figure_index": "7",
+    "panel": "a",
+    "series": "SiO2",
+    "series_index": 2,
+    "series_axis": "substrate",
+    "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/2",
+    "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+    "linked_experiment_ids": [
+     "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp03"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 6. Diagram of the film thickness as a function of cycle numbers. The large change of the nominal growth rate vs. film thickness most likely results from a non-ideal 2D nucleation on the substrate."
+   },
+   "raw": {
+    "x": {
+     "label": "No of cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Film thickness",
+     "quantity": "film_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      50.0
+     ],
+     [
+      200,
+      70.0
+     ],
+     [
+      500,
+      100.0
+     ],
+     [
+      1000,
+      150.0
+     ],
+     [
+      1500,
+      200.0
+     ],
+     [
+      2000,
+      250.0
+     ],
+     [
+      2500,
+      300.0
+     ],
+     [
+      3000,
+      350.0
+     ],
+     [
+      3500,
+      400.0
+     ],
+     [
+      4000,
+      450.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "No of cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "",
+     "raw_label": "Film thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+      "doi": "10.1016_j.jcrysgro.2017.04.019",
+      "figure": "6",
+      "panel": "a",
+      "series": "SiO2",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/2/points",
+      "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+      "experiment_id": "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp03"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1016_j.jcrysgro.2017.04.019",
+      "doi": "10.1016_j.jcrysgro.2017.04.019",
+      "figure": "6",
+      "panel": "a",
+      "series": "SiO2",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "papers/10.1016_j.jcrysgro.2017.04.019/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/2/points",
+      "source_checksum": "sha256:dbea4fa8990d997197995497418af2cf262c9731b6c12a8185940562fd90a9c9",
+      "experiment_id": "10.1016_j.jcrysgro.2017.04.019__Fig6a__exp03"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 10
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass"
+   ]
+  }
+ ]
+}

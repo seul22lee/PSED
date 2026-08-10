@@ -16,7 +16,7 @@ import json, os, re, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 
 # --- load Gemini key from 0604_kg/.env (not hardcoded) ---
@@ -178,7 +178,7 @@ def abstract_of(md, limit=2200):
 
 
 def build_scout_input(sd):
-    d = EXTRACTED / sd
+    d = EXTRACTED / sd / "extracted"
     md = (d / "document.md").read_text()
     struct = json.loads((d / "structure.json").read_text())
     abstract = abstract_of(md)
@@ -246,20 +246,20 @@ def scout(sd, client):
     obj, tok = _scout_call(client, MODEL, prompt)     # raises loudly rather than emptying
     obj["_tokens"] = tok
     obj["_scout_input_chars"] = len(prompt)
-    (EXTRACTED / sd / "scout.json").write_text(json.dumps(obj, indent=1))
+    (EXTRACTED / sd / "extracted" / "scout.json").write_text(json.dumps(obj, indent=1))
     return obj
 
 
 def dump_inputs(sd):
     """Write + print the exact scout inputs (no LLM) so they can be checked vs the PDF."""
     abstract, conclusion, caps = build_scout_input(sd)
-    struct = json.loads((EXTRACTED / sd / "structure.json").read_text())
+    struct = json.loads((EXTRACTED / sd / "extracted" / "structure.json").read_text())
     n_fig, n_empty = struct["n_figures"], sum(1 for f in struct["figures"] if not f["caption"])
     txt = (f"=== ABSTRACT ({len(abstract)} chars) ===\n{abstract}\n\n"
            f"=== CONCLUSION ({len(conclusion)} chars) ===\n{conclusion or '(none found)'}\n\n"
            f"=== CAPTIONS ({len(caps)} non-empty; {n_empty}/{n_fig} figures had EMPTY captions) ===\n"
            + "\n".join(caps))
-    (EXTRACTED / sd / "scout_input.txt").write_text(txt)
+    (EXTRACTED / sd / "extracted" / "scout_input.txt").write_text(txt)
     print(f"\n########## {sd} ##########")
     print(txt)
     print(f"\n[check] abstract {'OK' if len(abstract) > 200 else '⚠ short/empty'} · "
@@ -273,8 +273,8 @@ def verify_all():
     (docling failure, missing abstract/conclusion, high empty-caption ratio) → CSV."""
     import csv as _csv
     rows = []
-    for d in sorted(p for p in EXTRACTED.iterdir() if (p / "structure.json").exists()):
-        sd = d.name
+    for d in sorted(p for p in (d / "extracted" for d in EXTRACTED.iterdir() if d.is_dir()) if (p / "structure.json").exists()):
+        sd = d.parent.name
         md = (d / "document.md").read_text() if (d / "document.md").exists() else ""
         struct = json.loads((d / "structure.json").read_text())
         abstract = abstract_of(md)

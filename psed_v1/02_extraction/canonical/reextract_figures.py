@@ -13,7 +13,7 @@ Improved schema (spec §2.1) — per axis:
     axis_scale, annotations, plus series/legend mapping per panel.
 
 Output (new file, never overwrites figure_data.json):
-    03_corpus/extracted/{doi}/recovery/figure_semantics_v1.json
+    papers/{doi}/extracted/recovery/figure_semantics_v1.json
 
 build_canonical.py picks that file up automatically and uses `label_raw` as
 evidence source 1.

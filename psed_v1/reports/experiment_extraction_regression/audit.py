@@ -22,8 +22,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(__file__).resolve().parent
-EXTRACT = ROOT / "03_corpus" / "extracted"
-RESOLVED = ROOT / "02_extraction" / "output"
+EXTRACT = ROOT / "papers"         # papers/<doi>/extracted/
+RESOLVED = ROOT / "papers"        # papers/<doi>/{resolved,canonical}/
 CASE = "10.1063_1.5028178"
 
 # material formulas that a caption may state explicitly
@@ -65,12 +65,12 @@ def caption_reactants(caption):
 
 # --------------------------------------------------------------- 1. inventory
 def source_inventory():
-    fd = jload(EXTRACT / CASE / "figure_data.json", {})
-    recs = jload(EXTRACT / CASE / "records.json", [])
+    fd = jload(EXTRACT / CASE / "extracted" / "figure_data.json", {})
+    recs = jload(EXTRACT / CASE / "extracted" / "records.json", [])
     ents = jload(RESOLVED / CASE / "resolved" / "entities.json", [])
-    scout = jload(EXTRACT / CASE / "scout.json", {})
-    doc = (EXTRACT / CASE / "document.md").read_text(errors="replace") \
-        if (EXTRACT / CASE / "document.md").exists() else ""
+    scout = jload(EXTRACT / CASE / "extracted" / "scout.json", {})
+    doc = (EXTRACT / CASE / "extracted" / "document.md").read_text(errors="replace") \
+        if (EXTRACT / CASE / "extracted" / "document.md").exists() else ""
     drill = {d.get("where"): d for d in scout.get("drill") or []}
 
     rows, ri = [], 0
@@ -199,7 +199,7 @@ def before_after():
         before = committed(rel)
         after = jload(d, [])
         ents = jload(RESOLVED / p / "resolved" / "entities.json", [])
-        raw = jload(EXTRACT / p / "records.json", [])
+        raw = jload(EXTRACT / p / "extracted" / "records.json", [])
         if before is None:
             continue
         cls = collections.Counter(e.get("classification") for e in ents)
@@ -233,13 +233,13 @@ def before_after():
 # ------------------------------------------------------- 4. corpus coverage
 def corpus_coverage():
     rows, chem = [], []
-    for d in sorted(glob.glob(str(EXTRACT / "*" / "records.json"))):
-        p = Path(d).parent.name
+    for d in sorted(glob.glob(str(EXTRACT / "*" / "extracted" / "records.json"))):
+        p = Path(d).parents[1].name
         recs = jload(d, [])
         ents = jload(RESOLVED / p / "resolved" / "entities.json", [])
         exps = jload(RESOLVED / p / "resolved" / "experiments.json", [])
-        scout = jload(EXTRACT / p / "scout.json", {})
-        fd = jload(EXTRACT / p / "figure_data.json", {})
+        scout = jload(EXTRACT / p / "extracted" / "scout.json", {})
+        fd = jload(EXTRACT / p / "extracted" / "figure_data.json", {})
         # records.json holds the RAW stage-05 material, which is still the
         # scout.materials[0] value: the repair re-resolves material at the
         # resolution stage rather than re-running vision extraction. Reading

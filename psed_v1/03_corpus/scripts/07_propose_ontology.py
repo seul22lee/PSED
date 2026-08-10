@@ -20,7 +20,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 PROPOSED = ROOT / "proposed"; PROPOSED.mkdir(exist_ok=True)
 PIPE = ROOT.parent / "02_extraction"
 sys.path.insert(0, str(PIPE / "stages"))
@@ -47,8 +47,8 @@ LIGANDS = [x["id"] for x in ONTO["individuals"].get("ligand_families", [])]
 def gather_unmapped():
     """type -> {item -> {dois:set, units:set}} for everything that doesn't canonicalise."""
     out = {"materials": {}, "precursors": {}, "coreactants": {}, "quantities": {}}
-    for d in sorted(p for p in EXTRACTED.iterdir() if (p / "scout.json").exists()):
-        sd = d.name
+    for d in sorted(p for p in (d / "extracted" for d in EXTRACTED.iterdir() if d.is_dir()) if (p / "scout.json").exists()):
+        sd = d.parent.name
         sc = json.loads((d / "scout.json").read_text())
         for m in sc.get("materials") or []:
             if m and not lib.canon_material(m):

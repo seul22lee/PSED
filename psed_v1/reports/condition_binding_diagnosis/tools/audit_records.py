@@ -18,8 +18,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 
 NUMU = re.compile(r"^\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\s*(.*?)\s*$")
 _cache = {}
@@ -70,7 +70,7 @@ def find_exp(doi, rid):
 def panel_of(doi, exp):
     """The figure_data panel + series this record came from."""
     prov = exp.get("provenance") or {}
-    fd = J(EX / doi / "figure_data.json") or {}
+    fd = J(EX / doi / "extracted" / "figure_data.json") or {}
     fi = str(prov.get("fig_docling_index") or "")
     pan = str(prov.get("panel") or "")
     for fig in fd.get("figures", []) or []:
@@ -133,7 +133,7 @@ def audit(rec):
     # ---------- Layer 2 evidence ----------
     fd_conds = dict((panel or {}).get("conditions") or {})
     row["figure_data_conditions"] = json.dumps(fd_conds, ensure_ascii=False)
-    recs = J(EX / doi / "records.json") or []
+    recs = J(EX / doi / "extracted" / "records.json") or []
     rc = {}
     for r in recs:
         p = r.get("provenance") or {}
@@ -142,7 +142,7 @@ def audit(rec):
             rc = dict(r.get("controlled") or {})
             break
     row["records_conditions"] = json.dumps(rc, ensure_ascii=False)
-    pj = (J(EX / doi / "pressure.json") or {}).get("pressures") or []
+    pj = (J(EX / doi / "extracted" / "pressure.json") or {}).get("pressures") or []
     row["pressure_json_conditions"] = json.dumps(
         [{"type": p.get("pressure_type"), "value": p.get("value"), "unit": p.get("unit"),
           "context": p.get("context"), "species": p.get("named_species")} for p in pj],

@@ -16,8 +16,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(__file__).resolve().parent
-KB = ROOT / "02_extraction" / "output"
-EXTRACTED = ROOT / "03_corpus" / "extracted"
+KB = ROOT / "papers"           # papers/<doi>/{resolved,canonical}/
+EXTRACTED = ROOT / "papers"    # papers/<doi>/extracted/
 sys.path.insert(0, str(ROOT / "02_extraction"))
 from canonical import chemistry_scope as cschem      # noqa: E402
 from canonical import entities as cent               # noqa: E402
@@ -29,7 +29,7 @@ def jload(p, d=None):
 
 
 def raw_series_count(paper):
-    fd = jload(EXTRACTED / paper / "figure_data.json", {})
+    fd = jload(EXTRACTED / paper / "extracted" / "figure_data.json", {})
     return sum(len(pan.get("series") or [])
                for f in (fd.get("figures") or []) for pan in (f.get("panels") or []))
 
@@ -56,7 +56,7 @@ def main():
         if raw and raw != len(rows):
             fail["orphaned_or_duplicated_series"].append((p, raw, len(rows)))
         raw_pts = sum(len(sx.get("points") or [])
-                      for f in (jload(EXTRACTED / p / "figure_data.json", {})
+                      for f in (jload(EXTRACTED / p / "extracted" / "figure_data.json", {})
                                 .get("figures") or [])
                       for pan in (f.get("panels") or [])
                       for sx in (pan.get("series") or []))
@@ -110,8 +110,8 @@ def main():
                     fail["condition_on_mismaterialised_entity"].append(rid)
 
         # --- the caption must not contradict the assigned material --------
-        fd = jload(EXTRACTED / p / "figure_data.json", {})
-        scout = jload(EXTRACTED / p / "scout.json", {})
+        fd = jload(EXTRACTED / p / "extracted" / "figure_data.json", {})
+        scout = jload(EXTRACTED / p / "extracted" / "scout.json", {})
         mats = scout.get("materials") or []
         bykey = collections.defaultdict(set)
         for r in rows:

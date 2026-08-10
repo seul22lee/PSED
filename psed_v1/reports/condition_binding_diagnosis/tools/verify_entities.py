@@ -12,8 +12,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 
 # --- continuous single-sample measurement (one run, sampled densely) --------
 CONTINUOUS = [
@@ -39,7 +39,7 @@ DISCRETE = [
 
 def caption_for(doi, exp):
     prov = exp.get("provenance") or {}
-    fd = json.loads((EX / doi / "figure_data.json").read_text()) if (EX / doi / "figure_data.json").exists() else {}
+    fd = json.loads((EX / doi / "extracted" / "figure_data.json").read_text()) if (EX / doi / "extracted" / "figure_data.json").exists() else {}
     for fig in fd.get("figures", []) or []:
         if str(fig.get("figure")) == str(prov.get("fig_docling_index") or ""):
             return fig.get("caption") or ""

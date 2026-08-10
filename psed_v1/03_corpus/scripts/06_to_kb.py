@@ -15,10 +15,11 @@ papers actually enter the KB alongside the existing corpus.
 Run with the psed310 env python.
 """
 import json, os, re, sys
+from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 PIPE = ROOT.parent / "02_extraction"
 sys.path.insert(0, str(PIPE / "stages"))
 sys.path.insert(0, str(PIPE))
@@ -30,6 +31,8 @@ from canonical import entities as centities   # what a digitised curve actually 
 from canonical import conditions as ccond     # ConditionAssertion recovery + binding
 from canonical import chemistry_scope as cschem  # material/reactants by narrowest evidence
 from canonical import series_identity as csid    # measured vs calculated, per series
+from canonical import axis_roles as caxis         # what an axis MEANS
+from canonical import granularity as cgran        # does variation mean separate runs
 sys.path.insert(0, str(ROOT / "scripts"))
 import chemistry_propagation as cprop
 import importlib.util
@@ -39,7 +42,7 @@ _spec = importlib.util.spec_from_file_location("ex", ROOT / "scripts" / "04_extr
 ex = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(ex)   # section_text, _load_key
 
 MODEL = "gemini-flash-latest"
-OUT = PIPE / "output"
+OUT = ROOT.parent / "papers"        # papers/<doi>/{resolved,canonical}/
 
 # light unit normalisation to KB conventions
 # Feature dimensions are canonically nm in the ontology (feature_height/width are NanoM),
@@ -190,7 +193,7 @@ def base_card(scout):
 def methods_fill(sd, scout, client):
     """Fill scout-deferred conditions from the methods section. One LLM call."""
     base = base_card(scout)
-    md = (EXTRACTED / sd / "document.md").read_text()
+    md = (EXTRACTED / sd / "extracted" / "document.md").read_text()
     methods = ex.section_text(md, ["experimental", "methods", "deposition", "film growth",
                                    "materials and methods"], limit=4000)
     if not methods:
@@ -198,7 +201,7 @@ def methods_fill(sd, scout, client):
     # Tables the paper reports (from docling) — given to the SAME card-building call as a
     # reference the LLM consults only when pointed to a table or when a value is missing
     # from the prose (e.g. a standard TMA pulse listed only in a pulse-purge-sequence table).
-    st = json.loads((EXTRACTED / sd / "structure.json").read_text())
+    st = json.loads((EXTRACTED / sd / "extracted" / "structure.json").read_text())
     tables_md = "\n\n".join(
         f"[TABLE {t.get('index')}] {t.get('caption', '')}\n{t.get('markdown', '')}"
         for t in st.get("tables", []) if t.get("markdown"))
@@ -278,7 +281,7 @@ def backfill_card_provenance(card, scout):
 def get_card(sd, scout, client):
     """The methods-filled process card — CACHED to card.json so it's computed once.
     On re-resolve (client=None) it loads the cache (or the scout base), NO LLM."""
-    cf = EXTRACTED / sd / "card.json"
+    cf = EXTRACTED / sd / "extracted" / "card.json"
     if cf.exists():
         card = json.loads(cf.read_text())
         if "_field_provenance" not in card:       # legacy card: backfill, no LLM
@@ -406,7 +409,7 @@ def geometry_facts(sd, materials=None, material=None):
     never asserted as fact. Each condition keeps its raw label, evidence quote and status,
     and all copies share ONE evidence id so paper-level fan-out is not mistaken for
     independent observations."""
-    gf = EXTRACTED / sd / "geometry.json"
+    gf = EXTRACTED / sd / "extracted" / "geometry.json"
     if not gf.exists():
         return None, None, []
     try:
@@ -476,6 +479,14 @@ def _dedup_pressures(conds):
 _LABEL_CACHE = {}
 
 
+def _canon_axis(label):
+    """Alias lookup used by axis_roles: the label resolver first (it strips
+    units and log/ln wrappers), then the plain alias table."""
+    if not label:
+        return None
+    return lib.resolve_axis_label(label) or lib.canon_quantity(label)
+
+
 def _axis_labels(sd, record):
     """Verbatim axis labels recovered by the selective re-extraction pass, if any.
     They let the live path repair a unit with EVIDENCE (a label reading
@@ -486,7 +497,7 @@ def _axis_labels(sd, record):
         # 1. labels captured by the CURRENT extraction schema (05_figure_extract.py
         #    now records label_raw). Future papers need no recovery pass at all.
         try:
-            fd = json.loads((EXTRACTED / sd / "figure_data.json").read_text())
+            fd = json.loads((EXTRACTED / sd / "extracted" / "figure_data.json").read_text())
             for fig in fd.get("figures") or []:
                 for pan in fig.get("panels") or []:
                     key = (str(fig.get("figure")), str(pan.get("panel") or "").lower())
@@ -494,23 +505,32 @@ def _axis_labels(sd, record):
                                 "y": (pan.get("y") or {}).get("label_raw")}
         except Exception:
             pass
-        # 2. labels recovered afterwards for papers extracted with the old schema
+        # 2. labels recovered afterwards for papers extracted with the old schema.
+        #    Kept in SEPARATE namespaces: printed figure numbers and docling
+        #    indices are different numbering systems, and merging them made a
+        #    lookup of printed "7" return docling-7's labels -- a different
+        #    figure. That is how an XPS depth profile acquired the axes of an
+        #    in-situ thickness trace.
+        printed = {}
         try:
-            for key, rec in csources.recovery_index(sd).items():
-                lab = {"x": (rec.get("x") or {}).get("label_raw"),
-                       "y": (rec.get("y") or {}).get("label_raw")}
-                if lab["x"] or lab["y"]:
-                    idx[key] = lab
+            rc = csources.recovery_index(sd)
+            for ns, target in (("by_docling", idx), ("by_printed", printed)):
+                for key, rec in (rc.get(ns) or {}).items():
+                    lab = {"x": (rec.get("x") or {}).get("label_raw"),
+                           "y": (rec.get("y") or {}).get("label_raw")}
+                    if lab["x"] or lab["y"]:
+                        target.setdefault(key, lab)
         except Exception:
             pass
-        _LABEL_CACHE[sd] = idx
-    idx = _LABEL_CACHE[sd]
-    if not idx:
-        return {}
+        _LABEL_CACHE[sd] = {"by_docling": idx, "by_printed": printed}
+    maps = _LABEL_CACHE[sd]
     prov = record.get("provenance") or {}
     panel = str(prov.get("panel") or "").lower()
-    for key in (str(prov.get("fig_docling_index") or ""), str(prov.get("figure_number") or "")):
-        rec = idx.get((key, panel))
+    for ns, key in (("by_docling", str(prov.get("fig_docling_index") or "")),
+                    ("by_printed", str(prov.get("figure_number") or ""))):
+        if not key:
+            continue
+        rec = (maps.get(ns) or {}).get((key, panel))
         if rec and (rec.get("x") or rec.get("y")):
             return rec
     return {}
@@ -584,7 +604,7 @@ _RECS_CACHE = {}
 
 def _records(sd):
     if sd not in _RECS_CACHE:
-        f = EXTRACTED / sd / "records.json"
+        f = EXTRACTED / sd / "extracted" / "records.json"
         _RECS_CACHE[sd] = json.loads(f.read_text()) if f.exists() else []
     return _RECS_CACHE[sd]
 
@@ -640,7 +660,7 @@ def _method_assertions(sd):
 
 def _figure_data(sd):
     if sd not in _FD_CACHE:
-        f = EXTRACTED / sd / "figure_data.json"
+        f = EXTRACTED / sd / "extracted" / "figure_data.json"
         _FD_CACHE[sd] = json.loads(f.read_text()) if f.exists() else {}
     return _FD_CACHE[sd]
 
@@ -675,7 +695,7 @@ def _drill_why(sd, fig_docling_index):
     lateral channel"). Written per figure at extraction time, so it is
     figure-level evidence and ranks above any paper-level default."""
     if sd not in _DRILL_CACHE:
-        f = EXTRACTED / sd / "scout.json"
+        f = EXTRACTED / sd / "extracted" / "scout.json"
         sc = json.loads(f.read_text()) if f.exists() else {}
         _DRILL_CACHE[sd] = {str(d.get("where") or "").lstrip("Ff"): d.get("why")
                             for d in (sc.get("drill") or [])}
@@ -684,14 +704,14 @@ def _drill_why(sd, fig_docling_index):
 
 def _structure(sd):
     if sd not in _ST_CACHE:
-        f = EXTRACTED / sd / "structure.json"
+        f = EXTRACTED / sd / "extracted" / "structure.json"
         _ST_CACHE[sd] = json.loads(f.read_text()) if f.exists() else {}
     return _ST_CACHE[sd]
 
 
 def _document(sd):
     if sd not in _DOC_CACHE:
-        f = EXTRACTED / sd / "document.md"
+        f = EXTRACTED / sd / "extracted" / "document.md"
         _DOC_CACHE[sd] = ccond.fold_math(f.read_text(errors="replace")) if f.exists() else ""
     return _DOC_CACHE[sd]
 
@@ -758,6 +778,60 @@ def _representation(caption, panel):
     return "primary"
 
 
+def figure_slug(printed_figure_number, panel):
+    """`Fig7a` from the figure's own caption number and its panel letter.
+
+    Both come from extraction provenance and neither is invented: a figure whose
+    printed number was never resolved becomes `FigIdx<n>` (the docling index,
+    visibly marked as such) or `NoFig`, and a panel is appended ONLY when the
+    source gives one. A single-panel figure therefore reads `Fig7`, not `Fig7a`.
+    """
+    fn = str(printed_figure_number or "").strip()
+    slug = "Fig%s" % re.sub(r"[^A-Za-z0-9.]", "", fn) if fn else None
+    pan = str(panel or "").strip().lower()
+    if slug and re.fullmatch(r"[a-z]", pan):
+        slug += pan
+    return slug
+
+
+def assign_experiment_ids(entities, pid):
+    """`<doi>__Fig7a__exp01` — paper, figure, panel, and a suffix only when the
+    same figure/panel yields more than one record.
+
+    The old id was `<doi>-E017`: a running index that said nothing about where
+    the record came from, so reviewing a paper figure by figure meant joining
+    back to the entity table for every row. Ids are assigned after all entities
+    of a paper exist, because whether a suffix is needed is a property of the
+    GROUP, not of one record.
+    """
+    groups = defaultdict(list)
+    for e in entities:
+        slug = figure_slug(e.get("printed_figure_number"), e.get("panel"))
+        if not slug:
+            idx = str(e.get("fig_docling_index") or "").strip()
+            slug = "FigIdx%s" % idx if idx else "NoFig"
+        e["_slug"] = slug
+        groups[slug].append(e)
+
+    out = {}
+    for slug, members in groups.items():
+        multi = len(members) > 1
+        for i, e in enumerate(members, 1):
+            eid = "%s__%s" % (pid, slug)
+            if multi:
+                eid += "__exp%02d" % i
+            e["experiment_id"] = eid
+            e["figure_slug"] = slug
+            e["id_has_panel"] = bool(re.search(r"[a-z]$", slug))
+            e["id_suffix_reason"] = (
+                "%d records share %s" % (len(members), slug) if multi else None)
+            out[id(e)] = eid
+        members.sort(key=lambda x: x.get("experiment_id") or "")
+    for e in entities:
+        e.pop("_slug", None)
+    return out
+
+
 def resolve_source_entities(sd, exps, pid):
     """Turn per-curve records into TYPED SOURCE ENTITIES.
 
@@ -789,6 +863,42 @@ def resolve_source_entities(sd, exps, pid):
         _sid = _panel_identity[_pkey].get(ctx["source_series"]) or {
             "kind": "unknown", "confidence": None, "evidence": None, "fit_of": None}
         ctx["series_source_kind"] = _sid["kind"]
+
+        # ---- axis SEMANTICS, then GRANULARITY, as two separate questions ----
+        _labels = _axis_labels(sd, e)
+        _xsem = caxis.resolve_axis(
+            raw_label=_labels.get("x"), raw_quantity=e.get("coordinate"),
+            unit=e.get("coordinate_unit"), caption=ctx["caption"],
+            context=ctx["body_mentions"], other_axis_label=_labels.get("y"),
+            canon=_canon_axis)
+        _ysem = caxis.resolve_axis(
+            raw_label=_labels.get("y"),
+            raw_quantity=(e.get("measurand") or {}).get("quantity"),
+            unit=(e.get("measurand") or {}).get("unit"), caption=ctx["caption"],
+            context=ctx["body_mentions"], other_axis_label=_labels.get("x"),
+            canon=_canon_axis)
+        _gran, _gran_ev, _gran_review = cgran.classify(
+            x_role=_xsem["axis_role"], source_kind=_sid["kind"],
+            caption=ctx["caption"], methods=methods, body=ctx["body_mentions"],
+            panel_labels=ctx.get("panel_series_labels") or [],
+            series_label=ctx["source_series"], n_points=len(e.get("points") or []),
+            measurand_role=_ysem["axis_role"])
+        # write the RESOLVED semantics back: the stale canonical coordinate is
+        # what the old structural gates read, and it is what turned a Nyquist
+        # plot into a spatial profile. Raw label and raw quantity are kept.
+        if _xsem["canonical_quantity"]:
+            e["coordinate_raw_quantity"] = e.get("coordinate")
+            e["coordinate"] = _xsem["canonical_quantity"]
+        if _ysem["canonical_quantity"]:
+            _md = e.get("measurand") or {}
+            _md["raw_quantity"] = _md.get("quantity")
+            _md["quantity"] = _ysem["canonical_quantity"]
+            e["measurand"] = _md
+        e["x_semantics"], e["y_semantics"] = _xsem, _ysem
+        ctx["coordinate"] = e.get("coordinate")
+        ctx["x_axis_role"] = _xsem["axis_role"]
+        ctx["granularity_kind"] = _gran
+        ctx["granularity_evidence"] = _gran_ev
         cls = centities.classify(ctx, methods)
         model = centities.CLASS_MODEL[cls["classification"]]
         prov = e.get("provenance") or {}
@@ -901,6 +1011,12 @@ def resolve_source_entities(sd, exps, pid):
             "chemistry_consistent": e.get("chemistry_consistent"),
             "chemistry_inconsistency": e.get("chemistry_inconsistency"),
             # series-level source identity, independent of the figure flag
+            "granularity_kind": _gran,
+            "granularity_evidence": _gran_ev,
+            "granularity_review_reason": _gran_review,
+            "x_axis_role": _xsem["axis_role"],
+            "y_axis_role": _ysem["axis_role"],
+            "x_semantics": _xsem, "y_semantics": _ysem,
             "series_source_kind": _sid["kind"],
             "series_source_confidence": _sid["confidence"],
             "series_source_evidence": _sid["evidence"],
@@ -928,48 +1044,37 @@ def resolve_source_entities(sd, exps, pid):
             if model["case"] == 1:
                 n_cases, case_status = 1, "supported"
             elif model["case"] == "from_evidence":
-                # Even an explicit sample list may not split a curve whose x
-                # axis advances within one run or measures one specimen: the
-                # samples are then separate CURVES, not points of this one.
-                _axis_ok = centities.setting_axis_kind(
-                    e.get("coordinate")) == "process_setting"
-                n = cls["supported_setting_count"] if _axis_ok else None
-                if n:
-                    n_cases, case_status = n, "enumerated_in_source"
-                    case_reason = cls["supported_setting_evidence"]
+                # Case minting FOLLOWS the granularity decision. The old gate
+                # re-derived its own axis kind here and could contradict it --
+                # a curve typed `independent_process_sweep` then minted nothing
+                # because a separate table said its axis was "within run".
+                _distinct = sorted({o["x_raw"] for o in observations
+                                    if o["x_raw"] is not None})
+                if ctx.get("granularity_kind") != "independent_process_sweep":
+                    n_cases, case_status = 0, "not_an_independent_sweep"
+                    case_reason = ("granularity is %r: its points are observations "
+                                   "of one execution, not separate executions"
+                                   % ctx.get("granularity_kind"))
+                elif len(_distinct) < 2:
+                    n_cases, case_status = 1, "single_setting_only"
+                    case_reason = "one setting plotted; one execution"
+                elif len(_distinct) <= centities.MAX_UNENUMERATED_SETTINGS:
+                    n_cases, case_status = len(_distinct), "independent_process_sweep"
+                    case_reason = ("%d separately executed settings on a %s axis; %s"
+                                   % (len(_distinct), ctx.get("x_axis_role"),
+                                      ctx.get("granularity_evidence")))
                 else:
-                    # An explicit sample list is the strongest evidence but almost
-                    # no paper provides one, so requiring it left 146 corroborated
-                    # sweeps minting nothing. Widen to the other evidence the
-                    # contract admits -- a matching enumeration in prose, or a
-                    # process-setting x axis with documentary corroboration --
-                    # while still refusing on a within-run axis, a measurement
-                    # coordinate, or a point set too dense to be markers.
-                    _rs = (cls.get("signals") or {}).get("R") or {}
-                    # the methods state how a parameter was varied across
-                    # depositions ("Plasma exposure times ranging from 3.8 up to
-                    # 120 s were used"); the caption rarely repeats it
-                    _rs_hits = list(_rs.get("discrete") or []) + \
-                        centities._hits(centities.RUNSTRUCT_DISCRETE, methods)
-                    _n2, _method2, _ev2 = centities.sweep_setting_cases(
-                        classification=cls["classification"],
-                        coordinate=e.get("coordinate"),
-                        observed_x=[o["x_raw"] for o in observations],
-                        n_points=len(observations),
-                        caption=ctx["caption"], body=ctx["body_mentions"],
-                        run_structure_hits=_rs_hits,
-                        table_linked=bool((cls.get("signals") or {}).get("T")),
-                        series_source_kind=_sid["kind"])
-                    if _n2:
-                        n_cases, case_status, case_reason = _n2, _method2, _ev2
-                    else:
-                        n_cases, case_status = 0, "unresolved_settings"
-                        case_reason = (
-                            "%s. The digitised point count is digitisation density "
-                            "and must not be used as a case count; marker spacing "
-                            "was tested as an alternative and rejected, since it "
-                            "cannot separate evenly-spaced real settings from an "
-                            "evenly-resampled line." % _ev2)
+                    # too dense to be markers: a saturation curve digitised at 20
+                    # points is a line through ~6 films, and guessing which is
+                    # which would fabricate depositions
+                    n_cases, case_status = 0, "unresolved_settings"
+                    case_reason = (
+                        "%d distinct x values exceed the %d beyond which digitisation "
+                        "density cannot be told from real markers; the paper "
+                        "does not enumerate the settings, so the count stays "
+                        "unresolved (granularity: %s)"
+                        % (len(_distinct), centities.MAX_UNENUMERATED_SETTINGS,
+                           ctx.get("granularity_evidence")))
         ent["experimental_case_count"] = n_cases
         ent["experimental_case_status"] = case_status
         ent["experimental_case_reason"] = case_reason
@@ -1029,6 +1134,14 @@ def resolve_source_entities(sd, exps, pid):
                 c["exp_id"] = eid if n_cases == 1 else "%s-C%02d" % (eid, k)
                 c["entity_id"] = eid
                 c["entity_key"] = ekey
+                # the paper is a FIELD, never something to parse back out of the
+                # id: `exp_id.split("-")[0]` already broke on hyphenated DOIs
+                # (10.1007_s11671-010-9676-0 -> "10.1007_s11671")
+                c["paper_id"] = sd
+                c["doi"] = sd
+                c["printed_figure_number"] = ctx["figure_number"]
+                c["panel"] = ctx["panel"]
+                c["figure_slug"] = None      # filled by assign_experiment_ids
                 c["entity_class"] = "ExperimentalCase"
                 c["record_kind"] = "ExperimentalCase"
                 c["measurement_class"] = model["measurement"]
@@ -1092,6 +1205,80 @@ def resolve_source_entities(sd, exps, pid):
         tgt = _by_panel_label.get((ent["fig_docling_index"], ent["panel_key"], lab))
         if tgt and tgt != ent["entity_id"]:
             ent["fit_of_entity"] = tgt
+
+    # ---- ProcessRun / MeasurementEvent / ResultSeries ---------------------
+    # One plot series is NOT one physical experiment. Several channels of one
+    # measurement (the six XPS elements of a depth profile) are one measurement
+    # event on one sample; the entity that carries the case is the first of the
+    # group and the rest link to it instead of minting five more depositions.
+    _events = defaultdict(list)
+    for ent in entities:
+        key = (ent.get("fig_docling_index"), ent.get("panel_key"),
+               ent.get("granularity_kind"))
+        _events[key].append(ent)
+    for (fig, pan, gran), members in _events.items():
+        shared = (gran == "multi_output_measurement" and len(members) > 1)
+        holder = members[0]
+        for i, ent in enumerate(members):
+            ent["measurement_event_id"] = None      # filled after ids exist
+            ent["shares_measurement_event"] = shared
+            ent["shares_physical_case_with"] = None
+            if shared and i:
+                # the channel carries no separate physical case
+                ent["experimental_case_count"] = 0
+                ent["experimental_case_status"] = "shared_measurement_event"
+                ent["experimental_case_reason"] = (
+                    "one of %d channels of a single measurement event on the same "
+                    "sample; the physical case is carried by the first channel"
+                    % len(members))
+                ent["_shares_with"] = holder
+
+    # ---- final, figure-anchored experiment ids ---------------------------
+    # Assigned last because "does this figure/panel need a suffix?" is a property
+    # of the GROUP: a figure contributing one record keeps a clean `Fig7a`, and
+    # only a shared figure/panel gains `__exp01`, `__exp02`.
+    assign_experiment_ids(entities, pid)
+    remap = {}
+    for ent in entities:
+        remap[ent["entity_id"]] = ent["experiment_id"]
+    for ent in entities:
+        ent["provisional_entity_id"] = ent["entity_id"]
+        ent["entity_id"] = ent["experiment_id"]
+        if ent.get("fit_of_entity"):
+            ent["fit_of_entity"] = remap.get(ent["fit_of_entity"], ent["fit_of_entity"])
+    for c in cases:
+        old = c.get("entity_id")
+        new = remap.get(old, old)
+        # a figure/panel that yields several CASES from one curve keeps its
+        # per-case suffix, appended to the new id rather than the old one
+        suffix = ""
+        m = re.search(r"-C(\d+)$", str(c.get("exp_id") or ""))
+        if m:
+            suffix = "__case%s" % m.group(1)
+        c["entity_id"] = new
+        c["exp_id"] = new + suffix
+        for ctrl in c.get("controlled") or []:
+            o = ctrl.get("origin") or {}
+            if o.get("experiment_id"):
+                o["experiment_id"] = c["exp_id"]
+    for ent in entities:
+        holder = ent.pop("_shares_with", None)
+        if holder is not None:
+            ent["shares_physical_case_with"] = holder["entity_id"]
+        ent["result_series_id"] = ent["entity_id"]
+        ent["physical_case_id"] = (
+            ent.get("shares_physical_case_with") or ent["entity_id"]
+        ) if (ent.get("experimental_case_count") or
+              ent.get("shares_physical_case_with")) else None
+    # a measurement event is shared by every channel of one panel measurement
+    for (fig, pan, gran), members in _events.items():
+        eid = members[0]["entity_id"] + ("__meas" if len(members) > 1 else "")
+        for ent in members:
+            ent["measurement_event_id"] = eid
+    for s in series:
+        s["entity_id"] = remap.get(s.get("entity_id"), s.get("entity_id"))
+        if s.get("series_id"):
+            s["series_id"] = "%s__series" % s["entity_id"]
     return entities, cases, series, assertions
 
 
@@ -1143,6 +1330,11 @@ def build_results_view(sd, pid, entities, curve_records):
             "fig_docling_index": ent.get("fig_docling_index"),
             "printed_figure_number": ent.get("printed_figure_number"),
             "panel": ent.get("panel"),
+            # the figure/panel anchor carried by the id, so a consumer can group
+            # by figure without re-parsing the id
+            "figure_slug": ent.get("figure_slug"),
+            "id_has_panel": ent.get("id_has_panel"),
+            "id_suffix_reason": ent.get("id_suffix_reason"),
             "source_series_id": ent.get("entity_key"),
             "source_series_label": ent.get("source_series"),
             "n_points": ent.get("n_observations"),
@@ -1153,7 +1345,33 @@ def build_results_view(sd, pid, entities, curve_records):
             "source_kind_confidence": ent.get("series_source_confidence"),
             "source_kind_evidence": ent.get("series_source_evidence"),
             "figure_source_flag": (rec.get("source") if rec else None),
-            "result_kind": RESULT_KIND.get(ent.get("classification"), "unresolved"),
+            # the review's vocabulary: granularity first, entity class as the
+            # fallback for the classes granularity does not decide (fits,
+            # imported literature, conceptual figures)
+            # Granularity names the kind for MEASURED curves. It must never
+            # override a provenance decision: a simulated curve stays a model
+            # however spatial its x axis is, and a re-plot stays a re-plot.
+            "result_kind": (
+                RESULT_KIND.get(ent.get("classification"), "unresolved")
+                if ent.get("classification") in (
+                    "simulation", "model_sweep", "fit", "derived_representation",
+                    "imported_literature_data", "conceptual_figure")
+                else (ent.get("granularity_kind")
+                      if ent.get("granularity_kind") in cgran.KINDS
+                      and ent.get("granularity_kind") != "unresolved"
+                      else RESULT_KIND.get(ent.get("classification"),
+                                           "unresolved"))),
+            "granularity_kind": ent.get("granularity_kind"),
+            "granularity_evidence": ent.get("granularity_evidence"),
+            "granularity_review_reason": ent.get("granularity_review_reason"),
+            "x_axis_role": ent.get("x_axis_role"),
+            "y_axis_role": ent.get("y_axis_role"),
+            "x_semantics": ent.get("x_semantics"),
+            "y_semantics": ent.get("y_semantics"),
+            "physical_case_id": ent.get("physical_case_id"),
+            "measurement_event_id": ent.get("measurement_event_id"),
+            "result_series_id": ent.get("result_series_id") or ent["entity_id"],
+            "shares_physical_case_with": ent.get("shares_physical_case_with"),
             "entity_class": ent.get("entity_class"),
             "classification": ent.get("classification"),
             "classification_confidence": ent.get("classification_confidence"),
@@ -1210,21 +1428,58 @@ def build_results_view(sd, pid, entities, curve_records):
 def _result_summary(rows):
     from collections import Counter
     kinds = Counter(r["result_kind"] for r in rows)
+    ids = lambda k: sorted(r["result_id"] for r in rows if r["result_kind"] == k)
     return {
+        # --- the review's reporting vocabulary, each count auditable ---------
+        "source_figure_series_ids": sorted(r["result_id"] for r in rows),
+        "physical_case_ids": sorted({r["physical_case_id"] for r in rows
+                                     if r.get("physical_case_id")}),
+        "measurement_event_ids": sorted({r["measurement_event_id"] for r in rows
+                                         if r.get("measurement_event_id")}),
+        "physical_process_runs": len({r["physical_case_id"] for r in rows
+                                      if r.get("physical_case_id")}),
+        "measurement_events": len({r["measurement_event_id"] for r in rows
+                                   if r.get("measurement_event_id")}),
+        "result_series": len(rows),
+        "independent_sweep_cases_minted": sum(
+            r["experimental_case_count"] or 0 for r in rows
+            if r["result_kind"] == "independent_process_sweep"),
+        "independent_process_sweeps": kinds.get("independent_process_sweep", 0),
+        "continuous_or_longitudinal_runs": kinds.get(
+            "continuous_or_longitudinal_run", 0),
+        "spatial_profiles_g": kinds.get("spatial_profile", 0),
+        "measurement_scans": kinds.get("measurement_scan", 0),
+        "multi_output_measurements_g": kinds.get("multi_output_measurement", 0),
+        "models_and_simulations": kinds.get("model_or_simulation", 0)
+        + kinds.get("simulation", 0) + kinds.get("model_curve", 0),
+        "unresolved_granularity": sum(
+            1 for r in rows
+            if r.get("granularity_kind") in (None, "unresolved")),
+        "unresolved_granularity_ids": sorted(
+            r["result_id"] for r in rows
+            if r.get("granularity_kind") in (None, "unresolved")),
+        "granularity_review_queue": sorted(
+            (r["result_id"], r.get("granularity_review_reason"))
+            for r in rows if r.get("granularity_review_reason")),
         "source_figure_series": len(rows),
         "resolved_result_records": len(rows),
         "physical_experimental_cases": sum(r["experimental_case_count"] or 0
                                            for r in rows),
-        "continuous_experimental_runs": kinds.get("continuous_experimental_run", 0),
-        "discrete_experimental_sweeps": kinds.get("discrete_experimental_sweep", 0),
+        "continuous_experimental_runs": kinds.get("continuous_experimental_run", 0)
+        + kinds.get("continuous_or_longitudinal_run", 0),
+        "discrete_experimental_sweeps": kinds.get("discrete_experimental_sweep", 0)
+        + kinds.get("independent_process_sweep", 0),
         "discrete_experimental_cases": sum(
             r["experimental_case_count"] or 0 for r in rows
             if r["result_kind"] == "discrete_experimental_sweep"),
-        "experimental_profiles": kinds.get("experimental_profile", 0),
-        "multi_output_measurements": kinds.get("multi_output_measurement", 0),
+        "experimental_profiles": kinds.get("experimental_profile", 0)
+        + kinds.get("spatial_profile", 0),
+        "multi_output_measurements": kinds.get("multi_output_measurement", 0)
+        + kinds.get("measurement_scan", 0),
         "fits_or_calculated_representations": kinds.get(
             "fit_or_calculated_representation", 0),
-        "simulations": kinds.get("simulation", 0),
+        "simulations": kinds.get("simulation", 0)
+        + kinds.get("model_or_simulation", 0),
         "model_curves": kinds.get("model_curve", 0),
         "imported_literature_data": kinds.get("imported_literature_data", 0),
         "derived_representations": kinds.get("derived_representation", 0),
@@ -1244,6 +1499,80 @@ def _result_summary(rows):
             1 for r in rows
             if r["experimental_case_status"] == "unresolved_settings"),
     }
+
+
+def write_review_manifest(sd, pid, paper_dir, results, entities):
+    """papers/<doi>/review.json — the paper-by-paper review entry point.
+
+    Lists the files in this folder and the figure-by-figure result table, so a
+    reviewer can work through one paper without querying the corpus.
+    """
+    figs = defaultdict(list)
+    for r in results["results"]:
+        # group by the ACTUAL figure/panel, from provenance. `figure_slug` is
+        # the id anchor and is right, but fall back to the printed number and
+        # panel rather than dropping every record into one "?" bucket.
+        slug = r.get("figure_slug")
+        if not slug:
+            fn = str(r.get("printed_figure_number") or "").strip()
+            pan = str(r.get("panel") or "").strip().lower()
+            slug = ("Fig%s%s" % (fn, pan if len(pan) == 1 else "")) if fn \
+                else ("FigIdx%s" % r.get("fig_docling_index")
+                      if r.get("fig_docling_index") else "NoFig")
+        figs[slug].append(r)
+    by_figure = []
+    for slug in sorted(figs, key=lambda s: (len(s), s)):
+        rows = figs[slug]
+        by_figure.append({
+            "figure_slug": slug,
+            "printed_figure_number": rows[0]["printed_figure_number"],
+            "panel": rows[0]["panel"],
+            "fig_docling_index": rows[0]["fig_docling_index"],
+            "n_series": len(rows),
+            # ids split by what they identify, so a reviewer can tell a
+            # deposition from a spectrum from a simulated curve
+            "physical_case_ids": sorted({r["physical_case_id"] for r in rows
+                                         if r.get("physical_case_id")}),
+            "measurement_event_ids": sorted({r["measurement_event_id"]
+                                             for r in rows
+                                             if r.get("measurement_event_id")}),
+            "result_series_ids": [r["result_id"] for r in rows],
+            "model_or_simulation_ids": sorted(
+                r["result_id"] for r in rows
+                if r["result_kind"] in ("model_or_simulation", "simulation",
+                                        "model_curve",
+                                        "fit_or_calculated_representation")),
+            "unresolved_ids": sorted(
+                r["result_id"] for r in rows
+                if r.get("granularity_kind") in (None, "unresolved")),
+            "result_kinds": sorted({r["result_kind"] for r in rows}),
+            "materials": sorted({r["material"] for r in rows if r["material"]}),
+            "physical_cases": sum(r["experimental_case_count"] or 0 for r in rows),
+            "caption": (rows[0]["caption"] or "")[:300],
+        })
+    manifest = {
+        "paper_id": pid,
+        "doi": sd,
+        "folder": "papers/%s" % pid,
+        "files": {
+            "pdf": "paper.pdf" if (paper_dir / "paper.pdf").exists() else None,
+            "extracted": sorted(p.name for p in (paper_dir / "extracted").iterdir())
+            if (paper_dir / "extracted").exists() else [],
+            "resolved": sorted(p.name for p in (paper_dir / "resolved").iterdir())
+            if (paper_dir / "resolved").exists() else [],
+            "canonical": sorted(p.name for p in (paper_dir / "canonical").iterdir())
+            if (paper_dir / "canonical").exists() else [],
+        },
+        "experiment_id_format": (
+            "<doi>__Fig<N>[<panel>][__exp<NN>] — figure number and panel come "
+            "from extraction provenance; the __exp suffix appears only when one "
+            "figure/panel yields several records"),
+        "summary": results["summary"],
+        "by_figure": by_figure,
+    }
+    (paper_dir / "review.json").write_text(json.dumps(manifest, indent=1,
+                                                      ensure_ascii=False))
+    return manifest
 
 
 def _f(v):
@@ -1602,7 +1931,7 @@ def main(sds):
     if want_all or not sds:
         # every paper in the corpus manifest (the authoritative 31-paper list)
         sds = csources.papers()
-        sds = [s for s in sds if (EXTRACTED / s / "scout.json").exists()]
+        sds = [s for s in sds if (EXTRACTED / s / "extracted" / "scout.json").exists()]
         print("[to-kb] --all: %d paper(s) from the manifest" % len(sds))
     client = None
     if not resolve_only:
@@ -1610,7 +1939,7 @@ def main(sds):
         client = genai.Client(api_key=ex._load_key())
     TI = TO = 0
     for sd in sds:
-        d = EXTRACTED / sd
+        d = EXTRACTED / sd / "extracted"
         scout = json.loads((d / "scout.json").read_text())
         records = json.loads((d / "records.json").read_text()) if (d / "records.json").exists() else []
         card, tok = get_card(sd, scout, client)   # cached; LLM only first time (skipped on --resolve-only)
@@ -1630,13 +1959,16 @@ def main(sds):
         # complete on its own. experiments.json stays a derived physical-experiment
         # view; nobody should have to join three files to find out what a paper's
         # figures contain.
-        (outdir / "results.json").write_text(
-            json.dumps(build_results_view(sd, pid, entities, curve_records), indent=1))
+        _results = build_results_view(sd, pid, entities, curve_records)
+        (outdir / "results.json").write_text(json.dumps(_results, indent=1))
+        # per-paper review manifest: what this folder holds and what it says, so
+        # a reviewer opening papers/<doi>/ sees the whole paper at a glance
+        write_review_manifest(sd, pid, outdir.parent, _results, entities)
         mats = sorted({e.get("material") for e in exps if e.get("material")})
         ready = sum(1 for e in exps if e.get("analysis_ready"))
         exp = sum(1 for e in exps if e.get("relevance") == "experimental")
         _c = _counts(entities, exps, series)
-        print(f"[to-kb] {sd} → output/{pid}/  {len(entities)} entities → "
+        print(f"[to-kb] {sd} → papers/{pid}/  {len(entities)} entities → "
               f"{_c['experimental_cases']} cases, {_c['experimental_series']} series, "
               f"{_c['simulation_runs']}sim/{_c['model_sweeps']}sweep/"
               f"{_c['imported_literature_profiles']}lit/{_c['unresolved_source_entities']}unres "

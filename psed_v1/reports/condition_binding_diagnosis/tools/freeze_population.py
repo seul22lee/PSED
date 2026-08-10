@@ -9,8 +9,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]          # psed_v1/
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 
 
 def sh(*a):
@@ -37,9 +37,9 @@ def main():
         exps = json.loads(ep.read_text()) if ep.exists() else []
         ser = json.loads(sp.read_text()) if sp.exists() else []
         curves = (json.loads(cp.read_text()).get("curves", []) if cp.exists() else [])
-        for f in (ep, sp, cp, EX / doi / "figure_data.json", EX / doi / "records.json",
-                  EX / doi / "pressure.json", EX / doi / "card.json",
-                  EX / doi / "geometry.json", EX / doi / "document.md"):
+        for f in (ep, sp, cp, EX / doi / "extracted" / "figure_data.json", EX / doi / "extracted" / "records.json",
+                  EX / doi / "extracted" / "pressure.json", EX / doi / "extracted" / "card.json",
+                  EX / doi / "extracted" / "geometry.json", EX / doi / "extracted" / "document.md"):
             if f.exists():
                 checks[str(f.relative_to(REPO))] = sha(f)
         for e in exps:

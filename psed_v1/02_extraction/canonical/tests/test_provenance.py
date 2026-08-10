@@ -7,7 +7,7 @@ from canonical import validate as V
 from canonical import sources as S
 from canonical.schema import REPO, Status
 
-OUTPUT = REPO / "02_extraction" / "output"
+OUTPUT = REPO / "papers"          # papers/<doi>/{resolved,canonical}/
 
 
 def any_canonical_doc():
@@ -109,7 +109,7 @@ class TestRecoveryMerge(unittest.TestCase):
 
     def test_36_recovery_files_carry_no_points(self):
         found = 0
-        for p in sorted((REPO / "03_corpus" / "extracted").glob("*/recovery/figure_semantics_v1.json")):
+        for p in sorted((REPO / "papers").glob("*/extracted/recovery/figure_semantics_v1.json")):
             found += 1
             doc = json.loads(p.read_text())
             self.assertFalse(doc.get("points"))
@@ -125,7 +125,7 @@ class TestRecoveryMerge(unittest.TestCase):
         """Every canonical curve must have exactly as many points as the source."""
         for p in sorted(OUTPUT.glob("*/canonical/curves.json")):
             doc = json.loads(p.read_text())
-            fd = json.loads((REPO / "03_corpus" / "extracted" / doc["doi"] / "figure_data.json").read_text())
+            fd = json.loads((REPO / "papers" / doc["doi"] / "extracted" / "figure_data.json").read_text())
             for c in doc["curves"]:
                 node = V._resolve_pointer(fd, c["source"]["json_pointer"])
                 self.assertIsNotNone(node)

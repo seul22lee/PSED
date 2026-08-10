@@ -245,7 +245,7 @@ check("B resolves to experiment/caption", (b.param_sources["temperature::"]["sou
 
 # ------------------------------------------------------------ corpus fixtures
 print("14) corpus: d0cp temperature is a genuine paper scalar, not a window endpoint")
-OUT = ROOT.parent / "02_extraction" / "output"
+OUT = ROOT.parent / "papers"      # papers/<doi>/resolved/
 
 
 def _card(doi):

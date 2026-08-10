@@ -11,7 +11,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-KB = REPO / "02_extraction" / "output"
+KB = REPO / "papers"              # papers/<doi>/resolved/
 OUT = REPO / "reports" / "condition_precision"
 SEED = 20260804
 # A held-out draw under a different seed checks that precision did not simply

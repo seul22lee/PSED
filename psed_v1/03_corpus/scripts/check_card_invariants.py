@@ -29,7 +29,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-EXTRACTED = HERE.parent / "extracted"
+EXTRACTED = HERE.parents[2] / "papers"   # papers/<doi>/extracted/
 
 spec = u.spec_from_file_location("kb6", HERE / "06_to_kb.py")
 kb6 = u.module_from_spec(spec)
@@ -44,7 +44,7 @@ def _is_window(w):
 
 def main():
     hard_violations, advisories, checked = [], [], 0
-    for d in sorted(p for p in EXTRACTED.iterdir() if p.is_dir()):
+    for d in sorted(p for p in (d / "extracted" for d in EXTRACTED.iterdir() if d.is_dir()) if p.is_dir()):
         sp, cp = d / "scout.json", d / "card.json"
         if not sp.exists():
             continue
@@ -57,13 +57,13 @@ def main():
         # HARD: the scout path itself must yield no scalar for a real window
         scout_scalar = kb6.base_card(scout).get("temperature_C")
         if scout_scalar is not None:
-            hard_violations.append((d.name, window, scout_scalar))
+            hard_violations.append((d.parent.name, window, scout_scalar))
 
         # ADVISORY: merged card sits on an endpoint (legitimate only if independently stated)
         if cp.exists():
             t = json.loads(cp.read_text()).get("temperature_C")
             if t is not None and float(t) in (float(window[0]), float(window[1])):
-                advisories.append((d.name, window, t))
+                advisories.append((d.parent.name, window, t))
 
     print(f"papers with a non-degenerate temperature window: {checked}")
 
