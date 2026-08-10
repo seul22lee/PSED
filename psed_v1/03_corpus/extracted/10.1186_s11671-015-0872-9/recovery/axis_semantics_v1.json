@@ -1,0 +1,61 @@
+{
+ "doi": "10.1186_s11671-015-0872-9",
+ "schema_version": 1,
+ "kind": "text_evidence_recovery_audit",
+ "generator": "02_extraction/canonical/recover_axis_semantics.py",
+ "code_version": "e673785+dirty",
+ "created_at": 1785775201,
+ "note": "Audit + work list. Text-evidence recovery is re-derived by build_canonical.py from the same sources; new RAW evidence (verbatim axis labels) is written by reextract_figures.py to figure_semantics_v1.json.",
+ "n_panels": 1,
+ "panels": [
+  {
+   "figure": "3",
+   "figure_index": "4",
+   "panel": "a",
+   "image": "figures/fig_4.png",
+   "caption": "Figure 3 XRD profile for the AAO template on Al substrate and TiO2 coated via the ALD process.",
+   "panel_caption": "",
+   "x": {
+    "label_raw": null,
+    "quantity": "2 Theta",
+    "quantity_canonical": null,
+    "unit_raw": "degree",
+    "unit_normalized": "deg",
+    "is_normalized": null,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "normalization_definition": null,
+    "normalization_denominator_role": null,
+    "comparison_group": null,
+    "axis_role": null,
+    "axis_kind": "unknown",
+    "status": "unsupported",
+    "unresolved_reason": "x quantity '2 Theta' does not resolve to any ontology QuantityKind",
+    "recovery": null
+   },
+   "y": {
+    "label_raw": null,
+    "quantity": "Intensity",
+    "quantity_canonical": "intensity",
+    "unit_raw": "a. u.",
+    "unit_normalized": null,
+    "is_normalized": null,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "normalization_definition": null,
+    "normalization_denominator_role": null,
+    "comparison_group": null,
+    "axis_role": "output",
+    "axis_kind": "output",
+    "status": "not_applicable",
+    "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+    "recovery": null
+   },
+   "needs_image_reextraction": true,
+   "reextraction_reasons": [
+    "x_quantity_unknown",
+    "y_unit_unparseable:a. u."
+   ]
+  }
+ ]
+}

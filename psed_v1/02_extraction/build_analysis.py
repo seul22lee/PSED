@@ -13,7 +13,9 @@ from pathlib import Path
 from collections import defaultdict
 from statistics import mean, pstdev
 
-ROOT = Path(__file__).parent
+# resolve(): without it every path here is relative to the caller's cwd, so the
+# script only ran from inside 02_extraction/ and failed from the repo root.
+ROOT = Path(__file__).resolve().parent
 ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 
 

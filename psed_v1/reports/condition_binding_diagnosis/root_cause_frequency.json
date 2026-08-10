@@ -1,0 +1,94 @@
+{
+ "sample_n": 120,
+ "note": "random sample only; targeted cases excluded",
+ "frequencies": [
+  {
+   "code": "P",
+   "label": "Curve point incorrectly promoted to Experiment",
+   "count": 44,
+   "share": 0.3667,
+   "ci95": [
+    0.2858,
+    0.4558
+   ],
+   "responsible_code_path": "03_corpus/scripts/06_to_kb.py::split_condition_series"
+  },
+  {
+   "code": "",
+   "label": "no failure detected",
+   "count": 31,
+   "share": 0.2583,
+   "ci95": [
+    0.1884,
+    0.3433
+   ],
+   "responsible_code_path": ""
+  },
+  {
+   "code": "S",
+   "label": "Model or simulation data stored as Experiment",
+   "count": 17,
+   "share": 0.1417,
+   "ci95": [
+    0.0904,
+    0.2152
+   ],
+   "responsible_code_path": "03_corpus/scripts/06_to_kb.py::to_experiments (relevance=model still written to experiments.json)"
+  },
+  {
+   "code": "I",
+   "label": "Hidden or replaced by fallback / dedup",
+   "count": 9,
+   "share": 0.075,
+   "ci95": [
+    0.04,
+    0.1364
+   ],
+   "responsible_code_path": "03_corpus/scripts/06_to_kb.py::_dedup_pressures"
+  },
+  {
+   "code": "C",
+   "label": "Wrong quantity classification / axis role unresolved",
+   "count": 8,
+   "share": 0.0667,
+   "ci95": [
+    0.0342,
+    0.1261
+   ],
+   "responsible_code_path": "02_extraction/canonical/axis_semantics.py::resolve_x_axis"
+  },
+  {
+   "code": "J",
+   "label": "Incorrect paper-level broadcast",
+   "count": 5,
+   "share": 0.0417,
+   "ci95": [
+    0.0179,
+    0.0938
+   ],
+   "responsible_code_path": "03_corpus/scripts/10_pressure.py::pressure_facts + 06_to_kb base_ctrl"
+  },
+  {
+   "code": "A",
+   "label": "Mention not extracted",
+   "count": 4,
+   "share": 0.0333,
+   "ci95": [
+    0.013,
+    0.0826
+   ],
+   "responsible_code_path": "03_corpus/scripts/05_figure_extract.py::VISION_SCHEMA (series_axis/conditions)"
+  },
+  {
+   "code": "H",
+   "label": "Field dropped downstream",
+   "count": 2,
+   "share": 0.0167,
+   "ci95": [
+    0.0046,
+    0.0587
+   ],
+   "responsible_code_path": "03_corpus/scripts/06_to_kb.py::to_experiments panel_ctrl / _num_cond"
+  }
+ ]
+}

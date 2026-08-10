@@ -1,0 +1,692 @@
+[
+ {
+  "material": "Bi2Te3",
+  "material_raw": "Bi2Te3",
+  "precursors": [],
+  "coreactants": [
+   "(Et3Si)2Te"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "(Et3Si)2Te"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "generic_pressure",
+    "value": 80.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1016_j.jcrysgro.2017.04.019::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "under a pressure of about 0.8 mbar",
+     "original_value": 0.8,
+     "original_unit": "mbar"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 358.14,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "(Et3Si)2Te",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "",
+   "family": "film_amount"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    50.0
+   ],
+   [
+    200,
+    60.5
+   ],
+   [
+    500,
+    75.7
+   ],
+   [
+    1000,
+    101.0
+   ],
+   [
+    1500,
+    126.3
+   ],
+   [
+    2000,
+    155.0
+   ],
+   [
+    2500,
+    182.0
+   ],
+   [
+    3000,
+    209.0
+   ],
+   [
+    3500,
+    236.0
+   ],
+   [
+    4000,
+    263.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1016_j.jcrysgro.2017.04.019-F6a-0",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 6. Diagram of the film thickness as a function of cycle numbers. The large change of the nominal growth rate vs. film thickness most likely results from a non-ideal 2D nucleation on the substra",
+   "extractor": "vision-llm",
+   "doi": "10.1016_j.jcrysgro.2017.04.019"
+  },
+  "series_name": "substrate: Al2O3",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "Bi2Te3",
+   "supporting_evidence": null,
+   "ambiguity_reason": "Bi2Te3 contains 2 metals ['Bi', 'Te'] and the source lists 3 precursor candidates ['(Me2N)3Bi', '(MeEtN)3Bi', '[(Me3Si)2NBi\u03bc-NSiMe3]2']; a multi-metal film needs one precursor per metal, so no single candidate resolves it \u2014 an explicit material_chemistry mapping is required",
+   "candidate_mappings": {
+    "precursors": [
+     "(Me2N)3Bi",
+     "(MeEtN)3Bi",
+     "[(Me3Si)2NBi\u03bc-NSiMe3]2"
+    ],
+    "coreactants": [
+     "(Et3Si)2Te"
+    ],
+    "materials": [
+     "Bi2Te3"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Bi2Te3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "(Et3Si)2Te",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1016_j.jcrysgro.2017.04.019-F6a-0",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "(Et3Si)2Te",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Bi2Te3",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-0"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "Bi2Te3",
+  "material_raw": "Bi2Te3",
+  "precursors": [],
+  "coreactants": [
+   "(Et3Si)2Te"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "(Et3Si)2Te"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "generic_pressure",
+    "value": 80.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1016_j.jcrysgro.2017.04.019::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "under a pressure of about 0.8 mbar",
+     "original_value": 0.8,
+     "original_unit": "mbar"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 358.14,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "(Et3Si)2Te",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "",
+   "family": "film_amount"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    36.0
+   ],
+   [
+    200,
+    55.6
+   ],
+   [
+    500,
+    85.0
+   ],
+   [
+    1000,
+    134.0
+   ],
+   [
+    1500,
+    183.0
+   ],
+   [
+    2000,
+    232.0
+   ],
+   [
+    2500,
+    281.0
+   ],
+   [
+    3000,
+    330.0
+   ],
+   [
+    3500,
+    379.0
+   ],
+   [
+    4000,
+    428.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1016_j.jcrysgro.2017.04.019-F6a-1",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 6. Diagram of the film thickness as a function of cycle numbers. The large change of the nominal growth rate vs. film thickness most likely results from a non-ideal 2D nucleation on the substra",
+   "extractor": "vision-llm",
+   "doi": "10.1016_j.jcrysgro.2017.04.019"
+  },
+  "series_name": "substrate: Si",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "Bi2Te3",
+   "supporting_evidence": null,
+   "ambiguity_reason": "Bi2Te3 contains 2 metals ['Bi', 'Te'] and the source lists 3 precursor candidates ['(Me2N)3Bi', '(MeEtN)3Bi', '[(Me3Si)2NBi\u03bc-NSiMe3]2']; a multi-metal film needs one precursor per metal, so no single candidate resolves it \u2014 an explicit material_chemistry mapping is required",
+   "candidate_mappings": {
+    "precursors": [
+     "(Me2N)3Bi",
+     "(MeEtN)3Bi",
+     "[(Me3Si)2NBi\u03bc-NSiMe3]2"
+    ],
+    "coreactants": [
+     "(Et3Si)2Te"
+    ],
+    "materials": [
+     "Bi2Te3"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Bi2Te3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "(Et3Si)2Te",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1016_j.jcrysgro.2017.04.019-F6a-1",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "(Et3Si)2Te",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-1"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Bi2Te3",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-1"
+    }
+   },
+   "completeness": 0.286
+  }
+ },
+ {
+  "material": "Bi2Te3",
+  "material_raw": "Bi2Te3",
+  "precursors": [],
+  "coreactants": [
+   "(Et3Si)2Te"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "(Et3Si)2Te"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "generic_pressure",
+    "value": 80.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1016_j.jcrysgro.2017.04.019::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "under a pressure of about 0.8 mbar",
+     "original_value": 0.8,
+     "original_unit": "mbar"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 358.14,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "(Et3Si)2Te",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "",
+   "family": "film_amount"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    50.0
+   ],
+   [
+    200,
+    70.0
+   ],
+   [
+    500,
+    100.0
+   ],
+   [
+    1000,
+    150.0
+   ],
+   [
+    1500,
+    200.0
+   ],
+   [
+    2000,
+    250.0
+   ],
+   [
+    2500,
+    300.0
+   ],
+   [
+    3000,
+    350.0
+   ],
+   [
+    3500,
+    400.0
+   ],
+   [
+    4000,
+    450.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1016_j.jcrysgro.2017.04.019-F6a-2",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 6. Diagram of the film thickness as a function of cycle numbers. The large change of the nominal growth rate vs. film thickness most likely results from a non-ideal 2D nucleation on the substra",
+   "extractor": "vision-llm",
+   "doi": "10.1016_j.jcrysgro.2017.04.019"
+  },
+  "series_name": "substrate: SiO2",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "Bi2Te3",
+   "supporting_evidence": null,
+   "ambiguity_reason": "Bi2Te3 contains 2 metals ['Bi', 'Te'] and the source lists 3 precursor candidates ['(Me2N)3Bi', '(MeEtN)3Bi', '[(Me3Si)2NBi\u03bc-NSiMe3]2']; a multi-metal film needs one precursor per metal, so no single candidate resolves it \u2014 an explicit material_chemistry mapping is required",
+   "candidate_mappings": {
+    "precursors": [
+     "(Me2N)3Bi",
+     "(MeEtN)3Bi",
+     "[(Me3Si)2NBi\u03bc-NSiMe3]2"
+    ],
+    "coreactants": [
+     "(Et3Si)2Te"
+    ],
+    "materials": [
+     "Bi2Te3"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Bi2Te3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "(Et3Si)2Te",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1016_j.jcrysgro.2017.04.019-F6a-2",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "(Et3Si)2Te",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-2"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Bi2Te3",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1016_j.jcrysgro.2017.04.019-F6a-2"
+    }
+   },
+   "completeness": 0.286
+  }
+ }
+]

@@ -24,6 +24,12 @@ sys.path.insert(0, str(PIPE / "stages"))
 sys.path.insert(0, str(PIPE))
 import lib                                   # canon_*, family, recipe_role, species_prop
 import recipe as recipe_mod
+from canonical import live as clive           # unit conversion, axis-role granularity, scoping
+from canonical import sources as csources     # recovered verbatim axis labels
+from canonical import entities as centities   # what a digitised curve actually IS
+from canonical import conditions as ccond     # ConditionAssertion recovery + binding
+from canonical import chemistry_scope as cschem  # material/reactants by narrowest evidence
+from canonical import series_identity as csid    # measured vs calculated, per series
 sys.path.insert(0, str(ROOT / "scripts"))
 import chemistry_propagation as cprop
 import importlib.util
@@ -47,16 +53,19 @@ _LEN_Q = ("feature_height", "feature_width", "feature_length", "pore_diameter", 
 
 
 def _norm_unit(q, val, unit):
-    u = (unit or "").strip().lower()
+    """Scalar unit normalisation for a single controlled value.
+
+    Delegates to the shared, dimension-aware converter so the KB and the
+    canonical layer agree. Two behaviours changed here on purpose:
+      * `Å/cycle` now becomes `nm/cycle`, NOT `nm` — the /cycle dimension is
+        part of the quantity and dropping it made GPC incomparable with lengths.
+      * a value is only rescaled when its unit is genuinely convertible; an
+        unparseable or dimension-conflicting unit leaves the value untouched.
+    """
     if val is None:
         return val, unit
-    if q in ("growth_per_cycle",) and u in ("å/cycle", "a/cycle", "å", "a", "angstrom"):
-        return val * 0.1, "nm"           # Å → nm
-    if q in ("film_thickness", "penetration_depth") and u in ("µm", "um", "μm"):
-        return val * 1000.0, "nm"        # µm → nm
-    if q in _LEN_Q and u in _LEN_TO_NM:
-        return val * _LEN_TO_NM[u], "nm"  # feature dimensions → nm (ontology canonical)
-    return val, unit
+    vals, out_unit, _rec = clive.normalize_measurand(q, unit, [val])
+    return (vals[0] if vals else val), out_unit
 
 
 METHODS_SCHEMA = """From the METHODS text, return ONLY JSON with the ALD PROCESS
@@ -368,8 +377,29 @@ def paper_conditions(card):
 FACTUAL_STATUS = ("directly_reported", "derived_from_reported_dimensions")
 
 
-def geometry_facts(sd):
+def geometry_material(q, materials):
+    """The material a geometry/model parameter belongs to, when its evidence says.
+
+    A model-parameter table is one row per material:
+
+        Al 2 O 3 | 500 | 500 | 147 | 0.00572 | 219
+        TiO 2    | 1000 | 500 | 25.7 | 0.1   | 0.252
+
+    Both rows were extracted at PAPER scope, so an Al2O3 experiment was offered
+    TiO2's sticking probability and adsorption constant as equally valid
+    candidates; the conflict then surfaced as "3 distinct sticking_probability
+    values at paper scope". The row's own evidence names its material, which
+    makes the split deterministic instead of ambiguous.
+    """
+    hits = cschem._named(q.get("evidence") or "", materials)
+    return hits[0] if len(hits) == 1 else None
+
+
+def geometry_facts(sd, materials=None, material=None):
     """(structure, geometry_class, [controlled conditions]) from extracted/{sd}/geometry.json.
+
+    When `material` is given, a parameter whose evidence row names a DIFFERENT
+    material is dropped: it is that other film's parameter, not this one's.
 
     Only `directly_reported` / `derived_from_reported_dimensions` quantities become
     conditions — an `inferred_from_context` value stays in geometry.json for audit but is
@@ -387,7 +417,11 @@ def geometry_facts(sd):
     for i, q in enumerate(g.get("quantities") or []):
         if q.get("status") not in FACTUAL_STATUS:
             continue
-        origin = {"level": "paper", "from": "geometry",
+        qmat = geometry_material(q, materials)
+        if material and qmat and qmat != material:
+            continue                      # another film's row of the same table
+        origin = {"level": "material" if qmat else "paper", "from": "geometry",
+                  "material_scope": qmat,
                   "evidence_id": f"{sd}::geometry::{q.get('quantity')}::{i}",
                   "raw_label": q.get("raw_label"), "symbol": q.get("symbol"),
                   "status": q.get("status"), "scope": q.get("scope"),
@@ -439,6 +473,786 @@ def _dedup_pressures(conds):
     return out
 
 
+_LABEL_CACHE = {}
+
+
+def _axis_labels(sd, record):
+    """Verbatim axis labels recovered by the selective re-extraction pass, if any.
+    They let the live path repair a unit with EVIDENCE (a label reading
+    'Thickness/cycles S/N (nm)' proves the quantity is per-cycle) instead of
+    guessing. Returns {} when no recovery file exists for this paper."""
+    if sd not in _LABEL_CACHE:
+        idx = {}
+        # 1. labels captured by the CURRENT extraction schema (05_figure_extract.py
+        #    now records label_raw). Future papers need no recovery pass at all.
+        try:
+            fd = json.loads((EXTRACTED / sd / "figure_data.json").read_text())
+            for fig in fd.get("figures") or []:
+                for pan in fig.get("panels") or []:
+                    key = (str(fig.get("figure")), str(pan.get("panel") or "").lower())
+                    idx[key] = {"x": (pan.get("x") or {}).get("label_raw"),
+                                "y": (pan.get("y") or {}).get("label_raw")}
+        except Exception:
+            pass
+        # 2. labels recovered afterwards for papers extracted with the old schema
+        try:
+            for key, rec in csources.recovery_index(sd).items():
+                lab = {"x": (rec.get("x") or {}).get("label_raw"),
+                       "y": (rec.get("y") or {}).get("label_raw")}
+                if lab["x"] or lab["y"]:
+                    idx[key] = lab
+        except Exception:
+            pass
+        _LABEL_CACHE[sd] = idx
+    idx = _LABEL_CACHE[sd]
+    if not idx:
+        return {}
+    prov = record.get("provenance") or {}
+    panel = str(prov.get("panel") or "").lower()
+    for key in (str(prov.get("fig_docling_index") or ""), str(prov.get("figure_number") or "")):
+        rec = idx.get((key, panel))
+        if rec and (rec.get("x") or rec.get("y")):
+            return rec
+    return {}
+
+
+def _entity_context(sd, e):
+    """Evidence bundle for one source entity (one digitised curve)."""
+    prov = e.get("provenance") or {}
+    fi = str(prov.get("fig_docling_index") or "")
+    fn = str(prov.get("figure_number") or "")
+    pan = str(prov.get("panel") or "")
+    fd = _figure_data(sd)
+    fig, panel, panel_ord = {}, {}, None
+    sname_probe = e.get("series_name") or ""
+    slabel_probe = (sname_probe.split(":", 1)[1].strip() if ":" in sname_probe
+                    else (sname_probe or "<single>"))
+    for f in fd.get("figures", []) or []:
+        if str(f.get("figure")) == fi:
+            fig = f
+            cands = [(i, pp) for i, pp in enumerate(f.get("panels", []) or [])
+                     if str(pp.get("panel") or "") == pan]
+            # When the panel LETTER is missing, several panels of one figure share the
+            # empty key. Disambiguate by the panel that actually carries this curve's
+            # coordinate and label, and record its ordinal so the entity key stays
+            # unique (two panels of Fig 5 both lost their letter in 10.1116_6.0002804).
+            if len(cands) > 1:
+                best = [(i, pp) for i, pp in cands
+                        if (pp.get("x") or {}).get("quantity") == e.get("coordinate")
+                        and any(str(sx.get("label", "")).strip() == slabel_probe
+                                for sx in (pp.get("series") or []))]
+                cands = best or cands
+            if cands:
+                panel_ord, panel = cands[0]
+            break
+    sname = e.get("series_name") or ""
+    slabel = sname.split(":", 1)[1].strip() if ":" in sname else (sname or "<single>")
+    cap = fig.get("caption") or ""
+    return {
+        "caption": cap,
+        "body_mentions": _figure_body(sd, fn),
+        "source_series": slabel,
+        "panel_series_axis": panel.get("series_axis"),
+        "coordinate": e.get("coordinate"),
+        "granularity": e.get("granularity"),
+        "relevance": e.get("relevance"),
+        "is_model_result": e.get("is_model_result"),
+        "panel_source_flag": (fig.get("panel_source") or {}).get(pan),
+        "figure_source_flag": fig.get("source"),
+        "representation": _representation(cap, pan),
+        "n_source_points": len(e.get("points") or []),
+        "table_captions": [t.get("caption") for t in (_structure(sd).get("tables") or [])],
+        "fig_docling_index": fi, "figure_number": fn, "panel": pan,
+        "panel_key": pan or ("#%d" % panel_ord if panel_ord is not None else "-"),
+        "panel_conditions": panel.get("conditions") or {},
+        # every label drawn in this panel: a fit can only be attached to the
+        # measured curve it was fitted to if we can see its siblings
+        "panel_series_labels": [str(s.get("label") or "").strip()
+                                for s in (panel.get("series") or [])],
+        "panel_x_quantity": (panel.get("x") or {}).get("quantity"),
+        # lets a "as presented in Figure N" cross-reference be resolved against
+        # the figures this paper actually has
+        "paper_figure_numbers": [
+            (r.get("provenance") or {}).get("figure_number")
+            for r in _records(sd)],
+    }
+
+
+_FD_CACHE, _ST_CACHE, _DOC_CACHE, _REF_CACHE = {}, {}, {}, {}
+_RECS_CACHE = {}
+
+
+def _records(sd):
+    if sd not in _RECS_CACHE:
+        f = EXTRACTED / sd / "records.json"
+        _RECS_CACHE[sd] = json.loads(f.read_text()) if f.exists() else []
+    return _RECS_CACHE[sd]
+
+
+def _reference_assertions(sd):
+    if sd not in _REF_CACHE:
+        _REF_CACHE[sd] = ccond.reference_scoped_assertions(_document(sd), paper_id=sd)
+    return _REF_CACHE[sd]
+
+
+_VARIED_CACHE = {}
+
+
+def _figure_varied(sd, fig_index):
+    """Quantities that some panel/series of this figure VARIES.
+
+    A figure-scope value of such a quantity is one panel's setting, not the
+    figure's common value, so it must not be broadcast to the other panels
+    (Fig. 11 of 10.1039_d0cp03358h varies pulse time in (a) and purge time in (b);
+    panel (a)'s 0.4 s was reaching panel (b))."""
+    key = (sd, str(fig_index))
+    if key in _VARIED_CACHE:
+        return _VARIED_CACHE[key]
+    out = set()
+    for f in (_figure_data(sd).get("figures") or []):
+        if str(f.get("figure")) != str(fig_index):
+            continue
+        for pan in (f.get("panels") or []):
+            axis = pan.get("series_axis") or ""
+            for a in ccond.from_series_label(
+                    " ".join(str(sx.get("label", "")) for sx in (pan.get("series") or [])),
+                    axis):
+                out.add(a["quantity"])
+            q, _ = ccond.quantity_for(axis, None)
+            if q:
+                out.add(q)
+    _VARIED_CACHE[key] = out
+    return out
+
+
+_METH_CACHE = {}
+
+
+def _method_assertions(sd):
+    if sd not in _METH_CACHE:
+        m = _methods(sd)
+        _METH_CACHE[sd] = (ccond.conditions_from_prose(m, "method", "methods",
+                                                       "methods section", paper_id=sd)
+                           + ccond.pressures_from_text(m, "method", "methods",
+                                                       "methods section", paper_id=sd))
+    return _METH_CACHE[sd]
+
+
+def _figure_data(sd):
+    if sd not in _FD_CACHE:
+        f = EXTRACTED / sd / "figure_data.json"
+        _FD_CACHE[sd] = json.loads(f.read_text()) if f.exists() else {}
+    return _FD_CACHE[sd]
+
+
+_DRILL_CACHE = {}
+
+
+_MCHEM_CACHE = {}
+
+
+def _methods_mapping(sd, materials):
+    """{material: precursor} from an explicit 'respectively' sentence in the
+    methods. Cached per paper: the regex runs over the whole methods section."""
+    if sd not in _MCHEM_CACHE:
+        _MCHEM_CACHE[sd] = cschem.methods_chemistry_mapping(
+            _methods(sd), materials)
+    return _MCHEM_CACHE[sd]
+
+
+def _figure_caption(sd, fig_docling_index):
+    """The figure's FULL caption. The copy on a record is truncated to 200
+    characters, which is enough to spot a material but not to split panel
+    clauses out of a six-panel caption."""
+    for f in (_figure_data(sd).get("figures") or []):
+        if str(f.get("figure")) == str(fig_docling_index or ""):
+            return f.get("caption") or ""
+    return ""
+
+
+def _drill_why(sd, fig_docling_index):
+    """The scout's own one-line note for this figure ("...profiles of TiO2 in
+    lateral channel"). Written per figure at extraction time, so it is
+    figure-level evidence and ranks above any paper-level default."""
+    if sd not in _DRILL_CACHE:
+        f = EXTRACTED / sd / "scout.json"
+        sc = json.loads(f.read_text()) if f.exists() else {}
+        _DRILL_CACHE[sd] = {str(d.get("where") or "").lstrip("Ff"): d.get("why")
+                            for d in (sc.get("drill") or [])}
+    return _DRILL_CACHE[sd].get(str(fig_docling_index or ""))
+
+
+def _structure(sd):
+    if sd not in _ST_CACHE:
+        f = EXTRACTED / sd / "structure.json"
+        _ST_CACHE[sd] = json.loads(f.read_text()) if f.exists() else {}
+    return _ST_CACHE[sd]
+
+
+def _document(sd):
+    if sd not in _DOC_CACHE:
+        f = EXTRACTED / sd / "document.md"
+        _DOC_CACHE[sd] = ccond.fold_math(f.read_text(errors="replace")) if f.exists() else ""
+    return _DOC_CACHE[sd]
+
+
+def _figure_body(sd, fignum, window=620):
+    if not fignum:
+        return ""
+    txt = _document(sd)
+    out = []
+    for m in re.finditer(r"[Ff]ig(?:ure)?s?\.?\s*%s(?![0-9])" % re.escape(str(fignum)), txt):
+        out.append(txt[max(0, m.start() - 260): m.end() + window])
+        if len(out) >= 3:
+            break
+    return "\n---\n".join(out)
+
+
+# Markdown SECTION HEADINGS, not a bare word match. A plain search for "method"
+# matched "method of choice for conformal thin film growth" in the INTRODUCTION of
+# 10.1039_d0cp03358h and returned 6000 characters of intro, so every methods-scope
+# condition in that paper (300 C, 500 cycles, 3 hPa, 150 sccm) was invisible.
+_METHOD_HEADING = re.compile(
+    r"(?im)^\s{0,3}#{1,4}\s*(?:[A-Z0-9]{1,3}[.)]\s*)?"
+    r"((?:experimental|methods?|materials and methods|experimental (?:section|details|setup)|"
+    r"atomic layer deposition|ald (?:process|growth|deposition)|film (?:growth|deposition)|"
+    r"deposition(?: process| conditions)?|sample preparation|synthesis|"
+    r"characteri[sz]ation)\b[^\n]*)$")
+
+
+def _methods(sd):
+    """Every methods-like SECTION of the paper, concatenated.
+
+    Papers split their conditions across 'Atomic layer deposition',
+    'Sample preparation' and 'Characterisation' sections, so all matching headings
+    are collected rather than only the first."""
+    txt = _document(sd)
+    spans = []
+    heads = list(_METHOD_HEADING.finditer(txt))
+    for m in heads:
+        nxt = re.search(r"(?m)^\s{0,3}#{1,4}\s+\S", txt[m.end():])
+        end = m.end() + (nxt.start() if nxt else 4000)
+        spans.append(txt[m.start():end])
+    if spans:
+        return "\n\n".join(spans)[:20000]
+    m = re.search(r"(?is)\b(experimental|materials and methods)\b(.{0,6000})", txt)
+    return m.group(0) if m else txt[:6000]
+
+
+_REPR = [(re.compile(r"as[- ]measured", re.I), "as_measured"),
+         (re.compile(r"\bscaled\b", re.I), "scaled"),
+         (re.compile(r"normali[sz]ed", re.I), "normalized"),
+         (re.compile(r"\binset\b", re.I), "inset")]
+
+
+def _representation(caption, panel):
+    clause = ""
+    if panel:
+        m = re.search(r"\(\s*%s\s*\)" % re.escape(panel), caption or "", re.I)
+        if m:
+            nxt = re.search(r"\(\s*[a-h]\s*\)", caption[m.end():], re.I)
+            clause = caption[m.start(): m.end() + (nxt.start() if nxt else 200)]
+    for rx, lab in _REPR:
+        if clause and rx.search(clause):
+            return lab
+    return "primary"
+
+
+def resolve_source_entities(sd, exps, pid):
+    """Turn per-curve records into TYPED SOURCE ENTITIES.
+
+    Contract, enforced here:
+      * a drawn curve is a PlotSeries and is never itself an Experiment;
+      * its digitised points are Observations by default;
+      * an ExperimentalCase is minted only when the paper ENUMERATES the settings;
+      * simulations, model sweeps, fits, imported literature and derived
+        representations never become current-paper Experiments;
+      * `unknown` entities are preserved whole, unsplit and unpromoted.
+
+    Returns (entities, experiment_cases, series, assertions).
+    """
+    methods = _methods(sd)
+    entities, cases, series, assertions = [], [], [], []
+    _panel_identity = {}                      # (fig, panel_key) -> csid.resolve_panel
+    for idx, e in enumerate(exps):
+        ctx = _entity_context(sd, e)
+        # ---- measured vs calculated, resolved for the PANEL as a whole -------
+        # A figure flagged "measured" may still hold a calculated line; the flag
+        # is inherited by every series unless the caption and the labels say
+        # otherwise. Resolving the panel together is what lets a fit be linked
+        # to the measured curve instead of minting a second deposition.
+        _pkey = (ctx["fig_docling_index"], ctx["panel_key"])
+        if _pkey not in _panel_identity:
+            _panel_identity[_pkey] = csid.resolve_panel(
+                ctx.get("panel_series_labels") or [ctx["source_series"]],
+                ctx["caption"], ctx.get("figure_source_flag"))
+        _sid = _panel_identity[_pkey].get(ctx["source_series"]) or {
+            "kind": "unknown", "confidence": None, "evidence": None, "fit_of": None}
+        ctx["series_source_kind"] = _sid["kind"]
+        cls = centities.classify(ctx, methods)
+        model = centities.CLASS_MODEL[cls["classification"]]
+        prov = e.get("provenance") or {}
+        ekey = "%s|%s|%s|%s|%s|%s" % (pid, ctx["fig_docling_index"] or "-",
+                                      ctx["figure_number"] or "-", ctx["panel_key"],
+                                      ctx["source_series"], ctx["representation"])
+        eid = "%s-E%03d" % (pid, idx)
+        pts = e.get("points") or []
+        cpts = e.get("points_canonical") or pts
+
+        # ---- condition assertions for this entity (deterministic) -------------
+        prov_kw = dict(paper_id=sd, figure_index=ctx["fig_docling_index"],
+                       figure_number=ctx["figure_number"], panel=ctx["panel"])
+        ent_assertions = []
+        ent_assertions += ccond.from_series_label(ctx["source_series"],
+                                                  ctx["panel_series_axis"], **prov_kw)
+        # A multi-panel caption states different conditions per panel. The clause for
+        # THIS panel is panel-scoped; only the shared preamble is figure-scoped.
+        _clauses, _preamble = ccond.caption_panel_clauses(ctx["caption"])
+        _my_clause = _clauses.get((ctx["panel"] or "").lower())
+        _fig_text = _preamble if _clauses else ctx["caption"]
+        _preamble_assertions = (
+            ccond.from_caption(_fig_text, **prov_kw)
+            # governing-phrase conditions from the caption preamble: a paper's stated
+            # process conditions (300 C, 500 cycles, 3 hPa, 150 sccm N2) only became
+            # assertions once this ran
+            + ccond.conditions_from_prose(
+                _fig_text, "figure", "caption",
+                "figure %s caption" % ctx["figure_number"], **prov_kw))
+        for _a in _preamble_assertions:
+            # the shared preamble states values that hold for EVERY panel
+            _a["figure_common"] = True
+        ent_assertions += _preamble_assertions
+        if _my_clause:
+            _pk = dict(prov_kw)
+            _pk["panel"] = ctx["panel"]
+            ent_assertions += ccond.from_caption(_my_clause, **_pk)
+            ent_assertions += ccond.conditions_from_prose(
+                _my_clause, "panel", "caption",
+                "figure %s caption, panel (%s)" % (ctx["figure_number"], ctx["panel"]),
+                **_pk)
+            ent_assertions += ccond.pressures_from_text(
+                _my_clause, "panel", "caption",
+                "figure %s caption, panel (%s)" % (ctx["figure_number"], ctx["panel"]),
+                **_pk)
+        ent_assertions += ccond.conditions_from_prose(
+            ctx["body_mentions"], "figure", "body",
+            "document.md near Fig %s" % ctx["figure_number"], **prov_kw)
+        ent_assertions += _method_assertions(sd)
+        ent_assertions += ccond.pressures_from_text(
+            ctx["caption"], "figure", "caption", "figure %s caption" % ctx["figure_number"],
+            **prov_kw)
+        ent_assertions += ccond.pressures_from_text(
+            ctx["body_mentions"], "figure", "body",
+            "document.md near Fig %s" % ctx["figure_number"], **prov_kw)
+        ent_assertions += ccond.pressures_from_text(
+            methods, "method", "methods", "methods section", paper_id=sd)
+        # adopted/estimated inputs stated per CITED WORK rather than per figure
+        ent_assertions += _reference_assertions(sd)
+        for a in ent_assertions:
+            a["source_entity"] = ekey
+        bound, ambiguous, _ = ccond.bind(ent_assertions, ctx,
+                                         _figure_varied(sd, ctx["fig_docling_index"]))
+        assertions.extend(ent_assertions)
+
+        observations = [{"index": i, "x_raw": p[0], "y_raw": p[1],
+                         "x_canonical": (cpts[i][0] if i < len(cpts) else None),
+                         "y_canonical": (cpts[i][1] if i < len(cpts) else None)}
+                        for i, p in enumerate(pts)]
+
+        ent = {
+            "entity_id": eid,
+            "entity_key": ekey,
+            "entity_class": centities.ENTITY_CLASS[cls["classification"]],
+            "classification": cls["classification"],
+            "classification_confidence": cls["confidence"],
+            "classification_method": cls["method"],
+            "classification_evidence": cls["evidence"],
+            "signal_families": cls["signal_families"],
+            "unresolved_reason": cls["unresolved_reason"],
+            "is_current_paper_experiment": model["is_experiment"],
+            "paper_id": sd,
+            "fig_docling_index": ctx["fig_docling_index"],
+            "printed_figure_number": ctx["figure_number"],
+            "panel": ctx["panel"],
+            "panel_key": ctx["panel_key"],
+            "source_series": ctx["source_series"],
+            "representation": ctx["representation"],
+            "plot_series": True,
+            "coordinate": e.get("coordinate"),
+            "coordinate_unit": e.get("coordinate_unit_normalized") or e.get("coordinate_unit"),
+            "measurand": (e.get("measurand") or {}).get("quantity"),
+            "measurand_unit": (e.get("measurand") or {}).get("unit"),
+            "measurement_class": model["measurement"],
+            "samples_are": model["samples_are"],
+            "n_observations": len(observations),
+            "observations": observations,
+            "between_curve_condition": cls["between_curve_condition"],
+            "between_curve_value": cls["between_curve_value"],
+            "bound_conditions": bound,
+            "ambiguous_conditions": ambiguous,
+            "originally_reported_in": cls["originally_reported_in"],
+            "reported_in": sd if cls["classification"] == "imported_literature_data" else None,
+            "material": e.get("material"), "material_raw": e.get("material_raw"),
+            "material_scope_level": e.get("material_scope_level"),
+            "material_evidence": e.get("material_evidence"),
+            "material_candidates": e.get("material_candidates") or [],
+            "material_ambiguity_reason": e.get("material_ambiguity_reason"),
+            "multi_material_paper": e.get("multi_material_paper"),
+            "chemistry_consistent": e.get("chemistry_consistent"),
+            "chemistry_inconsistency": e.get("chemistry_inconsistency"),
+            # series-level source identity, independent of the figure flag
+            "series_source_kind": _sid["kind"],
+            "series_source_confidence": _sid["confidence"],
+            "series_source_evidence": _sid["evidence"],
+            "fit_of_series_label": _sid["fit_of"],
+            "fit_of_entity": None,          # resolved to an entity_id below
+            "geometry_class": e.get("geometry_class"),
+            "structure": e.get("structure"),
+            # chemistry travels with the entity: a modelling or literature curve still
+            # identifies the process the paper studies, and the KB must see it even
+            # though the curve is not this paper's experiment
+            "precursors": e.get("precursors") or [],
+            "coreactants": e.get("coreactants") or [],
+            "reactants": e.get("reactants") or [],
+            "carrier_gas": e.get("carrier_gas"),
+            "process_type": e.get("process_type"),
+            "cycle_sequence": e.get("cycle_sequence"),
+            "chemistry_provenance": e.get("chemistry_provenance"),
+            "provenance": prov,
+            "source_record_id": e.get("exp_id"),
+        }
+
+        # ---- case minting ---------------------------------------------------
+        n_cases, case_status, case_reason = 0, "not_an_experiment", None
+        if model["is_experiment"]:
+            if model["case"] == 1:
+                n_cases, case_status = 1, "supported"
+            elif model["case"] == "from_evidence":
+                # Even an explicit sample list may not split a curve whose x
+                # axis advances within one run or measures one specimen: the
+                # samples are then separate CURVES, not points of this one.
+                _axis_ok = centities.setting_axis_kind(
+                    e.get("coordinate")) == "process_setting"
+                n = cls["supported_setting_count"] if _axis_ok else None
+                if n:
+                    n_cases, case_status = n, "enumerated_in_source"
+                    case_reason = cls["supported_setting_evidence"]
+                else:
+                    # An explicit sample list is the strongest evidence but almost
+                    # no paper provides one, so requiring it left 146 corroborated
+                    # sweeps minting nothing. Widen to the other evidence the
+                    # contract admits -- a matching enumeration in prose, or a
+                    # process-setting x axis with documentary corroboration --
+                    # while still refusing on a within-run axis, a measurement
+                    # coordinate, or a point set too dense to be markers.
+                    _rs = (cls.get("signals") or {}).get("R") or {}
+                    # the methods state how a parameter was varied across
+                    # depositions ("Plasma exposure times ranging from 3.8 up to
+                    # 120 s were used"); the caption rarely repeats it
+                    _rs_hits = list(_rs.get("discrete") or []) + \
+                        centities._hits(centities.RUNSTRUCT_DISCRETE, methods)
+                    _n2, _method2, _ev2 = centities.sweep_setting_cases(
+                        classification=cls["classification"],
+                        coordinate=e.get("coordinate"),
+                        observed_x=[o["x_raw"] for o in observations],
+                        n_points=len(observations),
+                        caption=ctx["caption"], body=ctx["body_mentions"],
+                        run_structure_hits=_rs_hits,
+                        table_linked=bool((cls.get("signals") or {}).get("T")),
+                        series_source_kind=_sid["kind"])
+                    if _n2:
+                        n_cases, case_status, case_reason = _n2, _method2, _ev2
+                    else:
+                        n_cases, case_status = 0, "unresolved_settings"
+                        case_reason = (
+                            "%s. The digitised point count is digitisation density "
+                            "and must not be used as a case count; marker spacing "
+                            "was tested as an alternative and rejected, since it "
+                            "cannot separate evenly-spaced real settings from an "
+                            "evenly-resampled line." % _ev2)
+        ent["experimental_case_count"] = n_cases
+        ent["experimental_case_status"] = case_status
+        ent["experimental_case_reason"] = case_reason
+        # lower bound: a corroborated sweep varies its axis, so at least two distinct
+        # settings were prepared. This is a property of the sweep, not of how densely
+        # the curve was digitised.
+        ent["experimental_case_lower_bound"] = (
+            n_cases if case_status in ("supported", "enumerated_in_source")
+            else (2 if case_status == "unresolved_settings" else 0))
+        ent["distinct_setting_values_observed"] = (
+            len({o["x_raw"] for o in observations}) if case_status == "unresolved_settings" else None)
+        ent["observation_count_unresolved_as_cases"] = (
+            len(observations) if case_status == "unresolved_settings" else 0)
+
+        # A "sweep" with a single observation is not a sweep: there is nothing to
+        # vary across. It is one measurement at one setting, so it yields exactly one
+        # case and no series.
+        _degenerate_sweep = (cls["classification"] == "discrete_experimental_sweep"
+                             and len(observations) <= 1)
+        if _degenerate_sweep:
+            n_cases, case_status = (1 if observations else 0), "single_setting_only"
+            case_reason = ("classified as a sweep but only %d observation was digitised; "
+                           "a sweep requires at least two settings" % len(observations))
+            ent["experimental_case_count"] = n_cases
+            ent["experimental_case_status"] = case_status
+            ent["experimental_case_reason"] = case_reason
+            ent["experimental_case_lower_bound"] = n_cases
+            ent["distinct_setting_values_observed"] = None
+
+        # a sweep is an ExperimentalSeries regardless of how many cases it supports
+        if cls["classification"] == "discrete_experimental_sweep" and not _degenerate_sweep:
+            sid = "%s-S%03d" % (pid, len(series))
+            ent["experimental_series_id"] = sid
+            series.append({
+                "series_id": sid, "doi": sd, "entity_id": eid, "entity_key": ekey,
+                "series_varies": e.get("coordinate"),
+                "series_varies_unit": ent["coordinate_unit"],
+                "measurand": e.get("measurand"),
+                "n_observations": len(observations),
+                "supported_case_count": n_cases,
+                "case_count_lower_bound": ent["experimental_case_lower_bound"],
+                "distinct_setting_values_observed": ent["distinct_setting_values_observed"],
+                "case_count_status": case_status,
+                "case_count_reason": case_reason,
+                "between_curve_condition": cls["between_curve_condition"],
+                "between_curve_value": cls["between_curve_value"],
+                "provenance": prov, "series_name": e.get("series_name"),
+                "material": e.get("material"), "relevance": e.get("relevance"),
+            })
+
+        entities.append(ent)
+
+        # ---- backward-compatible ExperimentalCase records --------------------
+        if model["is_experiment"] and n_cases >= 1:
+            for k in range(n_cases):
+                c = json.loads(json.dumps(e))
+                c["exp_id"] = eid if n_cases == 1 else "%s-C%02d" % (eid, k)
+                c["entity_id"] = eid
+                c["entity_key"] = ekey
+                c["entity_class"] = "ExperimentalCase"
+                c["record_kind"] = "ExperimentalCase"
+                c["measurement_class"] = model["measurement"]
+                c["classification"] = cls["classification"]
+                c["classification_confidence"] = cls["confidence"]
+                c["granularity"] = {"continuous_trace": "trace",
+                                    "experimental_profile": "profile",
+                                    "multi_output_measurement": "multi_output"}.get(
+                                        cls["classification"], "case")
+                c["points"] = pts
+                c["points_canonical"] = cpts
+                c["n_observations"] = len(observations)
+                c["observations_are_experiments"] = False
+                if cls["classification"] == "discrete_experimental_sweep":
+                    c["in_series"] = ent.get("experimental_series_id")
+                    c["case_index"] = k
+                for b in bound:
+                    if b.get("quantity") and b.get("value") is not None:
+                        c.setdefault("controlled", []).append({
+                            "quantity": b["quantity"], "value": _f(b["value"]),
+                            "unit": b.get("unit"), "of_reactant": b.get("of_reactant"),
+                            # keep the ORIGINAL evidence kind as the source label
+                            # (caption / series_label / body / methods) so downstream
+                            # provenance checks still see where the value came from
+                            "source": {"caption": "caption", "series_label": "series",
+                                       "body": "body", "methods": "methods",
+                                       "table": "table"}.get(b.get("source_kind"),
+                                                             b.get("source_kind") or "condition_assertion"),
+                            "assertion_source_kind": b.get("source_kind"),
+                            "scope": b.get("bound_at_scope"),
+                            "context_status": "resolved",
+                            "assertion_status": b.get("assertion_status"),
+                            "species": b.get("species"),
+                            "origin": {"level": b.get("bound_at_scope"),
+                                       "from": b.get("source_kind"),
+                                       "evidence": b.get("raw_evidence"),
+                                       "locator": b.get("evidence_locator")},
+                        })
+                if ambiguous:
+                    c["ambiguous_conditions"] = ambiguous
+                c["controlled"], _cf = clive.mark_ambiguous_context(c.get("controlled") or [])
+                if _cf:
+                    c["context_conflicts"] = _cf
+                r_obj = recipe_mod.from_experiment(c)
+                c["recipe"] = r_obj.to_dict()
+                c["recipe"]["completeness"] = r_obj.completeness()
+                cases.append(c)
+    # ---- attach each fit/calculated curve to the measurement it describes ----
+    # Done after the loop because the measured sibling may be resolved later than
+    # the fit. A fit links to a measurement; it never mints a DepositionRun or a
+    # Sample of its own, which is what `experimental_case_count == 0` already
+    # guarantees for the `fit` class.
+    _by_panel_label = {}
+    for ent in entities:
+        _by_panel_label[(ent["fig_docling_index"], ent["panel_key"],
+                         ent["source_series"])] = ent["entity_id"]
+    for ent in entities:
+        lab = ent.get("fit_of_series_label")
+        if not lab:
+            continue
+        tgt = _by_panel_label.get((ent["fig_docling_index"], ent["panel_key"], lab))
+        if tgt and tgt != ent["entity_id"]:
+            ent["fit_of_entity"] = tgt
+    return entities, cases, series, assertions
+
+
+#: which of the nine entity classes each result row reports under. Kept explicit
+#: rather than derived so a new class cannot silently fall out of the summary.
+RESULT_KIND = {
+    "continuous_trace": "continuous_experimental_run",
+    "experimental_profile": "experimental_profile",
+    "multi_output_measurement": "multi_output_measurement",
+    "discrete_experimental_sweep": "discrete_experimental_sweep",
+    "simulation": "simulation",
+    "model_sweep": "model_curve",
+    "fit": "fit_or_calculated_representation",
+    "imported_literature_data": "imported_literature_data",
+    "derived_representation": "derived_representation",
+    "conceptual_figure": "conceptual_figure",
+    "unknown": "unresolved",
+}
+
+
+def build_results_view(sd, pid, entities, curve_records):
+    """One row per SOURCE SERIES — the complete extraction result for a paper.
+
+    The regression diagnosis found no data loss anywhere: 659 raw series became
+    659 records and 663 entities, with zero orphans. What it found was that the
+    result was split across experiments.json (physical cases), series.json
+    (sweeps) and entities.json (everything else), and every consumer read only
+    the first. A 19-curve paper therefore looked like a 4-record paper.
+
+    This view is the fix. It carries the identity, granularity decision,
+    chemistry and provenance of every curve, so no consumer needs to know how
+    the other files are partitioned.
+    """
+    by_key = {}
+    for r in curve_records:
+        prov = r.get("provenance") or {}
+        by_key[(str(prov.get("fig_docling_index") or ""),
+                str(prov.get("panel") or ""),
+                str(r.get("series_value") or ""))] = r
+    rows = []
+    for ent in entities:
+        rec = by_key.get((str(ent.get("fig_docling_index") or ""),
+                          str(ent.get("panel") or ""),
+                          str(ent.get("source_series") or ""))) or {}
+        prov = ent.get("provenance") or {}
+        rows.append({
+            "result_id": ent["entity_id"],
+            "paper_id": sd,
+            "fig_docling_index": ent.get("fig_docling_index"),
+            "printed_figure_number": ent.get("printed_figure_number"),
+            "panel": ent.get("panel"),
+            "source_series_id": ent.get("entity_key"),
+            "source_series_label": ent.get("source_series"),
+            "n_points": ent.get("n_observations"),
+            "points": ent.get("observations"),
+            "representation": ent.get("representation"),
+            # ---- identity -------------------------------------------------
+            "source_kind": ent.get("series_source_kind"),
+            "source_kind_confidence": ent.get("series_source_confidence"),
+            "source_kind_evidence": ent.get("series_source_evidence"),
+            "figure_source_flag": (rec.get("source") if rec else None),
+            "result_kind": RESULT_KIND.get(ent.get("classification"), "unresolved"),
+            "entity_class": ent.get("entity_class"),
+            "classification": ent.get("classification"),
+            "classification_confidence": ent.get("classification_confidence"),
+            "classification_method": ent.get("classification_method"),
+            "classification_evidence": ent.get("classification_evidence"),
+            "is_current_paper_experiment": ent.get("is_current_paper_experiment"),
+            # ---- granularity ----------------------------------------------
+            "granularity": ("point_level"
+                            if (ent.get("experimental_case_count") or 0) > 1
+                            else "curve_level"
+                            if (ent.get("experimental_case_count") or 0) == 1
+                            else "no_physical_case"),
+            "experimental_case_count": ent.get("experimental_case_count"),
+            "experimental_case_status": ent.get("experimental_case_status"),
+            "experimental_case_reason": ent.get("experimental_case_reason"),
+            "experimental_case_lower_bound": ent.get("experimental_case_lower_bound"),
+            "samples_are": ent.get("samples_are"),
+            # ---- links ------------------------------------------------------
+            "measurement_class": ent.get("measurement_class"),
+            "fit_of_entity": ent.get("fit_of_entity"),
+            "fit_of_series_label": ent.get("fit_of_series_label"),
+            "originally_reported_in": ent.get("originally_reported_in"),
+            # ---- chemistry --------------------------------------------------
+            "material": ent.get("material"),
+            "material_scope_level": ent.get("material_scope_level"),
+            "material_evidence": ent.get("material_evidence"),
+            "material_candidates": ent.get("material_candidates") or [],
+            "material_ambiguity_reason": ent.get("material_ambiguity_reason"),
+            "multi_material_paper": ent.get("multi_material_paper"),
+            "precursors": ent.get("precursors") or [],
+            "coreactants": ent.get("coreactants") or [],
+            "chemistry_provenance": ent.get("chemistry_provenance"),
+            "chemistry_consistent": ent.get("chemistry_consistent"),
+            "chemistry_inconsistency": ent.get("chemistry_inconsistency"),
+            # ---- axes + provenance ------------------------------------------
+            "coordinate": ent.get("coordinate"),
+            "coordinate_unit": ent.get("coordinate_unit"),
+            "measurand": ent.get("measurand"),
+            "measurand_unit": ent.get("measurand_unit"),
+            "caption": prov.get("caption"),
+            "provenance": prov,
+            "bound_condition_count": len(ent.get("bound_conditions") or []),
+            "ambiguous_condition_count": len(ent.get("ambiguous_conditions") or []),
+        })
+    return {
+        "paper_id": sd,
+        "source_series_total": len(entities),
+        "result_records": len(rows),
+        "summary": _result_summary(rows),
+        "results": rows,
+    }
+
+
+def _result_summary(rows):
+    from collections import Counter
+    kinds = Counter(r["result_kind"] for r in rows)
+    return {
+        "source_figure_series": len(rows),
+        "resolved_result_records": len(rows),
+        "physical_experimental_cases": sum(r["experimental_case_count"] or 0
+                                           for r in rows),
+        "continuous_experimental_runs": kinds.get("continuous_experimental_run", 0),
+        "discrete_experimental_sweeps": kinds.get("discrete_experimental_sweep", 0),
+        "discrete_experimental_cases": sum(
+            r["experimental_case_count"] or 0 for r in rows
+            if r["result_kind"] == "discrete_experimental_sweep"),
+        "experimental_profiles": kinds.get("experimental_profile", 0),
+        "multi_output_measurements": kinds.get("multi_output_measurement", 0),
+        "fits_or_calculated_representations": kinds.get(
+            "fit_or_calculated_representation", 0),
+        "simulations": kinds.get("simulation", 0),
+        "model_curves": kinds.get("model_curve", 0),
+        "imported_literature_data": kinds.get("imported_literature_data", 0),
+        "derived_representations": kinds.get("derived_representation", 0),
+        "unresolved_series": kinds.get("unresolved", 0),
+        # A generic model curve (reactant A into a channel) has no film material,
+        # which is not an ambiguity. Only a MEASURED series without a resolved
+        # material is one.
+        "material_ambiguities": sum(
+            1 for r in rows
+            if r["material"] is None and r["is_current_paper_experiment"]),
+        "material_not_applicable_model_curves": sum(
+            1 for r in rows
+            if r["material"] is None and not r["is_current_paper_experiment"]),
+        "chemistry_inconsistencies": sum(1 for r in rows
+                                         if r["chemistry_consistent"] is False),
+        "sweeps_with_unresolved_settings": sum(
+            1 for r in rows
+            if r["experimental_case_status"] == "unresolved_settings"),
+    }
+
+
+def _f(v):
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return v
+
+
 def to_experiments(sd, scout, records, card):
     # Chemistry is resolved PER MATERIAL, never by list position. The scout emits
     # materials/precursors/coreactants as three independent lists, so `[0]` carried no
@@ -475,20 +1289,121 @@ def to_experiments(sd, scout, records, card):
     carrier = {"species": card.get("carrier_gas")} if card.get("carrier_gas") else None
     ptype = lib.canon_process(card.get("process_type")) or card.get("process_type")
     base_ctrl = paper_conditions(card)
-    geom_struct, geom_class, geom_ctrl = geometry_facts(sd)
-    base_ctrl = base_ctrl + geom_ctrl
+    # geometry/model parameters are re-read PER MATERIAL below; only the
+    # material-independent ones belong in the shared base
+    geom_struct, geom_class, _geom_all = geometry_facts(sd, scout.get("materials"))
+    _geom_cache = {}
+
+    def _geom_for(mat):
+        if mat not in _geom_cache:
+            _geom_cache[mat] = geometry_facts(
+                sd, scout.get("materials"), material=mat)[2]
+        return _geom_cache[mat]
     pid = short_pid(sd)
     exps = []
     for r in records:
         mq = lib.canon_quantity((r.get("measurand") or {}).get("quantity")) or (r.get("measurand") or {}).get("quantity")
         cq = lib.canon_quantity(r.get("coordinate")) or r.get("coordinate")
-        mv, mu = _norm_unit(mq, None, (r.get("measurand") or {}).get("unit"))
         pts = [p for p in (r.get("points") or []) if isinstance(p, list) and len(p) == 2]
-        mat = lib.canon_material(r.get("material")) or (scout.get("materials") or [None])[0]
-        _ch = _chem_for(mat)
-        prec_c, core_c = _ch.precursor, _ch.co_reactant
-        reactants = _reactants_for(_ch)
+
+        # ---- units: convert VALUES together with the unit -------------------
+        # The previous code called _norm_unit(mq, None, unit): with value=None the
+        # converter returned immediately, so the unit label was kept but the y
+        # values were never rescaled. Å/cycle and nm/cycle sat side by side as
+        # bare numbers. Both axes are now converted for real, and the RAW axis
+        # metadata is preserved next to the converted values.
+        raw_mu = (r.get("measurand") or {}).get("unit")
+        raw_cu = r.get("coordinate_unit")
+        labels = _axis_labels(sd, r)
+        ys, mu, y_conv = clive.normalize_measurand(mq, raw_mu, [p[1] for p in pts],
+                                                   label=labels.get("y"))
+        raw_cu_out, cu_norm, c_dimensionless = clive.coordinate_unit(
+            cq, raw_cu, label=labels.get("x"))
+        xs, cu_conv = [p[0] for p in pts], None
+        if cu_norm:
+            xs, cu_target, c_conv = clive.normalize_measurand(cq, cu_norm,
+                                                              [p[0] for p in pts],
+                                                              label=labels.get("x"))
+            if c_conv.get("values_rescaled"):
+                cu_norm, cu_conv = cu_target, c_conv
+        canon_pts = [[x, y] for x, y in zip(xs, ys)]
+        # ---- material from the NARROWEST evidence, never by list position ----
+        # `r["material"]` is trustworthy only when stage 05 read it off the series
+        # legend; for every other legend it wrote scout.materials[0], which
+        # assigned Al2O3 to a caption that says "TiO2 from TiCl4 and H2O". The
+        # ladder re-resolves from the caption/scout note the record already
+        # carries, and REFUSES on a multi-material paper with no figure-level
+        # evidence rather than falling back to element zero.
+        _prov_r = r.get("provenance") or {}
+        # the caption is stored truncated on the record; the figure's own full
+        # caption is what the panel clause has to be split out of
+        _full_cap = _figure_caption(sd, _prov_r.get("fig_docling_index")) \
+            or _prov_r.get("caption")
+        _pan_clauses, _ = ccond.caption_panel_clauses(_full_cap or "")
+        # does this figure hand a DIFFERENT material to different panels?
+        _panel_mats = {m for cl in _pan_clauses.values()
+                       for m in cschem._named(cl, scout.get("materials"))}
+        _scoped = cschem.resolve_material(
+            panel_assigns_materials=(len(_panel_mats) > 1),
+            series_label=r.get("material_raw"),
+            caption=_full_cap,
+            panel_clause=_pan_clauses.get(str(_prov_r.get("panel") or "").lower()),
+            drill_why=_drill_why(sd, _prov_r.get("fig_docling_index")),
+            body=_figure_body(sd, _prov_r.get("figure_number")),
+            materials=scout.get("materials"),
+            legend_is_material=(r.get("material")
+                                if r.get("series_kind") == "material" else None))
+        mat = lib.canon_material(_scoped["material"]) or _scoped["material"]
+        # an explicit "<material> from <precursor> and <coreactant>" in THIS
+        # figure's caption outranks any paper-level default
+        _cap_chem = cschem.caption_chemistry(_prov_r.get("caption"),
+                                             scout.get("materials"))
+        # an explicit methods mapping ("... for the growth of SiO2, TiO2, Al2O3
+        # and HfO2, respectively") beats element matching, which depends on a
+        # hand-curated hint table and left SiO2 and HfO2 with no precursor at all
+        _meth_chem = _methods_mapping(sd, scout.get("materials")).get(mat)
+        if _meth_chem and not _cap_chem:
+            prec_c = lib.canon_precursor(_meth_chem["precursor"]) or _meth_chem["precursor"]
+            _ch = _chem_for(mat)
+            core_c = _ch.co_reactant
+            _chem_prov_extra = {
+                "resolution_status": "fully_resolved" if core_c else "precursor_only",
+                "resolution_method": "methods_respectively_mapping",
+                "confidence": 0.9, "source_level": "paper_methods",
+                "directly_extracted": True, "material_scope": mat,
+                "supporting_evidence": _meth_chem["evidence"],
+                "ambiguity_reason": None, "candidate_mappings": None}
+        elif _cap_chem and mat and _cap_chem["material"] == _scoped["material"]:
+            prec_c = lib.canon_precursor(_cap_chem["precursor"]) or _cap_chem["precursor"]
+            core_c = lib.canon_coreactant(_cap_chem["coreactant"]) or _cap_chem["coreactant"]
+            _ch = _chem_for(mat)
+            _chem_prov_extra = {
+                "resolution_status": "fully_resolved",
+                "resolution_method": "figure_caption_explicit",
+                "confidence": 0.95, "source_level": "figure",
+                "directly_extracted": True, "material_scope": mat,
+                "supporting_evidence": _cap_chem["evidence"],
+                "ambiguity_reason": None, "candidate_mappings": None}
+        else:
+            _ch = _chem_for(mat)
+            prec_c, core_c = _ch.precursor, _ch.co_reactant
+            _chem_prov_extra = None
+        reactants = ([{"label": "A", "role": "precursor", "species": prec_c}]
+                     if prec_c else [])
+        if core_c:
+            reactants.append({"label": "B", "role": "coreactant", "species": core_c})
+        # The element check is a heuristic over a symbol/name table; an explicit
+        # statement in the source is not. When the paper itself pairs the film
+        # with its precursor ("... for the growth of SiO2, TiO2, Al2O3 and HfO2,
+        # respectively"), the source wins -- otherwise TDMACpH, whose trailing H
+        # is the hafnium, reads as a contradiction of HfO2.
+        if (_chem_prov_extra or {}).get("directly_extracted"):
+            _consistent, _incons = True, None
+        else:
+            _consistent, _incons = cschem.consistent(mat, prec_c, core_c)
         press_ctrl = pressure10.pressure_facts(sd, reactants)
+        geom_ctrl = _geom_for(mat)
+        base_ctrl_m = base_ctrl + geom_ctrl
         fig = (r.get("provenance") or {}).get("figure", "F?").replace("Fig ", "F").replace(" ", "")
         panel = (r.get("provenance") or {}).get("panel") or ""
         panel = panel.lower() if re.fullmatch(r"[A-Za-z]", str(panel).strip()) else ""   # only a real panel letter
@@ -516,16 +1431,45 @@ def to_experiments(sd, scout, records, card):
         series_name = (f'{r.get("series_axis") or "series"}: {r.get("series_value")}'
                        if r.get("series_kind") in ("numeric_sweep", "categorical")
                        and r.get("series_value") else None)
+        # ---- granularity from the ONTOLOGY AXIS ROLE, not the point count ----
+        # Old rule: "profile" if len(pts) > 1. That made every 5-point temperature
+        # sweep a single "profile experiment". A coordinate axis (position, depth)
+        # is one profile; a CONDITION axis (temperature, cycles, pulse time) means
+        # each point is its own experiment and the curve is an ExperimentSeries.
+        _granularity, _gran_reason = clive.axis_granularity(cq, len(pts))
         e = {
             "material": mat, "material_raw": r.get("material"),
+            "material_scope_level": _scoped["scope_level"],
+            "material_evidence": _scoped["evidence"],
+            "material_candidates": _scoped["candidates"],
+            "material_ambiguity_reason": _scoped["ambiguity_reason"],
+            "multi_material_paper": _scoped["multi_material_paper"],
+            "chemistry_consistent": _consistent,
+            "chemistry_inconsistency": _incons,
             "precursors": [prec_c] if prec_c else [], "coreactants": [core_c] if core_c else [],
             "reactants": reactants, "carrier_gas": carrier, "process_type": ptype,
             "cycle_sequence": "AB" if core_c else "A",
-            "controlled": _dedup_pressures(base_ctrl + panel_ctrl + series_ctrl + press_ctrl),
-            "measurand": {"quantity": mq, "unit": (r.get("measurand") or {}).get("unit"),
-                          "family": lib.family(mq)},
+            "controlled": _dedup_pressures(base_ctrl_m + panel_ctrl + series_ctrl + press_ctrl),
+            # measurand/coordinate keep the RAW unit AND the canonical unit side
+            # by side; `unit` stays the KB-canonical one so existing consumers
+            # keep working, `raw_unit` is the untouched source value.
+            "measurand": {"quantity": mq, "unit": mu, "raw_unit": raw_mu,
+                          "family": lib.family(mq), "unit_conversion": y_conv},
             "coordinate": cq, "coordinate_family": lib.family(cq),
-            "points": pts, "granularity": "profile" if len(pts) > 1 else "single",
+            # spec §2.3: a coordinate number is never stored without its unit.
+            # `coordinate_unit_normalized` is None only when the unit could not be
+            # resolved, and then `coordinate_unit_status` says why.
+            "coordinate_unit": raw_cu_out,
+            "coordinate_unit_normalized": cu_norm,
+            "coordinate_is_dimensionless": c_dimensionless,
+            "coordinate_unit_status": ("resolved" if cu_norm else "unresolved"),
+            "coordinate_unit_reason": (None if cu_norm else
+                                       "no parseable unit for coordinate %r and the "
+                                       "ontology does not declare it dimensionless" % cq),
+            "coordinate_unit_conversion": cu_conv,
+            "points": pts,                       # RAW digitized points, unchanged
+            "points_canonical": canon_pts,       # same points in canonical units
+            "granularity": _granularity,
             "relevance": "experimental" if r.get("source") == "measured" else "model",
             "is_model_result": r.get("source") == "simulated",
             "analysis_ready": bool(pts and mq),
@@ -534,15 +1478,26 @@ def to_experiments(sd, scout, records, card):
             "series_name": series_name,             # display only; built from structure, never re-parsed
             "phase": r.get("phase"),                # crystallographic phase (e.g. "c-MoS2") or None
             "structure": geom_struct, "geometry_class": geom_class,
-            "chemistry_provenance": _chem_prov(_ch),
+            "chemistry_provenance": _chem_prov_extra or _chem_prov(_ch),
             # dependent = the measured output; varies = the swept coordinate (profiles).
             # Populated so the shared 0706 consumers (evaluate_kb, kg, similarity) see the
             # measured/swept quantities the same way as old-pipeline records.
-            "varies": [cq] if (cq and len(pts) > 1) else [],
-            "dependent": [{"quantity": mq, "unit": (r.get("measurand") or {}).get("unit"),
+            # `varies` is the swept COORDINATE of a profile. A condition sweep does
+            # not "vary" inside one experiment — it varies ACROSS the experiments of
+            # its ExperimentSeries, which is recorded as series_varies below.
+            "varies": [cq] if (cq and _granularity == "profile") else [],
+            "series_varies": cq if (cq and _granularity == "series") else None,
+            "granularity_reason": _gran_reason,
+            "axis_role": clive.axis_role_of(clive.canon_quantity(cq) or cq),
+            "dependent": [{"quantity": mq, "unit": mu, "raw_unit": raw_mu,
                            "family": lib.family(mq)}] if mq else [],
             "issues": [] if pts else ["no-points"],
         }
+        # scope every controlled value and flag same-scope conflicts so a paper-level
+        # geometry value with several candidates is NOT broadcast (spec §2.7)
+        e["controlled"], _conflicts = clive.mark_ambiguous_context(e["controlled"])
+        if _conflicts:
+            e["context_conflicts"] = _conflicts
         r_obj = recipe_mod.from_experiment(e)
         e["recipe"] = r_obj.to_dict(); e["recipe"]["completeness"] = r_obj.completeness()
         exps.append(e)
@@ -582,6 +1537,14 @@ def to_experiments(sd, scout, records, card):
                 e["controlled"].append({"quantity": "precursor_molecular_diameter", "value": round(dpm * 1e-3, 4),
                                         "unit": "nm", "of_reactant": lab, "source": "species",
                                         "origin": {**so, "property": "molecular_diameter"}})
+    # Re-scope AFTER the species properties are appended, so every controlled value —
+    # including the ontology reference data added here — carries its applicability
+    # scope and any same-scope conflict flag. Doing this only inside the record loop
+    # left the late-appended species values unscoped.
+    for e in exps:
+        e["controlled"], _c = clive.mark_ambiguous_context(e.get("controlled") or [])
+        if _c:
+            e["context_conflicts"] = _c
     return pid, exps
 
 
@@ -634,7 +1597,13 @@ def _unit(v):
 
 def main(sds):
     resolve_only = "--resolve-only" in sds        # deterministic re-grounding, NO LLM
+    want_all = "--all" in sds
     sds = [s for s in sds if not s.startswith("--")]
+    if want_all or not sds:
+        # every paper in the corpus manifest (the authoritative 31-paper list)
+        sds = csources.papers()
+        sds = [s for s in sds if (EXTRACTED / s / "scout.json").exists()]
+        print("[to-kb] --all: %d paper(s) from the manifest" % len(sds))
     client = None
     if not resolve_only:
         from google import genai
@@ -646,16 +1615,76 @@ def main(sds):
         records = json.loads((d / "records.json").read_text()) if (d / "records.json").exists() else []
         card, tok = get_card(sd, scout, client)   # cached; LLM only first time (skipped on --resolve-only)
         TI += tok.get("in", 0); TO += tok.get("out", 0)
-        pid, exps = to_experiments(sd, scout, records, card)
+        pid, curve_records = to_experiments(sd, scout, records, card)
+        # Each curve becomes a TYPED SOURCE ENTITY. Experimental cases are minted
+        # only where the paper supports them; observations stay observations.
+        entities, exps, series, assertions = resolve_source_entities(sd, curve_records, pid)
         outdir = OUT / pid / "resolved"
         outdir.mkdir(parents=True, exist_ok=True)
+        (outdir / "entities.json").write_text(json.dumps(entities, indent=1))
         (outdir / "experiments.json").write_text(json.dumps(exps, indent=1))
-        mats = sorted({e["material"] for e in exps if e["material"]})
-        ready = sum(1 for e in exps if e["analysis_ready"])
-        exp = sum(1 for e in exps if e["relevance"] == "experimental")
-        print(f"[to-kb] {sd} → output/{pid}/  {len(exps)} exps ({ready} ready, {exp} exp / {len(exps)-exp} model) "
+        (outdir / "series.json").write_text(json.dumps(series, indent=1))
+        (outdir / "assertions.json").write_text(json.dumps(assertions, indent=1))
+        (outdir / "counts.json").write_text(json.dumps(_counts(entities, exps, series), indent=1))
+        # THE authoritative extraction-result surface: one row per source curve,
+        # complete on its own. experiments.json stays a derived physical-experiment
+        # view; nobody should have to join three files to find out what a paper's
+        # figures contain.
+        (outdir / "results.json").write_text(
+            json.dumps(build_results_view(sd, pid, entities, curve_records), indent=1))
+        mats = sorted({e.get("material") for e in exps if e.get("material")})
+        ready = sum(1 for e in exps if e.get("analysis_ready"))
+        exp = sum(1 for e in exps if e.get("relevance") == "experimental")
+        _c = _counts(entities, exps, series)
+        print(f"[to-kb] {sd} → output/{pid}/  {len(entities)} entities → "
+              f"{_c['experimental_cases']} cases, {_c['experimental_series']} series, "
+              f"{_c['simulation_runs']}sim/{_c['model_sweeps']}sweep/"
+              f"{_c['imported_literature_profiles']}lit/{_c['unresolved_source_entities']}unres "
               f"materials={mats} chem={card.get('precursors')}+{card.get('coreactants')} T={card.get('temperature_C')}")
     print(f"[to-kb] methods gap-fill tokens: in={TI} out={TO}")
+
+
+
+
+def _counts(entities, cases, series):
+    """Differentiated counts. There is deliberately NO single 'experiment count':
+    the contract requires each kind to be reported separately, and any count that
+    would have to be inferred from digitisation density is reported as unresolved."""
+    from collections import Counter
+    cls = Counter(e["classification"] for e in entities)
+    return {
+        "source_entities": len(entities),
+        "plot_series": len(entities),
+        "experimental_cases": len(cases),
+        "experimental_cases_lower_bound": len(cases) + sum(
+            e.get("experimental_case_lower_bound", 0) for e in entities
+            if e.get("experimental_case_status") == "unresolved_settings"),
+        "deposition_runs": sum(1 for c in cases
+                               if (c.get("measurand") or {}).get("quantity") in
+                               ("film_thickness", "growth_per_cycle", "growth_rate",
+                                "normalized_thickness", "step_coverage")),
+        "unique_samples": len({(c.get("material"), c.get("entity_id")) for c in cases}),
+        "measurements": sum(1 for e in entities if e.get("measurement_class")),
+        "experimental_profiles": cls.get("experimental_profile", 0),
+        "continuous_traces": cls.get("continuous_trace", 0),
+        "multi_output_measurements": cls.get("multi_output_measurement", 0),
+        "experimental_series": len(series),
+        "series_with_unresolved_case_count": sum(
+            1 for s in series if s.get("case_count_status") == "unresolved_settings"),
+        "observations_pending_case_resolution": sum(
+            e.get("observation_count_unresolved_as_cases", 0) for e in entities),
+        "imported_literature_profiles": cls.get("imported_literature_data", 0),
+        "simulation_runs": cls.get("simulation", 0),
+        "model_sweeps": cls.get("model_sweep", 0),
+        "model_prediction_points": sum(e["n_observations"] for e in entities
+                                       if e["classification"] in ("model_sweep", "simulation")),
+        "fits": cls.get("fit", 0),
+        "derived_representations": sum(
+            1 for e in entities if e.get("representation") in ("scaled", "normalized", "inset")),
+        "unresolved_source_entities": cls.get("unknown", 0),
+        "total_observations": sum(e["n_observations"] for e in entities),
+        "classification_breakdown": dict(cls),
+    }
 
 
 if __name__ == "__main__":

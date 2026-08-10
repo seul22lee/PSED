@@ -2,21 +2,88 @@
  {
   "material": "Pt",
   "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 1 Cross-sectional TEM micrographs analyzing the deposition of Pt thin films by ALD at 300 \u00b0 C for different thickness stages: (a) 50 ALD cycles, (b) 100 ALD cycles, (c) 200 ALD cycles, (d) 400 ALD cycles, (e) 1000",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": true,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
   "precursors": [],
   "coreactants": [],
-  "reactants": [
-   {
-    "label": "A",
-    "role": "precursor",
-    "species": null
-   }
-  ],
+  "reactants": [],
   "carrier_gas": null,
   "process_type": "thermal",
   "cycle_sequence": "A",
   "controlled": [
    {
-    "quantity": "temperature",
+    "quantity": "feature_width",
+    "value": 1000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "material_scope": null,
+     "evidence_id": "10.1007_s12274-010-0066-9::geometry::feature_width::0",
+     "raw_label": "pore size",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "SEM top view micrograph of the porous Si template with a pore size of 1 \u00b5m",
+     "parameter_status": "measured"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "feature_height",
+    "value": 90000.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "material_scope": null,
+     "evidence_id": "10.1007_s12274-010-0066-9::geometry::feature_height::1",
+     "raw_label": "Si template pore depth",
+     "symbol": null,
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "cross-sectional SEM view revealing the Si template pore depth of 90 \u00b5m",
+     "parameter_status": "measured"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 90,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "material_scope": null,
+     "evidence_id": "10.1007_s12274-010-0066-9::geometry::aspect_ratio::2",
+     "raw_label": "aspect ratio",
+     "symbol": null,
+     "status": "derived_from_reported_dimensions",
+     "scope": "figure",
+     "evidence": "porous Si template with a pore size of 1 \u00b5m, (b) cross-sectional SEM view revealing the Si template pore depth of 90 \u00b5m",
+     "basis": "pore depth / pore size"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "deposition_temperature",
     "value": 300.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -29,12 +96,14 @@
      "experiment_id": "10.1007_s12274-010-0066-9-F1f-0",
      "figure": "Fig 1",
      "panel": "f"
-    }
+    },
+    "scope": "figure",
+    "context_status": "resolved"
    },
    {
     "quantity": "cycle_number",
     "value": 200.0,
-    "unit": "cycles",
+    "unit": null,
     "of_reactant": null,
     "source": "caption",
     "recipe_role": "control_setting",
@@ -45,47 +114,110 @@
      "experiment_id": "10.1007_s12274-010-0066-9-F1f-0",
      "figure": "Fig 1",
      "panel": "f"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "200 ALD cycles",
+     "locator": "document.md near Fig 1"
     }
    }
   ],
   "measurand": {
    "quantity": "intensity",
    "unit": "a.u.",
-   "family": null
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
   },
-  "coordinate": "diffraction_angle",
+  "coordinate": "2\u03b8",
   "coordinate_family": null,
+  "coordinate_unit": "\u00b0",
+  "coordinate_unit_normalized": "deg",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
   "points": [
    [
     30.0,
     5.0
    ],
    [
-    35.0,
+    32.0,
     5.0
    ],
    [
-    38.5,
+    34.0,
+    5.0
+   ],
+   [
+    36.0,
+    5.0
+   ],
+   [
+    38.0,
+    5.2
+   ],
+   [
+    39.0,
     6.0
    ],
    [
     39.5,
-    20.0
+    12.0
+   ],
+   [
+    39.8,
+    30.0
+   ],
+   [
+    40.0,
+    52.0
    ],
    [
     40.1,
-    53.0
+    51.0
    ],
    [
-    40.7,
-    18.0
+    40.3,
+    20.0
    ],
    [
-    42.0,
-    6.0
+    40.8,
+    6.5
    ],
    [
-    45.0,
+    41.5,
+    5.2
+   ],
+   [
+    43.0,
+    5.0
+   ],
+   [
+    46.0,
     5.0
    ],
    [
@@ -93,47 +225,79 @@
     5.0
    ],
    [
-    55.0,
+    54.0,
     5.0
    ],
    [
-    60.0,
+    58.0,
     5.0
    ],
    [
-    65.0,
+    62.0,
     5.0
    ],
    [
-    68.5,
-    8.0
-   ],
-   [
-    69.6,
-    95.0
-   ],
-   [
-    70.5,
-    8.0
-   ],
-   [
-    75.0,
+    66.0,
     5.0
    ],
    [
-    80.0,
+    68.0,
+    5.5
+   ],
+   [
+    68.8,
+    15.0
+   ],
+   [
+    69.1,
+    98.0
+   ],
+   [
+    69.4,
+    20.0
+   ],
+   [
+    70.0,
+    6.0
+   ],
+   [
+    71.0,
+    5.0
+   ],
+   [
+    74.0,
+    5.0
+   ],
+   [
+    78.0,
+    5.0
+   ],
+   [
+    82.0,
+    5.0
+   ],
+   [
+    84.0,
     5.0
    ],
    [
     85.0,
-    5.0
+    5.5
    ],
    [
-    86.2,
+    86.0,
     8.0
    ],
    [
-    87.5,
+    86.3,
+    7.5
+   ],
+   [
+    87.0,
+    5.5
+   ],
+   [
+    88.0,
     5.0
    ],
    [
@@ -141,11 +305,157 @@
     5.0
    ]
   ],
-  "granularity": "profile",
+  "points_canonical": [
+   [
+    30.0,
+    5.0
+   ],
+   [
+    32.0,
+    5.0
+   ],
+   [
+    34.0,
+    5.0
+   ],
+   [
+    36.0,
+    5.0
+   ],
+   [
+    38.0,
+    5.2
+   ],
+   [
+    39.0,
+    6.0
+   ],
+   [
+    39.5,
+    12.0
+   ],
+   [
+    39.8,
+    30.0
+   ],
+   [
+    40.0,
+    52.0
+   ],
+   [
+    40.1,
+    51.0
+   ],
+   [
+    40.3,
+    20.0
+   ],
+   [
+    40.8,
+    6.5
+   ],
+   [
+    41.5,
+    5.2
+   ],
+   [
+    43.0,
+    5.0
+   ],
+   [
+    46.0,
+    5.0
+   ],
+   [
+    50.0,
+    5.0
+   ],
+   [
+    54.0,
+    5.0
+   ],
+   [
+    58.0,
+    5.0
+   ],
+   [
+    62.0,
+    5.0
+   ],
+   [
+    66.0,
+    5.0
+   ],
+   [
+    68.0,
+    5.5
+   ],
+   [
+    68.8,
+    15.0
+   ],
+   [
+    69.1,
+    98.0
+   ],
+   [
+    69.4,
+    20.0
+   ],
+   [
+    70.0,
+    6.0
+   ],
+   [
+    71.0,
+    5.0
+   ],
+   [
+    74.0,
+    5.0
+   ],
+   [
+    78.0,
+    5.0
+   ],
+   [
+    82.0,
+    5.0
+   ],
+   [
+    84.0,
+    5.0
+   ],
+   [
+    85.0,
+    5.5
+   ],
+   [
+    86.0,
+    8.0
+   ],
+   [
+    86.3,
+    7.5
+   ],
+   [
+    87.0,
+    5.5
+   ],
+   [
+    88.0,
+    5.0
+   ],
+   [
+    90.0,
+    5.0
+   ]
+  ],
+  "granularity": "multi_output",
   "relevance": "experimental",
   "is_model_result": false,
   "analysis_ready": true,
-  "exp_id": "10.1007_s12274-010-0066-9-F1f-0",
+  "exp_id": "10.1007_s12274-010-0066-9-E000",
   "provenance": {
    "figure": "Fig 1",
    "figure_number": "1",
@@ -155,7 +465,7 @@
    "extractor": "vision-llm",
    "doi": "10.1007_s12274-010-0066-9"
   },
-  "series_name": "series: 200 ALD cycles Pt film",
+  "series_name": "series: 200 ALD cycles",
   "phase": null,
   "structure": "mesoporous_film",
   "geometry_class": "porous_material",
@@ -178,29 +488,22 @@
     ]
    }
   },
-  "varies": [
-   "diffraction_angle"
-  ],
+  "varies": [],
+  "series_varies": null,
+  "granularity_reason": "x axis role could not be determined",
+  "axis_role": null,
   "dependent": [
    {
     "quantity": "intensity",
     "unit": "a.u.",
+    "raw_unit": "a.u.",
     "family": null
    }
   ],
   "issues": [],
   "recipe": {
    "material": "Pt",
-   "reactants": [
-    {
-     "label": "A",
-     "role": "precursor",
-     "species": null,
-     "dose_time": null,
-     "purge_time": null,
-     "partial_pressure": null
-    }
-   ],
+   "reactants": [],
    "cycle_sequence": "A",
    "supercycle": null,
    "supercycle_repeats": null,
@@ -208,32 +511,27 @@
    "temperature": 300.0,
    "flow_rate": null,
    "carrier_gas": null,
-   "structure": null,
+   "structure": {
+    "H": 90000.0,
+    "W": 1000.0
+   },
    "targets": null,
    "provenance": "extracted",
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1007_s12274-010-0066-9-F1f-0",
+    "_exp_id": "10.1007_s12274-010-0066-9-E000",
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Pt",
-     "experiment_id": "10.1007_s12274-010-0066-9-F1f-0"
+     "experiment_id": "10.1007_s12274-010-0066-9-E000"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "A",
-     "experiment_id": "10.1007_s12274-010-0066-9-F1f-0"
-    },
-    "reactants::": {
-     "source": "experiment",
-     "from": "experiment_record",
-     "value": [
-      "A"
-     ],
-     "experiment_id": "10.1007_s12274-010-0066-9-F1f-0"
+     "experiment_id": "10.1007_s12274-010-0066-9-E000"
     },
     "cycle_number::": {
      "source": "experiment",
@@ -254,7 +552,79 @@
      "panel": "f"
     }
    },
-   "completeness": 0.5
-  }
+   "completeness": 0.667
+  },
+  "entity_id": "10.1007_s12274-010-0066-9-E000",
+  "entity_key": "10.1007_s12274-010-0066-9|2|1|f|200 ALD cycles|primary",
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 36,
+  "observations_are_experiments": false,
+  "ambiguous_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "species": null,
+    "scope": "figure",
+    "candidates": [
+     "300 \u00b0C",
+     "320 \u00b0C"
+    ],
+    "status": "ambiguous",
+    "reason": "2 distinct deposition_temperature values at figure scope; no narrower evidence distinguishes them, so none is applied",
+    "assertions": [
+     {
+      "quantity": "deposition_temperature",
+      "value": "300",
+      "unit": "\u00b0C",
+      "raw_evidence": "deposition temperature of 300 \u00b0 C",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1007_s12274-010-0066-9",
+      "figure_index": "2",
+      "figure_number": "1",
+      "panel": "f",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1007_s12274-010-0066-9|2|1|f|200 ALD cycles|primary"
+     },
+     {
+      "quantity": "deposition_temperature",
+      "value": "320",
+      "unit": "\u00b0C",
+      "raw_evidence": "deposition temperatures higher than 320 \u00b0 C",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1007_s12274-010-0066-9",
+      "figure_index": "2",
+      "figure_number": "1",
+      "panel": "f",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1007_s12274-010-0066-9|2|1|f|200 ALD cycles|primary"
+     }
+    ]
+   }
+  ]
  }
 ]

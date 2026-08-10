@@ -27,14 +27,57 @@ for _g in ("precursors", "coreactants"):
                 _SPECIES[str(_key).strip().lower()] = _it
 
 
-def _load():
-    """All analysis-ready resolved experiments, tagged with their paper id."""
+def _load(include_non_experimental=True):
+    """Resolved records for KB questions, tagged with their paper id.
+
+    `experiments.json` now holds ONLY current-paper experimental cases, so a
+    modelling paper (whose curves are simulations or re-plotted literature) has
+    none. Chemistry/condition questions must still see those papers — the process
+    they study is real evidence even when the plotted curve is not this paper's
+    experiment — so the typed entity records are folded in, each tagged with its
+    `record_nature`. Callers that need experiments only can filter on it."""
     out = []
     for f in sorted(glob.glob(str(ROOT / "output" / "*" / "resolved" / "experiments.json"))):
         pid = f.split("/output/")[1].split("/")[0]
         for e in json.loads(Path(f).read_text()):
             e["_pid"] = pid
+            e.setdefault("record_nature", "experimental_case")
             out.append(e)
+    if not include_non_experimental:
+        return out
+    for f in sorted(glob.glob(str(ROOT / "output" / "*" / "resolved" / "entities.json"))):
+        pid = f.split("/output/")[1].split("/")[0]
+        for ent in json.loads(Path(f).read_text()):
+            if ent.get("is_current_paper_experiment"):
+                continue          # already present as an experimental case
+            out.append({
+                "_pid": pid, "exp_id": ent["entity_id"],
+                "record_nature": ent["classification"],
+                "entity_id": ent["entity_id"], "entity_class": ent["entity_class"],
+                "material": ent.get("material"),
+                "precursors": ent.get("precursors") or [],
+                "coreactants": ent.get("coreactants") or [],
+                "reactants": ent.get("reactants") or [],
+                "process_type": ent.get("process_type"),
+                "structure": ent.get("structure"),
+                "geometry_class": ent.get("geometry_class"),
+                "chemistry_provenance": ent.get("chemistry_provenance"),
+                "controlled": [
+                    {"quantity": b.get("quantity"), "value": b.get("value"),
+                     "unit": b.get("unit"), "of_reactant": b.get("of_reactant"),
+                     "source": b.get("source_kind"), "scope": b.get("bound_at_scope"),
+                     "context_status": "resolved"}
+                    for b in (ent.get("bound_conditions") or [])],
+                "measurand": {"quantity": ent.get("measurand"),
+                              "unit": ent.get("measurand_unit")},
+                "coordinate": ent.get("coordinate"),
+                "points": [[o.get("x_raw"), o.get("y_raw")] for o in ent.get("observations") or []],
+                "relevance": ("model" if ent["classification"] in
+                              ("simulation", "model_sweep") else "experimental"),
+                "is_model_result": ent["classification"] in ("simulation", "model_sweep"),
+                "analysis_ready": bool(ent.get("observations")),
+                "provenance": ent.get("provenance") or {},
+            })
     return out
 
 

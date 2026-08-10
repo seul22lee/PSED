@@ -1,0 +1,128 @@
+{
+ "papers_processed": 31,
+ "papers_with_figure_data": 27,
+ "figures": 133,
+ "panels": 242,
+ "curves": 659,
+ "digitized_points": 12085,
+ "raw_x_label_recovery_rate": 0.2762,
+ "raw_y_label_recovery_rate": 0.2792,
+ "x_quantity_resolution_rate": 0.5933,
+ "y_quantity_resolution_rate": 0.7102,
+ "x_quantity_resolved": 391,
+ "y_quantity_resolved": 468,
+ "x_semantic_resolution_rate": 0.3824,
+ "y_semantic_resolution_rate": 0.3263,
+ "x_comparison_ready": 252,
+ "y_comparison_ready": 215,
+ "axis_semantic_resolution_rate": 0.3543,
+ "already_canonical_rate": 0.2613,
+ "direct_unit_conversion_rate": 0.1092,
+ "successful_conversion_rate": 0.3705,
+ "missing_context_rate": 0.0214,
+ "ambiguous_rate": 0.0007,
+ "unsupported_rate": 0.3897,
+ "invalid_rate": 0.0229,
+ "not_applicable_rate": 0.1948,
+ "transformations_total": 1355,
+ "units_recovered_from_verbatim_label": 34,
+ "low_confidence_assignments": 34,
+ "granularity_changed_curves": 287,
+ "granularity_distribution": {
+  "series": 164,
+  "correlation": 24,
+  "unresolved": 267,
+  "profile": 197,
+  "single": 7
+ },
+ "transformation_count_by_rule": {
+  "identity_canonical_mapping": 354,
+  "growth_per_cycle_unit_conversion": 33,
+  "axis_semantic_resolution": 823,
+  "length_unit_conversion": 31,
+  "temperature_unit_conversion": 55,
+  "time_unit_conversion": 22,
+  "denormalize_x_by_feature_height": 36,
+  "denormalize_x_by_channel_length": 1
+ },
+ "quantity_count_by_comparison_group": {
+  "pulse_time": 39,
+  "growth_per_cycle": 72,
+  "film_thickness": 124,
+  "process_temperature": 55,
+  "spatial_position": 123,
+  "normalized_spatial_position_by_feature_height": 36,
+  "normalized_spatial_position_by_channel_length": 1,
+  "surface_coverage": 7,
+  "penetration_depth": 8,
+  "cycle_count": 2
+ },
+ "normalization_definition_usage": {
+  "x_over_feature_height": 36,
+  "x_over_channel_length": 1
+ },
+ "status_by_axis": {
+  "x": {
+   "already_canonical": 145,
+   "unsupported": 320,
+   "converted": 107,
+   "not_applicable": 61,
+   "invalid": 17,
+   "missing_context": 9
+  },
+  "y": {
+   "converted": 41,
+   "not_applicable": 203,
+   "unsupported": 208,
+   "already_canonical": 174,
+   "missing_context": 19,
+   "invalid": 14
+  }
+ },
+ "context_scope_usage": {
+  "method": 2,
+  "paper": 1,
+  "curve": 16,
+  "panel": 6,
+  "figure": 10
+ },
+ "context_status": {
+  "resolved": 35,
+  "ambiguous": 1,
+  "missing_context": 1
+ },
+ "distinct_paper_level_assertions": 1,
+ "note_on_counting": "paper-level context is counted once per distinct (paper, quantity, value, source) assertion, not once per experiment that could see it",
+ "most_common_unresolved_reasons": [
+  [
+   "does not resolve to any ontology QuantityKind",
+   459
+  ],
+  [
+   "not a recognised, convertible unit",
+   68
+  ],
+  [
+   "the printed unit and the quantity disagree",
+   31
+  ],
+  [
+   "no normalization expression found",
+   28
+  ],
+  [
+   "no declared unit-conversion rule for dimension exposure",
+   1
+  ],
+  [
+   "distinct",
+   1
+  ],
+  [
+   "no value for",
+   1
+  ]
+ ],
+ "code_version": "e673785+dirty",
+ "created_at": 1784891489
+}

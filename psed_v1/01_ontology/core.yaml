@@ -265,6 +265,43 @@ classes:
   - {id: BarrierCoating, parent: Application}
   - {id: DecorativeCoating, parent: Application}
 
+  # --- comparability layer -----------------------------------------------------
+  # TBox for the canonical comparison layer (02_extraction/canonical/). These
+  # deliberately REUSE QuantityValue: a canonical value IS a QuantityValue that was
+  # produced_by a TransformationExecution. No parallel DerivedQuantityValue class is
+  # minted, and no existing class is duplicated.
+  - {id: TransformationRule, parent: Entity, definition: "A reusable, versioned rule for converting one quantity representation into another (unit conversion, normalization, algebraic derivation, ...). Declared here, bound to code by implementation_id."}
+  - {id: TransformationExecution, parent: Entity, definition: "One application of a TransformationRule to a specific source value, carrying the context values used, the status, and full provenance back to paper/figure/panel/curve/point."}
+  - {id: NormalizationDefinition, parent: Entity, definition: "The exact semantics of a normalized/dimensionless value: its numerator, its denominator, the denominator's role, and the reference location. x/H and x/L are DIFFERENT NormalizationDefinitions and never interchangeable."}
+  - {id: ComparisonGroup, parent: Entity, definition: "A semantic bucket within which canonical values may legitimately be compared. Values only enter a group when their semantics and context are resolved."}
+  - {id: ContextBinding, parent: Entity, definition: "A contextual quantity value bound to a target at a declared applicability scope (point/curve/series/panel/figure/experiment/method/paper), with provenance and evidence."}
+  - {id: AxisSemantics, parent: Entity, definition: "The resolved meaning of one plot axis: axis role (coordinate/condition/output), axis kind, normalization definition, and the evidence spans supporting the assignment."}
+
+  # --- source-entity layer -----------------------------------------------------
+  # A plotted CURVE is evidence, not an experiment. These classes separate what the
+  # paper physically did from how it was drawn, so that a densely digitised line can
+  # never masquerade as many depositions. Existing `Experiment` is retained and
+  # narrowed: it now means a physically distinct case (see ExperimentalCase).
+  - {id: SourceEntity, parent: Entity, definition: "One digitised curve or panel series as it appears in the paper: the unit of evidence, keyed by paper/figure/panel/series/representation."}
+  - {id: PlotSeries, parent: SourceEntity, definition: "A drawn curve. NEVER an Experiment: it is the depiction of some underlying case, measurement, simulation or imported dataset."}
+  - {id: PlotRepresentation, parent: SourceEntity, definition: "One depiction (as-measured / scaled / normalized / inset) of an underlying measurement. Several representations of the same data must link to one underlying entity, not multiply it."}
+  - {id: ExperimentalCase, parent: Experiment, definition: "A physically distinct experimental case performed under one supported condition set. Created only when the source paper supports that setting as separately conducted."}
+  - {id: DepositionRun, parent: ExperimentalCase, definition: "An ExperimentalCase that is a film-growth run (as opposed to a post-growth treatment or characterisation-only case)."}
+  - {id: Sample, parent: Entity, definition: "A physical specimen produced by one or more deposition runs and carried between measurements."}
+  - {id: Measurement, parent: Entity, definition: "One measurement performed on a Sample or ExperimentalCase, producing observations, a profile, or several observable channels."}
+  - {id: Observation, parent: Entity, definition: "One sampled value of a measurement (a digitised curve point). An Observation is NOT an Experiment."}
+  - {id: ExperimentalProfile, parent: Measurement, definition: "A measurement sampled along a spatial coordinate of one specimen. Its spatial samples are Observations, never Experiments."}
+  - {id: ContinuousTrace, parent: Measurement, definition: "A measurement monitored continuously through one run (in-situ SE/QCM, kinetics, depth profile). Its samples are Observations of a single case."}
+  - {id: MultiOutputMeasurement, parent: Measurement, definition: "One measurement of one specimen reporting several observable channels (elements, peak components, response quantities). Channels are not separate Experiments."}
+  - {id: SimulationRun, parent: Entity, definition: "One execution of a model with a stated input set. Not a current-paper Experiment."}
+  - {id: ModelSweep, parent: Entity, definition: "A family of model evaluations over a swept parameter. Its points are ModelPredictions, not Experiments."}
+  - {id: ModelPrediction, parent: Entity, definition: "One predicted value from a model. Never an Experiment."}
+  - {id: Fit, parent: Entity, definition: "A fitted or regressed representation derived from other data, linked to its inputs."}
+  - {id: ImportedLiteratureObservation, parent: Entity, definition: "Experimental evidence re-plotted from a cited work. Carries reported_in (this paper) AND originally_reported_in (the cited work); it is not an experiment conducted by the current paper."}
+  - {id: DerivedRepresentation, parent: Entity, definition: "A transformation or redraw of another entity's data (scaled/normalized panel, ratio plot). Adds no new experimental case."}
+  - {id: UnresolvedSourceEntity, parent: SourceEntity, definition: "A source entity whose nature could not be established from the available evidence. Preserved intact with its curves, conditions and evidence; never split and never promoted."}
+  - {id: ConditionAssertion, parent: Entity, definition: "One condition stated somewhere in a paper, with its value, evidence, assertion status and the scope over which it applies. Binding is a separate act from assertion."}
+
 # =============================================================================
 # RELATIONS  — typed object properties (domain -> range). The KG uses these
 # instead of today's generic has_indep/has_ctrl/similar_to edges.
@@ -320,6 +357,43 @@ relations:
   # thesaurus links (SKOS-style) for concept navigation
   - {id: broader,         domain: Entity, range: Entity, transitive: true, acyclic: true, definition: "SKOS broader concept."}
   - {id: related,         domain: Entity, range: Entity, symmetric: true, definition: "SKOS related concept."}
+  # comparability layer edges (canonical values <-> raw evidence <-> rules)
+  - {id: produced_by,     domain: QuantityValue, range: TransformationExecution, definition: "A canonical QuantityValue was produced by this TransformationExecution. Required: no canonical value may exist without one."}
+  - {id: derived_from_value, domain: QuantityValue, range: QuantityValue, definition: "Canonical value <- the RAW source value it was derived from. Raw values are never overwritten."}
+  - {id: used_rule,       domain: TransformationExecution, range: TransformationRule, functional: true}
+  - {id: used_context,    domain: TransformationExecution, range: ContextBinding, definition: "Every contextual value the transformation consumed, with its scope and provenance."}
+  - {id: context_of_kind, domain: ContextBinding, range: QuantityKind, functional: true}
+  - {id: rule_source_kind, domain: TransformationRule, range: QuantityKind}
+  - {id: rule_target_kind, domain: TransformationRule, range: QuantityKind}
+  - {id: requires_context, domain: TransformationRule, range: QuantityKind, definition: "Contextual quantity the rule cannot run without; absence yields status missing_context."}
+  - {id: has_normalization_definition, domain: QuantityValue, range: NormalizationDefinition}
+  - {id: normalization_numerator,   domain: NormalizationDefinition, range: QuantityKind, functional: true}
+  - {id: normalization_denominator, domain: NormalizationDefinition, range: QuantityKind, functional: true}
+  - {id: in_comparison_group, domain: QuantityValue, range: ComparisonGroup, definition: "Only values with resolved semantics AND resolved context enter a comparison group."}
+  - {id: group_canonical_kind, domain: ComparisonGroup, range: QuantityKind, functional: true}
+  - {id: group_normalization, domain: ComparisonGroup, range: NormalizationDefinition, functional: true}
+  - {id: has_axis_semantics, domain: Experiment, range: AxisSemantics}
+  # source-entity layer
+  - {id: depicted_by,      domain: Entity, range: PlotSeries, definition: "The underlying case/measurement/run that this drawn curve depicts."}
+  - {id: represents_same_as, domain: PlotRepresentation, range: Measurement, definition: "Scaled/normalized/as-measured panels of ONE measurement link here instead of multiplying it."}
+  - {id: case_in_series,   domain: ExperimentalCase, range: ExperimentSeries, definition: "An ExperimentalCase belongs to the sweep that groups it."}
+  - {id: performed_on,     domain: Measurement, range: Sample}
+  - {id: measures_case,    domain: Measurement, range: ExperimentalCase}
+  - {id: has_observation,  domain: Measurement, range: Observation, definition: "A sampled point of this measurement. Observations are never Experiments."}
+  - {id: observation_of_kind, domain: Observation, range: QuantityKind}
+  - {id: produced_by_run,  domain: Sample, range: DepositionRun}
+  - {id: simulated_by,     domain: Observation, range: SimulationRun}
+  - {id: predicted_by,     domain: ModelPrediction, range: ModelSweep}
+  - {id: sweep_varies,     domain: ModelSweep, range: QuantityKind}
+  - {id: fitted_from,      domain: Fit, range: Entity}
+  - {id: derived_representation_of, domain: DerivedRepresentation, range: Entity}
+  - {id: reported_in,      domain: ImportedLiteratureObservation, range: Paper, definition: "The paper in which this curve is re-plotted (the current paper)."}
+  - {id: originally_reported_in, domain: ImportedLiteratureObservation, range: Paper, definition: "The cited work that actually performed the experiment."}
+  - {id: asserts_condition, domain: SourceEntity, range: ConditionAssertion}
+  - {id: assertion_binds_to, domain: ConditionAssertion, range: Entity, definition: "The entities the assertion's own scope actually covers. Never a broadcast."}
+  - {id: assertion_of_kind, domain: ConditionAssertion, range: QuantityKind}
+  - {id: unresolved_reason_of, domain: UnresolvedSourceEntity, range: Entity}
+  - {id: axis_semantics_from, domain: AxisSemantics, range: Figure, definition: "The figure/panel whose label, caption or discussion supplied the axis-semantic evidence."}
 
 # =============================================================================
 # QUANTITY ENRICHMENT  — keyed by canonical_name in dictionary.json.
@@ -369,7 +443,12 @@ quantity_enrichment:
   growth_rate:           {qudt_qk: null, unit: "nm/s"}
   normalized_thickness:  {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
   # --- counts ---
-  cycle_number:          {qudt_qk: "qk:Dimensionless", unit: "unit:NUM", note: "integer count of cycles"}
+  # unit is "cycle", NOT unit:NUM. QUDT has no cycle unit, but treating a cycle
+  # count as a plain dimensionless number makes `cycle`, `nm/cycle` and a
+  # dimensionless fraction mutually convertible, which is exactly the confusion
+  # that let Å/cycle collapse to nm. The comparability layer gives `cycle` its own
+  # base dimension; the QUDT quantity kind stays Dimensionless for FAIR alignment.
+  cycle_number:          {qudt_qk: "qk:Dimensionless", unit: "cycle", note: "integer count of cycles; unit is the cycle count itself, not a bare number"}
   # --- dimensionless groups & probabilities ---
   aspect_ratio:            {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS", derived_from: [feature_height, feature_width]}
   equivalent_aspect_ratio: {qudt_qk: "qk:Dimensionless", unit: "unit:UNITLESS"}
@@ -642,6 +721,698 @@ quantity_relations:
              work_function, band_gap, crystallinity, grain_size, surface_roughness,
              impurity_content, composition, dopant_content, film_stress, nucleation_delay,
              damkohler_number, thiele_modulus, knudsen_number]
+
+  # ==========================================================================
+  # COMPARABILITY LAYER (declarative). Consumed by 02_extraction/canonical/.
+  # This SUPERSEDES the informal `transforms:` list above, which is kept for
+  # backward compatibility with similarity.py's legacy path; every entry there
+  # now has a fully-specified counterpart in `transformation_rules`.
+  # ==========================================================================
+
+  # --- controlled vocabularies ---------------------------------------------
+  transformation_statuses:
+    - {id: already_canonical,       meaning: "source is already the canonical quantity+unit; values copied unchanged"}
+    - {id: directly_convertible,    meaning: "same dimension+quantity kind, differing unit; convertible with no context"}
+    - {id: contextually_convertible, meaning: "a rule exists and all required context is resolved, conversion pending/possible"}
+    - {id: converted,               meaning: "transformation applied successfully and validated"}
+    - {id: ambiguous,               meaning: "several distinct context candidates at the applicable scope; NOT resolved by picking one"}
+    - {id: missing_context,         meaning: "a required contextual quantity could not be found in any scope"}
+    - {id: unsupported,             meaning: "no rule connects the source representation to any comparison group"}
+    - {id: invalid,                 meaning: "rule applied but validation failed (zero denominator, domain violation, bad round-trip)"}
+    - {id: not_applicable,          meaning: "axis is not a comparison target (e.g. XRD intensity vs 2-theta)"}
+
+  transformation_types:
+    - {id: identity_canonical_mapping, invertible: true,  needs_context: false}
+    - {id: unit_conversion,            invertible: true,  needs_context: false}
+    - {id: scale_conversion,           invertible: true,  needs_context: false}
+    - {id: algebraic_derivation,       invertible: false, needs_context: true}
+    - {id: normalization,              invertible: true,  needs_context: true}
+    - {id: denormalization,            invertible: true,  needs_context: true}
+    - {id: geometry_based_conversion,  invertible: true,  needs_context: true}
+    - {id: cycle_based_conversion,     invertible: true,  needs_context: true}
+    - {id: reference_value_normalization, invertible: true, needs_context: true}
+    - {id: axis_semantic_resolution,   invertible: false, needs_context: false}
+
+  # --- unit model -----------------------------------------------------------
+  # `cycle` is its own BASE DIMENSION, not a dimensionless scalar: nm, nm/cycle,
+  # a dimensionless fraction and a cycle count are mutually non-interchangeable.
+  # `unknown` (unparseable unit string) is distinct from `dimensionless`.
+  base_dimensions: [length, mass, time, temperature, amount, current, cycle, angle]
+
+  canonical_units:
+    length:        {unit: "µm",       note: "µm for spatial position; nm for film thickness (see per-group overrides)"}
+    thickness:     {unit: "nm"}
+    growth_per_cycle: {unit: "nm/cycle"}
+    time:          {unit: "s"}
+    pressure:      {unit: "Pa"}
+    temperature:   {unit: "K"}
+    dimensionless: {unit: "1"}
+    cycle_count:   {unit: "cycle"}
+    exposure:      {unit: "Pa.s"}
+
+  # --- normalization definitions -------------------------------------------
+  # Each is a DISTINCT semantic quantity. They MUST NOT be merged into a generic
+  # "normalized thickness" / "normalized distance". Per §3.7 of the spec, the
+  # denominator reuses an EXISTING quantity kind and adds a semantic role rather
+  # than minting new kinds (e.g. x/L uses feature_length + role channel_length).
+  normalization_definitions:
+    - id: x_over_feature_height
+      semantic_label: "axial position / feature height  (x/H, x̃)"
+      numerator: spatial_coordinate
+      denominator: feature_height
+      normalization_denominator_role: feature_height
+      reference_location: null
+      formula: "x_tilde = x / H"
+      valid_domain: {min: 0.0, max: null}
+      comparison_group: normalized_spatial_position_by_feature_height
+      invertible: true
+      requires_context: [feature_height]
+      denominator_symbols: ["H", "x/H", "x̃", "z/H", "h"]
+    - id: x_over_channel_length
+      semantic_label: "axial position / channel length  (x/L)"
+      numerator: spatial_coordinate
+      denominator: feature_length
+      normalization_denominator_role: channel_length
+      reference_location: null
+      formula: "x_hat = x / L"
+      valid_domain: {min: 0.0, max: null}
+      comparison_group: normalized_spatial_position_by_channel_length
+      invertible: true
+      requires_context: [feature_length]
+      denominator_symbols: ["L", "x/L", "z/L"]
+    - id: x_over_feature_depth
+      semantic_label: "penetration position / feature depth  (x/d)"
+      numerator: spatial_coordinate
+      denominator: feature_depth
+      normalization_denominator_role: feature_depth
+      reference_location: null
+      formula: "x_norm = x / depth"
+      valid_domain: {min: 0.0, max: null}
+      comparison_group: normalized_spatial_position_by_feature_depth
+      invertible: true
+      requires_context: [feature_depth]
+      denominator_symbols: ["d", "x/d", "depth"]
+    - id: x_over_hydraulic_diameter
+      semantic_label: "axial position / hydraulic diameter  (x/Dh)"
+      numerator: spatial_coordinate
+      denominator: hydraulic_diameter
+      normalization_denominator_role: hydraulic_diameter
+      reference_location: null
+      formula: "x_norm = x / D_h"
+      valid_domain: {min: 0.0, max: null}
+      comparison_group: normalized_spatial_position_by_hydraulic_diameter
+      invertible: true
+      requires_context: [hydraulic_diameter]
+      denominator_symbols: ["Dh", "D_h", "x/Dh"]
+    - id: x_over_feature_width
+      semantic_label: "axial position / feature width = local aspect ratio  (x/w)"
+      numerator: spatial_coordinate
+      denominator: feature_width
+      normalization_denominator_role: feature_width
+      reference_location: null
+      formula: "AR_local = x / w"
+      valid_domain: {min: 0.0, max: null}
+      comparison_group: local_aspect_ratio_position
+      invertible: true
+      requires_context: [feature_width]
+      denominator_symbols: ["w", "x/w"]
+    - id: t_over_t_entrance
+      semantic_label: "local thickness / thickness at the feature entrance  t(x)/t(0)"
+      numerator: film_thickness
+      denominator: film_thickness
+      normalization_denominator_role: entrance_thickness
+      reference_location: entrance
+      formula: "t_norm(x) = t(x) / t(0)"
+      valid_domain: {min: 0.0, max: 1.5}
+      comparison_group: entrance_normalized_thickness
+      invertible: true
+      requires_context: [reference_thickness]
+      denominator_symbols: ["t(0)", "t0", "t_0", "d(0)", "S(0)"]
+    - id: t_over_t_max
+      semantic_label: "local thickness / maximum thickness of the same profile  t(x)/t_max"
+      numerator: film_thickness
+      denominator: film_thickness
+      normalization_denominator_role: maximum_thickness
+      reference_location: profile_maximum
+      formula: "t_norm(x) = t(x) / t_max"
+      valid_domain: {min: 0.0, max: 1.0}
+      comparison_group: maximum_normalized_thickness
+      invertible: true
+      requires_context: [reference_thickness]
+      denominator_symbols: ["tmax", "t_max", "t_{max}", "d_max"]
+    - id: t_over_t_planar
+      semantic_label: "local thickness / thickness on an adjacent planar reference  t(x)/t_planar"
+      numerator: film_thickness
+      denominator: reference_thickness
+      normalization_denominator_role: planar_thickness
+      reference_location: planar_reference
+      formula: "t_norm(x) = t(x) / t_planar"
+      valid_domain: {min: 0.0, max: 1.5}
+      comparison_group: planar_normalized_thickness
+      invertible: true
+      requires_context: [reference_thickness]
+      denominator_symbols: ["t_planar", "t_flat", "t_ref"]
+    - id: t_bottom_over_t_top
+      semantic_label: "step coverage: thickness at feature bottom / thickness at top"
+      numerator: film_thickness
+      denominator: film_thickness
+      normalization_denominator_role: top_thickness
+      reference_location: top
+      formula: "SC = t_bottom / t_top"
+      valid_domain: {min: 0.0, max: 1.5}
+      comparison_group: step_coverage_bottom_to_top
+      invertible: true
+      requires_context: [reference_thickness]
+      denominator_symbols: ["t_top", "d_top"]
+    - id: t_bottom_over_t_planar
+      semantic_label: "thickness at feature bottom / planar reference thickness"
+      numerator: film_thickness
+      denominator: reference_thickness
+      normalization_denominator_role: planar_thickness
+      reference_location: planar_reference
+      formula: "SC_planar = t_bottom / t_planar"
+      valid_domain: {min: 0.0, max: 1.5}
+      comparison_group: step_coverage_bottom_to_planar
+      invertible: true
+      requires_context: [reference_thickness]
+      denominator_symbols: ["t_planar", "t_flat"]
+    - id: gpc_local_over_gpc_planar
+      semantic_label: "local growth per cycle / planar growth per cycle"
+      numerator: growth_per_cycle
+      denominator: growth_per_cycle
+      normalization_denominator_role: planar_growth_per_cycle
+      reference_location: planar_reference
+      formula: "gpc_norm(x) = GPC(x) / GPC_planar"
+      valid_domain: {min: 0.0, max: 1.5}
+      comparison_group: local_to_planar_growth_ratio
+      invertible: true
+      requires_context: [growth_per_cycle]
+      denominator_symbols: ["GPC_planar", "GPC_0", "gpc_planar"]
+
+  # --- comparison groups ----------------------------------------------------
+  comparison_groups:
+    spatial_position:
+      canonical_quantity: spatial_coordinate
+      canonical_unit: "µm"
+      dimension: length
+      axis_role: coordinate
+    normalized_spatial_position_by_feature_height:
+      canonical_quantity: dimensionless_distance
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: coordinate
+      normalization_definition: x_over_feature_height
+    normalized_spatial_position_by_channel_length:
+      canonical_quantity: dimensionless_distance
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: coordinate
+      normalization_definition: x_over_channel_length
+    normalized_spatial_position_by_feature_depth:
+      canonical_quantity: dimensionless_distance
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: coordinate
+      normalization_definition: x_over_feature_depth
+    normalized_spatial_position_by_hydraulic_diameter:
+      canonical_quantity: dimensionless_distance
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: coordinate
+      normalization_definition: x_over_hydraulic_diameter
+    local_aspect_ratio_position:
+      canonical_quantity: aspect_ratio
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: coordinate
+      normalization_definition: x_over_feature_width
+    film_thickness:
+      canonical_quantity: film_thickness
+      canonical_unit: "nm"
+      dimension: length
+      axis_role: output
+    growth_per_cycle:
+      canonical_quantity: growth_per_cycle
+      canonical_unit: "nm/cycle"
+      dimension: length_per_cycle
+      axis_role: output
+    entrance_normalized_thickness:
+      canonical_quantity: normalized_thickness
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: output
+      normalization_definition: t_over_t_entrance
+    maximum_normalized_thickness:
+      canonical_quantity: normalized_thickness
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: output
+      normalization_definition: t_over_t_max
+    planar_normalized_thickness:
+      canonical_quantity: normalized_thickness
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: output
+      normalization_definition: t_over_t_planar
+    step_coverage_bottom_to_top:
+      canonical_quantity: step_coverage
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: output
+      normalization_definition: t_bottom_over_t_top
+    step_coverage_bottom_to_planar:
+      canonical_quantity: step_coverage
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: output
+      normalization_definition: t_bottom_over_t_planar
+    local_to_planar_growth_ratio:
+      canonical_quantity: normalized_thickness
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: output
+      normalization_definition: gpc_local_over_gpc_planar
+    penetration_depth:
+      canonical_quantity: penetration_depth
+      canonical_unit: "µm"
+      dimension: length
+      axis_role: output
+    surface_coverage:
+      canonical_quantity: surface_coverage
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: output
+    cycle_count:
+      canonical_quantity: cycle_number
+      canonical_unit: "cycle"
+      dimension: cycle
+      axis_role: condition
+    process_temperature:
+      canonical_quantity: deposition_temperature
+      canonical_unit: "K"
+      dimension: temperature
+      axis_role: condition
+    process_pressure:
+      canonical_quantity: total_pressure
+      canonical_unit: "Pa"
+      dimension: pressure
+      axis_role: condition
+    pulse_time:
+      canonical_quantity: pulse_time
+      canonical_unit: "s"
+      dimension: time
+      axis_role: condition
+    exposure:
+      canonical_quantity: exposure
+      canonical_unit: "Pa.s"
+      dimension: exposure
+      axis_role: condition
+    dose:
+      canonical_quantity: exposure
+      canonical_unit: "Pa.s"
+      dimension: exposure
+      axis_role: condition
+    aspect_ratio:
+      canonical_quantity: aspect_ratio
+      canonical_unit: "1"
+      dimension: dimensionless
+      axis_role: condition
+    feature_size:
+      canonical_quantity: feature_height
+      canonical_unit: "nm"
+      dimension: length
+      axis_role: condition
+
+  # --- transformation rule registry ----------------------------------------
+  # Each rule is bound to code by `implementation_id`. The build FAILS if a rule
+  # here has no implementation, if an implementation has no declaration here, if
+  # required units/context are missing, or if a rule claims invertibility without
+  # a valid inverse (see canonical/rules.py::validate_registry).
+  transformation_rules:
+    - id: identity_canonical_mapping
+      version: "1.0.0"
+      implementation_id: identity
+      type: identity_canonical_mapping
+      source_quantity_kind: null          # any: applies when source == canonical
+      target_quantity_kind: null
+      input_units: any
+      output_unit: same
+      required_context: []
+      invertible: true
+      valid_domain: null
+      assumptions: []
+      confidence_policy: certain
+
+    - id: length_unit_conversion
+      version: "1.0.0"
+      implementation_id: unit_convert
+      type: unit_conversion
+      dimension: length
+      input_units: ["m", "mm", "µm", "um", "μm", "micron", "nm", "Å", "A", "angstrom", "cm"]
+      output_unit: by_comparison_group
+      required_context: []
+      invertible: true
+      valid_domain: null
+      assumptions: []
+      confidence_policy: certain
+
+    - id: pressure_unit_conversion
+      version: "1.0.0"
+      implementation_id: unit_convert
+      type: unit_conversion
+      dimension: pressure
+      input_units: ["Pa", "kPa", "hPa", "bar", "mbar", "Torr", "mTorr", "atm"]
+      output_unit: "Pa"
+      required_context: []
+      invertible: true
+      valid_domain: null
+      assumptions: []
+      confidence_policy: certain
+
+    - id: time_unit_conversion
+      version: "1.0.0"
+      implementation_id: unit_convert
+      type: unit_conversion
+      dimension: time
+      input_units: ["s", "sec", "ms", "min", "h", "hr"]
+      output_unit: "s"
+      required_context: []
+      invertible: true
+      valid_domain: null
+      assumptions: []
+      confidence_policy: certain
+
+    - id: temperature_unit_conversion
+      version: "1.0.0"
+      implementation_id: unit_convert
+      type: unit_conversion
+      dimension: temperature
+      input_units: ["K", "°C", "C", "degC", "celsius"]
+      output_unit: "K"
+      required_context: []
+      invertible: true
+      valid_domain: null
+      assumptions: ["affine conversion; offset units are rejected as ratio units"]
+      confidence_policy: certain
+
+    - id: growth_per_cycle_unit_conversion
+      version: "1.0.0"
+      implementation_id: unit_convert
+      type: unit_conversion
+      dimension: length_per_cycle
+      input_units: ["nm/cycle", "nm/cyc", "Å/cycle", "Å/cyc", "A/cycle", "angstrom/cycle", "pm/cycle"]
+      output_unit: "nm/cycle"
+      required_context: []
+      invertible: true
+      valid_domain: null
+      assumptions: ["the /cycle dimension is preserved; Å/cycle never degrades to nm"]
+      confidence_policy: certain
+
+    - id: dimensionless_scale_conversion
+      version: "1.0.0"
+      implementation_id: unit_convert
+      type: scale_conversion
+      dimension: dimensionless
+      input_units: ["1", "", "%", "percent", "fraction", "ratio", "a.u."]
+      output_unit: "1"
+      required_context: []
+      invertible: true
+      valid_domain: null
+      assumptions: ["'a.u.' is NOT convertible and is rejected as unknown, not dimensionless"]
+      confidence_policy: certain
+
+    - id: denormalize_x_by_feature_height
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: geometry_based_conversion
+      source_quantity_kind: dimensionless_distance
+      target_quantity_kind: spatial_coordinate
+      normalization_definition: x_over_feature_height
+      input_units: ["1"]
+      output_unit: "µm"
+      required_context: [feature_height]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: ["the plotted x is normalized by the SAME feature height that applies to this curve"]
+      confidence_policy: evidence_required
+
+    - id: denormalize_x_by_channel_length
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: geometry_based_conversion
+      source_quantity_kind: dimensionless_distance
+      target_quantity_kind: spatial_coordinate
+      normalization_definition: x_over_channel_length
+      input_units: ["1"]
+      output_unit: "µm"
+      required_context: [feature_length]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: ["x/L uses the channel length of this curve's structure"]
+      confidence_policy: evidence_required
+
+    - id: denormalize_x_by_feature_depth
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: geometry_based_conversion
+      source_quantity_kind: dimensionless_distance
+      target_quantity_kind: spatial_coordinate
+      normalization_definition: x_over_feature_depth
+      input_units: ["1"]
+      output_unit: "µm"
+      required_context: [feature_depth]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: []
+      confidence_policy: evidence_required
+
+    - id: denormalize_x_by_hydraulic_diameter
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: geometry_based_conversion
+      source_quantity_kind: dimensionless_distance
+      target_quantity_kind: spatial_coordinate
+      normalization_definition: x_over_hydraulic_diameter
+      input_units: ["1"]
+      output_unit: "µm"
+      required_context: [hydraulic_diameter]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: []
+      confidence_policy: evidence_required
+
+    - id: denormalize_x_by_feature_width
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: geometry_based_conversion
+      source_quantity_kind: aspect_ratio
+      target_quantity_kind: spatial_coordinate
+      normalization_definition: x_over_feature_width
+      input_units: ["1"]
+      output_unit: "µm"
+      required_context: [feature_width]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: ["local aspect ratio measured from the feature mouth"]
+      confidence_policy: evidence_required
+
+    - id: normalize_x_by_feature_height
+      version: "1.0.0"
+      implementation_id: normalize_by_denominator
+      type: normalization
+      source_quantity_kind: spatial_coordinate
+      target_quantity_kind: dimensionless_distance
+      normalization_definition: x_over_feature_height
+      input_units: ["m", "mm", "µm", "um", "nm", "Å"]
+      output_unit: "1"
+      required_context: [feature_height]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: []
+      confidence_policy: evidence_required
+
+    - id: normalize_x_by_channel_length
+      version: "1.0.0"
+      implementation_id: normalize_by_denominator
+      type: normalization
+      source_quantity_kind: spatial_coordinate
+      target_quantity_kind: dimensionless_distance
+      normalization_definition: x_over_channel_length
+      input_units: ["m", "mm", "µm", "um", "nm", "Å"]
+      output_unit: "1"
+      required_context: [feature_length]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: []
+      confidence_policy: evidence_required
+
+    - id: thickness_from_gpc_and_cycles
+      version: "1.0.0"
+      implementation_id: thickness_from_gpc
+      type: cycle_based_conversion
+      source_quantity_kind: growth_per_cycle
+      target_quantity_kind: film_thickness
+      input_units: ["nm/cycle"]
+      output_unit: "nm"
+      required_context: [cycle_number]
+      optional_context: [nucleation_delay]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions:
+        - "steady linear growth over the cycle range"
+        - "effective cycles = cycle_number - nucleation_delay when nucleation_delay is available"
+      confidence_policy: assumption_recorded
+
+    - id: gpc_from_thickness_and_cycles
+      version: "1.0.0"
+      implementation_id: gpc_from_thickness
+      type: cycle_based_conversion
+      source_quantity_kind: film_thickness
+      target_quantity_kind: growth_per_cycle
+      input_units: ["nm"]
+      output_unit: "nm/cycle"
+      required_context: [cycle_number]
+      optional_context: [nucleation_delay]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions:
+        - "steady linear growth: only applied when the growth regime is supported by evidence or nucleation_delay is known"
+        - "effective cycles must be > 0"
+      confidence_policy: assumption_recorded
+
+    - id: denormalize_thickness_by_entrance
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: reference_value_normalization
+      source_quantity_kind: normalized_thickness
+      target_quantity_kind: film_thickness
+      normalization_definition: t_over_t_entrance
+      input_units: ["1"]
+      output_unit: "nm"
+      required_context: [reference_thickness]
+      invertible: true
+      valid_domain: {min: 0.0, max: 1.5}
+      assumptions: ["reference thickness is the entrance/mouth thickness of THIS curve"]
+      confidence_policy: evidence_required
+
+    - id: denormalize_thickness_by_max
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: reference_value_normalization
+      source_quantity_kind: normalized_thickness
+      target_quantity_kind: film_thickness
+      normalization_definition: t_over_t_max
+      input_units: ["1"]
+      output_unit: "nm"
+      required_context: [reference_thickness]
+      invertible: true
+      valid_domain: {min: 0.0, max: 1.0}
+      assumptions: ["reference thickness is the maximum of THIS profile"]
+      confidence_policy: evidence_required
+
+    - id: denormalize_thickness_by_planar
+      version: "1.0.0"
+      implementation_id: denormalize_by_denominator
+      type: reference_value_normalization
+      source_quantity_kind: normalized_thickness
+      target_quantity_kind: film_thickness
+      normalization_definition: t_over_t_planar
+      input_units: ["1"]
+      output_unit: "nm"
+      required_context: [reference_thickness]
+      invertible: true
+      valid_domain: {min: 0.0, max: 1.5}
+      assumptions: ["planar reference deposited in the same run"]
+      confidence_policy: evidence_required
+
+    - id: normalize_thickness_by_entrance
+      version: "1.0.0"
+      implementation_id: normalize_by_denominator
+      type: reference_value_normalization
+      source_quantity_kind: film_thickness
+      target_quantity_kind: normalized_thickness
+      normalization_definition: t_over_t_entrance
+      input_units: ["nm", "µm", "Å"]
+      output_unit: "1"
+      required_context: [reference_thickness]
+      invertible: true
+      valid_domain: {min: 0.0, max: null}
+      assumptions: []
+      confidence_policy: evidence_required
+
+    - id: normalize_thickness_by_max
+      version: "1.0.0"
+      implementation_id: normalize_by_profile_max
+      type: reference_value_normalization
+      source_quantity_kind: film_thickness
+      target_quantity_kind: normalized_thickness
+      normalization_definition: t_over_t_max
+      input_units: ["nm", "µm", "Å"]
+      output_unit: "1"
+      required_context: []
+      self_contained: true      # denominator comes from the curve's own points, not from external context
+      invertible: false
+      valid_domain: {min: 0.0, max: 1.0}
+      assumptions: ["denominator is the maximum of the SAME digitized curve, so it is self-contained; not invertible without the stored max"]
+      confidence_policy: certain
+
+    - id: step_coverage_from_bottom_top
+      version: "1.0.0"
+      implementation_id: ratio_of_two_values
+      type: reference_value_normalization
+      source_quantity_kind: film_thickness
+      target_quantity_kind: step_coverage
+      normalization_definition: t_bottom_over_t_top
+      input_units: ["nm", "µm", "Å"]
+      output_unit: "1"
+      required_context: [reference_thickness]
+      invertible: true
+      valid_domain: {min: 0.0, max: 1.5}
+      assumptions: ["both thicknesses measured on the same feature in the same run"]
+      confidence_policy: evidence_required
+
+    - id: local_to_planar_gpc_ratio
+      version: "1.0.0"
+      implementation_id: ratio_of_two_values
+      type: reference_value_normalization
+      source_quantity_kind: growth_per_cycle
+      target_quantity_kind: normalized_thickness
+      normalization_definition: gpc_local_over_gpc_planar
+      input_units: ["nm/cycle"]
+      output_unit: "1"
+      required_context: [growth_per_cycle]
+      invertible: true
+      valid_domain: {min: 0.0, max: 1.5}
+      assumptions: ["planar GPC from the same chemistry and temperature"]
+      confidence_policy: evidence_required
+
+    - id: exposure_from_pressure_and_time
+      version: "1.0.0"
+      implementation_id: exposure_from_pressure_time
+      type: algebraic_derivation
+      source_quantity_kind: partial_pressure
+      target_quantity_kind: exposure
+      input_units: ["Pa"]
+      output_unit: "Pa.s"
+      required_context: [pulse_time]
+      invertible: false
+      valid_domain: {min: 0.0, max: null}
+      assumptions: ["Langmuir dose P*t; NOT independent evidence of either operand"]
+      confidence_policy: assumption_recorded
+
+    - id: axis_semantic_resolution
+      version: "1.0.0"
+      implementation_id: axis_semantics
+      type: axis_semantic_resolution
+      source_quantity_kind: null
+      target_quantity_kind: null
+      input_units: any
+      output_unit: same
+      required_context: []
+      invertible: false
+      valid_domain: null
+      assumptions: ["assignment of an axis to a comparison group from documentary evidence only"]
+      confidence_policy: evidence_required
 
 # =============================================================================
 # INDIVIDUALS  — canonical reference instances (seed ABox). These are the shared

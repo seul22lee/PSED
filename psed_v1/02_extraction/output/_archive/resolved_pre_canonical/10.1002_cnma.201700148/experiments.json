@@ -1,0 +1,152 @@
+[
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_per_cycle",
+   "unit": "nm",
+   "family": "film_amount"
+  },
+  "coordinate": null,
+  "coordinate_family": null,
+  "points": [],
+  "granularity": "single",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "is_paper_level": true,
+  "analysis_ready": false,
+  "exp_id": "10.1002_cnma.201700148-paper-0",
+  "provenance": {
+   "doi": "10.1002_cnma.201700148",
+   "source": "paper-level",
+   "figure": "paper",
+   "study_type": "experimental",
+   "modalities": []
+  },
+  "series_name": null,
+  "phase": null,
+  "varies": [],
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "value": 0.18,
+    "unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [
+   "paper-level (no figure data extracted)"
+  ],
+  "recipe": {
+   "material": "BN",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-paper-0",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-paper-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-paper-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1002_cnma.201700148-paper-0"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.4
+  }
+ }
+]

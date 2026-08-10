@@ -26,7 +26,7 @@ for pdf in sorted(glob.glob(str(ROOT / "pdfs" / "*.pdf"))):
         "kb":   kbf.exists(),
         "geom": (d / "geometry.json").exists(),
     }
-    info = {"ald": "", "go": "", "mats": "", "nexp": ""}
+    info = {"ald": "", "go": "", "mats": "", "nexp": "", "prof": "", "ser": "", "canon": ""}
     if st["scout"]:
         s = json.loads((d / "scout.json").read_text())
         # A FAILED scout must never look like a deliberate non-ALD rejection: a truncated
@@ -45,15 +45,30 @@ for pdf in sorted(glob.glob(str(ROOT / "pdfs" / "*.pdf"))):
         for c in s.get("coreactants") or []:
             if c not in O_COR: miss_c.setdefault(c, []).append(sd)
     if st["kb"]:
-        info["nexp"] = str(len(json.loads(kbf.read_text())))
+        exps = json.loads(kbf.read_text())
+        info["nexp"] = str(len(exps))
+        # A condition sweep is now one Experiment PER POINT plus an
+        # ExperimentSeries, so the raw count alone would read as corpus growth.
+        # Show the spatial-profile count and the series count next to it.
+        info["prof"] = str(sum(1 for e in exps if e.get("granularity") == "profile"))
+        sf = PIPE / "output" / sd / "resolved" / "series.json"
+        if sf.exists():
+            info["ser"] = str(len(json.loads(sf.read_text())))
+        cf = PIPE / "output" / sd / "canonical" / "curves.json"
+        if cf.exists():
+            cur = json.loads(cf.read_text()).get("curves", [])
+            info["canon"] = str(sum(1 for c in cur
+                                    if (c.get("canonical") or {}).get("x")
+                                    or (c.get("canonical") or {}).get("y")))
     rows.append((sd, st, info))
 
 # ---- console ----
 def mark(b): return "O" if b else "."
-print(f"{'paper':34} doc scout deep KB geom  ald go  exps  materials")
+print(f"{'paper':34} doc scout deep KB geom  ald go  exps prof ser canon  materials")
 for sd, st, i in rows:
     print(f"{sd:34} {mark(st['doc']):3} {mark(st['scout']):5} {mark(st['deep']):4} "
-          f"{mark(st['kb']):2} {mark(st['geom']):4}  {i['ald']:3} {i['go']:3} {i['nexp']:4}  {i['mats']}")
+          f"{mark(st['kb']):2} {mark(st['geom']):4}  {i['ald']:3} {i['go']:3} "
+          f"{i['nexp']:4} {i['prof']:4} {i['ser']:3} {i['canon']:5}  {i['mats']}")
 n = len(rows)
 cnt = {k: sum(1 for _, st, _ in rows if st[k]) for k in ("doc", "scout", "deep", "kb", "geom")}
 print(f"\nTOTAL {n} PDFs | docling {cnt['doc']} | scout {cnt['scout']} | "
@@ -71,12 +86,18 @@ h = ['<!doctype html><meta charset="utf-8"><title>corpus status</title><style>',
      f'<h2>Corpus status — {n} PDFs</h2>',
      f'<p>docling {cnt["doc"]} · scout {cnt["scout"]} · deep {cnt["deep"]} · '
      f'KB {cnt["kb"]} · geometry {cnt["geom"]}</p>',
+     '<p>exps = total Experiments (a condition sweep contributes one per point); '
+     'prof = spatial-profile experiments; series = ExperimentSeries; '
+     'canon = curves with at least one axis in a canonical comparison group. '
+     'See docs/CANONICALIZATION.md.</p>',
      '<table><tr><th>paper</th><th>docling</th><th>scout</th><th>deep</th><th>KB</th>'
-     '<th>geom</th><th>ALD?</th><th>deeper?</th><th>exps</th><th>materials</th></tr>']
+     '<th>geom</th><th>ALD?</th><th>deeper?</th><th>exps</th><th>prof</th>'
+     '<th>series</th><th>canon</th><th>materials</th></tr>']
 for sd, st, i in rows:
     h.append(f'<tr><td>{sd}</td>{cell(st["doc"])}{cell(st["scout"])}{cell(st["deep"])}'
              f'{cell(st["kb"])}{cell(st["geom"])}<td>{i["ald"]}</td><td>{i["go"]}</td>'
-             f'<td>{i["nexp"]}</td><td>{html.escape(i["mats"])}</td></tr>')
+             f'<td>{i["nexp"]}</td><td>{i["prof"]}</td><td>{i["ser"]}</td>'
+             f'<td>{i["canon"]}</td><td>{html.escape(i["mats"])}</td></tr>')
 h.append('</table><h2>Ontology gaps</h2>')
 for label, dd in (("materials", miss_m), ("precursors", miss_p), ("coreactants", miss_c)):
     h.append(f'<h3>{label} ({len(dd)})</h3><table><tr><th>term</th><th>papers</th></tr>')

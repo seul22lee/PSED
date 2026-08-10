@@ -1,0 +1,106 @@
+{
+ "doi": "10.1021_acs.jpcc.9b08176",
+ "schema_version": 1,
+ "kind": "selective_figure_axis_reextraction",
+ "generator": "02_extraction/canonical/reextract_figures.py",
+ "model": "gemini-flash-latest",
+ "code_version": "e673785+dirty",
+ "created_at": 1785771212,
+ "note": "Axis METADATA only. Digitized points are NOT re-read and NOT replaced; figure_data.json is never modified.",
+ "n_panels": 2,
+ "panels": [
+  {
+   "figure": "2",
+   "figure_index": "7",
+   "panel": "a",
+   "x": {
+    "label_raw": "",
+    "unit_raw": "",
+    "is_normalized": false,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "axis_scale": "linear"
+   },
+   "y": {
+    "label_raw": "Film growth",
+    "unit_raw": "",
+    "is_normalized": false,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "axis_scale": "linear"
+   },
+   "series_legend": [],
+   "annotations": [
+    "SiO2",
+    "TiO2",
+    "Al2O3",
+    "HfO2",
+    "t (s):",
+    "AR=1200",
+    "z̃₅₀%"
+   ],
+   "recovery": {
+    "method": "selective_vision_reextraction",
+    "model": "gemini-flash-latest",
+    "source": "figure_image",
+    "source_file": "03_corpus/extracted/10.1021_acs.jpcc.9b08176/figures/fig_7.png",
+    "source_location": "figure 2 panel a",
+    "triggered_by": [
+     "y_comparison_target_without_usable_unit"
+    ],
+    "automatic": true,
+    "points_replaced": false
+   }
+  },
+  {
+   "figure": "3",
+   "figure_index": "9",
+   "panel": "a",
+   "x": {
+    "label_raw": "ln(Plasma time (s))",
+    "unit_raw": "s",
+    "is_normalized": false,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "axis_scale": "linear"
+   },
+   "y": {
+    "label_raw": "PD^{50%} / cavity height",
+    "unit_raw": "",
+    "is_normalized": true,
+    "normalization_expression": "PD^{50%} / cavity height",
+    "normalization_denominator_symbol": "cavity height",
+    "axis_scale": "linear"
+   },
+   "series_legend": [
+    {
+     "label": "SiO2",
+     "condition": null
+    },
+    {
+     "label": "TiO2",
+     "condition": null
+    }
+   ],
+   "annotations": [
+    "Linear Fits",
+    "Δln(t)",
+    "Δz̃_{50%}",
+    "r = (4/3)·(Δln(t)/Δz̃_{50%})^2"
+   ],
+   "recovery": {
+    "method": "selective_vision_reextraction",
+    "model": "gemini-flash-latest",
+    "source": "figure_image",
+    "source_file": "03_corpus/extracted/10.1021_acs.jpcc.9b08176/figures/fig_9.png",
+    "source_location": "figure 3 panel a",
+    "triggered_by": [
+     "x_unit_dimension_conflicts_with_quantity:time_vs_exposure",
+     "y_comparison_target_without_usable_unit"
+    ],
+    "automatic": true,
+    "points_replaced": false
+   }
+  }
+ ]
+}

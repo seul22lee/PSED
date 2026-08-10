@@ -1,0 +1,9 @@
+code,label,count,share,ci95,responsible_code_path
+P,Curve point incorrectly promoted to Experiment,44,0.3667,"[0.2858, 0.4558]",03_corpus/scripts/06_to_kb.py::split_condition_series
+,no failure detected,31,0.2583,"[0.1884, 0.3433]",
+S,Model or simulation data stored as Experiment,17,0.1417,"[0.0904, 0.2152]",03_corpus/scripts/06_to_kb.py::to_experiments (relevance=model still written to experiments.json)
+I,Hidden or replaced by fallback / dedup,9,0.075,"[0.04, 0.1364]",03_corpus/scripts/06_to_kb.py::_dedup_pressures
+C,Wrong quantity classification / axis role unresolved,8,0.0667,"[0.0342, 0.1261]",02_extraction/canonical/axis_semantics.py::resolve_x_axis
+J,Incorrect paper-level broadcast,5,0.0417,"[0.0179, 0.0938]",03_corpus/scripts/10_pressure.py::pressure_facts + 06_to_kb base_ctrl
+A,Mention not extracted,4,0.0333,"[0.013, 0.0826]",03_corpus/scripts/05_figure_extract.py::VISION_SCHEMA (series_axis/conditions)
+H,Field dropped downstream,2,0.0167,"[0.0046, 0.0587]",03_corpus/scripts/06_to_kb.py::to_experiments panel_ctrl / _num_cond

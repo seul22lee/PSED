@@ -1,0 +1,61 @@
+{
+ "doi": "10.1016_j.jcrysgro.2017.04.019",
+ "schema_version": 1,
+ "kind": "text_evidence_recovery_audit",
+ "generator": "02_extraction/canonical/recover_axis_semantics.py",
+ "code_version": "e673785+dirty",
+ "created_at": 1785775201,
+ "note": "Audit + work list. Text-evidence recovery is re-derived by build_canonical.py from the same sources; new RAW evidence (verbatim axis labels) is written by reextract_figures.py to figure_semantics_v1.json.",
+ "n_panels": 1,
+ "panels": [
+  {
+   "figure": "6",
+   "figure_index": "7",
+   "panel": "a",
+   "image": "figures/fig_7.png",
+   "caption": "Figure 6. Diagram of the film thickness as a function of cycle numbers. The large change of the nominal growth rate vs. film thickness most likely results from a non-ideal 2D nucleation on the substrate.",
+   "panel_caption": "",
+   "x": {
+    "label_raw": "No of cycles",
+    "quantity": "cycle_number",
+    "quantity_canonical": "cycle_number",
+    "unit_raw": "",
+    "unit_normalized": null,
+    "is_normalized": null,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "normalization_definition": null,
+    "normalization_denominator_role": null,
+    "comparison_group": "cycle_count",
+    "axis_role": "condition",
+    "axis_kind": "condition_sweep",
+    "status": "resolved",
+    "unresolved_reason": null,
+    "recovery": null
+   },
+   "y": {
+    "label_raw": "Film thickness",
+    "quantity": "film_thickness",
+    "quantity_canonical": "film_thickness",
+    "unit_raw": "",
+    "unit_normalized": null,
+    "is_normalized": null,
+    "normalization_expression": null,
+    "normalization_denominator_symbol": null,
+    "normalization_definition": null,
+    "normalization_denominator_role": null,
+    "comparison_group": "film_thickness",
+    "axis_role": "output",
+    "axis_kind": "output",
+    "status": "resolved",
+    "unresolved_reason": null,
+    "recovery": null
+   },
+   "needs_image_reextraction": true,
+   "reextraction_reasons": [
+    "x_comparison_target_without_usable_unit",
+    "y_comparison_target_without_usable_unit"
+   ]
+  }
+ ]
+}

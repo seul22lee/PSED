@@ -1,0 +1,8682 @@
+[
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Weight",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    30.0,
+    100.0
+   ],
+   [
+    60.0,
+    99.8
+   ],
+   [
+    90.0,
+    99.5
+   ],
+   [
+    120.0,
+    98.8
+   ],
+   [
+    140.0,
+    98.0
+   ],
+   [
+    155.0,
+    97.0
+   ],
+   [
+    170.0,
+    94.5
+   ],
+   [
+    180.0,
+    90.2
+   ],
+   [
+    188.0,
+    84.5
+   ],
+   [
+    195.0,
+    76.0
+   ],
+   [
+    200.0,
+    67.0
+   ],
+   [
+    205.0,
+    54.0
+   ],
+   [
+    210.0,
+    38.0
+   ],
+   [
+    215.0,
+    18.0
+   ],
+   [
+    220.0,
+    4.5
+   ],
+   [
+    225.0,
+    3.2
+   ],
+   [
+    240.0,
+    2.8
+   ],
+   [
+    270.0,
+    2.6
+   ],
+   [
+    300.0,
+    2.5
+   ],
+   [
+    350.0,
+    2.4
+   ],
+   [
+    400.0,
+    2.4
+   ],
+   [
+    450.0,
+    2.4
+   ],
+   [
+    500.0,
+    2.3
+   ],
+   [
+    550.0,
+    2.3
+   ],
+   [
+    600.0,
+    2.3
+   ],
+   [
+    650.0,
+    2.2
+   ],
+   [
+    700.0,
+    2.0
+   ],
+   [
+    750.0,
+    1.8
+   ],
+   [
+    800.0,
+    1.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F3a-0",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "17",
+   "panel": "a",
+   "caption": "FIG. 3. (a) TGA curve and (b) vapor pressure curve of the synthesized MoCl 4 (thd)(THF).",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "Weight",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F3a-0",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F3a-0"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F3a-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F3a-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F3a-0"
+    }
+   },
+   "completeness": 0.5
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "partial_pressure",
+   "unit": "torr",
+   "family": "pressure"
+  },
+  "coordinate": "temperature",
+  "coordinate_family": "process_temperature",
+  "points": [
+   [
+    20.0,
+    0.15
+   ],
+   [
+    22.0,
+    0.16
+   ],
+   [
+    24.0,
+    0.172
+   ],
+   [
+    25.3,
+    0.181
+   ],
+   [
+    27.0,
+    0.198
+   ],
+   [
+    29.0,
+    0.216
+   ],
+   [
+    31.0,
+    0.233
+   ],
+   [
+    33.0,
+    0.251
+   ],
+   [
+    35.0,
+    0.269
+   ],
+   [
+    37.0,
+    0.287
+   ],
+   [
+    39.0,
+    0.305
+   ],
+   [
+    41.0,
+    0.323
+   ],
+   [
+    43.0,
+    0.341
+   ],
+   [
+    45.0,
+    0.358
+   ],
+   [
+    47.0,
+    0.375
+   ],
+   [
+    49.0,
+    0.392
+   ],
+   [
+    50.0,
+    0.4
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F3b-1",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "17",
+   "panel": "b",
+   "caption": "FIG. 3. (a) TGA curve and (b) vapor pressure curve of the synthesized MoCl 4 (thd)(THF).",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "temperature"
+  ],
+  "dependent": [
+   {
+    "quantity": "partial_pressure",
+    "unit": "torr",
+    "family": "pressure"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F3b-1",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F3b-1"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F3b-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F3b-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F3b-1"
+    }
+   },
+   "completeness": 0.5
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-2",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-2",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    25.0
+   ],
+   [
+    0.5,
+    53.0
+   ],
+   [
+    1.0,
+    53.0
+   ],
+   [
+    1.5,
+    51.5
+   ],
+   [
+    2.0,
+    52.0
+   ],
+   [
+    2.5,
+    54.0
+   ],
+   [
+    3.0,
+    52.0
+   ],
+   [
+    3.5,
+    53.5
+   ],
+   [
+    4.0,
+    52.0
+   ],
+   [
+    4.5,
+    53.0
+   ],
+   [
+    5.0,
+    53.0
+   ],
+   [
+    5.3,
+    52.0
+   ],
+   [
+    5.7,
+    43.0
+   ],
+   [
+    6.0,
+    33.0
+   ],
+   [
+    6.5,
+    23.0
+   ],
+   [
+    7.0,
+    14.0
+   ],
+   [
+    7.5,
+    9.0
+   ],
+   [
+    8.0,
+    6.0
+   ],
+   [
+    8.5,
+    3.5
+   ],
+   [
+    9.0,
+    2.0
+   ],
+   [
+    9.5,
+    0.5
+   ],
+   [
+    10.0,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4a-2",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "a",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: Mo",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 350.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4a-2",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4a-2"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4a-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4a-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4a-2"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 350.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-2",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-3",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-3",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    33.0
+   ],
+   [
+    0.5,
+    18.0
+   ],
+   [
+    1.0,
+    18.0
+   ],
+   [
+    1.5,
+    17.5
+   ],
+   [
+    2.0,
+    17.5
+   ],
+   [
+    2.5,
+    17.5
+   ],
+   [
+    3.0,
+    17.0
+   ],
+   [
+    3.5,
+    17.0
+   ],
+   [
+    4.0,
+    17.0
+   ],
+   [
+    4.5,
+    17.5
+   ],
+   [
+    5.0,
+    18.5
+   ],
+   [
+    5.5,
+    17.0
+   ],
+   [
+    6.0,
+    25.0
+   ],
+   [
+    6.2,
+    38.0
+   ],
+   [
+    6.5,
+    47.0
+   ],
+   [
+    7.0,
+    51.0
+   ],
+   [
+    7.5,
+    53.5
+   ],
+   [
+    8.0,
+    55.0
+   ],
+   [
+    8.5,
+    57.0
+   ],
+   [
+    9.0,
+    57.5
+   ],
+   [
+    9.5,
+    57.0
+   ],
+   [
+    10.0,
+    57.0
+   ],
+   [
+    10.5,
+    58.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4a-3",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "a",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 350.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4a-3",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4a-3"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4a-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4a-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4a-3"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 350.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-3",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-4",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-4",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    26.0
+   ],
+   [
+    0.5,
+    26.0
+   ],
+   [
+    1.0,
+    25.5
+   ],
+   [
+    1.5,
+    24.5
+   ],
+   [
+    2.0,
+    24.5
+   ],
+   [
+    2.5,
+    24.5
+   ],
+   [
+    3.0,
+    24.5
+   ],
+   [
+    3.5,
+    24.5
+   ],
+   [
+    4.0,
+    24.5
+   ],
+   [
+    4.5,
+    25.0
+   ],
+   [
+    5.0,
+    25.5
+   ],
+   [
+    5.3,
+    22.5
+   ],
+   [
+    5.7,
+    16.0
+   ],
+   [
+    6.0,
+    12.0
+   ],
+   [
+    6.5,
+    5.0
+   ],
+   [
+    7.0,
+    2.0
+   ],
+   [
+    7.5,
+    0.0
+   ],
+   [
+    8.0,
+    0.5
+   ],
+   [
+    8.5,
+    1.0
+   ],
+   [
+    9.0,
+    0.5
+   ],
+   [
+    9.5,
+    0.0
+   ],
+   [
+    10.0,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4a-4",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "a",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: N",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 350.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4a-4",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4a-4"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4a-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4a-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4a-4"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 350.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-4",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-5",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-5",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    0.0
+   ],
+   [
+    4.5,
+    0.0
+   ],
+   [
+    5.0,
+    0.5
+   ],
+   [
+    5.5,
+    2.0
+   ],
+   [
+    6.0,
+    10.0
+   ],
+   [
+    6.5,
+    26.0
+   ],
+   [
+    7.0,
+    34.0
+   ],
+   [
+    7.5,
+    37.0
+   ],
+   [
+    8.0,
+    38.0
+   ],
+   [
+    8.5,
+    37.0
+   ],
+   [
+    9.0,
+    40.0
+   ],
+   [
+    9.5,
+    39.0
+   ],
+   [
+    10.0,
+    39.0
+   ],
+   [
+    10.5,
+    40.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4a-5",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "a",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 350.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4a-5",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4a-5"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4a-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4a-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4a-5"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 350.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-5",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-6",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-6",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    25.0
+   ],
+   [
+    0.5,
+    5.0
+   ],
+   [
+    1.0,
+    5.0
+   ],
+   [
+    1.5,
+    5.0
+   ],
+   [
+    2.0,
+    5.0
+   ],
+   [
+    2.5,
+    5.0
+   ],
+   [
+    3.0,
+    5.0
+   ],
+   [
+    3.5,
+    5.0
+   ],
+   [
+    4.0,
+    4.5
+   ],
+   [
+    4.5,
+    4.0
+   ],
+   [
+    5.0,
+    3.5
+   ],
+   [
+    5.5,
+    3.0
+   ],
+   [
+    6.0,
+    2.8
+   ],
+   [
+    7.0,
+    2.5
+   ],
+   [
+    8.0,
+    2.5
+   ],
+   [
+    9.0,
+    2.5
+   ],
+   [
+    10.0,
+    2.8
+   ],
+   [
+    10.5,
+    3.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4a-6",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "a",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 350.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4a-6",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4a-6"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4a-6"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4a-6"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4a-6"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 350.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4a-6",
+     "figure": "Fig 4",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-7",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-7",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    29.0
+   ],
+   [
+    0.5,
+    54.0
+   ],
+   [
+    1.0,
+    62.0
+   ],
+   [
+    1.5,
+    63.0
+   ],
+   [
+    1.8,
+    64.5
+   ],
+   [
+    2.0,
+    61.0
+   ],
+   [
+    2.5,
+    63.5
+   ],
+   [
+    3.0,
+    62.5
+   ],
+   [
+    3.5,
+    62.0
+   ],
+   [
+    4.0,
+    64.0
+   ],
+   [
+    4.5,
+    62.5
+   ],
+   [
+    5.0,
+    63.5
+   ],
+   [
+    5.5,
+    62.5
+   ],
+   [
+    6.0,
+    63.5
+   ],
+   [
+    6.5,
+    63.5
+   ],
+   [
+    7.0,
+    62.0
+   ],
+   [
+    7.5,
+    54.0
+   ],
+   [
+    8.0,
+    38.0
+   ],
+   [
+    8.5,
+    25.0
+   ],
+   [
+    9.0,
+    15.0
+   ],
+   [
+    9.5,
+    8.0
+   ],
+   [
+    10.0,
+    6.0
+   ],
+   [
+    10.5,
+    2.5
+   ],
+   [
+    11.0,
+    2.5
+   ],
+   [
+    12.0,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4b-7",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "b",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: Mo",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4b-7",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4b-7"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4b-7"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4b-7"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4b-7"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-7",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-8",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-8",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    20.0
+   ],
+   [
+    0.2,
+    9.0
+   ],
+   [
+    1.0,
+    8.0
+   ],
+   [
+    1.5,
+    8.5
+   ],
+   [
+    2.0,
+    8.0
+   ],
+   [
+    2.5,
+    7.5
+   ],
+   [
+    3.0,
+    9.0
+   ],
+   [
+    3.5,
+    7.5
+   ],
+   [
+    4.0,
+    8.5
+   ],
+   [
+    4.5,
+    8.0
+   ],
+   [
+    5.0,
+    8.0
+   ],
+   [
+    5.5,
+    9.0
+   ],
+   [
+    6.0,
+    10.5
+   ],
+   [
+    6.5,
+    9.5
+   ],
+   [
+    7.0,
+    9.0
+   ],
+   [
+    7.5,
+    12.0
+   ],
+   [
+    8.0,
+    32.0
+   ],
+   [
+    8.5,
+    43.0
+   ],
+   [
+    9.0,
+    48.0
+   ],
+   [
+    9.5,
+    53.0
+   ],
+   [
+    10.0,
+    56.5
+   ],
+   [
+    10.5,
+    57.0
+   ],
+   [
+    11.0,
+    56.5
+   ],
+   [
+    11.8,
+    60.0
+   ],
+   [
+    12.0,
+    58.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4b-8",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "b",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4b-8",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4b-8"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4b-8"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4b-8"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4b-8"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-8",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-9",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-9",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    44.0
+   ],
+   [
+    0.5,
+    32.0
+   ],
+   [
+    1.0,
+    29.0
+   ],
+   [
+    1.5,
+    27.5
+   ],
+   [
+    2.0,
+    28.0
+   ],
+   [
+    2.5,
+    28.5
+   ],
+   [
+    3.0,
+    29.0
+   ],
+   [
+    3.5,
+    28.0
+   ],
+   [
+    4.0,
+    29.5
+   ],
+   [
+    4.5,
+    27.0
+   ],
+   [
+    5.0,
+    28.0
+   ],
+   [
+    5.5,
+    26.5
+   ],
+   [
+    6.0,
+    27.0
+   ],
+   [
+    6.5,
+    26.0
+   ],
+   [
+    7.0,
+    24.0
+   ],
+   [
+    7.5,
+    17.0
+   ],
+   [
+    8.0,
+    10.0
+   ],
+   [
+    8.2,
+    2.5
+   ],
+   [
+    8.5,
+    2.0
+   ],
+   [
+    9.0,
+    1.5
+   ],
+   [
+    9.5,
+    0.5
+   ],
+   [
+    10.0,
+    1.0
+   ],
+   [
+    10.5,
+    0.0
+   ],
+   [
+    11.0,
+    0.0
+   ],
+   [
+    12.0,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4b-9",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "b",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: N",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4b-9",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4b-9"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4b-9"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4b-9"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4b-9"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-9",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-10",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-10",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    0.0
+   ],
+   [
+    6.5,
+    0.5
+   ],
+   [
+    7.0,
+    3.5
+   ],
+   [
+    7.5,
+    12.0
+   ],
+   [
+    8.0,
+    22.0
+   ],
+   [
+    8.5,
+    30.0
+   ],
+   [
+    9.0,
+    35.0
+   ],
+   [
+    9.5,
+    37.0
+   ],
+   [
+    10.0,
+    37.0
+   ],
+   [
+    10.5,
+    39.0
+   ],
+   [
+    11.0,
+    39.0
+   ],
+   [
+    11.5,
+    39.0
+   ],
+   [
+    12.0,
+    40.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4b-10",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "b",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4b-10",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4b-10"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4b-10"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4b-10"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4b-10"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-10",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-11",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-11",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    0.0
+   ],
+   [
+    0.5,
+    1.0
+   ],
+   [
+    1.0,
+    1.0
+   ],
+   [
+    1.5,
+    0.5
+   ],
+   [
+    2.0,
+    0.0
+   ],
+   [
+    2.5,
+    1.0
+   ],
+   [
+    3.0,
+    0.5
+   ],
+   [
+    3.5,
+    1.0
+   ],
+   [
+    4.0,
+    1.0
+   ],
+   [
+    4.5,
+    0.5
+   ],
+   [
+    5.0,
+    0.0
+   ],
+   [
+    5.5,
+    1.0
+   ],
+   [
+    6.0,
+    1.0
+   ],
+   [
+    6.5,
+    0.0
+   ],
+   [
+    7.0,
+    0.0
+   ],
+   [
+    7.5,
+    1.0
+   ],
+   [
+    8.0,
+    0.0
+   ],
+   [
+    8.5,
+    0.0
+   ],
+   [
+    9.0,
+    0.0
+   ],
+   [
+    10.0,
+    0.0
+   ],
+   [
+    11.0,
+    0.0
+   ],
+   [
+    12.0,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4b-11",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "b",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4b-11",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4b-11"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4b-11"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4b-11"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4b-11"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4b-11",
+     "figure": "Fig 4",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-12",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "H2_exposure_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-12",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-12",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    35.0
+   ],
+   [
+    0.5,
+    56.0
+   ],
+   [
+    1.0,
+    61.0
+   ],
+   [
+    1.5,
+    64.0
+   ],
+   [
+    2.0,
+    62.0
+   ],
+   [
+    2.5,
+    62.5
+   ],
+   [
+    3.0,
+    63.0
+   ],
+   [
+    3.5,
+    60.0
+   ],
+   [
+    4.0,
+    63.0
+   ],
+   [
+    4.5,
+    62.5
+   ],
+   [
+    5.0,
+    63.5
+   ],
+   [
+    5.5,
+    62.5
+   ],
+   [
+    6.0,
+    63.0
+   ],
+   [
+    6.5,
+    64.0
+   ],
+   [
+    7.0,
+    59.0
+   ],
+   [
+    7.5,
+    52.0
+   ],
+   [
+    8.0,
+    38.0
+   ],
+   [
+    8.5,
+    23.0
+   ],
+   [
+    9.0,
+    15.0
+   ],
+   [
+    9.5,
+    9.0
+   ],
+   [
+    10.0,
+    7.0
+   ],
+   [
+    10.5,
+    4.0
+   ],
+   [
+    11.0,
+    2.0
+   ],
+   [
+    11.5,
+    1.0
+   ],
+   [
+    12.0,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4c-12",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "c",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: Mo",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4c-12",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4c-12"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4c-12"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4c-12"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4c-12"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-12",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-13",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "H2_exposure_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-13",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-13",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    24.0
+   ],
+   [
+    0.2,
+    9.0
+   ],
+   [
+    1.0,
+    7.0
+   ],
+   [
+    1.5,
+    6.0
+   ],
+   [
+    2.0,
+    7.0
+   ],
+   [
+    2.5,
+    7.0
+   ],
+   [
+    3.0,
+    6.0
+   ],
+   [
+    3.5,
+    7.0
+   ],
+   [
+    4.0,
+    5.5
+   ],
+   [
+    4.5,
+    7.0
+   ],
+   [
+    5.0,
+    6.0
+   ],
+   [
+    5.5,
+    6.0
+   ],
+   [
+    6.0,
+    5.0
+   ],
+   [
+    6.5,
+    6.5
+   ],
+   [
+    7.0,
+    7.0
+   ],
+   [
+    7.5,
+    16.0
+   ],
+   [
+    8.0,
+    38.0
+   ],
+   [
+    8.5,
+    46.0
+   ],
+   [
+    9.0,
+    50.0
+   ],
+   [
+    9.5,
+    55.0
+   ],
+   [
+    10.0,
+    58.5
+   ],
+   [
+    10.5,
+    58.5
+   ],
+   [
+    11.0,
+    60.5
+   ],
+   [
+    11.8,
+    58.5
+   ],
+   [
+    12.0,
+    59.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4c-13",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "c",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: O",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4c-13",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4c-13"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4c-13"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4c-13"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4c-13"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-13",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-14",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "H2_exposure_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-14",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-14",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    40.0
+   ],
+   [
+    0.5,
+    37.0
+   ],
+   [
+    1.0,
+    30.0
+   ],
+   [
+    1.5,
+    29.0
+   ],
+   [
+    2.0,
+    28.0
+   ],
+   [
+    2.5,
+    29.5
+   ],
+   [
+    3.0,
+    27.0
+   ],
+   [
+    3.5,
+    29.5
+   ],
+   [
+    4.0,
+    28.0
+   ],
+   [
+    4.5,
+    29.0
+   ],
+   [
+    5.0,
+    28.5
+   ],
+   [
+    5.5,
+    29.5
+   ],
+   [
+    6.0,
+    28.0
+   ],
+   [
+    6.5,
+    29.5
+   ],
+   [
+    7.0,
+    26.5
+   ],
+   [
+    7.5,
+    18.0
+   ],
+   [
+    7.7,
+    12.0
+   ],
+   [
+    8.0,
+    5.0
+   ],
+   [
+    8.5,
+    1.0
+   ],
+   [
+    9.0,
+    2.5
+   ],
+   [
+    9.5,
+    0.5
+   ],
+   [
+    10.0,
+    1.5
+   ],
+   [
+    10.5,
+    0.5
+   ],
+   [
+    11.0,
+    1.5
+   ],
+   [
+    11.5,
+    0.5
+   ],
+   [
+    12.0,
+    0.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4c-14",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "c",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: N",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4c-14",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4c-14"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4c-14"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4c-14"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4c-14"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-14",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-15",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "H2_exposure_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-15",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-15",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    0.0
+   ],
+   [
+    6.5,
+    0.5
+   ],
+   [
+    7.0,
+    2.5
+   ],
+   [
+    7.5,
+    12.0
+   ],
+   [
+    8.0,
+    25.0
+   ],
+   [
+    8.5,
+    32.0
+   ],
+   [
+    9.0,
+    36.5
+   ],
+   [
+    9.5,
+    38.0
+   ],
+   [
+    10.0,
+    37.5
+   ],
+   [
+    10.5,
+    40.5
+   ],
+   [
+    11.0,
+    38.5
+   ],
+   [
+    11.8,
+    40.5
+   ],
+   [
+    12.0,
+    38.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4c-15",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "c",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: Si",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4c-15",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4c-15"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4c-15"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4c-15"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4c-15"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-15",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-16",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "H2_exposure_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-16",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "NH3_exposure_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-16",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "atomic_concentration",
+   "unit": "%",
+   "family": null
+  },
+  "coordinate": "Sputtering time",
+  "coordinate_family": null,
+  "points": [
+   [
+    0,
+    1.5
+   ],
+   [
+    0.5,
+    0.5
+   ],
+   [
+    1.0,
+    0.5
+   ],
+   [
+    1.5,
+    0.5
+   ],
+   [
+    2.0,
+    0.5
+   ],
+   [
+    2.5,
+    1.5
+   ],
+   [
+    3.0,
+    0.5
+   ],
+   [
+    3.5,
+    1.5
+   ],
+   [
+    4.0,
+    0.5
+   ],
+   [
+    4.5,
+    1.5
+   ],
+   [
+    5.0,
+    0.5
+   ],
+   [
+    5.5,
+    1.5
+   ],
+   [
+    6.0,
+    0.5
+   ],
+   [
+    6.5,
+    1.5
+   ],
+   [
+    7.0,
+    0.5
+   ],
+   [
+    8.0,
+    0.5
+   ],
+   [
+    9.0,
+    0.5
+   ],
+   [
+    10.0,
+    0.5
+   ],
+   [
+    11.0,
+    0.5
+   ],
+   [
+    12.0,
+    0.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F4c-16",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "19",
+   "panel": "c",
+   "caption": "FIG. 4. (a) AES data of MoN x films deposited using the conventional ALD process at 350 \u00b0C, (b) AES data of MoN x films deposited using the conventional ALD process at 500 \u00b0C and (c) AES data of MoN x",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "element: C",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Sputtering time"
+  ],
+  "dependent": [
+   {
+    "quantity": "atomic_concentration",
+    "unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F4c-16",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F4c-16"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F4c-16"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F4c-16"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F4c-16"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F4c-16",
+     "figure": "Fig 4",
+     "panel": "c"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-17",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "H2_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-17",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-17",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-17",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Intensity (Arb. unit)",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Grazing angle (2\u0398)",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.02,
+    0.82
+   ],
+   [
+    0.08,
+    0.76
+   ],
+   [
+    0.15,
+    0.78
+   ],
+   [
+    0.25,
+    0.81
+   ],
+   [
+    0.35,
+    0.83
+   ],
+   [
+    0.45,
+    0.83
+   ],
+   [
+    0.55,
+    0.83
+   ],
+   [
+    0.63,
+    0.82
+   ],
+   [
+    0.68,
+    0.77
+   ],
+   [
+    0.75,
+    0.68
+   ],
+   [
+    0.82,
+    0.72
+   ],
+   [
+    0.88,
+    0.68
+   ],
+   [
+    0.95,
+    0.6
+   ],
+   [
+    1.02,
+    0.65
+   ],
+   [
+    1.1,
+    0.58
+   ],
+   [
+    1.15,
+    0.53
+   ],
+   [
+    1.23,
+    0.58
+   ],
+   [
+    1.31,
+    0.49
+   ],
+   [
+    1.38,
+    0.45
+   ],
+   [
+    1.46,
+    0.51
+   ],
+   [
+    1.53,
+    0.42
+   ],
+   [
+    1.6,
+    0.38
+   ],
+   [
+    1.68,
+    0.43
+   ],
+   [
+    1.77,
+    0.38
+   ],
+   [
+    1.85,
+    0.36
+   ],
+   [
+    1.93,
+    0.39
+   ],
+   [
+    2.02,
+    0.34
+   ],
+   [
+    2.1,
+    0.31
+   ],
+   [
+    2.18,
+    0.33
+   ],
+   [
+    2.27,
+    0.31
+   ],
+   [
+    2.35,
+    0.28
+   ],
+   [
+    2.42,
+    0.28
+   ],
+   [
+    2.5,
+    0.28
+   ],
+   [
+    2.59,
+    0.26
+   ],
+   [
+    2.68,
+    0.24
+   ],
+   [
+    2.77,
+    0.23
+   ],
+   [
+    2.85,
+    0.23
+   ],
+   [
+    2.94,
+    0.21
+   ],
+   [
+    3.02,
+    0.2
+   ],
+   [
+    3.11,
+    0.18
+   ],
+   [
+    3.2,
+    0.17
+   ],
+   [
+    3.28,
+    0.17
+   ],
+   [
+    3.37,
+    0.16
+   ],
+   [
+    3.45,
+    0.13
+   ],
+   [
+    3.5,
+    0.11
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F5a-17",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 5. (a) Raw XRR data of the MoNx film with a curve fit and (b) the thickness of the MoN x thin film as a function of the number of ALD cycles.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "curve type: Raw",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Grazing angle (2\u0398)"
+  ],
+  "dependent": [
+   {
+    "quantity": "Intensity (Arb. unit)",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200.0,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F5a-17",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F5a-17"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F5a-17"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F5a-17"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F5a-17"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 200.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-17",
+     "figure": "Fig 5",
+     "panel": "a"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-17",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.7
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-18",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "H2_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-18",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-18",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-18",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Intensity (Arb. unit)",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "Grazing angle (2\u0398)",
+  "coordinate_family": null,
+  "points": [
+   [
+    0.02,
+    0.82
+   ],
+   [
+    0.15,
+    0.82
+   ],
+   [
+    0.3,
+    0.82
+   ],
+   [
+    0.45,
+    0.83
+   ],
+   [
+    0.55,
+    0.83
+   ],
+   [
+    0.63,
+    0.82
+   ],
+   [
+    0.68,
+    0.77
+   ],
+   [
+    0.75,
+    0.67
+   ],
+   [
+    0.82,
+    0.71
+   ],
+   [
+    0.88,
+    0.67
+   ],
+   [
+    0.95,
+    0.6
+   ],
+   [
+    1.02,
+    0.64
+   ],
+   [
+    1.1,
+    0.58
+   ],
+   [
+    1.15,
+    0.53
+   ],
+   [
+    1.23,
+    0.57
+   ],
+   [
+    1.31,
+    0.49
+   ],
+   [
+    1.38,
+    0.45
+   ],
+   [
+    1.46,
+    0.51
+   ],
+   [
+    1.53,
+    0.42
+   ],
+   [
+    1.6,
+    0.38
+   ],
+   [
+    1.68,
+    0.43
+   ],
+   [
+    1.77,
+    0.38
+   ],
+   [
+    1.85,
+    0.36
+   ],
+   [
+    1.93,
+    0.39
+   ],
+   [
+    2.02,
+    0.34
+   ],
+   [
+    2.1,
+    0.31
+   ],
+   [
+    2.18,
+    0.33
+   ],
+   [
+    2.27,
+    0.31
+   ],
+   [
+    2.35,
+    0.28
+   ],
+   [
+    2.42,
+    0.28
+   ],
+   [
+    2.5,
+    0.28
+   ],
+   [
+    2.59,
+    0.26
+   ],
+   [
+    2.68,
+    0.24
+   ],
+   [
+    2.77,
+    0.23
+   ],
+   [
+    2.85,
+    0.23
+   ],
+   [
+    2.94,
+    0.21
+   ],
+   [
+    3.02,
+    0.2
+   ],
+   [
+    3.11,
+    0.18
+   ],
+   [
+    3.2,
+    0.17
+   ],
+   [
+    3.28,
+    0.16
+   ],
+   [
+    3.37,
+    0.14
+   ],
+   [
+    3.45,
+    0.12
+   ],
+   [
+    3.5,
+    0.1
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F5a-18",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "21",
+   "panel": "a",
+   "caption": "FIG. 5. (a) Raw XRR data of the MoNx film with a curve fit and (b) the thickness of the MoN x thin film as a function of the number of ALD cycles.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "curve type: Fit",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Grazing angle (2\u0398)"
+  ],
+  "dependent": [
+   {
+    "quantity": "Intensity (Arb. unit)",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200.0,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F5a-18",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F5a-18"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F5a-18"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F5a-18"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F5a-18"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 200.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-18",
+     "figure": "Fig 5",
+     "panel": "a"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5a-18",
+     "figure": "Fig 5",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.7
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5b-19",
+     "figure": "Fig 5",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "H2_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5b-19",
+     "figure": "Fig 5",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "NH3_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5b-19",
+     "figure": "Fig 5",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "family": "film_amount"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "points": [
+   [
+    50,
+    4.3
+   ],
+   [
+    100,
+    8.9
+   ],
+   [
+    150,
+    12.4
+   ],
+   [
+    200,
+    17.5
+   ],
+   [
+    250,
+    22.0
+   ],
+   [
+    300,
+    25.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F5b-19",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "21",
+   "panel": "b",
+   "caption": "FIG. 5. (a) Raw XRR data of the MoNx film with a curve fit and (b) the thickness of the MoN x thin film as a function of the number of ALD cycles.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "series: Thin film thickness",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F5b-19",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F5b-19"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F5b-19"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F5b-19"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F5b-19"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F5b-19",
+     "figure": "Fig 5",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6a-20",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "H2_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6a-20",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6a-20",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "Arb. unit",
+   "family": null
+  },
+  "coordinate": "Binding energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    226.0,
+    0.11
+   ],
+   [
+    226.5,
+    0.11
+   ],
+   [
+    227.0,
+    0.12
+   ],
+   [
+    227.3,
+    0.15
+   ],
+   [
+    227.6,
+    0.25
+   ],
+   [
+    228.0,
+    0.5
+   ],
+   [
+    228.3,
+    0.75
+   ],
+   [
+    228.5,
+    0.83
+   ],
+   [
+    228.7,
+    0.85
+   ],
+   [
+    229.0,
+    0.75
+   ],
+   [
+    229.3,
+    0.45
+   ],
+   [
+    229.6,
+    0.28
+   ],
+   [
+    229.8,
+    0.24
+   ],
+   [
+    230.1,
+    0.25
+   ],
+   [
+    230.5,
+    0.33
+   ],
+   [
+    231.0,
+    0.52
+   ],
+   [
+    231.5,
+    0.67
+   ],
+   [
+    231.9,
+    0.7
+   ],
+   [
+    232.2,
+    0.66
+   ],
+   [
+    232.5,
+    0.52
+   ],
+   [
+    232.8,
+    0.35
+   ],
+   [
+    233.1,
+    0.25
+   ],
+   [
+    233.5,
+    0.21
+   ],
+   [
+    234.0,
+    0.2
+   ],
+   [
+    234.5,
+    0.2
+   ],
+   [
+    235.0,
+    0.21
+   ],
+   [
+    235.5,
+    0.21
+   ],
+   [
+    236.0,
+    0.2
+   ],
+   [
+    236.5,
+    0.17
+   ],
+   [
+    237.0,
+    0.15
+   ],
+   [
+    237.5,
+    0.15
+   ],
+   [
+    238.0,
+    0.15
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F6a-20",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "22",
+   "panel": "a",
+   "caption": "FIG. 6. XPS data of (a) Mo3d and (b) N1s and Mo3p of an MoN x thin film deposited by ALD super-cycles.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "series: Mo3d",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Binding energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "Arb. unit",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F6a-20",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F6a-20"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F6a-20"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F6a-20"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F6a-20"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6a-20",
+     "figure": "Fig 6",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6b-21",
+     "figure": "Fig 6",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "H2_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6b-21",
+     "figure": "Fig 6",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "NH3_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6b-21",
+     "figure": "Fig 6",
+     "panel": "b"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "Arb. unit",
+   "family": null
+  },
+  "coordinate": "Binding energy",
+  "coordinate_family": null,
+  "points": [
+   [
+    388.0,
+    0.11
+   ],
+   [
+    389.0,
+    0.12
+   ],
+   [
+    390.0,
+    0.14
+   ],
+   [
+    391.0,
+    0.16
+   ],
+   [
+    392.0,
+    0.2
+   ],
+   [
+    393.0,
+    0.28
+   ],
+   [
+    394.0,
+    0.45
+   ],
+   [
+    394.5,
+    0.55
+   ],
+   [
+    395.1,
+    0.6
+   ],
+   [
+    395.5,
+    0.58
+   ],
+   [
+    395.8,
+    0.56
+   ],
+   [
+    396.2,
+    0.6
+   ],
+   [
+    396.6,
+    0.75
+   ],
+   [
+    397.0,
+    0.87
+   ],
+   [
+    397.2,
+    0.88
+   ],
+   [
+    397.5,
+    0.84
+   ],
+   [
+    398.0,
+    0.7
+   ],
+   [
+    398.5,
+    0.55
+   ],
+   [
+    399.0,
+    0.43
+   ],
+   [
+    399.5,
+    0.35
+   ],
+   [
+    400.0,
+    0.29
+   ],
+   [
+    401.0,
+    0.22
+   ],
+   [
+    402.0,
+    0.18
+   ],
+   [
+    403.0,
+    0.16
+   ],
+   [
+    404.0,
+    0.15
+   ],
+   [
+    405.0,
+    0.16
+   ],
+   [
+    406.0,
+    0.17
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F6b-21",
+  "provenance": {
+   "figure": "Fig 6",
+   "figure_number": "6",
+   "fig_docling_index": "22",
+   "panel": "b",
+   "caption": "FIG. 6. XPS data of (a) Mo3d and (b) N1s and Mo3p of an MoN x thin film deposited by ALD super-cycles.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "series: N1s and Mo3p",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "Binding energy"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "Arb. unit",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F6b-21",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F6b-21"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F6b-21"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F6b-21"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F6b-21"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F6b-21",
+     "figure": "Fig 6",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.6
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "temperature",
+    "value": 500.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F7a-22",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "H2_dose_time",
+    "value": 20.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F7a-22",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "NH3_dose_time",
+    "value": 60.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F7a-22",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200.0,
+    "unit": null,
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F7a-22",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "family": null
+  },
+  "coordinate": "2 \u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    20.0,
+    65.0
+   ],
+   [
+    21.0,
+    58.5
+   ],
+   [
+    22.0,
+    52.0
+   ],
+   [
+    23.0,
+    46.0
+   ],
+   [
+    24.0,
+    41.5
+   ],
+   [
+    25.0,
+    37.0
+   ],
+   [
+    26.0,
+    33.0
+   ],
+   [
+    27.0,
+    30.5
+   ],
+   [
+    28.0,
+    28.5
+   ],
+   [
+    29.0,
+    27.0
+   ],
+   [
+    30.0,
+    24.5
+   ],
+   [
+    31.0,
+    22.0
+   ],
+   [
+    32.0,
+    21.5
+   ],
+   [
+    33.0,
+    24.0
+   ],
+   [
+    34.0,
+    28.5
+   ],
+   [
+    35.0,
+    33.0
+   ],
+   [
+    36.0,
+    40.0
+   ],
+   [
+    37.2,
+    48.0
+   ],
+   [
+    38.0,
+    38.0
+   ],
+   [
+    39.0,
+    28.0
+   ],
+   [
+    40.0,
+    22.0
+   ],
+   [
+    41.0,
+    23.0
+   ],
+   [
+    42.0,
+    28.0
+   ],
+   [
+    43.5,
+    39.0
+   ],
+   [
+    44.5,
+    30.0
+   ],
+   [
+    45.5,
+    24.0
+   ],
+   [
+    47.0,
+    21.0
+   ],
+   [
+    48.5,
+    20.0
+   ],
+   [
+    50.0,
+    19.5
+   ],
+   [
+    51.5,
+    18.5
+   ],
+   [
+    52.8,
+    38.0
+   ],
+   [
+    53.5,
+    22.0
+   ],
+   [
+    55.5,
+    33.0
+   ],
+   [
+    57.0,
+    24.0
+   ],
+   [
+    58.5,
+    17.5
+   ],
+   [
+    60.0,
+    12.5
+   ],
+   [
+    61.5,
+    14.0
+   ],
+   [
+    63.2,
+    19.0
+   ],
+   [
+    64.5,
+    15.0
+   ],
+   [
+    66.0,
+    11.5
+   ],
+   [
+    68.0,
+    10.0
+   ],
+   [
+    70.0,
+    10.0
+   ],
+   [
+    72.0,
+    11.0
+   ],
+   [
+    74.0,
+    11.0
+   ],
+   [
+    75.2,
+    13.0
+   ],
+   [
+    77.0,
+    11.5
+   ],
+   [
+    78.5,
+    12.0
+   ],
+   [
+    80.0,
+    13.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F7a-22",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "24",
+   "panel": "a",
+   "caption": "FIG. 7. (a) GIXRD data and (b) HR-TEM image of MoNx thin films deposited by ALD super-cycle.",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "2 \u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200.0,
+   "temperature": 500.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F7a-22",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F7a-22"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F7a-22"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F7a-22"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F7a-22"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 200.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F7a-22",
+     "figure": "Fig 7",
+     "panel": "a"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": "10.1116_6.0002154",
+     "experiment_id": "10.1116_6.0002154-F7a-22",
+     "figure": "Fig 7",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.7
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "arb. unit",
+   "family": null
+  },
+  "coordinate": "2\u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    30.0,
+    10.2
+   ],
+   [
+    32.0,
+    10.3
+   ],
+   [
+    34.0,
+    10.2
+   ],
+   [
+    36.0,
+    10.4
+   ],
+   [
+    38.0,
+    10.3
+   ],
+   [
+    40.0,
+    10.5
+   ],
+   [
+    41.5,
+    11.2
+   ],
+   [
+    42.5,
+    14.0
+   ],
+   [
+    43.0,
+    19.5
+   ],
+   [
+    43.4,
+    30.1
+   ],
+   [
+    43.8,
+    23.2
+   ],
+   [
+    44.5,
+    13.5
+   ],
+   [
+    45.5,
+    10.6
+   ],
+   [
+    47.0,
+    10.3
+   ],
+   [
+    48.5,
+    10.6
+   ],
+   [
+    49.5,
+    12.0
+   ],
+   [
+    50.5,
+    17.2
+   ],
+   [
+    51.2,
+    13.5
+   ],
+   [
+    52.0,
+    11.0
+   ],
+   [
+    54.0,
+    10.3
+   ],
+   [
+    56.0,
+    10.2
+   ],
+   [
+    58.0,
+    10.4
+   ],
+   [
+    60.0,
+    10.3
+   ],
+   [
+    62.0,
+    10.2
+   ],
+   [
+    64.0,
+    10.3
+   ],
+   [
+    66.0,
+    10.4
+   ],
+   [
+    68.0,
+    10.2
+   ],
+   [
+    70.0,
+    10.3
+   ],
+   [
+    72.0,
+    10.5
+   ],
+   [
+    73.2,
+    11.8
+   ],
+   [
+    74.2,
+    14.8
+   ],
+   [
+    75.0,
+    12.2
+   ],
+   [
+    76.0,
+    10.5
+   ],
+   [
+    78.0,
+    10.3
+   ],
+   [
+    80.0,
+    10.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F9b-23",
+  "provenance": {
+   "figure": "Fig 9",
+   "figure_number": "9",
+   "fig_docling_index": "27",
+   "panel": "b",
+   "caption": "FIG. 9. (a) Schematic of deposition Cu/MoN x /sub-structure and annealing process and XRD data of (a) As-dep Cu(100 nm)/MoN x (5 nm)/sub stack, (b) Cu(100 nm)/MoN x (5 nm)/sub stack at 500 \u00b0C, (c) Cu(",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "annealing temperature: (a) As-dep",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "2\u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "arb. unit",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F9b-23",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F9b-23"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F9b-23"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F9b-23"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F9b-23"
+    }
+   },
+   "completeness": 0.5
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "arb. unit",
+   "family": null
+  },
+  "coordinate": "2\u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    30.0,
+    36.2
+   ],
+   [
+    32.0,
+    36.3
+   ],
+   [
+    34.0,
+    36.2
+   ],
+   [
+    36.0,
+    36.4
+   ],
+   [
+    38.0,
+    36.3
+   ],
+   [
+    40.0,
+    36.5
+   ],
+   [
+    41.5,
+    37.5
+   ],
+   [
+    42.5,
+    42.1
+   ],
+   [
+    43.0,
+    52.0
+   ],
+   [
+    43.4,
+    71.5
+   ],
+   [
+    43.8,
+    56.2
+   ],
+   [
+    44.5,
+    41.5
+   ],
+   [
+    45.5,
+    36.8
+   ],
+   [
+    47.0,
+    36.3
+   ],
+   [
+    48.5,
+    36.8
+   ],
+   [
+    49.5,
+    39.5
+   ],
+   [
+    50.5,
+    52.4
+   ],
+   [
+    51.2,
+    43.1
+   ],
+   [
+    52.0,
+    37.8
+   ],
+   [
+    54.0,
+    36.3
+   ],
+   [
+    56.0,
+    36.2
+   ],
+   [
+    58.0,
+    36.4
+   ],
+   [
+    60.0,
+    36.3
+   ],
+   [
+    62.0,
+    36.2
+   ],
+   [
+    64.0,
+    36.3
+   ],
+   [
+    66.0,
+    36.4
+   ],
+   [
+    68.0,
+    36.2
+   ],
+   [
+    70.0,
+    36.3
+   ],
+   [
+    72.0,
+    36.6
+   ],
+   [
+    73.2,
+    39.2
+   ],
+   [
+    74.2,
+    47.8
+   ],
+   [
+    75.0,
+    41.0
+   ],
+   [
+    76.0,
+    36.7
+   ],
+   [
+    78.0,
+    36.3
+   ],
+   [
+    80.0,
+    36.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F9b-24",
+  "provenance": {
+   "figure": "Fig 9",
+   "figure_number": "9",
+   "fig_docling_index": "27",
+   "panel": "b",
+   "caption": "FIG. 9. (a) Schematic of deposition Cu/MoN x /sub-structure and annealing process and XRD data of (a) As-dep Cu(100 nm)/MoN x (5 nm)/sub stack, (b) Cu(100 nm)/MoN x (5 nm)/sub stack at 500 \u00b0C, (c) Cu(",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "annealing temperature: (b) 500\u00b0C anneal",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "2\u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "arb. unit",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F9b-24",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F9b-24"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F9b-24"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F9b-24"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F9b-24"
+    }
+   },
+   "completeness": 0.5
+  }
+ },
+ {
+  "material": "Mo2N",
+  "material_raw": "Mo2N",
+  "precursors": [
+   "MoCl4_THD_THF"
+  ],
+  "coreactants": [],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MoCl4_THD_THF"
+   }
+  ],
+  "carrier_gas": {
+   "species": "Ar"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "A",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": 66.661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1116_6.0002154::pressure::working_pressure::0",
+     "pressure_type": "working_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "the process pressure was kept constant at 0.5 Torr",
+     "original_value": 0.5,
+     "original_unit": "Torr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "arb. unit",
+   "family": null
+  },
+  "coordinate": "2\u0398",
+  "coordinate_family": null,
+  "points": [
+   [
+    30.0,
+    68.2
+   ],
+   [
+    32.0,
+    68.3
+   ],
+   [
+    34.0,
+    68.2
+   ],
+   [
+    36.0,
+    68.4
+   ],
+   [
+    38.0,
+    68.3
+   ],
+   [
+    40.0,
+    68.5
+   ],
+   [
+    41.5,
+    69.8
+   ],
+   [
+    42.5,
+    75.2
+   ],
+   [
+    43.0,
+    86.0
+   ],
+   [
+    43.4,
+    103.5
+   ],
+   [
+    43.8,
+    88.1
+   ],
+   [
+    44.5,
+    74.5
+   ],
+   [
+    45.5,
+    68.9
+   ],
+   [
+    47.0,
+    68.3
+   ],
+   [
+    48.5,
+    68.9
+   ],
+   [
+    49.5,
+    72.8
+   ],
+   [
+    50.5,
+    87.2
+   ],
+   [
+    51.2,
+    76.0
+   ],
+   [
+    52.0,
+    70.1
+   ],
+   [
+    54.0,
+    68.3
+   ],
+   [
+    56.0,
+    68.2
+   ],
+   [
+    58.0,
+    68.4
+   ],
+   [
+    60.0,
+    68.3
+   ],
+   [
+    62.0,
+    68.2
+   ],
+   [
+    64.0,
+    68.3
+   ],
+   [
+    66.0,
+    68.4
+   ],
+   [
+    68.0,
+    68.2
+   ],
+   [
+    70.0,
+    68.3
+   ],
+   [
+    72.0,
+    68.7
+   ],
+   [
+    73.2,
+    72.1
+   ],
+   [
+    74.2,
+    82.5
+   ],
+   [
+    75.0,
+    73.8
+   ],
+   [
+    76.0,
+    68.8
+   ],
+   [
+    78.0,
+    68.3
+   ],
+   [
+    80.0,
+    68.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1116_6.0002154-F9b-25",
+  "provenance": {
+   "figure": "Fig 9",
+   "figure_number": "9",
+   "fig_docling_index": "27",
+   "panel": "b",
+   "caption": "FIG. 9. (a) Schematic of deposition Cu/MoN x /sub-structure and annealing process and XRD data of (a) As-dep Cu(100 nm)/MoN x (5 nm)/sub stack, (b) Cu(100 nm)/MoN x (5 nm)/sub stack at 500 \u00b0C, (c) Cu(",
+   "extractor": "vision-llm",
+   "doi": "10.1116_6.0002154"
+  },
+  "series_name": "annealing temperature: (c) 600\u00b0C anneal",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "precursor_only",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Mo2N",
+   "supporting_evidence": "of the candidates ['MoCl4_THD_THF'] listed by the paper, only 'MoCl4_THD_THF' carries the metal of Mo2N",
+   "ambiguity_reason": "2 co-reactants listed with no material mapping: ['NH3', 'H2']",
+   "candidate_mappings": {
+    "precursors": [
+     "MoCl4_THD_THF"
+    ],
+    "coreactants": [
+     "NH3",
+     "H2"
+    ],
+    "materials": [
+     "Mo2N"
+    ]
+   }
+  },
+  "varies": [
+   "2\u0398"
+  ],
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "arb. unit",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Mo2N",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MoCl4_THD_THF",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "Ar"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1116_6.0002154-F9b-25",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MoCl4_THD_THF",
+     "experiment_id": "10.1116_6.0002154-F9b-25"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Mo2N",
+     "experiment_id": "10.1116_6.0002154-F9b-25"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1116_6.0002154-F9b-25"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A"
+     ],
+     "experiment_id": "10.1116_6.0002154-F9b-25"
+    }
+   },
+   "completeness": 0.5
+  }
+ }
+]

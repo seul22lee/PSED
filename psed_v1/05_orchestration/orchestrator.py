@@ -20,17 +20,21 @@ Executors wired:
 import sys, json, re
 from pathlib import Path
 
-ROOT = Path(__file__).parent
-sys.path.insert(0, str(ROOT / "0706_pipeline"))
-sys.path.insert(0, str(ROOT / "PSED_MPC"))
+# psed_v1 layout: the KB stages live in 02_extraction and the twin in 04_twin_mpc.
+# These two paths still named the pre-psed_v1 folders (0706_pipeline / PSED_MPC),
+# so this report could not be regenerated at all.
+ROOT = Path(__file__).resolve().parent
+REPO = ROOT.parent
+sys.path.insert(0, str(REPO / "02_extraction"))
+sys.path.insert(0, str(REPO / "04_twin_mpc"))
 import kb_service                      # noqa: E402
 import process_id                      # noqa: E402
 import recipe as recipe_mod            # noqa: E402
 import kb_bridge                       # noqa: E402
 from channel_model import channelModel, MODEL_ID  # noqa: E402
 
-DERIVED = ROOT / "0706_pipeline" / "kb_derived"
-DERIVED.mkdir(exist_ok=True)
+DERIVED = REPO / "02_extraction" / "kb_derived"
+DERIVED.mkdir(parents=True, exist_ok=True)
 STORE = DERIVED / "orchestrator_runs.json"
 
 # common name/formula → KB material id
@@ -347,7 +351,7 @@ td{{padding:8px 8px;border-bottom:1px solid #eef0f3;vertical-align:top}}
 <div class=note style="margin-top:10px">Intents → executors: {legend}</div></div>
 <div class=card><h2>Example runs (end-to-end, grounded &amp; cited)</h2>
 <table><tr><th>query</th><th>intent</th><th>material</th><th>result</th></tr>{trows}</table>
-<div class=note style="margin-top:8px">Each run is appended to <span class=m>0706_pipeline/kb_derived/orchestrator_runs.json</span> — the write-back arrow the stateless Argonne agents lack. Every result carries provenance (papers, parameter sources) so downstream can trust and cite it.</div></div>
+<div class=note style="margin-top:8px">Each run is appended to <span class=m>02_extraction/kb_derived/orchestrator_runs.json</span> — the write-back arrow the stateless Argonne agents lack. Every result carries provenance (papers, parameter sources) so downstream can trust and cite it.</div></div>
 </div>"""
     (ROOT / "m5_orchestration.html").write_text(html)
     return html
@@ -370,5 +374,5 @@ if __name__ == "__main__":
         else:
             print(f"   ✗ {r.get('msg')}")
     make_report(runs)
-    print(f"\n[memory] {STORE.relative_to(ROOT)} now holds {len(json.loads(STORE.read_text()))} runs")
+    print(f"\n[memory] {STORE.relative_to(REPO)} now holds {len(json.loads(STORE.read_text()))} runs")
     print("wrote m5_orchestration.html")

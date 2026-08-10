@@ -1,0 +1,5220 @@
+[
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    30,
+    0.93
+   ],
+   [
+    70,
+    0.83
+   ],
+   [
+    120,
+    0.71
+   ],
+   [
+    180,
+    0.59
+   ],
+   [
+    250,
+    0.47
+   ],
+   [
+    330,
+    0.37
+   ],
+   [
+    420,
+    0.27
+   ],
+   [
+    520,
+    0.19
+   ],
+   [
+    630,
+    0.12
+   ],
+   [
+    750,
+    0.07
+   ],
+   [
+    900,
+    0.04
+   ],
+   [
+    1100,
+    0.02
+   ],
+   [
+    1350,
+    0.01
+   ],
+   [
+    1600,
+    0.0
+   ],
+   [
+    2000,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-0",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "surface recombination probability: r=10^-5",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-0",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-0"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-0"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-0"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-0"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    15,
+    0.88
+   ],
+   [
+    35,
+    0.73
+   ],
+   [
+    60,
+    0.57
+   ],
+   [
+    90,
+    0.42
+   ],
+   [
+    105,
+    0.37
+   ],
+   [
+    140,
+    0.26
+   ],
+   [
+    180,
+    0.17
+   ],
+   [
+    230,
+    0.1
+   ],
+   [
+    290,
+    0.05
+   ],
+   [
+    360,
+    0.02
+   ],
+   [
+    450,
+    0.01
+   ],
+   [
+    600,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-1",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "surface recombination probability: r=10^-4",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-1",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-1"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-1"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-1"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-1"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    5,
+    0.85
+   ],
+   [
+    12,
+    0.68
+   ],
+   [
+    20,
+    0.52
+   ],
+   [
+    30,
+    0.41
+   ],
+   [
+    35,
+    0.37
+   ],
+   [
+    45,
+    0.28
+   ],
+   [
+    60,
+    0.18
+   ],
+   [
+    80,
+    0.1
+   ],
+   [
+    105,
+    0.04
+   ],
+   [
+    140,
+    0.01
+   ],
+   [
+    200,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-2",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "surface recombination probability: r=10^-3",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-2",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-2"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-2"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-2"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-2"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    2,
+    0.82
+   ],
+   [
+    5,
+    0.61
+   ],
+   [
+    8,
+    0.46
+   ],
+   [
+    11,
+    0.37
+   ],
+   [
+    15,
+    0.26
+   ],
+   [
+    20,
+    0.17
+   ],
+   [
+    28,
+    0.08
+   ],
+   [
+    40,
+    0.03
+   ],
+   [
+    60,
+    0.01
+   ],
+   [
+    100,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1b-3",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "b",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "surface recombination probability: r=10^-2",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1b-3",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-3"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-3"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-3"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1b-3"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    20,
+    0.89
+   ],
+   [
+    50,
+    0.74
+   ],
+   [
+    90,
+    0.57
+   ],
+   [
+    140,
+    0.4
+   ],
+   [
+    150,
+    0.37
+   ],
+   [
+    200,
+    0.26
+   ],
+   [
+    270,
+    0.16
+   ],
+   [
+    350,
+    0.09
+   ],
+   [
+    450,
+    0.05
+   ],
+   [
+    600,
+    0.02
+   ],
+   [
+    800,
+    0.01
+   ],
+   [
+    1100,
+    0.0
+   ],
+   [
+    2000,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-4",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "exposure time: t=10^0",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-4",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-4"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-4"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-4"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-4"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    20,
+    0.89
+   ],
+   [
+    50,
+    0.74
+   ],
+   [
+    90,
+    0.57
+   ],
+   [
+    140,
+    0.4
+   ],
+   [
+    150,
+    0.37
+   ],
+   [
+    200,
+    0.26
+   ],
+   [
+    270,
+    0.16
+   ],
+   [
+    350,
+    0.09
+   ],
+   [
+    450,
+    0.05
+   ],
+   [
+    600,
+    0.02
+   ],
+   [
+    800,
+    0.01
+   ],
+   [
+    1100,
+    0.0
+   ],
+   [
+    2000,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-5",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "exposure time: t=10^1",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-5",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-5"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-5"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-5"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-5"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    20,
+    0.89
+   ],
+   [
+    50,
+    0.74
+   ],
+   [
+    90,
+    0.57
+   ],
+   [
+    140,
+    0.4
+   ],
+   [
+    150,
+    0.37
+   ],
+   [
+    200,
+    0.26
+   ],
+   [
+    270,
+    0.16
+   ],
+   [
+    350,
+    0.09
+   ],
+   [
+    450,
+    0.05
+   ],
+   [
+    600,
+    0.02
+   ],
+   [
+    800,
+    0.01
+   ],
+   [
+    1100,
+    0.0
+   ],
+   [
+    2000,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-6",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "exposure time: t=10^2",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-6",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-6"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-6"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-6"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-6"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    20,
+    0.89
+   ],
+   [
+    50,
+    0.74
+   ],
+   [
+    90,
+    0.57
+   ],
+   [
+    140,
+    0.4
+   ],
+   [
+    150,
+    0.37
+   ],
+   [
+    200,
+    0.26
+   ],
+   [
+    270,
+    0.16
+   ],
+   [
+    350,
+    0.09
+   ],
+   [
+    450,
+    0.05
+   ],
+   [
+    600,
+    0.02
+   ],
+   [
+    800,
+    0.01
+   ],
+   [
+    1100,
+    0.0
+   ],
+   [
+    2000,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-7",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "exposure time: t=10^3",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-7",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-7"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-7"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-7"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-7"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_density",
+   "unit": "",
+   "family": null
+  },
+  "coordinate": "aspect_ratio",
+  "coordinate_family": "position",
+  "points": [
+   [
+    0,
+    1.0
+   ],
+   [
+    20,
+    0.89
+   ],
+   [
+    50,
+    0.74
+   ],
+   [
+    90,
+    0.57
+   ],
+   [
+    140,
+    0.4
+   ],
+   [
+    150,
+    0.37
+   ],
+   [
+    200,
+    0.26
+   ],
+   [
+    270,
+    0.16
+   ],
+   [
+    350,
+    0.09
+   ],
+   [
+    450,
+    0.05
+   ],
+   [
+    600,
+    0.02
+   ],
+   [
+    800,
+    0.01
+   ],
+   [
+    1100,
+    0.0
+   ],
+   [
+    2000,
+    0.0
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "model",
+  "is_model_result": true,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F1c-8",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "6",
+   "panel": "c",
+   "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density o",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": "exposure time: t=10^4",
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "aspect_ratio"
+  ],
+  "dependent": [
+   {
+    "quantity": "film_density",
+    "unit": "",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F1c-8",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-8"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-8"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-8"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F1c-8"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    3.8,
+    330
+   ],
+   [
+    12,
+    570
+   ],
+   [
+    38,
+    730
+   ],
+   [
+    120,
+    870
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-9",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-9",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-9"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-9"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-9"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-9"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "TiO2",
+  "material_raw": "TiO2",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TDMAT"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 224.19,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TDMAT",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    12,
+    450
+   ],
+   [
+    120,
+    780
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-10",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "TiO2",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'BDEAS', 'Ti(N(CH3)2)4', 'TDMAT', 'TMA', 'HfCp(N(CH3)2)3', 'TDMACpH'] listed by the paper, only 'TDMAT' carries the metal of TiO2",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "pulse_time"
+  ],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "TiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TDMAT",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-10",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TDMAT",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-10"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-10"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-10"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-10"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-10"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    }
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    120,
+    80
+   ]
+  ],
+  "granularity": "single",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-11",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'BDEAS', 'Ti(N(CH3)2)4', 'TDMAT', 'TMA', 'HfCp(N(CH3)2)3', 'TDMACpH'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-11",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-11"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-11"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-11"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-11"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-11"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.429
+  }
+ },
+ {
+  "material": "HfO2",
+  "material_raw": "HfO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "pulse_time",
+  "coordinate_family": "exposure_time",
+  "points": [
+   [
+    120,
+    40
+   ]
+  ],
+  "granularity": "single",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F2a-12",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "HfO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "7 precursor candidate(s) ['SiH2(N(C2H5)2)2', 'BDEAS', 'Ti(N(CH3)2)4', 'TDMAT', 'TMA', 'HfCp(N(CH3)2)3', 'TDMACpH'] and 4 material(s) ['SiO2', 'TiO2', 'Al2O3', 'HfO2']; no unique candidate carries the metal of HfO2 (metals: ['Hf']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "HfO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F2a-12",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-12"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "HfO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-12"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-12"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F2a-12"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "SiO2",
+  "material_raw": "SiO2",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": null
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "points": [
+   [
+    1.05,
+    330
+   ],
+   [
+    2.4,
+    568
+   ],
+   [
+    3.59,
+    730
+   ],
+   [
+    4.79,
+    875
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F3a-13",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time h",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "SiO2",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 candidates carry the metal of SiO2: ['SiH2(N(C2H5)2)2', 'BDEAS']; the source provides no mapping to choose between them",
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "exposure"
+  ],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "SiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": null,
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F3a-13",
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-13"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "SiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-13"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-13"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-13"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.357
+  }
+ },
+ {
+  "material": "TiO2",
+  "material_raw": "TiO2",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TDMAT"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    }
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 2000,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "structure",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::aspect_ratio::0",
+     "raw_label": "AR",
+     "symbol": "AR",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "in trenches with AR = 2000 and \u03b3 \u226a 1 is assumed",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "initial_sticking_coefficient",
+    "value": 0.0001,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::initial_sticking_coefficient::1",
+     "raw_label": "initial sticking probability",
+     "symbol": "s0",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "with an initial sticking probability of s 0=10 -4",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 5e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::2",
+     "raw_label": "surface recombination probabilities",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "figure",
+     "evidence": "For r = 5 \u00d7 10 -5 , panel (C) shows that an exponential increase",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "assumed"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 6e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::3",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "similar surface recombination probabilities of r = (6 \u00b1 2) \u00d7 10 -5",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "recombination_probability",
+    "value": 7e-05,
+    "unit": null,
+    "of_reactant": null,
+    "source": "geometry",
+    "recipe_role": "model_parameter",
+    "origin": {
+     "level": "paper",
+     "from": "geometry",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::geometry::recombination_probability::4",
+     "raw_label": "recombination probability",
+     "symbol": "r",
+     "status": "directly_reported",
+     "scope": "paper",
+     "evidence": "(7 \u00b1 4) \u00d7 10 -5 were determined for these processes",
+     "model_context": "reaction-diffusion model",
+     "parameter_status": "fitted"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 6.6661,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.jpcc.9b08176::pressure::generic_pressure::0",
+     "pressure_type": "generic_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "100/50 sccm O2/ Ar gas mixture, 50 mtorr pressure, and 600 W ICP power",
+     "original_value": 50,
+     "original_unit": "mtorr"
+    }
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 224.19,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TDMAT",
+     "property": "molar_mass"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "penetration_depth",
+   "unit": "",
+   "family": "position"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "points": [
+   [
+    2.4,
+    450
+   ],
+   [
+    4.79,
+    788
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.jpcc.9b08176-F3a-14",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "9",
+   "panel": "a",
+   "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time h",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.jpcc.9b08176"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "TiO2",
+   "supporting_evidence": "of the candidates ['SiH2(N(C2H5)2)2', 'BDEAS', 'Ti(N(CH3)2)4', 'TDMAT', 'TMA', 'HfCp(N(CH3)2)3', 'TDMACpH'] listed by the paper, only 'TDMAT' carries the metal of TiO2",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "SiH2(N(C2H5)2)2",
+     "BDEAS",
+     "Ti(N(CH3)2)4",
+     "TDMAT",
+     "TMA",
+     "HfCp(N(CH3)2)3",
+     "TDMACpH"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "SiO2",
+     "TiO2",
+     "Al2O3",
+     "HfO2"
+    ]
+   }
+  },
+  "varies": [
+   "exposure"
+  ],
+  "dependent": [
+   {
+    "quantity": "penetration_depth",
+    "unit": "",
+    "family": "position"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "TiO2",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TDMAT",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": {
+    "penetration_depth": "measured-in-figure"
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.jpcc.9b08176-F3a-14",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TDMAT",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-14"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-14"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TiO2",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-14"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-14"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.jpcc.9b08176-F3a-14"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.429
+  }
+ }
+]

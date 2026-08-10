@@ -645,6 +645,44 @@ def _diagnosability(patterns):
             "unresolved_attributions": unresolved}
 
 
+# =============================================================================
+# ARCHITECTURAL TODO (documented technical debt — DO NOT IMPLEMENT HERE) ·······
+# -----------------------------------------------------------------------------
+# Make the M3 report FULLY EVIDENCE-DERIVED instead of TEMPLATE-DERIVED.
+#
+# The report is already deterministic (no LLM call), which is good. But several
+# scientific statements are still emitted from manually-authored templates /
+# fixed registries rather than being derived from evidence. Known examples:
+#   · _global_assumptions() emits a FIXED assumption list;
+#   · _explanation_space() / the six loci are largely TEMPLATE-driven;
+#   · several interpretation sentences are PRE-AUTHORED and only interpolate
+#     runtime numbers.
+# Maintenance problem: if extraction coverage improves, the ontology changes,
+# new evidence types appear, or the model evolves, the report logic will NOT
+# adapt automatically — the templates themselves must be edited. Not desired.
+#
+# Long-term principle — every scientific statement in the report should be a
+# DETERMINISTIC CONSEQUENCE of:
+#     extracted evidence + runtime model-resolution trace + ontology state
+#     + numerical results + explicit scientific rules
+# NOT of manually-authored templates.
+#
+# Future architecture — each emitted statement should carry: origin, rule_id,
+# trigger condition, evidence references, affected conclusions, discharge
+# condition. Statements (assumptions, explanation loci) become active ONLY when
+# their triggering evidence exists, and DISCHARGE automatically when it changes.
+#   Example — claim `kinetics_are_model_defaults`:
+#     origin   = runtime resolution trace
+#     trigger  = provenance(c)==model_default OR provenance(K)==model_default
+#                OR provenance(gpc)==model_default
+#     evidence = the run-level model-resolution/provenance summary
+#     discharge= disappears automatically once those parameters resolve from
+#                accepted evidence.
+#
+# STATUS: architectural TODO only. Do NOT change current behavior in this task;
+# this note is preserved so a future refactor can move report generation toward
+# a fully evidence-derived scientific reporting engine.
+# =============================================================================
 # ---- R5: scientific interpretation (plural, non-exclusive, never a conclusion) ----
 def _dependency_assumptions(r):
     a = []
