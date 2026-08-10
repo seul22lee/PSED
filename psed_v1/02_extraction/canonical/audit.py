@@ -38,7 +38,7 @@ from .schema import (REPO, Status, COMPARISON_GROUPS,             # noqa: E402
                      NORMALIZATION_DEFINITIONS, RULE_DECLS, code_version,
                      build_timestamp)
 
-OUTPUT = REPO / "02_extraction" / "output"
+OUTPUT = REPO / "papers"          # papers/<doi>/{resolved,canonical}/
 REPORTS = REPO / "reports" / "canonical"
 
 RESOLVED_STATUSES = {Status.CONVERTED, Status.ALREADY_CANONICAL}

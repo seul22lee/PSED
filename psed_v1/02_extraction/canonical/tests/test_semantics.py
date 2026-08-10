@@ -98,10 +98,16 @@ class TestAxisClassification(unittest.TestCase):
         self.assertEqual(s["comparison_group"], "spatial_position")
 
     def test_25_condition_axis_classification(self):
-        for q in ("deposition_temperature", "cycle_number", "pulse_time", "exposure"):
+        """CONTRACT CHANGE. `cycle_number` moved from `condition` to
+        `coordinate`: whether its points are separate runs is decided by
+        canonical/granularity.py from run-structure evidence, not by the axis
+        table. The recipe quantities are unchanged."""
+        for q in ("deposition_temperature", "pulse_time", "exposure"):
             s = AX.resolve_x_axis(q, "s", None, texts())
             self.assertEqual(s["axis_role"], "condition",
                              "%s should be a condition axis" % q)
+        s = AX.resolve_x_axis("cycle_number", "s", None, texts())
+        self.assertEqual(s["axis_role"], "coordinate")
 
     def test_unknown_quantity_is_unsupported_not_guessed(self):
         s = AX.resolve_x_axis("Binding Energy of the 2p peak", "eV", None, texts())

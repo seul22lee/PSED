@@ -7,8 +7,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 
 
 def J(p, d=None):
@@ -111,9 +111,9 @@ PRESSURE_Q = {"generic_pressure", "working_pressure", "total_pressure", "partial
 
 def status_row(c):
     (doi, pfig, idx, panel, sel, q, val, unit, ev, evsrc, vstatus, scope) = c
-    fd = J(EX / doi / "figure_data.json", {}) or {}
-    doc = T(EX / doi / "document.md")
-    pj = (J(EX / doi / "pressure.json", {}) or {}).get("pressures") or []
+    fd = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
+    doc = T(EX / doi / "extracted" / "document.md")
+    pj = (J(EX / doi / "extracted" / "pressure.json", {}) or {}).get("pressures") or []
     exps = J(KB / doi / "resolved" / "experiments.json", []) or []
 
     # layer: figure_data panel conditions

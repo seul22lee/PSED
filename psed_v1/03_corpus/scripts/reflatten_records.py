@@ -14,7 +14,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 
 # 05_figure_extract.py isn't a valid module name (leading digit) -> load by path.
 _spec = importlib.util.spec_from_file_location(
@@ -24,7 +24,7 @@ _spec.loader.exec_module(_fe)
 
 
 def reflatten(sd):
-    d = EXTRACTED / sd
+    d = EXTRACTED / sd / "extracted"
     fd = d / "figure_data.json"
     if not fd.is_file():
         print(f"  [skip] {sd}: no figure_data.json cache")

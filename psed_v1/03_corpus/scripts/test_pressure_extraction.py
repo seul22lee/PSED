@@ -49,8 +49,9 @@ REACTANTS = [{"label": "A", "role": "precursor", "species": "TBF"},
 
 def facts(observations):
     with tempfile.TemporaryDirectory() as td:
-        d = Path(td) / "10.0000_x"
-        d.mkdir()
+        # the fixture mirrors the real layout: papers/<doi>/extracted/
+        d = Path(td) / "10.0000_x" / "extracted"
+        d.mkdir(parents=True)
         (d / "pressure.json").write_text(json.dumps({"pressures": observations}))
         orig = p10.EXTRACTED
         p10.EXTRACTED = Path(td)

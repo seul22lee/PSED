@@ -60,7 +60,7 @@ def main():
             FILLED[r.get("exp_id")] = {k: m for k, m in ps.items()
                                        if isinstance(m, dict) and m.get("source") in ("kb", "model")}
     exps = []
-    for d in sorted((ROOT / "output").glob("*/resolved/experiments.json")):
+    for d in sorted((ROOT.parent / "papers").glob("*/resolved/experiments.json")):
         pid = d.parent.parent.name
         for i, e in enumerate(json.loads(d.read_text())):
             conds = [{"q": c["quantity"], "v": c.get("value"), "u": c.get("unit"),

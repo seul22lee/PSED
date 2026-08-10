@@ -418,7 +418,7 @@ def _targets(criteria=DEFAULT_CRITERIA):
     """Candidate ensemble for the criteria — membership by observable/scope only, never by
     outcome or commensurability. Reproduces the legacy run() filter exactly."""
     E = []
-    for f in sorted((PIPE / "output").glob("*/resolved/experiments.json")):
+    for f in sorted((PIPE.parent / "papers").glob("*/resolved/experiments.json")):
         E += json.load(open(f))
     return [e for e in E if _member(e, criteria)]
 
@@ -429,7 +429,7 @@ def _coverage(targets, criteria=DEFAULT_CRITERIA):
     from collections import Counter
     by_geo = Counter(e.get("geometry_class") for e in targets)
     by_mat = Counter(e.get("material") for e in targets)
-    by_src = Counter((e.get("exp_id") or "").split("-")[0] for e in targets)
+    by_src = Counter(_paper_of(e) for e in targets)
     valid_geo = criteria["model_validity"]["geometry"]
     untested = [{"dimension": "geometry_class", "value": g, "status": "untested_region",
                  "note": f"model-valid geometry '{g}' has no candidate profile in the corpus"}
@@ -538,7 +538,7 @@ def validate_one(exp, criteria=DEFAULT_CRITERIA):
     verdict, reasons, bq = _commensurability(exp, criteria)
 
     base = {"exp_id": exp.get("exp_id"), "material": exp.get("material"),
-            "paper": (exp.get("exp_id") or "").split("-")[0],
+            "paper": _paper_of(exp),
             "geometry_class": exp.get("geometry_class"), "thermal": _is_thermal(exp),
             "observation_provenance": obs_prov, "prov": prov, "notes": notes,
             "measured": sorted(k for k, s in prov.items() if s == "extracted"),
@@ -601,6 +601,17 @@ def validate_one(exp, criteria=DEFAULT_CRITERIA):
 
 
 # ---- R4: ensemble patterns + diagnosability (after the barrier) --------------
+def _paper_of(exp):
+    """The paper an experiment belongs to, from its own field.
+
+    This used to be `exp_id.split("-")[0]`, which silently truncated every
+    hyphenated DOI (10.1007_s11671-010-9676-0 -> "10.1007_s11671") and broke
+    outright once ids became figure-anchored. The record carries the paper; read
+    it."""
+    return (exp.get("paper_id") or exp.get("doi")
+            or (exp.get("provenance") or {}).get("paper_id") or "unknown")
+
+
 def _ensemble_patterns(admissible):
     from collections import Counter
     n = len(admissible)

@@ -6,7 +6,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
+KB = REPO / "papers"              # papers/<doi>/resolved/
 BASE = KB / "_archive" / "resolved_pre_canonical"
 
 CAUSE = {

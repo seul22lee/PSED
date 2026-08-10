@@ -19,7 +19,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-OUT = ROOT.parent / "02_extraction" / "output"
+OUT = ROOT.parent / "papers"      # papers/<doi>/resolved/
 
 spec = u.spec_from_file_location("kb6", HERE / "06_to_kb.py")
 kb6 = u.module_from_spec(spec); spec.loader.exec_module(kb6)
@@ -142,7 +142,7 @@ def conds(doi):
     qs |= {b.get("quantity") for e in ents for b in (e.get("bound_conditions") or [])}
     # geometry facts are attached per paper by geometry_facts(); they reach the
     # records through the same path for both experimental and model papers
-    gp = ROOT / "extracted" / doi / "geometry.json"
+    gp = ROOT.parent / "papers" / doi / "extracted" / "geometry.json"
     if gp.is_file():
         try:
             g = json.loads(gp.read_text())
@@ -172,7 +172,7 @@ for doi, want_struct, want_class, want_q in (
     ok(f"{doi} carries {sorted(want_q)}", not missing, f"missing {sorted(missing)}")
 
 print("9) Yim reports only aspect-ratio RANGES — none may be asserted as a scalar")
-g = json.loads((ROOT / "extracted" / "10.1039_d0cp03358h" / "geometry.json").read_text())
+g = json.loads((ROOT.parent / "papers" / "10.1039_d0cp03358h" / "extracted" / "geometry.json").read_text())
 ars = [q for q in (g.get("quantities") or []) if q["quantity"] == "aspect_ratio"]
 ok("no fabricated aspect_ratio for Yim", not ars, ars)
 r = conds("10.1039_d0cp03358h")

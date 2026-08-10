@@ -24,7 +24,7 @@ ROOT = Path(__file__).parent
 
 def load():
     E = []
-    for d in sorted((ROOT / "output").glob("*/resolved/experiments.json")):
+    for d in sorted((ROOT.parent / "papers").glob("*/resolved/experiments.json")):
         pid = d.parent.parent.name
         for e in json.loads(d.read_text()):
             e["_pid"] = pid; E.append(e)

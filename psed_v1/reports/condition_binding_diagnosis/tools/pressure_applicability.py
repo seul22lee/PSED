@@ -19,8 +19,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 PRESSURE_Q = {"generic_pressure", "working_pressure", "total_pressure", "partial_pressure",
               "chamber_total_pressure", "precursor_partial_pressure",
               "co_reactant_partial_pressure", "reactant_A_partial_pressure",
@@ -46,9 +46,9 @@ def main():
         doi = a["paper_id"]
         if doi not in cache:
             cache[doi] = {e["exp_id"]: e for e in (J(KB / doi / "resolved" / "experiments.json", []) or [])}
-            fdcache[doi] = J(EX / doi / "figure_data.json", {}) or {}
-            doccache[doi] = Path(EX / doi / "document.md").read_text(errors="replace") \
-                if (EX / doi / "document.md").exists() else ""
+            fdcache[doi] = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
+            doccache[doi] = Path(EX / doi / "extracted" / "document.md").read_text(errors="replace") \
+                if (EX / doi / "extracted" / "document.md").exists() else ""
         exp = cache[doi].get(a["record_id"], {})
         prov = exp.get("provenance") or {}
         fi, pan = str(prov.get("fig_docling_index") or ""), str(prov.get("panel") or "")
@@ -75,7 +75,7 @@ def main():
                 applies, scope, ev = True, "paper_methods", " ".join(m.group(0).split())[:120]
         # 4. single unambiguous process_condition pressure in pressure.json
         if not applies:
-            pj = (J(EX / doi / "pressure.json", {}) or {}).get("pressures") or []
+            pj = (J(EX / doi / "extracted" / "pressure.json", {}) or {}).get("pressures") or []
             proc = [x for x in pj if x.get("context") == "process_condition"
                     and x.get("value") is not None]
             vals = {round(float(x["value"]), 9) for x in proc}

@@ -37,16 +37,16 @@ def _load(include_non_experimental=True):
     experiment — so the typed entity records are folded in, each tagged with its
     `record_nature`. Callers that need experiments only can filter on it."""
     out = []
-    for f in sorted(glob.glob(str(ROOT / "output" / "*" / "resolved" / "experiments.json"))):
-        pid = f.split("/output/")[1].split("/")[0]
+    for f in sorted(glob.glob(str(ROOT.parent / "papers" / "*" / "resolved" / "experiments.json"))):
+        pid = f.split("/papers/")[1].split("/")[0]
         for e in json.loads(Path(f).read_text()):
             e["_pid"] = pid
             e.setdefault("record_nature", "experimental_case")
             out.append(e)
     if not include_non_experimental:
         return out
-    for f in sorted(glob.glob(str(ROOT / "output" / "*" / "resolved" / "entities.json"))):
-        pid = f.split("/output/")[1].split("/")[0]
+    for f in sorted(glob.glob(str(ROOT.parent / "papers" / "*" / "resolved" / "entities.json"))):
+        pid = f.split("/papers/")[1].split("/")[0]
         for ent in json.loads(Path(f).read_text()):
             if ent.get("is_current_paper_experiment"):
                 continue          # already present as an experimental case

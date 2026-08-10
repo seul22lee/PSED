@@ -426,7 +426,34 @@ def classify(ent, methods_text=""):
         return _result(cls, fams, "provenance_gate", sig, weak, pv, pw[cand],
                        ent, lit, sa, cap, body)
 
-    # ---------- 2. STRUCTURAL gates on the x axis ----------
+    # ---------- 2. GRANULARITY, resolved from axis semantics ----------
+    # canonical/granularity.py answers "does variation along this curve mean
+    # separate physical executions?" from the axis ROLE plus the modality and the
+    # paper's run-structure statements. When it reaches a decision, that decision
+    # IS the class -- the old `condition axis -> one experiment per point` rule
+    # is gone. `unresolved` falls through to the gates and votes below.
+    _gran = ent.get("granularity_kind")
+    _GRAN_CLASS = {
+        "independent_process_sweep": "discrete_experimental_sweep",
+        "continuous_or_longitudinal_run": "continuous_trace",
+        "measurement_scan": "multi_output_measurement",
+        "spatial_profile": "experimental_profile",
+        "multi_output_measurement": "multi_output_measurement",
+    }
+    if _gran in _GRAN_CLASS:
+        ev = ["G: granularity resolved as %r from the x-axis role %r"
+              % (_gran, ent.get("x_axis_role"))]
+        gev = ent.get("granularity_evidence")
+        if gev:
+            ev.append("G: %s" % gev)
+        fams = 2 if gev else 1
+        if mods:
+            fams += 1
+        return _result(_GRAN_CLASS[_gran], fams, "granularity(%s)" % _gran, sig,
+                       weak, Counter({_GRAN_CLASS[_gran]: 1}), ev,
+                       ent, lit, sa, cap, body)
+
+    # ---------- 3. STRUCTURAL gates on the x axis ----------
     # A MEASUREMENT coordinate (binding energy, 2-theta, wavelength, sputter depth)
     # means this curve is one specimen scanned across that coordinate. What differs
     # BETWEEN curves (an H2 ratio, a temperature) is a between-curve condition and is

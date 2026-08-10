@@ -19,8 +19,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis" / "stage0"
 DIAG = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 PDFS = REPO / "03_corpus" / "pdfs"
 
 
@@ -123,10 +123,10 @@ def main():
     for doi in sorted(trig):
         exps = J(KB / doi / "resolved" / "experiments.json", []) or []
         series = {s["series_id"]: s for s in (J(KB / doi / "resolved" / "series.json", []) or [])}
-        fd = J(EX / doi / "figure_data.json", {}) or {}
-        struct = J(EX / doi / "structure.json", {}) or {}
-        doc = norm_math(Path(EX / doi / "document.md").read_text(errors="replace")
-                        if (EX / doi / "document.md").exists() else "")
+        fd = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
+        struct = J(EX / doi / "extracted" / "structure.json", {}) or {}
+        doc = norm_math(Path(EX / doi / "extracted" / "document.md").read_text(errors="replace")
+                        if (EX / doi / "extracted" / "document.md").exists() else "")
         fig_by_idx = {str(f.get("figure")): f for f in fd.get("figures", [])}
         tables = struct.get("tables", []) or []
 

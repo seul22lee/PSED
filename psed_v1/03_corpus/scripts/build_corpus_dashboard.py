@@ -15,8 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent          # 0709_corpus
 REF = ROOT / "refsets"
 PDFS = ROOT / "pdfs"
-EXTRACTED = ROOT / "extracted"
-KB = ROOT.parent / "02_extraction" / "output"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
+KB = ROOT.parent / "papers"          # papers/<doi>/{resolved,canonical}/
 
 
 def load():
@@ -35,8 +35,8 @@ def load():
     pdfs = sorted(p.stem for p in PDFS.glob("*.pdf"))
     # extraction state per paper dir
     papers = []
-    for d in sorted(p for p in EXTRACTED.iterdir() if p.is_dir()):
-        sd = d.name
+    for d in sorted(p for p in (d / "extracted" for d in EXTRACTED.iterdir() if d.is_dir()) if p.is_dir()):
+        sd = d.parent.name
         sc = {}
         if (d / "scout.json").exists():
             try:

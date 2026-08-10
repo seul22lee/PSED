@@ -22,7 +22,7 @@ def _png(fig):
 
 def main():
     E = []
-    for f in glob.glob(str(ROOT / "output/*/resolved/experiments.json")):
+    for f in glob.glob(str(ROOT.parent / "papers/*/resolved/experiments.json")):
         E += json.load(open(f))
     R = [e for e in E if e.get("analysis_ready") and e.get("recipe")]
     comp = [e["recipe"]["completeness"] for e in R]
@@ -36,7 +36,7 @@ def main():
     # sample table across papers/granularities
     seen, rows = set(), ""
     for e in sorted(R, key=lambda e: e.get("exp_id", "")):
-        key = (e["exp_id"].split("-F")[0], e["granularity"])
+        key = (e.get("paper_id") or e.get("doi"), e["granularity"])
         if key in seen:
             continue
         seen.add(key)

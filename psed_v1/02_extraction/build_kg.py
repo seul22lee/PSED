@@ -34,7 +34,7 @@ for _g in ("precursors", "coreactants"):
 def _load_canonical():
     """Canonical curves produced by 02_extraction/canonical/build_canonical.py."""
     out = []
-    for d in sorted((ROOT / "output").glob("*/canonical/curves.json")):
+    for d in sorted((ROOT.parent / "papers").glob("*/canonical/curves.json")):
         try:
             out.extend(json.loads(d.read_text()).get("curves", []))
         except Exception:
@@ -247,7 +247,7 @@ ONTO_IRI = {c["id"]: c.get("iri") for c in ONTO["classes"]}
 def _load_entities():
     """Typed source entities: what each digitised curve actually is."""
     out = []
-    for d in sorted((ROOT / "output").glob("*/resolved/entities.json")):
+    for d in sorted((ROOT.parent / "papers").glob("*/resolved/entities.json")):
         try:
             for e in json.loads(d.read_text()):
                 e["_pid"] = d.parent.parent.name
@@ -375,7 +375,7 @@ def _add_entity_layer(node, link, nodes, present_q):
 def main():
     exps = []
     series_recs = []
-    for d in sorted((ROOT / "output").glob("*/resolved/experiments.json")):
+    for d in sorted((ROOT.parent / "papers").glob("*/resolved/experiments.json")):
         pid = d.parent.parent.name
         for i, e in enumerate(json.loads(d.read_text())):
             e["_pid"], e["_id"] = pid, f"{pid}:{i}"

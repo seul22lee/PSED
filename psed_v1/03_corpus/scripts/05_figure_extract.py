@@ -19,7 +19,7 @@ import json, os, re, sys, io
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 MODEL = "gemini-flash-latest"
 MAX_PX = 1100
@@ -141,7 +141,7 @@ def downscaled_png(path):
 
 
 def extract_paper(sd, client):
-    d = EXTRACTED / sd
+    d = EXTRACTED / sd / "extracted"
     scout = json.loads((d / "scout.json").read_text())
     # Gate on DRILL ONLY, not go_deeper. An empty drill means there is nothing to read,
     # so vision is skipped (this is what stops hallucinated-drill spend on microscopy

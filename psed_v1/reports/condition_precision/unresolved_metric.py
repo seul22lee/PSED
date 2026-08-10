@@ -25,7 +25,7 @@ import collections
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "02_extraction" / "output"
+OUT = ROOT / "papers"          # papers/<doi>/resolved/
 
 
 def main():

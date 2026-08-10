@@ -10,7 +10,7 @@ import json, re, glob
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent            # 0709_corpus
-OUT = ROOT.parent / "02_extraction" / "output"
+OUT = ROOT.parent / "papers"      # papers/<doi>/resolved/
 
 
 def cap_fignum(cap):
@@ -38,7 +38,7 @@ def _idx_from(pv):
 def main():
     kb_changed = kb_total = 0
     for f in sorted(glob.glob(str(OUT / "*" / "resolved" / "experiments.json"))):
-        pid = f.split("/output/")[1].split("/")[0]
+        pid = f.split("/papers/")[1].split("/")[0]
         exps = json.loads(Path(f).read_text())
         dirty = False
         for i, e in enumerate(exps):

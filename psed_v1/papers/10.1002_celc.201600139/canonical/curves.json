@@ -1,0 +1,4084 @@
+{
+ "doi": "10.1002_celc.201600139",
+ "generator": "02_extraction/canonical/build_canonical.py",
+ "code_version": "c3a2b33+dirty",
+ "created_at": 1786382176,
+ "ontology": "01_ontology/ald_ontology.json",
+ "n_curves": 17,
+ "curves": [
+  {
+   "curve_id": "10.1002_celc.201600139::F1::b::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "b",
+    "series": "LTB:H2S",
+    "series_index": 0,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig1b__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1. a) Schematic illustration of Li x Al y S ALD; b) in situ QCM measurements of Li x Al y S ALD performed at 150 8 C using (LTB-H2S)/(TDMAAl-H2S) = 1:1; c) Arrhenius plot for temperature-depended ionic conductivity measured using a 50 nm Li x Al y S film."
+   },
+   "raw": {
+    "x": {
+     "label": "ALD Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Mass (ng/cm²)",
+     "quantity": "Mass",
+     "unit": "ng/cm²",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      13.2
+     ],
+     [
+      2.0,
+      26.3
+     ],
+     [
+      3.0,
+      39.5
+     ],
+     [
+      4.0,
+      52.6
+     ],
+     [
+      5.0,
+      65.8
+     ],
+     [
+      6.0,
+      78.9
+     ],
+     [
+      7.0,
+      92.1
+     ],
+     [
+      8.0,
+      105.3
+     ],
+     [
+      9.0,
+      118.4
+     ],
+     [
+      10.0,
+      131.6
+     ],
+     [
+      11.0,
+      144.7
+     ],
+     [
+      12.0,
+      157.9
+     ],
+     [
+      13.0,
+      171.1
+     ],
+     [
+      14.0,
+      184.2
+     ],
+     [
+      15.0,
+      197.4
+     ],
+     [
+      16.0,
+      210.5
+     ],
+     [
+      17.0,
+      223.7
+     ],
+     [
+      18.0,
+      236.8
+     ],
+     [
+      19.0,
+      250.0
+     ],
+     [
+      20.0,
+      263.2
+     ],
+     [
+      21.0,
+      276.3
+     ],
+     [
+      22.0,
+      289.5
+     ],
+     [
+      23.0,
+      302.6
+     ],
+     [
+      24.0,
+      315.8
+     ],
+     [
+      25.0,
+      328.9
+     ],
+     [
+      26.0,
+      342.1
+     ],
+     [
+      27.0,
+      355.3
+     ],
+     [
+      28.0,
+      368.4
+     ],
+     [
+      29.0,
+      381.6
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "ALD Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Mass",
+     "raw_unit": "ng/cm²",
+     "raw_label": "Mass (ng/cm²)",
+     "unit": "ng/cm²",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Mass' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "1",
+      "panel": "b",
+      "series": "LTB:H2S",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig1b__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ng/cm²",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Mass' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "1",
+      "panel": "b",
+      "series": "LTB:H2S",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig1b__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 30
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "cycle_number",
+    "deposition_temperature",
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F1::b::1",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "b",
+    "series": "TDMAAl:H2S",
+    "series_index": 1,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig1b__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1. a) Schematic illustration of Li x Al y S ALD; b) in situ QCM measurements of Li x Al y S ALD performed at 150 8 C using (LTB-H2S)/(TDMAAl-H2S) = 1:1; c) Arrhenius plot for temperature-depended ionic conductivity measured using a 50 nm Li x Al y S film."
+   },
+   "raw": {
+    "x": {
+     "label": "ALD Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Mass (ng/cm²)",
+     "quantity": "Mass",
+     "unit": "ng/cm²",
+     "log": false
+    },
+    "points": [
+     [
+      0.5,
+      6.6
+     ],
+     [
+      1.5,
+      19.7
+     ],
+     [
+      2.5,
+      32.9
+     ],
+     [
+      3.5,
+      46.1
+     ],
+     [
+      4.5,
+      59.2
+     ],
+     [
+      5.5,
+      72.4
+     ],
+     [
+      6.5,
+      85.5
+     ],
+     [
+      7.5,
+      98.7
+     ],
+     [
+      8.5,
+      111.8
+     ],
+     [
+      9.5,
+      125.0
+     ],
+     [
+      10.5,
+      138.2
+     ],
+     [
+      11.5,
+      151.3
+     ],
+     [
+      12.5,
+      164.5
+     ],
+     [
+      13.5,
+      177.6
+     ],
+     [
+      14.5,
+      190.8
+     ],
+     [
+      15.5,
+      203.9
+     ],
+     [
+      16.5,
+      217.1
+     ],
+     [
+      17.5,
+      230.3
+     ],
+     [
+      18.5,
+      243.4
+     ],
+     [
+      19.5,
+      256.6
+     ],
+     [
+      20.5,
+      269.7
+     ],
+     [
+      21.5,
+      282.9
+     ],
+     [
+      22.5,
+      296.1
+     ],
+     [
+      23.5,
+      309.2
+     ],
+     [
+      24.5,
+      322.4
+     ],
+     [
+      25.5,
+      335.5
+     ],
+     [
+      26.5,
+      348.7
+     ],
+     [
+      27.5,
+      361.8
+     ],
+     [
+      28.5,
+      375.0
+     ],
+     [
+      29.5,
+      388.2
+     ],
+     [
+      30.0,
+      394.7
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "ALD Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Mass",
+     "raw_unit": "ng/cm²",
+     "raw_label": "Mass (ng/cm²)",
+     "unit": "ng/cm²",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Mass' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "1",
+      "panel": "b",
+      "series": "TDMAAl:H2S",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig1b__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ng/cm²",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Mass' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "1",
+      "panel": "b",
+      "series": "TDMAAl:H2S",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig1b__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 31
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "cycle_number",
+    "deposition_temperature",
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F1::c::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "c",
+    "series": "50nm LixAlyS",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/1/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig1c"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1. a) Schematic illustration of Li x Al y S ALD; b) in situ QCM measurements of Li x Al y S ALD performed at 150 8 C using (LTB-H2S)/(TDMAAl-H2S) = 1:1; c) Arrhenius plot for temperature-depended ionic conductivity measured using a 50 nm Li x Al y S film."
+   },
+   "raw": {
+    "x": {
+     "label": "1000/T(K)",
+     "quantity": "1000/T",
+     "unit": "1/K",
+     "log": false
+    },
+    "y": {
+     "label": "log σ (S/cm)",
+     "quantity": "resistivity",
+     "unit": "S/cm",
+     "log": false
+    },
+    "points": [
+     [
+      1.65,
+      -2.5
+     ],
+     [
+      1.75,
+      -2.76
+     ],
+     [
+      1.85,
+      -3.0
+     ],
+     [
+      1.92,
+      -3.12
+     ],
+     [
+      2.0,
+      -3.35
+     ],
+     [
+      2.11,
+      -3.63
+     ],
+     [
+      2.21,
+      -3.88
+     ],
+     [
+      2.3,
+      -4.1
+     ],
+     [
+      2.4,
+      -4.35
+     ],
+     [
+      2.5,
+      -4.6
+     ],
+     [
+      2.6,
+      -4.84
+     ],
+     [
+      2.7,
+      -5.09
+     ],
+     [
+      2.8,
+      -5.33
+     ],
+     [
+      2.9,
+      -5.58
+     ],
+     [
+      3.0,
+      -5.82
+     ],
+     [
+      3.1,
+      -6.07
+     ],
+     [
+      3.2,
+      -6.31
+     ],
+     [
+      3.3,
+      -6.56
+     ],
+     [
+      3.4,
+      -6.8
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "1000/T",
+     "raw_unit": "1/K",
+     "raw_label": "1000/T(K)",
+     "unit": "1/K",
+     "unit_recovered": false,
+     "quantity": "inverse_temperature",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'inverse_temperature' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "S/cm",
+     "raw_label": "log σ (S/cm)",
+     "unit": "S/cm",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "1/K",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'inverse_temperature' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "1",
+      "panel": "c",
+      "series": "50nm LixAlyS",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig1c"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "S/cm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "1",
+      "panel": "c",
+      "series": "50nm LixAlyS",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig1c"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'inverse_temperature' is an ontology coordinate",
+    "n_points": 19
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "cycle_number",
+    "deposition_temperature",
+    "feature_height",
+    "film_thickness"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F2::a::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "2",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "180°C",
+    "series_index": 0,
+    "series_axis": "temperature",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig2a__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Nyquist plots of a 50 nm Li x Al y S film. Insert shows the equivalent circuit."
+   },
+   "raw": {
+    "x": {
+     "label": "Z' (ohms)",
+     "quantity": "Z'",
+     "unit": "ohms",
+     "log": false
+    },
+    "y": {
+     "label": "-Z'' (ohms)",
+     "quantity": "-Z''",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      1000,
+      3000
+     ],
+     [
+      2000,
+      5000
+     ],
+     [
+      3000,
+      7000
+     ],
+     [
+      4000,
+      8500
+     ],
+     [
+      5000,
+      10000
+     ],
+     [
+      7000,
+      11500
+     ],
+     [
+      9000,
+      12800
+     ],
+     [
+      12000,
+      13800
+     ],
+     [
+      15000,
+      15000
+     ],
+     [
+      18000,
+      16000
+     ],
+     [
+      21000,
+      15200
+     ],
+     [
+      24000,
+      15000
+     ],
+     [
+      27000,
+      14800
+     ],
+     [
+      30000,
+      13200
+     ],
+     [
+      33000,
+      14800
+     ],
+     [
+      36000,
+      13000
+     ],
+     [
+      39000,
+      13600
+     ],
+     [
+      42000,
+      12500
+     ],
+     [
+      43000,
+      13800
+     ],
+     [
+      43500,
+      15200
+     ],
+     [
+      44000,
+      18500
+     ],
+     [
+      44200,
+      20000
+     ],
+     [
+      44500,
+      23500
+     ],
+     [
+      45000,
+      29200
+     ],
+     [
+      45500,
+      35000
+     ],
+     [
+      46000,
+      43500
+     ],
+     [
+      47000,
+      53500
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Z'",
+     "raw_unit": "ohms",
+     "raw_label": "Z' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "-Z''",
+     "raw_unit": "ohms",
+     "raw_label": "-Z'' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "180°C",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "180°C",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 28
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature",
+    "film_thickness",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F2::a::1",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "2",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "200°C",
+    "series_index": 1,
+    "series_axis": "temperature",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/1",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig2a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Nyquist plots of a 50 nm Li x Al y S film. Insert shows the equivalent circuit."
+   },
+   "raw": {
+    "x": {
+     "label": "Z' (ohms)",
+     "quantity": "Z'",
+     "unit": "ohms",
+     "log": false
+    },
+    "y": {
+     "label": "-Z'' (ohms)",
+     "quantity": "-Z''",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      500,
+      1000
+     ],
+     [
+      1000,
+      2000
+     ],
+     [
+      2000,
+      3800
+     ],
+     [
+      3000,
+      5000
+     ],
+     [
+      4000,
+      6200
+     ],
+     [
+      5000,
+      7200
+     ],
+     [
+      6500,
+      8000
+     ],
+     [
+      8500,
+      8500
+     ],
+     [
+      11000,
+      8800
+     ],
+     [
+      13500,
+      8800
+     ],
+     [
+      16000,
+      8500
+     ],
+     [
+      18000,
+      7800
+     ],
+     [
+      20000,
+      7000
+     ],
+     [
+      22000,
+      7800
+     ],
+     [
+      23000,
+      8800
+     ],
+     [
+      24000,
+      9800
+     ],
+     [
+      25000,
+      11000
+     ],
+     [
+      25500,
+      12500
+     ],
+     [
+      26000,
+      17500
+     ],
+     [
+      26500,
+      21200
+     ],
+     [
+      27000,
+      25000
+     ],
+     [
+      28500,
+      32800
+     ],
+     [
+      29500,
+      40800
+     ],
+     [
+      31000,
+      52500
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Z'",
+     "raw_unit": "ohms",
+     "raw_label": "Z' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "-Z''",
+     "raw_unit": "ohms",
+     "raw_label": "-Z'' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "200°C",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "200°C",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 24
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature",
+    "film_thickness",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F2::a::2",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "2",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "250°C",
+    "series_index": 2,
+    "series_axis": "temperature",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/2",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig2a__exp03"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Nyquist plots of a 50 nm Li x Al y S film. Insert shows the equivalent circuit."
+   },
+   "raw": {
+    "x": {
+     "label": "Z' (ohms)",
+     "quantity": "Z'",
+     "unit": "ohms",
+     "log": false
+    },
+    "y": {
+     "label": "-Z'' (ohms)",
+     "quantity": "-Z''",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      200,
+      200
+     ],
+     [
+      800,
+      500
+     ],
+     [
+      1500,
+      1000
+     ],
+     [
+      2500,
+      1200
+     ],
+     [
+      3500,
+      1500
+     ],
+     [
+      5000,
+      1800
+     ],
+     [
+      6000,
+      2000
+     ],
+     [
+      7000,
+      2000
+     ],
+     [
+      7500,
+      3500
+     ],
+     [
+      7800,
+      8000
+     ],
+     [
+      8000,
+      14500
+     ],
+     [
+      8500,
+      18000
+     ],
+     [
+      9000,
+      22000
+     ],
+     [
+      9500,
+      27500
+     ],
+     [
+      10500,
+      33500
+     ],
+     [
+      11500,
+      43800
+     ],
+     [
+      12500,
+      55000
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Z'",
+     "raw_unit": "ohms",
+     "raw_label": "Z' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "-Z''",
+     "raw_unit": "ohms",
+     "raw_label": "-Z'' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "250°C",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/2/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp03"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "250°C",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/2/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp03"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 17
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature",
+    "film_thickness",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F2::a::3",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "2",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "300°C",
+    "series_index": 3,
+    "series_axis": "temperature",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/3",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig2a__exp04"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. Nyquist plots of a 50 nm Li x Al y S film. Insert shows the equivalent circuit."
+   },
+   "raw": {
+    "x": {
+     "label": "Z' (ohms)",
+     "quantity": "Z'",
+     "unit": "ohms",
+     "log": false
+    },
+    "y": {
+     "label": "-Z'' (ohms)",
+     "quantity": "-Z''",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      200,
+      200
+     ],
+     [
+      500,
+      500
+     ],
+     [
+      1000,
+      1000
+     ],
+     [
+      1500,
+      1200
+     ],
+     [
+      2000,
+      1500
+     ],
+     [
+      2500,
+      2500
+     ],
+     [
+      3000,
+      4000
+     ],
+     [
+      3500,
+      7000
+     ],
+     [
+      4000,
+      11000
+     ],
+     [
+      4500,
+      15000
+     ],
+     [
+      5000,
+      18000
+     ],
+     [
+      5500,
+      22000
+     ],
+     [
+      6000,
+      27500
+     ],
+     [
+      6500,
+      33500
+     ],
+     [
+      7500,
+      40800
+     ],
+     [
+      8500,
+      50800
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Z'",
+     "raw_unit": "ohms",
+     "raw_label": "Z' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "-Z''",
+     "raw_unit": "ohms",
+     "raw_label": "-Z'' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "300°C",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/3/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp04"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "2",
+      "panel": "a",
+      "series": "300°C",
+      "series_index": 3,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/3/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig2a__exp04"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 16
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature",
+    "film_thickness",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::a::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "a",
+    "series": "Pristine Li",
+    "series_index": 0,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3a__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "Z' (ohms)",
+     "quantity": "Z'",
+     "unit": "ohms",
+     "log": false
+    },
+    "y": {
+     "label": "-Z'' (ohms)",
+     "quantity": "-Z''",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      80
+     ],
+     [
+      100,
+      180
+     ],
+     [
+      200,
+      290
+     ],
+     [
+      300,
+      400
+     ],
+     [
+      400,
+      490
+     ],
+     [
+      500,
+      570
+     ],
+     [
+      600,
+      640
+     ],
+     [
+      700,
+      700
+     ],
+     [
+      800,
+      750
+     ],
+     [
+      900,
+      780
+     ],
+     [
+      1000,
+      800
+     ],
+     [
+      1100,
+      820
+     ],
+     [
+      1200,
+      825
+     ],
+     [
+      1300,
+      825
+     ],
+     [
+      1400,
+      820
+     ],
+     [
+      1500,
+      800
+     ],
+     [
+      1600,
+      780
+     ],
+     [
+      1700,
+      750
+     ],
+     [
+      1800,
+      700
+     ],
+     [
+      1900,
+      640
+     ],
+     [
+      2000,
+      570
+     ],
+     [
+      2100,
+      490
+     ],
+     [
+      2200,
+      400
+     ],
+     [
+      2300,
+      310
+     ],
+     [
+      2400,
+      240
+     ],
+     [
+      2500,
+      190
+     ],
+     [
+      2600,
+      170
+     ],
+     [
+      2700,
+      170
+     ],
+     [
+      2800,
+      180
+     ],
+     [
+      2900,
+      185
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Z'",
+     "raw_unit": "ohms",
+     "raw_label": "Z' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "-Z''",
+     "raw_unit": "ohms",
+     "raw_label": "-Z'' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "a",
+      "series": "Pristine Li",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "a",
+      "series": "Pristine Li",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 30
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature",
+    "storage_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::a::1",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "a",
+    "series": "Li_xAl_yS coated Li",
+    "series_index": 1,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/1",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "Z' (ohms)",
+     "quantity": "Z'",
+     "unit": "ohms",
+     "log": false
+    },
+    "y": {
+     "label": "-Z'' (ohms)",
+     "quantity": "-Z''",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      110
+     ],
+     [
+      50,
+      140
+     ],
+     [
+      100,
+      170
+     ],
+     [
+      150,
+      190
+     ],
+     [
+      200,
+      205
+     ],
+     [
+      250,
+      210
+     ],
+     [
+      300,
+      215
+     ],
+     [
+      350,
+      210
+     ],
+     [
+      400,
+      200
+     ],
+     [
+      450,
+      180
+     ],
+     [
+      500,
+      150
+     ],
+     [
+      550,
+      100
+     ],
+     [
+      600,
+      40
+     ],
+     [
+      620,
+      0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Z'",
+     "raw_unit": "ohms",
+     "raw_label": "Z' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "-Z''",
+     "raw_unit": "ohms",
+     "raw_label": "-Z'' (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "a",
+      "series": "Li_xAl_yS coated Li",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": "unit 'ohms' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "a",
+      "series": "Li_xAl_yS coated Li",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 14
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature",
+    "storage_time"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::b::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "b",
+    "series": "Pristine Li",
+    "series_index": 0,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/1/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3b__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "storage time (h)",
+     "quantity": "exposure_time",
+     "unit": "h",
+     "log": false
+    },
+    "y": {
+     "label": "R_SEI (ohms)",
+     "quantity": "resistivity",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      0.5,
+      1800
+     ],
+     [
+      2.0,
+      2020
+     ],
+     [
+      2.2,
+      2150
+     ],
+     [
+      4.0,
+      2000
+     ],
+     [
+      20.0,
+      2580
+     ],
+     [
+      44.0,
+      2450
+     ],
+     [
+      68.0,
+      2600
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure_time",
+     "raw_unit": "h",
+     "raw_label": "storage time (h)",
+     "unit": "h",
+     "unit_recovered": false,
+     "quantity": "exposure_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'exposure_time' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "ohms",
+     "raw_label": "R_SEI (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "h",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'exposure_time' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "b",
+      "series": "Pristine Li",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3b__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "b",
+      "series": "Pristine Li",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3b__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'exposure_time' is an ontology condition; each point is one experiment",
+    "n_points": 7
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::b::1",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "b",
+    "series": "Li_xAl_yS Coated Li",
+    "series_index": 1,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/1/series/1",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3b__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "storage time (h)",
+     "quantity": "exposure_time",
+     "unit": "h",
+     "log": false
+    },
+    "y": {
+     "label": "R_SEI (ohms)",
+     "quantity": "resistivity",
+     "unit": "ohms",
+     "log": false
+    },
+    "points": [
+     [
+      1.5,
+      320
+     ],
+     [
+      4.0,
+      460
+     ],
+     [
+      20.0,
+      640
+     ],
+     [
+      44.0,
+      620
+     ],
+     [
+      68.0,
+      610
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "exposure_time",
+     "raw_unit": "h",
+     "raw_label": "storage time (h)",
+     "unit": "h",
+     "unit_recovered": false,
+     "quantity": "exposure_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'exposure_time' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "ohms",
+     "raw_label": "R_SEI (ohms)",
+     "unit": "ohms",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "h",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'exposure_time' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "b",
+      "series": "Li_xAl_yS Coated Li",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3b__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ohms",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "b",
+      "series": "Li_xAl_yS Coated Li",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3b__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'exposure_time' is an ontology condition; each point is one experiment",
+    "n_points": 5
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::c::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "c",
+    "series": "Pristine Cu",
+    "series_index": 0,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/2/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3c__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "Cycling number",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Coulombic efficiency (%)",
+     "quantity": "Coulombic efficiency",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      1,
+      63
+     ],
+     [
+      2,
+      73
+     ],
+     [
+      5,
+      78
+     ],
+     [
+      10,
+      80
+     ],
+     [
+      15,
+      80
+     ],
+     [
+      20,
+      78
+     ],
+     [
+      30,
+      77
+     ],
+     [
+      40,
+      76
+     ],
+     [
+      50,
+      76
+     ],
+     [
+      60,
+      76
+     ],
+     [
+      70,
+      75
+     ],
+     [
+      80,
+      75
+     ],
+     [
+      90,
+      74
+     ],
+     [
+      100,
+      73
+     ],
+     [
+      110,
+      71
+     ],
+     [
+      120,
+      68
+     ],
+     [
+      130,
+      65
+     ],
+     [
+      140,
+      60
+     ],
+     [
+      145,
+      52
+     ],
+     [
+      148,
+      45
+     ],
+     [
+      151,
+      42
+     ],
+     [
+      152,
+      44
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Cycling number",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Coulombic efficiency",
+     "raw_unit": "%",
+     "raw_label": "Coulombic efficiency (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "coulombic_efficiency",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "c",
+      "series": "Pristine Cu",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/2/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3c__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "c",
+      "series": "Pristine Cu",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/2/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3c__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 22
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::c::1",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "c",
+    "series": "Li_xAl_yS Coated Cu",
+    "series_index": 1,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/2/series/1",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3c__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "Cycling number",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Coulombic efficiency (%)",
+     "quantity": "Coulombic efficiency",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      1,
+      59
+     ],
+     [
+      5,
+      76
+     ],
+     [
+      10,
+      77
+     ],
+     [
+      20,
+      78
+     ],
+     [
+      30,
+      78
+     ],
+     [
+      40,
+      78
+     ],
+     [
+      50,
+      78
+     ],
+     [
+      60,
+      78
+     ],
+     [
+      70,
+      78
+     ],
+     [
+      80,
+      78
+     ],
+     [
+      90,
+      78
+     ],
+     [
+      100,
+      78
+     ],
+     [
+      110,
+      78
+     ],
+     [
+      120,
+      78
+     ],
+     [
+      130,
+      78
+     ],
+     [
+      140,
+      78
+     ],
+     [
+      150,
+      77
+     ],
+     [
+      160,
+      76
+     ],
+     [
+      170,
+      75
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Cycling number",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Coulombic efficiency",
+     "raw_unit": "%",
+     "raw_label": "Coulombic efficiency (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "coulombic_efficiency",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "c",
+      "series": "Li_xAl_yS Coated Cu",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/2/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3c__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "c",
+      "series": "Li_xAl_yS Coated Cu",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/2/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3c__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 19
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::d::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "d",
+    "series": "Pristine Cu",
+    "series_index": 0,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/3/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3d__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "Cycling number",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Hysteresis (V)",
+     "quantity": "Hysteresis",
+     "unit": "V",
+     "log": false
+    },
+    "points": [
+     [
+      20,
+      0.136
+     ],
+     [
+      40,
+      0.138
+     ],
+     [
+      60,
+      0.15
+     ],
+     [
+      80,
+      0.153
+     ],
+     [
+      100,
+      0.168
+     ],
+     [
+      120,
+      0.206
+     ],
+     [
+      140,
+      0.271
+     ],
+     [
+      160,
+      0.375
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Cycling number",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Hysteresis",
+     "raw_unit": "V",
+     "raw_label": "Hysteresis (V)",
+     "unit": "V",
+     "unit_recovered": false,
+     "quantity": "hysteresis_voltage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'hysteresis_voltage' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "d",
+      "series": "Pristine Cu",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/3/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3d__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "V",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'hysteresis_voltage' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "d",
+      "series": "Pristine Cu",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/3/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3d__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 8
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F3::d::1",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "3",
+    "figure_index": "10",
+    "panel": "d",
+    "series": "Li_xAl_yS coated Cu",
+    "series_index": 1,
+    "series_axis": "electrode",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/3/series/1",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig3d__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. a) AC impedance spectra of Li/electrolyte/Li symmetric cells using both pristine Li and Li x Al y S-coated Li after 68 h storage; b) R SEI of Li/electrolyte/Li symmetric cells versus storage time; c) CE of Li deposition/striping in 1 m LiPF 6 -EC/EMC with pristine Cu and Li x Al y S-coated Cu; d) comparison of hysteresis of Li deposition/striping for both pristine Cu and Li x Al y S-coated Cu with Li metal as reference/counter electrodes."
+   },
+   "raw": {
+    "x": {
+     "label": "Cycling number",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Hysteresis (V)",
+     "quantity": "Hysteresis",
+     "unit": "V",
+     "log": false
+    },
+    "points": [
+     [
+      20,
+      0.116
+     ],
+     [
+      40,
+      0.116
+     ],
+     [
+      60,
+      0.115
+     ],
+     [
+      80,
+      0.119
+     ],
+     [
+      100,
+      0.119
+     ],
+     [
+      120,
+      0.119
+     ],
+     [
+      140,
+      0.139
+     ],
+     [
+      160,
+      0.156
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Cycling number",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Hysteresis",
+     "raw_unit": "V",
+     "raw_label": "Hysteresis (V)",
+     "unit": "V",
+     "unit_recovered": false,
+     "quantity": "hysteresis_voltage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'hysteresis_voltage' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "d",
+      "series": "Li_xAl_yS coated Cu",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/3/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3d__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "V",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'hysteresis_voltage' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "3",
+      "panel": "d",
+      "series": "Li_xAl_yS coated Cu",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/3/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig3d__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 8
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F4::a::0",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "4",
+    "figure_index": "11",
+    "panel": "a",
+    "series": "Pristine Cu",
+    "series_index": 0,
+    "series_axis": "substrate",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/3/panels/0/series/0",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig4a__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. CE of Li deposition/striping in 4 m LiTFSI-DME with pristine Cu or 25 nm Li x Al y S-coated Cu."
+   },
+   "raw": {
+    "x": {
+     "label": "Cycling number",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Coulombic Efficiency (%)",
+     "quantity": "Coulombic Efficiency",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      78.2
+     ],
+     [
+      15,
+      87.5
+     ],
+     [
+      35,
+      93.1
+     ],
+     [
+      60,
+      96.2
+     ],
+     [
+      90,
+      97.8
+     ],
+     [
+      120,
+      99.1
+     ],
+     [
+      145,
+      101.3
+     ],
+     [
+      170,
+      98.4
+     ],
+     [
+      200,
+      97.6
+     ],
+     [
+      235,
+      96.8
+     ],
+     [
+      270,
+      97.2
+     ],
+     [
+      310,
+      98.1
+     ],
+     [
+      350,
+      99.5
+     ],
+     [
+      380,
+      100.4
+     ],
+     [
+      410,
+      101.2
+     ],
+     [
+      425,
+      91.5
+     ],
+     [
+      440,
+      87.2
+     ],
+     [
+      450,
+      67.1
+     ],
+     [
+      465,
+      85.3
+     ],
+     [
+      480,
+      58.4
+     ],
+     [
+      500,
+      78.6
+     ],
+     [
+      515,
+      68.2
+     ],
+     [
+      530,
+      43.1
+     ],
+     [
+      538,
+      24.5
+     ],
+     [
+      550,
+      72.3
+     ],
+     [
+      565,
+      57.1
+     ],
+     [
+      580,
+      45.6
+     ],
+     [
+      595,
+      38.5
+     ],
+     [
+      600,
+      42.1
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Cycling number",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Coulombic Efficiency",
+     "raw_unit": "%",
+     "raw_label": "Coulombic Efficiency (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "coulombic_efficiency",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "4",
+      "panel": "a",
+      "series": "Pristine Cu",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig4a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "4",
+      "panel": "a",
+      "series": "Pristine Cu",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig4a__exp01"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 29
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1002_celc.201600139::F4::a::1",
+   "source": {
+    "paper_id": "10.1002_celc.201600139",
+    "doi": "10.1002_celc.201600139",
+    "figure": "4",
+    "figure_index": "11",
+    "panel": "a",
+    "series": "Li_xAl_yS coated Cu",
+    "series_index": 1,
+    "series_axis": "substrate",
+    "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+    "json_pointer": "/figures/3/panels/0/series/1",
+    "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+    "linked_experiment_ids": [
+     "10.1002_celc.201600139__Fig4a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. CE of Li deposition/striping in 4 m LiTFSI-DME with pristine Cu or 25 nm Li x Al y S-coated Cu."
+   },
+   "raw": {
+    "x": {
+     "label": "Cycling number",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Coulombic Efficiency (%)",
+     "quantity": "Coulombic Efficiency",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      82.5
+     ],
+     [
+      15,
+      88.2
+     ],
+     [
+      30,
+      92.4
+     ],
+     [
+      50,
+      94.6
+     ],
+     [
+      75,
+      95.8
+     ],
+     [
+      100,
+      92.1
+     ],
+     [
+      120,
+      86.5
+     ],
+     [
+      150,
+      91.2
+     ],
+     [
+      185,
+      95.3
+     ],
+     [
+      210,
+      70.4
+     ],
+     [
+      240,
+      95.8
+     ],
+     [
+      280,
+      96.5
+     ],
+     [
+      310,
+      97.1
+     ],
+     [
+      350,
+      97.2
+     ],
+     [
+      390,
+      97.6
+     ],
+     [
+      430,
+      97.8
+     ],
+     [
+      470,
+      97.5
+     ],
+     [
+      510,
+      97.6
+     ],
+     [
+      550,
+      98.1
+     ],
+     [
+      590,
+      97.4
+     ],
+     [
+      630,
+      96.8
+     ],
+     [
+      670,
+      96.2
+     ],
+     [
+      700,
+      92.8
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Cycling number",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Coulombic Efficiency",
+     "raw_unit": "%",
+     "raw_label": "Coulombic Efficiency (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "coulombic_efficiency",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "4",
+      "panel": "a",
+      "series": "Li_xAl_yS coated Cu",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig4a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'coulombic_efficiency' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1002_celc.201600139",
+      "doi": "10.1002_celc.201600139",
+      "figure": "4",
+      "panel": "a",
+      "series": "Li_xAl_yS coated Cu",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1002_celc.201600139/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/1/points",
+      "source_checksum": "sha256:631d4f58e40b72626aa9c316c29bd545590bb97ff18b788ed9c31eac257d7bf3",
+      "experiment_id": "10.1002_celc.201600139__Fig4a__exp02"
+     },
+     "created_by": "02_extraction/canonical/build_canonical.py",
+     "code_version": "c3a2b33+dirty",
+     "created_at": 1786382176
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 23
+   },
+   "context_available": [
+    "carrier_gas_partial_pressure",
+    "deposition_temperature"
+   ]
+  }
+ ]
+}

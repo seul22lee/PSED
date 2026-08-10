@@ -13,9 +13,9 @@ import json, sys, glob, re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXTRACTED = ROOT / "extracted"
+EXTRACTED = ROOT.parent / "papers"   # papers/<doi>/extracted/
 PIPE = ROOT.parent / "02_extraction"
-OUT = PIPE / "output"
+OUT = ROOT.parent / "papers"        # papers/<doi>/{resolved,canonical}/
 ONTO = json.loads((ROOT.parent / "01_ontology" / "ald_ontology.json").read_text())
 MODEL = "gemini-flash-latest"
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -122,7 +122,7 @@ def _paper_quants(sd):
 def classify_deterministic(sd):
     """Reproducible geometry classification from the paper text + the geometry quantities
     the extracted experiments carry. Keyword priority follows the Cremers taxonomy."""
-    md = (EXTRACTED / sd / "document.md").read_text()
+    md = (EXTRACTED / sd / "extracted" / "document.md").read_text()
     txt = (_title(md) + " \n " + ex.abstract_of(md)).lower()
     q = _paper_quants(sd)
     conf = bool(q & GEOM_Q)
@@ -145,7 +145,7 @@ def classify_deterministic(sd):
 
 
 def extract_one(sd, client):
-    md = (EXTRACTED / sd / "document.md").read_text()
+    md = (EXTRACTED / sd / "extracted" / "document.md").read_text()
     ab = ex.abstract_of(md)
     methods = ex.section_text(md, ["experimental", "methods", "substrate", "test structure",
                                    "sample preparation", "deposition"], limit=3500)
@@ -173,7 +173,7 @@ def extract_one(sd, client):
     if gc not in GC:
         gc = "planar"
     g["geometry_class"] = gc
-    (EXTRACTED / sd / "geometry.json").write_text(json.dumps(g, indent=1))
+    (EXTRACTED / sd / "extracted" / "geometry.json").write_text(json.dumps(g, indent=1))
     return g, tok
 
 
@@ -186,12 +186,12 @@ FACTUAL_STATUS = ("directly_reported", "derived_from_reported_dimensions")
 def extract_quantities(sd, client):
     """Second, separate LLM pass: numeric geometry + model parameters WITH evidence.
     Merged into geometry.json under `quantities`; the classification above is untouched."""
-    md = (EXTRACTED / sd / "document.md").read_text()
+    md = (EXTRACTED / sd / "extracted" / "document.md").read_text()
     ab = ex.abstract_of(md)
     methods = ex.section_text(md, ["experimental", "methods", "substrate", "test structure",
                                    "sample preparation", "deposition", "model", "theory",
                                    "simulation"], limit=6000)
-    st = json.loads((EXTRACTED / sd / "structure.json").read_text())
+    st = json.loads((EXTRACTED / sd / "extracted" / "structure.json").read_text())
     tables = "\n\n".join(f"[TABLE {t.get('index')}] {t.get('caption','')}\n{t.get('markdown','')}"
                          for t in st.get("tables", []) if t.get("markdown"))[:6000]
     caps = "\n".join(f"[{f.get('index')}] {f.get('caption','')}"
@@ -232,7 +232,7 @@ def extract_quantities(sd, client):
                     "model_context": q.get("model_context"),
                     "parameter_status": q.get("parameter_status"),
                     "evidence": (q.get("evidence") or "")[:400]})
-    gf = EXTRACTED / sd / "geometry.json"
+    gf = EXTRACTED / sd / "extracted" / "geometry.json"
     g = json.loads(gf.read_text()) if gf.exists() else {}
     g["quantities"] = out
     gf.write_text(json.dumps(g, indent=1))
@@ -248,7 +248,7 @@ def tag_experiments():
     """Write geometry + geometry_class into every KB experiment (deterministic)."""
     n = 0
     for sd in kb_dirs():
-        gf = EXTRACTED / sd / "geometry.json"
+        gf = EXTRACTED / sd / "extracted" / "geometry.json"
         g = json.loads(gf.read_text()) if gf.exists() else {}
         gc, st = g.get("geometry_class", "planar"), g.get("structure", "")
         f = OUT / sd / "resolved" / "experiments.json"
@@ -283,11 +283,11 @@ def main(argv):
         print(f"[geometry-quantities] tokens in={tin} out={tout}")
         return
     for sd in kb_dirs():
-        if not (EXTRACTED / sd / "document.md").exists():
+        if not (EXTRACTED / sd / "extracted" / "document.md").exists():
             print(f"  [skip] {sd} (no document.md)"); continue
         gc, st, why = classify_deterministic(sd)
         g = {"geometry_class": gc, "structure": st, "method": "deterministic", "evidence": why}
-        (EXTRACTED / sd / "geometry.json").write_text(json.dumps(g, indent=1))
+        (EXTRACTED / sd / "extracted" / "geometry.json").write_text(json.dumps(g, indent=1))
         print(f"  {sd:28} -> {gc:18} struct={st:16} | {why}")
     tag_experiments()
 

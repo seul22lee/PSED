@@ -2936,7 +2936,7 @@
       "note": "integer count of cycles; unit is the cycle count itself, not a bare number",
       "category": "process_parameter",
       "recipe_role": "control_setting",
-      "axis_role": "condition"
+      "axis_role": "coordinate"
     },
     {
       "id": "precursor_exposure",
@@ -4362,7 +4362,7 @@
       "unit": null,
       "category": "observable",
       "recipe_role": "observable",
-      "axis_role": "condition"
+      "axis_role": "output"
     },
     {
       "id": "flow_rate",
@@ -4378,6 +4378,368 @@
         "carrier flow",
         "flow",
         "sccm"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "process_parameter",
+      "recipe_role": "control_setting",
+      "axis_role": "condition"
+    },
+    {
+      "id": "scattering_vector_q",
+      "iri": "https://w3id.org/psed-ald/ontology#scattering_vector_q",
+      "domain": "characterization",
+      "symbols": [
+        "Q",
+        "q_z"
+      ],
+      "aliases": [
+        "scattering vector",
+        "momentum transfer",
+        "q vector",
+        "reciprocal space coordinate"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "diffraction_angle",
+      "iri": "https://w3id.org/psed-ald/ontology#diffraction_angle",
+      "domain": "characterization",
+      "symbols": [
+        "2θ"
+      ],
+      "aliases": [
+        "diffraction angle",
+        "two theta",
+        "2 theta",
+        "2θ",
+        "grazing angle"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "binding_energy",
+      "iri": "https://w3id.org/psed-ald/ontology#binding_energy",
+      "domain": "characterization",
+      "symbols": [
+        "BE"
+      ],
+      "aliases": [
+        "binding energy",
+        "photoelectron binding energy"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "wavenumber",
+      "iri": "https://w3id.org/psed-ald/ontology#wavenumber",
+      "domain": "characterization",
+      "symbols": [],
+      "aliases": [
+        "wavenumber",
+        "raman shift",
+        "wave number"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "wavelength",
+      "iri": "https://w3id.org/psed-ald/ontology#wavelength",
+      "domain": "characterization",
+      "symbols": [
+        "λ"
+      ],
+      "aliases": [
+        "wavelength"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "sputter_depth",
+      "iri": "https://w3id.org/psed-ald/ontology#sputter_depth",
+      "domain": "characterization",
+      "symbols": [],
+      "aliases": [
+        "sputter depth",
+        "sputter time",
+        "sputtering time",
+        "etch depth",
+        "etching time",
+        "depth profile coordinate",
+        "ion milling time"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "impedance_real",
+      "iri": "https://w3id.org/psed-ald/ontology#impedance_real",
+      "domain": "electrochemistry",
+      "symbols": [
+        "Z'"
+      ],
+      "aliases": [
+        "real impedance",
+        "z real",
+        "z'"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "impedance_imaginary",
+      "iri": "https://w3id.org/psed-ald/ontology#impedance_imaginary",
+      "domain": "electrochemistry",
+      "symbols": [
+        "-Z''"
+      ],
+      "aliases": [
+        "imaginary impedance",
+        "z imaginary",
+        "-z''",
+        "z''"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "interfacial_resistance",
+      "iri": "https://w3id.org/psed-ald/ontology#interfacial_resistance",
+      "domain": "electrochemistry",
+      "symbols": [
+        "R_SEI"
+      ],
+      "aliases": [
+        "interfacial resistance",
+        "sei resistance",
+        "charge transfer resistance",
+        "r_sei"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "observable",
+      "recipe_role": "observable",
+      "axis_role": "output"
+    },
+    {
+      "id": "ionic_conductivity",
+      "iri": "https://w3id.org/psed-ald/ontology#ionic_conductivity",
+      "domain": "electrochemistry",
+      "symbols": [
+        "σ"
+      ],
+      "aliases": [
+        "ionic conductivity",
+        "conductivity",
+        "log sigma",
+        "log σ"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "observable",
+      "recipe_role": "observable",
+      "axis_role": "output"
+    },
+    {
+      "id": "coulombic_efficiency",
+      "iri": "https://w3id.org/psed-ald/ontology#coulombic_efficiency",
+      "domain": "electrochemistry",
+      "symbols": [
+        "CE"
+      ],
+      "aliases": [
+        "coulombic efficiency",
+        "columbic efficiency",
+        "ce"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "observable",
+      "recipe_role": "observable",
+      "axis_role": "output"
+    },
+    {
+      "id": "hysteresis_voltage",
+      "iri": "https://w3id.org/psed-ald/ontology#hysteresis_voltage",
+      "domain": "electrochemistry",
+      "symbols": [],
+      "aliases": [
+        "hysteresis",
+        "voltage hysteresis"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "observable",
+      "recipe_role": "observable",
+      "axis_role": "output"
+    },
+    {
+      "id": "cycling_number",
+      "iri": "https://w3id.org/psed-ald/ontology#cycling_number",
+      "domain": "electrochemistry",
+      "symbols": [],
+      "aliases": [
+        "cycling number",
+        "cycle index",
+        "cycling index",
+        "cycle count (electrochemical)"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "areal_mass",
+      "iri": "https://w3id.org/psed-ald/ontology#areal_mass",
+      "domain": "characterization",
+      "symbols": [
+        "Δm"
+      ],
+      "aliases": [
+        "areal mass",
+        "mass gain",
+        "mass change",
+        "mass uptake",
+        "qcm mass"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "observable",
+      "recipe_role": "observable",
+      "axis_role": "output"
+    },
+    {
+      "id": "exposure_time",
+      "iri": "https://w3id.org/psed-ald/ontology#exposure_time",
+      "domain": "process",
+      "symbols": [],
+      "aliases": [
+        "exposure time",
+        "dose time",
+        "at-h exposure time",
+        "exposure duration",
+        "pulse duration",
+        "pulse length"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "process_parameter",
+      "recipe_role": "control_setting",
+      "axis_role": "condition"
+    },
+    {
+      "id": "exposure_dose",
+      "iri": "https://w3id.org/psed-ald/ontology#exposure_dose",
+      "domain": "process",
+      "symbols": [],
+      "aliases": [
+        "integrated exposure",
+        "exposure dose",
+        "pressure-time product",
+        "langmuir dose"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "process_parameter",
+      "recipe_role": "control_setting",
+      "axis_role": "condition"
+    },
+    {
+      "id": "storage_time",
+      "iri": "https://w3id.org/psed-ald/ontology#storage_time",
+      "domain": "characterization",
+      "symbols": [],
+      "aliases": [
+        "storage time",
+        "ageing time",
+        "aging time",
+        "shelf time"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "applied_power",
+      "iri": "https://w3id.org/psed-ald/ontology#applied_power",
+      "domain": "process",
+      "symbols": [],
+      "aliases": [
+        "applied power",
+        "plasma power",
+        "rf power",
+        "icp power"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "process_parameter",
+      "recipe_role": "control_setting",
+      "axis_role": "condition"
+    },
+    {
+      "id": "inverse_temperature",
+      "iri": "https://w3id.org/psed-ald/ontology#inverse_temperature",
+      "domain": "characterization",
+      "symbols": [
+        "1000/T"
+      ],
+      "aliases": [
+        "1000/t",
+        "inverse temperature",
+        "reciprocal temperature",
+        "arrhenius abscissa"
+      ],
+      "qudt_quantitykind": null,
+      "unit": null,
+      "category": "coordinate",
+      "recipe_role": "coordinate",
+      "axis_role": "coordinate"
+    },
+    {
+      "id": "hot_wire_temperature",
+      "iri": "https://w3id.org/psed-ald/ontology#hot_wire_temperature",
+      "domain": "process",
+      "symbols": [
+        "T_hw"
+      ],
+      "aliases": [
+        "hot-wire temperature",
+        "hot wire temperature",
+        "filament temperature",
+        "hot-wire temp"
       ],
       "qudt_quantitykind": null,
       "unit": null,
@@ -5419,6 +5781,10 @@
         "reactant_B_partial_pressure",
         "exposure",
         "flow_rate",
+        "exposure_time",
+        "exposure_dose",
+        "applied_power",
+        "hot_wire_temperature",
         "ozone_exposure",
         "tbf_dose",
         "ozone_exposure_per_cycle",
@@ -5467,6 +5833,11 @@
         "equivalent_oxide_thickness",
         "atomic_concentration",
         "adsorbed_species_density",
+        "ionic_conductivity",
+        "coulombic_efficiency",
+        "hysteresis_voltage",
+        "interfacial_resistance",
+        "areal_mass",
         "intensity"
       ],
       "coordinate": [
@@ -5474,6 +5845,17 @@
         "dimensionless_distance",
         "time",
         "diffusion_length",
+        "scattering_vector_q",
+        "diffraction_angle",
+        "binding_energy",
+        "wavenumber",
+        "wavelength",
+        "sputter_depth",
+        "impedance_real",
+        "impedance_imaginary",
+        "inverse_temperature",
+        "cycling_number",
+        "storage_time",
         "qz",
         "qxy"
       ],
@@ -5529,7 +5911,19 @@
         "dimensionless_distance",
         "time",
         "process_time",
-        "diffusion_length"
+        "diffusion_length",
+        "scattering_vector_q",
+        "diffraction_angle",
+        "binding_energy",
+        "wavenumber",
+        "wavelength",
+        "sputter_depth",
+        "impedance_real",
+        "impedance_imaginary",
+        "inverse_temperature",
+        "cycling_number",
+        "storage_time",
+        "cycle_number"
       ],
       "output": [
         "film_thickness",
@@ -5554,6 +5948,12 @@
         "saturated_coverage",
         "adsorbed_species_density",
         "film_density",
+        "atomic_concentration",
+        "ionic_conductivity",
+        "coulombic_efficiency",
+        "hysteresis_voltage",
+        "interfacial_resistance",
+        "areal_mass",
         "resistivity",
         "refractive_index",
         "dielectric_constant",
@@ -9358,23 +9758,23 @@
   "_counts": {
     "classes": 226,
     "relations": 75,
-    "quantity_kinds": 161,
+    "quantity_kinds": 181,
     "quantity_kinds_enriched": 130,
     "quantity_specializations": 22,
     "quantity_equations": 13,
     "quantity_families": 9,
     "quantity_in_family": 46,
     "quantity_categories": 9,
-    "quantity_categorized": 111,
+    "quantity_categorized": 131,
     "quantity_transforms": 6,
     "transformation_rules": 25,
     "transformation_types": 10,
     "transformation_statuses": 9,
     "normalization_definitions": 11,
     "comparison_groups": 24,
-    "axis_coordinate": 7,
-    "axis_condition": 105,
-    "axis_output": 49,
+    "axis_coordinate": 19,
+    "axis_condition": 107,
+    "axis_output": 55,
     "individuals": 201,
     "models": 4,
     "model_families": 1,

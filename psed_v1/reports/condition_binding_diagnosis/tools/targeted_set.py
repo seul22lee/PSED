@@ -6,8 +6,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "02_extraction" / "output"
-EX = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = REPO / "papers"    # papers/<doi>/extracted/
 BASE = KB / "_archive" / "resolved_pre_canonical"
 
 LEGEND_TOK = re.compile(r"(?:^|[\s,(])(T|p|d|H|L|AR)\s*[=:]|"
@@ -76,10 +76,10 @@ def main():
     # 5-8. per-record condition pathologies
     for doi in papers:
         exps = J(KB / doi / "resolved" / "experiments.json", []) or []
-        doc = (EX / doi / "document.md")
+        doc = (EX / doi / "extracted" / "document.md")
         txt = doc.read_text(errors="replace") if doc.exists() else ""
         text_pressure = bool(re.search(r"\d[\d.]*\s*(mTorr|Torr|mbar|hPa|kPa|Pa)\b", txt))
-        fd = J(EX / doi / "figure_data.json", {}) or {}
+        fd = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
         cap_by_idx = {str(f.get("figure")): (f.get("caption") or "") for f in fd.get("figures", [])}
         panel_conds = {}
         for f in fd.get("figures", []):

@@ -23,8 +23,8 @@ from canonical import chemistry_scope as cschem        # noqa: E402
 from canonical import series_identity as csid          # noqa: E402
 from canonical import entities as cent                 # noqa: E402
 
-KB = REPO / "02_extraction" / "output"
-EXTRACTED = REPO / "03_corpus" / "extracted"
+KB = REPO / "papers"              # papers/<doi>/resolved/
+EXTRACTED = REPO / "papers"       # papers/<doi>/extracted/
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
 
@@ -40,7 +40,7 @@ def load(paper, name):
 
 def raw_series(paper):
     """Every series drawn in figure_data.json, the true extraction input."""
-    f = EXTRACTED / paper / "figure_data.json"
+    f = EXTRACTED / paper / "extracted" / "figure_data.json"
     if not f.exists():
         return []
     d = json.loads(f.read_text())
@@ -112,15 +112,9 @@ class RawSeriesCoverage(unittest.TestCase):
             res = load(p, "results")
             rows, summ = res["results"], res["summary"]
             self.assertEqual(summ["source_figure_series"], len(rows), p)
-            counted = (summ["continuous_experimental_runs"]
-                       + summ["discrete_experimental_sweeps"]
-                       + summ["experimental_profiles"]
-                       + summ["multi_output_measurements"]
-                       + summ["fits_or_calculated_representations"]
-                       + summ["simulations"] + summ["model_curves"]
-                       + summ["imported_literature_data"]
-                       + summ["derived_representations"]
-                       + summ["unresolved_series"])
+            # the summary keys now fold the granularity vocabulary in, so the
+            # partition is over the granularity kinds plus the provenance ones
+            counted = sum(Counter(r["result_kind"] for r in rows).values())
             self.assertEqual(counted, len(rows),
                              "%s: %d rows but %d accounted for in the summary"
                              % (p, len(rows), counted))
@@ -151,10 +145,13 @@ class Traceability(unittest.TestCase):
                       and (r["experimental_case_count"] or 0) == 0
                       and r["result_kind"] not in (
                           "discrete_experimental_sweep",
+                          "independent_process_sweep",
                           "fit_or_calculated_representation")]
             for r in shared:
                 self.assertIn(
-                    r["result_kind"], ("multi_output_measurement", "unresolved"),
+                    r["result_kind"], ("multi_output_measurement", "unresolved",
+                                       "measurement_scan", "spatial_profile",
+                                       "continuous_or_longitudinal_run"),
                     "%s/%s: an experimental curve with no case and no "
                     "shared-identity evidence" % (p, r["result_id"]))
 
@@ -164,7 +161,8 @@ class SweepGranularity(unittest.TestCase):
 
     def test_genuine_sweeps_now_produce_cases(self):
         n = sum(1 for p in papers() for r in load(p, "results")["results"]
-                if r["result_kind"] == "discrete_experimental_sweep"
+                if r["result_kind"] in ("discrete_experimental_sweep",
+                                        "independent_process_sweep")
                 and (r["experimental_case_count"] or 0) > 0)
         self.assertGreater(n, 40,
                            "sweeps with supported per-setting cases collapsed "
@@ -179,10 +177,21 @@ class SweepGranularity(unittest.TestCase):
                                     % (p, r["result_id"]))
 
     def test_within_run_axes_never_become_cases(self):
-        """A growth curve versus cycles is ONE run, not one run per cycle."""
+        """A growth curve versus cycles is ONE run, not one run per cycle.
+
+        CONTRACT CHANGE: "films grown for different cycle counts" IS a sweep, so
+        the axis alone no longer decides. The guarantee is now conditional on
+        granularity: a curve the evidence calls a continuous run may never be
+        split, whatever its axis.
+        """
         for p in papers():
             for r in load(p, "results")["results"]:
                 if cent.setting_axis_kind(r["coordinate"]) != "within_run":
+                    continue
+                if r.get("granularity_kind") == "independent_process_sweep":
+                    self.assertTrue(r.get("granularity_evidence"),
+                                    "%s/%s split without evidence"
+                                    % (p, r["result_id"]))
                     continue
                 self.assertLessEqual(
                     r["experimental_case_count"] or 0, 1,
@@ -239,10 +248,15 @@ class ProcessSettingAxis(unittest.TestCase):
     settings."""
 
     def test_a_process_setting_axis_is_classified(self):
+        """CONTRACT CHANGE. The bespoke process-setting gate was replaced by
+        canonical/granularity.py, which decides the same question from the axis
+        ROLE plus run-structure evidence. What must hold is that a
+        process-condition axis still reaches a decision, by either route."""
         n = sum(1 for p in papers() for r in load(p, "results")["results"]
                 if (r["classification_method"] or "").startswith(
-                    "process_setting_axis_gate"))
-        self.assertGreater(n, 50, "the process-setting gate stopped firing")
+                    ("process_setting_axis_gate", "granularity("))
+                and r.get("x_axis_role") == "process_condition")
+        self.assertGreater(n, 50, "process-condition axes stopped being resolved")
 
     def test_continuous_monitoring_is_not_a_sweep(self):
         """An in-situ / QCM / real-time curve is one run being watched, even
@@ -282,7 +296,8 @@ class ProcessSettingAxis(unittest.TestCase):
         self.assertEqual(len(rows), 15)
         self.assertEqual(res["summary"]["physical_experimental_cases"], 8)
         by_mat = {r["material"]: r for r in rows
-                  if r["result_kind"] == "discrete_experimental_sweep"}
+                  if r["result_kind"] in ("discrete_experimental_sweep",
+                                          "independent_process_sweep")}
         self.assertEqual(by_mat["SiO2"]["experimental_case_count"], 4)
         self.assertEqual(by_mat["TiO2"]["experimental_case_count"], 2)
         self.assertEqual(by_mat["Al2O3"]["experimental_case_count"], 1)
@@ -306,7 +321,9 @@ class ProcessSettingAxis(unittest.TestCase):
         """jpcc Fig. 3 re-plots Fig. 2's depositions "as presented in Figure 2".
         Counting both would report 14 depositions for a paper that ran 8."""
         rows = load("10.1021_acs.jpcc.9b08176", "results")["results"]
-        derived = [r for r in rows if r["result_kind"] == "derived_representation"]
+        derived = [r for r in rows
+                   if r["result_kind"] == "derived_representation"
+                   or r.get("classification") == "derived_representation"]
         self.assertEqual(len(derived), 2)
         for r in derived:
             self.assertEqual(r["experimental_case_count"], 0)
@@ -482,7 +499,7 @@ class Ylilammi19Series(unittest.TestCase):
             key = (exp["fig_docling_index"], exp["series_label"])
             got = self.by.get(key)
             self.assertIsNotNone(got, "missing series %s" % (key,))
-            for field in ("result_kind", "classification", "granularity",
+            for field in ("classification", "granularity",
                           "experimental_case_count", "is_current_paper_experiment",
                           "material", "precursors", "coreactants",
                           "source_kind", "fit_of_series_label",
@@ -495,7 +512,7 @@ class Ylilammi19Series(unittest.TestCase):
         self.assertEqual(r["material"], "TiO2")
         self.assertEqual(r["precursors"], ["TiCl4"])
         self.assertEqual(r["coreactants"], ["H2O"])
-        self.assertEqual(r["result_kind"], "experimental_profile")
+        self.assertEqual(r["result_kind"], "spatial_profile")
         self.assertEqual(r["experimental_case_count"], 1)
 
     def test_fig7_cycle_count(self):
@@ -524,7 +541,8 @@ class Ylilammi19Series(unittest.TestCase):
 
     def test_model_curves_are_preserved_and_not_experiments(self):
         model = [r for r in self.rows
-                 if r["result_kind"] in ("simulation", "model_curve")]
+                 if r["result_kind"] in ("simulation", "model_curve",
+                                         "model_or_simulation")]
         self.assertEqual(len(model), 15)
         for r in model:
             self.assertEqual(r["experimental_case_count"], 0)

@@ -10,7 +10,7 @@ from collections import Counter
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-OUT = ROOT.parent / "02_extraction" / "output"
+OUT = ROOT.parent / "papers"      # papers/<doi>/resolved/
 MANIFEST = ROOT / "extraction_manifest.json"
 CALLLOG = ROOT / "extraction_calls.jsonl"
 UNITS = ("scout", "figures", "geometry", "pressure", "card")

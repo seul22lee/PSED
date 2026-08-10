@@ -674,15 +674,26 @@ quantity_relations:
       band_gap, crystallinity, grain_size, surface_roughness]
     process_parameter: [pulse_time, purge_time, plasma_exposure_time, cycle_time, process_time,
       cycle_number, temperature, deposition_temperature, partial_pressure, total_pressure,
-      reactant_A_partial_pressure, reactant_B_partial_pressure, exposure, flow_rate]
+      reactant_A_partial_pressure, reactant_B_partial_pressure, exposure, flow_rate,
+      # a DURATION and an INTEGRATED DOSE are different quantities with different
+      # units; `exposure` alone conflated 'at-H exposure time (min)' with Pa*s
+      exposure_time, exposure_dose, applied_power, hot_wire_temperature]
     geometry: [feature_height, feature_width, feature_length, aspect_ratio, coated_aspect_ratio,
       pore_diameter, pore_radius, generation, channel_filling_fraction]
     observable: [film_thickness, normalized_thickness, thickness_per_cycle, growth_per_cycle,
       growth_rate, deposition_rate, surface_coverage, maximum_surface_coverage, saturated_coverage,
       step_coverage, conformality, penetration_depth, penetration_depth_50, penetration_depth_80,
       uniformity, areal_density, composition, dopant_content, impurity_content, film_stress,
-      nucleation_delay, equivalent_oxide_thickness, atomic_concentration, adsorbed_species_density]
-    coordinate: [spatial_coordinate, dimensionless_distance, time, diffusion_length]
+      nucleation_delay, equivalent_oxide_thickness, atomic_concentration, adsorbed_species_density,
+      ionic_conductivity, coulombic_efficiency, hysteresis_voltage, interfacial_resistance,
+      areal_mass]
+    coordinate: [spatial_coordinate, dimensionless_distance, time, diffusion_length,
+      # instrument coordinates: an axis of the MEASUREMENT, never a process setting.
+      # Q was previously read as `site_density` and Z' as `spatial_coordinate`.
+      scattering_vector_q, diffraction_angle, binding_energy, wavenumber, wavelength,
+      sputter_depth, impedance_real, impedance_imaginary, inverse_temperature,
+      # progression coordinates: advance WITHIN one run or sample
+      cycling_number, storage_time]
     dimensionless_number: [knudsen_number, damkohler_number, thiele_modulus]
 
   # --- recipe_role: is a quantity a RECIPE setting (a reactor control knob)?
@@ -698,25 +709,38 @@ quantity_relations:
       collision_flux, mean_free_path, adsorption_site_area, maximum_surface_coverage]
     species_property: [molecular_mass, precursor_molecular_diameter]
 
-  # --- axis role: decides experiment GRANULARITY -----------------------------
-  # When a quantity is the INDEPENDENT (x) axis of a plot:
-  #   coordinate -> within-run position/time => the LINE is ONE experiment,
-  #                 its points are that experiment's profile/curve.
-  #   condition  -> a process setting varied across runs => EACH POINT is a
-  #                 SEPARATE experiment (its own controlled value).
-  #   output     -> dependent/measured; should not be an independent axis.
-  # Anything not listed defaults to 'condition' (the safe split-into-points case).
-  # NOTE ambiguous: cycle_number / time can be either (one monitored run vs
-  # separate depositions) -> extractor should check whether other conditions
-  # also differ across points before splitting.
+  # --- axis role: what an axis MEANS ------------------------------------------
+  # This no longer decides granularity. `condition -> each point is one
+  # experiment` was wrong in both directions: it split in-situ traces whose x
+  # axis merely NAMES a recipe quantity (film thickness vs at-H exposure time is
+  # one monitored run, not 25 depositions), and it left genuine sweeps unsplit.
+  # Granularity is decided in canonical/granularity.py from the axis role PLUS
+  # the measurement modality and the paper's run-structure statements; the roles
+  # here are one input to that, never the rule.
+  #
+  #   coordinate -> an axis of the measurement or of position/progression
+  #   condition  -> a quantity that CAN be a process setting (context decides)
+  #   output     -> dependent/measured
+  # Anything not listed defaults to 'condition'; `unknown` is a real outcome
+  # downstream and nothing is split without separate-execution evidence.
+  #
+  # CAUTION on single-letter symbols: `q` (site_density) and `z`
+  # (spatial_coordinate) are legitimate model symbols but collide with the
+  # GIWAXS axis `Q (1/A)` and the impedance axis `Z' (ohm)`. canonical/
+  # axis_roles.py rejects any alias match whose dimension the axis contradicts.
   axis_role:
-    coordinate: [spatial_coordinate, dimensionless_distance, time, process_time, diffusion_length]
+    coordinate: [spatial_coordinate, dimensionless_distance, time, process_time, diffusion_length,
+      scattering_vector_q, diffraction_angle, binding_energy, wavenumber, wavelength,
+      sputter_depth, impedance_real, impedance_imaginary, inverse_temperature,
+      cycling_number, storage_time, cycle_number]
     output: [film_thickness, thickness_per_cycle, normalized_thickness, growth_per_cycle,
              growth_rate, deposition_rate, areal_density, penetration_depth,
              penetration_depth_50, penetration_depth_80, step_coverage, conformality,
              coated_aspect_ratio, uniformity, sticking_probability,
              initial_sticking_coefficient, recombination_probability, reaction_probability,
              surface_coverage, saturated_coverage, adsorbed_species_density, film_density,
+             atomic_concentration, ionic_conductivity, coulombic_efficiency,
+             hysteresis_voltage, interfacial_resistance, areal_mass,
              resistivity, refractive_index, dielectric_constant, equivalent_oxide_thickness,
              work_function, band_gap, crystallinity, grain_size, surface_roughness,
              impurity_content, composition, dopant_content, film_stress, nucleation_delay,
