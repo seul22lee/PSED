@@ -63,13 +63,18 @@ def rel(path):
 
 
 def papers():
-    """Corpus paper ids, from the manifest (the authoritative 31-paper list)."""
-    m = _read_json(MANIFEST) or {}
-    ids = sorted((m.get("papers") or {}).keys())
-    if ids:
-        return ids
-    return sorted(d.name for d in CORPUS.iterdir()
-                  if d.is_dir() and P.extracted_dir(d.name).is_dir())
+    """Corpus paper ids — the papers that exist on disk with an extraction.
+
+    This used to read reports/extraction_runs/extraction_manifest.json and call it
+    "the authoritative list". That file is the frozen log of a July extraction run:
+    its input_paths still point at the pre-refactor extracted/<doi>/ layout, and it
+    has no entry for a paper added since. Because every downstream stage resolves its
+    corpus through this function, a paper missing from that log was silently absent
+    from resolve, canonical, the KG and every report no matter how much data it
+    contributed -- cremers2019 has 93 source series and appeared nowhere. The live
+    corpus is the filesystem; the manifest stays where it is as run provenance.
+    """
+    return P.papers()
 
 
 def paper_paths(doi):

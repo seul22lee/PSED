@@ -8,6 +8,7 @@
    "card.json",
    "document.md",
    "figure_data.json",
+   "figure_inventory.json",
    "figures",
    "geometry.json",
    "pressure.json",
@@ -33,6 +34,7 @@
  "summary": {
   "source_figure_series_ids": [
    "10.1002_pssa.201532305__Fig10a",
+   "10.1002_pssa.201532305__Fig10b",
    "10.1002_pssa.201532305__Fig11a",
    "10.1002_pssa.201532305__Fig11b",
    "10.1002_pssa.201532305__Fig11c",
@@ -59,10 +61,14 @@
    "10.1002_pssa.201532305__Fig5a__exp06",
    "10.1002_pssa.201532305__Fig6a",
    "10.1002_pssa.201532305__Fig7a",
+   "10.1002_pssa.201532305__Fig8a__exp01",
+   "10.1002_pssa.201532305__Fig8a__exp02",
+   "10.1002_pssa.201532305__Fig8a__exp03",
    "10.1002_pssa.201532305__Fig9a"
   ],
   "physical_case_ids": [
    "10.1002_pssa.201532305__Fig10a",
+   "10.1002_pssa.201532305__Fig10b",
    "10.1002_pssa.201532305__Fig11a",
    "10.1002_pssa.201532305__Fig11b",
    "10.1002_pssa.201532305__Fig11c",
@@ -80,10 +86,14 @@
    "10.1002_pssa.201532305__Fig5a__exp01",
    "10.1002_pssa.201532305__Fig6a",
    "10.1002_pssa.201532305__Fig7a",
+   "10.1002_pssa.201532305__Fig8a__exp01",
+   "10.1002_pssa.201532305__Fig8a__exp02",
+   "10.1002_pssa.201532305__Fig8a__exp03",
    "10.1002_pssa.201532305__Fig9a"
   ],
   "measurement_event_ids": [
    "10.1002_pssa.201532305__Fig10a",
+   "10.1002_pssa.201532305__Fig10b",
    "10.1002_pssa.201532305__Fig11a",
    "10.1002_pssa.201532305__Fig11b",
    "10.1002_pssa.201532305__Fig11c",
@@ -96,23 +106,30 @@
    "10.1002_pssa.201532305__Fig5a__exp01__meas",
    "10.1002_pssa.201532305__Fig6a",
    "10.1002_pssa.201532305__Fig7a",
+   "10.1002_pssa.201532305__Fig8a__exp01__meas",
    "10.1002_pssa.201532305__Fig9a"
   ],
-  "physical_process_runs": 19,
-  "measurement_events": 14,
-  "result_series": 28,
-  "independent_sweep_cases_minted": 25,
-  "independent_process_sweeps": 6,
-  "continuous_or_longitudinal_runs": 12,
+  "physical_process_runs": 23,
+  "measurement_events": 16,
+  "result_series": 32,
+  "independent_sweep_cases_minted": 37,
+  "independent_process_sweeps": 8,
+  "continuous_or_longitudinal_runs": 13,
   "spatial_profiles_g": 0,
   "measurement_scans": 0,
   "multi_output_measurements_g": 10,
   "models_and_simulations": 0,
-  "unresolved_granularity": 0,
-  "unresolved_granularity_ids": [],
+  "unresolved_granularity": 1,
+  "unresolved_granularity_ids": [
+   "10.1002_pssa.201532305__Fig6a"
+  ],
   "granularity_review_queue": [
    [
     "10.1002_pssa.201532305__Fig10a",
+    "conflicting run-structure evidence"
+   ],
+   [
+    "10.1002_pssa.201532305__Fig10b",
     "conflicting run-structure evidence"
    ],
    [
@@ -156,15 +173,19 @@
     "single-run and separate-run wording both present"
    ],
    [
+    "10.1002_pssa.201532305__Fig6a",
+    "unresolved axis role"
+   ],
+   [
     "10.1002_pssa.201532305__Fig7a",
     "conflicting run-structure evidence"
    ]
   ],
-  "source_figure_series": 28,
-  "resolved_result_records": 28,
-  "physical_experimental_cases": 39,
-  "continuous_experimental_runs": 12,
-  "discrete_experimental_sweeps": 6,
+  "source_figure_series": 32,
+  "resolved_result_records": 32,
+  "physical_experimental_cases": 53,
+  "continuous_experimental_runs": 14,
+  "discrete_experimental_sweeps": 8,
   "discrete_experimental_cases": 0,
   "experimental_profiles": 0,
   "multi_output_measurements": 10,
@@ -367,14 +388,16 @@
     "10.1002_pssa.201532305__Fig6a"
    ],
    "model_or_simulation_ids": [],
-   "unresolved_ids": [],
+   "unresolved_ids": [
+    "10.1002_pssa.201532305__Fig6a"
+   ],
    "result_kinds": [
-    "independent_process_sweep"
+    "continuous_experimental_run"
    ],
    "materials": [
     "W"
    ],
-   "physical_cases": 3,
+   "physical_cases": 1,
    "caption": "Figure 6 CVDgrowth rate versus process pressure during a 1 min exposure to at-H, after a 1-min exposure to WF6 gas followed by a 2-min purge. Conditions: 325 8 C of substrate temperature, 1750 8 C of "
   },
   {
@@ -402,6 +425,36 @@
    ],
    "physical_cases": 1,
    "caption": "Figure 7 In-situ monitoring of individual pulses by SE. Black lines indicate the slopes. The arrows show the admittance of the corresponding gas pulses to the reactor. One cycle consisted of 0.1 s at-"
+  },
+  {
+   "figure_slug": "Fig8a",
+   "printed_figure_number": "8",
+   "panel": "a",
+   "fig_docling_index": "11",
+   "n_series": 3,
+   "physical_case_ids": [
+    "10.1002_pssa.201532305__Fig8a__exp01",
+    "10.1002_pssa.201532305__Fig8a__exp02",
+    "10.1002_pssa.201532305__Fig8a__exp03"
+   ],
+   "measurement_event_ids": [
+    "10.1002_pssa.201532305__Fig8a__exp01__meas"
+   ],
+   "result_series_ids": [
+    "10.1002_pssa.201532305__Fig8a__exp01",
+    "10.1002_pssa.201532305__Fig8a__exp02",
+    "10.1002_pssa.201532305__Fig8a__exp03"
+   ],
+   "model_or_simulation_ids": [],
+   "unresolved_ids": [],
+   "result_kinds": [
+    "independent_process_sweep"
+   ],
+   "materials": [
+    "W"
+   ],
+   "physical_cases": 15,
+   "caption": "Figure 8 In /uniFB02 uence of total pressure and substrate temperature on net growth. The cycle sequence: 10 s of H2 (100 sccm)/30 s of Ar (purge)/0.1 s of WF6 (2 sccm)/30 s of Ar (purge). Other condi"
   },
   {
    "figure_slug": "Fig9a",
@@ -443,6 +496,32 @@
    ],
    "result_series_ids": [
     "10.1002_pssa.201532305__Fig10a"
+   ],
+   "model_or_simulation_ids": [],
+   "unresolved_ids": [],
+   "result_kinds": [
+    "continuous_or_longitudinal_run"
+   ],
+   "materials": [
+    "W"
+   ],
+   "physical_cases": 1,
+   "caption": "Figure 10 In-situ monitoring of HWALD growth in the linear regime by SE; the inset shows stepwise growth for individual cycles. Conditions: one ALD cycle consisted of 10 s H2 (100 sccm)/20 s Ar (purge"
+  },
+  {
+   "figure_slug": "Fig10b",
+   "printed_figure_number": "10",
+   "panel": "b",
+   "fig_docling_index": "13",
+   "n_series": 1,
+   "physical_case_ids": [
+    "10.1002_pssa.201532305__Fig10b"
+   ],
+   "measurement_event_ids": [
+    "10.1002_pssa.201532305__Fig10b"
+   ],
+   "result_series_ids": [
+    "10.1002_pssa.201532305__Fig10b"
    ],
    "model_or_simulation_ids": [],
    "unresolved_ids": [],

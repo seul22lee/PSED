@@ -8,6 +8,7 @@
    "card.json",
    "document.md",
    "figure_data.json",
+   "figure_inventory.json",
    "figures",
    "geometry.json",
    "pressure.json",
@@ -32,46 +33,53 @@
  "experiment_id_format": "<doi>__Fig<N>[<panel>][__exp<NN>] — figure number and panel come from extraction provenance; the __exp suffix appears only when one figure/panel yields several records",
  "summary": {
   "source_figure_series_ids": [
-   "10.1007_s11671-010-9676-0__NoFig"
+   "10.1007_s11671-010-9676-0__Fig2a",
+   "10.1007_s11671-010-9676-0__Fig2b",
+   "10.1007_s11671-010-9676-0__Fig4f__exp01",
+   "10.1007_s11671-010-9676-0__Fig4f__exp02",
+   "10.1007_s11671-010-9676-0__Fig4f__exp03",
+   "10.1007_s11671-010-9676-0__Fig4f__exp04"
   ],
-  "physical_case_ids": [],
+  "physical_case_ids": [
+   "10.1007_s11671-010-9676-0__Fig2a",
+   "10.1007_s11671-010-9676-0__Fig2b",
+   "10.1007_s11671-010-9676-0__Fig4f__exp01",
+   "10.1007_s11671-010-9676-0__Fig4f__exp02",
+   "10.1007_s11671-010-9676-0__Fig4f__exp03",
+   "10.1007_s11671-010-9676-0__Fig4f__exp04"
+  ],
   "measurement_event_ids": [
-   "10.1007_s11671-010-9676-0__NoFig"
+   "10.1007_s11671-010-9676-0__Fig2a",
+   "10.1007_s11671-010-9676-0__Fig2b",
+   "10.1007_s11671-010-9676-0__Fig4f__exp01__meas"
   ],
-  "physical_process_runs": 0,
-  "measurement_events": 1,
-  "result_series": 1,
+  "physical_process_runs": 6,
+  "measurement_events": 3,
+  "result_series": 6,
   "independent_sweep_cases_minted": 0,
   "independent_process_sweeps": 0,
-  "continuous_or_longitudinal_runs": 0,
+  "continuous_or_longitudinal_runs": 1,
   "spatial_profiles_g": 0,
-  "measurement_scans": 0,
+  "measurement_scans": 5,
   "multi_output_measurements_g": 0,
   "models_and_simulations": 0,
-  "unresolved_granularity": 1,
-  "unresolved_granularity_ids": [
-   "10.1007_s11671-010-9676-0__NoFig"
-  ],
-  "granularity_review_queue": [
-   [
-    "10.1007_s11671-010-9676-0__NoFig",
-    "unresolved axis role"
-   ]
-  ],
-  "source_figure_series": 1,
-  "resolved_result_records": 1,
-  "physical_experimental_cases": 0,
-  "continuous_experimental_runs": 0,
+  "unresolved_granularity": 0,
+  "unresolved_granularity_ids": [],
+  "granularity_review_queue": [],
+  "source_figure_series": 6,
+  "resolved_result_records": 6,
+  "physical_experimental_cases": 6,
+  "continuous_experimental_runs": 1,
   "discrete_experimental_sweeps": 0,
   "discrete_experimental_cases": 0,
   "experimental_profiles": 0,
-  "multi_output_measurements": 0,
+  "multi_output_measurements": 5,
   "fits_or_calculated_representations": 0,
   "simulations": 0,
   "model_curves": 0,
   "imported_literature_data": 0,
   "derived_representations": 0,
-  "unresolved_series": 1,
+  "unresolved_series": 0,
   "material_ambiguities": 0,
   "material_not_applicable_model_curves": 0,
   "chemistry_inconsistencies": 0,
@@ -79,30 +87,88 @@
  },
  "by_figure": [
   {
-   "figure_slug": "NoFig",
-   "printed_figure_number": "",
-   "panel": "",
-   "fig_docling_index": "",
+   "figure_slug": "Fig2a",
+   "printed_figure_number": "2",
+   "panel": "a",
+   "fig_docling_index": "4",
    "n_series": 1,
-   "physical_case_ids": [],
+   "physical_case_ids": [
+    "10.1007_s11671-010-9676-0__Fig2a"
+   ],
    "measurement_event_ids": [
-    "10.1007_s11671-010-9676-0__NoFig"
+    "10.1007_s11671-010-9676-0__Fig2a"
    ],
    "result_series_ids": [
-    "10.1007_s11671-010-9676-0__NoFig"
+    "10.1007_s11671-010-9676-0__Fig2a"
    ],
    "model_or_simulation_ids": [],
-   "unresolved_ids": [
-    "10.1007_s11671-010-9676-0__NoFig"
-   ],
+   "unresolved_ids": [],
    "result_kinds": [
-    "unresolved"
+    "measurement_scan"
    ],
    "materials": [
     "Fe2O3"
    ],
-   "physical_cases": 0,
-   "caption": ""
+   "physical_cases": 1,
+   "caption": "Fig. 2 a Typical XPS data on substrate surface with Fe2O3 deposited by 30 ALD cycles; b Iron concentration at the surface of Fe2O3/Al2O3(10 nm)/ SiO2(700 nm)/Si after different ALD cycles"
+  },
+  {
+   "figure_slug": "Fig2b",
+   "printed_figure_number": "2",
+   "panel": "b",
+   "fig_docling_index": "5",
+   "n_series": 1,
+   "physical_case_ids": [
+    "10.1007_s11671-010-9676-0__Fig2b"
+   ],
+   "measurement_event_ids": [
+    "10.1007_s11671-010-9676-0__Fig2b"
+   ],
+   "result_series_ids": [
+    "10.1007_s11671-010-9676-0__Fig2b"
+   ],
+   "model_or_simulation_ids": [],
+   "unresolved_ids": [],
+   "result_kinds": [
+    "continuous_or_longitudinal_run"
+   ],
+   "materials": [
+    "Fe2O3"
+   ],
+   "physical_cases": 1,
+   "caption": "Fig. 2 a Typical XPS data on substrate surface with Fe2O3 deposited by 30 ALD cycles; b Iron concentration at the surface of Fe2O3/Al2O3(10 nm)/ SiO2(700 nm)/Si after different ALD cycles"
+  },
+  {
+   "figure_slug": "Fig4f",
+   "printed_figure_number": "4",
+   "panel": "f",
+   "fig_docling_index": "9",
+   "n_series": 4,
+   "physical_case_ids": [
+    "10.1007_s11671-010-9676-0__Fig4f__exp01",
+    "10.1007_s11671-010-9676-0__Fig4f__exp02",
+    "10.1007_s11671-010-9676-0__Fig4f__exp03",
+    "10.1007_s11671-010-9676-0__Fig4f__exp04"
+   ],
+   "measurement_event_ids": [
+    "10.1007_s11671-010-9676-0__Fig4f__exp01__meas"
+   ],
+   "result_series_ids": [
+    "10.1007_s11671-010-9676-0__Fig4f__exp01",
+    "10.1007_s11671-010-9676-0__Fig4f__exp02",
+    "10.1007_s11671-010-9676-0__Fig4f__exp03",
+    "10.1007_s11671-010-9676-0__Fig4f__exp04"
+   ],
+   "model_or_simulation_ids": [],
+   "unresolved_ids": [],
+   "result_kinds": [
+    "measurement_scan"
+   ],
+   "materials": [
+    "Fe2O3"
+   ],
+   "physical_cases": 4,
+   "caption": "Fig. 4 a Low- and b highmagnification SEM images of aligned CNTs grown on quartz fiber; Morphologies of c top and d bottom of aligned CNTs grown on quartz fibers; e TEM images of few-walled CNTs from "
   }
  ]
 }

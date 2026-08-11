@@ -1,8 +1,8 @@
 {
  "doi": "10.1021_acs.chemmater.2c02292",
  "generator": "pipeline/canonical/build_canonical.py",
- "code_version": "7e3103e+dirty",
- "created_at": 1786394469,
+ "code_version": "e038973+dirty",
+ "created_at": 1786419380,
  "ontology": "ontology/ald_ontology.json",
  "n_curves": 44,
  "curves": [
@@ -14,12 +14,12 @@
     "figure": "1",
     "figure_index": "1",
     "panel": "a",
-    "series": "",
+    "series": "GPC",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/0/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig1a__case00"
     ],
@@ -160,17 +160,17 @@
       "doi": "10.1021_acs.chemmater.2c02292",
       "figure": "1",
       "panel": "a",
-      "series": "",
+      "series": "GPC",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1a__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -197,17 +197,17 @@
       "doi": "10.1021_acs.chemmater.2c02292",
       "figure": "1",
       "panel": "a",
-      "series": "",
+      "series": "GPC",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1a__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -219,9 +219,9 @@
     "n_points": 5
    },
    "context_available": [
+    "Methanol pulse time",
     "deposition_temperature",
     "growth_per_cycle",
-    "methanol pulse time",
     "molecular_mass"
    ]
   },
@@ -233,12 +233,12 @@
     "figure": "1",
     "figure_index": "1",
     "panel": "b",
-    "series": "",
+    "series": "GPC",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/1/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig1b__case00"
     ],
@@ -253,7 +253,7 @@
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Growth per cycle (Å)",
      "quantity": "growth_per_cycle",
      "unit": "Å",
      "log": false
@@ -300,15 +300,25 @@
     "y": {
      "raw_quantity": "growth_per_cycle",
      "raw_unit": "Å",
-     "raw_label": null,
-     "unit": "Å",
-     "unit_recovered": false,
+     "raw_label": "Growth per cycle (Å)",
+     "unit": "Å/cycle",
+     "unit_recovered": true,
      "quantity": "growth_per_cycle",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
-     "evidence": [],
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": null,
+       "source_location": null,
+       "span": "Growth per cycle (Å)",
+       "method": "per_cycle_division_printed_in_axis_label",
+       "confidence": 0.9,
+       "automatic": true
+      }
+     ],
      "status": "resolved",
      "unresolved_reason": null
     }
@@ -327,7 +337,19 @@
      ],
      "normalization_definition": null
     },
-    "y": null
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.08800000000000001,
+      0.09000000000000001,
+      0.10300000000000001,
+      0.10800000000000001,
+      0.10300000000000001
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -357,52 +379,54 @@
       "doi": "10.1021_acs.chemmater.2c02292",
       "figure": "1",
       "panel": "b",
-      "series": "",
+      "series": "GPC",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1b__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "length_unit_conversion",
+     "rule_id": "growth_per_cycle_unit_conversion",
      "rule_version": "1.0.0",
      "type": "unit_conversion",
-     "formula": null,
-     "status": "invalid",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
      "original_value": null,
-     "original_unit": "Å",
+     "original_unit": "Å/cycle",
      "canonical_value": null,
      "canonical_unit": "nm/cycle",
      "context": {},
-     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.chemmater.2c02292",
       "doi": "10.1021_acs.chemmater.2c02292",
       "figure": "1",
       "panel": "b",
-      "series": "",
+      "series": "GPC",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1b__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -428,12 +452,12 @@
     "figure": "1",
     "figure_index": "1",
     "panel": "c",
-    "series": "",
+    "series": "GPC",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/2/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig1c__case00"
     ],
@@ -448,7 +472,7 @@
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Growth per cycle (Å)",
      "quantity": "growth_per_cycle",
      "unit": "Å",
      "log": false
@@ -491,15 +515,25 @@
     "y": {
      "raw_quantity": "growth_per_cycle",
      "raw_unit": "Å",
-     "raw_label": null,
-     "unit": "Å",
-     "unit_recovered": false,
+     "raw_label": "Growth per cycle (Å)",
+     "unit": "Å/cycle",
+     "unit_recovered": true,
      "quantity": "growth_per_cycle",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
-     "evidence": [],
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": null,
+       "source_location": null,
+       "span": "Growth per cycle (Å)",
+       "method": "per_cycle_division_printed_in_axis_label",
+       "confidence": 0.9,
+       "automatic": true
+      }
+     ],
      "status": "resolved",
      "unresolved_reason": null
     }
@@ -517,7 +551,18 @@
      ],
      "normalization_definition": null
     },
-    "y": null
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.11000000000000001,
+      0.099,
+      0.10300000000000001,
+      0.11000000000000001
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -549,52 +594,54 @@
       "doi": "10.1021_acs.chemmater.2c02292",
       "figure": "1",
       "panel": "c",
-      "series": "",
+      "series": "GPC",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1c__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "length_unit_conversion",
+     "rule_id": "growth_per_cycle_unit_conversion",
      "rule_version": "1.0.0",
      "type": "unit_conversion",
-     "formula": null,
-     "status": "invalid",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
      "original_value": null,
-     "original_unit": "Å",
+     "original_unit": "Å/cycle",
      "canonical_value": null,
      "canonical_unit": "nm/cycle",
      "context": {},
-     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.chemmater.2c02292",
       "doi": "10.1021_acs.chemmater.2c02292",
       "figure": "1",
       "panel": "c",
-      "series": "",
+      "series": "GPC",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1c__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -624,7 +671,7 @@
     "series_axis": "substrate",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/3/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig1d__exp01__case00"
     ],
@@ -647,7 +694,7 @@
     "points": [
      [
       15.0,
-      1.75
+      1.76
      ],
      [
       20.0,
@@ -663,7 +710,7 @@
      ],
      [
       70.0,
-      7.3
+      7.28
      ],
      [
       85.0,
@@ -710,11 +757,11 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      1.75,
+      1.76,
       2.25,
       3.75,
       5.15,
-      7.3,
+      7.28,
       8.8
      ],
      "normalization_definition": null
@@ -753,12 +800,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/3/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1d__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -788,12 +835,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/3/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1d__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -824,7 +871,7 @@
     "series_axis": "substrate",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/3/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig1d__exp01__case01"
     ],
@@ -847,15 +894,15 @@
     "points": [
      [
       20.0,
-      1.75
+      1.76
      ],
      [
       25.0,
-      2.75
+      2.76
      ],
      [
       35.0,
-      3.55
+      3.58
      ],
      [
       50.0,
@@ -902,9 +949,9 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      1.75,
-      2.75,
-      3.55,
+      1.76,
+      2.76,
+      3.58,
       5.0
      ],
      "normalization_definition": null
@@ -943,12 +990,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/3/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1d__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -978,12 +1025,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/3/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1d__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1009,78 +1056,61 @@
     "figure": "1",
     "figure_index": "1",
     "panel": "f",
-    "series": "",
+    "series": "Ru L intensity profile",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/4/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
-    "linked_experiment_ids": [
-     "10.1021_acs.chemmater.2c02292__Fig1f"
-    ],
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
+    "linked_experiment_ids": [],
     "data_source": "measured",
     "caption": "Figure 1: ALD characteristics: a) Growth per cycle (GPC) as a function of RuO4 pulse time, using a fixed pulse time of 25s for methanol. b) GPC as a function of methanol pulse time, with the RuO4 pulse time kept fixed at 40s. c) Temperature window of the ALD process showing the growth per cycle as a function of substrate temperature, as obtained from XRR. Note that for the data points with error bars, the mean of the data points measured in each case is plotted and the error bar corresponds to the standard deviation of the data. d) Thickness vs. the number of ALD cycles, as determined from XRR on Si-H and Si with native oxide substrates at 100 °C (Inset: schematic illustration of the ALD process). e) Cross-sectional SEM image of the RuO2 coated micropillars indicating the different depths where the EDX was measured. f) The normalised Ru L"
    },
    "raw": {
     "x": {
      "label": "Ru L intensity (a.u.)",
-     "quantity": "spatial_coordinate",
-     "unit": "μm",
-     "log": false
-    },
-    "y": {
-     "label": "Distance along the pillar (µm)",
      "quantity": "Ru L intensity",
      "unit": "a.u.",
      "log": false
     },
+    "y": {
+     "label": "Distance along the pillar (µm)",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "log": false
+    },
     "points": [
      [
-      0.0,
-      18.9
+      19.0,
+      0.0
      ],
      [
-      10.0,
-      15.5
+      15.5,
+      10.0
      ],
      [
-      20.0,
-      14.3
+      14.3,
+      20.0
      ],
      [
-      30.0,
-      14.3
+      14.3,
+      30.0
      ],
      [
-      40.0,
-      15.1
+      15.2,
+      40.0
      ],
      [
-      50.0,
-      15.9
+      15.9,
+      50.0
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "spatial_coordinate",
-     "raw_unit": "μm",
-     "raw_label": "Ru L intensity (a.u.)",
-     "unit": "μm",
-     "unit_recovered": false,
-     "quantity": "spatial_coordinate",
-     "axis_role": "coordinate",
-     "axis_kind": "spatial_coordinate",
-     "normalization_definition": null,
-     "comparison_group": "spatial_position",
-     "evidence": [],
-     "status": "resolved",
-     "unresolved_reason": null
-    },
-    "y": {
      "raw_quantity": "Ru L intensity",
      "raw_unit": "a.u.",
-     "raw_label": "Distance along the pillar (µm)",
+     "raw_label": "Ru L intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": null,
@@ -1090,11 +1120,27 @@
      "comparison_group": null,
      "evidence": [],
      "status": "unsupported",
-     "unresolved_reason": "y quantity 'Ru L intensity' does not resolve to any ontology QuantityKind"
+     "unresolved_reason": "x quantity 'Ru L intensity' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "µm",
+     "raw_label": "Distance along the pillar (µm)",
+     "unit": "µm",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
-    "x": {
+    "x": null,
+    "y": {
      "comparison_group": "spatial_position",
      "quantity": "spatial_coordinate",
      "unit": "µm",
@@ -1107,8 +1153,7 @@
       50.0
      ],
      "normalization_definition": null
-    },
-    "y": null
+    }
    },
    "projections": {
     "x": [],
@@ -1117,41 +1162,6 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "identity_canonical_mapping",
-     "rule_version": "1.0.0",
-     "type": "identity_canonical_mapping",
-     "formula": "identity",
-     "status": "already_canonical",
-     "normalization_definition": null,
-     "comparison_group": "spatial_position",
-     "original_value": null,
-     "original_unit": "μm",
-     "canonical_value": null,
-     "canonical_unit": "µm",
-     "context": {},
-     "unresolved_reason": null,
-     "confidence": 1.0,
-     "assumptions": [],
-     "invertible": true,
-     "source": {
-      "paper_id": "10.1021_acs.chemmater.2c02292",
-      "doi": "10.1021_acs.chemmater.2c02292",
-      "figure": "1",
-      "panel": "f",
-      "series": "",
-      "series_index": 0,
-      "axis": "x",
-      "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/4/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
-      "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1f"
-     },
-     "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
-    },
-    {
-     "axis": "y",
      "rule_id": "axis_semantic_resolution",
      "rule_version": "1.0.0",
      "type": "axis_semantic_resolution",
@@ -1164,7 +1174,7 @@
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Ru L intensity' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "x quantity 'Ru L intensity' does not resolve to any ontology QuantityKind",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -1173,32 +1183,63 @@
       "doi": "10.1021_acs.chemmater.2c02292",
       "figure": "1",
       "panel": "f",
-      "series": "",
+      "series": "Ru L intensity profile",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/4/series/0/points",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "µm",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.chemmater.2c02292",
+      "doi": "10.1021_acs.chemmater.2c02292",
+      "figure": "1",
+      "panel": "f",
+      "series": "Ru L intensity profile",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/4/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
-      "experiment_id": "10.1021_acs.chemmater.2c02292__Fig1f"
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
+      "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": "coordinate",
-    "previous_representation": "profile",
-    "resolved_representation": "profile",
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
     "changed": false,
-    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "reason": "x axis role could not be determined",
     "n_points": 6
    },
-   "context_available": [
-    "deposition_temperature",
-    "growth_per_cycle",
-    "molecular_mass"
-   ]
+   "context_available": []
   },
   {
    "curve_id": "10.1021_acs.chemmater.2c02292::F2::a::0",
@@ -1210,10 +1251,10 @@
     "panel": "a",
     "series": "Ru metal (RuO4-H2)",
     "series_index": 0,
-    "series_axis": "process",
+    "series_axis": "ALD process",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2a__exp01"
     ],
@@ -1222,105 +1263,113 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      292.0,
-      180.0
-     ],
-     [
       290.0,
-      185.0
+      178.5
      ],
      [
       288.0,
-      200.0
+      183.1
      ],
      [
-      286.0,
-      220.0
+      286.5,
+      192.3
      ],
      [
-      285.0,
-      310.0
+      285.5,
+      231.3
      ],
      [
-      284.2,
-      530.0
+      284.8,
+      328.0
      ],
      [
-      284.0,
-      700.0
+      284.4,
+      452.1
      ],
      [
-      283.8,
-      860.0
+      284.1,
+      640.8
      ],
      [
-      283.5,
-      680.0
+      283.9,
+      866.2
      ],
      [
-      283.0,
-      400.0
+      283.6,
+      732.8
      ],
      [
-      282.0,
-      200.0
+      283.3,
+      516.5
      ],
      [
-      281.2,
-      240.0
+      282.8,
+      314.2
+     ],
+     [
+      282.1,
+      203.8
+     ],
+     [
+      281.3,
+      203.8
      ],
      [
       280.8,
-      300.0
+      282.0
      ],
      [
       280.4,
-      500.0
+      424.6
      ],
      [
-      280.2,
-      860.0
-     ],
-     [
-      280.0,
-      1460.0
+      280.1,
+      659.2
      ],
      [
       279.8,
-      1750.0
+      1160.6
+     ],
+     [
+      279.6,
+      1455.1
      ],
      [
       279.5,
-      1170.0
+      1758.8
      ],
      [
       279.2,
-      500.0
+      1487.3
      ],
      [
       279.0,
-      200.0
+      861.6
      ],
      [
-      278.0,
-      60.0
+      278.6,
+      351.0
      ],
      [
-      276.0,
-      40.0
+      278.2,
+      125.6
+     ],
+     [
+      277.5,
+      42.8
      ]
     ]
    },
@@ -1328,7 +1377,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -1343,7 +1392,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -1393,12 +1442,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -1428,12 +1477,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1442,7 +1491,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 22
+    "n_points": 24
    },
    "context_available": [
     "molecular_mass"
@@ -1458,10 +1507,10 @@
     "panel": "a",
     "series": "RuO2 (RuO4-methanol)",
     "series_index": 1,
-    "series_axis": "process",
+    "series_axis": "ALD process",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2a__exp02"
     ],
@@ -1470,85 +1519,81 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      294.0,
-      180.0
+      294.5,
+      174.0
      ],
      [
       292.0,
-      180.0
+      187.8
      ],
      [
-      290.0,
-      195.0
+      289.5,
+      220.0
      ],
      [
-      288.0,
-      240.0
+      287.5,
+      293.6
      ],
      [
-      286.5,
-      380.0
+      286.2,
+      408.6
      ],
      [
-      285.5,
-      500.0
+      285.3,
+      532.8
      ],
      [
-      285.2,
-      530.0
+      284.7,
+      404.0
      ],
      [
-      284.8,
-      480.0
+      283.8,
+      298.2
      ],
      [
-      284.2,
-      380.0
-     ],
-     [
-      283.0,
-      290.0
+      282.8,
+      293.6
      ],
      [
       282.0,
-      360.0
+      385.6
      ],
      [
-      281.2,
-      640.0
+      281.3,
+      606.4
      ],
      [
       281.0,
-      670.0
+      670.8
      ],
      [
-      280.6,
-      560.0
+      280.5,
+      486.8
      ],
      [
       280.0,
-      200.0
+      210.8
+     ],
+     [
+      279.5,
+      82.0
      ],
      [
       279.0,
-      50.0
-     ],
-     [
-      278.0,
-      20.0
+      36.0
      ]
     ]
    },
@@ -1556,7 +1601,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -1571,7 +1616,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -1621,12 +1666,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -1656,12 +1701,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1670,7 +1715,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 17
+    "n_points": 16
    },
    "context_available": [
     "molecular_mass"
@@ -1689,7 +1734,7 @@
     "series_axis": "peak component",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2b__exp01"
     ],
@@ -1698,53 +1743,49 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      284.0,
+      283.5,
       0.0
      ],
      [
       283.0,
-      10.0
+      82.1
      ],
      [
-      282.5,
-      50.0
-     ],
-     [
-      282.0,
-      180.0
-     ],
-     [
-      281.5,
-      500.0
+      282.2,
+      285.3
      ],
      [
       281.3,
-      600.0
+      601.1
      ],
      [
-      281.0,
-      480.0
+      281.2,
+      652.4
      ],
      [
-      280.5,
-      180.0
+      280.8,
+      506.7
      ],
      [
-      280.0,
-      20.0
+      280.3,
+      188.0
+     ],
+     [
+      279.8,
+      28.2
      ],
      [
       279.0,
@@ -1756,7 +1797,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -1771,7 +1812,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -1821,12 +1862,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -1856,12 +1897,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1870,7 +1911,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 10
+    "n_points": 9
    },
    "context_available": [
     "molecular_mass"
@@ -1889,7 +1930,7 @@
     "series_axis": "peak component",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2b__exp02"
     ],
@@ -1898,44 +1939,36 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      286.0,
+      286.5,
       0.0
      ],
      [
       285.0,
-      15.0
-     ],
-     [
-      284.0,
-      90.0
+      23.5
      ],
      [
       283.6,
-      140.0
+      141.2
      ],
      [
-      283.0,
-      110.0
+      282.5,
+      94.1
      ],
      [
-      282.0,
-      25.0
-     ],
-     [
-      281.0,
+      281.5,
       0.0
      ]
     ]
@@ -1944,7 +1977,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -1959,7 +1992,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -2009,12 +2042,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2044,12 +2077,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2058,7 +2091,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 7
+    "n_points": 5
    },
    "context_available": [
     "molecular_mass"
@@ -2077,7 +2110,7 @@
     "series_axis": "peak component",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/2",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2b__exp03"
     ],
@@ -2086,52 +2119,44 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      289.0,
+      288.5,
       0.0
      ],
      [
-      288.0,
-      15.0
-     ],
-     [
       287.0,
-      70.0
-     ],
-     [
-      286.0,
-      220.0
+      82.1
      ],
      [
       285.5,
-      340.0
+      341.2
      ],
      [
-      285.0,
-      280.0
+      285.3,
+      371.8
      ],
      [
-      284.0,
-      100.0
+      284.5,
+      141.2
      ],
      [
-      283.0,
-      20.0
+      283.5,
+      23.5
      ],
      [
-      282.0,
+      282.5,
       0.0
      ]
     ]
@@ -2140,7 +2165,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -2155,7 +2180,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -2205,12 +2230,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2240,12 +2265,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2254,7 +2279,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 9
+    "n_points": 7
    },
    "context_available": [
     "molecular_mass"
@@ -2273,7 +2298,7 @@
     "series_axis": "peak component",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/3",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2b__exp04"
     ],
@@ -2282,37 +2307,33 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      291.0,
+      291.5,
       0.0
      ],
      [
-      289.5,
-      20.0
+      289.0,
+      28.2
      ],
      [
-      288.0,
-      60.0
+      287.3,
+      70.6
      ],
      [
-      287.5,
-      70.0
-     ],
-     [
-      286.5,
-      30.0
+      286.0,
+      37.6
      ],
      [
       285.0,
@@ -2324,7 +2345,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -2339,7 +2360,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -2389,12 +2410,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/3/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2424,12 +2445,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/3/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2438,7 +2459,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 6
+    "n_points": 5
    },
    "context_available": [
     "molecular_mass"
@@ -2457,7 +2478,7 @@
     "series_axis": "peak component",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/4",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2b__exp05"
     ],
@@ -2466,33 +2487,25 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      285.2,
+      285.0,
       0.0
      ],
      [
-      284.7,
-      20.0
-     ],
-     [
-      284.5,
-      35.0
-     ],
-     [
-      284.2,
-      20.0
+      284.4,
+      37.6
      ],
      [
       283.8,
@@ -2504,7 +2517,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -2519,7 +2532,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -2569,12 +2582,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/4/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp05"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2604,12 +2617,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/4/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2b__exp05"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2618,7 +2631,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 5
+    "n_points": 3
    },
    "context_available": [
     "molecular_mass",
@@ -2638,7 +2651,7 @@
     "series_axis": "peak component",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/2/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2c__exp01"
     ],
@@ -2647,45 +2660,41 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      534.0,
+      534.5,
       0.0
      ],
      [
       533.0,
-      20.0
+      32.2
      ],
      [
-      532.0,
-      80.0
+      531.5,
+      188.1
      ],
      [
-      531.0,
-      220.0
-     ],
-     [
-      530.1,
-      410.0
+      530.2,
+      419.4
      ],
      [
       529.5,
-      250.0
+      204.2
      ],
      [
-      529.0,
-      60.0
+      528.8,
+      32.2
      ],
      [
       528.0,
@@ -2697,7 +2706,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -2712,7 +2721,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -2762,12 +2771,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2c__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2797,12 +2806,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2c__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2811,7 +2820,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 8
+    "n_points": 7
    },
    "context_available": [
     "molecular_mass",
@@ -2831,7 +2840,7 @@
     "series_axis": "peak component",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/2/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig2c__exp02"
     ],
@@ -2840,45 +2849,33 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (CPS)",
      "quantity": "Intensity",
      "unit": "CPS",
      "log": false
     },
     "points": [
      [
-      534.0,
+      535.5,
       0.0
      ],
      [
-      533.0,
-      25.0
-     ],
-     [
-      532.0,
-      75.0
+      533.5,
+      21.5
      ],
      [
       531.5,
-      90.0
-     ],
-     [
-      531.0,
-      70.0
+      88.7
      ],
      [
       530.0,
-      10.0
-     ],
-     [
-      529.0,
-      0.0
+      2.7
      ]
     ]
    },
@@ -2886,7 +2883,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -2901,7 +2898,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "CPS",
-     "raw_label": null,
+     "raw_label": "Intensity (CPS)",
      "unit": "CPS",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -2951,12 +2948,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2c__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2986,12 +2983,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig2c__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -3000,7 +2997,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 7
+    "n_points": 4
    },
    "context_available": [
     "molecular_mass"
@@ -3016,10 +3013,10 @@
     "panel": "a",
     "series": "Annealed in He",
     "series_index": 0,
-    "series_axis": "annealing atmosphere",
+    "series_axis": "sample condition",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/2/panels/0/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig3a__exp01"
     ],
@@ -3028,13 +3025,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2Θ (°)",
      "quantity": "2Θ",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -3042,167 +3039,139 @@
     "points": [
      [
       20.0,
-      7.01
+      72.0
      ],
      [
-      21.5,
-      7.01
+      22.0,
+      72.0
      ],
      [
-      23.0,
-      7.01
+      24.0,
+      72.0
      ],
      [
-      24.5,
-      7.01
+      25.0,
+      72.1
      ],
      [
       26.0,
-      7.03
+      72.5
      ],
      [
-      26.8,
-      7.15
+      27.0,
+      76.0
      ],
      [
-      27.3,
-      7.6
-     ],
-     [
-      27.7,
-      8.7
+      27.5,
+      84.0
      ],
      [
       28.0,
-      9.7
+      98.0
      ],
      [
-      28.3,
-      8.7
+      28.5,
+      84.0
      ],
      [
-      28.7,
-      7.6
+      29.0,
+      76.0
      ],
      [
-      29.2,
-      7.15
-     ],
-     [
-      30.5,
-      7.02
+      30.0,
+      72.2
      ],
      [
       32.0,
-      7.01
+      72.0
      ],
      [
       33.5,
-      7.02
+      72.1
      ],
      [
       34.5,
-      7.15
+      74.0
      ],
      [
-      34.9,
-      7.5
+      35.1,
+      82.0
      ],
      [
-      35.2,
-      8.02
-     ],
-     [
-      35.5,
-      7.5
-     ],
-     [
-      35.9,
-      7.15
+      35.7,
+      74.0
      ],
      [
       37.0,
-      7.01
+      72.0
      ],
      [
       38.5,
-      7.01
+      72.1
      ],
      [
       39.5,
-      7.1
+      74.0
      ],
      [
       40.1,
-      7.7
+      80.0
      ],
      [
       40.7,
-      7.1
+      74.0
      ],
      [
       42.0,
-      7.01
+      72.0
      ],
      [
-      44.0,
-      7.01
-     ],
-     [
-      46.0,
-      7.01
+      45.0,
+      72.0
      ],
      [
       48.0,
-      7.01
+      72.0
      ],
      [
-      50.0,
-      7.01
+      51.0,
+      72.0
      ],
      [
-      52.0,
-      7.02
+      53.0,
+      72.2
      ],
      [
       53.8,
-      7.12
+      75.0
      ],
      [
-      54.2,
-      7.35
-     ],
-     [
-      54.5,
-      7.7
+      54.3,
+      81.0
      ],
      [
       54.8,
-      7.35
+      75.0
      ],
      [
-      55.2,
-      7.12
+      56.0,
+      72.1
      ],
      [
-      56.5,
-      7.02
+      57.2,
+      73.0
      ],
      [
-      57.5,
-      7.12
-     ],
-     [
-      58.0,
-      7.4
+      57.9,
+      76.0
      ],
      [
       58.5,
-      7.12
+      72.5
      ],
      [
       60.0,
-      7.01
+      72.0
      ]
     ]
    },
@@ -3210,7 +3179,7 @@
     "x": {
      "raw_quantity": "2Θ",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2Θ (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -3225,7 +3194,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -3275,12 +3244,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig3a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -3310,12 +3279,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig3a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -3324,7 +3293,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 41
+    "n_points": 34
    },
    "context_available": [
     "film_thickness",
@@ -3342,10 +3311,10 @@
     "panel": "a",
     "series": "Annealed in air",
     "series_index": 1,
-    "series_axis": "annealing atmosphere",
+    "series_axis": "sample condition",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/2/panels/0/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig3a__exp02"
     ],
@@ -3354,13 +3323,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2Θ (°)",
      "quantity": "2Θ",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -3368,167 +3337,123 @@
     "points": [
      [
       20.0,
-      4.0
+      44.0
      ],
      [
-      21.5,
-      4.0
+      22.0,
+      44.0
      ],
      [
-      23.0,
-      4.0
+      24.0,
+      44.0
      ],
      [
-      24.5,
-      4.0
+      25.5,
+      44.2
      ],
      [
-      26.0,
-      4.03
-     ],
-     [
-      26.8,
-      4.15
+      26.5,
+      47.0
      ],
      [
       27.3,
-      4.6
-     ],
-     [
-      27.7,
-      5.7
+      58.0
      ],
      [
       28.0,
-      6.7
-     ],
-     [
-      28.3,
-      5.7
+      78.0
      ],
      [
       28.7,
-      4.6
+      58.0
      ],
      [
-      29.2,
-      4.15
+      29.5,
+      47.0
      ],
      [
-      30.5,
-      4.02
+      31.0,
+      44.1
      ],
      [
-      32.0,
-      4.01
+      33.0,
+      44.0
      ],
      [
-      33.5,
-      4.02
+      34.2,
+      46.0
      ],
      [
-      34.5,
-      4.15
+      35.1,
+      58.0
      ],
      [
-      34.9,
-      4.5
+      36.0,
+      46.0
      ],
      [
-      35.2,
-      5.28
+      37.5,
+      44.0
      ],
      [
-      35.5,
-      4.5
-     ],
-     [
-      35.9,
-      4.15
-     ],
-     [
-      37.0,
-      4.01
-     ],
-     [
-      38.5,
-      4.01
-     ],
-     [
-      39.5,
-      4.1
+      39.0,
+      45.0
      ],
      [
       40.1,
-      4.78
+      55.0
      ],
      [
-      40.7,
-      4.1
+      41.2,
+      45.0
      ],
      [
-      42.0,
-      4.01
-     ],
-     [
-      44.0,
-      4.01
+      43.0,
+      44.0
      ],
      [
       46.0,
-      4.01
+      44.0
      ],
      [
-      48.0,
-      4.01
+      49.0,
+      44.0
      ],
      [
-      50.0,
-      4.01
+      52.5,
+      44.2
      ],
      [
-      52.0,
-      4.02
+      53.5,
+      47.0
      ],
      [
-      53.8,
-      4.12
+      54.3,
+      55.0
      ],
      [
-      54.2,
-      4.35
-     ],
-     [
-      54.5,
-      4.72
-     ],
-     [
-      54.8,
-      4.35
-     ],
-     [
-      55.2,
-      4.12
+      55.1,
+      47.0
      ],
      [
       56.5,
-      4.02
+      44.1
      ],
      [
-      57.5,
-      4.08
+      57.3,
+      45.5
      ],
      [
-      58.0,
-      4.28
+      57.9,
+      48.0
      ],
      [
       58.5,
-      4.08
+      45.0
      ],
      [
       60.0,
-      4.0
+      44.0
      ]
     ]
    },
@@ -3536,7 +3461,7 @@
     "x": {
      "raw_quantity": "2Θ",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2Θ (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -3551,7 +3476,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -3601,12 +3526,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig3a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -3636,12 +3561,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig3a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -3650,7 +3575,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 41
+    "n_points": 30
    },
    "context_available": [
     "film_thickness",
@@ -3668,10 +3593,10 @@
     "panel": "a",
     "series": "As deposited",
     "series_index": 2,
-    "series_axis": "annealing atmosphere",
+    "series_axis": "sample condition",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/2/panels/0/series/2",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig3a__exp03"
     ],
@@ -3680,13 +3605,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2Θ (°)",
      "quantity": "2Θ",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -3694,167 +3619,167 @@
     "points": [
      [
       20.0,
-      1.5
+      20.0
      ],
      [
       21.0,
-      2.0
+      26.0
      ],
      [
       22.0,
-      1.1
+      15.0
      ],
      [
       23.0,
-      1.9
+      24.0
      ],
      [
       24.0,
-      1.2
+      13.0
      ],
      [
       25.0,
-      2.2
+      22.0
      ],
      [
       26.0,
-      1.0
+      10.0
      ],
      [
       27.0,
-      1.8
+      31.0
      ],
      [
       28.0,
-      1.1
+      18.0
      ],
      [
       29.0,
-      2.8
+      31.0
      ],
      [
       30.0,
-      1.3
+      12.0
      ],
      [
       31.0,
-      2.2
+      27.0
      ],
      [
       32.0,
-      1.4
+      33.0
      ],
      [
       33.0,
-      2.6
+      33.0
      ],
      [
       34.0,
-      1.2
+      18.0
      ],
      [
       35.0,
-      2.0
+      25.0
      ],
      [
       36.0,
-      1.1
+      12.0
      ],
      [
       37.0,
-      2.4
+      21.0
      ],
      [
       38.0,
-      1.2
+      15.0
      ],
      [
       39.0,
-      2.1
+      20.0
      ],
      [
       40.0,
-      2.8
+      32.0
      ],
      [
       41.0,
-      1.1
+      16.0
      ],
      [
       42.0,
-      1.8
+      22.0
      ],
      [
       43.0,
-      2.9
+      31.0
      ],
      [
       44.0,
-      1.3
+      22.0
      ],
      [
       45.0,
-      2.5
+      14.0
      ],
      [
       46.0,
-      1.2
+      20.0
      ],
      [
       47.0,
-      2.1
+      17.0
      ],
      [
       48.0,
-      2.7
+      29.0
      ],
      [
       49.0,
-      1.1
+      18.0
      ],
      [
       50.0,
-      2.3
+      21.0
      ],
      [
       51.0,
-      1.2
+      31.0
      ],
      [
       52.0,
-      2.6
+      20.0
      ],
      [
       53.0,
-      1.1
+      13.0
      ],
      [
       54.0,
-      2.2
+      28.0
      ],
      [
       55.0,
-      1.3
+      17.0
      ],
      [
       56.0,
-      2.4
+      30.0
      ],
      [
       57.0,
-      1.0
+      12.0
      ],
      [
       58.0,
-      2.8
+      32.0
      ],
      [
       59.0,
-      1.2
+      18.0
      ],
      [
       60.0,
-      2.2
+      26.0
      ]
     ]
    },
@@ -3862,7 +3787,7 @@
     "x": {
      "raw_quantity": "2Θ",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2Θ (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -3877,7 +3802,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -3927,12 +3852,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig3a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -3962,12 +3887,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig3a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -3994,10 +3919,10 @@
     "panel": "c",
     "series": "Annealed",
     "series_index": 0,
-    "series_axis": "sample state",
+    "series_axis": "state",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/0/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig4c__exp01"
     ],
@@ -4006,192 +3931,128 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "q",
+     "label": "q (nm⁻¹)",
+     "quantity": "scattering_vector",
      "unit": "nm^-1",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Intensity",
+     "label": "Intensity (a.u.)",
+     "quantity": "intensity",
      "unit": "a.u.",
      "log": false
     },
     "points": [
      [
-      20.0,
-      11.0
+      19.8,
+      10.0
      ],
      [
       20.5,
-      0.6
-     ],
-     [
-      21.0,
-      0.5
+      1.8
      ],
      [
       22.0,
-      0.5
+      1.8
      ],
      [
-      23.0,
-      0.6
-     ],
-     [
-      24.0,
-      1.5
+      23.5,
+      1.8
      ],
      [
       24.6,
       6.8
      ],
      [
-      25.0,
-      2.0
+      25.2,
+      1.8
      ],
      [
-      25.5,
-      0.7
-     ],
-     [
-      26.5,
-      0.7
-     ],
-     [
-      27.5,
-      1.2
+      26.8,
+      1.8
      ],
      [
       28.0,
-      3.3
-     ],
-     [
-      28.5,
-      1.5
+      3.4
      ],
      [
       29.0,
-      0.7
-     ],
-     [
-      30.0,
-      0.7
+      1.3
      ],
      [
       32.0,
-      0.8
+      1.3
      ],
      [
-      34.0,
-      0.8
+      35.0,
+      1.3
      ],
      [
-      36.0,
-      0.9
-     ],
-     [
-      36.8,
-      2.0
-     ],
-     [
-      37.1,
+      37.2,
       7.9
      ],
      [
-      37.5,
-      2.5
+      38.5,
+      1.3
      ],
      [
-      38.0,
-      0.9
-     ],
-     [
-      38.8,
-      1.1
-     ],
-     [
-      39.3,
-      3.6
-     ],
-     [
-      39.8,
-      1.2
-     ],
-     [
-      40.5,
-      0.9
+      39.5,
+      3.5
      ],
      [
       42.0,
-      0.8
+      1.3
      ],
      [
-      43.5,
-      1.0
+      44.2,
+      3.0
      ],
      [
-      44.1,
-      2.4
-     ],
-     [
-      44.6,
-      1.1
-     ],
-     [
-      45.5,
-      1.0
+      45.0,
+      1.3
      ],
      [
       46.5,
-      2.8
+      3.0
      ],
      [
-      47.0,
-      1.1
+      49.0,
+      1.3
      ],
      [
-      48.5,
-      0.8
-     ],
-     [
-      50.0,
-      0.9
-     ],
-     [
-      51.5,
-      1.0
+      51.0,
+      1.3
      ],
      [
       53.0,
-      1.2
+      1.3
      ],
      [
       54.0,
-      1.6
+      1.8
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "q",
+     "raw_quantity": "scattering_vector",
      "raw_unit": "nm^-1",
-     "raw_label": null,
+     "raw_label": "q (nm⁻¹)",
      "unit": "nm^-1",
      "unit_recovered": false,
-     "quantity": "site_density",
-     "axis_role": "condition",
-     "axis_kind": "condition_sweep",
+     "quantity": "scattering_vector_q",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
      "status": "not_applicable",
-     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)"
+     "unresolved_reason": "quantity 'scattering_vector_q' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Intensity",
+     "raw_quantity": "intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -4227,7 +4088,7 @@
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)",
+     "unresolved_reason": "quantity 'scattering_vector_q' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -4241,12 +4102,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4c__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -4276,24 +4137,23 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4c__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": "condition",
-    "previous_representation": "trace",
-    "resolved_representation": "series",
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis 'site_density' is an ontology condition; each point is one experiment",
-    "n_points": 38
+    "reason": "x axis 'scattering_vector_q' is an ontology coordinate",
+    "n_points": 22
    },
    "context_available": [
-    "film_thickness",
     "molecular_mass"
    ]
   },
@@ -4307,10 +4167,10 @@
     "panel": "c",
     "series": "As deposited",
     "series_index": 1,
-    "series_axis": "sample state",
+    "series_axis": "state",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/0/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig4c__exp02"
     ],
@@ -4319,93 +4179,73 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "q",
+     "label": "q (nm⁻¹)",
+     "quantity": "scattering_vector",
      "unit": "nm^-1",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Intensity",
+     "label": "Intensity (a.u.)",
+     "quantity": "intensity",
      "unit": "a.u.",
      "log": false
     },
     "points": [
      [
-      20.0,
-      0.9
-     ],
-     [
-      21.0,
-      0.8
+      19.8,
+      1.2
      ],
      [
       22.0,
-      0.9
-     ],
-     [
-      23.0,
-      1.0
+      1.2
      ],
      [
       24.0,
-      0.9
-     ],
-     [
-      25.0,
-      0.9
+      1.3
      ],
      [
       26.0,
-      1.2
+      1.3
      ],
      [
-      26.8,
-      1.7
-     ],
-     [
-      27.5,
-      1.2
-     ],
-     [
-      28.0,
-      1.0
-     ],
-     [
-      29.0,
-      1.2
-     ],
-     [
-      30.5,
-      3.3
-     ],
-     [
-      31.5,
+      27.0,
       1.8
      ],
      [
-      32.5,
-      0.9
+      28.0,
+      1.5
+     ],
+     [
+      29.0,
+      2.3
+     ],
+     [
+      30.5,
+      3.4
+     ],
+     [
+      32.0,
+      2.0
      ],
      [
       34.0,
-      0.8
-     ],
-     [
-      36.0,
-      0.8
-     ],
-     [
-      38.0,
-      0.9
-     ],
-     [
-      40.0,
       1.2
      ],
      [
+      36.0,
+      1.2
+     ],
+     [
+      38.0,
+      1.2
+     ],
+     [
+      40.0,
+      1.1
+     ],
+     [
       42.0,
-      1.0
+      1.1
      ],
      [
       44.0,
@@ -4417,11 +4257,11 @@
      ],
      [
       48.0,
-      1.0
+      1.1
      ],
      [
       50.0,
-      1.0
+      1.1
      ],
      [
       52.0,
@@ -4429,30 +4269,30 @@
      ],
      [
       54.0,
-      1.4
+      1.1
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "q",
+     "raw_quantity": "scattering_vector",
      "raw_unit": "nm^-1",
-     "raw_label": null,
+     "raw_label": "q (nm⁻¹)",
      "unit": "nm^-1",
      "unit_recovered": false,
-     "quantity": "site_density",
-     "axis_role": "condition",
-     "axis_kind": "condition_sweep",
+     "quantity": "scattering_vector_q",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
      "status": "not_applicable",
-     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)"
+     "unresolved_reason": "quantity 'scattering_vector_q' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Intensity",
+     "raw_quantity": "intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -4488,7 +4328,7 @@
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "quantity 'site_density' is not a comparison target (no comparison group declares it)",
+     "unresolved_reason": "quantity 'scattering_vector_q' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -4502,12 +4342,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4c__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -4537,24 +4377,23 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4c__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": "condition",
-    "previous_representation": "trace",
-    "resolved_representation": "series",
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis 'site_density' is an ontology condition; each point is one experiment",
-    "n_points": 25
+    "reason": "x axis 'scattering_vector_q' is an ontology coordinate",
+    "n_points": 20
    },
    "context_available": [
-    "film_thickness",
     "molecular_mass"
    ]
   },
@@ -4568,10 +4407,10 @@
     "panel": "d",
     "series": "As deposited",
     "series_index": 0,
-    "series_axis": "data type",
+    "series_axis": "type",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/1/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig4d__exp01"
     ],
@@ -4580,184 +4419,120 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "r",
+     "label": "r (Å)",
+     "quantity": "spatial_coordinate",
      "unit": "Å",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "G (r) (Å⁻²)",
      "quantity": "G(r)",
      "unit": "Å^-2",
      "log": false
     },
     "points": [
      [
-      1.0,
-      0.1
-     ],
-     [
       1.5,
       -0.3
      ],
      [
       2.0,
-      -0.5
+      -0.4
      ],
      [
       2.6,
-      3.1
+      3.0
      ],
      [
       3.0,
-      -1.2
+      -1.1
      ],
      [
-      3.5,
-      0.3
+      3.6,
+      0.5
      ],
      [
       4.0,
-      -0.8
+      -0.6
      ],
      [
-      4.5,
+      4.6,
       2.2
      ],
      [
-      5.0,
-      -1.2
+      5.2,
+      -0.9
      ],
      [
-      5.5,
-      0.3
-     ],
-     [
-      6.0,
-      -0.8
+      5.8,
+      0.4
      ],
      [
       7.0,
       1.8
      ],
      [
-      7.5,
-      -1.0
-     ],
-     [
       8.3,
       1.2
      ],
      [
-      9.0,
-      -0.8
-     ],
-     [
-      10.0,
-      0.5
+      9.8,
+      0.7
      ],
      [
       11.0,
-      0.4
-     ],
-     [
-      12.0,
-      0.3
-     ],
-     [
-      13.0,
       0.5
      ],
      [
-      14.0,
-      -0.8
+      12.6,
+      0.7
      ],
      [
       14.8,
-      1.1
-     ],
-     [
-      16.0,
-      0.3
+      1.0
      ],
      [
       17.0,
-      0.5
-     ],
-     [
-      18.0,
-      0.2
-     ],
-     [
-      19.0,
-      0.4
+      0.7
      ],
      [
       20.0,
+      0.6
+     ],
+     [
+      23.5,
+      0.4
+     ],
+     [
+      26.8,
       0.5
      ],
      [
-      21.0,
-      0.3
-     ],
-     [
-      22.0,
-      0.4
-     ],
-     [
-      23.0,
-      0.2
-     ],
-     [
-      24.0,
-      0.3
-     ],
-     [
-      25.0,
-      0.2
-     ],
-     [
-      26.0,
-      0.1
-     ],
-     [
-      27.0,
-      0.4
-     ],
-     [
-      28.0,
-      -0.2
-     ],
-     [
-      29.0,
-      0.2
-     ],
-     [
       30.0,
-      -0.1
+      0.2
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "r",
+     "raw_quantity": "spatial_coordinate",
      "raw_unit": "Å",
-     "raw_label": null,
+     "raw_label": "r (Å)",
      "unit": "Å",
      "unit_recovered": false,
-     "quantity": "recombination_probability",
-     "axis_role": "output",
-     "axis_kind": "output",
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     },
     "y": {
      "raw_quantity": "G(r)",
      "raw_unit": "Å^-2",
-     "raw_label": null,
+     "raw_label": "G (r) (Å⁻²)",
      "unit": "Å^-2",
      "unit_recovered": false,
      "quantity": null,
@@ -4771,7 +4546,34 @@
     }
    },
    "canonical": {
-    "x": null,
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.00015000000000000001,
+      0.0002,
+      0.00026000000000000003,
+      0.00030000000000000003,
+      0.00036,
+      0.0004,
+      0.00045999999999999996,
+      0.0005200000000000001,
+      0.00058,
+      0.0007,
+      0.0008300000000000001,
+      0.0009800000000000002,
+      0.0011,
+      0.00126,
+      0.0014800000000000002,
+      0.0017000000000000001,
+      0.002,
+      0.00235,
+      0.00268,
+      0.003
+     ],
+     "normalization_definition": null
+    },
     "y": null
    },
    "projections": {
@@ -4781,22 +4583,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "length_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "unit_conversion",
+     "formula": "Å -> µm",
+     "status": "converted",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "original_value": null,
      "original_unit": "Å",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "µm",
      "context": {},
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.chemmater.2c02292",
       "doi": "10.1021_acs.chemmater.2c02292",
@@ -4807,12 +4609,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4d__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -4842,24 +4644,23 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4d__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": "output",
+    "axis_role": "coordinate",
     "previous_representation": "trace",
-    "resolved_representation": "correlation",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis 'recombination_probability' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
-    "n_points": 36
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 20
    },
    "context_available": [
-    "film_thickness",
     "molecular_mass"
    ]
   },
@@ -4873,10 +4674,10 @@
     "panel": "d",
     "series": "Fit",
     "series_index": 1,
-    "series_axis": "data type",
+    "series_axis": "type",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/1/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig4d__exp01"
     ],
@@ -4885,29 +4686,25 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "r",
+     "label": "r (Å)",
+     "quantity": "spatial_coordinate",
      "unit": "Å",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "G (r) (Å⁻²)",
      "quantity": "G(r)",
      "unit": "Å^-2",
      "log": false
     },
     "points": [
      [
-      1.0,
+      1.5,
       0.1
      ],
      [
-      1.5,
-      -0.2
-     ],
-     [
       2.0,
-      -0.4
+      -0.6
      ],
      [
       2.6,
@@ -4915,154 +4712,94 @@
      ],
      [
       3.0,
-      -0.9
-     ],
-     [
-      3.5,
-      0.1
-     ],
-     [
-      4.0,
-      -0.6
-     ],
-     [
-      4.5,
-      2.3
-     ],
-     [
-      5.0,
       -1.0
      ],
      [
-      5.5,
-      0.2
+      3.6,
+      0.4
      ],
      [
-      6.0,
-      -0.6
+      4.0,
+      -0.4
+     ],
+     [
+      4.6,
+      2.1
+     ],
+     [
+      5.2,
+      -0.7
+     ],
+     [
+      5.8,
+      0.2
      ],
      [
       7.0,
-      1.9
-     ],
-     [
-      7.5,
-      -0.8
+      1.6
      ],
      [
       8.3,
-      1.3
+      1.1
      ],
      [
-      9.0,
-      -0.6
-     ],
-     [
-      10.0,
-      0.4
+      9.8,
+      0.6
      ],
      [
       11.0,
-      0.3
-     ],
-     [
-      12.0,
-      0.2
-     ],
-     [
-      13.0,
       0.4
      ],
      [
-      14.0,
-      -0.6
+      12.6,
+      0.6
      ],
      [
       14.8,
-      1.0
-     ],
-     [
-      16.0,
-      0.2
+      0.9
      ],
      [
       17.0,
-      0.4
-     ],
-     [
-      18.0,
-      0.1
-     ],
-     [
-      19.0,
-      0.3
+      0.6
      ],
      [
       20.0,
+      0.5
+     ],
+     [
+      23.5,
+      0.3
+     ],
+     [
+      26.8,
       0.4
      ],
      [
-      21.0,
-      0.2
-     ],
-     [
-      22.0,
-      0.3
-     ],
-     [
-      23.0,
-      0.1
-     ],
-     [
-      24.0,
-      0.2
-     ],
-     [
-      25.0,
-      0.1
-     ],
-     [
-      26.0,
-      0.0
-     ],
-     [
-      27.0,
-      0.3
-     ],
-     [
-      28.0,
-      -0.1
-     ],
-     [
-      29.0,
-      0.1
-     ],
-     [
       30.0,
-      -0.1
+      0.1
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "r",
+     "raw_quantity": "spatial_coordinate",
      "raw_unit": "Å",
-     "raw_label": null,
+     "raw_label": "r (Å)",
      "unit": "Å",
      "unit_recovered": false,
-     "quantity": "recombination_probability",
-     "axis_role": "output",
-     "axis_kind": "output",
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     },
     "y": {
      "raw_quantity": "G(r)",
      "raw_unit": "Å^-2",
-     "raw_label": null,
+     "raw_label": "G (r) (Å⁻²)",
      "unit": "Å^-2",
      "unit_recovered": false,
      "quantity": null,
@@ -5076,7 +4813,34 @@
     }
    },
    "canonical": {
-    "x": null,
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.00015000000000000001,
+      0.0002,
+      0.00026000000000000003,
+      0.00030000000000000003,
+      0.00036,
+      0.0004,
+      0.00045999999999999996,
+      0.0005200000000000001,
+      0.00058,
+      0.0007,
+      0.0008300000000000001,
+      0.0009800000000000002,
+      0.0011,
+      0.00126,
+      0.0014800000000000002,
+      0.0017000000000000001,
+      0.002,
+      0.00235,
+      0.00268,
+      0.003
+     ],
+     "normalization_definition": null
+    },
     "y": null
    },
    "projections": {
@@ -5086,22 +4850,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "length_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "unit_conversion",
+     "formula": "Å -> µm",
+     "status": "converted",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "original_value": null,
      "original_unit": "Å",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "µm",
      "context": {},
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.chemmater.2c02292",
       "doi": "10.1021_acs.chemmater.2c02292",
@@ -5112,12 +4876,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4d__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -5147,24 +4911,23 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4d__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": "output",
+    "axis_role": "coordinate",
     "previous_representation": "trace",
-    "resolved_representation": "correlation",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis 'recombination_probability' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
-    "n_points": 36
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 20
    },
    "context_available": [
-    "film_thickness",
     "molecular_mass"
    ]
   },
@@ -5178,10 +4941,10 @@
     "panel": "e",
     "series": "Annealed",
     "series_index": 0,
-    "series_axis": "data type",
+    "series_axis": "type",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/2/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig4e__exp01"
     ],
@@ -5190,168 +4953,108 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "r",
+     "label": "r (Å)",
+     "quantity": "spatial_coordinate",
      "unit": "Å",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "G (r) (Å⁻²)",
      "quantity": "G(r)",
      "unit": "Å^-2",
      "log": false
     },
     "points": [
      [
-      1.0,
-      0.1
-     ],
-     [
-      1.5,
-      -0.2
-     ],
-     [
       2.0,
-      3.6
+      3.3
      ],
      [
       2.5,
-      -3.2
-     ],
-     [
-      3.0,
-      -0.5
+      -3.0
      ],
      [
       3.5,
-      11.2
+      11.5
      ],
      [
       4.0,
-      -0.8
+      -2.1
      ],
      [
       4.5,
       3.6
      ],
      [
-      5.0,
-      -3.8
+      5.5,
+      7.7
      ],
      [
-      5.6,
-      7.8
-     ],
-     [
-      6.2,
-      -3.2
-     ],
-     [
-      6.6,
-      0.5
+      6.3,
+      -2.3
      ],
      [
       7.2,
-      8.5
-     ],
-     [
-      8.0,
-      -1.8
-     ],
-     [
-      8.4,
-      7.6
-     ],
-     [
-      9.0,
-      -3.8
-     ],
-     [
-      9.5,
-      3.2
-     ],
-     [
-      10.6,
-      9.8
-     ],
-     [
-      11.5,
-      -3.5
-     ],
-     [
-      12.2,
-      4.2
-     ],
-     [
-      13.8,
       8.4
      ],
      [
-      15.0,
-      -3.5
+      8.4,
+      7.4
      ],
      [
-      16.0,
-      4.1
+      10.5,
+      9.5
      ],
      [
-      17.0,
+      12.0,
       0.8
      ],
      [
-      18.0,
-      2.5
+      13.8,
+      8.2
      ],
      [
-      19.0,
-      2.8
+      15.8,
+      4.1
      ],
      [
-      20.5,
-      5.6
-     ],
-     [
-      22.0,
-      2.5
-     ],
-     [
-      23.8,
-      3.8
-     ],
-     [
-      25.8,
-      5.1
-     ],
-     [
-      28.0,
+      17.2,
       2.3
      ],
      [
-      29.5,
-      2.5
+      20.5,
+      5.4
+     ],
+     [
+      25.8,
+      5.0
+     ],
+     [
+      30.0,
+      1.8
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "r",
+     "raw_quantity": "spatial_coordinate",
      "raw_unit": "Å",
-     "raw_label": null,
+     "raw_label": "r (Å)",
      "unit": "Å",
      "unit_recovered": false,
-     "quantity": "recombination_probability",
-     "axis_role": "output",
-     "axis_kind": "output",
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     },
     "y": {
      "raw_quantity": "G(r)",
      "raw_unit": "Å^-2",
-     "raw_label": null,
+     "raw_label": "G (r) (Å⁻²)",
      "unit": "Å^-2",
      "unit_recovered": false,
      "quantity": null,
@@ -5365,7 +5068,31 @@
     }
    },
    "canonical": {
-    "x": null,
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.0002,
+      0.00025,
+      0.00035,
+      0.0004,
+      0.00045000000000000004,
+      0.00055,
+      0.00063,
+      0.00072,
+      0.00084,
+      0.0010500000000000002,
+      0.0012000000000000001,
+      0.0013800000000000002,
+      0.0015800000000000002,
+      0.00172,
+      0.00205,
+      0.0025800000000000003,
+      0.003
+     ],
+     "normalization_definition": null
+    },
     "y": null
    },
    "projections": {
@@ -5375,22 +5102,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "length_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "unit_conversion",
+     "formula": "Å -> µm",
+     "status": "converted",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "original_value": null,
      "original_unit": "Å",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "µm",
      "context": {},
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.chemmater.2c02292",
       "doi": "10.1021_acs.chemmater.2c02292",
@@ -5401,12 +5128,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4e__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -5436,24 +5163,23 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4e__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": "output",
+    "axis_role": "coordinate",
     "previous_representation": "trace",
-    "resolved_representation": "correlation",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis 'recombination_probability' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
-    "n_points": 32
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 17
    },
    "context_available": [
-    "film_thickness",
     "molecular_mass"
    ]
   },
@@ -5467,10 +5193,10 @@
     "panel": "e",
     "series": "Fit",
     "series_index": 1,
-    "series_axis": "data type",
+    "series_axis": "type",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/2/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig4e__exp01"
     ],
@@ -5479,168 +5205,112 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "r",
+     "label": "r (Å)",
+     "quantity": "spatial_coordinate",
      "unit": "Å",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "G (r) (Å⁻²)",
      "quantity": "G(r)",
      "unit": "Å^-2",
      "log": false
     },
     "points": [
      [
-      1.0,
-      0.0
-     ],
-     [
       1.5,
-      -0.1
+      8.2
      ],
      [
       2.0,
-      8.4
+      3.0
      ],
      [
       2.5,
-      -2.5
-     ],
-     [
-      3.0,
-      -0.3
+      -2.8
      ],
      [
       3.5,
-      10.8
+      11.0
      ],
      [
       4.0,
-      -0.6
+      -1.8
      ],
      [
       4.5,
       3.8
      ],
      [
-      5.0,
-      -3.0
+      5.5,
+      7.5
      ],
      [
-      5.6,
-      7.6
-     ],
-     [
-      6.2,
-      -2.8
-     ],
-     [
-      6.6,
-      0.4
+      6.3,
+      -2.0
      ],
      [
       7.2,
       8.2
      ],
      [
-      8.0,
-      -1.5
-     ],
-     [
       8.4,
-      7.2
+      7.1
      ],
      [
-      9.0,
-      -3.2
-     ],
-     [
-      9.5,
-      3.0
-     ],
-     [
-      10.6,
+      10.5,
       9.2
      ],
      [
-      11.5,
-      -3.0
-     ],
-     [
-      12.2,
-      3.8
-     ],
-     [
-      13.8,
-      8.0
-     ],
-     [
-      15.0,
-      -3.0
-     ],
-     [
-      16.0,
-      3.8
-     ],
-     [
-      17.0,
+      12.0,
       0.6
      ],
      [
-      18.0,
-      2.2
+      13.8,
+      7.9
      ],
      [
-      19.0,
-      2.5
+      15.8,
+      3.9
+     ],
+     [
+      17.2,
+      2.1
      ],
      [
       20.5,
-      5.2
-     ],
-     [
-      22.0,
-      2.2
-     ],
-     [
-      23.8,
-      3.5
+      5.1
      ],
      [
       25.8,
       4.8
      ],
      [
-      28.0,
-      2.0
-     ],
-     [
-      29.5,
-      2.2
+      30.0,
+      1.5
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "r",
+     "raw_quantity": "spatial_coordinate",
      "raw_unit": "Å",
-     "raw_label": null,
+     "raw_label": "r (Å)",
      "unit": "Å",
      "unit_recovered": false,
-     "quantity": "recombination_probability",
-     "axis_role": "output",
-     "axis_kind": "output",
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     },
     "y": {
      "raw_quantity": "G(r)",
      "raw_unit": "Å^-2",
-     "raw_label": null,
+     "raw_label": "G (r) (Å⁻²)",
      "unit": "Å^-2",
      "unit_recovered": false,
      "quantity": null,
@@ -5654,7 +5324,32 @@
     }
    },
    "canonical": {
-    "x": null,
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.00015000000000000001,
+      0.0002,
+      0.00025,
+      0.00035,
+      0.0004,
+      0.00045000000000000004,
+      0.00055,
+      0.00063,
+      0.00072,
+      0.00084,
+      0.0010500000000000002,
+      0.0012000000000000001,
+      0.0013800000000000002,
+      0.0015800000000000002,
+      0.00172,
+      0.00205,
+      0.0025800000000000003,
+      0.003
+     ],
+     "normalization_definition": null
+    },
     "y": null
    },
    "projections": {
@@ -5664,22 +5359,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "length_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "unit_conversion",
+     "formula": "Å -> µm",
+     "status": "converted",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "spatial_position",
      "original_value": null,
      "original_unit": "Å",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "µm",
      "context": {},
-     "unresolved_reason": "quantity 'recombination_probability' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.chemmater.2c02292",
       "doi": "10.1021_acs.chemmater.2c02292",
@@ -5690,12 +5385,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4e__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -5725,24 +5420,23 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig4e__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": "output",
+    "axis_role": "coordinate",
     "previous_representation": "trace",
-    "resolved_representation": "correlation",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis 'recombination_probability' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
-    "n_points": 32
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 18
    },
    "context_available": [
-    "film_thickness",
     "molecular_mass"
    ]
   },
@@ -5759,7 +5453,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/0/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case00"
     ],
@@ -5893,12 +5587,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -5928,12 +5622,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -5963,7 +5657,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/0/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case01"
     ],
@@ -5985,11 +5679,11 @@
     },
     "points": [
      [
-      10,
-      2.2
+      15,
+      2.4
      ],
      [
-      15,
+      20,
       2.8
      ],
      [
@@ -6002,7 +5696,7 @@
      ],
      [
       70,
-      9.7
+      9.8
      ]
     ]
    },
@@ -6045,11 +5739,11 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      2.2,
+      2.4,
       2.8,
       3.5,
       7.0,
-      9.7
+      9.8
      ],
      "normalization_definition": null
     }
@@ -6087,12 +5781,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6122,12 +5816,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6157,7 +5851,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/0/series/2",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case02"
     ],
@@ -6184,7 +5878,7 @@
      ],
      [
       15,
-      3.5
+      2.8
      ],
      [
       25,
@@ -6236,7 +5930,7 @@
      "unit": "nm",
      "values": [
       2.2,
-      3.5,
+      2.8,
       5.5,
       10.0
      ],
@@ -6276,12 +5970,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6311,12 +6005,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6346,7 +6040,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/0/series/3",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case03"
     ],
@@ -6465,12 +6159,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/3/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6500,12 +6194,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/0/series/3/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5a__exp01__case03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6535,7 +6229,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/1/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case00"
     ],
@@ -6681,12 +6375,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6718,12 +6412,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6753,7 +6447,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/1/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case01"
     ],
@@ -6776,11 +6470,11 @@
     "points": [
      [
       10,
-      1.41
+      1.42
      ],
      [
       25,
-      1.37
+      1.38
      ],
      [
       40,
@@ -6847,8 +6541,8 @@
      "quantity": "growth_per_cycle",
      "unit": "nm/cycle",
      "values": [
-      0.141,
-      0.137,
+      0.142,
+      0.13799999999999998,
       0.142
      ],
      "normalization_definition": null
@@ -6887,12 +6581,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6924,12 +6618,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6959,7 +6653,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/1/series/2",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case02"
     ],
@@ -7093,12 +6787,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -7130,12 +6824,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5b__exp01__case02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -7165,7 +6859,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/2/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case00"
     ],
@@ -7192,7 +6886,7 @@
      ],
      [
       30,
-      0.89
+      0.9
      ],
      [
       40,
@@ -7200,7 +6894,7 @@
      ],
      [
       50,
-      0.92
+      0.93
      ]
     ]
    },
@@ -7265,9 +6959,9 @@
      "unit": "nm/cycle",
      "values": [
       0.062,
-      0.08900000000000001,
+      0.09000000000000001,
       0.10200000000000001,
-      0.09200000000000001
+      0.09300000000000001
      ],
      "normalization_definition": null
     }
@@ -7305,12 +6999,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -7342,12 +7036,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -7377,7 +7071,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/2/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case01"
     ],
@@ -7400,15 +7094,15 @@
     "points": [
      [
       30,
-      1.21
+      1.22
      ],
      [
       40,
-      1.36
+      1.37
      ],
      [
       50,
-      1.41
+      1.42
      ]
     ]
    },
@@ -7471,9 +7165,9 @@
      "quantity": "growth_per_cycle",
      "unit": "nm/cycle",
      "values": [
-      0.121,
-      0.136,
-      0.141
+      0.122,
+      0.137,
+      0.142
      ],
      "normalization_definition": null
     }
@@ -7511,12 +7205,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -7548,12 +7242,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -7583,7 +7277,7 @@
     "series_axis": "coreactant",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/2/series/2",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case02"
     ],
@@ -7717,12 +7411,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/2/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -7754,12 +7448,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/2/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig5c__exp01__case02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -7789,7 +7483,7 @@
     "series_axis": "m/z",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6a__exp01"
     ],
@@ -7798,137 +7492,105 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Time",
+     "label": "Time (s)",
+     "quantity": "time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Normalised intensity",
-     "unit": "a.u.",
+     "label": "Normalised intensity (a.u.)",
+     "quantity": "intensity",
+     "unit": "",
      "log": false
     },
     "points": [
      [
       20.0,
-      0.01
+      0.0
      ],
      [
-      27.0,
-      0.02
+      30.0,
+      0.05
      ],
      [
-      32.0,
-      0.25
-     ],
-     [
-      36.0,
+      35.0,
       0.98
      ],
      [
-      42.0,
+      40.0,
       1.0
      ],
      [
-      53.0,
-      0.99
-     ],
-     [
-      56.0,
-      0.72
+      55.0,
+      1.0
      ],
      [
       60.0,
-      0.22
+      0.15
      ],
      [
-      70.0,
-      0.07
-     ],
-     [
-      80.0,
-      0.02
+      75.0,
+      0.05
      ],
      [
       90.0,
       0.01
      ],
      [
-      96.0,
-      0.28
+      95.0,
+      0.98
      ],
      [
       100.0,
-      0.99
+      1.0
      ],
      [
-      110.0,
-      0.99
+      115.0,
+      1.0
      ],
      [
-      117.0,
-      0.98
-     ],
-     [
-      121.0,
-      0.7
-     ],
-     [
-      126.0,
-      0.21
+      120.0,
+      0.15
      ],
      [
       135.0,
-      0.06
-     ],
-     [
-      145.0,
-      0.02
-     ],
-     [
-      155.0,
-      0.01
-     ],
-     [
-      161.0,
-      0.29
-     ],
-     [
-      165.0,
-      0.98
-     ],
-     [
-      175.0,
-      0.98
-     ],
-     [
-      184.0,
-      0.98
-     ],
-     [
-      188.0,
-      0.69
-     ],
-     [
-      193.0,
-      0.2
-     ],
-     [
-      202.0,
       0.05
      ],
      [
-      215.0,
+      150.0,
       0.01
+     ],
+     [
+      160.0,
+      0.98
+     ],
+     [
+      165.0,
+      0.99
+     ],
+     [
+      185.0,
+      0.98
+     ],
+     [
+      190.0,
+      0.15
+     ],
+     [
+      205.0,
+      0.05
+     ],
+     [
+      220.0,
+      0.0
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Time",
+     "raw_quantity": "time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "Time (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "time",
@@ -7941,19 +7603,19 @@
      "unresolved_reason": "quantity 'time' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Normalised intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
+     "raw_quantity": "intensity",
+     "raw_unit": "",
+     "raw_label": "Normalised intensity (a.u.)",
+     "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind"
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
     }
    },
    "canonical": {
@@ -7993,12 +7655,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -8006,15 +7668,15 @@
      "rule_version": "1.0.0",
      "type": "axis_semantic_resolution",
      "formula": null,
-     "status": "unsupported",
+     "status": "not_applicable",
      "normalization_definition": null,
      "comparison_group": null,
      "original_value": null,
-     "original_unit": "a.u.",
+     "original_unit": "",
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -8028,12 +7690,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -8042,7 +7704,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'time' is an ontology coordinate",
-    "n_points": 28
+    "n_points": 20
    },
    "context_available": [
     "m/z",
@@ -8062,7 +7724,7 @@
     "series_axis": "m/z",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6a__exp02"
     ],
@@ -8071,15 +7733,15 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Time",
+     "label": "Time (s)",
+     "quantity": "time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Normalised intensity",
-     "unit": "a.u.",
+     "label": "Normalised intensity (a.u.)",
+     "quantity": "intensity",
+     "unit": "",
      "log": false
     },
     "points": [
@@ -8088,51 +7750,51 @@
       0.0
      ],
      [
-      27.0,
-      0.02
-     ],
-     [
-      33.0,
-      0.22
-     ],
-     [
-      37.0,
-      0.97
-     ],
-     [
-      42.0,
-      0.92
-     ],
-     [
-      54.0,
-      0.9
-     ],
-     [
-      57.0,
-      0.58
-     ],
-     [
-      61.0,
-      0.18
-     ],
-     [
-      72.0,
+      30.0,
       0.05
      ],
      [
-      82.0,
+      35.0,
+      0.98
+     ],
+     [
+      40.0,
+      0.95
+     ],
+     [
+      45.0,
+      0.92
+     ],
+     [
+      50.0,
+      0.91
+     ],
+     [
+      55.0,
+      0.9
+     ],
+     [
+      60.0,
+      0.15
+     ],
+     [
+      70.0,
+      0.08
+     ],
+     [
+      80.0,
+      0.03
+     ],
+     [
+      90.0,
       0.01
      ],
      [
-      91.0,
-      0.0
+      95.0,
+      0.98
      ],
      [
-      97.0,
-      0.25
-     ],
-     [
-      101.0,
+      100.0,
       0.88
      ],
      [
@@ -8141,67 +7803,59 @@
      ],
      [
       118.0,
-      0.86
+      0.85
      ],
      [
       122.0,
-      0.57
+      0.15
      ],
      [
-      127.0,
-      0.17
+      130.0,
+      0.08
      ],
      [
-      137.0,
-      0.04
+      140.0,
+      0.03
      ],
      [
-      147.0,
+      150.0,
       0.01
      ],
      [
-      157.0,
-      0.0
+      160.0,
+      0.98
      ],
      [
-      162.0,
-      0.26
+      165.0,
+      0.85
      ],
      [
-      166.0,
-      0.84
-     ],
-     [
-      176.0,
-      0.84
+      175.0,
+      0.85
      ],
      [
       185.0,
       0.83
      ],
      [
-      189.0,
-      0.56
+      190.0,
+      0.15
      ],
      [
-      194.0,
-      0.16
+      205.0,
+      0.05
      ],
      [
-      204.0,
-      0.04
-     ],
-     [
-      217.0,
+      220.0,
       0.0
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Time",
+     "raw_quantity": "time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "Time (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "time",
@@ -8214,19 +7868,19 @@
      "unresolved_reason": "quantity 'time' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Normalised intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
+     "raw_quantity": "intensity",
+     "raw_unit": "",
+     "raw_label": "Normalised intensity (a.u.)",
+     "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind"
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
     }
    },
    "canonical": {
@@ -8266,12 +7920,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -8279,15 +7933,15 @@
      "rule_version": "1.0.0",
      "type": "axis_semantic_resolution",
      "formula": null,
-     "status": "unsupported",
+     "status": "not_applicable",
      "normalization_definition": null,
      "comparison_group": null,
      "original_value": null,
-     "original_unit": "a.u.",
+     "original_unit": "",
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -8301,12 +7955,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -8315,7 +7969,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'time' is an ontology coordinate",
-    "n_points": 28
+    "n_points": 26
    },
    "context_available": [
     "m/z",
@@ -8335,7 +7989,7 @@
     "series_axis": "m/z",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/2",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6a__exp03"
     ],
@@ -8344,137 +7998,129 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Time",
+     "label": "Time (s)",
+     "quantity": "time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Normalised intensity",
-     "unit": "a.u.",
+     "label": "Normalised intensity (a.u.)",
+     "quantity": "intensity",
+     "unit": "",
      "log": false
     },
     "points": [
      [
       20.0,
-      0.03
-     ],
-     [
-      27.0,
-      0.04
-     ],
-     [
-      32.0,
-      0.2
-     ],
-     [
-      36.0,
-      0.95
-     ],
-     [
-      42.0,
-      0.95
-     ],
-     [
-      52.0,
-      0.92
-     ],
-     [
-      57.0,
-      0.6
-     ],
-     [
-      62.0,
-      0.25
-     ],
-     [
-      70.0,
-      0.11
-     ],
-     [
-      80.0,
-      0.06
-     ],
-     [
-      90.0,
-      0.02
-     ],
-     [
-      96.0,
-      0.22
-     ],
-     [
-      101.0,
-      0.93
-     ],
-     [
-      110.0,
-      0.92
-     ],
-     [
-      117.0,
-      0.9
-     ],
-     [
-      122.0,
-      0.62
-     ],
-     [
-      128.0,
-      0.22
-     ],
-     [
-      137.0,
-      0.08
-     ],
-     [
-      146.0,
       0.05
      ],
      [
-      156.0,
-      0.03
-     ],
-     [
-      161.0,
-      0.22
-     ],
-     [
-      165.0,
-      0.9
-     ],
-     [
-      175.0,
-      0.9
-     ],
-     [
-      184.0,
-      0.88
-     ],
-     [
-      188.0,
-      0.58
-     ],
-     [
-      194.0,
-      0.21
-     ],
-     [
-      203.0,
+      30.0,
       0.08
      ],
      [
-      216.0,
+      35.0,
+      0.95
+     ],
+     [
+      40.0,
+      0.97
+     ],
+     [
+      45.0,
+      0.94
+     ],
+     [
+      50.0,
+      0.98
+     ],
+     [
+      55.0,
+      0.93
+     ],
+     [
+      60.0,
+      0.2
+     ],
+     [
+      70.0,
+      0.1
+     ],
+     [
+      80.0,
+      0.08
+     ],
+     [
+      90.0,
       0.03
+     ],
+     [
+      95.0,
+      0.95
+     ],
+     [
+      100.0,
+      0.98
+     ],
+     [
+      110.0,
+      0.95
+     ],
+     [
+      118.0,
+      0.96
+     ],
+     [
+      122.0,
+      0.2
+     ],
+     [
+      130.0,
+      0.1
+     ],
+     [
+      140.0,
+      0.08
+     ],
+     [
+      150.0,
+      0.03
+     ],
+     [
+      160.0,
+      0.9
+     ],
+     [
+      165.0,
+      0.92
+     ],
+     [
+      175.0,
+      0.91
+     ],
+     [
+      185.0,
+      0.92
+     ],
+     [
+      190.0,
+      0.2
+     ],
+     [
+      205.0,
+      0.08
+     ],
+     [
+      220.0,
+      0.02
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Time",
+     "raw_quantity": "time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "Time (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "time",
@@ -8487,19 +8133,19 @@
      "unresolved_reason": "quantity 'time' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Normalised intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
+     "raw_quantity": "intensity",
+     "raw_unit": "",
+     "raw_label": "Normalised intensity (a.u.)",
+     "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind"
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
     }
    },
    "canonical": {
@@ -8539,12 +8185,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -8552,15 +8198,15 @@
      "rule_version": "1.0.0",
      "type": "axis_semantic_resolution",
      "formula": null,
-     "status": "unsupported",
+     "status": "not_applicable",
      "normalization_definition": null,
      "comparison_group": null,
      "original_value": null,
-     "original_unit": "a.u.",
+     "original_unit": "",
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -8574,12 +8220,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -8588,7 +8234,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'time' is an ontology coordinate",
-    "n_points": 28
+    "n_points": 26
    },
    "context_available": [
     "m/z",
@@ -8608,7 +8254,7 @@
     "series_axis": "m/z",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/1/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6b__exp01"
     ],
@@ -8617,125 +8263,101 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Time",
+     "label": "Time (s)",
+     "quantity": "time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Normalised intensity",
-     "unit": "a.u.",
+     "label": "Normalised intensity (a.u.)",
+     "quantity": "intensity",
+     "unit": "",
      "log": false
     },
     "points": [
      [
-      68.0,
-      0.0
+      65.0,
+      0.01
      ],
      [
-      74.0,
-      0.02
-     ],
-     [
-      76.0,
-      0.61
+      75.0,
+      0.05
      ],
      [
       78.0,
       1.0
      ],
      [
-      82.0,
-      0.72
+      80.0,
+      0.73
      ],
      [
       95.0,
       0.72
      ],
      [
-      112.0,
-      0.71
-     ],
-     [
-      117.0,
-      0.48
+      118.0,
+      0.7
      ],
      [
       120.0,
-      0.12
+      0.05
      ],
      [
       130.0,
-      0.01
+      0.02
      ],
      [
       150.0,
       0.02
      ],
      [
-      156.0,
-      0.63
-     ],
-     [
-      158.0,
+      157.0,
       1.0
      ],
      [
-      162.0,
-      0.73
-     ],
-     [
-      178.0,
-      0.71
-     ],
-     [
-      194.0,
+      160.0,
       0.72
+     ],
+     [
+      175.0,
+      0.71
      ],
      [
       198.0,
-      0.47
+      0.7
      ],
      [
-      201.0,
-      0.1
+      200.0,
+      0.05
      ],
      [
-      212.0,
-      0.01
+      210.0,
+      0.02
      ],
      [
       230.0,
-      0.01
-     ],
-     [
-      237.0,
-      0.6
+      0.02
      ],
      [
       238.0,
-      0.92
+      0.9
      ],
      [
-      242.0,
+      240.0,
       0.72
      ],
      [
-      258.0,
+      260.0,
       0.71
      ],
      [
-      276.0,
-      0.71
+      278.0,
+      0.7
      ],
      [
-      279.0,
-      0.46
-     ],
-     [
-      282.0,
-      0.11
+      280.0,
+      0.05
      ],
      [
       295.0,
@@ -8745,9 +8367,9 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Time",
+     "raw_quantity": "time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "Time (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "time",
@@ -8760,19 +8382,19 @@
      "unresolved_reason": "quantity 'time' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Normalised intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
+     "raw_quantity": "intensity",
+     "raw_unit": "",
+     "raw_label": "Normalised intensity (a.u.)",
+     "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind"
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
     }
    },
    "canonical": {
@@ -8812,12 +8434,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6b__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -8825,15 +8447,15 @@
      "rule_version": "1.0.0",
      "type": "axis_semantic_resolution",
      "formula": null,
-     "status": "unsupported",
+     "status": "not_applicable",
      "normalization_definition": null,
      "comparison_group": null,
      "original_value": null,
-     "original_unit": "a.u.",
+     "original_unit": "",
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -8847,12 +8469,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/1/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6b__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -8861,7 +8483,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'time' is an ontology coordinate",
-    "n_points": 28
+    "n_points": 22
    },
    "context_available": [
     "m/z",
@@ -8881,7 +8503,7 @@
     "series_axis": "m/z",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/1/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6b__exp02"
     ],
@@ -8890,49 +8512,45 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Time",
+     "label": "Time (s)",
+     "quantity": "time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Normalised intensity",
-     "unit": "a.u.",
+     "label": "Normalised intensity (a.u.)",
+     "quantity": "intensity",
+     "unit": "",
      "log": false
     },
     "points": [
      [
-      68.0,
-      0.01
+      65.0,
+      0.0
      ],
      [
       75.0,
-      0.03
+      0.01
      ],
      [
       78.0,
       0.98
      ],
      [
-      82.0,
-      0.66
+      80.0,
+      0.65
      ],
      [
       95.0,
-      0.62
+      0.61
      ],
      [
-      113.0,
-      0.6
-     ],
-     [
-      117.0,
-      0.38
+      118.0,
+      0.59
      ],
      [
       120.0,
-      0.08
+      0.01
      ],
      [
       130.0,
@@ -8943,35 +8561,27 @@
       0.0
      ],
      [
-      156.0,
-      0.58
+      157.0,
+      0.98
      ],
      [
-      158.0,
-      0.95
+      160.0,
+      0.62
      ],
      [
-      162.0,
-      0.65
-     ],
-     [
-      178.0,
-      0.61
-     ],
-     [
-      194.0,
-      0.58
+      175.0,
+      0.6
      ],
      [
       198.0,
-      0.36
+      0.58
      ],
      [
-      201.0,
-      0.08
+      200.0,
+      0.01
      ],
      [
-      212.0,
+      210.0,
       0.0
      ],
      [
@@ -8979,32 +8589,24 @@
       0.0
      ],
      [
-      237.0,
-      0.55
-     ],
-     [
       238.0,
-      0.85
+      0.88
      ],
      [
-      242.0,
-      0.61
+      240.0,
+      0.6
      ],
      [
-      258.0,
+      260.0,
       0.58
      ],
      [
-      276.0,
+      278.0,
       0.57
      ],
      [
-      279.0,
-      0.35
-     ],
-     [
-      282.0,
-      0.07
+      280.0,
+      0.01
      ],
      [
       295.0,
@@ -9014,9 +8616,9 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Time",
+     "raw_quantity": "time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "Time (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "time",
@@ -9029,19 +8631,19 @@
      "unresolved_reason": "quantity 'time' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Normalised intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
+     "raw_quantity": "intensity",
+     "raw_unit": "",
+     "raw_label": "Normalised intensity (a.u.)",
+     "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind"
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
     }
    },
    "canonical": {
@@ -9081,12 +8683,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6b__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -9094,15 +8696,15 @@
      "rule_version": "1.0.0",
      "type": "axis_semantic_resolution",
      "formula": null,
-     "status": "unsupported",
+     "status": "not_applicable",
      "normalization_definition": null,
      "comparison_group": null,
      "original_value": null,
-     "original_unit": "a.u.",
+     "original_unit": "",
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -9116,12 +8718,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/1/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6b__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -9130,7 +8732,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'time' is an ontology coordinate",
-    "n_points": 27
+    "n_points": 22
    },
    "context_available": [
     "m/z",
@@ -9150,7 +8752,7 @@
     "series_axis": "m/z",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/1/series/2",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6b__exp03"
     ],
@@ -9159,21 +8761,21 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Time",
+     "label": "Time (s)",
+     "quantity": "time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Normalised intensity",
-     "unit": "a.u.",
+     "label": "Normalised intensity (a.u.)",
+     "quantity": "intensity",
+     "unit": "",
      "log": false
     },
     "points": [
      [
-      68.0,
-      0.03
+      65.0,
+      0.04
      ],
      [
       75.0,
@@ -9181,10 +8783,10 @@
      ],
      [
       78.0,
-      0.82
+      0.8
      ],
      [
-      82.0,
+      83.0,
       0.88
      ],
      [
@@ -9192,16 +8794,12 @@
       0.68
      ],
      [
-      113.0,
+      118.0,
       0.67
      ],
      [
-      117.0,
-      0.42
-     ],
-     [
       120.0,
-      0.1
+      0.04
      ],
      [
       130.0,
@@ -9209,71 +8807,55 @@
      ],
      [
       150.0,
-      0.03
+      0.02
      ],
      [
-      156.0,
-      0.6
+      157.0,
+      0.75
      ],
      [
-      158.0,
-      0.8
+      165.0,
+      0.7
      ],
      [
-      162.0,
-      0.72
-     ],
-     [
-      178.0,
-      0.67
-     ],
-     [
-      194.0,
-      0.65
+      175.0,
+      0.68
      ],
      [
       198.0,
-      0.4
+      0.65
      ],
      [
-      201.0,
-      0.09
+      200.0,
+      0.04
      ],
      [
-      212.0,
+      210.0,
       0.02
      ],
      [
       230.0,
-      0.03
-     ],
-     [
-      237.0,
-      0.58
+      0.02
      ],
      [
       238.0,
-      0.78
+      0.75
      ],
      [
-      242.0,
-      0.68
+      250.0,
+      0.7
      ],
      [
-      258.0,
+      260.0,
       0.66
      ],
      [
-      276.0,
-      0.64
+      278.0,
+      0.63
      ],
      [
-      279.0,
-      0.39
-     ],
-     [
-      282.0,
-      0.09
+      280.0,
+      0.04
      ],
      [
       295.0,
@@ -9283,9 +8865,9 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Time",
+     "raw_quantity": "time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "Time (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "time",
@@ -9298,19 +8880,19 @@
      "unresolved_reason": "quantity 'time' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Normalised intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
+     "raw_quantity": "intensity",
+     "raw_unit": "",
+     "raw_label": "Normalised intensity (a.u.)",
+     "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": null,
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind"
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
     }
    },
    "canonical": {
@@ -9350,12 +8932,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/1/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6b__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -9363,15 +8945,15 @@
      "rule_version": "1.0.0",
      "type": "axis_semantic_resolution",
      "formula": null,
-     "status": "unsupported",
+     "status": "not_applicable",
      "normalization_definition": null,
      "comparison_group": null,
      "original_value": null,
-     "original_unit": "a.u.",
+     "original_unit": "",
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Normalised intensity' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -9385,12 +8967,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/1/series/2/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6b__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -9399,7 +8981,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'time' is an ontology coordinate",
-    "n_points": 27
+    "n_points": 22
    },
    "context_available": [
     "m/z",
@@ -9416,10 +8998,10 @@
     "panel": "c",
     "series": "After RuO4 pulse",
     "series_index": 0,
-    "series_axis": "surface condition",
+    "series_axis": "ALD step",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/2/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6c__exp01"
     ],
@@ -9428,33 +9010,33 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Wavenumber",
+     "label": "Wavenumber (cm⁻¹)",
+     "quantity": "wavenumber",
      "unit": "cm^-1",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Transmittance",
+     "label": "Transmittance (a.u.)",
+     "quantity": "transmittance",
      "unit": "a.u.",
      "log": false
     },
     "points": [
      [
-      4950.0,
-      0.66
+      5000.0,
+      0.68
      ],
      [
       4500.0,
-      0.69
+      0.7
      ],
      [
       4000.0,
-      0.72
+      0.73
      ],
      [
       3500.0,
-      0.75
+      0.76
      ],
      [
       3000.0,
@@ -9465,36 +9047,36 @@
       0.82
      ],
      [
-      2050.0,
-      0.89
-     ],
-     [
-      2010.0,
-      0.48
-     ],
-     [
-      1980.0,
-      0.7
-     ],
-     [
-      1500.0,
-      0.79
-     ],
-     [
-      1000.0,
+      2100.0,
       0.88
      ],
      [
-      600.0,
-      0.89
+      2000.0,
+      0.58
+     ],
+     [
+      1950.0,
+      0.73
+     ],
+     [
+      1500.0,
+      0.78
+     ],
+     [
+      1000.0,
+      0.85
+     ],
+     [
+      700.0,
+      0.88
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Wavenumber",
+     "raw_quantity": "wavenumber",
      "raw_unit": "cm^-1",
-     "raw_label": null,
+     "raw_label": "Wavenumber (cm⁻¹)",
      "unit": "cm^-1",
      "unit_recovered": false,
      "quantity": "wavenumber",
@@ -9507,9 +9089,9 @@
      "unresolved_reason": "quantity 'wavenumber' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Transmittance",
+     "raw_quantity": "transmittance",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Transmittance (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": null,
@@ -9519,7 +9101,7 @@
      "comparison_group": null,
      "evidence": [],
      "status": "unsupported",
-     "unresolved_reason": "y quantity 'Transmittance' does not resolve to any ontology QuantityKind"
+     "unresolved_reason": "y quantity 'transmittance' does not resolve to any ontology QuantityKind"
     }
    },
    "canonical": {
@@ -9559,12 +9141,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6c__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -9580,7 +9162,7 @@
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Transmittance' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "y quantity 'transmittance' does not resolve to any ontology QuantityKind",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -9594,12 +9176,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/2/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6c__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -9624,10 +9206,10 @@
     "panel": "c",
     "series": "After methanol pulse",
     "series_index": 1,
-    "series_axis": "surface condition",
+    "series_axis": "ALD step",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/2/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6c__exp02"
     ],
@@ -9636,73 +9218,73 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Wavenumber",
+     "label": "Wavenumber (cm⁻¹)",
+     "quantity": "wavenumber",
      "unit": "cm^-1",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Transmittance",
+     "label": "Transmittance (a.u.)",
+     "quantity": "transmittance",
      "unit": "a.u.",
      "log": false
     },
     "points": [
      [
-      4950.0,
-      0.17
+      5000.0,
+      0.22
      ],
      [
       4500.0,
-      0.17
+      0.22
      ],
      [
       4000.0,
-      0.17
+      0.22
      ],
      [
       3500.0,
-      0.17
+      0.23
      ],
      [
       3000.0,
-      0.17
+      0.23
      ],
      [
       2500.0,
-      0.18
+      0.23
      ],
      [
-      2050.0,
-      0.16
+      2100.0,
+      0.22
      ],
      [
-      2010.0,
-      0.27
+      2000.0,
+      0.32
      ],
      [
-      1980.0,
-      0.2
+      1950.0,
+      0.26
      ],
      [
       1500.0,
-      0.17
+      0.21
      ],
      [
-      1000.0,
-      0.2
+      1100.0,
+      0.22
      ],
      [
-      600.0,
-      0.16
+      800.0,
+      0.21
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Wavenumber",
+     "raw_quantity": "wavenumber",
      "raw_unit": "cm^-1",
-     "raw_label": null,
+     "raw_label": "Wavenumber (cm⁻¹)",
      "unit": "cm^-1",
      "unit_recovered": false,
      "quantity": "wavenumber",
@@ -9715,9 +9297,9 @@
      "unresolved_reason": "quantity 'wavenumber' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Transmittance",
+     "raw_quantity": "transmittance",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Transmittance (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": null,
@@ -9727,7 +9309,7 @@
      "comparison_group": null,
      "evidence": [],
      "status": "unsupported",
-     "unresolved_reason": "y quantity 'Transmittance' does not resolve to any ontology QuantityKind"
+     "unresolved_reason": "y quantity 'transmittance' does not resolve to any ontology QuantityKind"
     }
    },
    "canonical": {
@@ -9767,12 +9349,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6c__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -9788,7 +9370,7 @@
      "canonical_value": null,
      "canonical_unit": null,
      "context": {},
-     "unresolved_reason": "y quantity 'Transmittance' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "y quantity 'transmittance' does not resolve to any ontology QuantityKind",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -9802,12 +9384,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/2/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6c__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -9835,7 +9417,7 @@
     "series_axis": "surface termination",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/3/series/0",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6d__exp01"
     ],
@@ -9844,14 +9426,14 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Binding energy",
+     "label": "Binding energy (eV)",
+     "quantity": "binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Intensity",
+     "label": "Intensity (a.u.)",
+     "quantity": "intensity",
      "unit": "a.u.",
      "log": false
     },
@@ -9866,19 +9448,11 @@
      ],
      [
       533.0,
-      230.0
-     ],
-     [
-      531.5,
-      330.0
+      240.0
      ],
      [
       531.0,
-      410.0
-     ],
-     [
-      530.5,
-      470.0
+      450.0
      ],
      [
       530.0,
@@ -9886,11 +9460,11 @@
      ],
      [
       529.5,
-      540.0
+      520.0
      ],
      [
       529.0,
-      310.0
+      300.0
      ],
      [
       528.0,
@@ -9904,9 +9478,9 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Binding energy",
+     "raw_quantity": "binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -9919,9 +9493,9 @@
      "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Intensity",
+     "raw_quantity": "intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -9971,12 +9545,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/3/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6d__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -10006,12 +9580,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/3/series/0/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6d__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -10020,7 +9594,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 11
+    "n_points": 9
    },
    "context_available": [
     "molecular_mass"
@@ -10039,7 +9613,7 @@
     "series_axis": "surface termination",
     "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/3/series/1",
-    "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+    "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
     "linked_experiment_ids": [
      "10.1021_acs.chemmater.2c02292__Fig6d__exp02"
     ],
@@ -10048,14 +9622,14 @@
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "Binding energy",
+     "label": "Binding energy (eV)",
+     "quantity": "binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "Intensity",
+     "label": "Intensity (a.u.)",
+     "quantity": "intensity",
      "unit": "a.u.",
      "log": false
     },
@@ -10073,16 +9647,8 @@
       220.0
      ],
      [
-      531.5,
-      310.0
-     ],
-     [
       531.0,
-      390.0
-     ],
-     [
-      530.5,
-      440.0
+      420.0
      ],
      [
       530.1,
@@ -10090,7 +9656,7 @@
      ],
      [
       529.5,
-      430.0
+      420.0
      ],
      [
       529.0,
@@ -10102,15 +9668,15 @@
      ],
      [
       526.0,
-      135.0
+      140.0
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Binding energy",
+     "raw_quantity": "binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -10123,9 +9689,9 @@
      "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
     },
     "y": {
-     "raw_quantity": "Intensity",
+     "raw_quantity": "intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -10175,12 +9741,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/3/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6d__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -10210,12 +9776,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.chemmater.2c02292/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/3/series/1/points",
-      "source_checksum": "sha256:7bcb56c5f37755eb364991a25ed6401be42acb53ea7652d4a909c10c3c6816c2",
+      "source_checksum": "sha256:889ea3219987444e08195ab0052322667cbc7a32e49cb32c726fec3dc8e659d3",
       "experiment_id": "10.1021_acs.chemmater.2c02292__Fig6d__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -10224,7 +9790,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 11
+    "n_points": 9
    },
    "context_available": [
     "molecular_mass"

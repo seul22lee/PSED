@@ -1,11 +1,387 @@
 {
  "doi": "10.1021_acs.jpcc.9b08176",
  "generator": "pipeline/canonical/build_canonical.py",
- "code_version": "7e3103e+dirty",
- "created_at": 1786394469,
+ "code_version": "e038973+dirty",
+ "created_at": 1786419380,
  "ontology": "ontology/ald_ontology.json",
- "n_curves": 15,
+ "n_curves": 25,
  "curves": [
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F1::a::0",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "1",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "n/n_0",
+    "series_index": 0,
+    "series_axis": "variable",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [],
+    "data_source": "simulated",
+    "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
+   },
+   "raw": {
+    "x": {
+     "label": "z",
+     "quantity": "spatial_coordinate",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "n/n_0",
+     "quantity": "density",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      1.0
+     ],
+     [
+      50.0,
+      0.82
+     ],
+     [
+      100.0,
+      0.58
+     ],
+     [
+      150.0,
+      0.38
+     ],
+     [
+      200.0,
+      0.22
+     ],
+     [
+      250.0,
+      0.12
+     ],
+     [
+      300.0,
+      0.05
+     ],
+     [
+      350.0,
+      0.02
+     ],
+     [
+      400.0,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "",
+     "raw_label": "z",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "dimensionless_position_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    },
+    "y": {
+     "raw_quantity": "density",
+     "raw_unit": "",
+     "raw_label": "n/n_0",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "film_density",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "1",
+      "panel": "a",
+      "series": "n/n_0",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "1",
+      "panel": "a",
+      "series": "n/n_0",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": null,
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 9
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F1::a::1",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "1",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "Coverage \\theta",
+    "series_index": 1,
+    "series_axis": "variable",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [],
+    "data_source": "simulated",
+    "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
+   },
+   "raw": {
+    "x": {
+     "label": "z",
+     "quantity": "spatial_coordinate",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "n/n_0",
+     "quantity": "density",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      1.0
+     ],
+     [
+      200.0,
+      1.0
+     ],
+     [
+      350.0,
+      1.0
+     ],
+     [
+      450.0,
+      0.8
+     ],
+     [
+      500.0,
+      0.5
+     ],
+     [
+      550.0,
+      0.2
+     ],
+     [
+      600.0,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "",
+     "raw_label": "z",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "dimensionless_position_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    },
+    "y": {
+     "raw_quantity": "density",
+     "raw_unit": "",
+     "raw_label": "n/n_0",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "film_density",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "1",
+      "panel": "a",
+      "series": "Coverage \\theta",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "1",
+      "panel": "a",
+      "series": "Coverage \\theta",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": null,
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 7
+   },
+   "context_available": []
+  },
   {
    "curve_id": "10.1021_acs.jpcc.9b08176::F1::b::0",
    "source": {
@@ -14,92 +390,80 @@
     "figure": "1",
     "figure_index": "6",
     "panel": "b",
-    "series": "r=10^-5",
+    "series": "10^-5",
     "series_index": 0,
-    "series_axis": "surface recombination probability",
+    "series_axis": "recombination probability r",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/0/series/0",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/1/series/0",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      30,
-      0.93
+      200.0,
+      1.0
      ],
      [
-      70,
-      0.83
+      400.0,
+      1.0
      ],
      [
-      120,
-      0.71
+      600.0,
+      1.0
      ],
      [
-      180,
-      0.59
+      800.0,
+      1.0
      ],
      [
-      250,
-      0.47
+      1000.0,
+      1.0
      ],
      [
-      330,
-      0.37
+      1200.0,
+      1.0
      ],
      [
-      420,
-      0.27
+      1350.0,
+      0.95
      ],
      [
-      520,
-      0.19
+      1450.0,
+      0.75
      ],
      [
-      630,
-      0.12
+      1520.0,
+      0.5
      ],
      [
-      750,
-      0.07
+      1600.0,
+      0.25
      ],
      [
-      900,
-      0.04
+      1700.0,
+      0.08
      ],
      [
-      1100,
-      0.02
-     ],
-     [
-      1350,
-      0.01
-     ],
-     [
-      1600,
-      0.0
-     ],
-     [
-      2000,
+      1800.0,
       0.0
      ]
     ]
@@ -108,7 +472,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -121,24 +485,44 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.95,
+      0.75,
+      0.5,
+      0.25,
+      0.08,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -168,260 +552,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "b",
-      "series": "r=10^-5",
+      "series": "10^-5",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "b",
-      "series": "r=10^-5",
+      "series": "10^-5",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
-    }
-   ],
-   "granularity": {
-    "axis_role": "coordinate",
-    "previous_representation": null,
-    "resolved_representation": "profile",
-    "changed": false,
-    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 16
-   },
-   "context_available": []
-  },
-  {
-   "curve_id": "10.1021_acs.jpcc.9b08176::F1::b::1",
-   "source": {
-    "paper_id": "10.1021_acs.jpcc.9b08176",
-    "doi": "10.1021_acs.jpcc.9b08176",
-    "figure": "1",
-    "figure_index": "6",
-    "panel": "b",
-    "series": "r=10^-4",
-    "series_index": 1,
-    "series_axis": "surface recombination probability",
-    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/0/series/1",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-    "linked_experiment_ids": [],
-    "data_source": "simulated",
-    "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
-   },
-   "raw": {
-    "x": {
-     "label": null,
-     "quantity": "aspect_ratio",
-     "unit": "",
-     "log": false
-    },
-    "y": {
-     "label": null,
-     "quantity": "density",
-     "unit": "",
-     "log": false
-    },
-    "points": [
-     [
-      0,
-      1.0
-     ],
-     [
-      15,
-      0.88
-     ],
-     [
-      35,
-      0.73
-     ],
-     [
-      60,
-      0.57
-     ],
-     [
-      90,
-      0.42
-     ],
-     [
-      105,
-      0.37
-     ],
-     [
-      140,
-      0.26
-     ],
-     [
-      180,
-      0.17
-     ],
-     [
-      230,
-      0.1
-     ],
-     [
-      290,
-      0.05
-     ],
-     [
-      360,
-      0.02
-     ],
-     [
-      450,
-      0.01
-     ],
-     [
-      600,
-      0.0
-     ]
-    ]
-   },
-   "semantics": {
-    "x": {
-     "raw_quantity": "aspect_ratio",
-     "raw_unit": "",
-     "raw_label": null,
-     "unit": "",
-     "unit_recovered": false,
-     "quantity": "aspect_ratio",
-     "axis_role": "coordinate",
-     "axis_kind": "dimensionless_position_of_unknown_denominator",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "evidence": [],
-     "status": "missing_context",
-     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
-    },
-    "y": {
-     "raw_quantity": "density",
-     "raw_unit": "",
-     "raw_label": null,
-     "unit": "",
-     "unit_recovered": false,
-     "quantity": "film_density",
-     "axis_role": "output",
-     "axis_kind": "output",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
-    }
-   },
-   "canonical": {
-    "x": null,
-    "y": null
-   },
-   "projections": {
-    "x": [],
-    "y": []
-   },
-   "transformations": [
-    {
-     "axis": "x",
-     "rule_id": "axis_semantic_resolution",
-     "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "missing_context",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "original_value": null,
-     "original_unit": "",
-     "canonical_value": null,
-     "canonical_unit": null,
-     "context": {},
-     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
-     "source": {
-      "paper_id": "10.1021_acs.jpcc.9b08176",
-      "doi": "10.1021_acs.jpcc.9b08176",
-      "figure": "1",
-      "panel": "b",
-      "series": "r=10^-4",
-      "series_index": 1,
-      "axis": "x",
-      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": null
-     },
-     "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
-    },
-    {
-     "axis": "y",
-     "rule_id": "axis_semantic_resolution",
-     "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "original_value": null,
-     "original_unit": "",
-     "canonical_value": null,
-     "canonical_unit": null,
-     "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
-     "source": {
-      "paper_id": "10.1021_acs.jpcc.9b08176",
-      "doi": "10.1021_acs.jpcc.9b08176",
-      "figure": "1",
-      "panel": "b",
-      "series": "r=10^-4",
-      "series_index": 1,
-      "axis": "y",
-      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": null
-     },
-     "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -435,83 +611,75 @@
    "context_available": []
   },
   {
-   "curve_id": "10.1021_acs.jpcc.9b08176::F1::b::2",
+   "curve_id": "10.1021_acs.jpcc.9b08176::F1::b::1",
    "source": {
     "paper_id": "10.1021_acs.jpcc.9b08176",
     "doi": "10.1021_acs.jpcc.9b08176",
     "figure": "1",
     "figure_index": "6",
     "panel": "b",
-    "series": "r=10^-3",
-    "series_index": 2,
-    "series_axis": "surface recombination probability",
+    "series": "10^-4",
+    "series_index": 1,
+    "series_axis": "recombination probability r",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/0/series/2",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/1/series/1",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      5,
-      0.85
+      100.0,
+      1.0
      ],
      [
-      12,
-      0.68
+      200.0,
+      1.0
      ],
      [
-      20,
-      0.52
+      350.0,
+      0.98
      ],
      [
-      30,
-      0.41
+      500.0,
+      0.88
      ],
      [
-      35,
-      0.37
+      650.0,
+      0.62
      ],
      [
-      45,
-      0.28
+      720.0,
+      0.5
      ],
      [
-      60,
-      0.18
+      800.0,
+      0.3
      ],
      [
-      80,
+      900.0,
       0.1
      ],
      [
-      105,
-      0.04
-     ],
-     [
-      140,
-      0.01
-     ],
-     [
-      200,
+      980.0,
       0.0
      ]
     ]
@@ -520,7 +688,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -533,24 +701,41 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      0.98,
+      0.88,
+      0.62,
+      0.5,
+      0.3,
+      0.1,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -580,52 +765,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "b",
-      "series": "r=10^-3",
-      "series_index": 2,
+      "series": "10^-4",
+      "series_index": 1,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/2/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/1/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "b",
-      "series": "r=10^-3",
-      "series_index": 2,
+      "series": "10^-4",
+      "series_index": 1,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/2/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/1/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -634,7 +819,215 @@
     "resolved_representation": "profile",
     "changed": false,
     "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 12
+    "n_points": 10
+   },
+   "context_available": []
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F1::b::2",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "1",
+    "figure_index": "6",
+    "panel": "b",
+    "series": "10^-3",
+    "series_index": 2,
+    "series_axis": "recombination probability r",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/1/series/2",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [],
+    "data_source": "simulated",
+    "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
+   },
+   "raw": {
+    "x": {
+     "label": "z/h",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      1.0
+     ],
+     [
+      50.0,
+      1.0
+     ],
+     [
+      100.0,
+      0.98
+     ],
+     [
+      180.0,
+      0.85
+     ],
+     [
+      250.0,
+      0.65
+     ],
+     [
+      310.0,
+      0.5
+     ],
+     [
+      380.0,
+      0.25
+     ],
+     [
+      450.0,
+      0.05
+     ],
+     [
+      500.0,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "z/h",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "dimensionless_position_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    },
+    "y": {
+     "raw_quantity": "surface_coverage",
+     "raw_unit": "",
+     "raw_label": "Coverage \\theta",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "surface_coverage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "surface_coverage",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      1.0,
+      0.98,
+      0.85,
+      0.65,
+      0.5,
+      0.25,
+      0.05,
+      0.0
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "1",
+      "panel": "b",
+      "series": "10^-3",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/2/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "surface_coverage",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "1",
+      "panel": "b",
+      "series": "10^-3",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/2/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": null,
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 9
    },
    "context_available": []
   },
@@ -646,72 +1039,60 @@
     "figure": "1",
     "figure_index": "6",
     "panel": "b",
-    "series": "r=10^-2",
+    "series": "10^-2",
     "series_index": 3,
-    "series_axis": "surface recombination probability",
+    "series_axis": "recombination probability r",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/0/series/3",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/1/series/3",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      2,
-      0.82
+      20.0,
+      1.0
      ],
      [
-      5,
-      0.61
+      50.0,
+      0.9
      ],
      [
-      8,
-      0.46
+      80.0,
+      0.7
      ],
      [
-      11,
-      0.37
+      120.0,
+      0.5
      ],
      [
-      15,
-      0.26
+      150.0,
+      0.25
      ],
      [
-      20,
-      0.17
+      180.0,
+      0.05
      ],
      [
-      28,
-      0.08
-     ],
-     [
-      40,
-      0.03
-     ],
-     [
-      60,
-      0.01
-     ],
-     [
-      100,
+      200.0,
       0.0
      ]
     ]
@@ -720,7 +1101,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -733,24 +1114,39 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      1.0,
+      0.9,
+      0.7,
+      0.5,
+      0.25,
+      0.05,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -780,52 +1176,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "b",
-      "series": "r=10^-2",
+      "series": "10^-2",
       "series_index": 3,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/3/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/1/series/3/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "b",
-      "series": "r=10^-2",
+      "series": "10^-2",
       "series_index": 3,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/0/series/3/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/1/series/3/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -834,7 +1230,7 @@
     "resolved_representation": "profile",
     "changed": false,
     "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 11
+    "n_points": 8
    },
    "context_available": []
   },
@@ -846,84 +1242,48 @@
     "figure": "1",
     "figure_index": "6",
     "panel": "c",
-    "series": "t=10^0",
+    "series": "10^0",
     "series_index": 0,
-    "series_axis": "exposure time",
+    "series_axis": "plasma exposure time t",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/1/series/0",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/2/series/0",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      20,
-      0.89
+      10.0,
+      0.6
      ],
      [
-      50,
-      0.74
+      20.0,
+      0.3
      ],
      [
-      90,
-      0.57
-     ],
-     [
-      140,
-      0.4
-     ],
-     [
-      150,
-      0.37
-     ],
-     [
-      200,
-      0.26
-     ],
-     [
-      270,
-      0.16
-     ],
-     [
-      350,
-      0.09
-     ],
-     [
-      450,
+      40.0,
       0.05
      ],
      [
-      600,
-      0.02
-     ],
-     [
-      800,
-      0.01
-     ],
-     [
-      1100,
-      0.0
-     ],
-     [
-      2000,
+      60.0,
       0.0
      ]
     ]
@@ -932,7 +1292,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -945,24 +1305,36 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      0.6,
+      0.3,
+      0.05,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -992,52 +1364,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^0",
+      "series": "10^0",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^0",
+      "series": "10^0",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1046,7 +1418,7 @@
     "resolved_representation": "profile",
     "changed": false,
     "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 14
+    "n_points": 5
    },
    "context_available": []
   },
@@ -1058,84 +1430,60 @@
     "figure": "1",
     "figure_index": "6",
     "panel": "c",
-    "series": "t=10^1",
+    "series": "10^1",
     "series_index": 1,
-    "series_axis": "exposure time",
+    "series_axis": "plasma exposure time t",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/1/series/1",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/2/series/1",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      20,
-      0.89
+      50.0,
+      0.98
      ],
      [
-      50,
-      0.74
+      100.0,
+      0.8
      ],
      [
-      90,
-      0.57
+      150.0,
+      0.6
      ],
      [
-      140,
-      0.4
+      180.0,
+      0.5
      ],
      [
-      150,
-      0.37
+      250.0,
+      0.25
      ],
      [
-      200,
-      0.26
-     ],
-     [
-      270,
-      0.16
-     ],
-     [
-      350,
-      0.09
-     ],
-     [
-      450,
+      320.0,
       0.05
      ],
      [
-      600,
-      0.02
-     ],
-     [
-      800,
-      0.01
-     ],
-     [
-      1100,
-      0.0
-     ],
-     [
-      2000,
+      380.0,
       0.0
      ]
     ]
@@ -1144,7 +1492,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -1157,24 +1505,39 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      0.98,
+      0.8,
+      0.6,
+      0.5,
+      0.25,
+      0.05,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -1204,52 +1567,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^1",
+      "series": "10^1",
       "series_index": 1,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^1",
+      "series": "10^1",
       "series_index": 1,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1258,7 +1621,7 @@
     "resolved_representation": "profile",
     "changed": false,
     "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 14
+    "n_points": 8
    },
    "context_available": []
   },
@@ -1270,84 +1633,60 @@
     "figure": "1",
     "figure_index": "6",
     "panel": "c",
-    "series": "t=10^2",
+    "series": "10^2",
     "series_index": 2,
-    "series_axis": "exposure time",
+    "series_axis": "plasma exposure time t",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/1/series/2",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/2/series/2",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      20,
-      0.89
+      150.0,
+      1.0
      ],
      [
-      50,
-      0.74
+      300.0,
+      0.9
      ],
      [
-      90,
-      0.57
+      450.0,
+      0.68
      ],
      [
-      140,
-      0.4
+      550.0,
+      0.5
      ],
      [
-      150,
-      0.37
+      700.0,
+      0.25
      ],
      [
-      200,
-      0.26
-     ],
-     [
-      270,
-      0.16
-     ],
-     [
-      350,
-      0.09
-     ],
-     [
-      450,
+      850.0,
       0.05
      ],
      [
-      600,
-      0.02
-     ],
-     [
-      800,
-      0.01
-     ],
-     [
-      1100,
-      0.0
-     ],
-     [
-      2000,
+      950.0,
       0.0
      ]
     ]
@@ -1356,7 +1695,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -1369,24 +1708,39 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      1.0,
+      0.9,
+      0.68,
+      0.5,
+      0.25,
+      0.05,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -1416,52 +1770,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^2",
+      "series": "10^2",
       "series_index": 2,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/2/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/2/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^2",
+      "series": "10^2",
       "series_index": 2,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/2/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/2/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1470,7 +1824,7 @@
     "resolved_representation": "profile",
     "changed": false,
     "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 14
+    "n_points": 8
    },
    "context_available": []
   },
@@ -1482,84 +1836,60 @@
     "figure": "1",
     "figure_index": "6",
     "panel": "c",
-    "series": "t=10^3",
+    "series": "10^3",
     "series_index": 3,
-    "series_axis": "exposure time",
+    "series_axis": "plasma exposure time t",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/1/series/3",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/2/series/3",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      20,
-      0.89
+      300.0,
+      1.0
      ],
      [
-      50,
-      0.74
+      600.0,
+      0.95
      ],
      [
-      90,
-      0.57
+      850.0,
+      0.72
      ],
      [
-      140,
-      0.4
+      1050.0,
+      0.5
      ],
      [
-      150,
-      0.37
+      1250.0,
+      0.22
      ],
      [
-      200,
-      0.26
-     ],
-     [
-      270,
-      0.16
-     ],
-     [
-      350,
-      0.09
-     ],
-     [
-      450,
+      1400.0,
       0.05
      ],
      [
-      600,
-      0.02
-     ],
-     [
-      800,
-      0.01
-     ],
-     [
-      1100,
-      0.0
-     ],
-     [
-      2000,
+      1500.0,
       0.0
      ]
     ]
@@ -1568,7 +1898,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -1581,24 +1911,39 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      1.0,
+      0.95,
+      0.72,
+      0.5,
+      0.22,
+      0.05,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -1628,52 +1973,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^3",
+      "series": "10^3",
       "series_index": 3,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/3/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/3/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^3",
+      "series": "10^3",
       "series_index": 3,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/3/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/3/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1682,7 +2027,7 @@
     "resolved_representation": "profile",
     "changed": false,
     "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 14
+    "n_points": 8
    },
    "context_available": []
   },
@@ -1694,84 +2039,60 @@
     "figure": "1",
     "figure_index": "6",
     "panel": "c",
-    "series": "t=10^4",
+    "series": "10^4",
     "series_index": 4,
-    "series_axis": "exposure time",
+    "series_axis": "plasma exposure time t",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/0/panels/1/series/4",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/0/panels/2/series/4",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "simulated",
     "caption": "Figure 1. Panel (A) gives a schematic cross-sectional side view of a PillarHall LHAR structure used in this work to study /uniFB01 lm growth by plasma ALD. Through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. This sets a practical limit on the penetration depth of the deposited /uniFB01 lm, as illustrated in panel (B) for di /uniFB00 erent surface recombination probabilities and a constant time t = 10 4 (a.u.). For r = 5 × 10 -5 , panel (C) shows that an exponential increase in plasma exposure time is required to linearly increase the /uniFB01 lm penetration depth. The markers indicate the positions at which n ̃ = 1/e and θ = 1/2."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "z/h",
      "quantity": "aspect_ratio",
      "unit": "",
      "log": false
     },
     "y": {
-     "label": null,
-     "quantity": "density",
+     "label": "Coverage \\theta",
+     "quantity": "surface_coverage",
      "unit": "",
      "log": false
     },
     "points": [
      [
-      0,
+      0.0,
       1.0
      ],
      [
-      20,
-      0.89
+      500.0,
+      1.0
      ],
      [
-      50,
-      0.74
+      900.0,
+      0.95
      ],
      [
-      90,
-      0.57
+      1150.0,
+      0.72
      ],
      [
-      140,
-      0.4
+      1350.0,
+      0.5
      ],
      [
-      150,
-      0.37
+      1550.0,
+      0.22
      ],
      [
-      200,
-      0.26
-     ],
-     [
-      270,
-      0.16
-     ],
-     [
-      350,
-      0.09
-     ],
-     [
-      450,
+      1700.0,
       0.05
      ],
      [
-      600,
-      0.02
-     ],
-     [
-      800,
-      0.01
-     ],
-     [
-      1100,
-      0.0
-     ],
-     [
-      2000,
+      1800.0,
       0.0
      ]
     ]
@@ -1780,7 +2101,7 @@
     "x": {
      "raw_quantity": "aspect_ratio",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "z/h",
      "unit": "",
      "unit_recovered": false,
      "quantity": "aspect_ratio",
@@ -1793,24 +2114,39 @@
      "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
     },
     "y": {
-     "raw_quantity": "density",
+     "raw_quantity": "surface_coverage",
      "raw_unit": "",
-     "raw_label": null,
+     "raw_label": "Coverage \\theta",
      "unit": "",
      "unit_recovered": false,
-     "quantity": "film_density",
+     "quantity": "surface_coverage",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)"
+     "status": "resolved",
+     "unresolved_reason": null
     }
    },
    "canonical": {
     "x": null,
-    "y": null
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      1.0,
+      1.0,
+      0.95,
+      0.72,
+      0.5,
+      0.22,
+      0.05,
+      0.0
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -1840,52 +2176,52 @@
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^4",
+      "series": "10^4",
       "series_index": 4,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/4/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/4/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "axis_semantic_resolution",
+     "rule_id": "identity_canonical_mapping",
      "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "surface_coverage",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "1",
      "context": {},
-     "unresolved_reason": "quantity 'film_density' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
+     "unresolved_reason": null,
+     "confidence": 1.0,
      "assumptions": [],
-     "invertible": null,
+     "invertible": true,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
       "figure": "1",
       "panel": "c",
-      "series": "t=10^4",
+      "series": "10^4",
       "series_index": 4,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/0/panels/1/series/4/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/0/panels/2/series/4/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1894,7 +2230,7 @@
     "resolved_representation": "profile",
     "changed": false,
     "reason": "x axis 'aspect_ratio' is an ontology coordinate",
-    "n_points": 14
+    "n_points": 8
    },
    "context_available": []
   },
@@ -1911,17 +2247,17 @@
     "series_axis": "material",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/0",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [
-     "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case00"
+     "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
     ],
     "data_source": "measured",
     "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "pulse_time",
+     "label": "t (s)",
+     "quantity": "exposure",
      "unit": "s",
      "log": false
     },
@@ -1952,16 +2288,16 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "pulse_time",
+     "raw_quantity": "exposure",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "t (s)",
      "unit": "s",
      "unit_recovered": false,
-     "quantity": "pulse_time",
+     "quantity": "exposure",
      "axis_role": "condition",
      "axis_kind": "condition_sweep",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "evidence": [],
      "status": "resolved",
      "unresolved_reason": null
@@ -1983,18 +2319,7 @@
     }
    },
    "canonical": {
-    "x": {
-     "comparison_group": "pulse_time",
-     "quantity": "pulse_time",
-     "unit": "s",
-     "values": [
-      3.8,
-      12,
-      38,
-      120
-     ],
-     "normalization_definition": null
-    },
+    "x": null,
     "y": null
    },
    "projections": {
@@ -2004,22 +2329,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "identity_canonical_mapping",
+     "rule_id": "time_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "identity_canonical_mapping",
-     "formula": "identity",
-     "status": "already_canonical",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "original_value": null,
      "original_unit": "s",
      "canonical_value": null,
-     "canonical_unit": "s",
+     "canonical_unit": "Pa.s",
      "context": {},
-     "unresolved_reason": null,
-     "confidence": 1.0,
+     "unresolved_reason": "declared unit 's' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
      "assumptions": [],
-     "invertible": true,
+     "invertible": null,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
@@ -2030,12 +2355,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case00"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2065,12 +2390,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case00"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2078,7 +2403,7 @@
     "previous_representation": "case",
     "resolved_representation": "series",
     "changed": true,
-    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
     "n_points": 4
    },
    "context_available": [
@@ -2086,6 +2411,8 @@
     "flow_rate",
     "generic_pressure",
     "initial_sticking_coefficient",
+    "molecular_mass",
+    "precursor_molecular_diameter",
     "recombination_probability",
     "temperature"
    ]
@@ -2103,17 +2430,17 @@
     "series_axis": "material",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/1",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [
-     "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case01"
+     "10.1021_acs.jpcc.9b08176__Fig2a__exp04"
     ],
     "data_source": "measured",
     "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "pulse_time",
+     "label": "t (s)",
+     "quantity": "exposure",
      "unit": "s",
      "log": false
     },
@@ -2136,16 +2463,16 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "pulse_time",
+     "raw_quantity": "exposure",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "t (s)",
      "unit": "s",
      "unit_recovered": false,
-     "quantity": "pulse_time",
+     "quantity": "exposure",
      "axis_role": "condition",
      "axis_kind": "condition_sweep",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "evidence": [],
      "status": "resolved",
      "unresolved_reason": null
@@ -2167,16 +2494,7 @@
     }
    },
    "canonical": {
-    "x": {
-     "comparison_group": "pulse_time",
-     "quantity": "pulse_time",
-     "unit": "s",
-     "values": [
-      12,
-      120
-     ],
-     "normalization_definition": null
-    },
+    "x": null,
     "y": null
    },
    "projections": {
@@ -2186,22 +2504,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "identity_canonical_mapping",
+     "rule_id": "time_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "identity_canonical_mapping",
-     "formula": "identity",
-     "status": "already_canonical",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "original_value": null,
      "original_unit": "s",
      "canonical_value": null,
-     "canonical_unit": "s",
+     "canonical_unit": "Pa.s",
      "context": {},
-     "unresolved_reason": null,
-     "confidence": 1.0,
+     "unresolved_reason": "declared unit 's' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
      "assumptions": [],
-     "invertible": true,
+     "invertible": null,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
@@ -2212,12 +2530,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case01"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2247,12 +2565,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case01"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2260,7 +2578,7 @@
     "previous_representation": "case",
     "resolved_representation": "series",
     "changed": true,
-    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
     "n_points": 2
    },
    "context_available": [
@@ -2285,17 +2603,17 @@
     "series_axis": "material",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/2",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [
-     "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case02"
+     "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
     ],
     "data_source": "measured",
     "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "pulse_time",
+     "label": "t (s)",
+     "quantity": "exposure",
      "unit": "s",
      "log": false
     },
@@ -2314,16 +2632,16 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "pulse_time",
+     "raw_quantity": "exposure",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "t (s)",
      "unit": "s",
      "unit_recovered": false,
-     "quantity": "pulse_time",
+     "quantity": "exposure",
      "axis_role": "condition",
      "axis_kind": "condition_sweep",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "evidence": [],
      "status": "resolved",
      "unresolved_reason": null
@@ -2345,15 +2663,7 @@
     }
    },
    "canonical": {
-    "x": {
-     "comparison_group": "pulse_time",
-     "quantity": "pulse_time",
-     "unit": "s",
-     "values": [
-      120
-     ],
-     "normalization_definition": null
-    },
+    "x": null,
     "y": null
    },
    "projections": {
@@ -2363,22 +2673,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "identity_canonical_mapping",
+     "rule_id": "time_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "identity_canonical_mapping",
-     "formula": "identity",
-     "status": "already_canonical",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "original_value": null,
      "original_unit": "s",
      "canonical_value": null,
-     "canonical_unit": "s",
+     "canonical_unit": "Pa.s",
      "context": {},
-     "unresolved_reason": null,
-     "confidence": 1.0,
+     "unresolved_reason": "declared unit 's' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
      "assumptions": [],
-     "invertible": true,
+     "invertible": null,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
@@ -2389,12 +2699,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/2/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case02"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2424,12 +2734,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/2/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case02"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2445,6 +2755,8 @@
     "flow_rate",
     "generic_pressure",
     "initial_sticking_coefficient",
+    "molecular_mass",
+    "precursor_molecular_diameter",
     "recombination_probability",
     "temperature"
    ]
@@ -2462,17 +2774,17 @@
     "series_axis": "material",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/3",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [
-     "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case03"
+     "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
     ],
     "data_source": "measured",
     "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
    },
    "raw": {
     "x": {
-     "label": null,
-     "quantity": "pulse_time",
+     "label": "t (s)",
+     "quantity": "exposure",
      "unit": "s",
      "log": false
     },
@@ -2491,16 +2803,16 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "pulse_time",
+     "raw_quantity": "exposure",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "t (s)",
      "unit": "s",
      "unit_recovered": false,
-     "quantity": "pulse_time",
+     "quantity": "exposure",
      "axis_role": "condition",
      "axis_kind": "condition_sweep",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "evidence": [],
      "status": "resolved",
      "unresolved_reason": null
@@ -2522,15 +2834,7 @@
     }
    },
    "canonical": {
-    "x": {
-     "comparison_group": "pulse_time",
-     "quantity": "pulse_time",
-     "unit": "s",
-     "values": [
-      120
-     ],
-     "normalization_definition": null
-    },
+    "x": null,
     "y": null
    },
    "projections": {
@@ -2540,22 +2844,22 @@
    "transformations": [
     {
      "axis": "x",
-     "rule_id": "identity_canonical_mapping",
+     "rule_id": "time_unit_conversion",
      "rule_version": "1.0.0",
-     "type": "identity_canonical_mapping",
-     "formula": "identity",
-     "status": "already_canonical",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
      "normalization_definition": null,
-     "comparison_group": "pulse_time",
+     "comparison_group": "exposure",
      "original_value": null,
      "original_unit": "s",
      "canonical_value": null,
-     "canonical_unit": "s",
+     "canonical_unit": "Pa.s",
      "context": {},
-     "unresolved_reason": null,
-     "confidence": 1.0,
+     "unresolved_reason": "declared unit 's' has dimension time but the quantity's comparison group 'exposure' is exposure — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
      "assumptions": [],
-     "invertible": true,
+     "invertible": null,
      "source": {
       "paper_id": "10.1021_acs.jpcc.9b08176",
       "doi": "10.1021_acs.jpcc.9b08176",
@@ -2566,12 +2870,12 @@
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/3/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case03"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2601,12 +2905,12 @@
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/3/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
-      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp01__case03"
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2622,6 +2926,2741 @@
     "flow_rate",
     "generic_pressure",
     "initial_sticking_coefficient",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::0",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "HfO2 (120 s)",
+    "series_index": 0,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/0",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      10,
+      0.9
+     ],
+     [
+      25,
+      0.76
+     ],
+     [
+      40,
+      0.58
+     ],
+     [
+      50,
+      0.33
+     ],
+     [
+      58,
+      0.12
+     ],
+     [
+      68,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      10,
+      25,
+      40,
+      50,
+      58,
+      68
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "HfO2 (120 s)",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "HfO2 (120 s)",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "HfO2 (120 s)",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 7
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "pulse_time",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::1",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "Al2O3 (120 s)",
+    "series_index": 1,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/1",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      10,
+      0.96
+     ],
+     [
+      20,
+      0.88
+     ],
+     [
+      30,
+      0.84
+     ],
+     [
+      40,
+      0.76
+     ],
+     [
+      50,
+      0.69
+     ],
+     [
+      60,
+      0.63
+     ],
+     [
+      70,
+      0.58
+     ],
+     [
+      80,
+      0.48
+     ],
+     [
+      90,
+      0.37
+     ],
+     [
+      100,
+      0.25
+     ],
+     [
+      110,
+      0.04
+     ],
+     [
+      128,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      128
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "Al2O3 (120 s)",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "Al2O3 (120 s)",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "Al2O3 (120 s)",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 13
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::2",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "SiO2 (3.8 s)",
+    "series_index": 2,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/2",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp03"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      10,
+      0.92
+     ],
+     [
+      30,
+      0.88
+     ],
+     [
+      50,
+      0.9
+     ],
+     [
+      80,
+      0.9
+     ],
+     [
+      120,
+      0.87
+     ],
+     [
+      150,
+      0.85
+     ],
+     [
+      200,
+      0.81
+     ],
+     [
+      230,
+      0.78
+     ],
+     [
+      260,
+      0.72
+     ],
+     [
+      290,
+      0.65
+     ],
+     [
+      320,
+      0.55
+     ],
+     [
+      340,
+      0.48
+     ],
+     [
+      360,
+      0.35
+     ],
+     [
+      380,
+      0.28
+     ],
+     [
+      400,
+      0.2
+     ],
+     [
+      420,
+      0.17
+     ],
+     [
+      440,
+      0.08
+     ],
+     [
+      460,
+      0.02
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      10,
+      30,
+      50,
+      80,
+      120,
+      150,
+      200,
+      230,
+      260,
+      290,
+      320,
+      340,
+      360,
+      380,
+      400,
+      420,
+      440,
+      460
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (3.8 s)",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/2/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp03"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (3.8 s)",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/2/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp03"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (3.8 s)",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/2/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp03"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 19
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "pulse_time",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::3",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "TiO2 (12 s)",
+    "series_index": 3,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/3",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp04"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      10,
+      0.98
+     ],
+     [
+      20,
+      0.95
+     ],
+     [
+      50,
+      0.91
+     ],
+     [
+      80,
+      0.88
+     ],
+     [
+      110,
+      0.83
+     ],
+     [
+      150,
+      0.81
+     ],
+     [
+      180,
+      0.79
+     ],
+     [
+      210,
+      0.76
+     ],
+     [
+      250,
+      0.74
+     ],
+     [
+      280,
+      0.71
+     ],
+     [
+      310,
+      0.68
+     ],
+     [
+      340,
+      0.64
+     ],
+     [
+      370,
+      0.61
+     ],
+     [
+      400,
+      0.56
+     ],
+     [
+      420,
+      0.54
+     ],
+     [
+      440,
+      0.49
+     ],
+     [
+      460,
+      0.42
+     ],
+     [
+      480,
+      0.37
+     ],
+     [
+      500,
+      0.3
+     ],
+     [
+      520,
+      0.23
+     ],
+     [
+      530,
+      0.16
+     ],
+     [
+      540,
+      0.1
+     ],
+     [
+      560,
+      0.01
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      10,
+      20,
+      50,
+      80,
+      110,
+      150,
+      180,
+      210,
+      250,
+      280,
+      310,
+      340,
+      370,
+      400,
+      420,
+      440,
+      460,
+      480,
+      500,
+      520,
+      530,
+      540,
+      560
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "TiO2 (12 s)",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/3/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp04"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "TiO2 (12 s)",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/3/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp04"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "TiO2 (12 s)",
+      "series_index": 3,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/3/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp04"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 24
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "molecular_mass",
+    "pulse_time",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::4",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "SiO2 (12 s)",
+    "series_index": 4,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/4",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp05"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      20,
+      0.91
+     ],
+     [
+      60,
+      0.92
+     ],
+     [
+      100,
+      0.9
+     ],
+     [
+      140,
+      0.88
+     ],
+     [
+      180,
+      0.88
+     ],
+     [
+      220,
+      0.88
+     ],
+     [
+      260,
+      0.88
+     ],
+     [
+      300,
+      0.88
+     ],
+     [
+      340,
+      0.87
+     ],
+     [
+      380,
+      0.85
+     ],
+     [
+      420,
+      0.83
+     ],
+     [
+      460,
+      0.78
+     ],
+     [
+      500,
+      0.71
+     ],
+     [
+      520,
+      0.65
+     ],
+     [
+      540,
+      0.59
+     ],
+     [
+      560,
+      0.52
+     ],
+     [
+      580,
+      0.44
+     ],
+     [
+      600,
+      0.39
+     ],
+     [
+      620,
+      0.32
+     ],
+     [
+      640,
+      0.26
+     ],
+     [
+      660,
+      0.19
+     ],
+     [
+      680,
+      0.09
+     ],
+     [
+      700,
+      0.02
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      20,
+      60,
+      100,
+      140,
+      180,
+      220,
+      260,
+      300,
+      340,
+      380,
+      420,
+      460,
+      500,
+      520,
+      540,
+      560,
+      580,
+      600,
+      620,
+      640,
+      660,
+      680,
+      700
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (12 s)",
+      "series_index": 4,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/4/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp05"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (12 s)",
+      "series_index": 4,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/4/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp05"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (12 s)",
+      "series_index": 4,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/4/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp05"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 24
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "pulse_time",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::5",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "TiO2 (120 s)",
+    "series_index": 5,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/5",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp06"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      20,
+      0.98
+     ],
+     [
+      40,
+      0.94
+     ],
+     [
+      70,
+      0.91
+     ],
+     [
+      100,
+      0.88
+     ],
+     [
+      130,
+      0.85
+     ],
+     [
+      160,
+      0.82
+     ],
+     [
+      200,
+      0.81
+     ],
+     [
+      240,
+      0.79
+     ],
+     [
+      280,
+      0.76
+     ],
+     [
+      320,
+      0.74
+     ],
+     [
+      360,
+      0.72
+     ],
+     [
+      400,
+      0.71
+     ],
+     [
+      450,
+      0.69
+     ],
+     [
+      500,
+      0.67
+     ],
+     [
+      550,
+      0.65
+     ],
+     [
+      600,
+      0.63
+     ],
+     [
+      650,
+      0.6
+     ],
+     [
+      700,
+      0.57
+     ],
+     [
+      730,
+      0.54
+     ],
+     [
+      770,
+      0.52
+     ],
+     [
+      800,
+      0.48
+     ],
+     [
+      820,
+      0.43
+     ],
+     [
+      840,
+      0.39
+     ],
+     [
+      860,
+      0.35
+     ],
+     [
+      880,
+      0.31
+     ],
+     [
+      900,
+      0.25
+     ],
+     [
+      920,
+      0.18
+     ],
+     [
+      930,
+      0.12
+     ],
+     [
+      940,
+      0.04
+     ],
+     [
+      960,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      20,
+      40,
+      70,
+      100,
+      130,
+      160,
+      200,
+      240,
+      280,
+      320,
+      360,
+      400,
+      450,
+      500,
+      550,
+      600,
+      650,
+      700,
+      730,
+      770,
+      800,
+      820,
+      840,
+      860,
+      880,
+      900,
+      920,
+      930,
+      940,
+      960
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "TiO2 (120 s)",
+      "series_index": 5,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/5/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp06"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "TiO2 (120 s)",
+      "series_index": 5,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/5/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp06"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "TiO2 (120 s)",
+      "series_index": 5,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/5/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp06"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 31
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "molecular_mass",
+    "pulse_time",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::6",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "SiO2 (38 s)",
+    "series_index": 6,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/6",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp07"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      30,
+      0.98
+     ],
+     [
+      70,
+      0.96
+     ],
+     [
+      120,
+      0.94
+     ],
+     [
+      170,
+      0.92
+     ],
+     [
+      220,
+      0.91
+     ],
+     [
+      270,
+      0.9
+     ],
+     [
+      320,
+      0.89
+     ],
+     [
+      370,
+      0.88
+     ],
+     [
+      420,
+      0.88
+     ],
+     [
+      470,
+      0.88
+     ],
+     [
+      520,
+      0.85
+     ],
+     [
+      570,
+      0.81
+     ],
+     [
+      620,
+      0.76
+     ],
+     [
+      660,
+      0.7
+     ],
+     [
+      700,
+      0.63
+     ],
+     [
+      730,
+      0.56
+     ],
+     [
+      750,
+      0.48
+     ],
+     [
+      770,
+      0.44
+     ],
+     [
+      790,
+      0.38
+     ],
+     [
+      800,
+      0.3
+     ],
+     [
+      810,
+      0.25
+     ],
+     [
+      820,
+      0.17
+     ],
+     [
+      830,
+      0.07
+     ],
+     [
+      840,
+      0.01
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      30,
+      70,
+      120,
+      170,
+      220,
+      270,
+      320,
+      370,
+      420,
+      470,
+      520,
+      570,
+      620,
+      660,
+      700,
+      730,
+      750,
+      770,
+      790,
+      800,
+      810,
+      820,
+      830,
+      840
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (38 s)",
+      "series_index": 6,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/6/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp07"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (38 s)",
+      "series_index": 6,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/6/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp07"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (38 s)",
+      "series_index": 6,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/6/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp07"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 25
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "pulse_time",
+    "recombination_probability",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.jpcc.9b08176::F2::b::7",
+   "source": {
+    "paper_id": "10.1021_acs.jpcc.9b08176",
+    "doi": "10.1021_acs.jpcc.9b08176",
+    "figure": "2",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "SiO2 (120 s)",
+    "series_index": 7,
+    "series_axis": "material and dose time",
+    "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/7",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+    "linked_experiment_ids": [
+     "10.1021_acs.jpcc.9b08176__Fig2b__exp08"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2. (A) Top view optical microscope images of PillarHall LHAR structures, after plasma ALD of SiO2, TiO2, Al2O3, or HfO2 and removal of the membrane (note that PillarHall generation 3, which has a smaller pillar spacing than PillarHall-4, was used for SiO 2 growth using 120 s plasma steps). Surface areas with deposited material are darker by thin/uniFB01 lm interference. These areas start at the cavity entrance (top) and extend downward to a certain penetration depth. The aspect ratios at PD 50% are indicated in red, as determined in panel (B) from the measured thickness pro /uniFB01 les. A strong variation in /uniFB01 lm penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent."
+   },
+   "raw": {
+    "x": {
+     "label": "Distance / cavity height",
+     "quantity": "aspect_ratio",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Normalized thickness",
+     "quantity": "normalized_thickness",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      20,
+      1.02
+     ],
+     [
+      40,
+      0.98
+     ],
+     [
+      70,
+      0.96
+     ],
+     [
+      100,
+      0.94
+     ],
+     [
+      130,
+      0.93
+     ],
+     [
+      160,
+      0.96
+     ],
+     [
+      190,
+      0.91
+     ],
+     [
+      220,
+      0.94
+     ],
+     [
+      250,
+      0.91
+     ],
+     [
+      280,
+      0.93
+     ],
+     [
+      310,
+      0.9
+     ],
+     [
+      340,
+      0.89
+     ],
+     [
+      370,
+      0.88
+     ],
+     [
+      400,
+      0.89
+     ],
+     [
+      430,
+      0.88
+     ],
+     [
+      460,
+      0.88
+     ],
+     [
+      490,
+      0.85
+     ],
+     [
+      520,
+      0.86
+     ],
+     [
+      550,
+      0.83
+     ],
+     [
+      580,
+      0.81
+     ],
+     [
+      610,
+      0.79
+     ],
+     [
+      640,
+      0.76
+     ],
+     [
+      670,
+      0.73
+     ],
+     [
+      700,
+      0.69
+     ],
+     [
+      730,
+      0.66
+     ],
+     [
+      760,
+      0.63
+     ],
+     [
+      790,
+      0.58
+     ],
+     [
+      810,
+      0.52
+     ],
+     [
+      830,
+      0.48
+     ],
+     [
+      850,
+      0.42
+     ],
+     [
+      870,
+      0.38
+     ],
+     [
+      890,
+      0.34
+     ],
+     [
+      910,
+      0.3
+     ],
+     [
+      930,
+      0.21
+     ],
+     [
+      950,
+      0.15
+     ],
+     [
+      970,
+      0.13
+     ],
+     [
+      990,
+      0.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "aspect_ratio",
+     "raw_unit": "",
+     "raw_label": "Distance / cavity height",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "aspect_ratio",
+     "axis_role": "coordinate",
+     "axis_kind": "normalized_spatial_coordinate",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+       "source_location": "figure 8 panel b x.label_raw",
+       "span": "Distance / cavity height",
+       "method": "pattern_match:axis_label",
+       "confidence": 0.9,
+       "automatic": true,
+       "needs_manual_review": false
+      }
+     ],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "normalized_thickness",
+     "raw_unit": "",
+     "raw_label": "Normalized thickness",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "normalized_thickness",
+     "axis_role": "output",
+     "axis_kind": "normalized_thickness_of_unknown_denominator",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "missing_context",
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "quantity": "dimensionless_distance",
+     "unit": "1",
+     "values": [
+      0,
+      20,
+      40,
+      70,
+      100,
+      130,
+      160,
+      190,
+      220,
+      250,
+      280,
+      310,
+      340,
+      370,
+      400,
+      430,
+      460,
+      490,
+      520,
+      550,
+      580,
+      610,
+      640,
+      670,
+      700,
+      730,
+      760,
+      790,
+      810,
+      830,
+      850,
+      870,
+      890,
+      910,
+      930,
+      950,
+      970,
+      990
+     ],
+     "normalization_definition": "x_over_feature_height"
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "normalized_spatial_position_by_feature_height",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (120 s)",
+      "series_index": 7,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/7/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp08"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "x",
+     "rule_id": "denormalize_x_by_feature_height",
+     "rule_version": "1.0.0",
+     "type": "geometry_based_conversion",
+     "formula": "x_tilde = x / H",
+     "status": "missing_context",
+     "normalization_definition": "x_over_feature_height",
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": null,
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {
+      "feature_height": {
+       "quantity": "feature_height",
+       "status": "missing_context",
+       "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)"
+      }
+     },
+     "unresolved_reason": "no value for feature_height in any scope (point/curve/series/panel/figure/experiment/method/paper)",
+     "confidence": 0.0,
+     "assumptions": [
+      "the plotted x is normalized by the SAME feature height that applies to this curve"
+     ],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (120 s)",
+      "series_index": 7,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/7/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp08"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "missing_context",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "no normalization expression found in axis label, caption, panel text, figure discussion or equations",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.jpcc.9b08176",
+      "doi": "10.1021_acs.jpcc.9b08176",
+      "figure": "2",
+      "panel": "b",
+      "series": "SiO2 (120 s)",
+      "series_index": 7,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/7/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
+      "experiment_id": "10.1021_acs.jpcc.9b08176__Fig2b__exp08"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'aspect_ratio' is an ontology coordinate",
+    "n_points": 38
+   },
+   "context_available": [
+    "aspect_ratio",
+    "exposure",
+    "flow_rate",
+    "generic_pressure",
+    "initial_sticking_coefficient",
+    "pulse_time",
     "recombination_probability",
     "temperature"
    ]
@@ -2638,8 +5677,8 @@
     "series_index": 0,
     "series_axis": "material",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/2/panels/0/series/0",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/3/panels/0/series/0",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "measured",
     "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 ± 2) × 10 -5 and (7 ± 4) × 10 -5 are determined."
@@ -2660,19 +5699,19 @@
     "points": [
      [
       1.05,
-      330
+      331
      ],
      [
-      2.4,
+      2.38,
       568
      ],
      [
-      3.59,
-      730
+      3.6,
+      731
      ],
      [
-      4.79,
-      875
+      4.8,
+      871
      ]
     ]
    },
@@ -2744,13 +5783,13 @@
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/2/panels/0/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2779,13 +5818,13 @@
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/2/panels/0/series/0/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2810,8 +5849,8 @@
     "series_index": 1,
     "series_axis": "material",
     "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-    "json_pointer": "/figures/2/panels/0/series/1",
-    "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+    "json_pointer": "/figures/3/panels/0/series/1",
+    "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
     "linked_experiment_ids": [],
     "data_source": "measured",
     "caption": "Figure 3. Film penetration for plasma ALD of SiO2 and TiO2, as presented in Figure 2, plotted against the natural logarithm of the plasma exposure time. Here, a one second uncertainty in plasma time has been included to account for variation in striking time and other startup e /uniFB00 ects. The slope of this plot provides the e /uniFB00 ective surface recombination probability of radicals during the plasma ALD process. For the SiO2 and TiO2 processes, very similar values of r = (6 ± 2) × 10 -5 and (7 ± 4) × 10 -5 are determined."
@@ -2831,12 +5870,12 @@
     },
     "points": [
      [
-      2.4,
-      450
+      2.38,
+      449
      ],
      [
-      4.79,
-      788
+      4.8,
+      789
      ]
     ]
    },
@@ -2908,13 +5947,13 @@
       "series_index": 1,
       "axis": "x",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/2/panels/0/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/3/panels/0/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2943,13 +5982,13 @@
       "series_index": 1,
       "axis": "y",
       "source_file": "papers/10.1021_acs.jpcc.9b08176/extracted/figure_data.json",
-      "json_pointer": "/figures/2/panels/0/series/1/points",
-      "source_checksum": "sha256:e88af3adf8241b96235fda7f3d7f5c488e6142068d4aeb97d7427c8dfa949cd3",
+      "json_pointer": "/figures/3/panels/0/series/1/points",
+      "source_checksum": "sha256:125c555af9932c82fe83d1274ad27858055afdfa0fc575f5e8deb309b2e8b330",
       "experiment_id": null
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {

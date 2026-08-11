@@ -8,6 +8,7 @@
    "card.json",
    "document.md",
    "figure_data.json",
+   "figure_inventory.json",
    "figures",
    "geometry.json",
    "pressure.json",
@@ -32,13 +33,15 @@
  "experiment_id_format": "<doi>__Fig<N>[<panel>][__exp<NN>] — figure number and panel come from extraction provenance; the __exp suffix appears only when one figure/panel yields several records",
  "summary": {
   "source_figure_series_ids": [
-   "10.1116_6.0002436__Fig1a",
-   "10.1116_6.0002436__Fig1b",
+   "10.1116_6.0002436__Fig1a__exp01",
+   "10.1116_6.0002436__Fig1a__exp02",
+   "10.1116_6.0002436__Fig1a__exp03",
+   "10.1116_6.0002436__Fig1a__exp04",
    "10.1116_6.0002436__Fig2a__exp01",
    "10.1116_6.0002436__Fig2a__exp02",
    "10.1116_6.0002436__Fig2a__exp03",
    "10.1116_6.0002436__Fig2a__exp04",
-   "10.1116_6.0002436__Fig2b",
+   "10.1116_6.0002436__Fig2a__exp05",
    "10.1116_6.0002436__Fig3a__exp01",
    "10.1116_6.0002436__Fig3a__exp02",
    "10.1116_6.0002436__Fig3a__exp03",
@@ -55,10 +58,6 @@
    "10.1116_6.0002436__Fig5a__exp06",
    "10.1116_6.0002436__Fig5a__exp07",
    "10.1116_6.0002436__Fig5a__exp08",
-   "10.1116_6.0002436__Fig5a__exp09",
-   "10.1116_6.0002436__Fig5a__exp10",
-   "10.1116_6.0002436__Fig5a__exp11",
-   "10.1116_6.0002436__Fig5a__exp12",
    "10.1116_6.0002436__Fig6a__exp01",
    "10.1116_6.0002436__Fig6a__exp02",
    "10.1116_6.0002436__Fig6a__exp03",
@@ -69,13 +68,13 @@
    "10.1116_6.0002436__Fig6b__exp04"
   ],
   "physical_case_ids": [
-   "10.1116_6.0002436__Fig1a",
-   "10.1116_6.0002436__Fig1b",
+   "10.1116_6.0002436__Fig1a__exp03",
+   "10.1116_6.0002436__Fig1a__exp04",
    "10.1116_6.0002436__Fig2a__exp01",
    "10.1116_6.0002436__Fig2a__exp02",
    "10.1116_6.0002436__Fig2a__exp03",
    "10.1116_6.0002436__Fig2a__exp04",
-   "10.1116_6.0002436__Fig2b",
+   "10.1116_6.0002436__Fig2a__exp05",
    "10.1116_6.0002436__Fig3a__exp01",
    "10.1116_6.0002436__Fig3a__exp02",
    "10.1116_6.0002436__Fig3a__exp03",
@@ -92,10 +91,6 @@
    "10.1116_6.0002436__Fig5a__exp06",
    "10.1116_6.0002436__Fig5a__exp07",
    "10.1116_6.0002436__Fig5a__exp08",
-   "10.1116_6.0002436__Fig5a__exp09",
-   "10.1116_6.0002436__Fig5a__exp10",
-   "10.1116_6.0002436__Fig5a__exp11",
-   "10.1116_6.0002436__Fig5a__exp12",
    "10.1116_6.0002436__Fig6a__exp01",
    "10.1116_6.0002436__Fig6a__exp02",
    "10.1116_6.0002436__Fig6a__exp03",
@@ -106,37 +101,48 @@
    "10.1116_6.0002436__Fig6b__exp04"
   ],
   "measurement_event_ids": [
-   "10.1116_6.0002436__Fig1a",
-   "10.1116_6.0002436__Fig1b",
+   "10.1116_6.0002436__Fig1a__exp01__meas",
+   "10.1116_6.0002436__Fig1a__exp03__meas",
    "10.1116_6.0002436__Fig2a__exp01__meas",
-   "10.1116_6.0002436__Fig2b",
    "10.1116_6.0002436__Fig3a__exp01__meas",
    "10.1116_6.0002436__Fig4a__exp01__meas",
    "10.1116_6.0002436__Fig5a__exp01__meas",
    "10.1116_6.0002436__Fig6a__exp01__meas",
    "10.1116_6.0002436__Fig6b__exp01__meas"
   ],
-  "physical_process_runs": 35,
-  "measurement_events": 9,
-  "result_series": 35,
+  "physical_process_runs": 31,
+  "measurement_events": 8,
+  "result_series": 33,
   "independent_sweep_cases_minted": 54,
   "independent_process_sweeps": 7,
   "continuous_or_longitudinal_runs": 0,
   "spatial_profiles_g": 0,
-  "measurement_scans": 28,
+  "measurement_scans": 24,
   "multi_output_measurements_g": 0,
   "models_and_simulations": 0,
-  "unresolved_granularity": 0,
-  "unresolved_granularity_ids": [],
-  "granularity_review_queue": [],
-  "source_figure_series": 35,
-  "resolved_result_records": 35,
-  "physical_experimental_cases": 82,
+  "unresolved_granularity": 2,
+  "unresolved_granularity_ids": [
+   "10.1116_6.0002436__Fig1a__exp01",
+   "10.1116_6.0002436__Fig1a__exp02"
+  ],
+  "granularity_review_queue": [
+   [
+    "10.1116_6.0002436__Fig1a__exp01",
+    "unresolved axis role"
+   ],
+   [
+    "10.1116_6.0002436__Fig1a__exp02",
+    "unresolved axis role"
+   ]
+  ],
+  "source_figure_series": 33,
+  "resolved_result_records": 33,
+  "physical_experimental_cases": 78,
   "continuous_experimental_runs": 0,
-  "discrete_experimental_sweeps": 7,
+  "discrete_experimental_sweeps": 9,
   "discrete_experimental_cases": 0,
   "experimental_profiles": 0,
-  "multi_output_measurements": 28,
+  "multi_output_measurements": 24,
   "fits_or_calculated_representations": 0,
   "simulations": 0,
   "model_curves": 0,
@@ -153,52 +159,35 @@
    "figure_slug": "Fig1a",
    "printed_figure_number": "1",
    "panel": "a",
-   "fig_docling_index": "17",
-   "n_series": 1,
+   "fig_docling_index": "16",
+   "n_series": 4,
    "physical_case_ids": [
-    "10.1116_6.0002436__Fig1a"
+    "10.1116_6.0002436__Fig1a__exp03",
+    "10.1116_6.0002436__Fig1a__exp04"
    ],
    "measurement_event_ids": [
-    "10.1116_6.0002436__Fig1a"
+    "10.1116_6.0002436__Fig1a__exp01__meas",
+    "10.1116_6.0002436__Fig1a__exp03__meas"
    ],
    "result_series_ids": [
-    "10.1116_6.0002436__Fig1a"
+    "10.1116_6.0002436__Fig1a__exp01",
+    "10.1116_6.0002436__Fig1a__exp02",
+    "10.1116_6.0002436__Fig1a__exp03",
+    "10.1116_6.0002436__Fig1a__exp04"
    ],
    "model_or_simulation_ids": [],
-   "unresolved_ids": [],
+   "unresolved_ids": [
+    "10.1116_6.0002436__Fig1a__exp01",
+    "10.1116_6.0002436__Fig1a__exp02"
+   ],
    "result_kinds": [
+    "discrete_experimental_sweep",
     "independent_process_sweep"
    ],
    "materials": [
     "MoOx"
    ],
-   "physical_cases": 7,
-   "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 °C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s pu"
-  },
-  {
-   "figure_slug": "Fig1b",
-   "printed_figure_number": "1",
-   "panel": "b",
-   "fig_docling_index": "17",
-   "n_series": 1,
-   "physical_case_ids": [
-    "10.1116_6.0002436__Fig1b"
-   ],
-   "measurement_event_ids": [
-    "10.1116_6.0002436__Fig1b"
-   ],
-   "result_series_ids": [
-    "10.1116_6.0002436__Fig1b"
-   ],
-   "model_or_simulation_ids": [],
-   "unresolved_ids": [],
-   "result_kinds": [
-    "independent_process_sweep"
-   ],
-   "materials": [
-    "MoOx"
-   ],
-   "physical_cases": 7,
+   "physical_cases": 14,
    "caption": "FIG. 1. Saturation curves for ozone (3 wt. %) and bis-isopropylcyclopentyldienyl molybdenum dihydride. Sample growth temperatures were set to 150 °C. Pulsing sequences are (a) Mo( i PrCp)2H2 + 20 s pu"
   },
   {
@@ -206,12 +195,13 @@
    "printed_figure_number": "2",
    "panel": "a",
    "fig_docling_index": "18",
-   "n_series": 4,
+   "n_series": 5,
    "physical_case_ids": [
     "10.1116_6.0002436__Fig2a__exp01",
     "10.1116_6.0002436__Fig2a__exp02",
     "10.1116_6.0002436__Fig2a__exp03",
-    "10.1116_6.0002436__Fig2a__exp04"
+    "10.1116_6.0002436__Fig2a__exp04",
+    "10.1116_6.0002436__Fig2a__exp05"
    ],
    "measurement_event_ids": [
     "10.1116_6.0002436__Fig2a__exp01__meas"
@@ -220,7 +210,8 @@
     "10.1116_6.0002436__Fig2a__exp01",
     "10.1116_6.0002436__Fig2a__exp02",
     "10.1116_6.0002436__Fig2a__exp03",
-    "10.1116_6.0002436__Fig2a__exp04"
+    "10.1116_6.0002436__Fig2a__exp04",
+    "10.1116_6.0002436__Fig2a__exp05"
    ],
    "model_or_simulation_ids": [],
    "unresolved_ids": [],
@@ -230,33 +221,7 @@
    "materials": [
     "MoOx"
    ],
-   "physical_cases": 32,
-   "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 × 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe"
-  },
-  {
-   "figure_slug": "Fig2b",
-   "printed_figure_number": "2",
-   "panel": "b",
-   "fig_docling_index": "18",
-   "n_series": 1,
-   "physical_case_ids": [
-    "10.1116_6.0002436__Fig2b"
-   ],
-   "measurement_event_ids": [
-    "10.1116_6.0002436__Fig2b"
-   ],
-   "result_series_ids": [
-    "10.1116_6.0002436__Fig2b"
-   ],
-   "model_or_simulation_ids": [],
-   "unresolved_ids": [],
-   "result_kinds": [
-    "independent_process_sweep"
-   ],
-   "materials": [
-    "MoOx"
-   ],
-   "physical_cases": 8,
+   "physical_cases": 40,
    "caption": "FIG. 2. Growth per cycle of MoOx and SUP for various growth temperatures using the pulsing sequence of 6 × 0.25 s Mo( i PrCp)2 H2 + purge + 40 s O3 + purge. Purge time was varied with deposition tempe"
   },
   {
@@ -328,7 +293,7 @@
    "printed_figure_number": "5",
    "panel": "a",
    "fig_docling_index": "23",
-   "n_series": 12,
+   "n_series": 8,
    "physical_case_ids": [
     "10.1116_6.0002436__Fig5a__exp01",
     "10.1116_6.0002436__Fig5a__exp02",
@@ -337,11 +302,7 @@
     "10.1116_6.0002436__Fig5a__exp05",
     "10.1116_6.0002436__Fig5a__exp06",
     "10.1116_6.0002436__Fig5a__exp07",
-    "10.1116_6.0002436__Fig5a__exp08",
-    "10.1116_6.0002436__Fig5a__exp09",
-    "10.1116_6.0002436__Fig5a__exp10",
-    "10.1116_6.0002436__Fig5a__exp11",
-    "10.1116_6.0002436__Fig5a__exp12"
+    "10.1116_6.0002436__Fig5a__exp08"
    ],
    "measurement_event_ids": [
     "10.1116_6.0002436__Fig5a__exp01__meas"
@@ -354,11 +315,7 @@
     "10.1116_6.0002436__Fig5a__exp05",
     "10.1116_6.0002436__Fig5a__exp06",
     "10.1116_6.0002436__Fig5a__exp07",
-    "10.1116_6.0002436__Fig5a__exp08",
-    "10.1116_6.0002436__Fig5a__exp09",
-    "10.1116_6.0002436__Fig5a__exp10",
-    "10.1116_6.0002436__Fig5a__exp11",
-    "10.1116_6.0002436__Fig5a__exp12"
+    "10.1116_6.0002436__Fig5a__exp08"
    ],
    "model_or_simulation_ids": [],
    "unresolved_ids": [],
@@ -368,7 +325,7 @@
    "materials": [
     "MoOx"
    ],
-   "physical_cases": 12,
+   "physical_cases": 8,
    "caption": "FIG. 5. O 1s core-level XPS data for ALD MoOx deposited using Mo( i PrCp)2H2 at 100, 150, and 200 °C and a 200 °C deposited film annealed at 350 °C for 20 min."
   },
   {

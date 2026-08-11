@@ -1,38 +1,40 @@
 {
  "doi": "10.1039_c7ra07722j",
  "generator": "pipeline/canonical/build_canonical.py",
- "code_version": "7e3103e+dirty",
- "created_at": 1786394469,
+ "code_version": "e038973+dirty",
+ "created_at": 1786419380,
  "ontology": "ontology/ald_ontology.json",
- "n_curves": 34,
+ "n_curves": 33,
  "curves": [
   {
-   "curve_id": "10.1039_c7ra07722j::F2::a_1::0",
+   "curve_id": "10.1039_c7ra07722j::F2::a::0",
    "source": {
     "paper_id": "10.1039_c7ra07722j",
     "doi": "10.1039_c7ra07722j",
     "figure": "2",
     "figure_index": "4",
-    "panel": "a_1",
+    "panel": "a",
     "series": "",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/0/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-    "linked_experiment_ids": [],
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+    "linked_experiment_ids": [
+     "10.1039_c7ra07722j__Fig2a__exp01__case00"
+    ],
     "data_source": "measured",
     "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to the eye. Dotted lines indicate the chosen standard values and the corresponding growth per cycle. Note that the reaction time of H2O after dosing was kept at 4 s."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "LiOᵗBu dose (s)",
      "quantity": "pulse_time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Growth per cycle (Å)",
      "quantity": "growth_per_cycle",
      "unit": "Å",
      "log": false
@@ -48,23 +50,23 @@
      ],
      [
       1.0,
-      0.418
+      0.42
      ],
      [
       2.0,
-      0.463
+      0.46
      ],
      [
       4.0,
-      0.548
+      0.55
      ],
      [
       6.0,
-      0.598
+      0.6
      ],
      [
       8.0,
-      0.603
+      0.6
      ],
      [
       10.0,
@@ -76,7 +78,7 @@
     "x": {
      "raw_quantity": "pulse_time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "LiOᵗBu dose (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "pulse_time",
@@ -91,15 +93,25 @@
     "y": {
      "raw_quantity": "growth_per_cycle",
      "raw_unit": "Å",
-     "raw_label": null,
-     "unit": "Å",
-     "unit_recovered": false,
+     "raw_label": "Growth per cycle (Å)",
+     "unit": "Å/cycle",
+     "unit_recovered": true,
      "quantity": "growth_per_cycle",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
-     "evidence": [],
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": null,
+       "source_location": null,
+       "span": "Growth per cycle (Å)",
+       "method": "per_cycle_division_printed_in_axis_label",
+       "confidence": 0.9,
+       "automatic": true
+      }
+     ],
      "status": "resolved",
      "unresolved_reason": null
     }
@@ -121,7 +133,22 @@
      ],
      "normalization_definition": null
     },
-    "y": null
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.0,
+      0.019500000000000003,
+      0.042,
+      0.046000000000000006,
+      0.05500000000000001,
+      0.06,
+      0.06,
+      0.0615
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -150,94 +177,103 @@
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "a_1",
+      "panel": "a",
       "series": "",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "length_unit_conversion",
+     "rule_id": "growth_per_cycle_unit_conversion",
      "rule_version": "1.0.0",
      "type": "unit_conversion",
-     "formula": null,
-     "status": "invalid",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
      "original_value": null,
-     "original_unit": "Å",
+     "original_unit": "Å/cycle",
      "canonical_value": null,
      "canonical_unit": "nm/cycle",
      "context": {},
-     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
      "source": {
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "a_1",
+      "panel": "a",
       "series": "",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
     "axis_role": "condition",
-    "previous_representation": null,
+    "previous_representation": "case",
     "resolved_representation": "series",
-    "changed": false,
+    "changed": true,
     "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
     "n_points": 8
    },
    "context_available": [
+    "aspect_ratio",
+    "base_pressure",
+    "cycle_number",
+    "feature_height",
+    "feature_width",
     "temperature"
    ]
   },
   {
-   "curve_id": "10.1039_c7ra07722j::F2::a_2::0",
+   "curve_id": "10.1039_c7ra07722j::F2::a::0",
    "source": {
     "paper_id": "10.1039_c7ra07722j",
     "doi": "10.1039_c7ra07722j",
     "figure": "2",
     "figure_index": "4",
-    "panel": "a_2",
+    "panel": "a",
     "series": "",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/1/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-    "linked_experiment_ids": [],
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+    "linked_experiment_ids": [
+     "10.1039_c7ra07722j__Fig2a__exp01__case00"
+    ],
     "data_source": "measured",
     "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to the eye. Dotted lines indicate the chosen standard values and the corresponding growth per cycle. Note that the reaction time of H2O after dosing was kept at 4 s."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "LiOᵗBu dose (s)",
      "quantity": "pulse_time",
      "unit": "ms",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Growth per cycle (Å)",
      "quantity": "growth_per_cycle",
      "unit": "Å",
      "log": false
@@ -249,11 +285,11 @@
      ],
      [
       50.0,
-      0.596
+      0.595
      ],
      [
       100.0,
-      0.603
+      0.605
      ],
      [
       200.0,
@@ -265,7 +301,7 @@
     "x": {
      "raw_quantity": "pulse_time",
      "raw_unit": "ms",
-     "raw_label": null,
+     "raw_label": "LiOᵗBu dose (s)",
      "unit": "ms",
      "unit_recovered": false,
      "quantity": "pulse_time",
@@ -280,15 +316,25 @@
     "y": {
      "raw_quantity": "growth_per_cycle",
      "raw_unit": "Å",
-     "raw_label": null,
-     "unit": "Å",
-     "unit_recovered": false,
+     "raw_label": "Growth per cycle (Å)",
+     "unit": "Å/cycle",
+     "unit_recovered": true,
      "quantity": "growth_per_cycle",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
-     "evidence": [],
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": null,
+       "source_location": null,
+       "span": "Growth per cycle (Å)",
+       "method": "per_cycle_division_printed_in_axis_label",
+       "confidence": 0.9,
+       "automatic": true
+      }
+     ],
      "status": "resolved",
      "unresolved_reason": null
     }
@@ -306,7 +352,18 @@
      ],
      "normalization_definition": null
     },
-    "y": null
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.0,
+      0.0595,
+      0.0605,
+      0.059
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -335,102 +392,110 @@
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "a_2",
+      "panel": "a",
       "series": "",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/1/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "length_unit_conversion",
+     "rule_id": "growth_per_cycle_unit_conversion",
      "rule_version": "1.0.0",
      "type": "unit_conversion",
-     "formula": null,
-     "status": "invalid",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
      "original_value": null,
-     "original_unit": "Å",
+     "original_unit": "Å/cycle",
      "canonical_value": null,
      "canonical_unit": "nm/cycle",
      "context": {},
-     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
      "source": {
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "a_2",
+      "panel": "a",
       "series": "",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/1/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
     "axis_role": "condition",
-    "previous_representation": null,
+    "previous_representation": "case",
     "resolved_representation": "series",
-    "changed": false,
+    "changed": true,
     "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
     "n_points": 4
    },
    "context_available": [
-    "process_time",
+    "aspect_ratio",
+    "base_pressure",
+    "cycle_number",
+    "feature_height",
+    "feature_width",
     "temperature"
    ]
   },
   {
-   "curve_id": "10.1039_c7ra07722j::F2::a_3::0",
+   "curve_id": "10.1039_c7ra07722j::F2::a::0",
    "source": {
     "paper_id": "10.1039_c7ra07722j",
     "doi": "10.1039_c7ra07722j",
     "figure": "2",
     "figure_index": "4",
-    "panel": "a_3",
+    "panel": "a",
     "series": "",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/2/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-    "linked_experiment_ids": [],
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+    "linked_experiment_ids": [
+     "10.1039_c7ra07722j__Fig2a__exp01__case00"
+    ],
     "data_source": "measured",
     "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to the eye. Dotted lines indicate the chosen standard values and the corresponding growth per cycle. Note that the reaction time of H2O after dosing was kept at 4 s."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "LiOᵗBu dose (s)",
      "quantity": "pulse_time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Growth per cycle (Å)",
      "quantity": "growth_per_cycle",
      "unit": "Å",
      "log": false
     },
     "points": [
      [
-      0.0,
+      0.1,
       0.17
      ],
      [
@@ -443,11 +508,11 @@
      ],
      [
       2.0,
-      0.596
+      0.595
      ],
      [
       4.0,
-      0.602
+      0.6
      ]
     ]
    },
@@ -455,7 +520,7 @@
     "x": {
      "raw_quantity": "pulse_time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "LiOᵗBu dose (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "pulse_time",
@@ -470,15 +535,25 @@
     "y": {
      "raw_quantity": "growth_per_cycle",
      "raw_unit": "Å",
-     "raw_label": null,
-     "unit": "Å",
-     "unit_recovered": false,
+     "raw_label": "Growth per cycle (Å)",
+     "unit": "Å/cycle",
+     "unit_recovered": true,
      "quantity": "growth_per_cycle",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
-     "evidence": [],
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": null,
+       "source_location": null,
+       "span": "Growth per cycle (Å)",
+       "method": "per_cycle_division_printed_in_axis_label",
+       "confidence": 0.9,
+       "automatic": true
+      }
+     ],
      "status": "resolved",
      "unresolved_reason": null
     }
@@ -489,7 +564,7 @@
      "quantity": "pulse_time",
      "unit": "s",
      "values": [
-      0.0,
+      0.1,
       0.5,
       1.0,
       2.0,
@@ -497,7 +572,19 @@
      ],
      "normalization_definition": null
     },
-    "y": null
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.017,
+      0.018,
+      0.057499999999999996,
+      0.0595,
+      0.06
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -526,94 +613,103 @@
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "a_3",
+      "panel": "a",
       "series": "",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/2/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "length_unit_conversion",
+     "rule_id": "growth_per_cycle_unit_conversion",
      "rule_version": "1.0.0",
      "type": "unit_conversion",
-     "formula": null,
-     "status": "invalid",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
      "original_value": null,
-     "original_unit": "Å",
+     "original_unit": "Å/cycle",
      "canonical_value": null,
      "canonical_unit": "nm/cycle",
      "context": {},
-     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
      "source": {
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "a_3",
+      "panel": "a",
       "series": "",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/2/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2a__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
     "axis_role": "condition",
-    "previous_representation": null,
+    "previous_representation": "case",
     "resolved_representation": "series",
-    "changed": false,
+    "changed": true,
     "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
     "n_points": 5
    },
    "context_available": [
+    "aspect_ratio",
+    "base_pressure",
+    "cycle_number",
+    "feature_height",
+    "feature_width",
     "temperature"
    ]
   },
   {
-   "curve_id": "10.1039_c7ra07722j::F2::b_1::0",
+   "curve_id": "10.1039_c7ra07722j::F2::b::0",
    "source": {
     "paper_id": "10.1039_c7ra07722j",
     "doi": "10.1039_c7ra07722j",
     "figure": "2",
     "figure_index": "4",
-    "panel": "b_1",
+    "panel": "b",
     "series": "",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/3/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-    "linked_experiment_ids": [],
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+    "linked_experiment_ids": [
+     "10.1039_c7ra07722j__Fig2b__exp01__case00"
+    ],
     "data_source": "measured",
     "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to the eye. Dotted lines indicate the chosen standard values and the corresponding growth per cycle. Note that the reaction time of H2O after dosing was kept at 4 s."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "LiOᵗBu dose (s)",
      "quantity": "pulse_time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Growth per cycle (Å)",
      "quantity": "growth_per_cycle",
      "unit": "Å",
      "log": false
@@ -625,7 +721,7 @@
      ],
      [
       0.5,
-      0.368
+      0.37
      ],
      [
       1.0,
@@ -633,27 +729,23 @@
      ],
      [
       2.0,
-      0.722
-     ],
-     [
-      3.0,
-      0.852
+      0.72
      ],
      [
       4.0,
-      0.803
+      0.85
      ],
      [
       5.0,
-      0.824
+      0.8
      ],
      [
       6.0,
-      0.852
+      0.82
      ],
      [
       8.0,
-      0.852
+      0.85
      ]
     ]
    },
@@ -661,7 +753,7 @@
     "x": {
      "raw_quantity": "pulse_time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "LiOᵗBu dose (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "pulse_time",
@@ -676,15 +768,25 @@
     "y": {
      "raw_quantity": "growth_per_cycle",
      "raw_unit": "Å",
-     "raw_label": null,
-     "unit": "Å",
-     "unit_recovered": false,
+     "raw_label": "Growth per cycle (Å)",
+     "unit": "Å/cycle",
+     "unit_recovered": true,
      "quantity": "growth_per_cycle",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
-     "evidence": [],
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": null,
+       "source_location": null,
+       "span": "Growth per cycle (Å)",
+       "method": "per_cycle_division_printed_in_axis_label",
+       "confidence": 0.9,
+       "automatic": true
+      }
+     ],
      "status": "resolved",
      "unresolved_reason": null
     }
@@ -699,7 +801,6 @@
       0.5,
       1.0,
       2.0,
-      3.0,
       4.0,
       5.0,
       6.0,
@@ -707,7 +808,22 @@
      ],
      "normalization_definition": null
     },
-    "y": null
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.0,
+      0.037,
+      0.058499999999999996,
+      0.072,
+      0.085,
+      0.08000000000000002,
+      0.082,
+      0.085
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -736,94 +852,103 @@
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "b_1",
+      "panel": "b",
       "series": "",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/3/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2b__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "length_unit_conversion",
+     "rule_id": "growth_per_cycle_unit_conversion",
      "rule_version": "1.0.0",
      "type": "unit_conversion",
-     "formula": null,
-     "status": "invalid",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
      "original_value": null,
-     "original_unit": "Å",
+     "original_unit": "Å/cycle",
      "canonical_value": null,
      "canonical_unit": "nm/cycle",
      "context": {},
-     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
      "source": {
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "b_1",
+      "panel": "b",
       "series": "",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/3/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2b__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
     "axis_role": "condition",
-    "previous_representation": null,
+    "previous_representation": "case",
     "resolved_representation": "series",
-    "changed": false,
+    "changed": true,
     "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
-    "n_points": 9
+    "n_points": 8
    },
    "context_available": [
+    "aspect_ratio",
+    "base_pressure",
+    "cycle_number",
+    "feature_height",
+    "feature_width",
     "temperature"
    ]
   },
   {
-   "curve_id": "10.1039_c7ra07722j::F2::b_2::0",
+   "curve_id": "10.1039_c7ra07722j::F2::b::0",
    "source": {
     "paper_id": "10.1039_c7ra07722j",
     "doi": "10.1039_c7ra07722j",
     "figure": "2",
     "figure_index": "4",
-    "panel": "b_2",
+    "panel": "b",
     "series": "",
     "series_index": 0,
     "series_axis": "",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/0/panels/4/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-    "linked_experiment_ids": [],
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+    "linked_experiment_ids": [
+     "10.1039_c7ra07722j__Fig2b__exp01__case00"
+    ],
     "data_source": "measured",
     "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to the eye. Dotted lines indicate the chosen standard values and the corresponding growth per cycle. Note that the reaction time of H2O after dosing was kept at 4 s."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "LiOᵗBu dose (s)",
      "quantity": "pulse_time",
      "unit": "s",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Growth per cycle (Å)",
      "quantity": "growth_per_cycle",
      "unit": "Å",
      "log": false
@@ -839,19 +964,19 @@
      ],
      [
       1.0,
-      0.788
+      0.79
      ],
      [
       2.0,
-      0.812
+      0.81
      ],
      [
       3.0,
-      0.828
+      0.83
      ],
      [
       4.0,
-      0.806
+      0.81
      ]
     ]
    },
@@ -859,7 +984,7 @@
     "x": {
      "raw_quantity": "pulse_time",
      "raw_unit": "s",
-     "raw_label": null,
+     "raw_label": "LiOᵗBu dose (s)",
      "unit": "s",
      "unit_recovered": false,
      "quantity": "pulse_time",
@@ -874,15 +999,25 @@
     "y": {
      "raw_quantity": "growth_per_cycle",
      "raw_unit": "Å",
-     "raw_label": null,
-     "unit": "Å",
-     "unit_recovered": false,
+     "raw_label": "Growth per cycle (Å)",
+     "unit": "Å/cycle",
+     "unit_recovered": true,
      "quantity": "growth_per_cycle",
      "axis_role": "output",
      "axis_kind": "output",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
-     "evidence": [],
+     "evidence": [
+      {
+       "source": "axis_label",
+       "source_file": null,
+       "source_location": null,
+       "span": "Growth per cycle (Å)",
+       "method": "per_cycle_division_printed_in_axis_label",
+       "confidence": 0.9,
+       "automatic": true
+      }
+     ],
      "status": "resolved",
      "unresolved_reason": null
     }
@@ -902,7 +1037,20 @@
      ],
      "normalization_definition": null
     },
-    "y": null
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.0,
+      0.057499999999999996,
+      0.07900000000000001,
+      0.08100000000000002,
+      0.083,
+      0.08100000000000002
+     ],
+     "normalization_definition": null
+    }
    },
    "projections": {
     "x": [],
@@ -931,64 +1079,71 @@
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "b_2",
+      "panel": "b",
       "series": "",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/4/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2b__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
-     "rule_id": "length_unit_conversion",
+     "rule_id": "growth_per_cycle_unit_conversion",
      "rule_version": "1.0.0",
      "type": "unit_conversion",
-     "formula": null,
-     "status": "invalid",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
      "normalization_definition": null,
      "comparison_group": "growth_per_cycle",
      "original_value": null,
-     "original_unit": "Å",
+     "original_unit": "Å/cycle",
      "canonical_value": null,
      "canonical_unit": "nm/cycle",
      "context": {},
-     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
      "source": {
       "paper_id": "10.1039_c7ra07722j",
       "doi": "10.1039_c7ra07722j",
       "figure": "2",
-      "panel": "b_2",
+      "panel": "b",
       "series": "",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/0/panels/4/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": null
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig2b__exp01__case00"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
     "axis_role": "condition",
-    "previous_representation": null,
+    "previous_representation": "case",
     "resolved_representation": "series",
-    "changed": false,
+    "changed": true,
     "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
     "n_points": 6
    },
    "context_available": [
+    "aspect_ratio",
+    "base_pressure",
+    "cycle_number",
+    "feature_height",
+    "feature_width",
     "temperature"
    ]
   },
@@ -1005,7 +1160,7 @@
     "series_axis": "process and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3a__exp01"
     ],
@@ -1028,7 +1183,7 @@
     "points": [
      [
       0,
-      0.0
+      0
      ],
      [
       50,
@@ -1036,7 +1191,7 @@
      ],
      [
       100,
-      4.4
+      4.3
      ],
      [
       150,
@@ -1119,9 +1274,9 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      0.0,
+      0,
       2.0,
-      4.4,
+      4.3,
       6.8,
       9.4,
       11.9,
@@ -1169,12 +1324,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -1204,12 +1359,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1242,7 +1397,7 @@
     "series_axis": "process and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/1",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3a__exp02"
     ],
@@ -1265,27 +1420,27 @@
     "points": [
      [
       0,
-      0.0
+      0
      ],
      [
       50,
-      2.8
+      3.1
      ],
      [
       100,
-      5.8
+      6.3
      ],
      [
       150,
-      10.7
+      10.0
      ],
      [
       200,
-      15.1
+      14.8
      ],
      [
       250,
-      21.1
+      19.5
      ],
      [
       300,
@@ -1313,7 +1468,7 @@
      ],
      [
       600,
-      49.2
+      49.4
      ]
     ]
    },
@@ -1356,19 +1511,19 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      0.0,
-      2.8,
-      5.8,
-      10.7,
-      15.1,
-      21.1,
+      0,
+      3.1,
+      6.3,
+      10.0,
+      14.8,
+      19.5,
       23.6,
       28.1,
       32.7,
       36.8,
       40.8,
       45.1,
-      49.2
+      49.4
      ],
      "normalization_definition": null
     }
@@ -1406,12 +1561,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -1441,12 +1596,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1479,7 +1634,7 @@
     "series_axis": "process and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/2",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3a__exp03"
     ],
@@ -1502,23 +1657,23 @@
     "points": [
      [
       0,
-      0.0
+      0
      ],
      [
       50,
-      2.8
+      2.4
      ],
      [
       100,
-      5.2
+      5.0
      ],
      [
       150,
-      9.8
+      7.9
      ],
      [
       200,
-      13.6
+      13.9
      ],
      [
       250,
@@ -1530,11 +1685,11 @@
      ],
      [
       350,
-      26.1
+      26.2
      ],
      [
       400,
-      30.3
+      30.4
      ],
      [
       450,
@@ -1546,7 +1701,7 @@
      ],
      [
       550,
-      43.5
+      43.4
      ],
      [
       600,
@@ -1593,18 +1748,18 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      0.0,
-      2.8,
-      5.2,
-      9.8,
-      13.6,
+      0,
+      2.4,
+      5.0,
+      7.9,
+      13.9,
       18.2,
       22.2,
-      26.1,
-      30.3,
+      26.2,
+      30.4,
       34.6,
       39.0,
-      43.5,
+      43.4,
       47.9
      ],
      "normalization_definition": null
@@ -1643,12 +1798,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -1678,12 +1833,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1716,7 +1871,7 @@
     "series_axis": "process and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/3",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3a__exp04"
     ],
@@ -1739,19 +1894,19 @@
     "points": [
      [
       0,
-      0.0
+      0
      ],
      [
       50,
-      3.4
+      3.8
      ],
      [
       100,
-      6.7
+      7.1
      ],
      [
       150,
-      9.9
+      10.8
      ],
      [
       200,
@@ -1763,11 +1918,11 @@
      ],
      [
       300,
-      28.6
+      28.7
      ],
      [
       350,
-      35.2
+      35.1
      ],
      [
       400,
@@ -1775,7 +1930,7 @@
      ],
      [
       450,
-      49.3
+      49.2
      ]
     ]
    },
@@ -1818,16 +1973,16 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      0.0,
-      3.4,
-      6.7,
-      9.9,
+      0,
+      3.8,
+      7.1,
+      10.8,
       16.1,
       22.2,
-      28.6,
-      35.2,
+      28.7,
+      35.1,
       42.6,
-      49.3
+      49.2
      ],
      "normalization_definition": null
     }
@@ -1865,12 +2020,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -1900,12 +2055,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -1938,7 +2093,7 @@
     "series_axis": "process and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/0/series/4",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3a__exp05"
     ],
@@ -1961,15 +2116,15 @@
     "points": [
      [
       0,
-      0.0
+      0
      ],
      [
       50,
-      3.8
+      3.0
      ],
      [
       100,
-      7.1
+      5.8
      ],
      [
       150,
@@ -1977,15 +2132,15 @@
      ],
      [
       200,
-      14.2
+      13.6
      ],
      [
       250,
-      20.8
+      21.0
      ],
      [
       300,
-      28.6
+      28.5
      ],
      [
       350,
@@ -1994,10 +2149,6 @@
      [
       400,
       45.0
-     ],
-     [
-      435,
-      50.0
      ]
     ]
    },
@@ -2040,16 +2191,15 @@
      "quantity": "film_thickness",
      "unit": "nm",
      "values": [
-      0.0,
-      3.8,
-      7.1,
+      0,
+      3.0,
+      5.8,
       8.0,
-      14.2,
-      20.8,
-      28.6,
+      13.6,
+      21.0,
+      28.5,
       36.6,
-      45.0,
-      50.0
+      45.0
      ],
      "normalization_definition": null
     }
@@ -2087,12 +2237,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/4/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp05"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2122,12 +2272,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/0/series/4/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3a__exp05"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2136,7 +2286,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'cycle_number' is an ontology coordinate",
-    "n_points": 10
+    "n_points": 9
    },
    "context_available": [
     "aspect_ratio",
@@ -2157,10 +2307,10 @@
     "panel": "b",
     "series": "SE, thermal",
     "series_index": 0,
-    "series_axis": "measurement method and process",
+    "series_axis": "method and mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3b__exp01"
     ],
@@ -2291,12 +2441,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2326,12 +2476,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2360,10 +2510,10 @@
     "panel": "b",
     "series": "SE, plasma",
     "series_index": 1,
-    "series_axis": "measurement method and process",
+    "series_axis": "method and mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/1",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3b__exp02"
     ],
@@ -2499,12 +2649,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2534,12 +2684,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2568,10 +2718,10 @@
     "panel": "b",
     "series": "EBS, thermal",
     "series_index": 2,
-    "series_axis": "measurement method and process",
+    "series_axis": "method and mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/2",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3b__exp03"
     ],
@@ -2677,12 +2827,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2712,12 +2862,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2746,10 +2896,10 @@
     "panel": "b",
     "series": "EBS, plasma",
     "series_index": 3,
-    "series_axis": "measurement method and process",
+    "series_axis": "method and mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/1/panels/1/series/3",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig3b__exp04"
     ],
@@ -2776,15 +2926,15 @@
      ],
      [
       250,
-      0.7
+      0.69
      ],
      [
       275,
-      1.2
+      1.19
      ],
      [
       300,
-      1.7
+      1.71
      ]
     ]
    },
@@ -2870,12 +3020,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -2905,12 +3055,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/1/panels/1/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig3b__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -2939,10 +3089,10 @@
     "panel": "a",
     "series": "250 °C",
     "series_index": 0,
-    "series_axis": "deposition_temperature",
+    "series_axis": "temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/2/panels/0/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig4a__exp01"
     ],
@@ -2952,31 +3102,51 @@
    "raw": {
     "x": {
      "label": "Measurement number",
-     "quantity": "Measurement number",
+     "quantity": "cycle_number",
      "unit": "",
      "log": false
     },
     "y": {
      "label": "Δ (°)",
-     "quantity": "Δ",
+     "quantity": "Δ (°)",
      "unit": "°",
      "log": false
     },
     "points": [
      [
+      0,
+      0.6
+     ],
+     [
       1,
-      0.7
+      0.6
+     ],
+     [
+      2,
+      0.6
      ],
      [
       3,
-      0.7
+      0.6
+     ],
+     [
+      4,
+      0.65
      ],
      [
       5,
-      0.7
+      0.65
+     ],
+     [
+      6,
+      0.65
      ],
      [
       7,
+      0.65
+     ],
+     [
+      8,
       0.7
      ],
      [
@@ -2984,7 +3154,15 @@
       0.7
      ],
      [
+      10,
+      0.7
+     ],
+     [
       11,
+      0.7
+     ],
+     [
+      12,
       0.7
      ],
      [
@@ -2992,7 +3170,15 @@
       0.7
      ],
      [
+      14,
+      0.7
+     ],
+     [
       15,
+      0.7
+     ],
+     [
+      16,
       0.7
      ],
      [
@@ -3000,67 +3186,135 @@
       0.7
      ],
      [
+      18,
+      0.7
+     ],
+     [
       19,
       0.7
      ],
      [
+      20,
+      0.75
+     ],
+     [
       21,
-      0.7
+      0.75
+     ],
+     [
+      22,
+      0.75
      ],
      [
       23,
-      0.7
+      0.75
+     ],
+     [
+      24,
+      0.75
      ],
      [
       25,
-      0.7
+      0.75
+     ],
+     [
+      26,
+      0.75
      ],
      [
       27,
-      0.7
+      0.75
+     ],
+     [
+      28,
+      0.75
      ],
      [
       29,
-      0.7
+      0.75
+     ],
+     [
+      30,
+      0.75
      ],
      [
       31,
-      0.7
+      0.75
+     ],
+     [
+      32,
+      0.75
      ],
      [
       33,
-      0.7
+      0.75
+     ],
+     [
+      34,
+      0.75
      ],
      [
       35,
-      0.7
+      0.75
+     ],
+     [
+      36,
+      0.75
      ],
      [
       37,
-      0.7
+      0.75
+     ],
+     [
+      38,
+      0.75
      ],
      [
       39,
-      0.7
+      0.75
+     ],
+     [
+      40,
+      0.75
      ],
      [
       41,
-      0.7
+      0.8
+     ],
+     [
+      42,
+      0.8
      ],
      [
       43,
-      0.7
+      0.8
+     ],
+     [
+      44,
+      0.8
      ],
      [
       45,
-      0.7
+      0.8
+     ],
+     [
+      46,
+      0.8
      ],
      [
       47,
-      0.7
+      0.8
+     ],
+     [
+      48,
+      0.8
      ],
      [
       49,
+      0.8
+     ],
+     [
+      50,
       0.8
      ],
      [
@@ -3068,7 +3322,15 @@
       0.8
      ],
      [
+      52,
+      0.8
+     ],
+     [
       53,
+      0.8
+     ],
+     [
+      54,
       0.8
      ],
      [
@@ -3076,33 +3338,45 @@
       0.8
      ],
      [
+      56,
+      0.8
+     ],
+     [
       57,
       0.8
      ],
      [
+      58,
+      0.85
+     ],
+     [
+      59,
+      0.85
+     ],
+     [
       60,
-      0.8
+      0.85
      ]
     ]
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Measurement number",
+     "raw_quantity": "cycle_number",
      "raw_unit": "",
      "raw_label": "Measurement number",
      "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "cycle_count",
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "x quantity 'Measurement number' does not resolve to any ontology QuantityKind"
+     "status": "resolved",
+     "unresolved_reason": null
     },
     "y": {
-     "raw_quantity": "Δ",
+     "raw_quantity": "Δ (°)",
      "raw_unit": "°",
      "raw_label": "Δ (°)",
      "unit": "°",
@@ -3134,13 +3408,13 @@
      "formula": null,
      "status": "unsupported",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "cycle_count",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "cycle",
      "context": {},
-     "unresolved_reason": "x quantity 'Measurement number' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -3154,12 +3428,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig4a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -3189,21 +3463,21 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig4a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": null,
+    "axis_role": "coordinate",
     "previous_representation": "trace",
-    "resolved_representation": "unresolved",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis role could not be determined",
-    "n_points": 30
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 61
    },
    "context_available": [
     "aspect_ratio",
@@ -3212,7 +3486,8 @@
     "deposition_temperature",
     "feature_height",
     "feature_width",
-    "pulse_time"
+    "pulse_time",
+    "temperature"
    ]
   },
   {
@@ -3225,10 +3500,10 @@
     "panel": "a",
     "series": "275 °C",
     "series_index": 1,
-    "series_axis": "deposition_temperature",
+    "series_axis": "temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/2/panels/0/series/1",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig4a__exp02"
     ],
@@ -3238,132 +3513,176 @@
    "raw": {
     "x": {
      "label": "Measurement number",
-     "quantity": "Measurement number",
+     "quantity": "cycle_number",
      "unit": "",
      "log": false
     },
     "y": {
      "label": "Δ (°)",
-     "quantity": "Δ",
+     "quantity": "Δ (°)",
      "unit": "°",
      "log": false
     },
     "points": [
      [
+      0,
+      1.2
+     ],
+     [
       1,
-      1.8
+      2.0
      ],
      [
       2,
-      2.1
-     ],
-     [
-      3,
       2.7
      ],
      [
-      4,
+      3,
       3.5
      ],
      [
-      5,
+      4,
       4.0
      ],
      [
-      6,
+      5,
       4.5
      ],
      [
-      7,
+      6,
       5.0
      ],
      [
-      8,
+      7,
       5.4
      ],
      [
-      9,
+      8,
       5.9
      ],
      [
-      10,
-      6.4
+      9,
+      6.3
      ],
      [
-      11,
+      10,
       6.8
      ],
      [
+      11,
+      7.1
+     ],
+     [
       12,
-      7.2
+      7.6
      ],
      [
       13,
-      7.8
-     ],
-     [
-      14,
       8.3
      ],
      [
+      14,
+      8.6
+     ],
+     [
       15,
-      8.7
+      8.9
      ],
      [
       16,
-      9.0
-     ],
-     [
-      17,
       9.3
      ],
      [
-      18,
+      17,
       9.7
      ],
      [
+      18,
+      10.0
+     ],
+     [
       19,
-      10.1
+      10.3
      ],
      [
       20,
-      10.5
+      10.6
      ],
      [
       21,
-      10.7
+      10.8
+     ],
+     [
+      22,
+      11.1
      ],
      [
       23,
-      11.3
+      11.4
+     ],
+     [
+      24,
+      11.7
      ],
      [
       25,
-      11.9
+      12.0
+     ],
+     [
+      26,
+      12.2
      ],
      [
       27,
-      12.3
+      12.4
+     ],
+     [
+      28,
+      12.6
      ],
      [
       29,
-      12.7
+      12.8
      ],
      [
-      31,
+      30,
       12.9
      ],
      [
-      33,
+      31,
+      13.0
+     ],
+     [
+      32,
       13.4
      ],
      [
+      33,
+      13.5
+     ],
+     [
+      34,
+      13.7
+     ],
+     [
       35,
-      13.8
+      13.9
+     ],
+     [
+      36,
+      14.0
      ],
      [
       37,
-      14.0
+      14.1
+     ],
+     [
+      38,
+      14.1
+     ],
+     [
+      39,
+      14.2
      ],
      [
       40,
@@ -3371,39 +3690,79 @@
      ],
      [
       41,
-      15.3
+      15.4
+     ],
+     [
+      42,
+      15.7
      ],
      [
       43,
-      16.0
+      16.1
+     ],
+     [
+      44,
+      16.5
      ],
      [
       45,
-      16.6
+      16.7
      ],
      [
-      47,
+      46,
       17.0
      ],
      [
-      49,
+      47,
+      17.2
+     ],
+     [
+      48,
       17.3
      ],
      [
-      51,
-      17.6
+      49,
+      17.5
      ],
      [
-      53,
+      50,
+      17.7
+     ],
+     [
+      51,
       17.8
      ],
      [
+      52,
+      17.8
+     ],
+     [
+      53,
+      18.0
+     ],
+     [
+      54,
+      18.2
+     ],
+     [
       55,
-      18.1
+      18.2
+     ],
+     [
+      56,
+      18.2
      ],
      [
       57,
-      18.2
+      18.3
+     ],
+     [
+      58,
+      18.3
+     ],
+     [
+      59,
+      18.4
      ],
      [
       60,
@@ -3413,22 +3772,22 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Measurement number",
+     "raw_quantity": "cycle_number",
      "raw_unit": "",
      "raw_label": "Measurement number",
      "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "cycle_count",
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "x quantity 'Measurement number' does not resolve to any ontology QuantityKind"
+     "status": "resolved",
+     "unresolved_reason": null
     },
     "y": {
-     "raw_quantity": "Δ",
+     "raw_quantity": "Δ (°)",
      "raw_unit": "°",
      "raw_label": "Δ (°)",
      "unit": "°",
@@ -3460,13 +3819,13 @@
      "formula": null,
      "status": "unsupported",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "cycle_count",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "cycle",
      "context": {},
-     "unresolved_reason": "x quantity 'Measurement number' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -3480,12 +3839,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig4a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -3515,21 +3874,21 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig4a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": null,
+    "axis_role": "coordinate",
     "previous_representation": "trace",
-    "resolved_representation": "unresolved",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis role could not be determined",
-    "n_points": 40
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 61
    },
    "context_available": [
     "aspect_ratio",
@@ -3538,7 +3897,8 @@
     "deposition_temperature",
     "feature_height",
     "feature_width",
-    "pulse_time"
+    "pulse_time",
+    "temperature"
    ]
   },
   {
@@ -3551,10 +3911,10 @@
     "panel": "a",
     "series": "300 °C",
     "series_index": 2,
-    "series_axis": "deposition_temperature",
+    "series_axis": "temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/2/panels/0/series/2",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig4a__exp03"
     ],
@@ -3564,23 +3924,35 @@
    "raw": {
     "x": {
      "label": "Measurement number",
-     "quantity": "Measurement number",
+     "quantity": "cycle_number",
      "unit": "",
      "log": false
     },
     "y": {
      "label": "Δ (°)",
-     "quantity": "Δ",
+     "quantity": "Δ (°)",
      "unit": "°",
      "log": false
     },
     "points": [
      [
-      1,
+      0,
       1.5
      ],
      [
+      1,
+      1.6
+     ],
+     [
+      2,
+      1.7
+     ],
+     [
       3,
+      1.7
+     ],
+     [
+      4,
       1.7
      ],
      [
@@ -3588,19 +3960,39 @@
       1.7
      ],
      [
+      6,
+      1.7
+     ],
+     [
       7,
       1.8
      ],
      [
+      8,
+      1.8
+     ],
+     [
       9,
-      1.9
+      1.8
+     ],
+     [
+      10,
+      1.7
      ],
      [
       11,
       1.7
      ],
      [
+      12,
+      1.8
+     ],
+     [
       13,
+      1.8
+     ],
+     [
+      14,
       1.8
      ],
      [
@@ -3608,7 +4000,15 @@
       1.8
      ],
      [
+      16,
+      1.9
+     ],
+     [
       17,
+      1.9
+     ],
+     [
+      18,
       1.9
      ],
      [
@@ -3616,80 +4016,164 @@
       1.9
      ],
      [
-      21,
+      20,
       1.9
+     ],
+     [
+      21,
+      2.0
+     ],
+     [
+      22,
+      2.2
      ],
      [
       23,
       2.6
      ],
      [
+      24,
+      3.0
+     ],
+     [
       25,
       3.3
+     ],
+     [
+      26,
+      3.5
      ],
      [
       27,
       3.8
      ],
      [
+      28,
+      4.1
+     ],
+     [
       29,
       4.3
      ],
      [
+      30,
+      4.6
+     ],
+     [
       31,
-      4.7
+      4.8
+     ],
+     [
+      32,
+      5.0
      ],
      [
       33,
-      5.1
+      5.3
      ],
      [
-      35,
+      34,
       5.5
      ],
      [
+      35,
+      5.7
+     ],
+     [
+      36,
+      5.9
+     ],
+     [
       37,
-      5.8
+      6.0
+     ],
+     [
+      38,
+      6.1
+     ],
+     [
+      39,
+      6.2
      ],
      [
       40,
-      6.1
+      6.3
      ],
      [
       41,
       6.9
      ],
      [
+      42,
+      7.2
+     ],
+     [
       43,
-      7.5
+      7.6
+     ],
+     [
+      44,
+      7.9
      ],
      [
       45,
-      8.0
+      8.1
+     ],
+     [
+      46,
+      8.3
      ],
      [
       47,
-      8.4
+      8.6
      ],
      [
-      49,
+      48,
       8.9
      ],
      [
-      51,
-      9.4
+      49,
+      9.0
      ],
      [
-      53,
+      50,
+      9.3
+     ],
+     [
+      51,
+      9.5
+     ],
+     [
+      52,
       9.8
      ],
      [
-      55,
+      53,
+      10.0
+     ],
+     [
+      54,
       10.3
      ],
      [
-      57,
+      55,
+      10.6
+     ],
+     [
+      56,
       10.9
+     ],
+     [
+      57,
+      11.0
+     ],
+     [
+      58,
+      11.1
+     ],
+     [
+      59,
+      11.2
      ],
      [
       60,
@@ -3699,22 +4183,22 @@
    },
    "semantics": {
     "x": {
-     "raw_quantity": "Measurement number",
+     "raw_quantity": "cycle_number",
      "raw_unit": "",
      "raw_label": "Measurement number",
      "unit": "",
      "unit_recovered": false,
-     "quantity": null,
-     "axis_role": null,
-     "axis_kind": "unknown",
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "cycle_count",
      "evidence": [],
-     "status": "unsupported",
-     "unresolved_reason": "x quantity 'Measurement number' does not resolve to any ontology QuantityKind"
+     "status": "resolved",
+     "unresolved_reason": null
     },
     "y": {
-     "raw_quantity": "Δ",
+     "raw_quantity": "Δ (°)",
      "raw_unit": "°",
      "raw_label": "Δ (°)",
      "unit": "°",
@@ -3746,13 +4230,13 @@
      "formula": null,
      "status": "unsupported",
      "normalization_definition": null,
-     "comparison_group": null,
+     "comparison_group": "cycle_count",
      "original_value": null,
      "original_unit": "",
      "canonical_value": null,
-     "canonical_unit": null,
+     "canonical_unit": "cycle",
      "context": {},
-     "unresolved_reason": "x quantity 'Measurement number' does not resolve to any ontology QuantityKind",
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
      "confidence": 0.0,
      "assumptions": [],
      "invertible": null,
@@ -3766,12 +4250,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig4a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -3801,21 +4285,21 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/2/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig4a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
-    "axis_role": null,
+    "axis_role": "coordinate",
     "previous_representation": "trace",
-    "resolved_representation": "unresolved",
+    "resolved_representation": "profile",
     "changed": true,
-    "reason": "x axis role could not be determined",
-    "n_points": 30
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 61
    },
    "context_available": [
     "aspect_ratio",
@@ -3824,7 +4308,8 @@
     "deposition_temperature",
     "feature_height",
     "feature_width",
-    "pulse_time"
+    "pulse_time",
+    "temperature"
    ]
   },
   {
@@ -3840,7 +4325,7 @@
     "series_axis": "plasma exposure time",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/0/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig5a__exp01"
     ],
@@ -3867,23 +4352,23 @@
      ],
      [
       10,
-      0.5
+      0.4
      ],
      [
       20,
-      1.1
+      0.9
      ],
      [
       30,
-      1.7
+      1.6
      ],
      [
       40,
-      2.3
+      2.2
      ],
      [
       50,
-      2.8
+      2.7
      ],
      [
       60,
@@ -3903,7 +4388,7 @@
      ],
      [
       100,
-      4.8
+      4.7
      ],
      [
       110,
@@ -3911,119 +4396,119 @@
      ],
      [
       120,
-      5.9
+      6.0
      ],
      [
       130,
-      6.6
+      6.7
      ],
      [
       140,
-      7.3
+      7.4
      ],
      [
       150,
-      8.1
+      8.2
      ],
      [
       160,
-      9.1
+      9.2
      ],
      [
       170,
-      10.1
+      10.2
      ],
      [
       180,
-      11.2
+      11.3
      ],
      [
       190,
-      12.5
+      12.6
      ],
      [
       200,
-      14.0
+      13.9
      ],
      [
       210,
-      15.6
+      15.2
      ],
      [
       220,
-      17.2
+      16.5
      ],
      [
       230,
-      18.9
+      17.7
      ],
      [
       240,
-      20.7
+      19.2
      ],
      [
       250,
-      22.5
+      20.8
      ],
      [
       260,
-      24.2
+      22.3
      ],
      [
       270,
-      25.8
+      23.8
      ],
      [
       280,
-      27.4
+      25.3
      ],
      [
       290,
-      29.0
+      26.9
      ],
      [
       300,
-      30.6
+      28.7
      ],
      [
       310,
-      32.2
+      30.4
      ],
      [
       320,
-      33.8
+      32.0
      ],
      [
       330,
-      35.3
+      33.4
      ],
      [
       340,
-      36.9
+      35.0
      ],
      [
       350,
-      38.5
+      36.7
      ],
      [
       360,
-      40.1
+      38.3
      ],
      [
       370,
-      41.7
+      40.0
      ],
      [
       380,
-      43.3
+      41.6
      ],
      [
       390,
-      44.9
+      43.2
      ],
      [
       400,
-      46.5
+      45.0
      ]
     ]
    },
@@ -4067,46 +4552,46 @@
      "unit": "nm",
      "values": [
       0,
-      0.5,
-      1.1,
-      1.7,
-      2.3,
-      2.8,
+      0.4,
+      0.9,
+      1.6,
+      2.2,
+      2.7,
       3.2,
       3.6,
       4.0,
       4.3,
-      4.8,
+      4.7,
       5.3,
-      5.9,
-      6.6,
-      7.3,
-      8.1,
-      9.1,
-      10.1,
-      11.2,
-      12.5,
-      14.0,
-      15.6,
-      17.2,
-      18.9,
-      20.7,
-      22.5,
-      24.2,
-      25.8,
-      27.4,
-      29.0,
-      30.6,
-      32.2,
-      33.8,
-      35.3,
-      36.9,
-      38.5,
-      40.1,
-      41.7,
-      43.3,
-      44.9,
-      46.5
+      6.0,
+      6.7,
+      7.4,
+      8.2,
+      9.2,
+      10.2,
+      11.3,
+      12.6,
+      13.9,
+      15.2,
+      16.5,
+      17.7,
+      19.2,
+      20.8,
+      22.3,
+      23.8,
+      25.3,
+      26.9,
+      28.7,
+      30.4,
+      32.0,
+      33.4,
+      35.0,
+      36.7,
+      38.3,
+      40.0,
+      41.6,
+      43.2,
+      45.0
      ],
      "normalization_definition": null
     }
@@ -4144,12 +4629,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig5a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -4179,12 +4664,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig5a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -4219,7 +4704,7 @@
     "series_axis": "plasma exposure time",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/0/series/1",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig5a__exp02"
     ],
@@ -4246,150 +4731,142 @@
      ],
      [
       10,
-      0.9
+      0.8
      ],
      [
       20,
-      1.8
+      1.5
      ],
      [
       30,
-      2.6
+      2.3
      ],
      [
       40,
-      3.5
+      3.3
      ],
      [
       50,
-      4.6
+      4.4
      ],
      [
       60,
-      5.7
+      5.5
      ],
      [
       70,
-      6.7
+      6.8
      ],
      [
       80,
-      7.8
+      8.2
      ],
      [
       90,
-      8.8
+      9.5
      ],
      [
       100,
-      9.8
+      10.8
      ],
      [
       110,
-      10.9
-     ],
-     [
-      120,
       12.1
      ],
      [
-      130,
+      120,
       13.5
      ],
      [
+      130,
+      15.0
+     ],
+     [
       140,
-      14.8
+      16.5
      ],
      [
       150,
-      16.1
+      18.2
      ],
      [
       160,
-      17.5
+      19.8
      ],
      [
       170,
-      18.8
+      21.4
      ],
      [
       180,
-      20.1
+      22.8
      ],
      [
       190,
-      21.6
-     ],
-     [
-      200,
-      23.0
-     ],
-     [
-      210,
       24.3
      ],
      [
-      220,
-      25.7
+      200,
+      25.8
      ],
      [
-      230,
+      210,
       27.2
      ],
      [
-      240,
+      220,
       28.7
      ],
      [
+      230,
+      30.0
+     ],
+     [
+      240,
+      31.7
+     ],
+     [
       250,
-      30.1
+      33.3
      ],
      [
       260,
-      31.8
+      35.0
      ],
      [
       270,
-      33.4
+      36.7
      ],
      [
       280,
-      35.1
+      38.5
      ],
      [
       290,
-      36.8
+      40.2
      ],
      [
       300,
-      38.6
+      41.8
      ],
      [
       310,
-      40.3
+      43.4
      ],
      [
       320,
-      42.0
+      45.1
      ],
      [
       330,
-      43.6
+      46.8
      ],
      [
       340,
-      45.3
+      48.5
      ],
      [
       350,
-      47.0
-     ],
-     [
-      360,
-      48.6
-     ],
-     [
-      368,
       50.0
      ]
     ]
@@ -4434,42 +4911,40 @@
      "unit": "nm",
      "values": [
       0,
-      0.9,
-      1.8,
-      2.6,
-      3.5,
-      4.6,
-      5.7,
-      6.7,
-      7.8,
-      8.8,
-      9.8,
-      10.9,
+      0.8,
+      1.5,
+      2.3,
+      3.3,
+      4.4,
+      5.5,
+      6.8,
+      8.2,
+      9.5,
+      10.8,
       12.1,
       13.5,
-      14.8,
-      16.1,
-      17.5,
-      18.8,
-      20.1,
-      21.6,
-      23.0,
+      15.0,
+      16.5,
+      18.2,
+      19.8,
+      21.4,
+      22.8,
       24.3,
-      25.7,
+      25.8,
       27.2,
       28.7,
-      30.1,
-      31.8,
-      33.4,
-      35.1,
-      36.8,
-      38.6,
-      40.3,
-      42.0,
-      43.6,
-      45.3,
-      47.0,
-      48.6,
+      30.0,
+      31.7,
+      33.3,
+      35.0,
+      36.7,
+      38.5,
+      40.2,
+      41.8,
+      43.4,
+      45.1,
+      46.8,
+      48.5,
       50.0
      ],
      "normalization_definition": null
@@ -4508,12 +4983,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig5a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -4543,12 +5018,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig5a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -4557,7 +5032,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'cycle_number' is an ontology coordinate",
-    "n_points": 38
+    "n_points": 36
    },
    "context_available": [
     "aspect_ratio",
@@ -4583,7 +5058,7 @@
     "series_axis": "plasma exposure time",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/3/panels/0/series/2",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig5a__exp03"
     ],
@@ -4614,15 +5089,15 @@
      ],
      [
       20,
-      2.3
+      2.1
      ],
      [
       30,
-      3.4
+      3.3
      ],
      [
       40,
-      4.7
+      4.6
      ],
      [
       50,
@@ -4630,19 +5105,19 @@
      ],
      [
       60,
-      7.5
+      7.4
      ],
      [
       70,
-      9.0
+      8.9
      ],
      [
       80,
-      10.5
+      10.4
      ],
      [
       90,
-      12.1
+      12.0
      ],
      [
       100,
@@ -4650,98 +5125,90 @@
      ],
      [
       110,
-      15.3
+      15.7
      ],
      [
       120,
-      16.9
+      17.8
      ],
      [
       130,
-      18.5
+      19.8
      ],
      [
       140,
-      20.0
-     ],
-     [
-      150,
       21.6
      ],
      [
+      150,
+      23.5
+     ],
+     [
       160,
-      23.1
+      25.4
      ],
      [
       170,
-      24.6
+      27.2
      ],
      [
       180,
-      26.1
+      29.0
      ],
      [
       190,
-      27.6
-     ],
-     [
-      200,
-      29.2
-     ],
-     [
-      210,
       30.7
      ],
      [
-      220,
+      200,
       32.2
      ],
      [
-      230,
-      33.8
+      210,
+      33.7
      ],
      [
-      240,
+      220,
       35.3
      ],
      [
+      230,
+      37.0
+     ],
+     [
+      240,
+      38.6
+     ],
+     [
       250,
-      37.1
+      40.2
      ],
      [
       260,
-      38.8
+      41.5
      ],
      [
       270,
-      40.3
+      43.0
      ],
      [
       280,
-      41.7
+      44.5
      ],
      [
       290,
-      43.1
+      46.0
      ],
      [
       300,
-      44.6
+      47.5
      ],
      [
       310,
-      46.1
+      48.9
      ],
      [
       320,
-      47.6
-     ],
-     [
-      330,
-      49.0
-     ],
-     [
-      337,
       50.0
      ]
     ]
@@ -4787,38 +5254,36 @@
      "values": [
       0,
       1.2,
-      2.3,
-      3.4,
-      4.7,
+      2.1,
+      3.3,
+      4.6,
       6.0,
-      7.5,
-      9.0,
-      10.5,
-      12.1,
+      7.4,
+      8.9,
+      10.4,
+      12.0,
       13.7,
-      15.3,
-      16.9,
-      18.5,
-      20.0,
+      15.7,
+      17.8,
+      19.8,
       21.6,
-      23.1,
-      24.6,
-      26.1,
-      27.6,
-      29.2,
+      23.5,
+      25.4,
+      27.2,
+      29.0,
       30.7,
       32.2,
-      33.8,
+      33.7,
       35.3,
-      37.1,
-      38.8,
-      40.3,
-      41.7,
-      43.1,
-      44.6,
-      46.1,
-      47.6,
-      49.0,
+      37.0,
+      38.6,
+      40.2,
+      41.5,
+      43.0,
+      44.5,
+      46.0,
+      47.5,
+      48.9,
       50.0
      ],
      "normalization_definition": null
@@ -4857,12 +5322,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig5a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -4892,12 +5357,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/3/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig5a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -4906,7 +5371,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'cycle_number' is an ontology coordinate",
-    "n_points": 35
+    "n_points": 33
    },
    "context_available": [
     "aspect_ratio",
@@ -4927,300 +5392,119 @@
     "figure": "6",
     "figure_index": "8",
     "panel": "a",
-    "series": "Li2CO3",
+    "series": "C 1s",
     "series_index": 0,
-    "series_axis": "component",
+    "series_axis": "",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/0/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
-     "10.1039_c7ra07722j__Fig6a__exp01"
+     "10.1039_c7ra07722j__Fig6a"
     ],
     "data_source": "measured",
     "caption": "Fig. 6 XPS (a) C 1s, (b) Li 1s and (c) O 1s spectra for Li2CO3 grown by thermal ALD at 150 /C14 C. The measured spectra (black line) and /uniFB01 tted peaks (blue and red) are plotted together. The obtained Li2CO3 stoichiometry is 33.0 at% Li, 17.7 at% C and 49.3 at% O."
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
     },
     "points": [
      [
-      293.0,
-      1.8
+      294.0,
+      0.05
      ],
      [
-      292.5,
-      2.2
+      293.0,
+      0.05
      ],
      [
       292.0,
-      5.1
+      0.07
      ],
      [
       291.5,
-      14.8
+      0.15
      ],
      [
       291.0,
-      34.5
+      0.35
      ],
      [
       290.5,
-      65.2
+      0.7
      ],
      [
-      290.0,
-      88.4
+      290.1,
+      0.95
      ],
      [
       289.8,
-      88.1
+      0.85
      ],
      [
       289.5,
-      72.3
+      0.65
      ],
      [
       289.0,
-      44.8
+      0.35
      ],
      [
       288.5,
-      21.9
+      0.15
      ],
      [
       288.0,
-      9.5
+      0.08
      ],
      [
       287.5,
-      4.2
+      0.07
      ],
      [
       287.0,
-      2.1
-     ]
-    ]
-   },
-   "semantics": {
-    "x": {
-     "raw_quantity": "Binding energy",
-     "raw_unit": "eV",
-     "raw_label": null,
-     "unit": "eV",
-     "unit_recovered": false,
-     "quantity": "binding_energy",
-     "axis_role": "coordinate",
-     "axis_kind": "coordinate",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
-    },
-    "y": {
-     "raw_quantity": "Intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
-     "unit_recovered": false,
-     "quantity": "intensity",
-     "axis_role": "output",
-     "axis_kind": "output",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
-    }
-   },
-   "canonical": {
-    "x": null,
-    "y": null
-   },
-   "projections": {
-    "x": [],
-    "y": []
-   },
-   "transformations": [
-    {
-     "axis": "x",
-     "rule_id": "axis_semantic_resolution",
-     "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "original_value": null,
-     "original_unit": "eV",
-     "canonical_value": null,
-     "canonical_unit": null,
-     "context": {},
-     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
-     "source": {
-      "paper_id": "10.1039_c7ra07722j",
-      "doi": "10.1039_c7ra07722j",
-      "figure": "6",
-      "panel": "a",
-      "series": "Li2CO3",
-      "series_index": 0,
-      "axis": "x",
-      "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-      "json_pointer": "/figures/4/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": "10.1039_c7ra07722j__Fig6a__exp01"
-     },
-     "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
-    },
-    {
-     "axis": "y",
-     "rule_id": "axis_semantic_resolution",
-     "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "original_value": null,
-     "original_unit": "a.u.",
-     "canonical_value": null,
-     "canonical_unit": null,
-     "context": {},
-     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
-     "source": {
-      "paper_id": "10.1039_c7ra07722j",
-      "doi": "10.1039_c7ra07722j",
-      "figure": "6",
-      "panel": "a",
-      "series": "Li2CO3",
-      "series_index": 0,
-      "axis": "y",
-      "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-      "json_pointer": "/figures/4/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": "10.1039_c7ra07722j__Fig6a__exp01"
-     },
-     "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
-    }
-   ],
-   "granularity": {
-    "axis_role": "coordinate",
-    "previous_representation": "multi_output",
-    "resolved_representation": "profile",
-    "changed": true,
-    "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 14
-   },
-   "context_available": [
-    "aspect_ratio",
-    "base_pressure",
-    "cycle_number",
-    "feature_height",
-    "feature_width",
-    "temperature"
-   ]
-  },
-  {
-   "curve_id": "10.1039_c7ra07722j::F6::a::1",
-   "source": {
-    "paper_id": "10.1039_c7ra07722j",
-    "doi": "10.1039_c7ra07722j",
-    "figure": "6",
-    "figure_index": "8",
-    "panel": "a",
-    "series": "C-C / C-O / C=O",
-    "series_index": 1,
-    "series_axis": "component",
-    "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-    "json_pointer": "/figures/4/panels/0/series/1",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-    "linked_experiment_ids": [
-     "10.1039_c7ra07722j__Fig6a__exp02"
-    ],
-    "data_source": "measured",
-    "caption": "Fig. 6 XPS (a) C 1s, (b) Li 1s and (c) O 1s spectra for Li2CO3 grown by thermal ALD at 150 /C14 C. The measured spectra (black line) and /uniFB01 tted peaks (blue and red) are plotted together. The obtained Li2CO3 stoichiometry is 33.0 at% Li, 17.7 at% C and 49.3 at% O."
-   },
-   "raw": {
-    "x": {
-     "label": null,
-     "quantity": "Binding energy",
-     "unit": "eV",
-     "log": false
-    },
-    "y": {
-     "label": null,
-     "quantity": "Intensity",
-     "unit": "a.u.",
-     "log": false
-    },
-    "points": [
-     [
-      288.5,
-      2.0
-     ],
-     [
-      288.0,
-      4.5
-     ],
-     [
-      287.5,
-      6.2
-     ],
-     [
-      287.0,
-      4.8
+      0.08
      ],
      [
       286.5,
-      11.5
+      0.12
      ],
      [
       286.0,
-      24.8
+      0.22
      ],
      [
       285.3,
-      37.8
+      0.35
      ],
      [
       285.0,
-      35.2
+      0.32
      ],
      [
       284.5,
-      20.1
+      0.2
      ],
      [
       284.0,
-      8.2
-     ],
-     [
-      283.5,
-      3.1
+      0.09
      ],
      [
       283.0,
-      1.9
+      0.05
+     ],
+     [
+      282.0,
+      0.05
      ]
     ]
    },
@@ -5228,7 +5512,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -5243,7 +5527,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -5288,17 +5572,17 @@
       "doi": "10.1039_c7ra07722j",
       "figure": "6",
       "panel": "a",
-      "series": "C-C / C-O / C=O",
-      "series_index": 1,
+      "series": "C 1s",
+      "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-      "json_pointer": "/figures/4/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": "10.1039_c7ra07722j__Fig6a__exp02"
+      "json_pointer": "/figures/4/panels/0/series/0/points",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig6a"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -5323,17 +5607,17 @@
       "doi": "10.1039_c7ra07722j",
       "figure": "6",
       "panel": "a",
-      "series": "C-C / C-O / C=O",
-      "series_index": 1,
+      "series": "C 1s",
+      "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-      "json_pointer": "/figures/4/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": "10.1039_c7ra07722j__Fig6a__exp02"
+      "json_pointer": "/figures/4/panels/0/series/0/points",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig6a"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -5342,7 +5626,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 12
+    "n_points": 22
    },
    "context_available": [
     "aspect_ratio",
@@ -5350,6 +5634,7 @@
     "cycle_number",
     "feature_height",
     "feature_width",
+    "pulse_time",
     "temperature"
    ]
   },
@@ -5361,12 +5646,12 @@
     "figure": "6",
     "figure_index": "8",
     "panel": "b",
-    "series": "Li2CO3",
+    "series": "Li 1s",
     "series_index": 0,
-    "series_axis": "component",
+    "series_axis": "",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/4/panels/1/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig6b"
     ],
@@ -5375,69 +5660,77 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Binding energy (eV)",
      "quantity": "Binding energy",
      "unit": "eV",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
     },
     "points": [
      [
+      62.0,
+      0.05
+     ],
+     [
       60.0,
-      2.1
+      0.05
      ],
      [
       58.0,
-      2.3
+      0.05
      ],
      [
-      57.2,
-      3.8
+      57.5,
+      0.07
      ],
      [
-      56.8,
-      11.2
+      57.0,
+      0.15
      ],
      [
-      56.2,
-      38.5
+      56.5,
+      0.35
      ],
      [
-      55.8,
-      70.1
+      56.0,
+      0.7
      ],
      [
       55.4,
-      90.2
+      0.95
      ],
      [
       55.0,
-      72.4
+      0.8
      ],
      [
       54.5,
-      32.1
+      0.45
      ],
      [
       54.0,
-      11.5
+      0.18
      ],
      [
       53.5,
-      3.8
+      0.07
      ],
      [
-      52.0,
-      2.5
+      53.0,
+      0.05
+     ],
+     [
+      51.0,
+      0.05
      ],
      [
       50.0,
-      2.0
+      0.05
      ]
     ]
    },
@@ -5445,7 +5738,7 @@
     "x": {
      "raw_quantity": "Binding energy",
      "raw_unit": "eV",
-     "raw_label": null,
+     "raw_label": "Binding energy (eV)",
      "unit": "eV",
      "unit_recovered": false,
      "quantity": "binding_energy",
@@ -5460,7 +5753,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -5505,17 +5798,17 @@
       "doi": "10.1039_c7ra07722j",
       "figure": "6",
       "panel": "b",
-      "series": "Li2CO3",
+      "series": "Li 1s",
       "series_index": 0,
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig6b"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -5540,17 +5833,235 @@
       "doi": "10.1039_c7ra07722j",
       "figure": "6",
       "panel": "b",
-      "series": "Li2CO3",
+      "series": "Li 1s",
       "series_index": 0,
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/4/panels/1/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig6b"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'binding_energy' is an ontology coordinate",
+    "n_points": 15
+   },
+   "context_available": [
+    "aspect_ratio",
+    "base_pressure",
+    "cycle_number",
+    "feature_height",
+    "feature_width",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra07722j::F6::c::0",
+   "source": {
+    "paper_id": "10.1039_c7ra07722j",
+    "doi": "10.1039_c7ra07722j",
+    "figure": "6",
+    "figure_index": "8",
+    "panel": "c",
+    "series": "O 1s",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
+    "json_pointer": "/figures/4/panels/2/series/0",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+    "linked_experiment_ids": [
+     "10.1039_c7ra07722j__Fig6c"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 6 XPS (a) C 1s, (b) Li 1s and (c) O 1s spectra for Li2CO3 grown by thermal ALD at 150 /C14 C. The measured spectra (black line) and /uniFB01 tted peaks (blue and red) are plotted together. The obtained Li2CO3 stoichiometry is 33.0 at% Li, 17.7 at% C and 49.3 at% O."
+   },
+   "raw": {
+    "x": {
+     "label": "Binding energy (eV)",
+     "quantity": "Binding energy",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity (a.u.)",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      538.0,
+      0.05
+     ],
+     [
+      536.0,
+      0.05
+     ],
+     [
+      535.0,
+      0.06
+     ],
+     [
+      534.0,
+      0.1
+     ],
+     [
+      533.0,
+      0.3
+     ],
+     [
+      532.5,
+      0.6
+     ],
+     [
+      531.8,
+      0.95
+     ],
+     [
+      531.0,
+      0.7
+     ],
+     [
+      530.5,
+      0.35
+     ],
+     [
+      530.0,
+      0.15
+     ],
+     [
+      529.0,
+      0.06
+     ],
+     [
+      528.0,
+      0.05
+     ],
+     [
+      526.0,
+      0.05
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Binding energy",
+     "raw_unit": "eV",
+     "raw_label": "Binding energy (eV)",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": "binding_energy",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra07722j",
+      "doi": "10.1039_c7ra07722j",
+      "figure": "6",
+      "panel": "c",
+      "series": "O 1s",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/2/series/0/points",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig6c"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra07722j",
+      "doi": "10.1039_c7ra07722j",
+      "figure": "6",
+      "panel": "c",
+      "series": "O 1s",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/2/series/0/points",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
+      "experiment_id": "10.1039_c7ra07722j__Fig6c"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -5567,219 +6078,7 @@
     "cycle_number",
     "feature_height",
     "feature_width",
-    "temperature"
-   ]
-  },
-  {
-   "curve_id": "10.1039_c7ra07722j::F6::c::0",
-   "source": {
-    "paper_id": "10.1039_c7ra07722j",
-    "doi": "10.1039_c7ra07722j",
-    "figure": "6",
-    "figure_index": "8",
-    "panel": "c",
-    "series": "Li2CO3",
-    "series_index": 0,
-    "series_axis": "component",
-    "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-    "json_pointer": "/figures/4/panels/2/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-    "linked_experiment_ids": [
-     "10.1039_c7ra07722j__Fig6c"
-    ],
-    "data_source": "measured",
-    "caption": "Fig. 6 XPS (a) C 1s, (b) Li 1s and (c) O 1s spectra for Li2CO3 grown by thermal ALD at 150 /C14 C. The measured spectra (black line) and /uniFB01 tted peaks (blue and red) are plotted together. The obtained Li2CO3 stoichiometry is 33.0 at% Li, 17.7 at% C and 49.3 at% O."
-   },
-   "raw": {
-    "x": {
-     "label": null,
-     "quantity": "Binding energy",
-     "unit": "eV",
-     "log": false
-    },
-    "y": {
-     "label": null,
-     "quantity": "Intensity",
-     "unit": "a.u.",
-     "log": false
-    },
-    "points": [
-     [
-      536.0,
-      1.9
-     ],
-     [
-      534.5,
-      3.5
-     ],
-     [
-      533.5,
-      15.2
-     ],
-     [
-      532.8,
-      45.8
-     ],
-     [
-      532.2,
-      78.2
-     ],
-     [
-      531.8,
-      92.5
-     ],
-     [
-      531.2,
-      68.4
-     ],
-     [
-      530.8,
-      32.1
-     ],
-     [
-      530.2,
-      9.8
-     ],
-     [
-      529.5,
-      3.2
-     ],
-     [
-      528.0,
-      2.1
-     ],
-     [
-      526.0,
-      1.8
-     ]
-    ]
-   },
-   "semantics": {
-    "x": {
-     "raw_quantity": "Binding energy",
-     "raw_unit": "eV",
-     "raw_label": null,
-     "unit": "eV",
-     "unit_recovered": false,
-     "quantity": "binding_energy",
-     "axis_role": "coordinate",
-     "axis_kind": "coordinate",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
-    },
-    "y": {
-     "raw_quantity": "Intensity",
-     "raw_unit": "a.u.",
-     "raw_label": null,
-     "unit": "a.u.",
-     "unit_recovered": false,
-     "quantity": "intensity",
-     "axis_role": "output",
-     "axis_kind": "output",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "evidence": [],
-     "status": "not_applicable",
-     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
-    }
-   },
-   "canonical": {
-    "x": null,
-    "y": null
-   },
-   "projections": {
-    "x": [],
-    "y": []
-   },
-   "transformations": [
-    {
-     "axis": "x",
-     "rule_id": "axis_semantic_resolution",
-     "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "original_value": null,
-     "original_unit": "eV",
-     "canonical_value": null,
-     "canonical_unit": null,
-     "context": {},
-     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
-     "source": {
-      "paper_id": "10.1039_c7ra07722j",
-      "doi": "10.1039_c7ra07722j",
-      "figure": "6",
-      "panel": "c",
-      "series": "Li2CO3",
-      "series_index": 0,
-      "axis": "x",
-      "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-      "json_pointer": "/figures/4/panels/2/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": "10.1039_c7ra07722j__Fig6c"
-     },
-     "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
-    },
-    {
-     "axis": "y",
-     "rule_id": "axis_semantic_resolution",
-     "rule_version": "1.0.0",
-     "type": "axis_semantic_resolution",
-     "formula": null,
-     "status": "not_applicable",
-     "normalization_definition": null,
-     "comparison_group": null,
-     "original_value": null,
-     "original_unit": "a.u.",
-     "canonical_value": null,
-     "canonical_unit": null,
-     "context": {},
-     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
-     "confidence": 0.0,
-     "assumptions": [],
-     "invertible": null,
-     "source": {
-      "paper_id": "10.1039_c7ra07722j",
-      "doi": "10.1039_c7ra07722j",
-      "figure": "6",
-      "panel": "c",
-      "series": "Li2CO3",
-      "series_index": 0,
-      "axis": "y",
-      "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
-      "json_pointer": "/figures/4/panels/2/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
-      "experiment_id": "10.1039_c7ra07722j__Fig6c"
-     },
-     "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
-    }
-   ],
-   "granularity": {
-    "axis_role": "coordinate",
-    "previous_representation": "multi_output",
-    "resolved_representation": "profile",
-    "changed": true,
-    "reason": "x axis 'binding_energy' is an ontology coordinate",
-    "n_points": 12
-   },
-   "context_available": [
-    "aspect_ratio",
-    "base_pressure",
-    "cycle_number",
-    "feature_height",
-    "feature_width",
+    "pulse_time",
     "temperature"
    ]
   },
@@ -5793,10 +6092,10 @@
     "panel": "a",
     "series": "Thermal 300 °C",
     "series_index": 0,
-    "series_axis": "process type and temperature",
+    "series_axis": "process mode and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig7a__exp01"
     ],
@@ -5805,13 +6104,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2-theta (°)",
      "quantity": "2-theta",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -5819,131 +6118,95 @@
     "points": [
      [
       20.0,
-      86.0
-     ],
-     [
-      21.0,
-      84.3
+      162
      ],
      [
       22.0,
-      83.0
+      151
      ],
      [
-      23.5,
-      80.8
+      24.0,
+      142
      ],
      [
-      25.0,
-      79.0
-     ],
-     [
-      26.5,
-      78.0
+      26.0,
+      137
      ],
      [
       28.0,
-      77.5
+      134
      ],
      [
       29.5,
-      77.3
+      133
      ],
      [
       30.5,
-      77.2
+      137
      ],
      [
-      31.0,
-      77.6
-     ],
-     [
-      31.4,
-      79.5
-     ],
-     [
-      31.7,
-      82.5
+      31.5,
+      158
      ],
      [
       32.0,
-      79.2
+      146
      ],
      [
-      32.5,
-      77.5
+      33.0,
+      133
      ],
      [
-      34.0,
-      77.0
-     ],
-     [
-      36.0,
-      76.5
+      35.0,
+      127
      ],
      [
       38.0,
-      76.0
+      122
      ],
      [
       40.0,
-      75.5
+      120
      ],
      [
       41.0,
-      76.2
+      130
      ],
      [
       41.8,
-      81.0
+      178
      ],
      [
-      42.2,
-      89.0
+      42.3,
+      206
      ],
      [
-      42.4,
-      93.5
+      42.8,
+      168
      ],
      [
-      42.6,
-      89.0
-     ],
-     [
-      43.0,
-      81.0
-     ],
-     [
-      43.8,
-      76.5
+      43.5,
+      133
      ],
      [
       45.0,
-      75.0
+      122
      ],
      [
-      47.5,
-      74.0
+      48.0,
+      117
      ],
      [
-      50.0,
-      73.5
+      52.0,
+      113
      ],
      [
-      52.5,
-      73.0
-     ],
-     [
-      55.0,
-      72.5
-     ],
-     [
-      57.5,
-      72.2
+      56.0,
+      110
      ],
      [
       60.0,
-      72.0
+      108
      ]
     ]
    },
@@ -5951,7 +6214,7 @@
     "x": {
      "raw_quantity": "2-theta",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2-theta (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -5966,7 +6229,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -6016,12 +6279,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6051,12 +6314,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6065,7 +6328,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 32
+    "n_points": 23
    },
    "context_available": [
     "aspect_ratio",
@@ -6086,10 +6349,10 @@
     "panel": "a",
     "series": "Thermal 150 °C",
     "series_index": 1,
-    "series_axis": "process type and temperature",
+    "series_axis": "process mode and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/1",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig7a__exp02"
     ],
@@ -6098,13 +6361,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2-theta (°)",
      "quantity": "2-theta",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -6112,131 +6375,95 @@
     "points": [
      [
       20.0,
-      80.0
-     ],
-     [
-      21.0,
-      78.2
+      144
      ],
      [
       22.0,
-      77.0
+      133
      ],
      [
-      23.5,
-      74.5
+      24.0,
+      125
      ],
      [
-      25.0,
-      72.5
-     ],
-     [
-      26.5,
-      71.5
+      26.0,
+      120
      ],
      [
       28.0,
-      70.8
+      117
      ],
      [
       29.5,
-      70.6
+      116
      ],
      [
       30.5,
-      70.5
+      119
      ],
      [
-      31.0,
-      71.0
-     ],
-     [
-      31.4,
-      72.8
-     ],
-     [
-      31.7,
-      75.2
+      31.5,
+      138
      ],
      [
       32.0,
-      72.5
+      127
      ],
      [
-      32.5,
-      70.8
+      33.0,
+      115
      ],
      [
-      34.0,
-      70.2
-     ],
-     [
-      36.0,
-      69.7
+      35.0,
+      110
      ],
      [
       38.0,
-      69.2
+      106
      ],
      [
       40.0,
-      68.8
+      104
      ],
      [
       41.0,
-      69.5
+      112
      ],
      [
       41.8,
-      74.0
+      158
      ],
      [
-      42.2,
-      81.5
+      42.3,
+      185
      ],
      [
-      42.4,
-      85.0
+      42.8,
+      150
      ],
      [
-      42.6,
-      81.5
-     ],
-     [
-      43.0,
-      74.0
-     ],
-     [
-      43.8,
-      69.8
+      43.5,
+      116
      ],
      [
       45.0,
-      68.2
+      105
      ],
      [
-      47.5,
-      67.2
+      48.0,
+      101
      ],
      [
-      50.0,
-      66.8
+      52.0,
+      97
      ],
      [
-      52.5,
-      66.2
-     ],
-     [
-      55.0,
-      65.8
-     ],
-     [
-      57.5,
-      65.4
+      56.0,
+      95
      ],
      [
       60.0,
-      65.0
+      93
      ]
     ]
    },
@@ -6244,7 +6471,7 @@
     "x": {
      "raw_quantity": "2-theta",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2-theta (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -6259,7 +6486,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -6309,12 +6536,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6344,12 +6571,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6358,7 +6585,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 32
+    "n_points": 23
    },
    "context_available": [
     "aspect_ratio",
@@ -6379,10 +6606,10 @@
     "panel": "a",
     "series": "Thermal 100 °C",
     "series_index": 2,
-    "series_axis": "process type and temperature",
+    "series_axis": "process mode and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/2",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig7a__exp03"
     ],
@@ -6391,13 +6618,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2-theta (°)",
      "quantity": "2-theta",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -6405,131 +6632,95 @@
     "points": [
      [
       20.0,
-      72.0
-     ],
-     [
-      21.0,
-      70.2
+      125
      ],
      [
       22.0,
-      68.8
+      115
      ],
      [
-      23.5,
-      66.2
+      24.0,
+      108
      ],
      [
-      25.0,
-      64.5
-     ],
-     [
-      26.5,
-      63.4
+      26.0,
+      102
      ],
      [
       28.0,
-      62.8
+      99
      ],
      [
       29.5,
-      62.6
+      98
      ],
      [
       30.5,
-      62.5
+      101
      ],
      [
-      31.0,
-      63.0
-     ],
-     [
-      31.4,
-      64.8
-     ],
-     [
-      31.7,
-      67.2
+      31.5,
+      120
      ],
      [
       32.0,
-      64.5
+      110
      ],
      [
-      32.5,
-      62.8
+      33.0,
+      98
      ],
      [
-      34.0,
-      62.2
-     ],
-     [
-      36.0,
-      61.7
+      35.0,
+      93
      ],
      [
       38.0,
-      61.2
+      89
      ],
      [
       40.0,
-      60.8
+      87
      ],
      [
       41.0,
-      61.5
+      94
      ],
      [
       41.8,
-      66.0
+      138
      ],
      [
-      42.2,
-      73.5
+      42.3,
+      164
      ],
      [
-      42.4,
-      77.0
+      42.8,
+      130
      ],
      [
-      42.6,
-      73.5
-     ],
-     [
-      43.0,
-      66.0
-     ],
-     [
-      43.8,
-      61.8
+      43.5,
+      98
      ],
      [
       45.0,
-      60.2
+      88
      ],
      [
-      47.5,
-      59.2
+      48.0,
+      83
      ],
      [
-      50.0,
-      58.8
+      52.0,
+      80
      ],
      [
-      52.5,
-      58.2
-     ],
-     [
-      55.0,
-      57.8
-     ],
-     [
-      57.5,
-      57.4
+      56.0,
+      78
      ],
      [
       60.0,
-      57.0
+      76
      ]
     ]
    },
@@ -6537,7 +6728,7 @@
     "x": {
      "raw_quantity": "2-theta",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2-theta (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -6552,7 +6743,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -6602,12 +6793,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6637,12 +6828,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp03"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6651,7 +6842,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 32
+    "n_points": 23
    },
    "context_available": [
     "aspect_ratio",
@@ -6672,10 +6863,10 @@
     "panel": "a",
     "series": "Plasma 250 °C",
     "series_index": 3,
-    "series_axis": "process type and temperature",
+    "series_axis": "process mode and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/3",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig7a__exp04"
     ],
@@ -6684,13 +6875,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2-theta (°)",
      "quantity": "2-theta",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -6698,123 +6889,87 @@
     "points": [
      [
       20.0,
-      60.5
-     ],
-     [
-      21.0,
-      58.8
+      102
      ],
      [
       22.0,
-      57.5
+      92
      ],
      [
-      23.5,
-      55.0
+      24.0,
+      84
      ],
      [
-      25.0,
-      53.2
-     ],
-     [
-      26.5,
-      52.1
+      26.0,
+      79
      ],
      [
       28.0,
-      51.5
+      76
      ],
      [
-      29.5,
-      51.3
+      30.0,
+      74
      ],
      [
-      30.5,
-      51.2
+      31.5,
+      75
      ],
      [
-      31.0,
-      51.4
+      33.0,
+      73
      ],
      [
-      31.7,
-      51.8
-     ],
-     [
-      32.5,
-      51.2
-     ],
-     [
-      34.0,
-      50.8
-     ],
-     [
-      36.0,
-      50.2
+      35.0,
+      70
      ],
      [
       38.0,
-      49.7
+      65
      ],
      [
       40.0,
-      49.2
+      63
      ],
      [
       41.0,
-      50.0
+      71
      ],
      [
       41.8,
-      55.0
+      122
      ],
      [
-      42.2,
-      63.0
+      42.3,
+      146
      ],
      [
-      42.4,
-      67.0
+      42.8,
+      112
      ],
      [
-      42.6,
-      63.0
-     ],
-     [
-      43.0,
-      55.0
-     ],
-     [
-      43.8,
-      50.2
+      43.5,
+      76
      ],
      [
       45.0,
-      48.8
+      65
      ],
      [
-      47.5,
-      48.0
+      48.0,
+      61
      ],
      [
-      50.0,
-      47.5
+      52.0,
+      58
      ],
      [
-      52.5,
-      47.0
-     ],
-     [
-      55.0,
-      46.5
-     ],
-     [
-      57.5,
-      46.1
+      56.0,
+      56
      ],
      [
       60.0,
-      45.8
+      55
      ]
     ]
    },
@@ -6822,7 +6977,7 @@
     "x": {
      "raw_quantity": "2-theta",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2-theta (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -6837,7 +6992,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -6887,12 +7042,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -6922,12 +7077,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp04"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -6936,7 +7091,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 30
+    "n_points": 21
    },
    "context_available": [
     "aspect_ratio",
@@ -6957,10 +7112,10 @@
     "panel": "a",
     "series": "Plasma 150 °C",
     "series_index": 4,
-    "series_axis": "process type and temperature",
+    "series_axis": "process mode and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/4",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig7a__exp05"
     ],
@@ -6969,13 +7124,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2-theta (°)",
      "quantity": "2-theta",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -6983,123 +7138,87 @@
     "points": [
      [
       20.0,
-      53.5
-     ],
-     [
-      21.0,
-      51.6
+      83
      ],
      [
       22.0,
-      50.2
+      73
      ],
      [
-      23.5,
-      47.6
+      24.0,
+      66
      ],
      [
-      25.0,
-      45.8
-     ],
-     [
-      26.5,
-      44.7
+      26.0,
+      60
      ],
      [
       28.0,
-      44.0
+      57
      ],
      [
-      29.5,
-      43.8
+      30.0,
+      55
      ],
      [
-      30.5,
-      43.7
+      31.5,
+      56
      ],
      [
-      31.0,
-      43.8
+      33.0,
+      54
      ],
      [
-      31.7,
-      43.9
-     ],
-     [
-      32.5,
-      43.7
-     ],
-     [
-      34.0,
-      43.3
-     ],
-     [
-      36.0,
-      42.8
+      35.0,
+      51
      ],
      [
       38.0,
-      42.3
+      47
      ],
      [
       40.0,
-      41.8
+      45
      ],
      [
       41.0,
-      42.5
+      53
      ],
      [
       41.8,
-      47.5
+      108
      ],
      [
-      42.2,
-      55.5
+      42.3,
+      130
      ],
      [
-      42.4,
-      60.0
+      42.8,
+      96
      ],
      [
-      42.6,
-      55.5
-     ],
-     [
-      43.0,
-      47.5
-     ],
-     [
-      43.8,
-      42.8
+      43.5,
+      58
      ],
      [
       45.0,
-      41.2
+      47
      ],
      [
-      47.5,
-      40.5
+      48.0,
+      43
      ],
      [
-      50.0,
-      40.0
+      52.0,
+      40
      ],
      [
-      52.5,
-      39.5
-     ],
-     [
-      55.0,
-      39.0
-     ],
-     [
-      57.5,
-      38.6
+      56.0,
+      38
      ],
      [
       60.0,
-      38.2
+      37
      ]
     ]
    },
@@ -7107,7 +7226,7 @@
     "x": {
      "raw_quantity": "2-theta",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2-theta (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -7122,7 +7241,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -7172,12 +7291,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/4/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp05"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -7207,12 +7326,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/4/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp05"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -7221,7 +7340,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 30
+    "n_points": 21
    },
    "context_available": [
     "aspect_ratio",
@@ -7242,10 +7361,10 @@
     "panel": "a",
     "series": "Plasma 50 °C",
     "series_index": 5,
-    "series_axis": "process type and temperature",
+    "series_axis": "process mode and temperature",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/5/panels/0/series/5",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig7a__exp06"
     ],
@@ -7254,13 +7373,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "2-theta (°)",
      "quantity": "2-theta",
      "unit": "°",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Intensity (a.u.)",
      "quantity": "Intensity",
      "unit": "a.u.",
      "log": false
@@ -7268,131 +7387,95 @@
     "points": [
      [
       20.0,
-      47.0
-     ],
-     [
-      21.0,
-      45.0
+      62
      ],
      [
       22.0,
-      43.5
+      51
      ],
      [
-      23.5,
-      40.8
+      24.0,
+      43
      ],
      [
-      25.0,
-      38.8
-     ],
-     [
-      26.5,
-      37.7
+      26.0,
+      38
      ],
      [
       28.0,
-      37.0
+      35
      ],
      [
       29.5,
-      36.8
+      34
      ],
      [
       30.5,
-      36.8
+      36
      ],
      [
-      31.0,
-      37.3
-     ],
-     [
-      31.4,
-      39.2
-     ],
-     [
-      31.7,
-      42.0
+      31.5,
+      55
      ],
      [
       32.0,
-      39.0
+      42
      ],
      [
-      32.5,
-      37.1
+      33.0,
+      32
      ],
      [
-      34.0,
-      36.5
-     ],
-     [
-      36.0,
-      35.8
+      35.0,
+      29
      ],
      [
       38.0,
-      35.3
+      25
      ],
      [
       40.0,
-      34.8
+      23
      ],
      [
       41.0,
-      35.5
+      31
      ],
      [
       41.8,
-      41.0
+      88
      ],
      [
-      42.2,
-      50.0
+      42.3,
+      111
      ],
      [
-      42.4,
-      55.0
+      42.8,
+      76
      ],
      [
-      42.6,
-      50.0
-     ],
-     [
-      43.0,
-      41.0
-     ],
-     [
-      43.8,
-      35.8
+      43.5,
+      38
      ],
      [
       45.0,
-      34.2
+      26
      ],
      [
-      47.5,
-      33.5
+      48.0,
+      21
      ],
      [
-      50.0,
-      33.0
+      52.0,
+      18
      ],
      [
-      52.5,
-      32.5
-     ],
-     [
-      55.0,
-      32.0
-     ],
-     [
-      57.5,
-      31.6
+      56.0,
+      16
      ],
      [
       60.0,
-      31.2
+      15
      ]
     ]
    },
@@ -7400,7 +7483,7 @@
     "x": {
      "raw_quantity": "2-theta",
      "raw_unit": "°",
-     "raw_label": null,
+     "raw_label": "2-theta (°)",
      "unit": "°",
      "unit_recovered": false,
      "quantity": "diffraction_angle",
@@ -7415,7 +7498,7 @@
     "y": {
      "raw_quantity": "Intensity",
      "raw_unit": "a.u.",
-     "raw_label": null,
+     "raw_label": "Intensity (a.u.)",
      "unit": "a.u.",
      "unit_recovered": false,
      "quantity": "intensity",
@@ -7465,12 +7548,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/5/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp06"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -7500,12 +7583,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/5/panels/0/series/5/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig7a__exp06"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -7514,7 +7597,7 @@
     "resolved_representation": "profile",
     "changed": true,
     "reason": "x axis 'diffraction_angle' is an ontology coordinate",
-    "n_points": 32
+    "n_points": 23
    },
    "context_available": [
     "aspect_ratio",
@@ -7538,7 +7621,7 @@
     "series_axis": "ALD mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/6/panels/0/series/0",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig10a__exp01"
     ],
@@ -7547,124 +7630,128 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Z_{Re} (kΩ)",
      "quantity": "Z_Re",
      "unit": "kΩ",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Z_{Im} (kΩ)",
      "quantity": "Z_Im",
      "unit": "kΩ",
      "log": false
     },
     "points": [
      [
-      0.5,
+      0.3,
       0.1
      ],
      [
-      0.8,
-      0.7
+      0.6,
+      0.9
      ],
      [
-      1.2,
-      1.3
+      1.0,
+      1.6
      ],
      [
-      1.6,
-      1.8
+      1.5,
+      2.1
      ],
      [
-      2.1,
-      2.2
-     ],
-     [
-      2.7,
+      2.0,
       2.5
      ],
      [
-      3.3,
+      2.5,
       2.8
      ],
      [
-      4.0,
-      2.9
-     ],
-     [
-      4.7,
+      3.1,
       3.0
      ],
      [
-      5.4,
+      3.8,
+      3.1
+     ],
+     [
+      4.5,
+      3.1
+     ],
+     [
+      5.2,
+      3.0
+     ],
+     [
+      5.8,
       2.9
      ],
      [
-      6.1,
-      2.8
+      6.4,
+      2.7
      ],
      [
-      6.8,
+      7.0,
       2.5
      ],
      [
       7.4,
-      2.4
+      2.5
      ],
      [
       8.0,
-      2.9
+      3.1
      ],
      [
       8.5,
-      3.6
+      3.9
      ],
      [
-      8.9,
-      4.4
+      9.0,
+      4.8
      ],
      [
-      9.3,
-      5.2
+      9.5,
+      5.7
      ],
      [
-      9.8,
-      6.2
+      10.0,
+      6.7
      ],
      [
-      10.3,
-      7.2
+      10.5,
+      7.7
      ],
      [
-      10.7,
-      8.2
+      11.0,
+      8.8
      ],
      [
-      11.3,
-      9.4
+      11.5,
+      9.9
      ],
      [
-      11.8,
-      10.7
+      12.0,
+      11.1
      ],
      [
-      12.4,
-      12.3
+      12.5,
+      12.4
      ],
      [
-      13.2,
-      14.2
+      13.3,
+      14.3
      ],
      [
-      14.1,
+      14.2,
       16.3
      ],
      [
-      15.1,
-      18.7
+      15.2,
+      18.8
      ],
      [
-      16.3,
+      16.4,
       21.5
      ],
      [
@@ -7673,7 +7760,7 @@
      ],
      [
       19.3,
-      28.4
+      28.5
      ]
     ]
    },
@@ -7681,7 +7768,7 @@
     "x": {
      "raw_quantity": "Z_Re",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Re} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -7696,7 +7783,7 @@
     "y": {
      "raw_quantity": "Z_Im",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Im} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -7746,12 +7833,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -7781,12 +7868,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/0/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -7795,7 +7882,7 @@
     "resolved_representation": "unresolved",
     "changed": true,
     "reason": "x axis role could not be determined",
-    "n_points": 29
+    "n_points": 30
    },
    "context_available": [
     "aspect_ratio",
@@ -7820,7 +7907,7 @@
     "series_axis": "ALD mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/6/panels/0/series/1",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig10a__exp02"
     ],
@@ -7829,13 +7916,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Z_{Re} (kΩ)",
      "quantity": "Z_Re",
      "unit": "kΩ",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Z_{Im} (kΩ)",
      "quantity": "Z_Im",
      "unit": "kΩ",
      "log": false
@@ -7843,139 +7930,143 @@
     "points": [
      [
       0.1,
-      0.2
+      0.1
      ],
      [
-      0.4,
-      0.8
-     ],
-     [
-      0.8,
+      0.5,
       1.6
      ],
      [
-      1.2,
-      2.4
+      1.0,
+      2.8
      ],
      [
-      1.8,
-      3.2
+      1.5,
+      3.7
      ],
      [
-      2.3,
-      4.0
+      2.0,
+      4.5
      ],
      [
-      2.8,
-      4.7
+      2.5,
+      5.1
      ],
      [
-      3.4,
-      5.5
+      3.0,
+      5.7
      ],
      [
-      4.1,
+      3.5,
       6.3
      ],
      [
-      4.8,
-      7.1
-     ],
-     [
-      5.6,
-      7.9
-     ],
-     [
-      6.5,
-      8.7
-     ],
-     [
-      7.4,
-      9.4
-     ],
-     [
-      8.4,
-      10.0
-     ],
-     [
-      9.5,
-      10.4
-     ],
-     [
-      10.7,
-      10.7
-     ],
-     [
-      11.9,
-      10.8
-     ],
-     [
-      13.2,
-      10.8
-     ],
-     [
-      14.5,
-      10.7
-     ],
-     [
-      16.0,
-      10.4
-     ],
-     [
-      17.6,
-      9.8
-     ],
-     [
-      19.1,
-      9.0
-     ],
-     [
-      20.6,
-      8.2
-     ],
-     [
-      21.9,
-      7.3
-     ],
-     [
-      23.4,
-      6.2
-     ],
-     [
-      24.6,
-      5.0
-     ],
-     [
-      25.8,
-      3.6
-     ],
-     [
-      26.4,
-      4.2
-     ],
-     [
-      27.0,
-      5.6
-     ],
-     [
-      27.6,
+      4.3,
       7.2
      ],
      [
-      28.2,
-      9.3
+      5.2,
+      8.0
      ],
      [
-      28.8,
-      11.8
+      6.0,
+      8.7
      ],
      [
-      29.4,
-      15.1
+      6.8,
+      9.2
+     ],
+     [
+      7.7,
+      9.6
+     ],
+     [
+      8.7,
+      10.0
+     ],
+     [
+      9.8,
+      10.3
+     ],
+     [
+      10.8,
+      10.5
+     ],
+     [
+      12.0,
+      10.7
+     ],
+     [
+      13.1,
+      10.7
+     ],
+     [
+      14.3,
+      10.7
+     ],
+     [
+      15.5,
+      10.6
+     ],
+     [
+      16.6,
+      10.4
+     ],
+     [
+      17.7,
+      10.1
+     ],
+     [
+      19.2,
+      9.5
+     ],
+     [
+      20.6,
+      8.8
+     ],
+     [
+      21.8,
+      8.0
+     ],
+     [
+      23.3,
+      6.8
+     ],
+     [
+      24.5,
+      5.7
+     ],
+     [
+      25.8,
+      3.7
+     ],
+     [
+      26.5,
+      4.5
+     ],
+     [
+      27.2,
+      6.5
+     ],
+     [
+      27.8,
+      8.7
+     ],
+     [
+      28.3,
+      11.5
+     ],
+     [
+      28.9,
+      13.6
+     ],
+     [
+      29.5,
+      16.8
      ],
      [
       30.0,
-      19.3
+      20.5
      ]
     ]
    },
@@ -7983,7 +8074,7 @@
     "x": {
      "raw_quantity": "Z_Re",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Re} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -7998,7 +8089,7 @@
     "y": {
      "raw_quantity": "Z_Im",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Im} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -8048,12 +8139,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -8083,12 +8174,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/1/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp02"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -8097,7 +8188,7 @@
     "resolved_representation": "unresolved",
     "changed": true,
     "reason": "x axis role could not be determined",
-    "n_points": 34
+    "n_points": 35
    },
    "context_available": [
     "aspect_ratio",
@@ -8122,7 +8213,7 @@
     "series_axis": "ALD mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/6/panels/0/series/2",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig10a__exp01"
     ],
@@ -8131,108 +8222,92 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Z_{Re} (kΩ)",
      "quantity": "Z_Re",
      "unit": "kΩ",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Z_{Im} (kΩ)",
      "quantity": "Z_Im",
      "unit": "kΩ",
      "log": false
     },
     "points": [
      [
-      0.5,
-      0.0
+      0.3,
+      0.1
      ],
      [
       1.0,
-      1.0
+      1.6
      ],
      [
       2.0,
-      2.1
+      2.5
      ],
      [
-      3.0,
-      2.7
+      3.1,
+      3.0
      ],
      [
-      4.0,
-      2.9
-     ],
-     [
-      5.0,
-      2.9
+      4.5,
+      3.1
      ],
      [
       6.0,
       2.8
      ],
      [
-      7.0,
-      2.5
-     ],
-     [
-      7.5,
+      7.3,
       2.4
      ],
      [
       8.0,
-      2.8
-     ],
-     [
-      8.5,
-      3.5
+      2.9
      ],
      [
       9.0,
-      4.5
-     ],
-     [
-      9.5,
-      5.6
+      4.6
      ],
      [
       10.0,
-      6.7
+      6.6
      ],
      [
       11.0,
-      9.0
+      8.8
      ],
      [
       12.0,
-      11.5
+      11.1
      ],
      [
       13.0,
-      14.0
+      13.5
      ],
      [
       14.0,
-      16.5
+      16.0
      ],
      [
       15.0,
-      19.0
+      18.5
      ],
      [
       16.0,
-      21.5
+      21.1
      ],
      [
       17.0,
-      24.0
+      23.7
      ],
      [
       18.0,
-      26.5
+      26.3
      ],
      [
-      19.5,
+      19.4,
       30.0
      ]
     ]
@@ -8241,7 +8316,7 @@
     "x": {
      "raw_quantity": "Z_Re",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Re} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -8256,7 +8331,7 @@
     "y": {
      "raw_quantity": "Z_Im",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Im} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -8306,12 +8381,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -8341,12 +8416,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/2/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -8355,7 +8430,7 @@
     "resolved_representation": "unresolved",
     "changed": true,
     "reason": "x axis role could not be determined",
-    "n_points": 23
+    "n_points": 19
    },
    "context_available": [
     "aspect_ratio",
@@ -8380,7 +8455,7 @@
     "series_axis": "ALD mode",
     "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
     "json_pointer": "/figures/6/panels/0/series/3",
-    "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+    "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
     "linked_experiment_ids": [
      "10.1039_c7ra07722j__Fig10a__exp01"
     ],
@@ -8389,13 +8464,13 @@
    },
    "raw": {
     "x": {
-     "label": null,
+     "label": "Z_{Re} (kΩ)",
      "quantity": "Z_Re",
      "unit": "kΩ",
      "log": false
     },
     "y": {
-     "label": null,
+     "label": "Z_{Im} (kΩ)",
      "quantity": "Z_Im",
      "unit": "kΩ",
      "log": false
@@ -8403,147 +8478,67 @@
     "points": [
      [
       0.1,
-      0.0
-     ],
-     [
-      0.5,
-      1.0
+      0.1
      ],
      [
       1.0,
-      2.0
+      2.8
      ],
      [
-      2.0,
-      3.6
+      2.5,
+      5.1
      ],
      [
-      3.0,
-      5.0
+      4.3,
+      7.2
      ],
      [
-      4.0,
-      6.2
-     ],
-     [
-      5.0,
-      7.3
-     ],
-     [
-      6.0,
-      8.2
-     ],
-     [
-      7.0,
+      6.5,
       9.0
-     ],
-     [
-      8.0,
-      9.6
      ],
      [
       9.0,
       10.1
      ],
      [
-      10.0,
-      10.4
-     ],
-     [
-      11.0,
-      10.6
-     ],
-     [
       12.0,
       10.7
      ],
      [
-      13.0,
+      15.0,
       10.7
      ],
      [
-      14.0,
-      10.6
-     ],
-     [
-      15.0,
-      10.5
-     ],
-     [
-      16.0,
-      10.3
-     ],
-     [
-      17.0,
+      18.0,
       10.0
      ],
      [
-      18.0,
-      9.5
-     ],
-     [
-      19.0,
-      8.9
-     ],
-     [
-      20.0,
-      8.3
-     ],
-     [
       21.0,
-      7.6
-     ],
-     [
-      22.0,
-      6.9
-     ],
-     [
-      23.0,
-      6.1
+      8.5
      ],
      [
       24.0,
-      5.2
-     ],
-     [
-      25.0,
-      4.3
+      6.2
      ],
      [
       25.8,
       3.6
      ],
      [
-      26.5,
-      4.5
-     ],
-     [
       27.0,
       5.8
      ],
      [
-      27.5,
-      7.5
-     ],
-     [
       28.0,
-      9.8
-     ],
-     [
-      28.5,
-      12.5
+      9.5
      ],
      [
       29.0,
-      15.5
-     ],
-     [
-      29.5,
-      18.8
+      14.1
      ],
      [
       30.0,
-      22.5
+      20.5
      ]
     ]
    },
@@ -8551,7 +8546,7 @@
     "x": {
      "raw_quantity": "Z_Re",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Re} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -8566,7 +8561,7 @@
     "y": {
      "raw_quantity": "Z_Im",
      "raw_unit": "kΩ",
-     "raw_label": null,
+     "raw_label": "Z_{Im} (kΩ)",
      "unit": "kΩ",
      "unit_recovered": false,
      "quantity": null,
@@ -8616,12 +8611,12 @@
       "axis": "x",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     },
     {
      "axis": "y",
@@ -8651,12 +8646,12 @@
       "axis": "y",
       "source_file": "papers/10.1039_c7ra07722j/extracted/figure_data.json",
       "json_pointer": "/figures/6/panels/0/series/3/points",
-      "source_checksum": "sha256:ba77ebe82262c3fae16914e90bb140b693b9bc3fdb29f6fef1b757123fdc60b9",
+      "source_checksum": "sha256:3a16718cabd1f03e736d51ce3fb3c307a79beb7714182952f65b196a8970387b",
       "experiment_id": "10.1039_c7ra07722j__Fig10a__exp01"
      },
      "created_by": "pipeline/canonical/build_canonical.py",
-     "code_version": "7e3103e+dirty",
-     "created_at": 1786394469
+     "code_version": "e038973+dirty",
+     "created_at": 1786419380
     }
    ],
    "granularity": {
@@ -8665,7 +8660,7 @@
     "resolved_representation": "unresolved",
     "changed": true,
     "reason": "x axis role could not be determined",
-    "n_points": 36
+    "n_points": 16
    },
    "context_available": [
     "aspect_ratio",

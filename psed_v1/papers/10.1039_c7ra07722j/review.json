@@ -8,6 +8,7 @@
    "card.json",
    "document.md",
    "figure_data.json",
+   "figure_inventory.json",
    "figures",
    "geometry.json",
    "pressure.json",
@@ -36,11 +37,11 @@
    "10.1039_c7ra07722j__Fig10a__exp02",
    "10.1039_c7ra07722j__Fig10a__exp03",
    "10.1039_c7ra07722j__Fig10a__exp04",
-   "10.1039_c7ra07722j__Fig2__exp01",
-   "10.1039_c7ra07722j__Fig2__exp02",
-   "10.1039_c7ra07722j__Fig2__exp03",
-   "10.1039_c7ra07722j__Fig2__exp04",
-   "10.1039_c7ra07722j__Fig2__exp05",
+   "10.1039_c7ra07722j__Fig2a__exp01",
+   "10.1039_c7ra07722j__Fig2a__exp02",
+   "10.1039_c7ra07722j__Fig2a__exp03",
+   "10.1039_c7ra07722j__Fig2b__exp01",
+   "10.1039_c7ra07722j__Fig2b__exp02",
    "10.1039_c7ra07722j__Fig3a__exp01",
    "10.1039_c7ra07722j__Fig3a__exp02",
    "10.1039_c7ra07722j__Fig3a__exp03",
@@ -56,8 +57,7 @@
    "10.1039_c7ra07722j__Fig5a__exp01",
    "10.1039_c7ra07722j__Fig5a__exp02",
    "10.1039_c7ra07722j__Fig5a__exp03",
-   "10.1039_c7ra07722j__Fig6a__exp01",
-   "10.1039_c7ra07722j__Fig6a__exp02",
+   "10.1039_c7ra07722j__Fig6a",
    "10.1039_c7ra07722j__Fig6b",
    "10.1039_c7ra07722j__Fig6c",
    "10.1039_c7ra07722j__Fig7a__exp01",
@@ -70,11 +70,11 @@
   "physical_case_ids": [
    "10.1039_c7ra07722j__Fig10a__exp01",
    "10.1039_c7ra07722j__Fig10a__exp02",
-   "10.1039_c7ra07722j__Fig2__exp01",
-   "10.1039_c7ra07722j__Fig2__exp02",
-   "10.1039_c7ra07722j__Fig2__exp03",
-   "10.1039_c7ra07722j__Fig2__exp04",
-   "10.1039_c7ra07722j__Fig2__exp05",
+   "10.1039_c7ra07722j__Fig2a__exp01",
+   "10.1039_c7ra07722j__Fig2a__exp02",
+   "10.1039_c7ra07722j__Fig2a__exp03",
+   "10.1039_c7ra07722j__Fig2b__exp01",
+   "10.1039_c7ra07722j__Fig2b__exp02",
    "10.1039_c7ra07722j__Fig3a__exp01",
    "10.1039_c7ra07722j__Fig3a__exp02",
    "10.1039_c7ra07722j__Fig3a__exp03",
@@ -90,8 +90,7 @@
    "10.1039_c7ra07722j__Fig5a__exp01",
    "10.1039_c7ra07722j__Fig5a__exp02",
    "10.1039_c7ra07722j__Fig5a__exp03",
-   "10.1039_c7ra07722j__Fig6a__exp01",
-   "10.1039_c7ra07722j__Fig6a__exp02",
+   "10.1039_c7ra07722j__Fig6a",
    "10.1039_c7ra07722j__Fig6b",
    "10.1039_c7ra07722j__Fig6c",
    "10.1039_c7ra07722j__Fig7a__exp01",
@@ -104,24 +103,25 @@
   "measurement_event_ids": [
    "10.1039_c7ra07722j__Fig10a__exp01__meas",
    "10.1039_c7ra07722j__Fig10a__exp03__meas",
-   "10.1039_c7ra07722j__Fig2__exp01__meas",
+   "10.1039_c7ra07722j__Fig2a__exp01__meas",
+   "10.1039_c7ra07722j__Fig2b__exp01__meas",
    "10.1039_c7ra07722j__Fig3a__exp01__meas",
    "10.1039_c7ra07722j__Fig3b__exp01__meas",
    "10.1039_c7ra07722j__Fig4a__exp01__meas",
    "10.1039_c7ra07722j__Fig5a__exp01__meas",
-   "10.1039_c7ra07722j__Fig6a__exp01__meas",
+   "10.1039_c7ra07722j__Fig6a",
    "10.1039_c7ra07722j__Fig6b",
    "10.1039_c7ra07722j__Fig6c",
    "10.1039_c7ra07722j__Fig7a__exp01__meas"
   ],
-  "physical_process_runs": 32,
-  "measurement_events": 11,
-  "result_series": 34,
-  "independent_sweep_cases_minted": 32,
+  "physical_process_runs": 31,
+  "measurement_events": 12,
+  "result_series": 33,
+  "independent_sweep_cases_minted": 31,
   "independent_process_sweeps": 5,
   "continuous_or_longitudinal_runs": 15,
   "spatial_profiles_g": 0,
-  "measurement_scans": 12,
+  "measurement_scans": 11,
   "multi_output_measurements_g": 0,
   "models_and_simulations": 0,
   "unresolved_granularity": 0,
@@ -188,14 +188,14 @@
     "conflicting run-structure evidence"
    ]
   ],
-  "source_figure_series": 34,
-  "resolved_result_records": 34,
-  "physical_experimental_cases": 59,
+  "source_figure_series": 33,
+  "resolved_result_records": 33,
+  "physical_experimental_cases": 57,
   "continuous_experimental_runs": 15,
   "discrete_experimental_sweeps": 5,
   "discrete_experimental_cases": 0,
   "experimental_profiles": 0,
-  "multi_output_measurements": 12,
+  "multi_output_measurements": 11,
   "fits_or_calculated_representations": 2,
   "simulations": 0,
   "model_curves": 0,
@@ -209,27 +209,23 @@
  },
  "by_figure": [
   {
-   "figure_slug": "Fig2",
+   "figure_slug": "Fig2a",
    "printed_figure_number": "2",
-   "panel": "",
+   "panel": "a",
    "fig_docling_index": "4",
-   "n_series": 5,
+   "n_series": 3,
    "physical_case_ids": [
-    "10.1039_c7ra07722j__Fig2__exp01",
-    "10.1039_c7ra07722j__Fig2__exp02",
-    "10.1039_c7ra07722j__Fig2__exp03",
-    "10.1039_c7ra07722j__Fig2__exp04",
-    "10.1039_c7ra07722j__Fig2__exp05"
+    "10.1039_c7ra07722j__Fig2a__exp01",
+    "10.1039_c7ra07722j__Fig2a__exp02",
+    "10.1039_c7ra07722j__Fig2a__exp03"
    ],
    "measurement_event_ids": [
-    "10.1039_c7ra07722j__Fig2__exp01__meas"
+    "10.1039_c7ra07722j__Fig2a__exp01__meas"
    ],
    "result_series_ids": [
-    "10.1039_c7ra07722j__Fig2__exp01",
-    "10.1039_c7ra07722j__Fig2__exp02",
-    "10.1039_c7ra07722j__Fig2__exp03",
-    "10.1039_c7ra07722j__Fig2__exp04",
-    "10.1039_c7ra07722j__Fig2__exp05"
+    "10.1039_c7ra07722j__Fig2a__exp01",
+    "10.1039_c7ra07722j__Fig2a__exp02",
+    "10.1039_c7ra07722j__Fig2a__exp03"
    ],
    "model_or_simulation_ids": [],
    "unresolved_ids": [],
@@ -239,7 +235,35 @@
    "materials": [
     "Li2CO3"
    ],
-   "physical_cases": 32,
+   "physical_cases": 17,
+   "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to "
+  },
+  {
+   "figure_slug": "Fig2b",
+   "printed_figure_number": "2",
+   "panel": "b",
+   "fig_docling_index": "4",
+   "n_series": 2,
+   "physical_case_ids": [
+    "10.1039_c7ra07722j__Fig2b__exp01",
+    "10.1039_c7ra07722j__Fig2b__exp02"
+   ],
+   "measurement_event_ids": [
+    "10.1039_c7ra07722j__Fig2b__exp01__meas"
+   ],
+   "result_series_ids": [
+    "10.1039_c7ra07722j__Fig2b__exp01",
+    "10.1039_c7ra07722j__Fig2b__exp02"
+   ],
+   "model_or_simulation_ids": [],
+   "unresolved_ids": [],
+   "result_kinds": [
+    "independent_process_sweep"
+   ],
+   "materials": [
+    "Li2CO3"
+   ],
+   "physical_cases": 14,
    "caption": "Fig. 2 Saturation curves for (a) thermal and (b) plasma-assisted ALD of Li2CO3 obtained at 150 /C14 C showing the self-limiting growth behavior of the ALD process. The solid line serves as a guide to "
   },
   {
@@ -371,17 +395,15 @@
    "printed_figure_number": "6",
    "panel": "a",
    "fig_docling_index": "8",
-   "n_series": 2,
+   "n_series": 1,
    "physical_case_ids": [
-    "10.1039_c7ra07722j__Fig6a__exp01",
-    "10.1039_c7ra07722j__Fig6a__exp02"
+    "10.1039_c7ra07722j__Fig6a"
    ],
    "measurement_event_ids": [
-    "10.1039_c7ra07722j__Fig6a__exp01__meas"
+    "10.1039_c7ra07722j__Fig6a"
    ],
    "result_series_ids": [
-    "10.1039_c7ra07722j__Fig6a__exp01",
-    "10.1039_c7ra07722j__Fig6a__exp02"
+    "10.1039_c7ra07722j__Fig6a"
    ],
    "model_or_simulation_ids": [],
    "unresolved_ids": [],
@@ -391,7 +413,7 @@
    "materials": [
     "Li2CO3"
    ],
-   "physical_cases": 2,
+   "physical_cases": 1,
    "caption": "Fig. 6 XPS (a) C 1s, (b) Li 1s and (c) O 1s spectra for Li2CO3 grown by thermal ALD at 150 /C14 C. The measured spectra (black line) and /uniFB01 tted peaks (blue and red) are plotted together. The ob"
   },
   {
