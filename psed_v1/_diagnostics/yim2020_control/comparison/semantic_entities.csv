@@ -1,0 +1,13 @@
+control case,deposition run identity,sample identity,condition-case identity,measurement identity,result identity,representation identity,study-series membership,simulation provenance,current PSED likely/observed behavior,semantic verdict,confidence
+"Series A (samples 1,2,3)","RUN_A explicit, one shared run",3 distinct samples,1 condition case (recipe identical),3 reflectometry,3 profiles,as-measured,A,n/a,"3 Experiments, no run link",RUN_IDENTITY_LOSS,HIGH
+"Series B (samples 4,5,6)",not stated,3 sample codes,1 condition case (identical recipe),3 reflectometry at 50x/10x/5x,3 profiles,as-measured,B,n/a,Fig 7a -> 3 Experiments,WRONG_LEVEL,HIGH
+Sample 11,not stated,1 specimen (explicit),1 case (1000 cycles),SEM + Al-Ka map + EDS line scan (+reflectometry),"Al, Si, O profiles",as-measured,D,n/a,Fig 5b -> 3 Experiments,OVER_SPLIT / SAMPLE_IDENTITY_LOSS,HIGH
+Sample 8,not stated,1 specimen,1 case,reflectometry (also repeated in Fig 8a),1 profile,as-measured,C and D,n/a,appears under Fig 9 and Fig 8a separately,SERIES_MEMBERSHIP_LOSS,HIGH
+Sample 12,not stated,1 specimen,1 case,reflectometry,1 profile,as-measured,E and F,n/a,appears under Fig 11a and 11b separately,SERIES_MEMBERSHIP_LOSS,HIGH
+Fig 8a,same run (one sample),1 specimen (sample 8),1 case,repeated reflectometry,repeatability spread,as-measured,-,n/a,4 Experiments,SAMPLE_IDENTITY_LOSS,HIGH
+Fig 8b,several different runs,several chips,1 nominal case,reflectometry,reproducibility spread,as-measured,-,n/a,4 Experiments,RUN_IDENTITY_LOSS (case level arguably CORRECT),HIGH
+"Fig 9 top (a,b,c)",not stated,"samples 7,8,9",3 cases (channel height),3 measurements,3 results,as_measured / scaled / type1_normalized,C,n/a,9 Experiments,DUPLICATE_REPRESENTATION,HIGH
+"Fig 9 bottom (d,e,f)",not stated,"samples 8,10,11",3 cases (cycles),3 measurements,3 results,as_measured / scaled / type1_normalized,D,n/a,9 Experiments,DUPLICATE_REPRESENTATION,HIGH
+Fig 10,n/a,n/a,n/a,n/a,simulated profiles,scaled/normalized,-,Ylilammi diffusion-reaction model (MATLAB re-implementation),"31 SimulationRun entities, records labelled simulated",CORRECT,HIGH
+Fig 11a,not stated,"samples 12,13,14",3 cases (TMA pulse),3 reflectometry,3 profiles,as-measured,E,n/a,3 Experiments,CORRECT,HIGH
+Fig 11b,not stated,"samples 12,15,16",3 cases (purge),3 reflectometry,3 profiles,as-measured,F,n/a,3 Experiments,CORRECT,HIGH

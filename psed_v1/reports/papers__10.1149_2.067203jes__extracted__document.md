@@ -1,0 +1,340 @@
+<!-- image -->
+
+TU/e
+
+## Plasma-assisted ALD for the conformal deposition of SiO2 : process, material and electronic properties
+
+## Citation for published version (APA):
+
+Dingemans, G., Helvoirt, van, C. A. A., Pierreux, D., Keuning, W., &amp; Kessels, W. M. M. (2012). Plasma-assisted ALD for the conformal deposition of SiO2 : process, material and electronic properties. Journal of the Electrochemical Society, 159(3), H277-H285. https://doi.org/10.1149/2.067203jes
+
+## DOI:
+
+10.1149/2.067203jes
+
+## Document status and date:
+
+Published: 01/01/2012
+
+## Document Version:
+
+Publisher's PDF, also known as Version of Record (includes final page, issue and volume numbers)
+
+## Please check the document version of this publication:
+
+- A submitted manuscript is the version of the article upon submission and before peer-review. There can be important differences between the submitted version and the official published version of record. People interested in the research are advised to contact the author for the final version of the publication, or visit the DOI to the publisher's website.
+- The final author version and the galley proof are versions of the publication after peer review.
+- The final published version features the final layout of the paper including the volume, issue and page numbers.
+
+Link to publication
+
+## General rights
+
+Copyright and moral rights for the publications made accessible in the public portal are retained by the authors and/or other copyright owners and it is a condition of accessing publications that users recognise and abide by the legal requirements associated with these rights.
+
+- Users may download and print one copy of any publication from the public portal for the purpose of private study or research.
+- You may not further distribute the material or use it for any profit-making activity or commercial gain
+- You may freely distribute the URL identifying the publication in the public portal.
+
+If the publication is distributed under the terms of Article 25fa of the Dutch Copyright Act, indicated by the 'Taverne' license above, please follow below link for the End User Agreement:
+
+www.tue.nl/taverne
+
+## Take down policy
+
+If you believe that this document breaches copyright please contact us at:
+
+openaccess@tue.nl providing details and we will investigate your claim.
+
+Download date: 09. Jul. 2026
+
+<!-- image -->
+
+## Plasma-Assisted ALD for the Conformal Deposition of SiO2: Process, Material and Electronic Properties
+
+G. Dingemans, a C. A. A. van Helvoirt, a D. Pierreux, b W. Keuning, a and W. M. M. Kessels a, ∗ ,z a Department of Applied Physics, Eindhoven University of Technology, 5600 MB Eindhoven, The Netherlands b ASM, Kapeldreef 75, B-3001 Leuven, Belgium
+
+Plasma-assisted atomic layer deposition (ALD) was used to deposit SiO2 films in the temperature range of Tdep = 50-400 ◦ C on Si(100). H2Si[N(C2H5)2]2 and an O2 plasma were used as Si precursor and oxidant, respectively. The ALD growth process and material properties were characterized in detail. Ultrashort precursor doses ( ∼ 50 ms) were found to be sufficient to reach self-limiting ALDgrowthwith a growth-per-cycle of ∼ 1.2 Å ( Tdep =∼ 200 ◦ C) leading to SiO2 films with O/Si ratio of ∼ 2.1. Moreover, the plasma ALD process led to a high conformality (95-100%) for trenches with aspect ratios of ∼ 30. In addition, the electronic (interface) properties of ultrathin ALD SiO2 films and ALD SiO2/Al2O3 stacks were studied by capacitance-voltage and photoconductance decay measurements. The interface quality associated with SiO2 was improved significantly by using an ultrathin ALD Al2O3 capping layer and annealing. The interface defect densities decreased from ∼ 1 × 10 12 eV -1 cm -2 (at mid gap) for single layer SiO2 to &lt; 10 11 eV -1 cm -2 for the stacks. Correspondingly, ultralow surface recombination velocities &lt; 3 cm/s were obtained for n -type Si. The density and polarity of the fixed charges associated with the stacks were found to be critically dependent on the SiO2 thickness (1-30 nm).
+
+©2012 The Electrochemical Society. [DOI: 10.1149/2.067203jes] All rights reserved.
+
+Manuscript received November 8, 2011. Published January 6, 2012. This was Paper 1357 presented at the Montreal, QC, Canada, Meeting of the Society, May 1-6, 2011.
+
+The key importance of thermally grown silicon dioxide (SiO2) for applications in silicon-based microelectronics needs no introduction. 1, 2 Also in silicon photovoltaics, SiO2 is a very important material. The low interface defect densities associated with the Si/SiO2 interface reduce surface recombination significantly and have enabled high solar cell efficiencies. 3-6 Temperatures &gt; 800 ◦ Care typically required to form SiO2 by thermal oxidation of Si. Alternative methods for the synthesis of SiO2 have been developed to avoid such high temperatures and long processing times. They may also enable single side deposition and a high level of control of the material properties and film thickness. These alternative methods include (wet) chemical oxidation, (plasma-enhanced) chemical vapor deposition, sputtering and electron beam evaporation.
+
+Atomic layer deposition (ALD) is an alternative CVD-like method that recently gained considerable attention. In ALD, the substrate is sequentially exposed to two precursors (e.g., a Si-precursor and an oxidant) which each react with the surface until saturation. ALD allows for precise thickness control, optimal large-area uniformity, and the conformal coating of demanding substrate topologies. 7-9 Therefore, the advantages of ALD may expand the range of applications for SiO2. ALD SiO2 films may find application as protective or insulator coating, or can be used in nanolaminate structures with tailored optical and electronic properties. 10,11 The films can also be used in spacer defined double patterning processes for example for dynamic random access memory (DRAM) technology. 12 In addition, the ALD SiO2 process may be useful for engineering the interface between Si and highk materials. 13 In Si photovoltaics, SiO2 can be used in doublelayer surface passivation schemes, for example comprising Al2O3 or a -SiNx:H capping layers, with tailored interface properties. 14-16
+
+In the first reports, ALD SiO2 was synthesized employing SiCl4 and H2O which required relatively high substrate temperatures ( &gt; 300 ◦ C) and long precursor exposures. 17,18 In recent years, various alternative Si precursors have been tested in combination with O3 or H2O as the oxidants. These processes include the use of pyridine (C5H5N) and Al as catalysts on the surface. 17,11,19 The approach employing Al was referred to as rapid ALD as it resulted in deposition rates above the 'theoretical' maximum of one monolayer per ALD cycle. In addition, more recently a thermal ALD process for lowtemperature SiO2 wasreported which was free of catalysts or corrosive by-products. 20 In this respect, the use of precursors with amino ligands
+
+∗ Electrochemical Society Active Member.
+
+z E-mail: w.m.m.kessels@tue.nl
+
+has also shown promising results, in particular when combined with H2O2, O3, or O2 plasma as the oxidant. 21-24 Very recently, also SiH4 has been used as Si precursor during plasma-assisted ALD with CO2 plasma as oxidant. 25 SiO2 films grown with ALD have been reported to exhibit low carbon content, and a high electrical breakdown field. 10,22 Nevertheless, to improve properties such as the chemical etch rate or the interface defect density, annealing at a temperature of 1000 ◦ C was shown to be beneficial. 20 Here, we report on a plasma-assisted ALD process for synthesis of SiO2 at low substrate temperatures of 50-400 ◦ C. The ALD process employed H2Si[N(C2H5)2]2 as the Si precursor (Figure 1). The plasma-assisted ALD process was characterized in detail and the results are compared to the well-understood ALD process of Al2O3 using Al(CH3)3. We show that the ALD SiO2 process was compatible with short cycle times and led to an excellent conformality even on structures with an aspect ratio of ∼ 30. The electronic properties of the Si(100)/SiO2 interface were investigated using photoconductance decay and capacitance-voltage measurements. We demonstrate that interface defect densities &lt; 10 11 eV -1 cm -2 (at mid gap) can be reached when using ultrathin Al2O3 capping layers and annealing at moderate temperatures ( ∼ 400 ◦ C).
+
+The paper is organized as follows. After the experimental details, the characterization of the ALD SiO2 process will be presented. In addition, the material properties and the influence of the substrate temperature will be addressed and data with respect to the conformality will be presented. Subsequently, a brief discussion on the surface chemistry is included on the basis of in situ measurements. The final sections discuss the surface passivation properties and the electronic (interface) properties of the SiO2 films and SiO2/Al2O3 stacks.
+
+## Experimental
+
+The SiO2 films were deposited in the Oxford Instruments OpAL reactor. This is an open-load system, suited for both plasma and thermal ALD and operating at typical pressures of 150 mTorr. A remote O2 plasma was used during the oxidation step in the ALD cycle. H2Si[N(C2H5)2]2 (SAM.24, Air Liquide) was used as the Si precursor (Fig. 1). This is a liquid (melting point &lt; -10 ◦ C) which exhibits a high vapor pressure, i.e. ∼ 100 Torr at 100 ◦ C (Fig. 1). The SAM.24 was held in a stainless steel bubbler heated to 50 ◦ C and the precursor was introduced into the reactor by ultrashort doses (10-120 ms) using fast ALD valves. A flow of Ar as well as the O2 flow were continuously on during the process. The latter was feasible
+
+Figure 1. Vapor pressure of the H2Si[N(C2H5)2]2 (SAM.24) precursor used for ALD of SiO2 as a function of the temperature. The vapor pressure is compared to the one of Al(CH3)3 (TMA). This precursor is commonly used for ALD of Al2O3. The precurors are schematically represented in the figure.
+
+<!-- image -->
+
+as no evidence was found for reactions between the Si precursor and O2 under the experimental conditions used. The substrate temperature during deposition, Tdep , was varied between 50 and 400 ◦ C. The reactor wall temperature was 180 ◦ C unless the substrate temperature was lower. Under these conditions the wall and substrate temperature were equal. To allow for direct comparison, Al2O3 was synthesized in the same reactor using Al(CH3)3 as the metal precursor and O2 plasma as the oxidant. 26-28 All films were deposited on Si (100) wafers which received a short treatment in diluted HF ( ∼ 1% in DI-H2O) to remove the native oxide prior to loading the wafers into the ALD reactor.
+
+In situ spectroscopic ellipsometry (SE) measurements were used for optimizing the ALD process. The growth-per-cycle, GPC, and refractive index were determined by using a Cauchy optical model to fit the ellipsometry data. Rutherford backscattering spectroscopy (RBS) and elastic recoil detection (ERD) employing ∼ 2 MeV He 2 + -ions from the singletron at the Eindhoven University of Technology (Acctec B.V.) and transmission Fourier transform infrared absorption (FTIR) measurements were used to analyze the film composition. The surface morphology was investigated by atomic force microscopy (AFM) measurements in semi-contact mode and by high-resolution transmission electron microscopy (TEM). Scanning electron microscopy (SEM) was employed to visualize the conformal deposition of SiO2 in high aspect ratio trenches. The deposition process itself was studied in real time by quadrupole mass spectrometry (QMS) probing the gas in the exhaust line and by optical emission spectroscopy (OES) through a view port located on top of the ALD reactor.
+
+The interface quality and surface passivation properties of the ALD SiO2 films was evaluated from the effective lifetime τ eff of the minority carriers in double-side coated floatzone (FZ) n -type Si wafers ( ∼ 3.5 /Omega1 cm). τ eff was determined with photoconductance decay in the transient mode and quasi-steady-state-mode (for τ eff &lt; 100 µ s) using a Sinton lifetime tester (WCT 100). The upper level for the surface recombination velocity Seff,max was extracted at an injection level of 5 × 10 14 cm -3 by the expression:
+
+<!-- formula-not-decoded -->
+
+with W the thickness of the silicon wafer ( ∼ 280 µ m). In the derivation of this expression it is assumed that all recombination takes place at the surface. Capacitance-voltage measurements were performed on metal-oxide-semiconductor structures to extract the interface defect density ( Dit ) and the fixed charge density Qf . 29 Evaporated Al was used for the metal contacts which were applied after postdeposition annealing of the samples. The latter was performed in a rapid thermal annealing furnace (ramp up &gt; 30 ◦ C/s) in N2/H2 or N2 environment.
+
+Figure 2. SiO2 film thickness as a function of the number of ALD cycles. (a) Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE). (b) SiO2 film thickness extracted from the transmission electron microscopy (TEM) image of Fig. 3, compared with values determined by in situ SE on the same sample. The substrate temperature Tdep was 200 ◦ C.
+
+<!-- image -->
+
+## ALD Process and Material Characterization
+
+The ALD process was monitored by in situ spectroscopic ellipsometry (SE) by taking data points after a certain number of cycles. The SiO2 film thickness is plotted as a function of the number of ALD cycles in Fig. 2a for substrate temperatures of 50 ◦ C, 200 ◦ Cand250 ◦ C. For the latter two temperatures, the SiO2 thickness increased linearly with the number of cycles. A slight non-linearity was observed for Tdep = 50 ◦ C, which we attribute to parasitic CVD reactions as will be discussed below. In addition to SE, thickness information was extracted from a cross-sectional TEM micrograph of a sample which consisted of alternating layers of Al2O3 and SiO2 with each a varying thickness as set by the number of cycles per layer (Fig. 3). The TEM and SE data proved to be in excellent agreement (Fig. 2b). The growth-percycle (GPC) was determined from the slope of the curves in Fig. 2, with values of 1.2 Å/cycle and 1.1 Å/cycle obtained for substrate temperatures of 200 ◦ C and 250 o C, respectively. These GPC values are similar to those obtained for plasma ALD of Al2O3. 26,27 Moreover, no indications for a significant growth delay on H-terminated Si(100) substrates were found for the SiO2 ALDprocess, which is also similar to what has been observed for Al2O3. 26
+
+Figure 4 shows the effect of the duration of the successive steps in the ALD recipe, i.e., the precursor dosing, precursor purge step, plasma exposure, and plasma exposure purge step. In the corresponding experiments one process parameter in the ALD recipe was varied whereas the duration of the other steps was taken sufficiently long to
+
+Figure 3. High-resolution cross-sectional TEM image of a stack with alternating layers of ALD Al2O3 and ALD SiO2 deposited using 10-40 cycles each. The substrate temperature was 200 ◦ C. The extracted layer thicknesses are shown in Fig. 2b.
+
+<!-- image -->
+
+Figure 4. (a)-(d) Saturation curves for the growth-per-cycle, GPC, and refractive index, n, of the SiO2 films as measured by in situ spectroscopic ellipsometry as a function of the 4 process parameters in the ALD recipe. (e)-(h) Saturation curves for the GPC of Al2O3 films. The substrate temperature was 250 ◦ C for both the SiO2 and Al2O3 process.
+
+<!-- image -->
+
+guarantee saturated ALD conditions for the non-varied process parameters. The substrate temperature was set to 250 ◦ C. The growth process of SiO2 is compared to plasma-assisted ALD of Al2O3 at 250 ◦ C (Figures 4e-4h). From the figure it is evident that ultrashort precursor dosing times ( ∼ 50 ms) were already sufficient to reach selflimiting growth with a GPC of ∼ 1.1 Å. These short dosing times were only slightly higher compared to those used for the Al(CH3)3 precursor for ALD of Al2O3. The fact that short dosing times are sufficient is in agreement with the expectations based on the relatively high vapor pressure of the SAM.24 precursor. Many processes for other oxides using different precursors require much longer dosing times. For instance, ALD of TiO2 and Ta2O5 require dosing times &gt; 1s using alkylamide precursors in a similar remote plasma and thermal ALD reactor. 30,31 The duration of the purge step after precursor dosing was required to be &gt; 2 s. For shorter purge times, residual precursor remaining in the reactor volume can react in the plasma, causing parasitic (PE) CVD-like growth and a higher GPC value. Regarding the O2 plasma step, a plasma exposure time &gt; 1 s was found to be sufficient to reach a saturated GPC, indicating the rapid removal of the precursor ligands. For very short plasma exposure times, a drop in the refractive index below ∼ 1.46 was observed. This decrease can be attributed to the incorporation of impurities in the SiO2 film that originate from the Si precursor. The plasma exposure time required for ALD SiO2 is slightly shorter than for plasma ALD of Al2O3 which requires plasma times of ∼ 2 s to reach saturated growth. However, with in situ spectroscopic ellipsometry only the center of the Si wafer is probed and to ensure saturation over the full wafer surface, a plasma exposure time of 4 s was employed in all subsequent experiments. Interestingly, the purge after the plasma step had a significant impact on the GPC. This is in contrast to the ALD process for Al2O3, where the purge step after O2 plasma exposure was found to have little influence on the GPC and could be reduced well below 0.5 s. We attribute the higher GPC for shorter purges ( &lt; 2 s) to reactions between residual H2O, formed during the plasma process, 32 with the Si precursor injected in the subsequent step. Although it is known that the H2Si[N(C2H5)2]2 precursor reacts with H2O, it is relevant to mention here that we were unable to develop a thermal ALD process for SiO2 using SAM.24 as precursor and H2O as the oxidant. No film growth was observed. Instead, even with the shortest possible H2O doses applied, powder formation occurred in the reactor as was noticeable by the naked eye.
+
+The thickness uniformity of the SiO2 films deposited by plasmaassisted ALD at 250 ◦ C was evaluated by mapping the thickness by spectroscopic ellipsometry. A precursor dose time of 50 ms was used, while all other steps in the ALD cycle (Fig. 4) were set to 3s. For a 8 inch ( ∼ 200 mm) wafer the nonuniformity, defined by the difference between the maximum and minimum thicknesses divided by twice the average thickness of all data points measured, 26 was &lt; 3.5%. The thickness nonuniformity achieved on 4 inch (100 mm) wafers was ∼ 1%.
+
+Material properties and role of substrate temperature.Figure 5 shows the effect of the substrate temperature between 50 and 400 ◦ C on the growth rate and refractive index of SiO2. The length of the purge steps in the lower temperature regime was extended (up to 10 s
+
+Figure 5. Influence of the substrate temperature during deposition on (a) the refractive index, n, and (b) the growth-per-cycle, GPC, of SiO2 as determined with in situ spectroscopic ellipsometry.
+
+<!-- image -->
+
+Table I. Data on ALD SiO2 as determined from the RBS and ERD measurements. In the calculation of the mass density the film thickness as obtained by SE was used. The thickness of the films was in the range of 35-45 nm.
+
+|   Substrate temperature ( ◦ C) | Si atoms per cycle (10 14 cm - 2 )   | [Si] (atom%)   | [O] (atom%)   | [H] (atom%)   | O/Si ratio   | ρ mass (g/cm 3   |
+|--------------------------------|--------------------------------------|----------------|---------------|---------------|--------------|------------------|
+|                            100 | 2.8 ± 0.1                            | 29.1 ± 0.8     | 61.3 ± 1.5    | 9.6 ± 0.9     | 2.1 ± 0.1    | 2.0 ± 0.1        |
+|                            200 | 2.3 ± 0.1                            | 29.9 ± 0.8     | 62.9 ± 1.5    | 7.1 ± 0.7     | 2.1 ± 0.1    | 2.0 ± 0.1        |
+|                            300 | 1.9 0.1                              | 29.6 0.8       | 62.3 1.5      | 8.1 0.8       | 2.1 0.1      | 2.1 0.1          |
+
+±
+
+at 50 ◦ C), as it is more difficult to remove H2O at lower temperatures which could impact the saturation behavior of the process. The GPC was observed to decrease with increasing deposition temperature from ∼ 1.7 Å/cycle at 50 ◦ C to 0.8 Å/cycle at 400 ◦ C. The refractive index was fairly constant with a value of n = 1.46 ± 0.02 (photon energy of 2 eV) between 100 and 300 ◦ C. Below 100 ◦ C and above 300 ◦ C the refractive index was somewhat lower. It can therefore not be excluded that some non-ideal ALD behavior takes place at the lowest and highest temperatures investigated. At the low substrate temperature of 50 ◦ C, additional CVD reactions may contribute to the higher GPC and lower n . This might also explain the slightly non-linear trend between the film thickness and number of cycles observed at this deposition temperature as shown in Figure 2. Despite the long purging times (10 s) after the plasma step, the accumulation of some residual H2O in the reactor, with which the precursor can react, may play a role in these observations. For temperatures reaching 400 ◦ C, thermal stability issues of the precursor and its ligands can start to play a role.
+
+Table I shows RBS and ERD data obtained for substrate temperatures of 100, 200 and 300 ◦ C. The table shows that the number of Si atoms deposited per cycle decreases with increasing substrate temperature. This clearly demonstrates that the decrease of the GPC with increasing substrate temperature can be attributed to reduced precursor adsorption per cycle at higher temperatures. Similar results were obtained for Al2O3 synthesized by plasma-assisted ALD, 27,31 which could be attributed almost fully to the decrease in the number of Al atoms deposited per cycle for increasing substrate temperatures. For Al2O3, the decrease in GPC with increasing temperature is mainly due to a loss of -OH surface groups due to thermally activated dehydroxylation reactions. 8, 33, 34 The similarity between both ALD processes indicates that the OH surface coverage is also a key parameter controlling the growth rate of ALD SiO2 as will be discussed in more detail later.
+
+The fact that good SiO2 material properties were obtained between 100 and 300 ◦ C can be concluded from Table I. The Si and O content correspond with an O/Si ratio of 2.1 ± 0.1 and the hydrogen content of the films is 7 - 10 at.% depending on the substrate temperature. The carbon and nitrogen content of the films was below the detection limit of the RBS measurements of ∼ 5 at.%. Apart from the hydrogen content, the material properties were found to be virtually independent of the substrate temperature in the range of 100-300 ◦ C. This also holds for the mass density which was found to be 2.0 ± 0.1 g/cm 3 .
+
+Fourier transform infrared absorption spectroscopy was used to compare the ALD SiO2 films with thermally-grown SiO2. Figure 6 shows the FTIR spectra. The data reveal a shift of the Si-O-Si stretching and Si-O-Si rocking modes toward lower wavenumbers for the ALD SiO2 film. This is in agreement with the slightly nonstoichiometric nature of the films and the fact that the mass density of ALD SiO2 is slightly lower compared to typical values for wet thermally-grown SiO2 films ( ∼ 2.2 g/cm 3 ). The FTIR data also confirm the presence of hydrogen in the ALD SiO2 films by the observation of SiO-H bending ( ∼ 920 cm -1 ) and SiO-H stretching (2500-3600 cm -1 ) signatures in the spectrum.
+
+Surface Morphology.The surface morphology of the SiO2 films was studied by AFM in semi-contact mode. A root-mean-square surface roughness of 1.9 and 1.6 Å was obtained for films deposited at 100 ◦ C (film thickness 51 nm) and 200 ◦ C (48 nm), respectively. The fact that these values were not higher than those obtained for uncoated
+
+±
+
+±
+
+±
+
+±
+
+polished Si wafers demonstrates that the SiO2 films were deposited with negligible roughening on the Si(100) substrate. The latter can also be appreciated from the interface morphology as visualized in the TEM image of a SiO2/Al2O3 stack displayed in Fig. 7. Perfectly smooth Si/SiO2 and SiO2/Al2O3 interfaces can be observed. From the AFM data, it also follows that the aforementioned small (PE)CVD growth component at low substrate temperatures is not pronounced yet at 100 ◦ C as this would likely have resulted in enhanced surface roughness.
+
+Conformality.The conformality of the ALD process was examined on a structure with high-aspect ratio trenches using highresolution SEM. The various trenches exhibited aspect ratios (AR, i.e., depth of trench divided by average width) between ∼ 10 and ∼ 30 and were fabricated by deep reactive ion etching (DRIE). The trenches exhibited a thermal SiO2 layer of ∼ 100 nm on the surfaces. To obtain sufficient optical contrast between the layers, an Al2O3 film was deposited prior to ALD SiO2 deposition. The length of the various steps in the ALD SiO2 recipe was increased slightly compared to the requirements for ALD growth on a planar surface (see Fig. 4): The recipe included a dose time of 90 ms, a purge time of 5s, a plasma time of 4.5s and a subsequent purge time of 6s. Figure 8 shows the SEM image of a trench with an aspect ratio of AR = ∼ 30. The SiO2 film was deposited using 830 cycles. The film thickness at the surface was determined with SEM to be 100 ± 5 nm, which was in good agreement with the 102 ± 1 nm obtained by spectroscopic ellipsometry for a planar reference sample. At the bottom of the trench a thickness of 95 ± 5 nm was extracted from the SEM graph. This demonstrates a very high conformality (95-100%) for the plasma-assisted ALD process. These results are important as there is only a limited amount of literature available on the conformality of plasma-assisted ALD processes (see Ref. 35 and references therein). For example, good results have previously been reported for AR up to ∼ 15. 36
+
+Figure 6. FTIRspectra of ALD SiO2 prepared at 200 ◦ C(48nmfilmthickness) and thermal SiO2 grown by wet oxidation at ∼ 900 ◦ C(295 nm film thickness). The most prominent absorption peaks have been assigned (see Ref. 37 and references therein). The absorbance is normalized by the film thickness. A Si wafer without SiO2 served as a reference to obtain the absorption spectra.
+
+<!-- image -->
+
+±
+
+Figure 7. High-resolution TEM image of an ALD SiO2 film of 7.0 ± 0.3 nm thickness deposited on a H-terminated Si(100) wafer. The SiO2 was covered by an Al2O3 film deposited by plasma-assisted ALD.
+
+<!-- image -->
+
+The high conformality that was demonstrated for plasma-assisted ALD of SiO2 implies that the recombination of oxygen radicals in the trench was not significant in affecting the conformality. A recombination-limited growth regime would have resulted in a significant variation of film thickness along the depth of the trench. 35 Furthermore, it is interesting to note that the deposition of Al2O3, prior to the SiO2 film, exhibited a lower conformality for the ALD settings employed. The thickness of the film at the bottom of the trench was determined to be ∼ 50 nm compared to the ∼ 100 nm on the surface. For a trench with AR of ∼ 10, a conformality of 100% was obtained for Al2O3. The lower conformality for AR =∼ 30 could indicate that longer plasma exposure times (i.e., above 4.5 s) are required to reach saturation at the bottom of the trench. Another factor affecting the conformality could be a higher recombination rate of oxygen radicals on the Al2O3 surface than on SiO2. 35
+
+Figure 8. High-resolution SEM images of a high-aspect ratio trench in Si coated by 830 cycles of ALD SiO2. The SiO2 was deposited on top of thermal SiO2/ALD Al2O3 layers for optical contrast. The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30.
+
+<!-- image -->
+
+## Surface Chemistry
+
+From the data presented and on the basis of literature reports, some aspects of the surface chemistry during ALD SiO2 can be briefly addressed. As mentioned previously, from the decrease of the GPC for increasing substrate temperatures (Fig. 5b), we can conclude that the ALD process is governed by surface chemical reactions involving -OH groups. Note here that the presence of residual -OH groups was demonstrated by the FTIR spectrum showing a clear signature of SiO-H bonds in the films (Fig. 6). During the precursor step, it is therefore most likely that the -N(C2H5)2 ligands of the precursor react with the surface -OH groups producing volatile HN(C2H5)2. A reaction involving the breaking of the Si-H bond in the precursor is very unlikely. 24 We propose therefore similar surface chemical reactions during the first ALD half cycle as reported by Burton et al. 19 for the SiH(N(CH3)2)3 precursor which is comparable to the present precursor:
+
+<!-- formula-not-decoded -->
+
+where surface species are indicated by ∗ . In this precursor adsorption reaction, only one ( x = 1) or both ( x = 2) of the -N(C2H5)2 ligands may react. In the second half cycle, the surface reactions will be dominated by O radical species delivered by the plasma. 32 From similar cases studied previously (e.g., Al2O3 from Al(CH3)3 and O2 plasma 32 and Ta2O5 from Ta[N(CH3)2]5 and O2 plasma 30 ) it can be hypothesized that combustion-like reactions dominate:
+
+<!-- formula-not-decoded -->
+
+In the latter expression the species are not balanced as it is unclear what reaction products are actually created. In the second half cycle also N-containing species need to be produced for the case that not all precursor molecules react with the -OH covered surface through the release of both -N(C2H5)2 ligands, i.e. when x /negationslash= 2 for all precursor molecules adsorbing.
+
+Evidence for the fact that x /negationslash= 2 for all precursor molecules was obtained from quadrupole mass spectrometry (QMS) measurements. Figure 8 shows time-dependent mass spectrometry data for a number of selected mass-over-charge m/z ratios. The enhanced signals at m/z = 72 (N[C2H5]2 + ) and m/z = 73 (HN[C2H5]2 + ) during the first half cycle are consistent with the removal of the precursor ligands during precursor adsorption. However, it should be noted that these signals can also originate from the cracking of the precursor molecule in the mass spectrometer. Very small signals at these m/z values were also observed during the second half cycle whereas the signals were absent during steps in which the plasma was ignited without preceding precursor dosing. This suggests that after the first half cycle indeed a fraction of the -N(C2H5)2 ligands remain intact on the surface. 24 The latter can also be concluded from the other species observed during the second half cycle. During this plasma step, the prominent m/z ratios that were detected included m/z = 2 (H2 + ), m/z = 18 (H2O + ), m/z = 28 (CO + ) and m/z = 44 (CO2 + ). Figure 9 shows the signals at m/z = 18 and m/z = 44. The fact that combustion products such as CO2 are observed during the plasma step clearly indicates that some -N(C2H5)2 ligands remain on the surface after precursor adsorption.
+
+The interpretation of mass spectrometry for plasma-assisted ALD processes is more complicated than for thermal ALD as the reaction products released from the surface can react in the plasma leading to the creation of other species and fragments. The mass spectrometry data as shown in Figure 9 should therefore be interpreted with care. 32 However, plasma-assisted ALD also allows investigation of the optical emission spectrum during the plasma step. 38 Figure 10 shows two optical emission spectra, one for a plasma step during ALD (recorded immediately after plasma ignition) and one for a regular O2 plasma without preceding precursor dosing step. The presence of OH and H emission (i.e., H α , H β , H γ of the Balmer series) is clearly observed
+
+Figure 9. Data from quadrupole mass spectrometry (QMS) for selected massover-charge ratios, i.e., m / z = 18 (H2O + ), 44 (CO2 + ), 72 (N[C2H5]2 + ), and 73 (HN[C2H5]2 + ). During the measurements the substrate temperature was 250 ◦ C and the wall temperature was 180 ◦ C. In the first part of the figure only the precursor is pulsed, in the second part only the plasma and in third part both the precursor and plasma are pulsed (regular ALD cycle, with extended purge times for clarity).
+
+<!-- image -->
+
+for the plasma step during ALD. These excited fragments are formed in the plasma by (electron-induced) dissociation of volatile species originating from the reactor surfaces and substrate. The inset shows the transient H α emission during the plasma step in the ALD cycle. The increase and subsequent decrease of the signal suggests that the reaction products are formed within the first second after plasma ignition. This interpretation is consistent with the fast saturation behavior as displayed in Figure 4c. The H α emission disappears within 3-4 s after plasma ignition which is similar to the residence time of the gas species in our reactor at the operating pressure used ( ∼ 150 mTorr). This indicates that the surface reactions take place almost instantly after plasma ignition. Interesting is also that no signal due to CN emission is observed during the plasma step. This emission was prominently present in the emission spectra during plasma ALD from Ta2O5 from Ta[N(CH3)2]5 and O2 plasma. 30
+
+Figure 10. Optical emission spectra (OES) for the plasma step during plasmaassisted ALD and for a regular plasma step without preceding precursor dosing. The latter served as a reference. The most prominent emission lines have been assigned. The inset shows the transient signal due to H α emission after the ignition of the plasma at 0 s.
+
+<!-- image -->
+
+Figure 11. Injection-level-dependent effective lifetime for a single layer ∼ 45 nm SiO2 film (annealed 400 ◦ C, N2/H2, 20 min) and for a ∼ 12 nm SiO2/ ∼ 30 nm Al2O3 stack (annealed 400 ◦ C, N2, 10 min). The inset shows the long-term stability corresponding to the single layer SiO2 film after annealing. As substrates, 3.5 Ohm cm n -type FZ c -Si wafers were used.
+
+<!-- image -->
+
+## Surface Passivation Properties
+
+Surface passivation by single layer SiO2.The surface passivation properties were evaluated for n -type Si wafers that were coated on both sides with SiO2 (20-45 nm) using a deposition temperature of ∼ 200 ◦ C. The films afforded no significant surface passivation in the as-deposited state indicated by a very low effective lifetime of τ eff =∼ 4 µ s. Similar results were reported for plasma ALD Al2O3 films. 39,40 The as-deposited Al2O3 films exhibited a very high defect density at mid gap ( Dit ∼ 10 13 eV -1 cm -2 ), at least partially related to the vacuum UV (VUV) radiation present in the plasma. 40 It is expected that VUV also plays a role in the poor passivation quality obtained for as-deposited ALD SiO2. Figure 11 shows the injection-level dependent effective lifetime after annealing the ALD SiO2 films in forming gas (mixture of ∼ 10% H2 in N2) at a temperature of 400 ◦ C. The passivation properties improved significantly during annealing, resulting in τ eff values up to 560 µ s ( /Delta1 n = 1 × 10 14 cm -3 ), which correspond to Seff &lt; 25 cm/s. Nonetheless, the level of surface passivation after annealing was not stable in time and gradually deteriorated (inset Fig. 11). This transient behavior is indicative of progressively higher Dit values. Issues with the long term stability of the passivation by silicon oxides have been reported before for chemical oxides. 41
+
+In an attempt to improve the passivation properties of ALD SiO2, the effect of a high temperature annealing step at 900 ◦ C (1 min) was studied. A reduction of the film thickness by ∼ 10% was observed during this annealing step and also the refractive index decreased, indicating densification of the film. However, subsequent annealing in forming gas at 400 ◦ C did not lead to a significantly improved level of passivation or stability compared to a reference sample which did not receive the 900 ◦ C annealing step. The results show that the level of passivation associated with ALD SiO2 was significantly lower than obtained by thermally-grown SiO2 for which typically Seff values &lt; 10 cm/s are obtained.
+
+Surface passivation by SiO2/Al2O3 stacks.Wehave recently demonstrated that the interface properties of SiO2 films synthesized by highrate plasma enhanced chemical vapor deposition (PECVD) could be improved dramatically by the application of an Al2O3 capping film and subsequent annealing. 14 For these stacks, comprising Al2O3 films with a thickness down to ∼ 5 nm, very low surface recombination velocities with values of Seff &lt; 5 cm/s were achieved. 14 Figure 11 shows the effective lifetime for a 12 nm ALD SiO2/30 nm Al2O3 stack after annealing in N2 (400 ◦ C, 10 min). Note that in contrast to single layer ALD SiO2, annealing in N2/H2 was not necessary. The high effective lifetimes up to ∼ 7 ms correspond to exceptionally low Seff &lt; 3 cm/s for n -type Si. 15 It is furthermore important to mention that the effective lifetime induced by the SiO2/Al2O3 stacks remained
+
+virtually constant over the monitored period of several months. Preliminary results suggested that the passivation performance for p -type Si was lower than for n -type Si. Values of Seff &lt; 17 cm/s and &lt; 50 cm/s were obtained for stacks comprising SiO2 with a thickness of ∼ 1 and 12 nm, respectively, using 2 /Omega1 · cm p -type c -Si substrates. This difference between n - and p -type Si may be related to the positive charges present in the stacks comprising relatively thick SiO2 interlayers as will be discussed below. On p -type Si, a small positive charge density may attract the minority carrier electrons toward the surface increasing the recombination rate.
+
+For application in high-efficiency solar cells, it is relevant to mention that the stacks exhibited a good thermal stability during high temperature processing. 14
+
+## Capacitance-Voltage Measurements
+
+Capacitance-voltage measurements were carried out to study the electronic interface properties corresponding to the ALD SiO2 films and SiO2/Al2O3 stacks. The C-V data are shown in Fig. 12, for SiO2 thicknesses in the range of 1-30 nm. The measurements were performed using frequencies of 1, 10, 100 kHz. The voltage was swept from -4 to 4V to go from accumulation to inversion conditions.
+
+Dielectric constant.The dielectric constant k was determined from the capacitance density Cox of the dielectric (by the Hauser model) and the thickness information from SE, by:
+
+<!-- formula-not-decoded -->
+
+with d the film thickness, and /epsilon1 0 the vacuum permittivity. Table II gives the dielectric constants obtained for the SiO2 films and the stacks after annealing at 400 ◦ C. For the thinnest film ( ∼ 5 nm), for example, a dielectric constant of k = 4.7 ± 0.4 was extracted from the C-V data. The higher k -values obtained for ALD SiO2 relative to thermallygrown SiO2 ( k ∼ 3.9) can likely be attributed to the presence of residual OH groups in the material (Table I). 20,42 In comparison, Hiller et al. reported a value of k = 6.1 (as-deposited) and k = 3.6 for ALD SiO2 films after annealing at 1000 ◦ C. 20 For a stack comprising an ALD SiO2 film of 1 nm and an Al2O3 layer of 30 nm, a value of k = 8 ± 0.4 was determined. This value was similar (within measurement accuracy) to the value obtained for an Al2O3 reference film deposited directly on Hterminated Si (Table II). These values are in good agreement with those reported in the literature for single layer Al2O3 ( k = ∼ 7-9). 26,43-45 As expected, the dielectric constants of the stacks are observed to decrease for increasing SiO2 interlayer thickness due to the lower k -value associated with SiO2.
+
+Figure 12. Capacitance-voltage (C-V) measurements for (a) single layer ALD SiO2 films after annealing in forming gas (400 ◦ C, N2/H2, 10 min) and (b) for SiO2/Al2O3 stacks after annealing in N2 (400 ◦ C, 10 min). The SiO2 thickness was varied and the Al2O3 film thickness was 30 nm. The transients were measured using frequencies of 1, 10 (not shown) and 100 kHz. The C-V measurements were carried out several weeks after the annealing treatment. As substrates, 2 /Omega1 cm p -type c -Si wafers were used.
+
+<!-- image -->
+
+Fixed charges in ALD SiO2.The extraction of fixed charges from the flatband voltage shift VFB requires an assumption about the position of these charges. In a first approximation, it is common to assume that all charges reside at the Si/SiO2 interface. The effective fixed charge density Qeff (expressed in cm -2 ) is then simply given by the relation:
+
+<!-- formula-not-decoded -->
+
+with φ ms the work function difference between the Al contact and the p -type Si substrate, and q equal to the elementary charge. For single layer ALD SiO2, we observed a linear trend between VFB and the SiO2 thickness. By extrapolation, an y -axis intercept of -1.14 ± 0.02 eV was found which represents the value of φ ms. Moreover, this linear relation implies that the assumption of the presence of the charges at the interface is reasonable, as charge distributed in the bulk of
+
+Table II. SiO2 thickness dependent electronic properties of ALD SiO2 films and ALD SiO2/Al2O3 stacks. As a reference, the data for Al2O3 on Si is shown. 39 The relative dielectric constant k , effective fixed charge density Qeff (Eq. 3), negative charge at SiO2/Al2O3 interface Qneg (Eq. 4) and interface defect density at mid gap Dit were extracted from the C-V measurements (Fig. 12). The estimated error in the dielectric constant is ∼ 0.4; the error in Qf for single layer SiO2 and Al2O3 is estimated to be ± 2 × 10 11 cm -2 ; the error in Dit for single layer SiO2 is ∼ 0.5 × 10 12 cm -2 . The error in the Dit values for the stacks leads to maximum Dit values of 10 11 cm -2 eV -1 . The SiO2 films were annealed in H2/N2, while the Al2O3 and SiO2/Al2O3 stacks were annealed in N2.
+
+| Layer(s)                                                                                                                                         |   k | V FB                                      | Q eff (cm - 2 )                                                                  | Q neg a (cm - 2 )   | D it (eV - 1 cm - 2 )                                                 |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------------------------------------------|----------------------------------------------------------------------------------|---------------------|-----------------------------------------------------------------------|
+| 5 nm SiO 2 12.5 nm SiO 2 30 nm SiO 2 30 nm Al 2 O 3 on Si (ref.) 1 nm SiO 2 /30 nm Al 2 O 3 2.5 nm SiO 2 /30 nm Al 2 O 12.5 nm SiO 2 /30 nm Al 2 | 4.7 | - 1.26 - 1.45 - 1.86 2.5 0.83 0.63 - 0.69 | + 6 × 10 11 + 8 × 10 11 + 8 × 10 11 - 5.8 × 10 - 2.6 × 10 - 2.0 × 10 - 4 × 10 11 | - - - - × × ×       | 2 × 10 12 1 × 10 12 1 × 10 12 9 × 10 10 5 × 10 10 4 × 10 10 4 × 10 10 |
+|                                                                                                                                                  | 5.7 |                                           |                                                                                  |                     |                                                                       |
+|                                                                                                                                                  | 6.1 |                                           |                                                                                  |                     |                                                                       |
+|                                                                                                                                                  | 8   |                                           | 12                                                                               |                     |                                                                       |
+|                                                                                                                                                  | 8   |                                           | 12                                                                               | - 3.6 10 12         |                                                                       |
+| 3                                                                                                                                                | 7.2 |                                           | 12                                                                               | - 3.3 10 12         |                                                                       |
+| O 3                                                                                                                                              | 6.8 |                                           |                                                                                  | - 1.9 10 12         |                                                                       |
+| 30 nm SiO 2 /30 nm Al 2 O 3                                                                                                                      | 5.8 | 2.2                                       | 6 10 11                                                                          | 4 10 11             | 1 10 11                                                               |
+
+-
+
++
+
+×
+
+-
+
+×
+
+×
+
+a film would lead to a nonlinear thickness dependence. For ALD SiO2, relatively small VFB values were observed with corresponding positive Qf values in the range of 6-8 × 10 11 cm -2 (Table II). The fact that no hysteresis was observed in the C-V characteristics indicates that the VFB shifts were not caused by mobile charges. The presence of positive fixed charges is well-known for SiO2 deposited at low temperatures, and has for instance been reported for PECVD and ALD SiO2 films. 14,20,46 This is in contrast to thermally-grown oxides for which the charge density is typically much lower, unless the films have been exposed to significant UV irradiation or electrical stressing. 1, 46 The microscopic origin of the positive charges is not unambiguous as it depends on the nature of the oxide and the post-treatments. One defect that can be responsible for positive charges is the so-called E' center (Si atom backbonded by 3 O atoms). 1 However, for PECVD SiO2, Buchanan et al. have provided evidence that another (unknown) type of defect, also within tunneling distance (i.e &lt; 5 nm) of the Si substrate, is more likely to be responsible for the fixed charges. 46 It has also been hypothesized that H may be involved in the generation of the positive charges. 20,47
+
+Fixed charges in SiO2/Al2O3 stacks.In contrast to the single layers, large positive VFB values were observed for the SiO2/Al2O3 stacks comprising thin SiO2 interlayers (thickness of 1 and 2.5 nm) and for a single layer ALD Al2O3 reference sample deposited directly on H-terminated Si (Table II). These VFB values indicate the presence of a significant amount of net negative charge. When we apply the model of Eq. 3, we find a decreasing negative Qeff for increasing SiO2 thickness (Table II). For the thickest SiO2 interlayer of 30 nm, a negative VFB is found corresponding to a net positive Qeff of + 6 × 10 11 cm -2 when assuming that all charges are located at the Si/SiO2 interface. However, the latter assumption is not realistic for the stacks. To further interpret the VFB values in terms of fixed charges, we can also consider the influence of multiple charge contributions. It is well known that the negative charges associated with Al2O3 are mainly located near the SiO2/Al2O3 interface. 48-50 The negative charges will shift away from the Si interface when using SiO2 interlayers between Si and Al2O3. In addition, positive charges associated with SiO2 need to be taken into account. The latter can also be directly appreciated from the stack with a 30 nm interlayer. Therefore, in addition to the relation given in (3), an alternative, more complex model can be introduced which accounts for a positive charge contribution Qpos at the Si/SiO2 interface and a negative charge contribution Qneg at the SiO2/Al2O3 interface: 49,51
+
+<!-- formula-not-decoded -->
+
+For simplicity, we consider dSiO2 to be the nominal ALD SiO2 thickness as determined by SE. In order to obtain an estimate of Qneg using Eq. 4, a value for Qpos of + 8 × 10 11 cm -2 may be appropriate, i.e. the value obtained for thick SiO2 films without capping layer. In addition, in contrast to Eq. 3, we cannot use the experimentally determined values for Cox in Eq. 4. Therefore, we consider kSiO2 and kAl2O3 to be constant, with values of 5.5 and 8, respectively. Using these values, it is found from the analysis that Qneg decreases with increasing SiO2 interlayer thickness from ∼ 6 × 10 12 cm -2 (no ALD SiO2) to ∼ 4 × 10 11 cm -2 (30 nm SiO2). Note that the latter value (and its polarity) should be interpreted with care as this value significantly depends on the accuracy of the substituted value for Qpos . However, as expected, models (3) and (4) lead to the same main conclusion that the negative charge density associated with Al2O3 is strongly reduced for thicker SiO2 interlayers. Moreover, for sufficiently thick SiO2 films the fixed positive charges play a more dominant role.
+
+In general, these observations are in good agreement with a recent study by Wolf et al. using CV measurements. 52 In addition, the results are in line with a recent study using optical second-harmonic generation (SHG) experiments. 15 The SHG measurements are sensitive to electric fields induced in the space charge region below the Si surface caused by the fixed charges present in the passivation scheme. 15,48 It was found that the induced electric field strongly decreased for increasing SiO2 interlayers and vanished for a SiO2 interlayer thickness of ∼ 5 nm. However, a small net positive charge density was determined by SHG for an interlayer thickness of 12.5 nm while the C-V results suggested a small, but negative Qeff for this stack. These observations may be related to the fact that SHG is a fundamentally different measurement technique. For example, SHG is a non-contacting and non-intrusive technique, while the C-V measurements obviously require the application of metal contacts. The latter may influence directly or indirectly the fixed charges in the stack. For example, the exact value for φ ms may slightly depend on the dielectric below (i.e. SiO2 or Al2O3). 47
+
+The strong dependency of Qneg on the SiO2 thickness may point to a role of charge injection from the Si substrate in defect states at the remote SiO2/Al2O3 interface during annealing. 15 The SiO2 interlayer could serve as a barrier for charge injection and affect the formation of negative charges accordingly. As discussed in Ref. 15, the changes in net fixed charge density and associated field-effect passivation had a significant impact on the level of passivation but also on the injection level dependence of the effective lifetime.
+
+Interface defect density.The interface defect density was determined from the frequency dispersion in the C-V data. 29 The difference in the high and low frequency C-V characteristics corresponding to the ALD SiO2 films is indicative of the presence of a significant amount of electronically active interface defects (Fig. 12a). Relatively high Dit values of ∼ 10 12 cm -2 eV -1 were obtained for single layer ALD SiO2 films after forming gas annealing (Table II). This is consistent with the relatively high Seff values that were measured for similar samples, especially after aging (inset Fig. 11). In strong contrast, ultralow Dit values were obtained for the SiO2/Al2O3 stacks, with Dit &lt; 10 11 cm -2 eV -1 . In addition, the data did not reveal a clear relation between Dit and the SiO2 film thickness (1-30 nm). Therefore, the stacks induced a high level of chemical passivation regardless of SiO2 thickness. The low defect densities can be related to the effective hydrogenation of the interface under influence of hydrogen from the Al2O3 capping film. 53 During annealing, the prominent Pb -type defects (Si dangling bond) at the Si/SiO2 interface are effectively passivated by hydrogen. From the data in Table II, it can be concluded that the use of an Al2O3 capping layer leads to a significantly higher interface quality than obtained by annealing the ALD SiO2 films in forming gas.
+
+## Conclusions
+
+A plasma-assisted ALD process for SiO2 has been developed employing H2Si[N(C2H5)2]2 as Si precursor in combination with an O2 plasma as the oxidant. It was demonstrated that the ALD process is suited for the low-temperature synthesis of high-quality SiO2 films with the material properties being relatively insensitive to the substrate temperature in the range of 100 - 300 ◦ C. The ALD process combined comparatively high growth rates (0.8 - 1.7 Å/cycle) with relatively short dosing and purge times. Moreover, the plasma-assisted ALD process led to good conformality for trenches with an aspect ratio of ∼ 30, even for relatively short plasma exposure times of 4.5s.
+
+Regarding the electronic properties, the interface defect density was relatively high ( Dit ∼ 10 12 eV -1 cm -2 , after aging) for single layer ALD SiO2. The application of an Al2O3 capping layer in conjunction with a low-temperature anneal led to a dramatic improvement in the interface quality with Dit &lt; 10 11 eV -1 cm -2 . Corresponding ultralow surface recombination velocities &lt; 3 cm/s were measured for these stacks. The thickness of the SiO2 interlayer was found to control the fixed charge density associated with the SiO2/Al2O3 stacks. A transition from a high negative net charge density to a relatively low positive net charge density was observed.
+
+These results may have implications for a wide range of existing and future applications in which the thickness control and
+
+conformality of the ALD SiO2 films are critical factors. Moreover, the ALD SiO2 nanolayers can be applied in effective surface passivation schemes for future high-efficiency silicon solar cells.
+
+## Acknowledgments
+
+Dr. M.A Verheijen (TU/e) is acknowledged for the TEM analysis. Ch. Lachaud and Dr. A. Madec (Air liquide) are acknowledged for donating the SAM.24 precursor. This work is supported by Q-Cells and the German Ministry for the Environment, Nature Conservation and Nuclear Safety (BMU) under contract number 0325150 ('ALADIN'), and by the Dutch Technology Foundation STW (Thin Film Nanomanufacturing (TFN) program).
+
+## References
+
+1. M. L. Green, E. P. Gusev, R. Degraeve, and E. L. Garfunkel, J. Appl. Phys. 90 , 2057 (2001).
+2. C. R. Helms and E. H. Poindexter, Rep. Prog. Phys. , 57 , 791 (1994).
+3. A. G. Aberle, Prog. Photovoltaics , 8 , 473 (2000).
+4. M. J. Kerr and A. Cuevas, Semicond. Sci. Technol. , 17 , 35 (2002).
+5. J. Zhao, A. Wang, M. A. Green, and F. Ferrazza, Appl. Phys. Lett. , 73 , 1991 (1998).
+6. O. Schultz, A. Mette, M. Hermle, and S. W. Glunz, Prog. Photovolt: Res. Appl. , 16 , 317 (2008).
+7. S. M. George, Chem. Rev. , 110 , 111 (2010).
+8. R. L. Puurunen, J. Appl. Phys. , 97 , 121301 (2005).
+9. H. B. Profijt, S. E. Potts, M. C. M. van de Sanden, and W. M. M. Kessels, J. Vac. Sci. Technol. A. , 29 , 050801 (2011).
+10. J. W. Klaus, O. Sneh, and S. M. George, Science , 278 , 1934 (1997).
+11. D. Hausmann, J. Becker, S. Wang, and R. G. Gordon, Science , 298 , 402 (2002).
+12. J. Beynet, P. Wong, A. Miller, S. Locorotondo, D. Vangoidsenhoven, T.-H. Yoon, M. Demand, H.-S. Park, T. Vandeweyer, H. Sprey, Y.-M. Yoo, and M. Maenhoudt, Proc. SPIE , 7520 , 75201J (2009).
+13. C. C. Fulton, G. Lucovsky, and R. J. Nemanich, Appl. Phys. Lett. , 85 , 580 (2004).
+14. G. Dingemans, M. C. M. van de Sanden, and W. M. M. Kessels, Phys. Status Solidi RRL , 5 , 22 (2011).
+15. G. Dingemans, N. M. Terlinden, M. A. Verheijen, M. C. M. van de Sanden, and W. M. M. Kessels to be published in J. Appl. Phys. , 110 , 093715 (2011).
+16. G. Dingemans, M. M. Mandoc, S. Bordihn, M. C. M. van de Sanden, and W. M. M. Kessels, Appl. Phys. Lett. , 98 , 222102 (2011).
+17. J. W. Klaus, O. W. Ott, J. M. Johnson, and S. M. George, Appl. Phys. Lett. , 70 , 1092 (1997).
+18. S. M. George, O. Sneh, A. C. Dillon, M. K. Wise, A. W. Ott, L. A. Okada, and J. D. Way, Appl. Surf. Science , 82 , 460 (1994).
+19. B. B. Burton, M. P. Boleslawski, A. T. Desombre, and S. M. George, Chem. Mater. , 20 , 7031 (2008).
+20. D. Hiller, R. Zierold, J. Bachmann, M. Alexe, Y. Yang, J. W. Gerlach, A. Stesmans, M. Jivanescu, U. M¨ uller, J. Vogt, H. Hilmer, P. L¨ oper, M. K¨ unle, F. Munnik, K. Nielsch, and M. Zacharias, J. Appl. Phys. , 107 , 064314 (2010).
+21. S. Kamiyama, T. Miura, and Y. Nara, Thin Solid Films , 515 , 1517 (2006).
+22. S-J. Won, S. Suh, M. Soo Huh, and H. Joon Kim, IEEE Electron Device Lett. , 31 , 857 (2010).
+23. R. Katamreddy, B. Feist, and C. Takoudis, J. Electrochem. Soc. , 155 , G163 (2008).
+24. B. B. Burton, S. W. Rang, S. W. Rhee, and S. M. George, J. Phys. Chem. C , 113 , 8249 (2009).
+25. S. W. King, J. Vac. Sci. Technol. A , 29 , 041501 (2011).
+26. J. L. van Hemmen, S. B. S. Heil, J. H. Klootwijk, F. Roozeboom, C. J. Hodson, M. C. M. van de Sanden, and W. M. M. Kessels, J. Electrochem. Soc. , 154 , G165 (2007).
+27. G. Dingemans, M. C. M. van de Sanden, and W. M. M. Kessels, Electrochem. Solid. State Lett. , 13 , H76 (2010).
+28. G. Dingemans, R. Seguin, P. Engelhart, M. C. M. van de Sanden, and W. M. M. Kessels, Phys. Status Solidi RRL , 4 , 10 (2010).
+29. R. Castagne and A. Vapaille, Surf. Sci. , 28 , 157 (1971).
+30. S. B. S. Heil, F. Roozeboom, M. C. M. van de Sanden, and W. M. M. Kessels, J. Vac. Sci. Technol. A , 26 , 472 (2008).
+31. S. E. Potts, W. Keuning, E. Langereis, G. Dingemans, M. C. M. van de Sanden, and W. M. M. Kessels, J. Electrochem. Soc. , 157 , P66 (2010).
+32. S. B. S. Heil, J. L. van Hemmen, M. C. M. van de Sanden, and W. M. M. Kessels, J. Appl. Phys. , 103 , 103302 (2008).
+33. C. Dillon, A. W. Ott, J. D. Way, and S. M. George, Surf. Sci. , 322 , 230 (1995).
+34. E. Langereis, J. Keijmel, M. C. M. van de Sanden, and W. M. M. Kessels, Appl. Phys. Lett. , 92 , 231904 (2008).
+35. H. C. M. Knoops, E. Langereis, M. C. M. van de Sanden, and W. M. M. Kessels, J. Electrochem. Soc. , 157 , G241 (2010).
+36. H. Kim, C. Cabral, C. Lavoie, and S. M. Rossnagel, J. Vac. Sci. Technol. B , 20 , 1321 (2002).
+37. B. Hoex, F. J. J. Peeters, M. Creatore, M. A. Blauw, W. M. M. Kessels, and M. C. M. van de Sanden, J. Vac. Sci. Technol. A , 24 , 1823 (2006).
+38. A. J. M. Mackus, S. B. S. Heil, E. Langereis, H. C. M. Knoops, M. C. M. van de Sanden, and W. M. M. Kessels, J. Vac. Sci. Technol. A , 28 , 77 (2010).
+39. B. Hoex, S. B. S. Heil, E. Langereis, M. C. M. van de Sanden, and W. M. M. Kessels, Appl. Phys. Lett. , 89 , 042112 (2006).
+40. G. Dingemans, N. M. Terlinden, D. Pierreux, H. B. Profijt, M. C. M. van de Sanden, and W. M. M. Kessels, Electrochem. Solid. State Lett. , 14 , H1 (2011).
+41. N. E. Grant and K. R. McIntosh, IEEE Electron Device Lett. , 31 , 1002 (2010).
+42. B. Fowler and E. O'Brian, J. Vac. Sci. Technol. B , 12 , 441 (1994).
+43. M. D. Groner, J. W. Elam, F. H. Fabreguette, and S. M. George, Thin Solid Films , 413 , 186 (2002).
+44. J. W. Lim and S. J. Yun, Electrochem. Solid State Lett. , 7 , F45 (2004).
+45. S. K. Kim, S. W. Lee, C. S. Hwang, Y. S. Min, J. Y. Won, and J. Jeong, J. Electrochem. Soc. , 154 , F69 (2006).
+46. D. A. Buchanan, J. H. Stathis, and P. R. Wagner, Appl. Phys. Lett. , 56 , 1037 (1990).
+47. M. Houssa, V. V. Afanas'ev, A. Stesmans, and M. M. Heyns, Appl. Phys. Lett. , 77 , 1885 (2000).
+48. N. M. Terlinden, G. Dingemans, M. C. M. van de Sanden, and W. M. M. Kessels, Appl. Phys. Lett. , 96 , 112101 (2010).
+49. R. S. Johnson, G. Luckovsky, and I. Baumvol, J. Vac. Sci. Technol. A , 19 , 1353 (2001).
+50. D. Hoogeland, K. B. Jinesh, F. Roozeboom, W. F. A. Besling, M. C. M. van de Sanden, and W. M. M. Kessels, J. Appl. Phys. , 106 , 114107 (2009).
+51. J. A. Aboaf, D. R. Kerr, and A. Bassous, J. Electrochem. Soc. , 120 , 1103 (1973).
+52. S. Mack, A. Wolf, C. Brosinsky, S. Schmeisser, A. Kimmerle, P. Saint-Cast, M. Hofmann, and D. Biro, IEEE J. Photovoltaics , 1 , 135 (2011).
+53. G. Dingemans, W. Beyer, M. C. M. van de Sanden, and W. M. M. Kessels, Appl. Phys. Lett. , 97 , 152106 (2010).

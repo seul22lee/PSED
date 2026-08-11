@@ -1,0 +1,968 @@
+{
+ "doi": "10.1039_c3ta01665j",
+ "generator": "pipeline/canonical/build_canonical.py",
+ "code_version": "3848481+dirty",
+ "created_at": 1786465364,
+ "ontology": "ontology/ald_ontology.json",
+ "n_curves": 5,
+ "curves": [
+  {
+   "curve_id": "10.1039_c3ta01665j::F1::a::0::f0p0",
+   "source": {
+    "paper_id": "10.1039_c3ta01665j",
+    "doi": "10.1039_c3ta01665j",
+    "figure": "1",
+    "figure_index": "1",
+    "panel": "a",
+    "series": "measured (ICP)",
+    "series_index": 0,
+    "series_axis": "method",
+    "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+    "linked_experiment_ids": [
+     "10.1039_c3ta01665j__Fig1a__exp01__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c surface area)."
+   },
+   "raw": {
+    "x": {
+     "label": "number of Pt ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Pt loading (wt%)",
+     "quantity": "Pt loading",
+     "unit": "wt%",
+     "log": false
+    },
+    "points": [
+     [
+      1,
+      0.91
+     ],
+     [
+      2,
+      1.7
+     ],
+     [
+      4,
+      3.78
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "number of Pt ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Pt loading",
+     "raw_unit": "wt%",
+     "raw_label": "Pt loading (wt%)",
+     "unit": "wt%",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Pt loading' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "1",
+      "panel": "a",
+      "series": "measured (ICP)",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": "10.1039_c3ta01665j__Fig1a__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "wt%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Pt loading' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "1",
+      "panel": "a",
+      "series": "measured (ICP)",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": "10.1039_c3ta01665j__Fig1a__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 3
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c3ta01665j::F1::a::1::f0p0",
+   "source": {
+    "paper_id": "10.1039_c3ta01665j",
+    "doi": "10.1039_c3ta01665j",
+    "figure": "1",
+    "figure_index": "1",
+    "panel": "a",
+    "series": "ideal ALD",
+    "series_index": 1,
+    "series_axis": "method",
+    "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+    "linked_experiment_ids": [
+     "10.1039_c3ta01665j__Fig1a__exp01__case01"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c surface area)."
+   },
+   "raw": {
+    "x": {
+     "label": "number of Pt ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Pt loading (wt%)",
+     "quantity": "Pt loading",
+     "unit": "wt%",
+     "log": false
+    },
+    "points": [
+     [
+      1,
+      0.91
+     ],
+     [
+      2,
+      1.96
+     ],
+     [
+      4,
+      3.98
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "number of Pt ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Pt loading",
+     "raw_unit": "wt%",
+     "raw_label": "Pt loading (wt%)",
+     "unit": "wt%",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Pt loading' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "1",
+      "panel": "a",
+      "series": "ideal ALD",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": "10.1039_c3ta01665j__Fig1a__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "wt%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Pt loading' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "1",
+      "panel": "a",
+      "series": "ideal ALD",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": "10.1039_c3ta01665j__Fig1a__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 3
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c3ta01665j::F1::b::0::f0p1",
+   "source": {
+    "paper_id": "10.1039_c3ta01665j",
+    "doi": "10.1039_c3ta01665j",
+    "figure": "1",
+    "figure_index": "1",
+    "panel": "b",
+    "series": "Specific surface area",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/1/series/0",
+    "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+    "linked_experiment_ids": [
+     "10.1039_c3ta01665j__Fig1b__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c surface area)."
+   },
+   "raw": {
+    "x": {
+     "label": "number of Pt ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Specific surface area (m²·g⁻¹)",
+     "quantity": "Specific surface area",
+     "unit": "m2.g-1",
+     "log": false
+    },
+    "points": [
+     [
+      1,
+      54.84
+     ],
+     [
+      2,
+      57.0
+     ],
+     [
+      4,
+      57.81
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "number of Pt ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Specific surface area",
+     "raw_unit": "m2.g-1",
+     "raw_label": "Specific surface area (m²·g⁻¹)",
+     "unit": "m2.g-1",
+     "unit_recovered": false,
+     "quantity": "specific_surface_area",
+     "axis_role": "condition",
+     "axis_kind": "condition",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'specific_surface_area' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "1",
+      "panel": "b",
+      "series": "Specific surface area",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": "10.1039_c3ta01665j__Fig1b__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "m2.g-1",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'specific_surface_area' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "1",
+      "panel": "b",
+      "series": "Specific surface area",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": "10.1039_c3ta01665j__Fig1b__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 3
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c3ta01665j::F3::a::0::f1p0",
+   "source": {
+    "paper_id": "10.1039_c3ta01665j",
+    "doi": "10.1039_c3ta01665j",
+    "figure": "3",
+    "figure_index": "4",
+    "panel": "a",
+    "series": "Frequency",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/0",
+    "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Fig. 3 Particle size distribution from image analysis of TEM pictures for Pt nanoclusters deposited onto the TiO2 support after 1 ALD cycle (a) and after 5 ALD cycles (b)."
+   },
+   "raw": {
+    "x": {
+     "label": "Pt particle size (nm)",
+     "quantity": "Pt particle size",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "Frequency (%)",
+     "quantity": "Frequency",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      0.8,
+      1.0
+     ],
+     [
+      1.0,
+      13.0
+     ],
+     [
+      1.2,
+      19.2
+     ],
+     [
+      1.4,
+      18.3
+     ],
+     [
+      1.6,
+      22.8
+     ],
+     [
+      1.8,
+      14.6
+     ],
+     [
+      2.0,
+      8.2
+     ],
+     [
+      2.2,
+      1.8
+     ],
+     [
+      2.4,
+      1.0
+     ],
+     [
+      2.6,
+      1.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Pt particle size",
+     "raw_unit": "nm",
+     "raw_label": "Pt particle size (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'Pt particle size' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Frequency",
+     "raw_unit": "%",
+     "raw_label": "Frequency (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "frequency",
+     "axis_role": "condition",
+     "axis_kind": "condition",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'frequency' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'Pt particle size' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "3",
+      "panel": "a",
+      "series": "Frequency",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'frequency' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "3",
+      "panel": "a",
+      "series": "Frequency",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 10
+   },
+   "context_available": [
+    "cycle_number"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c3ta01665j::F3::b::0::f2p0",
+   "source": {
+    "paper_id": "10.1039_c3ta01665j",
+    "doi": "10.1039_c3ta01665j",
+    "figure": "3",
+    "figure_index": "5",
+    "panel": "b",
+    "series": "Pt nanoclusters",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/0",
+    "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Fig. 3 Particle size distribution from image analysis of TEM pictures for Pt nanoclusters deposited onto the TiO2 support after 1 ALD cycle (a) and after 5 ALD cycles (b)."
+   },
+   "raw": {
+    "x": {
+     "label": "Pt particle size (nm)",
+     "quantity": "Pt particle size",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "Frequency (%)",
+     "quantity": "Frequency",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      0.5,
+      0.5
+     ],
+     [
+      1.0,
+      6.1
+     ],
+     [
+      1.25,
+      5.1
+     ],
+     [
+      1.5,
+      12.1
+     ],
+     [
+      1.75,
+      14.6
+     ],
+     [
+      2.0,
+      13.6
+     ],
+     [
+      2.25,
+      9.1
+     ],
+     [
+      2.5,
+      6.6
+     ],
+     [
+      2.75,
+      7.0
+     ],
+     [
+      3.0,
+      4.0
+     ],
+     [
+      3.25,
+      2.0
+     ],
+     [
+      3.5,
+      5.1
+     ],
+     [
+      3.75,
+      3.0
+     ],
+     [
+      4.0,
+      3.0
+     ],
+     [
+      4.25,
+      0.5
+     ],
+     [
+      4.5,
+      2.5
+     ],
+     [
+      4.75,
+      0.5
+     ],
+     [
+      5.0,
+      3.0
+     ],
+     [
+      5.25,
+      1.5
+     ],
+     [
+      5.5,
+      1.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Pt particle size",
+     "raw_unit": "nm",
+     "raw_label": "Pt particle size (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'Pt particle size' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Frequency",
+     "raw_unit": "%",
+     "raw_label": "Frequency (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "frequency",
+     "axis_role": "condition",
+     "axis_kind": "condition",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'frequency' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'Pt particle size' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "3",
+      "panel": "b",
+      "series": "Pt nanoclusters",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'frequency' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c3ta01665j",
+      "doi": "10.1039_c3ta01665j",
+      "figure": "3",
+      "panel": "b",
+      "series": "Pt nanoclusters",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c3ta01665j/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:4c4d1fe0541ef3284f4d1d1006734e63d629e615c5caf24844d3fff0be520f0c",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 20
+   },
+   "context_available": [
+    "cycle_number"
+   ]
+  }
+ ]
+}

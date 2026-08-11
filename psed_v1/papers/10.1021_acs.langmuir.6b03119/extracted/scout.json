@@ -1,0 +1,89 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "both",
+ "materials": [
+  "Al2O3"
+ ],
+ "precursors": [
+  "trimethylaluminum"
+ ],
+ "coreactants": [
+  "H2O"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": null,
+ "gpc_nm": null,
+ "data": {
+  "conformality_or_penetration_profile": {
+   "present": true,
+   "where": [
+    "F6a"
+   ]
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F7d"
+   ]
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F7c"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F7a",
+    "F7b"
+   ]
+  }
+ },
+ "drill": [
+  {
+   "where": "F6a",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "plots Al2O3 coating thickness vs nanotube depth and inner diameter"
+  },
+  {
+   "where": "F7a",
+   "type": "other",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots frequency change per cycle vs deposition time from QCM"
+  },
+  {
+   "where": "F7b",
+   "type": "other",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots mass increase per cycle vs deposition time from QCM"
+  },
+  {
+   "where": "F7c",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "plots cumulative mass uptake corresponding to TMA and H2O exposures"
+  },
+  {
+   "where": "F7d",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "plots normalized comparison of TMA saturation curves at different stages"
+  }
+ ],
+ "go_deeper": true,
+ "_scout_samples": 2,
+ "_tokens": {
+  "in": 6096,
+  "out": 1175,
+  "thoughts": 2042,
+  "budget": 12288
+ },
+ "_scout_input_chars": 11781
+}

@@ -1,0 +1,127 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "both",
+ "materials": [
+  "Pt"
+ ],
+ "precursors": [
+  "HDMP",
+  "MeCpPtMe3"
+ ],
+ "coreactants": [
+  "O2"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": null,
+ "gpc_nm": null,
+ "data": {
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F0a"
+   ]
+  },
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F1a"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F0b",
+    "F0h",
+    "F1b",
+    "F2e",
+    "F2f"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F1c"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F0g"
+   ]
+  }
+ },
+ "drill": [
+  {
+   "where": "F0a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC according to exposure time of precursor and coreactant"
+  },
+  {
+   "where": "F0b",
+   "type": "film_property_vs_condition",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "Apparent coverage of Pt films versus ALD cycles"
+  },
+  {
+   "where": "F0g",
+   "type": "other",
+   "measurand": "surface_coverage",
+   "source": "simulated",
+   "why": "DFT calculated reaction coordinate energies"
+  },
+  {
+   "where": "F0h",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Electrical resistivity of Pt films vs ALD cycles"
+  },
+  {
+   "where": "F1a",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC vs growth temperature for both precursors"
+  },
+  {
+   "where": "F1b",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Electrical resistivity vs growth temperature"
+  },
+  {
+   "where": "F1c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS spectra of Pt films grown at 100 and 300 C"
+  },
+  {
+   "where": "F2e",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Electrical resistance change vs number of ALD cycles"
+  },
+  {
+   "where": "F2f",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Relative electrical resistance during 1000-cycle bending test"
+  }
+ ],
+ "go_deeper": true,
+ "_scout_samples": 2,
+ "_tokens": {
+  "in": 6076,
+  "out": 1772,
+  "thoughts": 1421,
+  "budget": 12288
+ },
+ "_scout_input_chars": 11956
+}

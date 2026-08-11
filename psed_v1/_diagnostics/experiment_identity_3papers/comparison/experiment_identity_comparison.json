@@ -1,0 +1,78 @@
+{
+ "task": "experiment identity / physical sample audit",
+ "mode": "read-only forensic; 0 API calls",
+ "papers": {
+  "10.1038_am.2016.182": {
+   "strongest_pdf_identity_level": "SAME_DEPOSITION_CONDITION_CASE",
+   "pdf_deposition_cases": 7,
+   "pdf_explicit_runs_or_batches": 0,
+   "exact_specimens_identifiable": 1,
+   "psed_experiments": 54,
+   "correct": 23,
+   "over_split": 24,
+   "over_merged": 0,
+   "unlinked": 5,
+   "not_a_deposition_experiment": 0,
+   "unresolvable": 7,
+   "same_case_multi_measurement_present": true,
+   "sample_identity_represented": false,
+   "confidence": "HIGH"
+  },
+  "10.1149_2.067203jes": {
+   "strongest_pdf_identity_level": "SAME_DEPOSITION_CONDITION_CASE",
+   "pdf_deposition_cases": 6,
+   "pdf_explicit_runs_or_batches": 1,
+   "exact_specimens_identifiable": 0,
+   "psed_experiments": 32,
+   "correct": 5,
+   "over_split": 14,
+   "over_merged": 9,
+   "unlinked": 1,
+   "not_a_deposition_experiment": 4,
+   "unresolvable": 0,
+   "same_case_multi_measurement_present": true,
+   "sample_identity_represented": false,
+   "confidence": "HIGH"
+  },
+  "10.1039_c7ta03257a": {
+   "strongest_pdf_identity_level": "SAME_DEPOSITION_CONDITION_CASE",
+   "pdf_deposition_cases": 3,
+   "pdf_explicit_runs_or_batches": 0,
+   "exact_specimens_identifiable": 0,
+   "psed_experiments": 0,
+   "correct": 0,
+   "over_split": 0,
+   "over_merged": 0,
+   "unlinked": 4,
+   "not_a_deposition_experiment": 4,
+   "unresolvable": 0,
+   "same_case_multi_measurement_present": true,
+   "sample_identity_represented": false,
+   "confidence": "HIGH"
+  }
+ },
+ "empirical_experiment_semantics": {
+  "verdict": "C/D hybrid \u2014 an extracted result curve (or one point of a sweep within it) plus inferred conditions",
+  "not": "a physical deposition run",
+  "evidence": [
+   "physical_case_id = <paper>__Fig<N><panel>__exp<NN>; 0 of 40 span more than one printed figure",
+   "shares_physical_case_with is set for 66/1044 entities corpus-wide and only within one measurement event",
+   "am.2016.182 T=100 C appears as 3 unrelated Experiments in Fig2a/2b/2c",
+   "2.067203jes one saturation study -> 8 Experiments, one per printed panel",
+   "c7ta03257a two fully-specified ALD cases -> 0 Experiments because their evidence is imaging-only"
+  ]
+ },
+ "identity_level_recoverable": {
+  "specimen": "rarely (1 clear case in 3 papers)",
+  "run_or_batch": "occasionally and usually implicitly",
+  "condition_case": "reliably \u2014 this is the level papers actually support"
+ },
+ "sample_concept_present": false,
+ "semantic_gaps": [
+  "no sample/specimen/deposition-run node; physical_case_id is figure-panel scoped",
+  "no relation 'measurement characterises material produced by deposition case X'",
+  "material is paper-level, so stacks and secondary depositions collapse",
+  "geometry is paper-level, so planar and HAR cases in one paper cannot coexist",
+  "Experiment minting requires a digitisable x-y result, so imaging-only depositions vanish"
+ ]
+}

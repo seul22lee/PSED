@@ -27,7 +27,10 @@ KEEP_NESTED = {"canonical", "condition_binding_diagnosis", "condition_completene
                "condition_precision", "entity_model",
                "experiment_extraction_regression"}
 SKIP_DIRS = {"reports", "tools", "output", "figures", "raw", "recovery",
-             "__pycache__", ".git", "node_modules", "third_party", "data"}
+             "__pycache__", ".git", "node_modules", "third_party", "data",
+             # candidate Docling text is triage INPUT, not a report: without this the
+             # mirror pulls one document.md per candidate PDF into reports/
+             "candidates", "pdf_inbox"}
 
 
 def sources():

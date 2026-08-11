@@ -1,0 +1,11 @@
+n,paper,pdf_ground_truth,current_psed,verdict,note
+1,10.1038_am.2016.182,PDF: CASE_C at 100 C -> GPC + resistivity + XPS,"PSED: Fig2a exp (T=100), Fig2b exp (T=100), Fig2c exp (T=100)",OVER_SPLIT,"three Experiments, three physical_case_ids, no link"
+2,10.1038_am.2016.182,PDF: temperature series 100..300 C = separate films,PSED: 11 Experiments across Fig2a,CORRECT,one Experiment per condition point is defensible
+3,10.1038_am.2016.182,"PDF: CASE_G device measurements (Fig4 b,c,d,e,g)",PSED: none,UNLINKED,Figure 4 never reached Scout
+4,10.1149_2.067203jes,PDF: one saturation study (Fig4 a-h),"PSED: 8 Experiments, one per panel",OVER_SPLIT,panel granularity drives Experiment identity
+5,10.1149_2.067203jes,PDF: Fig11 mixes SiO2-only and SiO2/Al2O3 stack,PSED: 9 Experiments all material=SiO2,OVER_MERGED,stack composition lost
+6,10.1149_2.067203jes,PDF: Al2O3 deposited in same reactor (CASE_D),PSED: no Al2O3 Experiment,OVER_MERGED,paper-level single material assignment
+7,10.1149_2.067203jes,PDF: HAR trench AR~30 (CASE_C),PSED: geometry_class=planar for the whole paper,OVER_MERGED,"geometry is paper-level, not experiment-level"
+8,10.1039_c7ta03257a,"PDF: 250 cycles, 3x vs 1x precursor pulse = 2 cases",PSED: 0 Experiments,UNLINKED,no deposition Experiment minted; imaging-only figures
+9,10.1039_c7ta03257a,PDF: Fig7 CV + Fig8a impedance on the Pt replica electrode,"PSED: 4 UnresolvedSourceEntity, physical_case_id=None",NOT_A_DEPOSITION_EXPERIMENT + UNLINKED,"correctly not deposition Experiments, but stranded from the synthesis"
+10,10.1038_am.2016.182,PDF: Fig2c XPS explicitly names the same 100/300 C films,PSED: Fig2c experiments carry deposition_temperature=100/300,OVER_SPLIT,"conditions are recorded, yet identity is still figure-scoped"

@@ -1,0 +1,426 @@
+[
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temperature with undersaturated and saturated TMA dosing conditions.",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O2_plasma"
+   }
+  ],
+  "carrier_gas": {
+   "species": "O2"
+  },
+  "process_type": "plasma",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "film_thickness",
+    "value": 20.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "observable",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1063_1.2338776",
+     "experiment_id": "10.1063_1.2338776__Fig1a__exp02",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 0.999915,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1063_1.2338776::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The deposition chamber was continuously purged by O2 resulting in a pressure of 7.5 mTorr.",
+     "original_value": 7.5,
+     "original_unit": "mTorr"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "base_pressure",
+    "value": 1.3332199999999998e-07,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1063_1.2338776::pressure::base_pressure::1",
+     "pressure_type": "base_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "reaction chamber at a base pressure of 10 -6 mTorr",
+     "original_value": 1e-06,
+     "original_unit": "mTorr"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "base_pressure",
+    "value": -6.0,
+    "unit": "mTorr",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "base pressure of 10 -6 mTorr",
+     "locator": "methods section"
+    }
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 100.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "substrate temperature ( from RT to 100 \u00b0C",
+     "locator": "methods section"
+    }
+   },
+   {
+    "quantity": "purge_time",
+    "value": 5.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "5 s purge",
+     "locator": "methods section"
+    }
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": 7.5,
+    "unit": "mTorr",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "purged by O2 resulting in a pressure of 7.5 mTorr. The PA-ALD cycle, used at all deposition temperatures, consisted of multiple TMA dosing ( 1 s each ) injected",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "WVTR",
+   "unit": "g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9",
+   "raw_unit": "g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9",
+    "to_unit": null,
+    "reason": "unit 'g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "deposition_temperature",
+  "coordinate_family": "process_temperature",
+  "coordinate_unit": "\u00b0C",
+  "coordinate_unit_normalized": "\u00b0C",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    25.0,
+    0.005
+   ]
+  ],
+  "points_canonical": [
+   [
+    25.0,
+    0.005
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1063_1.2338776__Fig1a__exp02",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "5",
+   "panel": "a",
+   "caption": "FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temperature with undersaturated and saturated TMA dosing conditions.",
+   "extractor": "vision-llm",
+   "doi": "10.1063_1.2338776"
+  },
+  "series_name": "TMA dosing condition: saturated",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "O2_plasma"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": null,
+  "granularity_reason": "only 1 point",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "WVTR",
+    "unit": "g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9",
+    "raw_unit": "g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": null,
+     "purge_time": 5.0,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O2_plasma",
+     "dose_time": null,
+     "purge_time": 5.0,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 100.0,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "O2"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1063_1.2338776-E001",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1063_1.2338776-E001"
+    },
+    "purge_time::A": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 5.0,
+     "paper_id": null,
+     "card_field": null
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O2_plasma",
+     "experiment_id": "10.1063_1.2338776-E001"
+    },
+    "purge_time::B": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 5.0,
+     "paper_id": null,
+     "card_field": null
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1063_1.2338776-E001"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1063_1.2338776-E001"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1063_1.2338776-E001"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "unknown",
+     "value": 100.0,
+     "paper_id": null,
+     "card_field": null
+    }
+   },
+   "completeness": 0.571
+  },
+  "coordinate_raw_quantity": "deposition_temperature",
+  "x_semantics": {
+   "raw_label": "Deposition temperature (\u00b0C)",
+   "raw_quantity": "deposition_temperature",
+   "raw_unit": "\u00b0C",
+   "unit_dimension": "temperature",
+   "canonical_quantity": "deposition_temperature",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Deposition temperature (\u00b0C)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "WVTR (g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9)",
+   "raw_quantity": "WVTR",
+   "raw_unit": "g\u00b7m\u207b\u00b2\u00b7day\u207b\u00b9",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1063_1.2338776__Fig1a__exp02",
+  "entity_key": "10.1063_1.2338776|5|1|a|saturated|primary",
+  "paper_id": "10.1063_1.2338776",
+  "doi": "10.1063_1.2338776",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 1,
+  "observations_are_experiments": false,
+  "in_series": null,
+  "case_index": 0
+ }
+]

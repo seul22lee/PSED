@@ -1,26 +1,26 @@
 {
-  "recipes": 851,
-  "fields_directly_extracted": 5938,
-  "fields_paper_direct": 1057,
-  "fields_experiment_direct": 4881,
+  "recipes": 1127,
+  "fields_directly_extracted": 7646,
+  "fields_paper_direct": 1255,
+  "fields_experiment_direct": 6391,
   "fields_derived": 0,
-  "fields_kb_imputed": 536,
-  "fields_model_default": 1786,
-  "fields_unresolved": 1678,
-  "fields_total": 9938,
+  "fields_kb_imputed": 896,
+  "fields_model_default": 2350,
+  "fields_unresolved": 2330,
+  "fields_total": 13222,
   "fields_by_origin": {
-    "caption": 663,
-    "experiment_record": 3639,
-    "kb_imputation": 536,
-    "methods_prose": 206,
-    "model_default": 1786,
-    "series": 173,
+    "caption": 745,
+    "experiment_record": 4863,
+    "kb_imputation": 896,
+    "methods_prose": 369,
+    "model_default": 2350,
+    "series": 198,
     "table": 133,
-    "unknown": 1124
+    "unknown": 1338
   },
-  "process_window_papers": 8,
-  "process_window_recipes": 423,
-  "window_recipes_with_per_experiment_temperature": 278,
+  "process_window_papers": 11,
+  "process_window_recipes": 536,
+  "window_recipes_with_per_experiment_temperature": 332,
   "window_recipes_with_paper_level_scalar_temperature": 0,
   "windows": {
     "10.1021_acs.chemmater.2c02292": [
@@ -39,6 +39,14 @@
       50,
       200
     ],
+    "10.1039_c7ra13417g": [
+      175,
+      250
+    ],
+    "10.1039_d0ra09876k": [
+      225,
+      300
+    ],
     "10.1039_d3dt01824e": [
       175,
       225
@@ -54,6 +62,10 @@
     "10.1116_6.0002804": [
       150,
       450
+    ],
+    "10.1149_2.067203jes": [
+      100,
+      300
     ]
   },
   "note": "A non-degenerate temperature_window_C is an admissible RANGE, not a scalar condition, and is NOT counted as a completed recipe field. Scalar temperatures previously produced by collapsing such a range to its lower endpoint have been removed; the resulting drop in 'filled completeness' is a truthfulness correction, not a regression. 'filled completeness' counts imputed and defaulted fields alongside extracted ones and is therefore NOT a measure of recipe readiness \u2014 read it together with fields_directly_extracted. Counts are read from each recipe's param_sources (provenance recorded where the value was created); fields_directly_extracted = paper + experiment + derived."

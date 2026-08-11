@@ -1,0 +1,47 @@
+{
+ "control_paper": "Yim et al. 2020 PCCP 22, 23107-23120",
+ "doi": "10.1039/d0cp03358h",
+ "already_corpus_member": true,
+ "psed_observed": {
+  "experiments": 39,
+  "entities": 70,
+  "series": 0,
+  "distinct_physical_case_ids": 37,
+  "physical_case_ids_spanning_more_than_one_figure": 0,
+  "records_measured": 39,
+  "records_simulated": 31,
+  "geometry_class": "lateral_channel",
+  "material": "Al2O3"
+ },
+ "ground_truth": {
+  "explicit_deposition_runs": 1,
+  "samples": 16,
+  "study_series": 6,
+  "sample_reuse": {
+   "8": [
+    "C",
+    "D"
+   ],
+   "12": [
+    "E",
+    "F"
+   ]
+  },
+  "representations_per_measurement": 3,
+  "simulation_figures": [
+   "10"
+  ]
+ },
+ "distinctions_proven": [
+  "DepositionRun != Sample (Series A)",
+  "MeasurementCondition != DepositionCondition (Series B)",
+  "Sample != Measurement (sample 11)",
+  "Measurement != Representation (Fig 9)",
+  "StudySeries membership is many-to-many (samples 8, 12)",
+  "Repeatability != Reproducibility (Fig 8a vs 8b)",
+  "ModelRun != Experiment (Fig 10)"
+ ],
+ "final_semantic_test": "SUPPORTED_WITH_LIMITATIONS",
+ "sample_and_run_status": "C - semantically distinct and necessary whenever evidence exists",
+ "api_calls": 0
+}
