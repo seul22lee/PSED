@@ -14,23 +14,10 @@
  "temperature_window_C": null,
  "gpc_nm": null,
  "data": {
-  "gpc_vs_temperature": {
+  "other": {
    "present": true,
    "where": [
-    "F10"
-   ]
-  },
-  "gpc_vs_dose_saturation": {
-   "present": true,
-   "where": [
-    "F14a",
-    "F14c"
-   ]
-  },
-  "gpc_vs_cycles": {
-   "present": true,
-   "where": [
-    "F13"
+    "F3"
    ]
   },
   "film_property_vs_condition": {
@@ -41,8 +28,9 @@
     "F6c",
     "F6d",
     "F8",
-    "F12",
-    "F14b"
+    "F10",
+    "F11",
+    "F12"
    ]
   },
   "xrd_or_spectrum": {
@@ -52,11 +40,24 @@
     "F15"
    ]
   },
-  "other": {
+  "gpc_vs_cycles": {
    "present": true,
    "where": [
-    "F3",
-    "F9"
+    "F9",
+    "F13"
+   ]
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F14a",
+    "F14c"
+   ]
+  },
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F14b"
    ]
   }
  },
@@ -64,115 +65,122 @@
   {
    "where": "F3",
    "type": "other",
-   "measurand": "film_thickness",
+   "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "plots hot-wire temperature vs applied power"
+   "why": "hot-wire temperature versus applied power calibration curve"
   },
   {
    "where": "F6a",
    "type": "film_property_vs_condition",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "plots film growth vs hot-wire temperature"
+   "why": "film growth versus hot-wire temperature"
   },
   {
    "where": "F6b",
    "type": "film_property_vs_condition",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "plots film growth vs H2 flow rate"
+   "why": "film growth versus H2 flow rate"
   },
   {
    "where": "F6c",
    "type": "film_property_vs_condition",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "plots film growth vs WF6 flow rate"
+   "why": "film growth versus WF6 flow rate"
   },
   {
    "where": "F6d",
    "type": "film_property_vs_condition",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "plots film growth vs H2-carrier gas flow rate"
+   "why": "film growth versus H2 carrier gas flow rate"
   },
   {
    "where": "F7",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS depth profile showing elemental composition"
+   "why": "XPS depth profile of grown film"
   },
   {
    "where": "F8",
    "type": "film_property_vs_condition",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "plots CVD growth rate versus process pressure"
+   "why": "CVD growth rate versus process pressure"
   },
   {
    "where": "F9",
-   "type": "other",
+   "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "real-time in-situ SE monitoring of individual gas pulses"
+   "why": "in-situ spectroscopic ellipsometry monitoring of individual pulses"
   },
   {
    "where": "F10",
-   "type": "gpc_vs_temperature",
+   "type": "film_property_vs_condition",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "plots net growth vs total pressure and substrate temperature"
+   "why": "net growth versus pressure and substrate temperature split crop 1"
+  },
+  {
+   "where": "F11",
+   "type": "film_property_vs_condition",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "net growth versus pressure and substrate temperature split crop 2"
   },
   {
    "where": "F12",
    "type": "film_property_vs_condition",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "plots CVD growth rate vs process pressure during gas mixing"
+   "why": "CVD growth rate versus process pressure during continuous mixing"
   },
   {
    "where": "F13",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "in-situ SE monitoring of linear HWALD growth vs cycles"
+   "why": "in-situ SE monitoring of ALD film growth versus time and cycles"
   },
   {
    "where": "F14a",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "plots growth per cycle vs atomic H pulse time"
+   "why": "growth rate versus atomic hydrogen pulse time"
   },
   {
    "where": "F14b",
-   "type": "film_property_vs_condition",
+   "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "plots growth per cycle vs hot-wire temperature"
+   "why": "growth rate versus hot-wire temperature"
   },
   {
    "where": "F14c",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "plots growth per cycle vs post atomic H purge time"
+   "why": "growth rate versus post at-H purge time"
   },
   {
    "where": "F15",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS depth profile of optimized HWALD W film"
+   "why": "XPS depth profile of 15 nm thick HWALD W film"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 3447,
-  "out": 1389,
-  "thoughts": 5061,
+  "in": 4218,
+  "out": 1469,
+  "thoughts": 3389,
   "budget": 12288
  },
- "_scout_input_chars": 11200
+ "_scout_input_chars": 14265
 }

@@ -18,86 +18,67 @@
   "gpc_vs_cycles": {
    "present": true,
    "where": [
-    "F4b"
+    "F4"
    ]
   },
   "film_property_vs_condition": {
    "present": true,
    "where": [
-    "F4c",
+    "F4"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
     "F6",
-    "F10a",
-    "F10b",
-    "F10c",
-    "F10d",
+    "F10",
     "F11"
    ]
   }
  },
  "drill": [
   {
-   "where": "F4b",
+   "where": "F4",
    "type": "gpc_vs_cycles",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "in situ QCM mass gain during ALD steps at 150 C"
+   "why": "in situ QCM measurements during LiAlSx ALD"
   },
   {
-   "where": "F4c",
+   "where": "F4",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Arrhenius plot of temperature-dependent ionic conductivity"
+   "why": "Arrhenius plot for ionic conductivity of LiAlSx film"
   },
   {
    "where": "F6",
-   "type": "film_property_vs_condition",
+   "type": "other",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Nyquist plot of 50 nm LixAlyS film"
+   "why": "Nyquist plots of LiAlSx film"
   },
   {
-   "where": "F10a",
-   "type": "film_property_vs_condition",
+   "where": "F10",
+   "type": "other",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "AC impedance spectra of symmetric cells after storage"
-  },
-  {
-   "where": "F10b",
-   "type": "film_property_vs_condition",
-   "measurand": "resistivity",
-   "source": "measured",
-   "why": "SEI resistance versus storage time"
-  },
-  {
-   "where": "F10c",
-   "type": "film_property_vs_condition",
-   "measurand": "surface_coverage",
-   "source": "measured",
-   "why": "Coulombic efficiency of Li deposition/stripping on Cu"
-  },
-  {
-   "where": "F10d",
-   "type": "film_property_vs_condition",
-   "measurand": "resistivity",
-   "source": "measured",
-   "why": "voltage hysteresis profiles of Li deposition/stripping"
+   "why": "AC impedance spectra and R_SEI evolution of pristine vs coated Li"
   },
   {
    "where": "F11",
-   "type": "film_property_vs_condition",
-   "measurand": "surface_coverage",
+   "type": "other",
+   "measurand": "resistivity",
    "source": "measured",
-   "why": "Coulombic efficiency of Li deposition/stripping in 4 M LiTFSI-DME"
+   "why": "coulombic efficiency of Li deposition/stripping"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 1969,
-  "out": 793,
-  "thoughts": 2267,
+  "in": 2513,
+  "out": 560,
+  "thoughts": 2138,
   "budget": 12288
  },
- "_scout_input_chars": 7090
+ "_scout_input_chars": 9450
 }

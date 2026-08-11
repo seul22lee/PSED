@@ -2,10 +2,10 @@
  "is_ald_process_paper": true,
  "study_type": "both",
  "materials": [
-  "SiO2",
-  "TiO2",
   "Al2O3",
-  "HfO2"
+  "HfO2",
+  "SiO2",
+  "TiO2"
  ],
  "precursors": [],
  "coreactants": [
@@ -18,9 +18,9 @@
   "conformality_or_penetration_profile": {
    "present": true,
    "where": [
-    "F6b",
-    "F6c",
-    "F7b",
+    "F6",
+    "F7",
+    "F8",
     "F9"
    ]
   }
@@ -31,36 +31,43 @@
    "type": "conformality_or_penetration_profile",
    "measurand": "penetration_depth",
    "source": "simulated",
-   "why": "simulated film penetration profile for different surface recombination probabilities"
+   "why": "simulated radical density and film penetration depth profiles for different surface recombination probabilities"
   },
   {
    "where": "F6c",
    "type": "conformality_or_penetration_profile",
    "measurand": "penetration_depth",
    "source": "simulated",
-   "why": "simulated relation between exposure time and film penetration depth"
+   "why": "simulated film penetration depth vs plasma exposure time"
   },
   {
-   "where": "F7b",
+   "where": "F7",
    "type": "conformality_or_penetration_profile",
-   "measurand": "film_thickness",
+   "measurand": "penetration_depth",
    "source": "measured",
-   "why": "measured thickness profiles in high-aspect-ratio structures"
+   "why": "measured thickness profiles and aspect ratio at 50% penetration depth"
+  },
+  {
+   "where": "F8",
+   "type": "conformality_or_penetration_profile",
+   "measurand": "penetration_depth",
+   "source": "measured",
+   "why": "measured thickness profiles and aspect ratio at 50% penetration depth"
   },
   {
    "where": "F9",
    "type": "conformality_or_penetration_profile",
    "measurand": "penetration_depth",
    "source": "measured",
-   "why": "measured film penetration vs natural logarithm of plasma exposure time"
+   "why": "film penetration vs natural log of plasma exposure time to determine surface recombination probability"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2655,
-  "out": 470,
-  "thoughts": 1886,
+  "in": 3378,
+  "out": 549,
+  "thoughts": 1996,
   "budget": 12288
  },
- "_scout_input_chars": 10009
+ "_scout_input_chars": 13112
 }

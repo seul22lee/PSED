@@ -58,10 +58,13 @@ VERDICTS = {
         "DRILL", "Thickness (Å) vs number of ALD cycles, Si, with linear fit y=0.315x-65.602",
         "Directly yields GPC; currently lost."),
     ("10.1039_d3ra05217f", 3): (
-        "AMBIGUOUS", "Table 1 (ALD precursor comparison) rendered as an image",
-        "Not an x-y plot, so the figure route should skip it — but it is a TABLE "
-        "delivered as a picture, so the table route cannot see it either. Needs a "
-        "routing decision, not a drill decision."),
+        "UNROUTED", "Table 1 (ALD precursor comparison) rendered as an image",
+        "DATA-BEARING. It carries the paper's precursor comparison — name, reference, "
+        "structure, state and ligand per precursor — so it is content the KB wants, not "
+        "a logo or decoration. It is unrouted rather than undecided: the figure route "
+        "digitizes x-y plots and this is a table, while the table route reads "
+        "structure.json tables and Docling emitted this one as a PictureItem. It stays "
+        "MANUAL_REVIEW because no existing path can carry it, not because it lacks value."),
     ("10.1039_d3ra05217f", 9): (
         "DRILL", "Five-panel saturation study: growth rate vs H2O purge, precursor supply, "
                  "precursor purge; thickness vs cycles; growth rate vs deposition temperature",
@@ -86,7 +89,8 @@ VERDICTS = {
         "(sits between FIG. 19 and FIG. 20, adjacent to neither)."),
 }
 
-BADGE = {"DRILL": "b-drill", "SKIP": "b-skip", "MERGE": "b-merge", "AMBIGUOUS": "b-amb"}
+BADGE = {"DRILL": "b-drill", "SKIP": "b-skip", "MERGE": "b-merge", "AMBIGUOUS": "b-amb",
+         "UNROUTED": "b-amb"}
 DISP_CLASS = {
     inv.DRILL: "b-drill", inv.OFFERED: "b-offer", inv.SKIP_WITH_REASON: "b-skip",
     inv.MANUAL_REVIEW: "b-amb", inv.MERGED_INTO_PRINTED_FIGURE: "b-merge",

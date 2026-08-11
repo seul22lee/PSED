@@ -8,15 +8,21 @@
   "MoCl2O2"
  ],
  "coreactants": [
-  "at-H"
+  "atomic hydrogen"
  ],
- "process_type": "thermal",
+ "process_type": "unknown",
  "temperature_window_C": [
   150,
   450
  ],
  "gpc_nm": 0.022,
  "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F18"
+   ]
+  },
   "gpc_vs_dose_saturation": {
    "present": true,
    "where": [
@@ -27,22 +33,10 @@
     "F17e"
    ]
   },
-  "gpc_vs_temperature": {
-   "present": true,
-   "where": [
-    "F18"
-   ]
-  },
   "gpc_vs_cycles": {
    "present": true,
    "where": [
     "F20"
-   ]
-  },
-  "xrd_or_spectrum": {
-   "present": true,
-   "where": [
-    "F21"
    ]
   },
   "film_property_vs_condition": {
@@ -53,6 +47,12 @@
     "F25a",
     "F25b"
    ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F21"
+   ]
   }
  },
  "drill": [
@@ -61,92 +61,92 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC versus precursor pulse time"
+   "why": "GPC as a function of MoCl2O2 pulse time"
   },
   {
    "where": "F17b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC versus coreactant pulse time"
+   "why": "GPC as a function of at-H pulse time"
   },
   {
    "where": "F17c",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC versus precursor purge time"
+   "why": "GPC as a function of MoCl2O2 purge time"
   },
   {
    "where": "F17d",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC versus coreactant purge time"
+   "why": "GPC as a function of at-H purge time"
   },
   {
    "where": "F17e",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC versus hot-wire temperature"
+   "why": "GPC as a function of hot-wire temperature"
   },
   {
    "where": "F18",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "GPC versus process temperature"
+   "why": "GPC as a function of process temperature for ALD and CVD"
   },
   {
    "where": "F20",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "Film thickness versus time during initial growth"
+   "why": "Film thickness as a function of time during initial stages of ALD"
   },
   {
    "where": "F21",
-   "type": "xrd_or_spectrum",
-   "measurand": "other",
+   "type": "other",
+   "measurand": "impurity_content",
    "source": "measured",
-   "why": "Mass spectroscopy signal evolution of byproducts"
+   "why": "Mass spectrometry emission of HCl and H2O reaction byproducts"
   },
   {
    "where": "F23a",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Compositional depth profile by TOF-ERDA"
+   "why": "Compositional depth profile from TOF-ERDA"
   },
   {
    "where": "F23b",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Average elemental composition versus temperature"
+   "why": "Averaged film composition versus deposition temperature"
   },
   {
    "where": "F25a",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Resistivity versus film thickness"
+   "why": "Film resistivity as a function of thickness"
   },
   {
    "where": "F25b",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Resistivity versus process temperature"
+   "why": "Film resistivity as a function of process temperature"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2745,
-  "out": 1166,
-  "thoughts": 882,
+  "in": 3308,
+  "out": 1205,
+  "thoughts": 2986,
   "budget": 12288
  },
- "_scout_input_chars": 9753
+ "_scout_input_chars": 12171
 }

@@ -7,7 +7,7 @@
  "precursors": [
   "(Me2N)3Bi",
   "(MeEtN)3Bi",
-  "[(Me3Si)2NBi\u03bc-NSiMe3]2"
+  "[(Me3Si)2NBi-NSiMe3]2"
  ],
  "coreactants": [
   "(Et3Si)2Te"
@@ -16,6 +16,12 @@
  "temperature_window_C": null,
  "gpc_nm": null,
  "data": {
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F2"
+   ]
+  },
   "gpc_vs_cycles": {
    "present": true,
    "where": [
@@ -25,19 +31,26 @@
  },
  "drill": [
   {
+   "where": "F2",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "GIXRD pattern of deposited Bi2Te3 film"
+  },
+  {
    "where": "F7",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "plots film thickness as a function of cycle numbers"
+   "why": "diagram of film thickness as a function of cycle numbers"
   }
  ],
- "go_deeper": false,
+ "go_deeper": true,
  "_tokens": {
-  "in": 2217,
-  "out": 272,
-  "thoughts": 1095,
+  "in": 2802,
+  "out": 358,
+  "thoughts": 2649,
   "budget": 12288
  },
- "_scout_input_chars": 7218
+ "_scout_input_chars": 9569
 }

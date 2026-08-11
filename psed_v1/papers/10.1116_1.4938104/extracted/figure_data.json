@@ -3,11 +3,7 @@
  "process_card": {
   "materials": [
    "Al2O3",
-   "Pt",
-   "TiO2",
-   "ZnO",
-   "TiN",
-   "W"
+   "Pt"
   ],
   "precursors": [
    "DEZ",
@@ -30,20 +26,33 @@
    "panel_source": {
     "d": "measured"
    },
+   "printed_figure": "4",
+   "is_split_crop": false,
+   "caption_source": "docling",
    "panels": [
     {
      "panel": "d",
      "x": {
       "quantity": "cycle_number",
       "unit": "",
-      "log": false
+      "log": false,
+      "label_raw": "Number of ALD Cycles",
+      "unit_raw": "",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
      },
      "y": {
       "quantity": "Water Contact Angle",
       "unit": "\u00b0",
-      "log": false
+      "log": false,
+      "label_raw": "Water Contact Angle",
+      "unit_raw": "",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
      },
-     "series_axis": "substrate and ALD temperature",
+     "series_axis": "temperature and substrate",
      "series": [
       {
        "label": "Cotton Fibers, 38 \u00b0C",
@@ -53,63 +62,55 @@
          0
         ],
         [
-         1.5,
-         120.5
+         1,
+         120
         ],
         [
-         5.0,
-         110.8
+         2,
+         125
         ],
         [
-         7.0,
-         120.5
+         5,
+         111
         ],
         [
-         10.0,
-         48.0
+         7,
+         121
         ],
         [
-         12.0,
+         10,
+         48
+        ],
+        [
+         12,
          0
         ],
         [
-         15.0,
+         15,
          0
         ],
         [
-         20.0,
+         25,
          0
         ],
         [
-         25.0,
+         35,
          0
         ],
         [
-         30.0,
+         37,
          0
         ],
         [
-         35.0,
+         38,
          0
         ],
         [
-         37.0,
+         40,
          0
         ],
         [
-         38.0,
-         0
-        ],
-        [
-         40.0,
-         0
-        ],
-        [
-         45.0,
-         0
-        ],
-        [
-         50.0,
+         50,
          0
         ]
        ]
@@ -118,23 +119,39 @@
        "label": "Cotton Fibers, 60 \u00b0C",
        "points": [
         [
-         1.0,
-         120.0
-        ],
-        [
-         10.0,
+         0,
          0
         ],
         [
-         15.0,
+         1,
+         120
+        ],
+        [
+         2,
+         121
+        ],
+        [
+         10,
          0
         ],
         [
-         25.0,
+         15,
          0
         ],
         [
-         50.0,
+         25,
+         0
+        ],
+        [
+         35,
+         0
+        ],
+        [
+         40,
+         0
+        ],
+        [
+         50,
          0
         ]
        ]
@@ -143,15 +160,19 @@
        "label": "Cotton Fibers, 90 \u00b0C",
        "points": [
         [
-         10.0,
-         32.0
+         1,
+         121
         ],
         [
-         10.0,
-         26.0
+         2,
+         121
         ],
         [
-         15.0,
+         10,
+         32
+        ],
+        [
+         15,
          0
         ]
        ]
@@ -160,32 +181,36 @@
        "label": "Cellulose Films",
        "points": [
         [
-         0.0,
-         35.0
+         0,
+         35
         ],
         [
-         2.0,
-         26.0
+         2,
+         26
         ],
         [
-         10.0,
-         13.0
+         10,
+         13
         ],
         [
-         15.0,
-         22.0
+         15,
+         22
         ],
         [
-         25.0,
-         17.0
+         25,
+         17
         ],
         [
-         50.0,
-         13.0
+         35,
+         18
         ],
         [
-         50.0,
-         21.0
+         50,
+         14
+        ],
+        [
+         50,
+         21
         ]
        ]
       }
@@ -200,9 +225,115 @@
    "caption": "FIG. 5. (Color online) (a) Cellulose cotton fibers after vapor metalation by DEZ. (b) Tensile strength of cotton improves after metalation by DEZ, with less change after treatment by TMA. Reprinted with permission from Gegorczyk et al ., Chem. Mater. 27 , 181 (2015). Copyright 2015, American Chemical Society.",
    "source": "measured",
    "panel_source": {
-    "b": "measured"
+    "_fig": "measured"
    },
+   "printed_figure": "5",
+   "is_split_crop": true,
+   "caption_source": "docling",
    "panels": []
+  },
+  {
+   "figure": "11",
+   "image": "figures/fig_11.png",
+   "caption": "FIG. 5. (Color online) (a) Cellulose cotton fibers after vapor metalation by DEZ. (b) Tensile strength of cotton improves after metalation by DEZ, with less change after treatment by TMA. Reprinted with permission from Gegorczyk et al ., Chem. Mater. 27 , 181 (2015). Copyright 2015, American Chemical Society.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "printed_figure": "5",
+   "is_split_crop": true,
+   "caption_source": "sibling",
+   "panels": [
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "cycle_number",
+      "unit": "",
+      "log": false,
+      "label_raw": "Number of Infiltration Cycles",
+      "unit_raw": "",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "quantity": "Ultimate Tensile Strength",
+      "unit": "MPa",
+      "log": false,
+      "label_raw": "Ultimate Tensile Strength (MPa)",
+      "unit_raw": "MPa",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "series_axis": "precursor",
+     "series": [
+      {
+       "label": "DEZ",
+       "points": [
+        [
+         0,
+         162
+        ],
+        [
+         2,
+         238
+        ],
+        [
+         3,
+         276
+        ],
+        [
+         5,
+         260
+        ],
+        [
+         10,
+         235
+        ],
+        [
+         20,
+         206
+        ],
+        [
+         50,
+         224
+        ]
+       ]
+      },
+      {
+       "label": "TMA",
+       "points": [
+        [
+         0,
+         162
+        ],
+        [
+         2,
+         172
+        ],
+        [
+         5,
+         180
+        ],
+        [
+         10,
+         169
+        ],
+        [
+         20,
+         194
+        ],
+        [
+         50,
+         214
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
   },
   {
    "figure": "13",
@@ -212,119 +343,257 @@
    "panel_source": {
     "a": "measured"
    },
+   "printed_figure": "7",
+   "is_split_crop": false,
+   "caption_source": "docling",
    "panels": [
     {
      "panel": "a",
      "x": {
       "quantity": "wavenumber",
       "unit": "cm^-1",
-      "log": false
+      "log": false,
+      "label_raw": "Wavenumbers (cm^-1)",
+      "unit_raw": "cm^-1",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
      },
      "y": {
-      "quantity": "absorbance",
+      "quantity": "Absorbance",
       "unit": "a.u.",
-      "log": false
+      "log": false,
+      "label_raw": "Absorbance",
+      "unit_raw": "",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
      },
-     "series_axis": "coating",
+     "series_axis": "coating condition",
      "series": [
       {
-       "label": "Untreated PA-6",
+       "label": "25 cycles ZnO + 75 cycles Gly/TMA + 25 cycles Al2O3",
        "points": [
         [
-         4000,
-         0.098
+         4000.0,
+         0.435
         ],
         [
-         3800,
-         0.098
+         3800.0,
+         0.437
         ],
         [
-         3600,
-         0.098
+         3600.0,
+         0.439
         ],
         [
-         3400,
-         0.103
+         3400.0,
+         0.438
         ],
         [
-         3300,
-         0.141
+         3300.0,
+         0.428
         ],
         [
-         3200,
-         0.108
+         3200.0,
+         0.436
         ],
         [
-         3050,
-         0.1
+         3000.0,
+         0.442
         ],
         [
-         2930,
-         0.138
+         2920.0,
+         0.457
         ],
         [
-         2860,
-         0.121
+         2850.0,
+         0.451
         ],
         [
-         2700,
-         0.1
+         2700.0,
+         0.447
         ],
         [
-         2500,
-         0.1
+         2500.0,
+         0.447
         ],
         [
-         2200,
-         0.1
+         2300.0,
+         0.447
         ],
         [
-         1900,
-         0.1
+         2100.0,
+         0.447
         ],
         [
-         1750,
-         0.102
+         1900.0,
+         0.447
         ],
         [
-         1650,
-         0.172
+         1700.0,
+         0.446
         ],
         [
-         1550,
-         0.172
+         1640.0,
+         0.432
         ],
         [
-         1450,
-         0.115
+         1580.0,
+         0.407
         ],
         [
-         1370,
-         0.102
+         1540.0,
+         0.422
         ],
         [
-         1260,
-         0.114
+         1450.0,
+         0.421
         ],
         [
-         1200,
-         0.109
+         1380.0,
+         0.426
         ],
         [
-         1100,
-         0.1
+         1300.0,
+         0.438
         ],
         [
-         900,
-         0.1
+         1260.0,
+         0.421
         ],
         [
-         750,
-         0.1
+         1200.0,
+         0.418
         ],
         [
-         600,
-         0.1
+         1100.0,
+         0.456
+        ],
+        [
+         1000.0,
+         0.438
+        ],
+        [
+         800.0,
+         0.445
+        ],
+        [
+         600.0,
+         0.46
+        ]
+       ]
+      },
+      {
+       "label": "25 cycles ZnO + 75 cycles Gly/TMA",
+       "points": [
+        [
+         4000.0,
+         0.315
+        ],
+        [
+         3800.0,
+         0.317
+        ],
+        [
+         3600.0,
+         0.319
+        ],
+        [
+         3400.0,
+         0.318
+        ],
+        [
+         3300.0,
+         0.308
+        ],
+        [
+         3200.0,
+         0.316
+        ],
+        [
+         3000.0,
+         0.322
+        ],
+        [
+         2920.0,
+         0.337
+        ],
+        [
+         2850.0,
+         0.331
+        ],
+        [
+         2700.0,
+         0.327
+        ],
+        [
+         2500.0,
+         0.327
+        ],
+        [
+         2300.0,
+         0.327
+        ],
+        [
+         2100.0,
+         0.327
+        ],
+        [
+         1900.0,
+         0.327
+        ],
+        [
+         1700.0,
+         0.326
+        ],
+        [
+         1640.0,
+         0.312
+        ],
+        [
+         1580.0,
+         0.287
+        ],
+        [
+         1540.0,
+         0.302
+        ],
+        [
+         1450.0,
+         0.301
+        ],
+        [
+         1380.0,
+         0.306
+        ],
+        [
+         1300.0,
+         0.318
+        ],
+        [
+         1260.0,
+         0.301
+        ],
+        [
+         1200.0,
+         0.298
+        ],
+        [
+         1100.0,
+         0.336
+        ],
+        [
+         1000.0,
+         0.318
+        ],
+        [
+         800.0,
+         0.325
+        ],
+        [
+         600.0,
+         0.34
         ]
        ]
       },
@@ -332,230 +601,186 @@
        "label": "25 cycles ZnO",
        "points": [
         [
-         4000,
-         0.24
+         4000.0,
+         0.2
         ],
         [
-         3700,
-         0.24
+         3800.0,
+         0.2
         ],
         [
-         3400,
-         0.24
+         3600.0,
+         0.2
         ],
         [
-         3100,
-         0.24
+         3400.0,
+         0.2
         ],
         [
-         2800,
-         0.24
+         3200.0,
+         0.2
         ],
         [
-         2500,
-         0.24
+         3000.0,
+         0.2
         ],
         [
-         2200,
-         0.24
+         2800.0,
+         0.2
         ],
         [
-         1900,
-         0.24
+         2600.0,
+         0.2
         ],
         [
-         1600,
-         0.238
+         2400.0,
+         0.2
         ],
         [
-         1300,
-         0.24
+         2200.0,
+         0.2
         ],
         [
-         1000,
-         0.24
+         2000.0,
+         0.2
         ],
         [
-         700,
-         0.24
+         1800.0,
+         0.2
         ],
         [
-         600,
-         0.24
+         1600.0,
+         0.2
+        ],
+        [
+         1400.0,
+         0.2
+        ],
+        [
+         1200.0,
+         0.2
+        ],
+        [
+         1000.0,
+         0.2
+        ],
+        [
+         800.0,
+         0.2
+        ],
+        [
+         600.0,
+         0.2
         ]
        ]
       },
       {
-       "label": "25 cycles ZnO+ 75 cycles Gly/TMA",
+       "label": "Untreated PA-6",
        "points": [
         [
-         4000,
-         0.328
+         4000.0,
+         0.05
         ],
         [
-         3700,
-         0.328
+         3800.0,
+         0.052
         ],
         [
-         3400,
-         0.321
+         3600.0,
+         0.053
         ],
         [
-         3300,
-         0.319
+         3400.0,
+         0.058
         ],
         [
-         3100,
-         0.328
+         3300.0,
+         0.098
         ],
         [
-         2930,
-         0.355
+         3200.0,
+         0.065
         ],
         [
-         2850,
-         0.348
+         3070.0,
+         0.055
         ],
         [
-         2600,
-         0.328
+         2920.0,
+         0.1
         ],
         [
-         2300,
-         0.328
+         2850.0,
+         0.075
         ],
         [
-         2000,
-         0.328
+         2700.0,
+         0.051
         ],
         [
-         1750,
-         0.328
+         2500.0,
+         0.05
         ],
         [
-         1650,
-         0.345
+         2300.0,
+         0.05
         ],
         [
-         1550,
-         0.298
+         2100.0,
+         0.05
         ],
         [
-         1450,
-         0.328
+         1900.0,
+         0.05
         ],
         [
-         1350,
-         0.332
+         1700.0,
+         0.05
         ],
         [
-         1260,
-         0.364
+         1640.0,
+         0.17
         ],
         [
-         1150,
-         0.338
+         1540.0,
+         0.175
         ],
         [
-         1000,
-         0.328
+         1460.0,
+         0.1
         ],
         [
-         800,
-         0.316
+         1370.0,
+         0.075
         ],
         [
-         600,
-         0.328
-        ]
-       ]
-      },
-      {
-       "label": "25 cycles ZnO+ 75 cycles Gly/TMA+ 25 cycles Al2O3",
-       "points": [
-        [
-         4000,
-         0.441
+         1260.0,
+         0.088
         ],
         [
-         3700,
-         0.441
+         1200.0,
+         0.08
         ],
         [
-         3400,
-         0.434
+         1100.0,
+         0.058
         ],
         [
-         3300,
-         0.432
+         1000.0,
+         0.053
         ],
         [
-         3100,
-         0.441
+         800.0,
+         0.052
         ],
         [
-         2930,
-         0.467
-        ],
-        [
-         2850,
-         0.46
-        ],
-        [
-         2600,
-         0.441
-        ],
-        [
-         2300,
-         0.441
-        ],
-        [
-         2000,
-         0.441
-        ],
-        [
-         1750,
-         0.441
-        ],
-        [
-         1650,
-         0.458
-        ],
-        [
-         1600,
-         0.413
-        ],
-        [
-         1500,
-         0.441
-        ],
-        [
-         1380,
-         0.445
-        ],
-        [
-         1260,
-         0.482
-        ],
-        [
-         1150,
-         0.45
-        ],
-        [
-         1000,
-         0.441
-        ],
-        [
-         800,
-         0.43
-        ],
-        [
-         600,
-         0.441
+         600.0,
+         0.07
         ]
        ]
       }
-     ]
+     ],
+     "conditions": {}
     }
    ]
   },
@@ -565,23 +790,366 @@
    "caption": "FIG. 8. (Color online) (a) Metal-insulator-metal fiber capacitor made from W coated fiber electrodes with a nonwoven polypropylene insulating layer. (b) Exposing the capacitor to various solvents created a capacitance signal that scaled with the solvent polarizability. Reprinted with permission from Jur et al ., Adv. Funct. Mater. 21 , 1993 (2011). Copyright 2011, John Wiley and Sons.",
    "source": "measured",
    "panel_source": {
-    "b": "measured"
+    "_fig": "measured"
    },
+   "printed_figure": "8",
+   "is_split_crop": true,
+   "caption_source": "docling",
+   "panels": []
+  },
+  {
+   "figure": "15",
+   "image": "figures/fig_15.png",
+   "caption": "FIG. 8. (Color online) (a) Metal-insulator-metal fiber capacitor made from W coated fiber electrodes with a nonwoven polypropylene insulating layer. (b) Exposing the capacitor to various solvents created a capacitance signal that scaled with the solvent polarizability. Reprinted with permission from Jur et al ., Adv. Funct. Mater. 21 , 1993 (2011). Copyright 2011, John Wiley and Sons.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "printed_figure": "8",
+   "is_split_crop": true,
+   "caption_source": "sibling",
    "panels": [
     {
-     "panel": "a",
+     "panel": "b",
      "x": {
-      "quantity": "spatial_coordinate",
-      "unit": "cm",
-      "log": false
+      "quantity": "frequency",
+      "unit": "Hz",
+      "log": true,
+      "label_raw": "Frequency [Hz]",
+      "unit_raw": "Hz",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
      },
      "y": {
-      "quantity": "spatial_coordinate",
-      "unit": "cm",
-      "log": false
+      "quantity": "Capacitance Density",
+      "unit": "pF/cm\u00b2",
+      "log": false,
+      "label_raw": "Capacitance Density [pF/cm\u00b2]",
+      "unit_raw": "pF/cm\u00b2",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
      },
-     "series_axis": "",
-     "series": [],
+     "series_axis": "solvent",
+     "series": [
+      {
+       "label": "H2O",
+       "points": [
+        [
+         10000,
+         273
+        ],
+        [
+         15000,
+         210
+        ],
+        [
+         20000,
+         170
+        ],
+        [
+         30000,
+         128
+        ],
+        [
+         40000,
+         106
+        ],
+        [
+         50000,
+         92
+        ],
+        [
+         60000,
+         82
+        ],
+        [
+         70000,
+         74
+        ],
+        [
+         80000,
+         67
+        ],
+        [
+         90000,
+         62
+        ],
+        [
+         100000,
+         58
+        ],
+        [
+         120000,
+         53
+        ],
+        [
+         150000,
+         45
+        ],
+        [
+         200000,
+         36
+        ],
+        [
+         250000,
+         31
+        ],
+        [
+         300000,
+         28
+        ],
+        [
+         400000,
+         22
+        ],
+        [
+         500000,
+         18
+        ],
+        [
+         600000,
+         17
+        ],
+        [
+         800000,
+         16
+        ],
+        [
+         1000000,
+         15
+        ]
+       ]
+      },
+      {
+       "label": "C2H5OH",
+       "points": [
+        [
+         10000,
+         131
+        ],
+        [
+         15000,
+         105
+        ],
+        [
+         20000,
+         87
+        ],
+        [
+         30000,
+         65
+        ],
+        [
+         40000,
+         53
+        ],
+        [
+         50000,
+         46
+        ],
+        [
+         60000,
+         40
+        ],
+        [
+         70000,
+         35
+        ],
+        [
+         80000,
+         32
+        ],
+        [
+         100000,
+         27
+        ],
+        [
+         150000,
+         21
+        ],
+        [
+         200000,
+         17
+        ],
+        [
+         300000,
+         13
+        ],
+        [
+         400000,
+         11
+        ],
+        [
+         500000,
+         10
+        ],
+        [
+         600000,
+         9
+        ],
+        [
+         800000,
+         8
+        ],
+        [
+         1000000,
+         8
+        ]
+       ]
+      },
+      {
+       "label": "(CH3)2CHOH",
+       "points": [
+        [
+         10000,
+         38
+        ],
+        [
+         15000,
+         32
+        ],
+        [
+         20000,
+         28
+        ],
+        [
+         30000,
+         24
+        ],
+        [
+         40000,
+         22
+        ],
+        [
+         50000,
+         21
+        ],
+        [
+         60000,
+         20
+        ],
+        [
+         80000,
+         18
+        ],
+        [
+         100000,
+         17
+        ],
+        [
+         150000,
+         15
+        ],
+        [
+         200000,
+         14
+        ],
+        [
+         300000,
+         13
+        ],
+        [
+         400000,
+         12
+        ],
+        [
+         500000,
+         11
+        ],
+        [
+         600000,
+         11
+        ],
+        [
+         800000,
+         10
+        ],
+        [
+         1000000,
+         10
+        ]
+       ]
+      },
+      {
+       "label": "Dry PP",
+       "points": [
+        [
+         10000,
+         5
+        ],
+        [
+         12000,
+         6
+        ],
+        [
+         15000,
+         5
+        ],
+        [
+         20000,
+         4
+        ],
+        [
+         30000,
+         3
+        ],
+        [
+         40000,
+         3
+        ],
+        [
+         50000,
+         3
+        ],
+        [
+         60000,
+         3
+        ],
+        [
+         80000,
+         3
+        ],
+        [
+         100000,
+         3
+        ],
+        [
+         150000,
+         3
+        ],
+        [
+         200000,
+         3
+        ],
+        [
+         300000,
+         3
+        ],
+        [
+         400000,
+         3
+        ],
+        [
+         500000,
+         3
+        ],
+        [
+         600000,
+         3
+        ],
+        [
+         800000,
+         3
+        ],
+        [
+         1000000,
+         3
+        ]
+       ]
+      }
+     ],
      "conditions": {}
     }
    ]
@@ -592,9 +1160,174 @@
    "caption": "FIG. 10. (Color online) (a) Electronic fiber-based touch-sensor using nylon-6 fibers coated with ALD aluminum-doped ZnO separated by insulating porous nonwoven polypropylene. (b) The response current was highly reproducible and scaled directly with applied force over several orders of magnitude. Reprinted with permission from Sweet et al ., J. Vac. Sci. Technol. Vac. Surf. Films 33 , 01A117 (2015). Copyright 2015, AIP Publishing LLC.",
    "source": "measured",
    "panel_source": {
-    "b": "measured"
+    "_fig": "measured"
    },
+   "printed_figure": "10",
+   "is_split_crop": true,
+   "caption_source": "docling",
    "panels": []
+  },
+  {
+   "figure": "20",
+   "image": "figures/fig_20.png",
+   "caption": "FIG. 10. (Color online) (a) Electronic fiber-based touch-sensor using nylon-6 fibers coated with ALD aluminum-doped ZnO separated by insulating porous nonwoven polypropylene. (b) The response current was highly reproducible and scaled directly with applied force over several orders of magnitude. Reprinted with permission from Sweet et al ., J. Vac. Sci. Technol. Vac. Surf. Films 33 , 01A117 (2015). Copyright 2015, AIP Publishing LLC.",
+   "source": "measured",
+   "panel_source": {
+    "_fig": "measured"
+   },
+   "printed_figure": "10",
+   "is_split_crop": true,
+   "caption_source": "sibling",
+   "panels": [
+    {
+     "panel": "b",
+     "x": {
+      "quantity": "Weight",
+      "unit": "g",
+      "log": false,
+      "label_raw": "Weight (grams)",
+      "unit_raw": "grams",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
+     },
+     "y": {
+      "quantity": "Response (I_on / I_off)",
+      "unit": "",
+      "log": true,
+      "label_raw": "Response (I_on / I_off)",
+      "unit_raw": "",
+      "is_normalized": true,
+      "normalization_expression": "I_on / I_off",
+      "normalization_denominator_symbol": "I_off"
+     },
+     "series_axis": "",
+     "series": [
+      {
+       "label": "Response",
+       "points": [
+        [
+         0.0,
+         1.0
+        ],
+        [
+         1.0,
+         120.0
+        ],
+        [
+         2.5,
+         350.0
+        ],
+        [
+         5.0,
+         830.0
+        ],
+        [
+         8.0,
+         2100.0
+        ],
+        [
+         12.0,
+         5200.0
+        ],
+        [
+         16.0,
+         11000.0
+        ],
+        [
+         20.0,
+         20000.0
+        ],
+        [
+         25.0,
+         32000.0
+        ],
+        [
+         30.0,
+         48000.0
+        ],
+        [
+         35.0,
+         68000.0
+        ],
+        [
+         40.0,
+         90000.0
+        ],
+        [
+         45.0,
+         115000.0
+        ],
+        [
+         50.0,
+         140000.0
+        ],
+        [
+         60.0,
+         195000.0
+        ],
+        [
+         70.0,
+         250000.0
+        ],
+        [
+         80.0,
+         300000.0
+        ],
+        [
+         90.0,
+         345000.0
+        ],
+        [
+         100.0,
+         380000.0
+        ],
+        [
+         110.0,
+         430000.0
+        ],
+        [
+         120.0,
+         480000.0
+        ],
+        [
+         130.0,
+         530000.0
+        ],
+        [
+         140.0,
+         580000.0
+        ],
+        [
+         150.0,
+         630000.0
+        ],
+        [
+         160.0,
+         680000.0
+        ],
+        [
+         170.0,
+         725000.0
+        ],
+        [
+         180.0,
+         770000.0
+        ],
+        [
+         190.0,
+         810000.0
+        ],
+        [
+         200.0,
+         850000.0
+        ]
+       ]
+      }
+     ],
+     "conditions": {}
+    }
+   ]
   },
   {
    "figure": "22",
@@ -604,18 +1337,31 @@
    "panel_source": {
     "b": "measured"
    },
+   "printed_figure": "12",
+   "is_split_crop": false,
+   "caption_source": "docling",
    "panels": [
     {
      "panel": "b",
      "x": {
-      "quantity": "exposure",
+      "quantity": "UV irradiation time",
       "unit": "h",
-      "log": false
+      "log": false,
+      "label_raw": "UV irradiation time (h)",
+      "unit_raw": "h",
+      "is_normalized": false,
+      "normalization_expression": null,
+      "normalization_denominator_symbol": null
      },
      "y": {
-      "quantity": "C/C0",
+      "quantity": "C/C_0",
       "unit": "",
-      "log": false
+      "log": false,
+      "label_raw": "C/C_0",
+      "unit_raw": "",
+      "is_normalized": true,
+      "normalization_expression": "C/C_0",
+      "normalization_denominator_symbol": "C_0"
      },
      "series_axis": "material",
      "series": [
@@ -627,11 +1373,11 @@
          1.0
         ],
         [
-         1.1,
+         1.2,
          0.99
         ],
         [
-         3.0,
+         3.1,
          0.98
         ],
         [
@@ -639,7 +1385,7 @@
          0.97
         ],
         [
-         5.1,
+         5.0,
          0.95
         ],
         [
@@ -673,7 +1419,7 @@
         ],
         [
          1.0,
-         0.8
+         0.76
         ],
         [
          2.0,
@@ -689,7 +1435,7 @@
         ],
         [
          5.0,
-         0.41
+         0.4
         ],
         [
          6.0,
@@ -701,7 +1447,7 @@
         ],
         [
          8.0,
-         0.32
+         0.31
         ],
         [
          9.0,
@@ -709,7 +1455,7 @@
         ],
         [
          23.1,
-         0.11
+         0.12
         ]
        ]
       },
@@ -722,7 +1468,7 @@
         ],
         [
          1.0,
-         0.78
+         0.79
         ],
         [
          2.0,
@@ -730,7 +1476,7 @@
         ],
         [
          3.0,
-         0.48
+         0.5
         ],
         [
          4.0,
@@ -771,15 +1517,15 @@
         ],
         [
          1.0,
-         0.79
+         0.76
         ],
         [
          2.0,
-         0.62
+         0.61
         ],
         [
          3.0,
-         0.44
+         0.43
         ],
         [
          4.0,
@@ -787,7 +1533,7 @@
         ],
         [
          5.0,
-         0.21
+         0.22
         ],
         [
          6.0,
@@ -818,7 +1564,8 @@
   }
  ],
  "_tokens": {
-  "in": 27955,
-  "out": 2863
- }
+  "in": 24679,
+  "out": 5323
+ },
+ "_upstream_scout": "bd265f07ee4bfcb2"
 }
