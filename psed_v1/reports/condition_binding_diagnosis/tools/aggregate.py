@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """READ-ONLY. §H/I/J — root-cause frequency, corpus estimates with CIs, paper summaries."""
+import paths as P
 import csv, json, math
 from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
+KB = P.PAPERS
 BASE = KB / "_archive" / "resolved_pre_canonical"
 
 CAUSE = {

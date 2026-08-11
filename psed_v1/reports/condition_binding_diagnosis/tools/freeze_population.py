@@ -3,14 +3,15 @@
 
 Writes corpus_population_manifest.json. Touches nothing else.
 """
+import paths as P
 import json, glob, hashlib, subprocess, os
 from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]          # psed_v1/
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 
 
 def sh(*a):
@@ -31,15 +32,15 @@ def main():
     records, checks, per_paper = [], {}, {}
     kinds = Counter(); rel = Counter(); gran = Counter()
     for doi in papers:
-        ep = KB / doi / "resolved" / "experiments.json"
-        sp = KB / doi / "resolved" / "series.json"
-        cp = KB / doi / "canonical" / "curves.json"
+        ep = P.resolved_json(doi, "experiments")
+        sp = P.resolved_json(doi, "series")
+        cp = P.curves_json(doi)
         exps = json.loads(ep.read_text()) if ep.exists() else []
         ser = json.loads(sp.read_text()) if sp.exists() else []
         curves = (json.loads(cp.read_text()).get("curves", []) if cp.exists() else [])
-        for f in (ep, sp, cp, EX / doi / "extracted" / "figure_data.json", EX / doi / "extracted" / "records.json",
-                  EX / doi / "extracted" / "pressure.json", EX / doi / "extracted" / "card.json",
-                  EX / doi / "extracted" / "geometry.json", EX / doi / "extracted" / "document.md"):
+        for f in (ep, sp, cp, P.extracted_dir(doi) / "figure_data.json", P.extracted_dir(doi) / "records.json",
+                  P.extracted_dir(doi) / "pressure.json", P.extracted_dir(doi) / "card.json",
+                  P.extracted_dir(doi) / "geometry.json", P.extracted_dir(doi) / "document.md"):
             if f.exists():
                 checks[str(f.relative_to(REPO))] = sha(f)
         for e in exps:
@@ -94,7 +95,7 @@ def main():
         "working_tree_status_lines": len((sh("git", "status", "--porcelain") or "").splitlines()),
         "generation_timestamp_source": "mtime of resolved/experiments.json per paper",
         "generation_commands": [
-            "python3 01_ontology/build_ontology.py",
+            "python3 -m ontology.build_ontology",
             "python3 02_extraction/canonical/recover_axis_semantics.py --all",
             "<psed310> 02_extraction/canonical/reextract_figures.py --priority high",
             "<psed310> 03_corpus/scripts/06_to_kb.py --all --resolve-only",

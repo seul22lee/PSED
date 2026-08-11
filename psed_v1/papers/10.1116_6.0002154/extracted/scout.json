@@ -8,34 +8,31 @@
   "MoCl4(THD)(THF)"
  ],
  "coreactants": [],
- "process_type": "unknown",
+ "process_type": "thermal",
  "temperature_window_C": null,
  "gpc_nm": null,
  "data": {
   "gpc_vs_cycles": {
    "present": true,
    "where": [
-    "F21b"
+    "F21"
    ]
   },
   "xrd_or_spectrum": {
    "present": true,
    "where": [
-    "F19a",
-    "F19b",
-    "F19c",
-    "F21a",
-    "F22a",
-    "F22b",
-    "F24a",
+    "F19",
+    "F21",
+    "F22",
+    "F24",
+    "F25",
     "F27"
    ]
   },
   "other": {
    "present": true,
    "where": [
-    "F17a",
-    "F17b"
+    "F17"
    ]
   }
  },
@@ -43,87 +40,101 @@
   {
    "where": "F17a",
    "type": "other",
-   "measurand": "impurity_content",
+   "measurand": "normalized_thickness",
    "source": "measured",
-   "why": "TGA thermogravimetric curve of precursor"
+   "why": "TGA thermogravimetric analysis curve of synthesized precursor"
   },
   {
    "where": "F17b",
    "type": "other",
-   "measurand": "impurity_content",
+   "measurand": "density",
    "source": "measured",
-   "why": "Vapor pressure curve of precursor"
+   "why": "vapor pressure curve of synthesized precursor"
   },
   {
    "where": "F19a",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "AES depth profile of MoNx film at 350 C"
+   "why": "AES compositional depth profile of film deposited at 350 C"
   },
   {
    "where": "F19b",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "AES depth profile of MoNx film at 500 C"
+   "why": "AES compositional depth profile of film deposited at 500 C"
   },
   {
    "where": "F19c",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "AES depth profile of MoNx film deposited by super-cycle process at 500 C"
+   "why": "AES compositional depth profile of super-cycle film deposited at 500 C"
   },
   {
-   "where": "F21a",
-   "type": "xrd_or_spectrum",
-   "measurand": "film_thickness",
-   "source": "measured",
-   "why": "Raw XRR data with curve fit for MoNx film"
-  },
-  {
-   "where": "F21b",
+   "where": "F21",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "MoNx thin film thickness as a function of ALD cycle number"
+   "why": "XRR curve fit and thickness vs number of ALD cycles from split crop figure"
   },
   {
    "where": "F22a",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS spectra of Mo3d for MoNx thin film"
+   "why": "Mo3d XPS spectrum of ALD super-cycle MoNx thin film"
   },
   {
    "where": "F22b",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS spectra of N1s and Mo3p for MoNx thin film"
+   "why": "N1s and Mo3p XPS spectra of ALD super-cycle MoNx thin film"
   },
   {
-   "where": "F24a",
+   "where": "F24",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "GIXRD pattern of MoNx thin film"
+   "why": "GIXRD pattern from split crop figure"
   },
   {
-   "where": "F27",
+   "where": "F25",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XRD data of Cu/MoNx/sub stack as-deposited and annealed at 500 and 600 C"
+   "why": "UPS valence band / work function spectrum of MoNx thin film"
+  },
+  {
+   "where": "F27a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XRD pattern of as-deposited Cu/MoNx/sub stack"
+  },
+  {
+   "where": "F27b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XRD pattern of Cu/MoNx/sub stack annealed at 500 C"
+  },
+  {
+   "where": "F27c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XRD pattern of Cu/MoNx/sub stack annealed at 600 C"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2331,
-  "out": 1049,
-  "thoughts": 1731,
+  "in": 3034,
+  "out": 1157,
+  "thoughts": 2317,
   "budget": 12288
  },
- "_scout_input_chars": 8262
+ "_scout_input_chars": 11146
 }

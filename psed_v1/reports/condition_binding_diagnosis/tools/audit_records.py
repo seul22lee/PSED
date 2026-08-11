@@ -12,14 +12,15 @@ Every condition mention found in Layer 1/2 is followed into Layer 3 and given a
 root-cause code. Machine-decidable facts only; fields needing human judgement are
 marked manual_review_required.
 """
+import paths as P
 import csv, json, re, sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 
 NUMU = re.compile(r"^\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\s*(.*?)\s*$")
 _cache = {}
@@ -61,7 +62,7 @@ LEGEND_TOKENS = re.compile(
 
 
 def find_exp(doi, rid):
-    for e in (J(KB / doi / "resolved" / "experiments.json") or []):
+    for e in (J(P.resolved_json(doi, "experiments")) or []):
         if e.get("exp_id") == rid:
             return e
     return None
@@ -70,7 +71,7 @@ def find_exp(doi, rid):
 def panel_of(doi, exp):
     """The figure_data panel + series this record came from."""
     prov = exp.get("provenance") or {}
-    fd = J(EX / doi / "extracted" / "figure_data.json") or {}
+    fd = J(P.extracted_dir(doi) / "figure_data.json") or {}
     fi = str(prov.get("fig_docling_index") or "")
     pan = str(prov.get("panel") or "")
     for fig in fd.get("figures", []) or []:
@@ -133,7 +134,7 @@ def audit(rec):
     # ---------- Layer 2 evidence ----------
     fd_conds = dict((panel or {}).get("conditions") or {})
     row["figure_data_conditions"] = json.dumps(fd_conds, ensure_ascii=False)
-    recs = J(EX / doi / "extracted" / "records.json") or []
+    recs = J(P.extracted_dir(doi) / "records.json") or []
     rc = {}
     for r in recs:
         p = r.get("provenance") or {}
@@ -142,7 +143,7 @@ def audit(rec):
             rc = dict(r.get("controlled") or {})
             break
     row["records_conditions"] = json.dumps(rc, ensure_ascii=False)
-    pj = (J(EX / doi / "extracted" / "pressure.json") or {}).get("pressures") or []
+    pj = (J(P.extracted_dir(doi) / "pressure.json") or {}).get("pressures") or []
     row["pressure_json_conditions"] = json.dumps(
         [{"type": p.get("pressure_type"), "value": p.get("value"), "unit": p.get("unit"),
           "context": p.get("context"), "species": p.get("named_species")} for p in pj],

@@ -5,11 +5,12 @@
   "MoOx"
  ],
  "precursors": [
-  "bis-isopropylcyclopentyldienyl molybdenum dihydride",
-  "Mo(iPrCp)2H2"
+  "Mo(iPrCp)2H2",
+  "Mo(NtBu)2(NMe2)2"
  ],
  "coreactants": [
-  "O3"
+  "O3",
+  "H2O"
  ],
  "process_type": "thermal",
  "temperature_window_C": [
@@ -21,8 +22,8 @@
   "gpc_vs_dose_saturation": {
    "present": true,
    "where": [
-    "F17a",
-    "F17b"
+    "F16",
+    "F17"
    ]
   },
   "gpc_vs_temperature": {
@@ -44,68 +45,68 @@
  },
  "drill": [
   {
-   "where": "F17a",
+   "where": "F16",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "saturation curve for Mo precursor dose"
+   "why": "O3 and Mo precursor saturation curves"
   },
   {
-   "where": "F17b",
+   "where": "F17",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "saturation curve for ozone precursor dose"
+   "why": "O3 and Mo precursor saturation curves"
   },
   {
    "where": "F18",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth per cycle as a function of temperature"
+   "why": "growth per cycle versus temperature"
   },
   {
    "where": "F20",
    "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
+   "measurand": "normalized_thickness",
    "source": "measured",
-   "why": "XRD spectra of as-deposited and annealed MoOx films"
+   "why": "XRD spectrum of as-deposited and annealed film"
   },
   {
    "where": "F21",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Mo 3d core-level XPS spectra"
+   "why": "Mo 3d XPS spectra"
   },
   {
    "where": "F23",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "O 1s core-level XPS spectra"
+   "why": "O 1s XPS spectra"
   },
   {
    "where": "F24a",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "FTIR spectra in 4000-1100 cm-1 range"
+   "why": "FTIR spectrum from 4000 to 1100 cm-1"
   },
   {
    "where": "F24b",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "FTIR spectra in 1100-500 cm-1 range"
+   "why": "FTIR spectrum from 1100 to 500 cm-1"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2369,
-  "out": 853,
-  "thoughts": 1544,
+  "in": 3076,
+  "out": 847,
+  "thoughts": 3175,
   "budget": 12288
  },
- "_scout_input_chars": 8068
+ "_scout_input_chars": 10893
 }

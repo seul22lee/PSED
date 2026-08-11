@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """READ-ONLY. §C — targeted diagnostic set, kept OUT of the random-sample statistics."""
+import paths as P
 import csv, json, re
 from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 BASE = KB / "_archive" / "resolved_pre_canonical"
 
 LEGEND_TOK = re.compile(r"(?:^|[\s,(])(T|p|d|H|L|AR)\s*[=:]|"
@@ -53,7 +54,7 @@ def main():
     # 3. 20 largest series
     allser = []
     for doi in papers:
-        for s in (J(KB / doi / "resolved" / "series.json", []) or []):
+        for s in (J(P.resolved_json(doi, "series"), []) or []):
             allser.append((s["n_experiments"], doi, s["series_id"], s["series_varies"],
                            s["provenance"].get("figure_number"), s["provenance"].get("panel")))
     allser.sort(reverse=True)
@@ -75,11 +76,11 @@ def main():
 
     # 5-8. per-record condition pathologies
     for doi in papers:
-        exps = J(KB / doi / "resolved" / "experiments.json", []) or []
-        doc = (EX / doi / "extracted" / "document.md")
+        exps = J(P.resolved_json(doi, "experiments"), []) or []
+        doc = (P.extracted_dir(doi) / "document.md")
         txt = doc.read_text(errors="replace") if doc.exists() else ""
         text_pressure = bool(re.search(r"\d[\d.]*\s*(mTorr|Torr|mbar|hPa|kPa|Pa)\b", txt))
-        fd = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
+        fd = J(P.extracted_dir(doi) / "figure_data.json", {}) or {}
         cap_by_idx = {str(f.get("figure")): (f.get("caption") or "") for f in fd.get("figures", [])}
         panel_conds = {}
         for f in fd.get("figures", []):

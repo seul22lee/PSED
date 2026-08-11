@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """The explicitly required regression conditions, checked on the REGENERATED
 entities with their provenance. Prints PASS/FAIL per condition."""
+import paths as P
 import json, sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-KB = REPO / "papers"              # papers/<doi>/resolved/
+KB = P.PAPERS
 FAIL = []
 
 
 def ents(doi):
-    return json.loads((KB / doi / "resolved" / "entities.json").read_text())
+    return json.loads((P.resolved_json(doi, "entities")).read_text())
 
 
 def find(doi, fig, panel=None, label=None):

@@ -38,6 +38,10 @@
   "xrd_or_spectrum": {
    "present": true,
    "where": [
+    "F3a",
+    "F3b",
+    "F3c",
+    "F3d",
     "F4a",
     "F6a"
    ]
@@ -49,64 +53,92 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth per cycle as a function of ozone exposure"
+   "why": "growth per cycle plotted against ozone pulse duration"
   },
   {
    "where": "F1b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth per cycle as a function of TBF exposure"
+   "why": "growth per cycle plotted against TBF precursor exposure"
   },
   {
    "where": "F1c",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "film thickness as a function of number of ALD cycles"
+   "why": "film thickness plotted as a function of total ALD cycles"
   },
   {
    "where": "F2",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "film elemental composition extracted from angle-resolved XPS vs measurement angle and growth conditions"
+   "why": "calculated atomic composition profiles from angle-resolved XPS measurements"
+  },
+  {
+   "where": "F3a",
+   "type": "xrd_or_spectrum",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "Fe 2p XPS spectra for sample with 10s ozone exposure"
+  },
+  {
+   "where": "F3b",
+   "type": "xrd_or_spectrum",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "Fe 2p XPS spectra for sample with 120s ozone exposure"
+  },
+  {
+   "where": "F3c",
+   "type": "xrd_or_spectrum",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "O 1s XPS spectra for sample with 10s ozone exposure"
+  },
+  {
+   "where": "F3d",
+   "type": "xrd_or_spectrum",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "O 1s XPS spectra for sample with 120s ozone exposure"
   },
   {
    "where": "F4a",
    "type": "xrd_or_spectrum",
-   "measurand": "film_thickness",
+   "measurand": "density",
    "source": "measured",
-   "why": "XRR reflectivity curves vs grazing angle theta"
+   "why": "XRR reflectivity intensity plot along with density model fits"
   },
   {
    "where": "F4b",
    "type": "film_property_vs_condition",
    "measurand": "density",
    "source": "simulated",
-   "why": "electron density profile generated from bilayer model fit"
+   "why": "modeled electron density profile along film thickness from fitted bilayer model"
   },
   {
    "where": "F6a",
    "type": "xrd_or_spectrum",
-   "measurand": "film_thickness",
+   "measurand": "density",
    "source": "measured",
-   "why": "integrated 2D GIWAXS intensity vs Q plots for films grown with different ozone exposures"
+   "why": "integrated 2D GIWAXS diffraction intensity plotted vs Q"
   },
   {
    "where": "F6b",
    "type": "film_property_vs_condition",
-   "measurand": "density",
+   "measurand": "normalized_thickness",
    "source": "measured",
-   "why": "phase composition ratio between alpha and gamma phases as a function of ozone exposure"
+   "why": "calculated phase ratio of alpha to gamma phase plotted versus ozone exposure duration"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2947,
-  "out": 848,
-  "thoughts": 2384,
+  "in": 3569,
+  "out": 1152,
+  "thoughts": 2834,
   "budget": 12288
  },
- "_scout_input_chars": 11703
+ "_scout_input_chars": 14214
 }

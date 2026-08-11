@@ -17,14 +17,15 @@ Signal families (independent by construction):
   T  table linkage                   a table caption binds the parameter set
   w* weak: axis role, point count, single caption keyword   (never decisive alone)
 """
+import paths as P
 import csv, json, re, sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis" / "stage0"
-EX = REPO / "papers"    # papers/<doi>/extracted/
-KB = REPO / "papers"              # papers/<doi>/resolved/
+EX = P.PAPERS
+KB = P.PAPERS
 
 def J(p, d=None):
     try:
@@ -440,7 +441,7 @@ def main():
     for ent in ents:
         doi = ent["paper_id"]
         if doi not in docs:
-            p = EX / doi / "extracted" / "document.md"
+            p = P.extracted_dir(doi) / "document.md"
             t = p.read_text(errors="replace") if p.exists() else ""
             from_stage0 = sys.modules[__name__]
             docs[doi] = t

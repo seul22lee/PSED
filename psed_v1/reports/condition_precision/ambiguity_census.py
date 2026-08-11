@@ -15,6 +15,7 @@ a sample into a complete census, so the three questions the audit asks --
 
 Read-only. Writes reports/condition_precision/ambiguity_census.{json,md}.
 """
+import paths as P
 import json
 import glob
 import re
@@ -27,7 +28,7 @@ OUT = ROOT / "papers"          # papers/<doi>/resolved/
 
 
 def load(paper, name):
-    p = OUT / paper / "resolved" / (name + ".json")
+    p = P.resolved_dir(paper) / (name + ".json")
     if not p.exists():
         return []
     d = json.loads(p.read_text())

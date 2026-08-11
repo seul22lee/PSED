@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """READ-ONLY. Correction #9 — can the missing pressures be recovered DETERMINISTICALLY
+import paths as P
 from local text, before any LLM call is proposed?
 
 For the 13 papers with a pressure in document.md and an empty pressure.json, extract:
@@ -16,7 +17,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-EX = REPO / "papers"    # papers/<doi>/extracted/
+EX = P.PAPERS
 
 PUNIT = r"(?:mTorr|Torr|mbar|hPa|kPa|MPa|Pa|atm|bar)"
 NUM = r"[-+]?\d*\.?\d+(?:\s*[x×]\s*10\s*[-–]?\d+)?(?:[eE][-+]?\d+)?"
