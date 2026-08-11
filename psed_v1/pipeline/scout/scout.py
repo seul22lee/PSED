@@ -317,12 +317,64 @@ def _reconcile_dispositions(sd, obj):
     return inv
 
 
+#: how many independent scout samples to union. Coverage selection is a recall task, so
+#: a figure named by ANY sample is kept.
+SCOUT_SAMPLES = 2
+
+
+def _drill_key(d):
+    """Identity of a drill item for de-duplication across samples."""
+    return (str(d.get("where") or "").strip().lower(), str(d.get("type") or ""),
+            str(d.get("measurand") or ""))
+
+
+def union_drill(primary, extra):
+    """Union the drill lists of two scout results, keeping `primary` order.
+
+    The scout is a COVERAGE selector, and its own schema says a data plot must never be
+    dropped — but the model is sampled, and at temperature 0 it still varies between
+    runs. A single sample therefore loses real figures at random: 10.1063/1.5028178
+    FIG. 2 (a four-series pressure-vs-position plot) was drilled in one run and silently
+    omitted in the next from a byte-identical caption line. Unioning independent samples
+    turns that silent loss into at most a duplicate vision call, which the figure stage
+    already tolerates — an unknown [F#] tag is skipped and a repeated one is grouped.
+    """
+    out = list(primary or [])
+    seen = {_drill_key(d) for d in out}
+    seen_idx = {re.sub(r"[^0-9]", "", str(d.get("where") or "")) for d in out}
+    for d in (extra or []):
+        k = _drill_key(d)
+        idx = re.sub(r"[^0-9]", "", str(d.get("where") or ""))
+        if k in seen or not idx or idx in seen_idx:
+            continue                          # already covered, at item or figure level
+        item = dict(d)
+        item["_from_sample"] = 2
+        out.append(item)
+        seen.add(k)
+    return out
+
+
 def scout(sd, client):
     _inventory.write(sd)                              # provenance first, then decide
     abstract, conclusion, caps = build_scout_input(sd)
     prompt = (f"{SCHEMA}\n\n=== ABSTRACT ===\n{abstract}\n\n=== CONCLUSION ===\n{conclusion}"
               f"\n\n=== FIGURE/TABLE CAPTIONS ===\n" + "\n".join(caps))
     obj, tok = _scout_call(client, MODEL, prompt)     # raises loudly rather than emptying
+    n_first = len(obj.get("drill") or [])
+    for _ in range(SCOUT_SAMPLES - 1):
+        try:
+            alt, tok2 = _scout_call(client, MODEL, prompt)
+        except Exception as e:                        # a failed extra sample must never
+            print(f"  [scout sample skipped] {e}")    # weaken the primary result
+            continue
+        obj["drill"] = union_drill(obj.get("drill"), alt.get("drill"))
+        for k in ("in", "out"):
+            if tok.get(k) is not None and tok2.get(k) is not None:
+                tok[k] = tok[k] + tok2[k]
+    gained = len(obj.get("drill") or []) - n_first
+    obj["_scout_samples"] = SCOUT_SAMPLES
+    if gained:
+        print(f"  [scout union] +{gained} figure(s) recovered from sample 2")
     obj["_tokens"] = tok
     obj["_scout_input_chars"] = len(prompt)
     (P.extracted_dir(sd) / "scout.json").write_text(json.dumps(obj, indent=1))

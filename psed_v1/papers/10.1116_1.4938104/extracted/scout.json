@@ -3,11 +3,7 @@
  "study_type": "review",
  "materials": [
   "Al2O3",
-  "Pt",
-  "TiO2",
-  "ZnO",
-  "TiN",
-  "W"
+  "Pt"
  ],
  "precursors": [
   "DEZ",
@@ -26,9 +22,12 @@
    "present": true,
    "where": [
     "F9d",
-    "F10b",
-    "F14b",
-    "F19b",
+    "F10",
+    "F11",
+    "F14",
+    "F15",
+    "F19",
+    "F20",
     "F22b"
    ]
   },
@@ -43,52 +42,73 @@
   {
    "where": "F9d",
    "type": "film_property_vs_condition",
-   "measurand": "surface_coverage",
-   "source": "measured",
-   "why": "plots water contact angle on cotton fibers and cellulose films after ALD coating"
-  },
-  {
-   "where": "F10b",
-   "type": "film_property_vs_condition",
    "measurand": "roughness",
    "source": "measured",
-   "why": "plots tensile strength of cotton fibers following DEZ and TMA treatments"
+   "why": "water contact angle on cotton fibers and cellulose films after ALD coating"
+  },
+  {
+   "where": "F10",
+   "type": "film_property_vs_condition",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "tensile strength of cotton fibers after metalation by DEZ and TMA"
+  },
+  {
+   "where": "F11",
+   "type": "film_property_vs_condition",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "tensile strength of cotton fibers after metalation by DEZ and TMA"
   },
   {
    "where": "F13a",
    "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
+   "measurand": "surface_coverage",
    "source": "measured",
-   "why": "shows FT-IR spectra of nylon-6 nanofibers after ZnO ALD and MLD treatments"
+   "why": "FT-IR spectra of nylon-6 nanofibers after ZnO ALD and MLD coating"
   },
   {
-   "where": "F14b",
+   "where": "F14",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "plots capacitance signal vs solvent polarizability for W-coated fiber capacitor"
+   "why": "capacitance response scaled with solvent polarizability"
   },
   {
-   "where": "F19b",
+   "where": "F15",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "plots current response vs applied force for AZO-coated nylon fiber touch sensor"
+   "why": "capacitance response scaled with solvent polarizability"
+  },
+  {
+   "where": "F19",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "response current scaled directly with applied force"
+  },
+  {
+   "where": "F20",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "response current scaled directly with applied force"
   },
   {
    "where": "F22b",
    "type": "film_property_vs_condition",
-   "measurand": "film_thickness",
+   "measurand": "surface_coverage",
    "source": "measured",
-   "why": "plots photocatalytic degradation curve of methylene blue using Ir-doped TiO2 on cellulose fibers"
+   "why": "photocatalytic degradation of methylene blue over time"
   }
  ],
  "go_deeper": false,
  "_tokens": {
-  "in": 3758,
-  "out": 705,
-  "thoughts": 3143,
+  "in": 5225,
+  "out": 876,
+  "thoughts": 3480,
   "budget": 12288
  },
- "_scout_input_chars": 13858
+ "_scout_input_chars": 19542
 }

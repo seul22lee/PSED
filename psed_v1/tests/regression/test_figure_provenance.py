@@ -287,6 +287,66 @@ for (pid, idx), want in sorted(EXPECT.items()):
        c["association_method"] in ("positional_adjacent", "shared_printed_figure",
                                    "structural_local_search"), c["association_method"])
 
+print("16) canonical panel key — one normalisation for provenance AND panel_source")
+for label, want in (("a", "a"), ("(a)", "a"), ("a (With bottom)", "a"),
+                    ("a - Without bottom", "a"), ("b (description)", "b"),
+                    ("b (C 1s)", "b"), ("A", "a"), ("(c) O 1s", "c"),
+                    ("", ""), ("left", ""), ("ab", "")):
+    check(f"panel {label!r}", fx._clean_panel(label), want)
+
+print("17) panel provenance is resolved, never defaulted to measured")
+SIM = {"panel_source": {"a": "simulated", "b": "simulated"}, "source": "simulated"}
+for label in ("a", "a (With bottom)", "a - Without bottom", "b (description)"):
+    check(f"descriptive label {label!r} keeps simulated",
+          fx.panel_source_for(SIM, label), "simulated")
+check("unknown panel of an all-simulated figure",
+      fx.panel_source_for(SIM, "z (x)"), "simulated")
+check("no evidence anywhere -> unresolved, not measured",
+      fx.panel_source_for({"panel_source": {}, "source": "both"}, "a"), "unresolved")
+check("mixed panels + unknown label -> unresolved",
+      fx.panel_source_for({"panel_source": {"a": "measured", "b": "simulated"},
+                           "source": "both"}, "q"), "unresolved")
+ok("'measured' is never a silent fallback in the resolver",
+   'or "measured"' not in _project.path("pipeline", "figures", "figure_extract.py").read_text())
+
+print("18) simulated panels stay simulated through flattening")
+_fr = {"figure": "37", "caption": "FIG. 20. Thickness profiles.", "source": "simulated",
+       "panel_source": {"a": "simulated", "b": "simulated"},
+       "panels": [{"panel": "a (With bottom)", "x": {"quantity": "aspect_ratio"},
+                   "y": {"quantity": "normalized_thickness"}, "series_axis": "s0",
+                   "series": [{"label": "1", "points": [[1, 1], [2, 0.5]]}]},
+                  {"panel": "b - Without bottom", "x": {"quantity": "aspect_ratio"},
+                   "y": {"quantity": "normalized_thickness"}, "series_axis": "s0",
+                   "series": [{"label": "0.1", "points": [[1, 1], [2, 0.4]]}]}]}
+_recs = fx.flatten_records("10.0000_x", {"materials": ["Al2O3"]}, [_fr])
+check("both descriptive panels flattened", len(_recs), 2)
+ok("no simulated curve became measured",
+   all(r["source"] == "simulated" for r in _recs), [r["source"] for r in _recs])
+check("canonical panel recorded in provenance",
+      sorted(r["provenance"]["panel"] for r in _recs), ["a", "b"])
+
+print("19) corpus anchor — a known supported x-y figure stays selected")
+# 10.1063/1.5028178 FIG. 2 (crop P10): reactant pressure vs position, four pulse-time
+# series. A single scout sample dropped it once; this asserts it survives. It is an
+# assertion about the CORPUS, never a routing rule.
+for pid, idx, pf, min_series in [("10.1063_1.5028178", 10, "2", 4)]:
+    c = {x["docling_index"]: x for x in inv.load(pid)["candidates"]}[idx]
+    ok(f"{pid} P{idx} is offered", inv.is_offerable(c), c["disposition"])
+    check(f"{pid} P{idx} printed figure", c["printed_figure"], pf)
+    _r = [x for x in json.loads(P.records_json(pid).read_text())
+          if str(x["provenance"].get("fig_docling_index")) == str(idx)]
+    ok(f"{pid} P{idx} yields >= {min_series} series", len(_r) >= min_series, len(_r))
+    ok(f"{pid} P{idx} series carry points", all(len(x.get("points") or []) for x in _r))
+
+print("20) scout unions independent samples rather than trusting one")
+check("two figures from separate samples are both kept",
+      len(sc.union_drill([{"where": "F1", "type": "t", "measurand": "m"}],
+                         [{"where": "F9", "type": "t", "measurand": "m"}])), 2)
+check("a figure already covered is not duplicated",
+      len(sc.union_drill([{"where": "F9a", "type": "t", "measurand": "m"}],
+                         [{"where": "F9", "type": "t", "measurand": "m"}])), 1)
+ok("scout takes more than one sample", sc.SCOUT_SAMPLES >= 2, sc.SCOUT_SAMPLES)
+
 print("15) the scout input is built from the inventory, not a caption filter")
 scout_src = _project.path("pipeline", "scout", "scout.py").read_text()
 ok("the silent caption filter is gone",

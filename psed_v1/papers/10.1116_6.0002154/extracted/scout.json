@@ -8,23 +8,23 @@
   "MoCl4(THD)(THF)"
  ],
  "coreactants": [],
- "process_type": "thermal",
+ "process_type": "unknown",
  "temperature_window_C": null,
  "gpc_nm": null,
  "data": {
   "gpc_vs_cycles": {
    "present": true,
    "where": [
-    "F21"
+    "F21b"
    ]
   },
   "xrd_or_spectrum": {
    "present": true,
    "where": [
     "F19",
-    "F21",
+    "F21a",
     "F22",
-    "F24",
+    "F24a",
     "F25",
     "F27"
    ]
@@ -38,103 +38,68 @@
  },
  "drill": [
   {
-   "where": "F17a",
+   "where": "F17",
    "type": "other",
    "measurand": "normalized_thickness",
    "source": "measured",
-   "why": "TGA thermogravimetric analysis curve of synthesized precursor"
+   "why": "TGA and vapor pressure curves of synthesized precursor"
   },
   {
-   "where": "F17b",
-   "type": "other",
-   "measurand": "density",
-   "source": "measured",
-   "why": "vapor pressure curve of synthesized precursor"
-  },
-  {
-   "where": "F19a",
+   "where": "F19",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "AES compositional depth profile of film deposited at 350 C"
+   "why": "AES compositional depth profiles of MoNx films"
   },
   {
-   "where": "F19b",
+   "where": "F21a",
    "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "AES compositional depth profile of film deposited at 500 C"
+   "why": "XRR experimental reflectivity data and fit"
   },
   {
-   "where": "F19c",
-   "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
-   "source": "measured",
-   "why": "AES compositional depth profile of super-cycle film deposited at 500 C"
-  },
-  {
-   "where": "F21",
+   "where": "F21b",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "XRR curve fit and thickness vs number of ALD cycles from split crop figure"
+   "why": "Film thickness as a function of ALD cycles"
   },
   {
-   "where": "F22a",
+   "where": "F22",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Mo3d XPS spectrum of ALD super-cycle MoNx thin film"
+   "why": "XPS spectra of Mo3d, N1s, and Mo3p"
   },
   {
-   "where": "F22b",
+   "where": "F24a",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "N1s and Mo3p XPS spectra of ALD super-cycle MoNx thin film"
-  },
-  {
-   "where": "F24",
-   "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
-   "source": "measured",
-   "why": "GIXRD pattern from split crop figure"
+   "why": "GIXRD pattern of MoNx thin film"
   },
   {
    "where": "F25",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "UPS valence band / work function spectrum of MoNx thin film"
+   "why": "UPS spectra of MoNx thin film"
   },
   {
-   "where": "F27a",
+   "where": "F27",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XRD pattern of as-deposited Cu/MoNx/sub stack"
-  },
-  {
-   "where": "F27b",
-   "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
-   "source": "measured",
-   "why": "XRD pattern of Cu/MoNx/sub stack annealed at 500 C"
-  },
-  {
-   "where": "F27c",
-   "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
-   "source": "measured",
-   "why": "XRD pattern of Cu/MoNx/sub stack annealed at 600 C"
+   "why": "XRD spectra of film stack as-deposited and after annealing"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 3034,
-  "out": 1157,
-  "thoughts": 2317,
+  "in": 3062,
+  "out": 796,
+  "thoughts": 2539,
   "budget": 12288
  },
- "_scout_input_chars": 11146
+ "_scout_input_chars": 11273
 }

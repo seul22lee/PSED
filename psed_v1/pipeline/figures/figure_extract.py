@@ -219,19 +219,23 @@ def extract_paper(sd, client):
                                              "printed_figure": fig.get("printed_figure"),
                                              "caption_source": fig.get("caption_source")})
         g["items"].append(it)
-        g["sources"].add(it.get("source") or "measured")
+        # An ABSENT scout source is unknown, not measured. Substituting "measured" here
+        # would launder a missing judgement into positive evidence of a physical
+        # experiment, which is exactly the error panel_source_for() exists to prevent.
+        _s = it.get("source") if it.get("source") in _VALID_SOURCES else None
+        if _s:
+            g["sources"].add(_s)
         # Keep each panel's OWN source. A figure like Fig 3 mixes an ideal *simulated*
         # panel (a) with the *experimental* panel (b); collapsing them to "both" made 06
         # label the measured panel as model.
         _pl = _panel_letter(it.get("where", ""))
-        if _pl:
-            g["panel_source"][_pl] = it.get("source") or "measured"
-        else:
-            g["panel_source"]["_fig"] = it.get("source") or "measured"
+        if _s:
+            g["panel_source"][_pl if _pl else "_fig"] = _s
     for g in groups.values():
         # figure-level summary kept for reporting only — NEVER used to stamp a panel
-        g["source"] = "simulated" if g["sources"] == {"simulated"} else \
-                       ("both" if len(g["sources"]) > 1 else "measured")
+        g["source"] = ("simulated" if g["sources"] == {"simulated"} else
+                       "both" if len(g["sources"]) > 1 else
+                       "measured" if g["sources"] == {"measured"} else None)
 
     from google.genai import types
     card = {k: scout.get(k) for k in ("materials", "precursors", "coreactants",
@@ -337,9 +341,50 @@ def _cap_fignum(caption):
 
 
 def _clean_panel(p):
-    """Keep only a real panel letter (a/b/c…); drop drill-tag pollution."""
+    """The CANONICAL panel key for a panel label: a bare letter, or "" if there is none.
+
+    This is the single normalisation used for both the record's `provenance.panel` and
+    the `panel_source` lookup, so the two can never disagree. Vision returns panel names
+    that carry a description — "a (With bottom)", "a - Without bottom", "b (C 1s)" — and
+    an exact-match lookup against the canonical keys {a, b, …} silently missed every one
+    of them, which is how 56 SIMULATED curves in cremers2019 were recorded as measured.
+
+        "a" -> "a"      "(a)" -> "a"     "a (With bottom)" -> "a"
+        "a - Without bottom" -> "a"      "b (description)" -> "b"
+        "" -> ""        "left" -> ""     "ab" -> ""
+    """
     p = str(p or "").strip()
-    return p.lower() if re.fullmatch(r"[A-Za-z]", p) else ""
+    if not p:
+        return ""
+    m = re.match(r"^\(?\s*([A-Za-z])\s*\)?\s*(?:[-–—.:,)]|\(|$|\s)", p)
+    return m.group(1).lower() if m else ""
+
+
+#: a source label that is real evidence, as opposed to an assumption
+_VALID_SOURCES = ("measured", "simulated")
+
+
+def panel_source_for(fr, panel_label):
+    """Resolve a panel's measured/simulated provenance, or "unresolved".
+
+    Never defaults to "measured": fabricating experimental provenance for a model curve
+    is a scientific error, and a silent default is how it happened. Panel evidence wins;
+    an explicit figure-level source is used only when it is itself unambiguous ("both"
+    means the figure mixes kinds and cannot stand in for a panel).
+    """
+    ps = fr.get("panel_source") or {}
+    key = _clean_panel(panel_label)
+    if key and ps.get(key) in _VALID_SOURCES:
+        return ps[key]
+    if ps.get("_fig") in _VALID_SOURCES:
+        return ps["_fig"]
+    # every drilled panel of this figure agrees -> that is explicit figure-level evidence
+    vals = {v for k, v in ps.items() if k != "_fig"}
+    if len(vals) == 1 and next(iter(vals)) in _VALID_SOURCES:
+        return next(iter(vals))
+    if fr.get("source") in _VALID_SOURCES:
+        return fr["source"]
+    return "unresolved"
 
 
 import re as _re
@@ -434,11 +479,9 @@ def flatten_records(sd, scout, figresults):
         fig_label = f"Fig {paper_fig}" if paper_fig else f"Fig {docling_idx} (idx)"
         for p in fr.get("panels", []):
             x, y = p.get("x", {}), p.get("y", {})
-            # each panel keeps its own measured/simulated source; figure-level only as fallback
-            _pl = (p.get("panel") or "").strip().lower()
-            _src = (fr.get("panel_source", {}).get(_pl)
-                    or fr.get("panel_source", {}).get("_fig")
-                    or "measured")
+            # each panel keeps its own measured/simulated source; resolved through the
+            # canonical panel key so a descriptive label cannot miss the lookup
+            _src = panel_source_for(fr, p.get("panel"))
             # series_axis is only a NAME for the condition. scout.materials is the decider
             # of material-vs-condition, so a legend that looks like a formula but isn't this
             # paper's film (substrate Al2O3/Si, coreactant Methanol) stays a condition.
@@ -496,7 +539,38 @@ def flatten_records(sd, scout, figresults):
     return recs
 
 
+def reflatten(sd):
+    """Re-derive records.json from the stored figure_data.json — no vision call.
+
+    Record generation is a pure function of the digitized figures plus the scout card,
+    so when only the flattening logic changes there is nothing to re-read from the
+    images. This regenerates the downstream artifact without discarding a valid and
+    expensive extraction.
+    """
+    d = P.extracted_dir(sd)
+    if not (d / "figure_data.json").exists():
+        return None
+    fd = json.loads((d / "figure_data.json").read_text())
+    scout = json.loads((d / "scout.json").read_text())
+    records = flatten_records(sd, scout, fd.get("figures") or [])
+    _write_json(d / "records.json", records)
+    return records
+
+
 def main(sds):
+    if sds and sds[0] == "--reflatten":
+        tot = 0
+        for sd in sds[1:] or sorted(P.papers()):
+            recs = reflatten(sd)
+            if recs is None:
+                continue
+            tot += len(recs)
+            src = {}
+            for r in recs:
+                src[r["source"]] = src.get(r["source"], 0) + 1
+            print(f"[reflatten] {sd:34} {len(recs):4d} records  {src}")
+        print(f"[reflatten] {tot} records total")
+        return
     from google import genai
     client = genai.Client(api_key=_load_key())
     TI = TO = 0

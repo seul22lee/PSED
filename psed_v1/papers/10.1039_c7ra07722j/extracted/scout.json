@@ -16,7 +16,7 @@
  "process_type": "plasma",
  "temperature_window_C": [
   50,
-  200
+  300
  ],
  "gpc_nm": 0.082,
  "data": {
@@ -30,7 +30,8 @@
   "gpc_vs_cycles": {
    "present": true,
    "where": [
-    "F5a"
+    "F5a",
+    "F7"
    ]
   },
   "gpc_vs_temperature": {
@@ -42,8 +43,7 @@
   "film_property_vs_condition": {
    "present": true,
    "where": [
-    "F6",
-    "F7"
+    "F6"
    ]
   },
   "xrd_or_spectrum": {
@@ -68,85 +68,85 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth per cycle versus pulse/reaction duration for thermal ALD of Li2CO3"
+   "why": "saturation curve for thermal ALD of Li2CO3"
   },
   {
    "where": "F4b",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth per cycle versus precursor and plasma exposure time for plasma ALD of Li2CO3"
+   "why": "saturation curve for plasma-assisted ALD of Li2CO3"
   },
   {
    "where": "F5a",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "in situ thickness versus ALD cycles measured by spectroscopic ellipsometry"
+   "why": "in situ SE thickness versus ALD cycles at different temperatures"
   },
   {
    "where": "F5b",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth per cycle as a function of temperature for plasma and thermal ALD"
+   "why": "growth per cycle as a function of substrate temperature"
   },
   {
    "where": "F6",
    "type": "film_property_vs_condition",
-   "measurand": "film_thickness",
+   "measurand": "refractive_index",
    "source": "measured",
-   "why": "phase shift Delta from ellipsometry during exposure to CO2 and H2O pulses"
+   "why": "ellipsometric phase shift Delta as a function of reaction pulses"
   },
   {
    "where": "F7",
-   "type": "film_property_vs_condition",
+   "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "in situ film thickness vs cycles for different O2 plasma exposure times"
+   "why": "in situ thickness growth for different O2 plasma exposure times"
   },
   {
    "where": "F8a",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS C 1s spectrum of thermal ALD Li2CO3 film"
+   "why": "XPS C 1s spectrum"
   },
   {
    "where": "F8b",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS Li 1s spectrum of thermal ALD Li2CO3 film"
+   "why": "XPS Li 1s spectrum"
   },
   {
    "where": "F8c",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS O 1s spectrum of thermal ALD Li2CO3 film"
+   "why": "XPS O 1s spectrum"
   },
   {
    "where": "F9",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XRD gonio scans of Li2CO3 films grown at different temperatures"
+   "why": "XRD gonio scans at various processing temperatures"
   },
   {
    "where": "F12a",
    "type": "other",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "impedance spectra of Li2CO3 films deposited by thermal and plasma ALD"
+   "why": "impedance spectroscopy data plots for thermal and plasma ALD films"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 3429,
-  "out": 1217,
-  "thoughts": 2543,
+  "in": 3948,
+  "out": 1140,
+  "thoughts": 2837,
   "budget": 12288
  },
- "_scout_input_chars": 11983
+ "_scout_input_chars": 14185
 }

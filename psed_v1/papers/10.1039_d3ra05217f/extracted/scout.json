@@ -5,8 +5,8 @@
   "Y2O3"
  ],
  "precursors": [
-  "tris(sec-butylcyclopentadienyl)yttrium",
-  "Y(sBuCp)3"
+  "Y(sBuCp)3",
+  "tris(sec-butylcyclopentadienyl)yttrium"
  ],
  "coreactants": [
   "H2O"
@@ -18,14 +18,24 @@
  ],
  "gpc_nm": 0.17,
  "data": {
-  "xrd_or_spectrum": {
+  "gpc_vs_temperature": {
    "present": true,
    "where": [
-    "F5",
-    "F11d",
-    "F11e",
-    "F11f",
-    "F12c"
+    "F9e"
+   ]
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F9a",
+    "F9b",
+    "F9c"
+   ]
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F9d"
    ]
   },
   "film_property_vs_condition": {
@@ -36,6 +46,16 @@
     "F11c",
     "F14a",
     "F14b"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F5",
+    "F11d",
+    "F11e",
+    "F11f",
+    "F12c"
    ]
   },
   "other": {
@@ -61,99 +81,134 @@
    "type": "other",
    "measurand": "density",
    "source": "measured",
-   "why": "precursor vapor pressure vs temperature plot"
+   "why": "Vapor pressure variations of Y(sBuCp)3 with temperature"
   },
   {
    "where": "F7a",
    "type": "other",
    "measurand": "density",
    "source": "measured",
-   "why": "TGA thermogravimetric curves for yttrium precursors"
+   "why": "TGA curves for Y(sBuCp)3 and conventional precursors"
   },
   {
    "where": "F7b",
    "type": "other",
    "measurand": "density",
    "source": "measured",
-   "why": "DSC thermograms for yttrium precursors"
+   "why": "DSC thermograms of Y(sBuCp)3 and conventional precursors"
   },
   {
    "where": "F8",
    "type": "other",
-   "measurand": "density",
+   "measurand": "impurity_content",
    "source": "measured",
-   "why": "TG residue percentage during thermal stability test at 190 \u00b0C"
+   "why": "TG residue recorded during long-term thermal stability test"
+  },
+  {
+   "where": "F9a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate for Y2O3 films as function of water purge time"
+  },
+  {
+   "where": "F9b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate saturation with increasing Y(sBuCp)3 supply time"
+  },
+  {
+   "where": "F9c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate as function of Y(sBuCp)3 purge time"
+  },
+  {
+   "where": "F9d",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Film thickness as function of number of ALD cycles"
+  },
+  {
+   "where": "F9e",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "Growth rate for Y2O3 films as function of deposition temperature"
   },
   {
    "where": "F11a",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS depth profile of film deposited at 200 \u00b0C"
+   "why": "XPS depth profile for Y2O3 film deposited at 200 \u00b0C"
   },
   {
    "where": "F11b",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS depth profile of film deposited at 250 \u00b0C"
+   "why": "XPS depth profile for Y2O3 film deposited at 250 \u00b0C"
   },
   {
    "where": "F11c",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS depth profile of film deposited at 300 \u00b0C"
+   "why": "XPS depth profile for Y2O3 film deposited at 300 \u00b0C"
   },
   {
    "where": "F11d",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS spectrum of film deposited at 200 \u00b0C"
+   "why": "XPS spectrum of Y2O3 film deposited at 200 \u00b0C"
   },
   {
    "where": "F11e",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS spectrum of film deposited at 250 \u00b0C"
+   "why": "XPS spectrum of Y2O3 film deposited at 250 \u00b0C"
   },
   {
    "where": "F11f",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS spectrum of film deposited at 300 \u00b0C"
+   "why": "XPS spectrum of Y2O3 film deposited at 300 \u00b0C"
   },
   {
    "where": "F12c",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XRD pattern for Y2O3 film on Si"
+   "why": "XRD pattern for Y2O3 film on Si substrate"
   },
   {
    "where": "F14a",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "capacitance-voltage curves for Pt/Y2O3/p-Si capacitor"
+   "why": "C-V curve for Pt/Y2O3/p-Si capacitor"
   },
   {
    "where": "F14b",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "leakage current density vs electric field curve"
+   "why": "Leakage current density vs electric field curve for Pt/Y2O3/p-Si capacitor"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2545,
-  "out": 1280,
-  "thoughts": 3049,
+  "in": 3206,
+  "out": 1816,
+  "thoughts": 3269,
   "budget": 12288
  },
- "_scout_input_chars": 8602
+ "_scout_input_chars": 11182
 }

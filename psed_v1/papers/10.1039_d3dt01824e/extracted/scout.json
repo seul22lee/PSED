@@ -30,11 +30,19 @@
     "F7"
    ]
   },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F8"
+   ]
+  },
   "xrd_or_spectrum": {
    "present": true,
    "where": [
     "F10",
-    "F11"
+    "F11a",
+    "F11b",
+    "F11c"
    ]
   },
   "film_property_vs_condition": {
@@ -50,7 +58,7 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth rate versus erbium precursor pulse length"
+   "why": "growth rate versus precursor 1 pulse length"
   },
   {
    "where": "F6",
@@ -64,50 +72,57 @@
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth rate versus deposition temperature"
+   "why": "growth rate as a function of deposition temperature"
+  },
+  {
+   "where": "F8",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "film thickness versus number of ALD cycles"
   },
   {
    "where": "F10",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "X-ray diffraction patterns at various temperatures"
+   "why": "X-ray diffraction patterns of Er2O3 films deposited at different temperatures"
   },
   {
    "where": "F11a",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "high-resolution Er 4d5/2 XPS spectra versus etching time"
+   "why": "high-resolution XPS spectra of Er 4d5/2 at various etching times"
   },
   {
    "where": "F11b",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "high-resolution O 1s XPS spectra versus etching time"
+   "why": "high-resolution XPS spectra of O 1s at various etching times"
   },
   {
    "where": "F11c",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "high-resolution C 1s XPS spectra versus etching time"
+   "why": "high-resolution XPS spectra of C 1s at various etching times"
   },
   {
    "where": "F12",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS depth profile showing elemental concentration"
+   "why": "XPS depth profile of elemental composition versus etching depth"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2600,
-  "out": 855,
-  "thoughts": 2533,
+  "in": 3165,
+  "out": 989,
+  "thoughts": 2662,
   "budget": 12288
  },
- "_scout_input_chars": 8772
+ "_scout_input_chars": 11094
 }

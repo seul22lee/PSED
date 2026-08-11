@@ -19,17 +19,17 @@
  ],
  "gpc_nm": 0.15,
  "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F18"
+   ]
+  },
   "gpc_vs_dose_saturation": {
    "present": true,
    "where": [
     "F16",
     "F17"
-   ]
-  },
-  "gpc_vs_temperature": {
-   "present": true,
-   "where": [
-    "F18"
    ]
   },
   "xrd_or_spectrum": {
@@ -38,8 +38,7 @@
     "F20",
     "F21",
     "F23",
-    "F24a",
-    "F24b"
+    "F24"
    ]
   }
  },
@@ -49,64 +48,57 @@
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "O3 and Mo precursor saturation curves"
+   "why": "saturation curves for ozone and Mo precursor dosing"
   },
   {
    "where": "F17",
    "type": "gpc_vs_dose_saturation",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "O3 and Mo precursor saturation curves"
+   "why": "saturation curves for ozone and Mo precursor dosing"
   },
   {
    "where": "F18",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "growth per cycle versus temperature"
+   "why": "growth per cycle as a function of growth temperature"
   },
   {
    "where": "F20",
    "type": "xrd_or_spectrum",
-   "measurand": "normalized_thickness",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "XRD spectrum of as-deposited and annealed film"
+   "why": "X-ray diffraction spectrum of as-deposited and annealed film"
   },
   {
    "where": "F21",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Mo 3d XPS spectra"
+   "why": "Mo 3d XPS spectra at various growth temperatures and after annealing"
   },
   {
    "where": "F23",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "O 1s XPS spectra"
+   "why": "O 1s XPS spectra at various growth temperatures and after annealing"
   },
   {
-   "where": "F24a",
+   "where": "F24",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "FTIR spectrum from 4000 to 1100 cm-1"
-  },
-  {
-   "where": "F24b",
-   "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
-   "source": "measured",
-   "why": "FTIR spectrum from 1100 to 500 cm-1"
+   "why": "ex situ FTIR spectra of as-deposited and annealed films"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 3076,
-  "out": 847,
-  "thoughts": 3175,
+  "in": 3132,
+  "out": 779,
+  "thoughts": 2298,
   "budget": 12288
  },
- "_scout_input_chars": 10893
+ "_scout_input_chars": 11147
 }

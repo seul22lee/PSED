@@ -13,25 +13,56 @@
   "xrd_or_spectrum": {
    "present": true,
    "where": [
-    "F8f"
+    "F4",
+    "F5",
+    "F8f",
+    "F9"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F4",
+    "F5"
    ]
   }
  },
  "drill": [
   {
+   "where": "F4",
+   "type": "xrd_or_spectrum",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "XPS spectrum and iron surface concentration after ALD cycles"
+  },
+  {
+   "where": "F5",
+   "type": "xrd_or_spectrum",
+   "measurand": "surface_coverage",
+   "source": "measured",
+   "why": "XPS spectrum and iron surface concentration after ALD cycles"
+  },
+  {
    "where": "F8f",
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "Raman spectrum of aligned CNTs grown on Si wafer with different ALD cycles"
+   "why": "Raman spectra of aligned CNTs grown on Si wafer for different ALD cycles"
+  },
+  {
+   "where": "F9",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "Raman spectra of CNT arrays grown on quartz fibers for different ALD cycles"
   }
  ],
  "go_deeper": false,
  "_tokens": {
-  "in": 1999,
-  "out": 211,
-  "thoughts": 1924,
+  "in": 2789,
+  "out": 474,
+  "thoughts": 2112,
   "budget": 12288
  },
- "_scout_input_chars": 7561
+ "_scout_input_chars": 10787
 }

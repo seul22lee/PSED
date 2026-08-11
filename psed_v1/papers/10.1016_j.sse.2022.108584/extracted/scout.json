@@ -5,8 +5,8 @@
   "Al2O3"
  ],
  "precursors": [
-  "trimethylaluminum",
-  "TMA"
+  "TMA",
+  "trimethylaluminum"
  ],
  "coreactants": [
   "H2O"
@@ -26,67 +26,62 @@
   "film_property_vs_condition": {
    "present": true,
    "where": [
-    "F7b"
-   ]
-  },
-  "other": {
-   "present": true,
-   "where": [
     "F4",
-    "F7a"
+    "F7a",
+    "F7b"
    ]
   }
  },
  "drill": [
   {
    "where": "F4",
-   "type": "other",
+   "type": "film_property_vs_condition",
    "measurand": "surface_coverage",
    "source": "simulated",
-   "why": "Plots required pulse time to reach 95% saturation against model kinetic parameters"
+   "why": "simulated pulse time to reach saturation vs model parameters"
   },
   {
    "where": "F6",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "simulated",
-   "why": "Compares simulated topography profiles with reported H2O-limited experimental thickness profiles"
+   "why": "simulated vs measured H2O-limited thickness profiles in HAR structures"
   },
   {
    "where": "F7a",
-   "type": "other",
+   "type": "film_property_vs_condition",
    "measurand": "surface_coverage",
    "source": "simulated",
-   "why": "Arrhenius plot of kinetic model parameters beta0 and Gamma_ev versus reciprocal temperature"
+   "why": "Arrhenius plot of fitted kinetic rate parameters"
   },
   {
    "where": "F7b",
    "type": "film_property_vs_condition",
    "measurand": "surface_coverage",
    "source": "simulated",
-   "why": "Plots temperature dependence of required pulse time, saturation coverage, and step coverage"
+   "why": "simulated pulse time and surface coverage vs temperature"
   },
   {
    "where": "F8",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "simulated",
-   "why": "Compares simulated TMA-limited profiles against experimental thickness profiles from multiple literature sources"
+   "why": "simulated vs measured TMA-limited thickness profiles"
   },
   {
    "where": "F9",
    "type": "conformality_or_penetration_profile",
    "measurand": "film_thickness",
    "source": "simulated",
-   "why": "Compares simulated profiles using Knudsen vs Bosanquet diffusivity against experimental lateral HAR profiles"
+   "why": "simulated thickness profiles in lateral HAR structures using Knudsen vs Bosanquet diffusivity"
   }
  ],
- "go_deeper": true,
+ "go_deeper": false,
  "_tokens": {
-  "in": 2283,
-  "out": 681,
-  "thoughts": 3012,
+  "in": 2783,
+  "out": 642,
+  "thoughts": 2556,
   "budget": 12288
  },
- "_scout_input_chars": 8590
+ "_scout_input_chars": 10734
 }
