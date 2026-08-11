@@ -10,6 +10,7 @@ Each criterion is re-derived FROM THE SOURCE TEXT, not read back off the asserti
   6 species/role re-deriving the species from the span must agree
   7 duplication  the same (quantity,value,unit) must not arrive via >1 locator
 """
+import paths as P
 import csv, json, re, sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -19,14 +20,14 @@ sys.path.insert(0, str(REPO / "02_extraction"))
 sys.path.insert(0, str(REPO / "02_extraction" / "stages"))
 sys.path.insert(0, str(REPO / "03_corpus" / "scripts"))
 import importlib.util as _u
-from canonical import conditions as C
+from pipeline.canonical import conditions as C
 
 _s = _u.spec_from_file_location("kb6", REPO / "03_corpus" / "scripts" / "06_to_kb.py")
 kb6 = _u.module_from_spec(_s)
 _s.loader.exec_module(kb6)
 
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 OUT = REPO / "reports" / "condition_precision"
 
 # what scope each evidence source may legitimately support
@@ -54,7 +55,7 @@ def _series_axis(rec):
     key = (rec["paper_id"], str(rec["fig_docling_index"]), str(rec["panel"] or ""))
     if key not in _AXIS_CACHE:
         axis = None
-        fd = json.loads((EX / rec["paper_id"] / "extracted" / "figure_data.json").read_text())
+        fd = json.loads((P.extracted_dir(rec["paper_id"]) / "figure_data.json").read_text())
         for f in fd.get("figures", []):
             if str(f.get("figure")) != str(rec["fig_docling_index"]):
                 continue
@@ -85,7 +86,7 @@ def source_text(rec):
         return kb6._methods(doi), "methods section"
     if rec["source_kind"] == "series_label":
         return C.fold_math(rec["source_series"] or ""), "series label"
-    fd = json.loads((EX / doi / "extracted" / "figure_data.json").read_text())
+    fd = json.loads((P.extracted_dir(doi) / "figure_data.json").read_text())
     cap = ""
     for f in fd.get("figures", []):
         if str(f.get("figure")) == str(rec["fig_docling_index"]):
@@ -111,7 +112,7 @@ def source_text(rec):
         return cap, "caption (full)"
     if rec["source_kind"] == "body":
         if "reference-scoped" in loc:
-            return C.fold_math((EX / doi / "extracted" / "document.md").read_text(errors="replace")), "document body"
+            return C.fold_math((P.extracted_dir(doi) / "document.md").read_text(errors="replace")), "document body"
         return C.fold_math(kb6._figure_body(doi, rec["printed_figure_number"])), "figure body"
     return "", "unknown"
 

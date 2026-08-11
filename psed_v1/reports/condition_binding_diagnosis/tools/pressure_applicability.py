@@ -13,14 +13,15 @@ Anything else (base pressure, several conflicting paper values with no narrower
 evidence, a model-definition symbol, a measured-response y-axis) does NOT apply and
 is NOT counted as a loss.
 """
+import paths as P
 import json, re
 from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 PRESSURE_Q = {"generic_pressure", "working_pressure", "total_pressure", "partial_pressure",
               "chamber_total_pressure", "precursor_partial_pressure",
               "co_reactant_partial_pressure", "reactant_A_partial_pressure",
@@ -45,10 +46,10 @@ def main():
     for a in audit["rows"]:
         doi = a["paper_id"]
         if doi not in cache:
-            cache[doi] = {e["exp_id"]: e for e in (J(KB / doi / "resolved" / "experiments.json", []) or [])}
-            fdcache[doi] = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
-            doccache[doi] = Path(EX / doi / "extracted" / "document.md").read_text(errors="replace") \
-                if (EX / doi / "extracted" / "document.md").exists() else ""
+            cache[doi] = {e["exp_id"]: e for e in (J(P.resolved_json(doi, "experiments"), []) or [])}
+            fdcache[doi] = J(P.extracted_dir(doi) / "figure_data.json", {}) or {}
+            doccache[doi] = Path(P.extracted_dir(doi) / "document.md").read_text(errors="replace") \
+                if (P.extracted_dir(doi) / "document.md").exists() else ""
         exp = cache[doi].get(a["record_id"], {})
         prov = exp.get("provenance") or {}
         fi, pan = str(prov.get("fig_docling_index") or ""), str(prov.get("panel") or "")
@@ -75,7 +76,7 @@ def main():
                 applies, scope, ev = True, "paper_methods", " ".join(m.group(0).split())[:120]
         # 4. single unambiguous process_condition pressure in pressure.json
         if not applies:
-            pj = (J(EX / doi / "extracted" / "pressure.json", {}) or {}).get("pressures") or []
+            pj = (J(P.extracted_dir(doi) / "pressure.json", {}) or {}).get("pressures") or []
             proc = [x for x in pj if x.get("context") == "process_condition"
                     and x.get("value") is not None]
             vals = {round(float(x["value"]), 9) for x in proc}

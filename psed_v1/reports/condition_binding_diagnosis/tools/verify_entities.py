@@ -6,14 +6,15 @@ The discriminator is NOT the x-axis quantity. It is whether the curve is a
 CONTINUOUS trace of one sample, or a set of DISCRETE separately-prepared runs.
 Each rule quotes the caption/text span it fired on, so every verdict is auditable.
 """
+import paths as P
 import json, re
 from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 
 # --- continuous single-sample measurement (one run, sampled densely) --------
 CONTINUOUS = [
@@ -39,7 +40,7 @@ DISCRETE = [
 
 def caption_for(doi, exp):
     prov = exp.get("provenance") or {}
-    fd = json.loads((EX / doi / "extracted" / "figure_data.json").read_text()) if (EX / doi / "extracted" / "figure_data.json").exists() else {}
+    fd = json.loads((P.extracted_dir(doi) / "figure_data.json").read_text()) if (P.extracted_dir(doi) / "figure_data.json").exists() else {}
     for fig in fd.get("figures", []) or []:
         if str(fig.get("figure")) == str(prov.get("fig_docling_index") or ""):
             return fig.get("caption") or ""
@@ -98,7 +99,7 @@ def main():
         doi, rid = row["paper_id"], row["record_id"]
         if doi not in exps_cache:
             exps_cache[doi] = {e["exp_id"]: e for e in
-                               json.loads((KB / doi / "resolved" / "experiments.json").read_text())}
+                               json.loads((P.resolved_json(doi, "experiments")).read_text())}
         exp = exps_cache[doi].get(rid, {})
         cap = caption_for(doi, exp)
         v, k, basis, span, checkable = classify(by_id[rid], exp, cap, row["source_curve_n_points"])

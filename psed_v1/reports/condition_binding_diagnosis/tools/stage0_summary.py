@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """READ-ONLY. Stage 0 step 3 — per-paper node vs unique-case counts, corrected
 case-count RANGES, pressure resolution at series/run scope, and completion status."""
+import paths as P
 import csv, json
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -8,7 +9,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis" / "stage0"
 DIAG = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
+KB = P.PAPERS
 
 
 def J(p, d=None):

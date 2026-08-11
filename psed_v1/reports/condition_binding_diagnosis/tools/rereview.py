@@ -12,14 +12,15 @@ classification_method:
                        (relevance=model, paper-level fallback record) without a quoted span
   heuristic          — decided from point count / axis role alone; NOT ground truth
 """
+import paths as P
 import csv, json, re
 from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 
 
 def J(p, d=None):
@@ -80,7 +81,7 @@ SAMPLE_ID = re.compile(r"\b(?:sample|run|specimen)s?\s+((?:\d+\s*,?\s*(?:and\s*)
 
 def caption_of(doi, exp):
     fi = str((exp.get("provenance") or {}).get("fig_docling_index") or "")
-    for f in (J(EX / doi / "extracted" / "figure_data.json", {}) or {}).get("figures", []):
+    for f in (J(P.extracted_dir(doi) / "figure_data.json", {}) or {}).get("figures", []):
         if str(f.get("figure")) == fi:
             return f.get("caption") or ""
     return ""
@@ -88,7 +89,7 @@ def caption_of(doi, exp):
 
 def doc_section_for_figure(doi, fignum):
     """Body text around 'Fig. N' mentions — the local paper evidence we have."""
-    txt = T(EX / doi / "extracted" / "document.md")
+    txt = T(P.extracted_dir(doi) / "document.md")
     if not fignum:
         return ""
     out = []
@@ -210,7 +211,7 @@ def main():
         doi = rec["paper_id"]
         if doi not in cache:
             cache[doi] = {e["exp_id"]: e for e in
-                          (J(KB / doi / "resolved" / "experiments.json", []) or [])}
+                          (J(P.resolved_json(doi, "experiments"), []) or [])}
         exp = cache[doi].get(rec["record_id"], {})
         r = review(rec, exp)
         r["sample_index"] = rec["sample_index"]

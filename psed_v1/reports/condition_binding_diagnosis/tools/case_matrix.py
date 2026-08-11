@@ -2,13 +2,14 @@
 """READ-ONLY. §13 — per-condition case matrix for the two deep case-study papers.
 Each row is one condition mention verified by hand against the source, traced
 through every layer."""
+import paths as P
 import csv, json, re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 
 
 def J(p, d=None):
@@ -111,10 +112,10 @@ PRESSURE_Q = {"generic_pressure", "working_pressure", "total_pressure", "partial
 
 def status_row(c):
     (doi, pfig, idx, panel, sel, q, val, unit, ev, evsrc, vstatus, scope) = c
-    fd = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
-    doc = T(EX / doi / "extracted" / "document.md")
-    pj = (J(EX / doi / "extracted" / "pressure.json", {}) or {}).get("pressures") or []
-    exps = J(KB / doi / "resolved" / "experiments.json", []) or []
+    fd = J(P.extracted_dir(doi) / "figure_data.json", {}) or {}
+    doc = T(P.extracted_dir(doi) / "document.md")
+    pj = (J(P.extracted_dir(doi) / "pressure.json", {}) or {}).get("pressures") or []
+    exps = J(P.resolved_json(doi, "experiments"), []) or []
 
     # layer: figure_data panel conditions
     fdstat = "n/a"

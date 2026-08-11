@@ -6,12 +6,13 @@ bound scope (method/figure/panel/series), entity class (case/trace/profile/simul
 imported literature/unresolved), and quantity family (pressure, exposure, temperature,
 flow, pulse, purge, cycle, geometry, GPC, model parameter).
 """
+import paths as P
 import csv, json, random, sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-KB = REPO / "papers"              # papers/<doi>/resolved/
+KB = P.PAPERS
 OUT = REPO / "reports" / "condition_precision"
 SEED = 20260804
 # A held-out draw under a different seed checks that precision did not simply

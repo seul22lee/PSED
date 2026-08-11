@@ -12,6 +12,7 @@ duplicated representations are visible rather than silently merged.
 Run with psed310 (needs PyMuPDF for page numbers):
   /home/ftk3187/miniconda3/envs/psed310/bin/python .../stage0_entities.py
 """
+import paths as P
 import json, re, sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -19,8 +20,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 OUT = REPO / "reports" / "condition_binding_diagnosis" / "stage0"
 DIAG = REPO / "reports" / "condition_binding_diagnosis"
-KB = REPO / "papers"              # papers/<doi>/resolved/
-EX = REPO / "papers"    # papers/<doi>/extracted/
+KB = P.PAPERS
+EX = P.PAPERS
 PDFS = REPO / "03_corpus" / "pdfs"
 
 
@@ -121,12 +122,12 @@ def main():
     node_counts = Counter()
 
     for doi in sorted(trig):
-        exps = J(KB / doi / "resolved" / "experiments.json", []) or []
-        series = {s["series_id"]: s for s in (J(KB / doi / "resolved" / "series.json", []) or [])}
-        fd = J(EX / doi / "extracted" / "figure_data.json", {}) or {}
-        struct = J(EX / doi / "extracted" / "structure.json", {}) or {}
-        doc = norm_math(Path(EX / doi / "extracted" / "document.md").read_text(errors="replace")
-                        if (EX / doi / "extracted" / "document.md").exists() else "")
+        exps = J(P.resolved_json(doi, "experiments"), []) or []
+        series = {s["series_id"]: s for s in (J(P.resolved_json(doi, "series"), []) or [])}
+        fd = J(P.extracted_dir(doi) / "figure_data.json", {}) or {}
+        struct = J(P.extracted_dir(doi) / "structure.json", {}) or {}
+        doc = norm_math(Path(P.extracted_dir(doi) / "document.md").read_text(errors="replace")
+                        if (P.extracted_dir(doi) / "document.md").exists() else "")
         fig_by_idx = {str(f.get("figure")): f for f in fd.get("figures", [])}
         tables = struct.get("tables", []) or []
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Condition-completeness matrix: one row per SOURCE-SUPPORTED condition, traced
+import paths as P
 from the mention to the KG.
 
 Success is not "how many ConditionAssertion objects exist". It is whether each
@@ -12,7 +13,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 OUT = REPO / "reports" / "condition_completeness"
-KB = REPO / "papers"              # papers/<doi>/resolved/
+KB = P.PAPERS
 
 
 def _num(v):
@@ -32,7 +33,7 @@ def J(p, d=None):
 
 def main():
     # the KG is a CORPUS-level artifact and stays in 02_extraction/output/
-    kg = J(REPO / "02_extraction" / "output" / "knowledge_graph_onto.json", {}) or {}
+    kg = J(P.knowledge_graph_json(), {}) or {}
     kg_assert = set()
     for n in kg.get("nodes", []):
         if n.get("ntype") == "ConditionAssertion":

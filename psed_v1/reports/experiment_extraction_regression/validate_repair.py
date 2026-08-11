@@ -8,6 +8,7 @@ curve labelled Al2O3 that the caption calls TiO2, is not a correct binding.
 
 Read-only. Writes reports/experiment_extraction_regression/acceptance.json.
 """
+import paths as P
 import json
 import glob
 import sys
@@ -17,10 +18,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(__file__).resolve().parent
 KB = ROOT / "papers"           # papers/<doi>/{resolved,canonical}/
-EXTRACTED = ROOT / "papers"    # papers/<doi>/extracted/
+EXTRACTED = P.PAPERS                 # papers/<id>/extracted/
 sys.path.insert(0, str(ROOT / "02_extraction"))
-from canonical import chemistry_scope as cschem      # noqa: E402
-from canonical import entities as cent               # noqa: E402
+from pipeline.canonical import chemistry_scope as cschem      # noqa: E402
+from pipeline.canonical import entities as cent               # noqa: E402
 
 
 def jload(p, d=None):
@@ -29,7 +30,7 @@ def jload(p, d=None):
 
 
 def raw_series_count(paper):
-    fd = jload(EXTRACTED / paper / "extracted" / "figure_data.json", {})
+    fd = jload(P.extracted_dir(paper) / "figure_data.json", {})
     return sum(len(pan.get("series") or [])
                for f in (fd.get("figures") or []) for pan in (f.get("panels") or []))
 
@@ -42,9 +43,9 @@ def main():
     per_paper = {}
 
     for p in papers:
-        res = jload(KB / p / "resolved" / "results.json")
+        res = jload(P.resolved_json(p, "results"))
         rows = res["results"]
-        ents = {e["entity_id"]: e for e in jload(KB / p / "resolved" / "entities.json", [])}
+        ents = {e["entity_id"]: e for e in jload(P.resolved_json(p, "entities"), [])}
         raw = raw_series_count(p)
         s = res["summary"]
         for k, v in s.items():
@@ -56,7 +57,7 @@ def main():
         if raw and raw != len(rows):
             fail["orphaned_or_duplicated_series"].append((p, raw, len(rows)))
         raw_pts = sum(len(sx.get("points") or [])
-                      for f in (jload(EXTRACTED / p / "extracted" / "figure_data.json", {})
+                      for f in (jload(P.extracted_dir(p) / "figure_data.json", {})
                                 .get("figures") or [])
                       for pan in (f.get("panels") or [])
                       for sx in (pan.get("series") or []))
@@ -110,8 +111,8 @@ def main():
                     fail["condition_on_mismaterialised_entity"].append(rid)
 
         # --- the caption must not contradict the assigned material --------
-        fd = jload(EXTRACTED / p / "extracted" / "figure_data.json", {})
-        scout = jload(EXTRACTED / p / "extracted" / "scout.json", {})
+        fd = jload(P.extracted_dir(p) / "figure_data.json", {})
+        scout = jload(P.extracted_dir(p) / "scout.json", {})
         mats = scout.get("materials") or []
         bykey = collections.defaultdict(set)
         for r in rows:

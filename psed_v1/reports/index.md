@@ -4,51 +4,9 @@ Copies of every .html and .md under psed_v1, in one place. Originals stay in the
 
 Regenerate with `python3 tools/gather_reports.py` (use `--check` to detect drift without copying). Run it after rebuilding any dashboard.
 
-## 00_paper
+## .
 
-- [00_paper/ALD_perspective_stage_aware_revised.md](00_paper__ALD_perspective_stage_aware_revised.md)
-
-## 01_ontology
-
-- [01_ontology/README.md](01_ontology__README.md)
-- [01_ontology/ontology.html](01_ontology__ontology.html)
-- [01_ontology/ontology_viewer.html](01_ontology__ontology_viewer.html)
-
-## 02_extraction
-
-- [02_extraction/README.md](02_extraction__README.md)
-- [02_extraction/analysis_dashboard.html](02_extraction__analysis_dashboard.html)
-- [02_extraction/benchmark/README.md](02_extraction__benchmark__README.md)
-- [02_extraction/benchmark/RESULTS.md](02_extraction__benchmark__RESULTS.md)
-- [02_extraction/experiment_dashboard.html](02_extraction__experiment_dashboard.html)
-- [02_extraction/kg_viewer.html](02_extraction__kg_viewer.html)
-- [02_extraction/m2_recipes.html](02_extraction__m2_recipes.html)
-- [02_extraction/phase_ab_summary.html](02_extraction__phase_ab_summary.html)
-- [02_extraction/recipes.html](02_extraction__recipes.html)
-- [02_extraction/stages/README.md](02_extraction__stages__README.md)
-
-## 03_corpus
-
-- [03_corpus/EXTRACTION_AUDIT_3PAPERS.md](03_corpus__EXTRACTION_AUDIT_3PAPERS.md)
-- [03_corpus/EXTRACTION_FRAMEWORK.md](03_corpus__EXTRACTION_FRAMEWORK.md)
-- [03_corpus/GROUND_TRUTH.md](03_corpus__GROUND_TRUTH.md)
-- [03_corpus/README.md](03_corpus__README.md)
-- [03_corpus/corpus_dashboard.html](03_corpus__corpus_dashboard.html)
-- [03_corpus/corpus_status.html](03_corpus__corpus_status.html)
-
-## 04_twin_mpc
-
-- [04_twin_mpc/m1_report.html](04_twin_mpc__m1_report.html)
-- [04_twin_mpc/m2_report.html](04_twin_mpc__m2_report.html)
-- [04_twin_mpc/m3_validation.html](04_twin_mpc__m3_validation.html)
-- [04_twin_mpc/m4_benchmark.html](04_twin_mpc__m4_benchmark.html)
-- [04_twin_mpc/ylilammi_gallery.html](04_twin_mpc__ylilammi_gallery.html)
-
-## 05_orchestration
-
-- [05_orchestration/eval/BENCHMARK_RESULTS.md](05_orchestration__eval__BENCHMARK_RESULTS.md)
-- [05_orchestration/eval/m5_design.html](05_orchestration__eval__m5_design.html)
-- [05_orchestration/m5_orchestration.html](05_orchestration__m5_orchestration.html)
+- [README.md](README.md)
 
 ## docs
 
@@ -60,10 +18,28 @@ Regenerate with `python3 tools/gather_reports.py` (use `--check` to detect drift
 - [docs/ENTITY_MODEL.md](docs__ENTITY_MODEL.md)
 - [docs/EVALUATION.md](docs__EVALUATION.md)
 - [docs/EXTRACTION_AUDIT.md](docs__EXTRACTION_AUDIT.md)
+- [docs/EXTRACTION_AUDIT_3PAPERS.md](docs__EXTRACTION_AUDIT_3PAPERS.md)
+- [docs/EXTRACTION_FRAMEWORK.md](docs__EXTRACTION_FRAMEWORK.md)
+- [docs/GROUND_TRUTH.md](docs__GROUND_TRUTH.md)
 - [docs/INTEGRATION_STRATEGY.md](docs__INTEGRATION_STRATEGY.md)
 - [docs/PIPELINE.md](docs__PIPELINE.md)
 - [docs/SCHEMA_DESIGN.md](docs__SCHEMA_DESIGN.md)
 - [docs/STRATEGY.md](docs__STRATEGY.md)
+- [docs/legacy_02_extraction_README.md](docs__legacy_02_extraction_README.md)
+- [docs/legacy_03_corpus_README.md](docs__legacy_03_corpus_README.md)
+- [docs/paper/ALD_perspective_stage_aware_revised.md](docs__paper__ALD_perspective_stage_aware_revised.md)
+
+## ontology
+
+- [ontology/README.md](ontology__README.md)
+- [ontology/ontology.html](ontology__ontology.html)
+- [ontology/ontology_viewer.html](ontology__ontology_viewer.html)
+
+## orchestration
+
+- [orchestration/eval/BENCHMARK_RESULTS.md](orchestration__eval__BENCHMARK_RESULTS.md)
+- [orchestration/eval/m5_design.html](orchestration__eval__m5_design.html)
+- [orchestration/m5_orchestration.html](orchestration__m5_orchestration.html)
 
 ## papers
 
@@ -99,6 +75,19 @@ Regenerate with `python3 tools/gather_reports.py` (use `--check` to detect drift
 - [papers/10.3762_bjnano.14.89/extracted/document.md](papers__10.3762_bjnano.14.89__extracted__document.md)
 - [papers/10.3762_bjnano.5.25/extracted/document.md](papers__10.3762_bjnano.5.25__extracted__document.md)
 - [papers/cremers2019/extracted/document.md](papers__cremers2019__extracted__document.md)
+
+## scripts
+
+- [scripts/extract-line-chart-data/LICENSE.md](scripts__extract-line-chart-data__LICENSE.md)
+- [scripts/extract-line-chart-data/README.md](scripts__extract-line-chart-data__README.md)
+
+## twin
+
+- [twin/m1_report.html](twin__m1_report.html)
+- [twin/m2_report.html](twin__m2_report.html)
+- [twin/m3_validation.html](twin__m3_validation.html)
+- [twin/m4_benchmark.html](twin__m4_benchmark.html)
+- [twin/ylilammi_gallery.html](twin__ylilammi_gallery.html)
 
 ## working report directories
 

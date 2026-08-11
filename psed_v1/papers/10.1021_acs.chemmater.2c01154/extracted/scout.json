@@ -2,22 +2,37 @@
  "is_ald_process_paper": true,
  "study_type": "experimental",
  "materials": [
-  "MoS2",
-  "TiS2",
-  "WS2"
+  "MoS2"
  ],
  "precursors": [],
  "coreactants": [
-  "H2"
+  "H2 plasma"
  ],
  "process_type": "plasma",
  "temperature_window_C": null,
  "gpc_nm": null,
  "data": {
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F10",
+    "F11",
+    "F14a",
+    "F14b",
+    "F18a",
+    "F18b"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F13",
+    "F17"
+   ]
+  },
   "gpc_vs_cycles": {
    "present": true,
    "where": [
-    "F10b",
     "F16a"
    ]
   },
@@ -26,63 +41,29 @@
    "where": [
     "F16b"
    ]
-  },
-  "film_property_vs_condition": {
-   "present": true,
-   "where": [
-    "F10c",
-    "F13",
-    "F17"
-   ]
-  },
-  "xrd_or_spectrum": {
-   "present": true,
-   "where": [
-    "F10a",
-    "F10b",
-    "F11",
-    "F14a",
-    "F14b",
-    "F18a",
-    "F18b"
-   ]
   }
  },
  "drill": [
   {
-   "where": "F10a",
+   "where": "F10",
    "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
-   "source": "measured",
-   "why": "Raman spectra showing effect of H2 flow ratio on film crystallinity"
-  },
-  {
-   "where": "F10b",
-   "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "SE thicknesses illustrating controlled growth over ALD cycles"
-  },
-  {
-   "where": "F10c",
-   "type": "film_property_vs_condition",
-   "measurand": "film_thickness",
-   "source": "measured",
-   "why": "Thickness map showing spatial uniformity over a 4 inch wafer"
+   "why": "Raman spectra and thickness measurements showing effect of H2 flow ratio on MoSx films"
   },
   {
    "where": "F11",
    "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "Raman spectra showing effect of H2 flow ratio and deposition temperature on crystallinity"
+   "why": "Raman spectra showing effect of H2 flow ratio and deposition temperature on film crystallinity"
   },
   {
    "where": "F13",
    "type": "film_property_vs_condition",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS heat map of S/Mo stoichiometry vs temperature and H2 flow ratio"
+   "why": "Heat map of S/Mo atomic ratio analyzed by XPS across temperatures and H2 flow ratios"
   },
   {
    "where": "F14a",
@@ -96,50 +77,50 @@
    "type": "xrd_or_spectrum",
    "measurand": "impurity_content",
    "source": "measured",
-   "why": "XPS spectra of S 2p core level for different H2 flow ratios"
+   "why": "XPS spectra of S 2p core levels for different H2 flow ratios"
   },
   {
    "where": "F16a",
    "type": "gpc_vs_cycles",
    "measurand": "film_thickness",
    "source": "measured",
-   "why": "In situ SE thickness evolution over ALD cycles at different H2 flow ratios"
+   "why": "Evolution of film thickness over ALD cycles measured by in situ SE for different H2 flow ratios"
   },
   {
    "where": "F16b",
    "type": "gpc_vs_temperature",
    "measurand": "growth_per_cycle",
    "source": "measured",
-   "why": "Heat map of GPC as a function of temperature and H2 flow ratio"
+   "why": "Heat map of GPC as a function of deposition temperature and H2 flow ratio"
   },
   {
    "where": "F17",
    "type": "film_property_vs_condition",
    "measurand": "resistivity",
    "source": "measured",
-   "why": "Heat map of resistivity as a function of temperature and H2 flow ratio"
+   "why": "Heat map of film resistivity as a function of deposition temperature and H2 flow ratio"
   },
   {
    "where": "F18a",
    "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "Raman spectra of WSx films for different H2 flow ratios"
+   "why": "Raman spectra of WSx films grown at 150 C using different H2 flow ratios"
   },
   {
    "where": "F18b",
    "type": "xrd_or_spectrum",
-   "measurand": "impurity_content",
+   "measurand": "film_thickness",
    "source": "measured",
-   "why": "Raman spectra of TiSx films for different H2 flow ratios"
+   "why": "Raman spectra of TiSx films grown at 100 C using different H2 flow ratios"
   }
  ],
  "go_deeper": true,
  "_tokens": {
-  "in": 2814,
-  "out": 1215,
-  "thoughts": 3019,
+  "in": 3354,
+  "out": 1055,
+  "thoughts": 4725,
   "budget": 12288
  },
- "_scout_input_chars": 10573
+ "_scout_input_chars": 12882
 }
