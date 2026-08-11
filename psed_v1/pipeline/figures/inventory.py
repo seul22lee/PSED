@@ -51,10 +51,17 @@ import re
 import sys
 from pathlib import Path
 
-#: how far after a marker a caption may start and still be considered "adjacent"
+#: distance under which an association is called "positional_adjacent" rather than
+#: "structural_local_search". This is a LABEL threshold, not a gate: association is
+#: decided by intervening structure (markers and other captions), never by distance.
 CAPTION_WINDOW = 260
-#: how far before a caption a crop may sit and still count as a sibling of it
-SIBLING_WINDOW = 300
+#: two candidate captions are treated as equally plausible — and the crop is therefore
+#: left for a human — when the runner-up is within this factor of the nearest.
+AMBIGUITY_RATIO = 1.5
+#: max characters between two consecutive image markers for them to count as crops of
+#: ONE printed figure. Document adjacency, not caption search: genuine siblings are 16
+#: characters apart in every case observed in this corpus.
+CLUSTER_GAP = 200
 
 #: explicit, exhaustive dispositions — every PictureItem gets exactly one
 DRILL = "DRILL"
@@ -67,18 +74,51 @@ OFFERED = "OFFERED_TO_SCOUT"
 
 _MARKER = re.compile(r"<!--\s*image\s*-->")
 
-# "Figure 2.", "FIG. 1.", "Figure 1:", "Figure 7 ．", "Scheme 2." — the number must be
-# followed by a caption delimiter. That single requirement is what separates a caption
-# from a body reference: "Figure 1b shows the mass changes…" has no delimiter after the
-# number and is therefore prose, not a caption.
+# A caption line: "Figure 2. a) …", "FIG. 1. Saturation …", "Fig. 5 Dependence of …",
+# "Fig. 5 (a) Growth rate …", "Fig. 2 a Typical XPS …", "Figure 7 ． Scheme of …".
+#
+# An earlier version required a delimiter (. : ) ．) right after the figure number. That
+# is Wiley/ACS/AIP house style, but Springer and RSC print "Fig. 5 Dependence of …" with
+# no delimiter at all — so the parser returned ZERO captions for 11 of 32 corpus papers
+# and caption recovery was silently disabled for a third of the corpus. The delimiter is
+# now optional; what separates a caption from a body reference is handled by
+# _caption_body() below, which is a stronger test than punctuation.
 _CAPTION = re.compile(
     r"(?:^|\n)[ \t>*]*"
-    r"((?:Figure|Fig|FIG|Scheme|SCHEME)\s*\.?\s*(\d+)\s*[a-hA-H]?\s*[.:：．)]\s*\S[^\n]*)")
+    r"((?:Figure|Fig|FIG|Scheme|SCHEME)\s*\.?\s*(\d+)\s*[.:：．]?\s*\S[^\n]*)")
+#: an optional panel marker directly after the figure number: "a", "(a)", "a)", "a."
+_PANEL_HEAD = re.compile(r"^\(?([a-hA-H])\)?[.,:]?\s+")
 #: verbs that mark a sentence about a figure rather than the figure's own caption
 _BODY_VERB = re.compile(
     r"^\s*(?:shows?|presents?|displays?|illustrates?|depicts?|gives?|reports?|"
     r"summari[sz]es?|compares?|indicates?|reveals?|plots?|contains?|is\b|are\b|was\b|were\b)",
     re.I)
+
+
+def _caption_body(text):
+    """The caption text after 'Fig N' and an optional panel marker, or None if this
+    reads as prose about the figure rather than the figure's own caption.
+
+    Two independent signals, both needed because journals differ:
+      · a body reference continues a sentence, so it starts with a lower-case function
+        word — "Fig. 5 for films grown on Si(100) …" — while a caption starts with a
+        capitalised noun or a panel marker;
+      · an explicit predicate — "Fig. 5(a) shows that …" — is prose even when a panel
+        marker precedes it.
+    """
+    m = re.match(r"(?:Figure|Fig|FIG|Scheme|SCHEME)\s*\.?\s*\d+\s*[.:：．]?\s*(.*)$",
+                 text, re.S)
+    if not m:
+        return None
+    rest = m.group(1).strip()
+    pm = _PANEL_HEAD.match(rest)
+    if pm:                                   # "a Typical XPS …" / "(a) Growth rate …"
+        rest = rest[pm.end():].strip()
+    if not rest or _BODY_VERB.match(rest):
+        return None
+    if not (rest[0].isupper() or rest[0].isdigit()):
+        return None                          # "for films grown …" — a continued sentence
+    return rest
 
 
 def _norm(s):
@@ -104,14 +144,14 @@ def parse_captions(md):
     out = []
     for m in _CAPTION.finditer(md):
         text, num = _norm(m.group(1)), m.group(2)
-        # the caption delimiter is the last char of the matched prefix; what follows it
-        # must read as a caption body, not as a predicate about the figure
-        tail = text.split(None, 2)
-        rest = tail[2] if len(tail) > 2 else ""
-        if _BODY_VERB.match(rest):
+        if _caption_body(text) is None:
             continue
         out.append({"offset": m.start(1), "printed_figure": num, "text": text})
     return out
+
+
+def _first_or_none(xs):
+    return xs[0] if xs else None
 
 
 def _extend_caption(md, cap):
@@ -208,65 +248,233 @@ def build(paper_id, with_crop_stats=True):
             "caption_source": "docling" if _norm(f.get("caption")) else "none",
             "caption_confidence": 1.0 if _norm(f.get("caption")) else 0.0,
             "printed_figure": printed_of.get(i),
+            "printed_figure_id": None,
             "panel": None,
             "siblings": [],
             "printed_group_id": None,
+            # how the caption identity was obtained; original Docling evidence in
+            # caption_original is never overwritten
+            "association_method": "docling_bound" if _norm(f.get("caption")) else "unresolved",
             "disposition": None,
             "disposition_reason": "",
         })
 
-    unclaimed = [c for c in caps if c["offset"] not in claimed]
-    for c in cand:
-        if c["caption_source"] == "docling" or c["md_offset"] is None:
-            continue
-        off = c["md_offset"]
-        near = [x for x in unclaimed if 0 <= x["offset"] - off <= CAPTION_WINDOW]
-        if not near:
-            continue
-        target = min(near, key=lambda x: x["offset"] - off)
-        # Unambiguous only if no OTHER crop sits between this crop and the caption —
-        # otherwise the closer crop is the better owner and this one is a sibling.
-        between = [o for o in (markers or []) if off < o < target["offset"]]
-        if between:
-            continue
-        c["caption_recovered"] = _extend_caption(md, target)
-        c["caption_source"] = "document_md"
-        c["caption_confidence"] = 0.9
-        c["printed_figure"] = target["printed_figure"]
-        claimed[target["offset"]] = c["docling_index"]
-        unclaimed = [x for x in unclaimed if x["offset"] != target["offset"]]
+    # --- 2. group crops into PRINTED FIGURES -------------------------------------
+    # The unit a caption governs is not a PictureItem, it is a run of CONSECUTIVE
+    # PictureItems with no caption text between them. Docling routinely splits one
+    # printed figure into several crops and binds the caption to whichever crop it
+    # happened to associate — sometimes the first of the run, sometimes the last.
+    # Treating each crop as independently captioned lost every other member of the
+    # run; grouping first makes the association direction irrelevant.
+    # Two crops share a printed figure only when the document says they sit together:
+    # they are consecutive, separated by nothing but the marker separator, with no
+    # caption between them, and they do not each carry a different Docling caption
+    # (two captions mean two printed figures). CLUSTER_GAP measures DOCUMENT ADJACENCY
+    # — "were these printed as one figure" — it is not a caption-search radius. Real
+    # siblings sit 16 characters apart (just "<!-- image -->\n\n"); the nearest false
+    # candidate observed in this corpus is 327 away, so the threshold is not delicate.
+    def _own_cap(i):
+        return _norm_key(cand[i]["caption_original"])[:60] or None
 
-    # --- 3. sibling runs: crops that share one printed figure --------------------
-    # A printed figure split across several crops leaves the caption bound to (or
-    # recovered by) exactly one of them; the crops immediately around it, with no
-    # other caption in between, belong to the same printed figure.
-    owner_offset = {v: k for k, v in claimed.items()}
-    for c in cand:
-        idx = c["docling_index"]
-        if idx not in owner_offset:
-            continue
-        cap_off = owner_offset[idx]
-        group = [idx]
-        for other in cand:
-            j = other["docling_index"]
-            if j == idx or other["md_offset"] is None:
+    def _splits(i):
+        """Does a caption printed between crops i-1 and i separate two printed figures?
+
+        Only if it belongs to neither of them. A figure split across crops often has
+        its caption printed BETWEEN those crops — 10.1116/6.0002436 FIG. 1 sits between
+        its own second and third crop — so treating any intervening caption as a
+        boundary cuts a printed figure in half at exactly its own caption.
+        """
+        for c in caps:
+            if not (markers[i - 1] < c["offset"] < markers[i]):
                 continue
-            dist = cap_off - other["md_offset"]
-            if 0 < dist <= SIBLING_WINDOW and other["caption_source"] in ("none",):
-                inter = [x for x in caps if other["md_offset"] < x["offset"] < cap_off]
-                if not inter:
-                    group.append(j)
-        if len(group) > 1:
-            gid = "printed:%s" % (c["printed_figure"] or ("idx%d" % idx))
-            for j in group:
+            if claimed.get(c["offset"]) in (i, i - 1):
+                continue                     # it is their own caption, not a boundary
+            return True
+        return False
+
+    clusters = []
+    if aligned and markers:
+        cur = [0]
+        for i in range(1, len(markers)):
+            gap = markers[i] - markers[i - 1]
+            # If the pair's OWN caption is printed between them, its text is what makes
+            # the gap large, so it is discounted from the measurement — but only its
+            # own length. Waiving the adjacency test outright instead would let a crop
+            # 6748 characters away join the group just because a caption sat somewhere
+            # in between (observed on cremers2019 P17/P18).
+            own_len = sum(len(c["text"]) for c in caps
+                          if markers[i - 1] < c["offset"] < markers[i]
+                          and claimed.get(c["offset"]) in (i, i - 1))
+            split = (_splits(i)
+                     or (gap - own_len > CLUSTER_GAP)
+                     or (_own_cap(i) and _own_cap(i - 1) and _own_cap(i) != _own_cap(i - 1)))
+            if split:
+                clusters.append(cur)
+                cur = [i]
+            else:
+                cur.append(i)
+        clusters.append(cur)
+    else:
+        clusters = [[f["index"]] for f in figures]
+
+    # A crop whose OWN adjacent caption is unclaimed owns that caption outright; it must
+    # not inherit a neighbour's. Splitting these out before inheritance is what stops
+    # d3dt01824e P8 (its own "Fig. 5" sits 16 chars later) being labelled with P7's Fig 4.
+    def _adjacent_unclaimed(i, pool):
+        off = markers[i]
+        hits = []
+        for cap in pool:
+            o = cap["offset"]
+            lo, hi = min(o, off), max(o, off)
+            if any(lo < m < hi for m in markers):
+                continue
+            if any(lo < c["offset"] < hi for c in caps if c["offset"] != o):
+                continue
+            hits.append((abs(o - off), cap))
+        hits.sort(key=lambda t: t[0])
+        return hits
+
+    if aligned and markers:
+        pool = [c for c in caps if c["offset"] not in claimed]
+        refined = []
+        for cl in clusters:
+            if len(cl) == 1:
+                refined.append(cl)
+                continue
+            run, has_anchor = [], False
+            for i in cl:
+                hits = _adjacent_unclaimed(i, pool) if not cand[i]["caption_original"] else []
+                own = (cand[i]["caption_source"] == "docling"
+                       or (hits and hits[0][0] <= CLUSTER_GAP))
+                # Split only on a SECOND anchor. Splitting on the first would separate a
+                # trailing captioned crop from the siblings that precede it — the very
+                # arrangement this grouping exists to capture (6.0002436 FIG. 1 is bound
+                # to the LAST of its three crops).
+                if own and has_anchor:
+                    refined.append(run)
+                    run, has_anchor = [i], True
+                else:
+                    run.append(i)
+                    has_anchor = has_anchor or own
+            if run:
+                refined.append(run)
+        clusters = refined
+
+    unclaimed = [c for c in caps if c["offset"] not in claimed]
+
+    # Is this document's caption coverage COMPLETE? Collect every printed figure number
+    # the text refers to, and every number for which a caption exists from any source
+    # (Docling-bound or parsed from the markdown). A number that is referenced but has
+    # no caption anywhere means that figure's caption never became text — typically
+    # because it is baked into the image crop. In such a paper an uncaptioned crop is
+    # more likely to BE one of those missing figures than to be a sibling of a captioned
+    # one, so caption inheritance across a cluster is not evidence, it is a guess.
+    # 10.1186/s11671-015-0872-9 is the case: 8 crops, captions only for Figures 1, 3, 4,
+    # and crops that are printed Figures 2, 5 and 6 would otherwise inherit 3 and 4.
+    referenced = {m.group(1) for m in
+                  re.finditer(r"\b(?:Figure|Fig|FIG)\.?\s*(\d+)", md)}
+    have_caption = {c["printed_figure"] for c in caps}
+    have_caption |= {v for v in printed_of.values() if v}
+    missing_numbers = {n for n in referenced if n not in have_caption}
+    inheritance_ok = not missing_numbers
+
+    def _bind(cluster, cap, method, conf, anchor=None):
+        """Give every member of a printed-figure cluster the same caption identity,
+        recording HOW each member obtained it. Never overwrites caption_original."""
+        text = _extend_caption(md, cap) if cap else None
+        gid = "printed:%s" % (cap["printed_figure"] if cap else "idx%d" % cluster[0])
+        for j in cluster:
+            cj = cand[j]
+            cj["printed_group_id"] = gid
+            cj["siblings"] = sorted(x for x in cluster if x != j)
+            cj["printed_figure_id"] = ("Figure %s" % cap["printed_figure"]) if cap else None
+            if cj["caption_source"] == "docling":
+                cj["association_method"] = "docling_bound"
+                continue
+            cj["caption_recovered"] = text
+            cj["printed_figure"] = cap["printed_figure"] if cap else None
+            if j == anchor:
+                cj["caption_source"] = "document_md"
+                cj["caption_confidence"] = conf
+                cj["association_method"] = method
+            else:
+                cj["caption_source"] = "sibling"
+                cj["caption_confidence"] = round(conf - 0.15, 2)
+                cj["association_method"] = "shared_printed_figure"
+
+    for cluster in clusters:
+        owners = [j for j in cluster if cand[j]["caption_source"] == "docling"]
+        if owners:
+            # Evidence: a member already carries a Docling-bound caption. Every other
+            # member of the same run belongs to that printed figure. This is the case
+            # the old code could not express, and it accounts for 5 of the 11 losses.
+            j0 = owners[0]
+            off0 = _first_or_none([o for o, i in claimed.items() if i == j0])
+            cap0 = next((c for c in caps if c["offset"] == off0), None)
+            if cap0 is None:
+                pf = printed_of.get(j0)
+                cap0 = {"offset": None, "printed_figure": pf, "text": cand[j0]["caption_original"]}
+                text = cand[j0]["caption_original"]
+            else:
+                text = _extend_caption(md, cap0)
+            gid = "printed:%s" % (cap0["printed_figure"] or "idx%d" % j0)
+            if not inheritance_ok and len(cluster) > 1:
+                # captions are missing for figures this paper cites — see above
+                for j in cluster:
+                    if cand[j]["caption_source"] != "docling":
+                        cand[j]["association_method"] = "unresolved"
+                        cand[j]["disposition_reason"] = (
+                            "caption inheritance withheld: this document cites figure(s) "
+                            "%s with no caption text anywhere, so an uncaptioned crop may "
+                            "be one of them" % ", ".join(sorted(missing_numbers)))
+                continue
+            for j in cluster:
                 cj = cand[j]
-                cj["printed_group_id"] = gid
-                cj["siblings"] = sorted(x for x in group if x != j)
-                if cj["caption_source"] == "none":
-                    cj["caption_recovered"] = c["caption_recovered"] or c["caption_original"]
+                cj["printed_group_id"] = gid if len(cluster) > 1 else None
+                cj["siblings"] = sorted(x for x in cluster if x != j)
+                cj["printed_figure_id"] = ("Figure %s" % cap0["printed_figure"]) if cap0["printed_figure"] else None
+                if cj["caption_source"] == "docling":
+                    cj["association_method"] = "docling_bound"
+                else:
+                    cj["caption_recovered"] = text
                     cj["caption_source"] = "sibling"
-                    cj["caption_confidence"] = 0.6
-                    cj["printed_figure"] = c["printed_figure"]
+                    cj["caption_confidence"] = 0.75
+                    cj["printed_figure"] = cap0["printed_figure"]
+                    cj["association_method"] = "shared_printed_figure"
+            continue
+
+        # No member is captioned. Look for ONE unclaimed caption structurally adjacent
+        # to the run: nothing but body text between it and the run — no other image
+        # marker (which would be a better owner) and no other caption (which would be
+        # a better match). Distance is evidence, not the test, so a caption separated
+        # from its figure by a paragraph of reading-order displacement is still found,
+        # while a caption with any competing crop or caption in between is refused.
+        first, last = markers[cluster[0]], markers[cluster[-1]]
+        cands = []
+        for cap in unclaimed:
+            o = cap["offset"]
+            if o < first:
+                lo, hi, anchor = o, first, cluster[0]
+            elif o > last:
+                lo, hi, anchor = last, o, cluster[-1]
+            else:
+                continue                     # inside the run — the run would have split
+            if any(lo < m < hi for m in markers):
+                continue                     # a nearer crop can claim it
+            if any(lo < c["offset"] < hi for c in caps if c["offset"] != o):
+                continue                     # a nearer caption competes
+            cands.append((abs(o - (first if o < first else last)), cap, anchor))
+        if not cands:
+            continue
+        cands.sort(key=lambda t: t[0])
+        if len(cands) > 1 and cands[1][0] <= cands[0][0] * AMBIGUITY_RATIO:
+            continue                         # two captions equally plausible — leave it
+        dist, cap, anchor = cands[0]
+        method = "positional_adjacent" if dist <= CAPTION_WINDOW else "structural_local_search"
+        conf = 0.9 if dist <= CAPTION_WINDOW else 0.8
+        _bind(cluster, cap, method, conf, anchor=anchor)
+        claimed[cap["offset"]] = anchor
+        unclaimed = [x for x in unclaimed if x["offset"] != cap["offset"]]
 
     # --- 4. disposition for every PictureItem — nothing may be left unset --------
     for c in cand:
@@ -276,12 +484,20 @@ def build(paper_id, with_crop_stats=True):
         if not c["image"]:
             c["disposition"] = SKIP_WITH_REASON
             c["disposition_reason"] = "docling produced no image crop"
-        elif c["caption_source"] == "sibling" and klass in ("fragment", "banner_or_logo"):
-            # part of a split printed figure, but this crop is a label strip or rule —
-            # it carries no data of its own and must not become a second vision call
-            c["disposition"] = MERGED_INTO_PRINTED_FIGURE
-            c["disposition_reason"] = ("%s crop of printed figure %s; content covered by "
-                                       "sibling crop(s)" % (klass, c["printed_figure"]))
+        elif klass in ("fragment", "banner_or_logo") and c["caption_source"] != "docling":
+            # A label strip or running-header band carries no data whatever caption it
+            # ended up with. Keying this off the crop CLASS rather than the association
+            # method matters: once captions can also be recovered positionally, a
+            # fragment that happens to sit next to a caption would otherwise be promoted
+            # to a vision call (observed on 6.0002804 P24/P26).
+            if c["printed_group_id"]:
+                c["disposition"] = MERGED_INTO_PRINTED_FIGURE
+                c["disposition_reason"] = ("%s crop of printed figure %s; content covered "
+                                           "by sibling crop(s)" % (klass, c["printed_figure"]))
+            else:
+                c["disposition"] = SKIP_WITH_REASON
+                c["disposition_reason"] = ("%s crop; carries a caption (%s) but no data"
+                                           % (klass, c["association_method"]))
         elif c["caption_source"] in ("docling", "document_md", "sibling"):
             c["disposition"] = OFFERED
             c["disposition_reason"] = "caption available via %s" % c["caption_source"]

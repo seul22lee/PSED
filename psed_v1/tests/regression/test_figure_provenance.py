@@ -174,7 +174,120 @@ ok("eligibility is evidence-based, not disposition-based",
                                and c["disposition"] != inv.MERGED_INTO_PRINTED_FIGURE)
        for c in inv_now["candidates"]))
 
-print("9) the scout input is built from the inventory, not a caption filter")
+print("10) caption grammar — house styles that omit the delimiter still parse")
+for text, want in (
+        ("Fig. 5 Dependence of Er2O3 film thicknesses on the number of ALD cycles.", "5"),
+        ("Fig. 5 (a) Growth rate for Y2O3 films as function of water purge time.", "5"),
+        ("Fig. 2 a Typical XPS data on the substrate surface; b Iron concentration.", "2"),
+        ("FIG. 20. Thickness profiles of a hole structure with EAR of 50:1.", "20"),
+        ("Figure 8 In fluence of total pressure and substrate temperature.", "8")):
+    got = inv.parse_captions("\n" + text + "\n")
+    ok(f"caption parsed: {text[:44]}…", [c["printed_figure"] for c in got] == [want], got)
+for text in ("Fig. 5 for films grown on Si(100), the thicknesses were proportional to N.",
+             "Fig. 5(a) shows that a higher growth rate was achieved at 10 and 30 s.",
+             "Figure 1b shows the mass changes observed through in situ QCM.",
+             "Figure 3 is discussed below in the context of nucleation."):
+    ok(f"body reference rejected: {text[:44]}…", not inv.parse_captions("\n" + text + "\n"),
+       inv.parse_captions("\n" + text + "\n"))
+
+print("11) structural association modes, on synthetic documents")
+
+
+def synth(md, captions):
+    """A throwaway paper: `captions` is the docling-bound caption per crop ('' = none)."""
+    td = tempfile.mkdtemp()
+    d = Path(td) / "10.0000_synth" / "extracted"
+    d.mkdir(parents=True)
+    (d / "document.md").write_text(md)
+    (d / "structure.json").write_text(json.dumps({
+        "n_figures": len(captions), "n_tables": 0, "tables": [], "sections": [],
+        "figures": [{"index": i, "caption": c, "image": ""} for i, c in enumerate(captions)]}))
+    orig = P.PAPERS
+    P.PAPERS = Path(td)
+    try:
+        return {c["docling_index"]: c for c in inv.build("10.0000_synth")["candidates"]}
+    finally:
+        P.PAPERS = orig
+
+
+M = "<!-- image -->"
+CAP1 = "Fig. 1 Growth rate of the film versus deposition temperature."
+CAP2 = "Fig. 2 Thickness of the film versus the number of ALD cycles."
+
+# caption bound to the FIRST crop of a run — the trailing sibling loses it (5 of the 11)
+r = synth(f"intro\n\n{CAP1}\n\n{M}\n\n{M}\n\nbody\n", [CAP1, ""])
+check("trailing sibling inherits the printed figure", r[1]["printed_figure"], "1")
+check("and records how", r[1]["association_method"], "shared_printed_figure")
+check("the docling-bound crop keeps its own provenance", r[0]["association_method"], "docling_bound")
+ok("original docling caption is never overwritten", r[0]["caption_original"] == CAP1)
+
+# caption bound to the LAST crop, printed between its siblings (10.1116/6.0002436 FIG. 1)
+r = synth(f"intro\n\n{M}\n\n{M}\n\n{CAP1}\n\n{M}\n\nbody\n", ["", "", CAP1])
+check("leading siblings inherit across their own caption", r[0]["printed_figure"], "1")
+check("and the middle crop too", r[1]["printed_figure"], "1")
+
+# a crop whose OWN caption follows it must not inherit the neighbour's (d3dt01824e P8)
+r = synth(f"{CAP1}\n\n{M}\n\n" + "x" * 900 + f"\n\n{M}\n\n{CAP2}\n\nbody\n", [CAP1, ""])
+check("crop with its own following caption binds to it", r[1]["printed_figure"], "2")
+check("by positional adjacency", r[1]["association_method"], "positional_adjacent")
+
+# structurally unambiguous but far away — distance is evidence, not a gate (cremers, s11671)
+r = synth(f"intro\n\n{CAP2}\n\n" + "y" * 1800 + f"\n\n{M}\n\nbody\n", [""])
+check("distant but unambiguous caption is found", r[0]["printed_figure"], "2")
+check("and is labelled as a structural search", r[0]["association_method"],
+      "structural_local_search")
+
+# an intervening DIFFERENT caption blocks inheritance
+r = synth(f"{CAP1}\n\n{M}\n\n{CAP2}\n\n" + "z" * 900 + f"\n\n{M}\n\nbody\n", [CAP1, ""])
+ok("intervening caption prevents the wrong figure being inherited",
+   r[1]["printed_figure"] != "1", r[1]["printed_figure"])
+
+# two equally plausible captions -> refuse, do not guess
+pad = "q" * 700
+r = synth(f"{CAP1}\n\n{pad}\n\n{M}\n\n{pad}\n\n{CAP2}\n\nbody\n", [""])
+check("ambiguous neighbours leave the crop unresolved", r[0]["association_method"], "unresolved")
+check("and it keeps no printed figure", r[0]["printed_figure"], None)
+
+print("12) incomplete caption coverage withholds inheritance")
+# the document cites Figure 2 but no caption for it exists anywhere -> an uncaptioned
+# crop may BE Figure 2, so it must not inherit Figure 1 (10.1186/s11671-015-0872-9)
+r = synth(f"We show this in Figure 2 below.\n\n{CAP1}\n\n{M}\n\n{M}\n\nbody\n", [CAP1, ""])
+check("no inheritance when a cited figure has no caption",
+      r[1]["association_method"], "unresolved")
+r = synth(f"We show this in Figure 1 below.\n\n{CAP1}\n\n{M}\n\n{M}\n\nbody\n", [CAP1, ""])
+check("inheritance allowed when coverage is complete",
+      r[1]["association_method"], "shared_printed_figure")
+
+print("13) a captioned fragment never becomes a vision call")
+found = []
+for pid in P.papers():
+    if not P.structure_json(pid).exists():
+        continue
+    for c in inv.build(pid)["candidates"]:
+        if (c.get("crop") or {}).get("klass") in ("fragment", "banner_or_logo") \
+                and c["caption_source"] != "docling" and inv.is_offerable(c):
+            found.append((pid, c["candidate_id"]))
+ok("no fragment or banner is offered to scout on caption evidence alone", not found, found[:4])
+
+print("14) the 11 audited crops are associated and offered")
+EXPECT = {("10.1002_pssa.201532305", 11): "8", ("10.1007_s11671-010-9676-0", 4): "2",
+          ("10.1007_s11671-010-9676-0", 5): "2", ("10.1021_acs.jpcc.9b08176", 8): "2",
+          ("10.1039_d3dt01824e", 8): "5", ("10.1039_d3ra05217f", 9): "5",
+          ("10.1116_1.4892385", 9): "2", ("10.1116_1.4938104", 11): "5",
+          ("10.1116_1.4938104", 20): "10", ("cremers2019", 26): "9", ("cremers2019", 37): "20"}
+_seen = {}
+for (pid, idx), want in sorted(EXPECT.items()):
+    if pid not in _seen:
+        _seen[pid] = {c["docling_index"]: c for c in inv.build(pid)["candidates"]}
+    c = _seen[pid][idx]
+    ok(f"{pid} P{idx} -> printed Figure {want}, offered",
+       c["printed_figure"] == want and inv.is_offerable(c),
+       f"got Figure {c['printed_figure']} / {c['disposition']}")
+    ok(f"{pid} P{idx} records its association evidence",
+       c["association_method"] in ("positional_adjacent", "shared_printed_figure",
+                                   "structural_local_search"), c["association_method"])
+
+print("15) the scout input is built from the inventory, not a caption filter")
 scout_src = _project.path("pipeline", "scout", "scout.py").read_text()
 ok("the silent caption filter is gone",
    'for f in struct["figures"] if f["caption"]' not in scout_src)
