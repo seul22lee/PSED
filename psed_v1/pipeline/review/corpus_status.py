@@ -16,8 +16,13 @@ O_PRE = {p["id"] for p in ONTO["individuals"]["precursors"]}
 O_COR = {c["id"] for c in ONTO["individuals"]["coreactants"]}
 
 rows, miss_m, miss_p, miss_c = [], {}, {}, {}
-for pdf in sorted(glob.glob(str(P.PDF_INBOX / "*.pdf"))):
-    sd = Path(pdf).stem
+# The LIVE corpus, not the acquisition inbox. This used to enumerate
+# corpus/acquisition/pdf_inbox/*.pdf and derive an id from each filename. That inbox is
+# a submission pool of 54 candidate PDFs whose filenames do not match the paper ids the
+# pipeline actually uses, so every id missed and the page reported "54 PDFs, docling 0,
+# scout 0, deep 0, KB 0, geometry 0" -- a coverage report that read as total failure
+# while the corpus was fully populated. The corpus is the set of papers on disk.
+for sd in sorted(P.papers()):
     d = P.extracted_dir(sd)
     kbf = P.resolved_json(sd, "experiments")
     st = {
@@ -72,7 +77,7 @@ for sd, st, i in rows:
           f"{i['nexp']:4} {i['prof']:4} {i['ser']:3} {i['canon']:5}  {i['mats']}")
 n = len(rows)
 cnt = {k: sum(1 for _, st, _ in rows if st[k]) for k in ("doc", "scout", "deep", "kb", "geom")}
-print(f"\nTOTAL {n} PDFs | docling {cnt['doc']} | scout {cnt['scout']} | "
+print(f"\nTOTAL {n} papers | docling {cnt['doc']} | scout {cnt['scout']} | "
       f"deep {cnt['deep']} | KB {cnt['kb']} | geometry {cnt['geom']}")
 print(f"\n-- ontology gaps (scouted but not in ontology) --")
 for label, dd in (("materials", miss_m), ("precursors", miss_p), ("coreactants", miss_c)):
@@ -84,7 +89,7 @@ h = ['<!doctype html><meta charset="utf-8"><title>corpus status</title><style>',
      'body{font-family:sans-serif;font-size:13px} table{border-collapse:collapse}',
      'td,th{border:1px solid #ccc;padding:2px 6px} .y{background:#c8e6c9;text-align:center}',
      '.n{background:#f5f5f5} .gap{background:#ffe0b2}</style>',
-     f'<h2>Corpus status — {n} PDFs</h2>',
+     f'<h2>Corpus status — {n} papers in the live corpus</h2>',
      f'<p>docling {cnt["doc"]} · scout {cnt["scout"]} · deep {cnt["deep"]} · '
      f'KB {cnt["kb"]} · geometry {cnt["geom"]}</p>',
      '<p>exps = total Experiments (a condition sweep contributes one per point); '

@@ -27,16 +27,36 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     __package__ = "canonical"
 
+import re
+
 from . import sources as S                                    # noqa: E402
 from . import axis_semantics as AX                            # noqa: E402
 from .canonicalize import canonicalize_axis                   # noqa: E402
 from .schema import REPO, code_version, build_timestamp       # noqa: E402
 
 
+_PTR = re.compile(r"/figures/(\d+)/panels/(\d+)/series/(\d+)")
+
+
 def curve_id(c):
-    """Deterministic across rebuilds: derived only from source coordinates."""
-    return "%s::F%s::%s::%d" % (c["doi"], c["figure_number"], c["panel"] or "-",
-                                c["series_index"])
+    """Deterministic across rebuilds AND unique per source series.
+
+    The printed figure number plus the panel label is not an identity. One printed
+    figure can be split across several docling crops, so two crops of the same
+    printed figure produce the same (figure, panel, series_index); and a single crop
+    can carry several panels whose labels collapse to the same letter. Both occur in
+    this corpus, and together they collapsed 833 canonical rows into 828 ids -- five
+    distinct source series silently sharing an identifier.
+
+    The json_pointer names the exact source slice (/figures/fi/panels/pi/series/si)
+    and is unique within a paper by construction, so its figure and panel ordinals are
+    appended. The printed prefix stays in front so the id remains readable.
+    """
+    m = _PTR.search(str(c.get("json_pointer") or ""))
+    slot = ("f%sp%s" % (m.group(1), m.group(2)) if m
+            else "i%s" % (c.get("figure") or "-"))       # pre-pointer records
+    return "%s::F%s::%s::%d::%s" % (c["doi"], c["figure_number"], c["panel"] or "-",
+                                    c["series_index"], slot)
 
 
 def build_curve(c):
