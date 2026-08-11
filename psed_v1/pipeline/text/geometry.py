@@ -236,25 +236,35 @@ def extract_quantities(sd, client):
 
 
 def kb_dirs():
-    return sorted(f.split("/output/")[1].split("/")[0]
-                  for f in P.glob_resolved("experiments.json"))
+    """Papers that have a resolved layer.
+
+    This used to reconstruct the paper id with f.split("/output/")[1], which is a path
+    shape that stopped existing at the responsibility-based refactor -- and glob_resolved
+    now yields Path objects, so the call raised AttributeError and the whole stage was
+    unrunnable. The paper id is the directory two levels above resolved/experiments.json.
+    """
+    return sorted(f.parent.parent.name for f in P.glob_resolved("experiments.json"))
 
 
-def tag_experiments():
+def tag_experiments(only=None):
     """Write geometry + geometry_class into every KB experiment (deterministic)."""
     n = 0
-    for sd in kb_dirs():
+    for sd in (only or kb_dirs()):
         gf = P.extracted_dir(sd) / "geometry.json"
         g = json.loads(gf.read_text()) if gf.exists() else {}
         gc, st = g.get("geometry_class", "planar"), g.get("structure", "")
         f = P.resolved_json(sd, "experiments")
+        if not f.exists():
+            # a newly parsed paper is classified before it is resolved; there is nothing
+            # to tag yet and resolve will read geometry.json itself
+            continue
         exps = json.loads(f.read_text())
         for e in exps:
             e["geometry_class"] = gc
             e["structure"] = st or e.get("structure")
         f.write_text(json.dumps(exps, indent=1))
         n += len(exps)
-    print(f"[geometry] tagged {n} experiments across {len(kb_dirs())} papers")
+    print(f"[geometry] tagged {n} experiments across {len(only or kb_dirs())} papers")
 
 
 def main(argv):
@@ -278,14 +288,17 @@ def main(argv):
                       f"[{q['status']}/{q['scope']}] {(q['evidence'] or '')[:60]}")
         print(f"[geometry-quantities] tokens in={tin} out={tout}")
         return
-    for sd in kb_dirs():
+    # An explicit paper list must be honoured here as it is under --quantities, so a new
+    # paper can be classified without re-tagging papers that are already validated.
+    sds = [a for a in argv if not a.startswith("--")] or kb_dirs()
+    for sd in sds:
         if not (P.extracted_dir(sd) / "document.md").exists():
             print(f"  [skip] {sd} (no document.md)"); continue
         gc, st, why = classify_deterministic(sd)
         g = {"geometry_class": gc, "structure": st, "method": "deterministic", "evidence": why}
         (P.extracted_dir(sd) / "geometry.json").write_text(json.dumps(g, indent=1))
         print(f"  {sd:28} -> {gc:18} struct={st:16} | {why}")
-    tag_experiments()
+    tag_experiments(sds)
 
 
 if __name__ == "__main__":

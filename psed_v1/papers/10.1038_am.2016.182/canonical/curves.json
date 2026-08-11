@@ -1,0 +1,3218 @@
+{
+ "doi": "10.1038_am.2016.182",
+ "generator": "pipeline/canonical/build_canonical.py",
+ "code_version": "3848481+dirty",
+ "created_at": 1786465364,
+ "ontology": "ontology/ald_ontology.json",
+ "n_curves": 16,
+ "curves": [
+  {
+   "curve_id": "10.1038_am.2016.182::F1::a::0::f0p0",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "a",
+    "series": "HDMP(precursor)",
+    "series_index": 0,
+    "series_axis": "precursor/reactant",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig1a__exp01__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Exposure time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Growth per cycle (Å/cycle)",
+     "quantity": "growth_per_cycle",
+     "unit": "Å/cycle",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      0.26
+     ],
+     [
+      2.0,
+      0.87
+     ],
+     [
+      4.0,
+      0.88
+     ],
+     [
+      6.0,
+      0.88
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "Exposure time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å/cycle",
+     "raw_label": "Growth per cycle (Å/cycle)",
+     "unit": "Å/cycle",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0.0,
+      1.0,
+      2.0,
+      4.0,
+      6.0
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.0,
+      0.026000000000000002,
+      0.08700000000000001,
+      0.08800000000000001,
+      0.08800000000000001
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "a",
+      "series": "HDMP(precursor)",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1a__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "growth_per_cycle_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å/cycle",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "a",
+      "series": "HDMP(precursor)",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1a__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 5
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F1::a::1::f0p0",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "a",
+    "series": "O2(reactant)",
+    "series_index": 1,
+    "series_axis": "precursor/reactant",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig1a__exp01__case01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Exposure time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Growth per cycle (Å/cycle)",
+     "quantity": "growth_per_cycle",
+     "unit": "Å/cycle",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      0.28
+     ],
+     [
+      2.0,
+      0.61
+     ],
+     [
+      4.0,
+      0.87
+     ],
+     [
+      6.0,
+      0.88
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "Exposure time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å/cycle",
+     "raw_label": "Growth per cycle (Å/cycle)",
+     "unit": "Å/cycle",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0.0,
+      1.0,
+      2.0,
+      4.0,
+      6.0
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.0,
+      0.028000000000000004,
+      0.061,
+      0.08700000000000001,
+      0.08800000000000001
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "a",
+      "series": "O2(reactant)",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1a__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "growth_per_cycle_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å/cycle",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "a",
+      "series": "O2(reactant)",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1a__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 5
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F1::b::0::f0p1",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "b",
+    "series": "MeCpPtMe3",
+    "series_index": 0,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/1/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig1b__exp01__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Apparent coverage (%)",
+     "quantity": "surface_coverage",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      55.0,
+      2.0
+     ],
+     [
+      78.0,
+      8.0
+     ],
+     [
+      100.0,
+      12.0
+     ],
+     [
+      200.0,
+      50.0
+     ],
+     [
+      300.0,
+      78.0
+     ],
+     [
+      400.0,
+      96.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "surface_coverage",
+     "raw_unit": "%",
+     "raw_label": "Apparent coverage (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "surface_coverage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "surface_coverage",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      0.0,
+      0.02,
+      0.08,
+      0.12,
+      0.5,
+      0.78,
+      0.96
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "b",
+      "series": "MeCpPtMe3",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1b__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "dimensionless_scale_conversion",
+     "rule_version": "1.0.0",
+     "type": "scale_conversion",
+     "formula": "% -> 1",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "surface_coverage",
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "'a.u.' is NOT convertible and is rejected as unknown, not dimensionless"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "b",
+      "series": "MeCpPtMe3",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1b__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 7
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F1::b::1::f0p1",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "b",
+    "series": "HDMP",
+    "series_index": 1,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/1/series/1",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig1b__exp01__case01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Apparent coverage (%)",
+     "quantity": "surface_coverage",
+     "unit": "%",
+     "log": false
+    },
+    "points": [
+     [
+      2.0,
+      0.5
+     ],
+     [
+      26.0,
+      13.0
+     ],
+     [
+      53.0,
+      33.0
+     ],
+     [
+      100.0,
+      97.0
+     ],
+     [
+      200.0,
+      98.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "surface_coverage",
+     "raw_unit": "%",
+     "raw_label": "Apparent coverage (%)",
+     "unit": "%",
+     "unit_recovered": false,
+     "quantity": "surface_coverage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "surface_coverage",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": {
+     "comparison_group": "surface_coverage",
+     "quantity": "surface_coverage",
+     "unit": "1",
+     "values": [
+      0.005,
+      0.13,
+      0.33,
+      0.97,
+      0.98
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "b",
+      "series": "HDMP",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1b__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "dimensionless_scale_conversion",
+     "rule_version": "1.0.0",
+     "type": "scale_conversion",
+     "formula": "% -> 1",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "surface_coverage",
+     "original_value": null,
+     "original_unit": "%",
+     "canonical_value": null,
+     "canonical_unit": "1",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "'a.u.' is NOT convertible and is rejected as unknown, not dimensionless"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "b",
+      "series": "HDMP",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1b__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 5
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F1::g::0::f0p2",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "g",
+    "series": "HDMP",
+    "series_index": 0,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/2/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [],
+    "data_source": "simulated",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Reaction coordinate",
+     "quantity": "Reaction coordinate",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Energy (kcal/mol)",
+     "quantity": "Energy (kcal/mol)",
+     "unit": "kcal/mol",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      20.5
+     ],
+     [
+      2.0,
+      -11.5
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Reaction coordinate",
+     "raw_unit": "",
+     "raw_label": "Reaction coordinate",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'Reaction coordinate' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Energy (kcal/mol)",
+     "raw_unit": "kcal/mol",
+     "raw_label": "Energy (kcal/mol)",
+     "unit": "kcal/mol",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Energy (kcal/mol)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'Reaction coordinate' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "g",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "kcal/mol",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Energy (kcal/mol)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "g",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 3
+   },
+   "context_available": [
+    "cycle_number"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F1::g::1::f0p2",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "g",
+    "series": "MeCpPtMe3",
+    "series_index": 1,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/2/series/1",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [],
+    "data_source": "simulated",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Reaction coordinate",
+     "quantity": "Reaction coordinate",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Energy (kcal/mol)",
+     "quantity": "Energy (kcal/mol)",
+     "unit": "kcal/mol",
+     "log": false
+    },
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      40.5
+     ],
+     [
+      2.0,
+      -6.5
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Reaction coordinate",
+     "raw_unit": "",
+     "raw_label": "Reaction coordinate",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'Reaction coordinate' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Energy (kcal/mol)",
+     "raw_unit": "kcal/mol",
+     "raw_label": "Energy (kcal/mol)",
+     "unit": "kcal/mol",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Energy (kcal/mol)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'Reaction coordinate' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "g",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "kcal/mol",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Energy (kcal/mol)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "g",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 3
+   },
+   "context_available": [
+    "cycle_number"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F1::h::0::f0p3",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "h",
+    "series": "HDMP",
+    "series_index": 0,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/3/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig1h__exp01__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Resistivity (µΩ·cm)",
+     "quantity": "resistivity",
+     "unit": "µΩ·cm",
+     "log": false
+    },
+    "points": [
+     [
+      50.0,
+      170.0
+     ],
+     [
+      100.0,
+      22.5
+     ],
+     [
+      200.0,
+      21.0
+     ],
+     [
+      300.0,
+      11.5
+     ],
+     [
+      500.0,
+      11.5
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "µΩ·cm",
+     "raw_label": "Resistivity (µΩ·cm)",
+     "unit": "µΩ·cm",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "h",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1h__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "µΩ·cm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "h",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1h__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 5
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F1::h::1::f0p3",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "1",
+    "figure_index": "0",
+    "panel": "h",
+    "series": "MeCpPtMe3",
+    "series_index": 1,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/3/series/1",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig1h__exp01__case01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 1 ( a ) GPCs of Pt /uniFB01 lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and O2 gas were used as the precursor and counter reactant, respectively, for the ALD of Pt. ( b ) Apparent coverage of the Pt /uniFB01 lms deposited by ALD using the MeCpPtMe3 (blue) and HDMP (red) precursors. The solid lines indicate the corresponding /uniFB01 tting results for the nucleation model. ( c -f ) Typical SEM images showing the Pt deposited via ALD using the MeCpPtMe3 precursor ( c , d ) and the HDMP precursor ( e , f ) at 100 and 200 cycles. ( g ) Density functional theory-calculated energies of the critical points along the reaction coordinate for the adsorption of the two precursors. ( h ) Electrical resistivity of the Pt /uniFB01 lms deposited by ALD according to the number of ALD cycles."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Resistivity (µΩ·cm)",
+     "quantity": "resistivity",
+     "unit": "µΩ·cm",
+     "log": false
+    },
+    "points": [
+     [
+      300.0,
+      21.0
+     ],
+     [
+      400.0,
+      18.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "µΩ·cm",
+     "raw_label": "Resistivity (µΩ·cm)",
+     "unit": "µΩ·cm",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "h",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1h__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "µΩ·cm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "1",
+      "panel": "h",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig1h__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 2
+   },
+   "context_available": [
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F2::a::0::f1p0",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "2",
+    "figure_index": "1",
+    "panel": "a",
+    "series": "HDMP",
+    "series_index": 0,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig2a__exp01__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2 ( a -b ) GPCs ( a ) and electrical resistivity ( b ) of the Pt /uniFB01 lms according to the growth temperatures during the ALD process with respect to the two precursors. ( c ) X-ray photoelectron spectroscopy spectra of Pt /uniFB01 lms grown by ALD with the HDMP precursor at the temperatures of 100 and 300 °C. ( d ) SEM image of the surface of a pristine hair strand. ( e -f ) SEM images of a Pt-coated hair strand ( e ) after ALD at low temperatures and a corresponding higher-magni /uniFB01 cation image ( f ) (inset shows a far higher-magni /uniFB01 cation SEM image of f ). ( g ) SEM image showing the complex 3D surface of pristine paper. ( h -i ) SEM images of the surface of Pt-coated paper ( h ) and corresponding higher-magni /uniFB01 cation images ( i )."
+   },
+   "raw": {
+    "x": {
+     "label": "Growth temperature (°C)",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "Growth per cycle (Å/cycle)",
+     "quantity": "growth_per_cycle",
+     "unit": "Å/cycle",
+     "log": false
+    },
+    "points": [
+     [
+      80,
+      0.22
+     ],
+     [
+      100,
+      0.29
+     ],
+     [
+      120,
+      0.19
+     ],
+     [
+      150,
+      0.43
+     ],
+     [
+      200,
+      0.65
+     ],
+     [
+      250,
+      0.89
+     ],
+     [
+      300,
+      0.87
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Growth temperature (°C)",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å/cycle",
+     "raw_label": "Growth per cycle (Å/cycle)",
+     "unit": "Å/cycle",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      353.15,
+      373.15,
+      393.15,
+      423.15,
+      473.15,
+      523.15,
+      573.15
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.022000000000000002,
+      0.028999999999999998,
+      0.019000000000000003,
+      0.043000000000000003,
+      0.065,
+      0.08900000000000001,
+      0.08700000000000001
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "a",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2a__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "growth_per_cycle_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å/cycle",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "a",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2a__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 7
+   },
+   "context_available": [
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F2::a::1::f1p0",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "2",
+    "figure_index": "1",
+    "panel": "a",
+    "series": "MeCpPtMe3",
+    "series_index": 1,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/1",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig2a__exp01__case01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2 ( a -b ) GPCs ( a ) and electrical resistivity ( b ) of the Pt /uniFB01 lms according to the growth temperatures during the ALD process with respect to the two precursors. ( c ) X-ray photoelectron spectroscopy spectra of Pt /uniFB01 lms grown by ALD with the HDMP precursor at the temperatures of 100 and 300 °C. ( d ) SEM image of the surface of a pristine hair strand. ( e -f ) SEM images of a Pt-coated hair strand ( e ) after ALD at low temperatures and a corresponding higher-magni /uniFB01 cation image ( f ) (inset shows a far higher-magni /uniFB01 cation SEM image of f ). ( g ) SEM image showing the complex 3D surface of pristine paper. ( h -i ) SEM images of the surface of Pt-coated paper ( h ) and corresponding higher-magni /uniFB01 cation images ( i )."
+   },
+   "raw": {
+    "x": {
+     "label": "Growth temperature (°C)",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "Growth per cycle (Å/cycle)",
+     "quantity": "growth_per_cycle",
+     "unit": "Å/cycle",
+     "log": false
+    },
+    "points": [
+     [
+      225,
+      0.4
+     ],
+     [
+      250,
+      0.43
+     ],
+     [
+      275,
+      0.52
+     ],
+     [
+      300,
+      0.55
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Growth temperature (°C)",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å/cycle",
+     "raw_label": "Growth per cycle (Å/cycle)",
+     "unit": "Å/cycle",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      498.15,
+      523.15,
+      548.15,
+      573.15
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "growth_per_cycle",
+     "quantity": "growth_per_cycle",
+     "unit": "nm/cycle",
+     "values": [
+      0.04000000000000001,
+      0.043000000000000003,
+      0.052000000000000005,
+      0.05500000000000001
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "a",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2a__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "growth_per_cycle_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "Å/cycle -> nm/cycle",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å/cycle",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "the /cycle dimension is preserved; Å/cycle never degrades to nm"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "a",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2a__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 4
+   },
+   "context_available": [
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F2::b::0::f1p1",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "2",
+    "figure_index": "1",
+    "panel": "b",
+    "series": "HDMP",
+    "series_index": 0,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/1/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig2b__exp01__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2 ( a -b ) GPCs ( a ) and electrical resistivity ( b ) of the Pt /uniFB01 lms according to the growth temperatures during the ALD process with respect to the two precursors. ( c ) X-ray photoelectron spectroscopy spectra of Pt /uniFB01 lms grown by ALD with the HDMP precursor at the temperatures of 100 and 300 °C. ( d ) SEM image of the surface of a pristine hair strand. ( e -f ) SEM images of a Pt-coated hair strand ( e ) after ALD at low temperatures and a corresponding higher-magni /uniFB01 cation image ( f ) (inset shows a far higher-magni /uniFB01 cation SEM image of f ). ( g ) SEM image showing the complex 3D surface of pristine paper. ( h -i ) SEM images of the surface of Pt-coated paper ( h ) and corresponding higher-magni /uniFB01 cation images ( i )."
+   },
+   "raw": {
+    "x": {
+     "label": "Growth temperature (°C)",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "Resistivity (µΩ·cm)",
+     "quantity": "resistivity",
+     "unit": "µΩ·cm",
+     "log": false
+    },
+    "points": [
+     [
+      80,
+      172
+     ],
+     [
+      100,
+      147
+     ],
+     [
+      120,
+      70
+     ],
+     [
+      150,
+      30
+     ],
+     [
+      200,
+      17
+     ],
+     [
+      250,
+      19
+     ],
+     [
+      300,
+      11
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Growth temperature (°C)",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "µΩ·cm",
+     "raw_label": "Resistivity (µΩ·cm)",
+     "unit": "µΩ·cm",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      353.15,
+      373.15,
+      393.15,
+      423.15,
+      473.15,
+      523.15,
+      573.15
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "b",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2b__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "µΩ·cm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "b",
+      "series": "HDMP",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2b__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 7
+   },
+   "context_available": [
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F2::b::1::f1p1",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "2",
+    "figure_index": "1",
+    "panel": "b",
+    "series": "MeCpPtMe3",
+    "series_index": 1,
+    "series_axis": "precursor",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/1/series/1",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig2b__exp01__case01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2 ( a -b ) GPCs ( a ) and electrical resistivity ( b ) of the Pt /uniFB01 lms according to the growth temperatures during the ALD process with respect to the two precursors. ( c ) X-ray photoelectron spectroscopy spectra of Pt /uniFB01 lms grown by ALD with the HDMP precursor at the temperatures of 100 and 300 °C. ( d ) SEM image of the surface of a pristine hair strand. ( e -f ) SEM images of a Pt-coated hair strand ( e ) after ALD at low temperatures and a corresponding higher-magni /uniFB01 cation image ( f ) (inset shows a far higher-magni /uniFB01 cation SEM image of f ). ( g ) SEM image showing the complex 3D surface of pristine paper. ( h -i ) SEM images of the surface of Pt-coated paper ( h ) and corresponding higher-magni /uniFB01 cation images ( i )."
+   },
+   "raw": {
+    "x": {
+     "label": "Growth temperature (°C)",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "Resistivity (µΩ·cm)",
+     "quantity": "resistivity",
+     "unit": "µΩ·cm",
+     "log": false
+    },
+    "points": [
+     [
+      250,
+      60
+     ],
+     [
+      275,
+      15
+     ],
+     [
+      300,
+      14
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Growth temperature (°C)",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "µΩ·cm",
+     "raw_label": "Resistivity (µΩ·cm)",
+     "unit": "µΩ·cm",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      523.15,
+      548.15,
+      573.15
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "b",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2b__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "µΩ·cm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "b",
+      "series": "MeCpPtMe3",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2b__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 3
+   },
+   "context_available": [
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F2::c::0::f1p2",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "2",
+    "figure_index": "1",
+    "panel": "c",
+    "series": "T_s = 100 °C",
+    "series_index": 0,
+    "series_axis": "growth_temperature",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/2/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig2c__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2 ( a -b ) GPCs ( a ) and electrical resistivity ( b ) of the Pt /uniFB01 lms according to the growth temperatures during the ALD process with respect to the two precursors. ( c ) X-ray photoelectron spectroscopy spectra of Pt /uniFB01 lms grown by ALD with the HDMP precursor at the temperatures of 100 and 300 °C. ( d ) SEM image of the surface of a pristine hair strand. ( e -f ) SEM images of a Pt-coated hair strand ( e ) after ALD at low temperatures and a corresponding higher-magni /uniFB01 cation image ( f ) (inset shows a far higher-magni /uniFB01 cation SEM image of f ). ( g ) SEM image showing the complex 3D surface of pristine paper. ( h -i ) SEM images of the surface of Pt-coated paper ( h ) and corresponding higher-magni /uniFB01 cation images ( i )."
+   },
+   "raw": {
+    "x": {
+     "label": "Binding energy (eV)",
+     "quantity": "Binding energy (eV)",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity (a.u.)",
+     "quantity": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      85.0,
+      21.0
+     ],
+     [
+      83.0,
+      22.0
+     ],
+     [
+      81.0,
+      23.5
+     ],
+     [
+      78.0,
+      26.0
+     ],
+     [
+      76.0,
+      32.0
+     ],
+     [
+      74.8,
+      55.0
+     ],
+     [
+      74.1,
+      105.0
+     ],
+     [
+      73.5,
+      58.0
+     ],
+     [
+      72.5,
+      33.0
+     ],
+     [
+      71.5,
+      50.0
+     ],
+     [
+      70.8,
+      115.0
+     ],
+     [
+      70.1,
+      60.0
+     ],
+     [
+      69.0,
+      23.0
+     ],
+     [
+      67.0,
+      21.5
+     ],
+     [
+      65.0,
+      21.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Binding energy (eV)",
+     "raw_unit": "eV",
+     "raw_label": "Binding energy (eV)",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'Binding energy (eV)' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Intensity (a.u.)",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Intensity (a.u.)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'Binding energy (eV)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "c",
+      "series": "T_s = 100 °C",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2c__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Intensity (a.u.)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "c",
+      "series": "T_s = 100 °C",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2c__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": "multi_output",
+    "resolved_representation": "unresolved",
+    "changed": true,
+    "reason": "x axis role could not be determined",
+    "n_points": 15
+   },
+   "context_available": [
+    "deposition_temperature",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F2::c::1::f1p2",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "2",
+    "figure_index": "1",
+    "panel": "c",
+    "series": "T_s = 300 °C",
+    "series_index": 1,
+    "series_axis": "growth_temperature",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/2/series/1",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig2c__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 2 ( a -b ) GPCs ( a ) and electrical resistivity ( b ) of the Pt /uniFB01 lms according to the growth temperatures during the ALD process with respect to the two precursors. ( c ) X-ray photoelectron spectroscopy spectra of Pt /uniFB01 lms grown by ALD with the HDMP precursor at the temperatures of 100 and 300 °C. ( d ) SEM image of the surface of a pristine hair strand. ( e -f ) SEM images of a Pt-coated hair strand ( e ) after ALD at low temperatures and a corresponding higher-magni /uniFB01 cation image ( f ) (inset shows a far higher-magni /uniFB01 cation SEM image of f ). ( g ) SEM image showing the complex 3D surface of pristine paper. ( h -i ) SEM images of the surface of Pt-coated paper ( h ) and corresponding higher-magni /uniFB01 cation images ( i )."
+   },
+   "raw": {
+    "x": {
+     "label": "Binding energy (eV)",
+     "quantity": "Binding energy (eV)",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity (a.u.)",
+     "quantity": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      85.0,
+      46.0
+     ],
+     [
+      83.0,
+      48.0
+     ],
+     [
+      81.0,
+      51.0
+     ],
+     [
+      78.0,
+      56.0
+     ],
+     [
+      76.0,
+      68.0
+     ],
+     [
+      74.8,
+      110.0
+     ],
+     [
+      74.1,
+      168.0
+     ],
+     [
+      73.5,
+      108.0
+     ],
+     [
+      72.5,
+      75.0
+     ],
+     [
+      71.5,
+      102.0
+     ],
+     [
+      70.9,
+      185.0
+     ],
+     [
+      70.1,
+      105.0
+     ],
+     [
+      69.0,
+      52.0
+     ],
+     [
+      67.0,
+      48.0
+     ],
+     [
+      65.0,
+      46.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Binding energy (eV)",
+     "raw_unit": "eV",
+     "raw_label": "Binding energy (eV)",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'Binding energy (eV)' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Intensity (a.u.)",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity (a.u.)",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Intensity (a.u.)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'Binding energy (eV)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "c",
+      "series": "T_s = 300 °C",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2c__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Intensity (a.u.)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "2",
+      "panel": "c",
+      "series": "T_s = 300 °C",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/1/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig2c__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": "multi_output",
+    "resolved_representation": "unresolved",
+    "changed": true,
+    "reason": "x axis role could not be determined",
+    "n_points": 15
+   },
+   "context_available": [
+    "deposition_temperature",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F3::e::0::f2p0",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "3",
+    "figure_index": "2",
+    "panel": "e",
+    "series": "Resistance",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig3e"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3 ( a ) Plain-view /uniFB01 eld emission scanning electron microscope image of the complex 3D structures of the pristine cotton /uniFB01 ber. ( b -c ) SEM images showing the surface of Pt-coated cotton /uniFB01 ber obtained by ALD at low temperatures ( b ) and a corresponding higher-magni /uniFB01 cation SEM image ( c ). The inset in ( c ) shows a far higher-magni /uniFB01 cation SEM image. ( d ) Photograph of the pristine cotton /uniFB01 ber and Pt-coated cotton /uniFB01 ber obtained by ALD. ( e ) Electrical resistance change of the Pt-coated conductive cotton /uniFB01 ber with respect to the number of ALD cycles. ( f ) Change in the relative electrical resistance of the conductive cotton /uniFB01 ber during the 1000-cycle bending test."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of ALD cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Resistance (Ω/cm)",
+     "quantity": "resistivity",
+     "unit": "ohm/cm",
+     "log": false
+    },
+    "points": [
+     [
+      400,
+      52.8
+     ],
+     [
+      500,
+      31.8
+     ],
+     [
+      1000,
+      14.8
+     ],
+     [
+      1500,
+      3.8
+     ],
+     [
+      2000,
+      2.7
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of ALD cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "ohm/cm",
+     "raw_label": "Resistance (Ω/cm)",
+     "unit": "ohm/cm",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "3",
+      "panel": "e",
+      "series": "Resistance",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig3e"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ohm/cm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "3",
+      "panel": "e",
+      "series": "Resistance",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig3e"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 5
+   },
+   "context_available": [
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1038_am.2016.182::F3::f::0::f2p1",
+   "source": {
+    "paper_id": "10.1038_am.2016.182",
+    "doi": "10.1038_am.2016.182",
+    "figure": "3",
+    "figure_index": "2",
+    "panel": "f",
+    "series": "Relative resistance",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/1/series/0",
+    "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+    "linked_experiment_ids": [
+     "10.1038_am.2016.182__Fig3f"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3 ( a ) Plain-view /uniFB01 eld emission scanning electron microscope image of the complex 3D structures of the pristine cotton /uniFB01 ber. ( b -c ) SEM images showing the surface of Pt-coated cotton /uniFB01 ber obtained by ALD at low temperatures ( b ) and a corresponding higher-magni /uniFB01 cation SEM image ( c ). The inset in ( c ) shows a far higher-magni /uniFB01 cation SEM image. ( d ) Photograph of the pristine cotton /uniFB01 ber and Pt-coated cotton /uniFB01 ber obtained by ALD. ( e ) Electrical resistance change of the Pt-coated conductive cotton /uniFB01 ber with respect to the number of ALD cycles. ( f ) Change in the relative electrical resistance of the conductive cotton /uniFB01 ber during the 1000-cycle bending test."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of bending cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Relative resistance (R/R_0)",
+     "quantity": "resistivity",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      1.0
+     ],
+     [
+      50,
+      1.002
+     ],
+     [
+      100,
+      1.008
+     ],
+     [
+      150,
+      1.012
+     ],
+     [
+      200,
+      1.014
+     ],
+     [
+      250,
+      1.011
+     ],
+     [
+      300,
+      1.013
+     ],
+     [
+      350,
+      1.017
+     ],
+     [
+      400,
+      1.016
+     ],
+     [
+      450,
+      1.019
+     ],
+     [
+      500,
+      1.017
+     ],
+     [
+      550,
+      1.02
+     ],
+     [
+      600,
+      1.021
+     ],
+     [
+      650,
+      1.025
+     ],
+     [
+      700,
+      1.023
+     ],
+     [
+      750,
+      1.021
+     ],
+     [
+      800,
+      1.022
+     ],
+     [
+      850,
+      1.023
+     ],
+     [
+      900,
+      1.026
+     ],
+     [
+      950,
+      1.028
+     ],
+     [
+      1000,
+      1.022
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of bending cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "resistivity",
+     "raw_unit": "",
+     "raw_label": "Relative resistance (R/R_0)",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "resistivity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "3",
+      "panel": "f",
+      "series": "Relative resistance",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig3f"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'resistivity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1038_am.2016.182",
+      "doi": "10.1038_am.2016.182",
+      "figure": "3",
+      "panel": "f",
+      "series": "Relative resistance",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+      "experiment_id": "10.1038_am.2016.182__Fig3f"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "trace",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 21
+   },
+   "context_available": [
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "temperature"
+   ]
+  }
+ ]
+}

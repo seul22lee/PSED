@@ -1,0 +1,501 @@
+{
+ "n_pages": 15,
+ "sections": [
+  "Performance of AI agents based on reasoning language models on ALD process optimization tasks",
+  "Articles You May Be Interested In",
+  "Precision Quadrupole Mass Spectrometers",
+  "Performance of AI agents based on reasoning language models on ALD process optimization tasks",
+  "AFFILIATIONS",
+  "ABSTRACT",
+  "I. INTRODUCTION",
+  "II. METHODOLOGY",
+  "A. Reasoning large language models",
+  "B. AI agents based on LLMs",
+  "C. AI agent for ALD process optimization",
+  "D. ALD process modeling",
+  "Sample of prompt to LLM",
+  "LLM response",
+  "1. Fully self-limited ALD process",
+  "2. ALD process with a CVD component",
+  "E. ALD optimization benchmark",
+  "III. RESULTS",
+  "A. Performance of the base agent",
+  "B. Performance of the base agent without initial guess",
+  "C. Comparison with other algorithms",
+  "D. Performance of agents with memory",
+  "E. Model search strategy and reasoning",
+  "IV. DISCUSSION",
+  "V. CONCLUSIONS",
+  "ACKNOWLEDGMENTS",
+  "AUTHOR DECLARATIONS",
+  "Conflict of Interest",
+  "Author Contributions",
+  "APPENDIX A: DERIVATION OF ALD MODEL",
+  "APPENDIX B: PROMPTS USED FOR THE REASONING MODEL",
+  "Your job: process requests to operate an atomic  layer  deposition  process.",
+  "REFERENCES"
+ ],
+ "n_figures": 36,
+ "n_tables": 5,
+ "figures": [
+  {
+   "index": 0,
+   "caption": "",
+   "image": "figures/fig_0.png",
+   "page": 1,
+   "bbox": [
+    33.602195739746094,
+    135.45361328125,
+    84.2641372680664,
+    83.12921142578125
+   ]
+  },
+  {
+   "index": 1,
+   "caption": "",
+   "image": "figures/fig_1.png",
+   "page": 1,
+   "bbox": [
+    189.9312744140625,
+    704.5726776123047,
+    198.40228271484375,
+    694.8543701171875
+   ]
+  },
+  {
+   "index": 2,
+   "caption": "",
+   "image": "figures/fig_2.png",
+   "page": 1,
+   "bbox": [
+    120.2076644897461,
+    689.6492156982422,
+    208.22572326660156,
+    670.2824096679688
+   ]
+  },
+  {
+   "index": 3,
+   "caption": "",
+   "image": "figures/fig_3.png",
+   "page": 1,
+   "bbox": [
+    129.62960815429688,
+    198.28240966796875,
+    241.1282196044922,
+    80.51873779296875
+   ]
+  },
+  {
+   "index": 4,
+   "caption": "",
+   "image": "figures/fig_4.png",
+   "page": 1,
+   "bbox": [
+    444.9186096191406,
+    629.7140960693359,
+    473.971435546875,
+    582.2679138183594
+   ]
+  },
+  {
+   "index": 5,
+   "caption": "",
+   "image": "figures/fig_5.png",
+   "page": 1,
+   "bbox": [
+    485.4815368652344,
+    629.5052947998047,
+    517.2203369140625,
+    582.3140563964844
+   ]
+  },
+  {
+   "index": 6,
+   "caption": "",
+   "image": "figures/fig_6.png",
+   "page": 2,
+   "bbox": [
+    51.37397003173828,
+    768.246883392334,
+    129.74749755859375,
+    746.1891975402832
+   ]
+  },
+  {
+   "index": 7,
+   "caption": "",
+   "image": "figures/fig_7.png",
+   "page": 2,
+   "bbox": [
+    113.34379577636719,
+    656.6401062011719,
+    130.83653259277344,
+    639.563720703125
+   ]
+  },
+  {
+   "index": 8,
+   "caption": "",
+   "image": "figures/fig_8.png",
+   "page": 2,
+   "bbox": [
+    140.74497985839844,
+    567.1399688720703,
+    153.66397094726562,
+    556.4891052246094
+   ]
+  },
+  {
+   "index": 9,
+   "caption": "",
+   "image": "figures/fig_9.png",
+   "page": 2,
+   "bbox": [
+    457.1841125488281,
+    616.7033233642578,
+    480.9718933105469,
+    588.720703125
+   ]
+  },
+  {
+   "index": 10,
+   "caption": "",
+   "image": "figures/fig_10.png",
+   "page": 2,
+   "bbox": [
+    494.2884826660156,
+    616.0206298828125,
+    524.1209716796875,
+    588.3960723876953
+   ]
+  },
+  {
+   "index": 11,
+   "caption": "",
+   "image": "figures/fig_11.png",
+   "page": 2,
+   "bbox": [
+    537.5974731445312,
+    617.1604309082031,
+    559.0704345703125,
+    589.1634826660156
+   ]
+  },
+  {
+   "index": 12,
+   "caption": "",
+   "image": "figures/fig_12.png",
+   "page": 3,
+   "bbox": [
+    51.46607208251953,
+    768.0798301696777,
+    129.7378387451172,
+    746.1789321899414
+   ]
+  },
+  {
+   "index": 13,
+   "caption": "",
+   "image": "figures/fig_13.png",
+   "page": 4,
+   "bbox": [
+    51.441368103027344,
+    768.1513252258301,
+    129.66488647460938,
+    746.2199897766113
+   ]
+  },
+  {
+   "index": 14,
+   "caption": "FIG. 1. Scheme of our AI agent for ALD process optimization: the logic component generates queries and process the response of the AI component, which uses a reasoning model to determine the strategy for optimization and request additional experiments. Based on the AI component's response, the logic component sends new conditions to the simulated ALD reactor.",
+   "image": "figures/fig_14.png",
+   "page": 4,
+   "bbox": [
+    54.13277816772461,
+    708.7035675048828,
+    295.5469665527344,
+    584.0989532470703
+   ]
+  },
+  {
+   "index": 15,
+   "caption": "",
+   "image": "figures/fig_15.png",
+   "page": 5,
+   "bbox": [
+    51.472171783447266,
+    768.1781692504883,
+    129.72763061523438,
+    746.1428985595703
+   ]
+  },
+  {
+   "index": 16,
+   "caption": "",
+   "image": "figures/fig_16.png",
+   "page": 6,
+   "bbox": [
+    51.50914764404297,
+    768.2303657531738,
+    129.69931030273438,
+    746.1316184997559
+   ]
+  },
+  {
+   "index": 17,
+   "caption": "FIG. 3. Precursor saturation curves of simulated ALD processes used to evaluate the process optimization by AI agents: (a) Soft-saturating model, showing the impact of a second, lower reactivity reaction pathway ( k a 1 \u00bc 5 s 1 , k b 1 \u00bc 1 s 1 , k 2 = 4 s -1 ); (b) Impact of CVD component for various values of the nonself-limited CVD component ( k 1 = 5 s -1 , k 2 = 4 s -1 ). In both cases, the coreactant dose time was set to t 2 = 1 s.",
+   "image": "figures/fig_17.png",
+   "page": 6,
+   "bbox": [
+    54.407676696777344,
+    709.2051467895508,
+    296.1856689453125,
+    404.1581726074219
+   ]
+  },
+  {
+   "index": 18,
+   "caption": "",
+   "image": "figures/fig_18.png",
+   "page": 7,
+   "bbox": [
+    51.39923095703125,
+    768.2689056396484,
+    129.68667602539062,
+    746.1691703796387
+   ]
+  },
+  {
+   "index": 19,
+   "caption": "",
+   "image": "figures/fig_19.png",
+   "page": 8,
+   "bbox": [
+    51.51233673095703,
+    768.2815017700195,
+    129.69119262695312,
+    746.1924514770508
+   ]
+  },
+  {
+   "index": 20,
+   "caption": "FIG. 4. Relative error between the growth per cycle resulting from the optimization process by the AI agent and the saturated GPC of the ALD process: (a) agent built on top of the o3 reasoning model; (b) agent built on top of the GPT5 reasoning model.",
+   "image": "figures/fig_20.png",
+   "page": 8,
+   "bbox": [
+    53.626651763916016,
+    709.5876083374023,
+    295.07366943359375,
+    444.61822509765625
+   ]
+  },
+  {
+   "index": 21,
+   "caption": "FIG. 5. Saturation curves and optimal times for two processes optimized by an agent built with the o3 reasoning model at the 50% and 75% percentile of relative error: (a) precursor saturation curve and (b) coreactant saturation curve for the slow/fast 1 \u00c5/cycle ALD process (50th percentile) (c) precursor saturation curve and (d) coreactant saturation curve for the fast/fast 1 \u00c5/cycle ALD process (75th percentile). Dots represent the optimal conditions returned by the AI agent.",
+   "image": "figures/fig_21.png",
+   "page": 8,
+   "bbox": [
+    315.7105407714844,
+    709.8504409790039,
+    557.2000122070312,
+    495.5027770996094
+   ]
+  },
+  {
+   "index": 22,
+   "caption": "FIG. 6. Optimized precursor and coreactant dose times for AI agents based on o3 and GPT5 models for the fast/fast process with a GPC of 1 \u00c5/cycle. In all cases the agents converged to an optimal solution, albeit with run-to-run variability as evidenced by the scatter in the plot. The greyscale contour plot represents the growth per cycle as a function of the precursor and coreactant dose time.",
+   "image": "figures/fig_22.png",
+   "page": 8,
+   "bbox": [
+    316.3252868652344,
+    370.8575439453125,
+    557.557373046875,
+    185.60491943359375
+   ]
+  },
+  {
+   "index": 23,
+   "caption": "",
+   "image": "figures/fig_23.png",
+   "page": 9,
+   "bbox": [
+    51.45570373535156,
+    768.2375068664551,
+    129.66644287109375,
+    746.1717834472656
+   ]
+  },
+  {
+   "index": 24,
+   "caption": "FIG. 7. Number of experiments requested as a function of the iteration number for ten independent optimization runs of the fast/fast 1 \u00c5/cycle ALD process using an AI agent based on the o3 reasoning model for an (0.2 s, 0.2 s) initial condition. The blue line represents the average over all the runs.",
+   "image": "figures/fig_24.png",
+   "page": 9,
+   "bbox": [
+    53.739234924316406,
+    709.3343200683594,
+    295.46044921875,
+    533.6992492675781
+   ]
+  },
+  {
+   "index": 25,
+   "caption": "FIG. 8. Optimized precursor and coreactant dose times for an AI agent based on the o3 model optimizing the slow/fast ALD process without any initial guess. The different colors represent the different scenarios summarized in Table III. The grayscale contour plot represents the growth per cycle as a function of the precursor and coreactant dose time.",
+   "image": "figures/fig_25.png",
+   "page": 9,
+   "bbox": [
+    315.79443359375,
+    709.0259628295898,
+    557.6852416992188,
+    524.3370361328125
+   ]
+  },
+  {
+   "index": 26,
+   "caption": "",
+   "image": "figures/fig_26.png",
+   "page": 10,
+   "bbox": [
+    51.44856643676758,
+    768.1825828552246,
+    129.64305114746094,
+    746.1515693664551
+   ]
+  },
+  {
+   "index": 27,
+   "caption": "",
+   "image": "figures/fig_27.png",
+   "page": 11,
+   "bbox": [
+    51.48110580444336,
+    768.2706413269043,
+    129.65313720703125,
+    746.2040405273438
+   ]
+  },
+  {
+   "index": 28,
+   "caption": "FIG. 9. Optimized precursor and coreactant dose times for an AI agent with memory based on the o3 model optimizing the slow/fast ALD process without any initial guess. The different colors represent the different scenarios summarized in Table V . The grayscale contour plot represents the growth per cycle as a function of the precursor and coreactant dose time.",
+   "image": "figures/fig_28.png",
+   "page": 11,
+   "bbox": [
+    54.03043746948242,
+    708.9092483520508,
+    295.4422912597656,
+    524.368408203125
+   ]
+  },
+  {
+   "index": 29,
+   "caption": "FIG. 10. Visualization of the search strategy of the baseline agent build on top of OpenAI's o3 reasoning model when optimizing a fast/fast ALD process with a GPC of 1 \u00c5/cycle with an initial guess of (0.2 s, 0.2 s). Each color represents a request for additional data points made by the agent during a different iteration of the optimization process. Each plot represents an independent run: (a) Run 1; (b) Run 2; (c) Run 3; (d) Run 4; (e) Run 5; (f) Run 6; (g) Run 7; (h) Run 8; (i) Run 9; ( j) Run 10.",
+   "image": "figures/fig_29.png",
+   "page": 11,
+   "bbox": [
+    52.6003532409668,
+    337.8521423339844,
+    558.447021484375,
+    160.59552001953125
+   ]
+  },
+  {
+   "index": 30,
+   "caption": "",
+   "image": "figures/fig_30.png",
+   "page": 12,
+   "bbox": [
+    51.437583923339844,
+    768.2721862792969,
+    129.72755432128906,
+    746.1351928710938
+   ]
+  },
+  {
+   "index": 31,
+   "caption": "FIG. 11. Visualization of the search strategy of the baseline agent built on top of OpenAI's o3 reasoning model when optimizing a slow/fast ALD process with a GPC of 1 \u00c5/cycle with no initial guess and with prior information on the precursor vapor pressure. Each plot represents an independent run: (a) Run 1; (b) Run 2; (c) Run 3; (d) Run 4; (e) Run 5; (f) Run 6; (g) Run 7; (h) Run 8; (i) Run 9; ( j) Run 10.",
+   "image": "figures/fig_31.png",
+   "page": 12,
+   "bbox": [
+    52.65248107910156,
+    709.6164855957031,
+    558.679443359375,
+    531.2599792480469
+   ]
+  },
+  {
+   "index": 32,
+   "caption": "",
+   "image": "figures/fig_32.png",
+   "page": 13,
+   "bbox": [
+    51.48705291748047,
+    768.2233543395996,
+    129.73434448242188,
+    746.1490478515625
+   ]
+  },
+  {
+   "index": 33,
+   "caption": "FIG. 12. Maximum precursor and dose times explored by the AI agent based on the o3 model for two fast/fast, 1 \u00c5/cycle ALD processes with CVD components of 4.8 \u00c5/min and 6.0 \u00c5/min. Each point represents a separate run and they are color coded depending on whether the agent identifies the process as self-limited (red) or nonself-limited (blue).",
+   "image": "figures/fig_33.png",
+   "page": 13,
+   "bbox": [
+    54.341365814208984,
+    708.4263229370117,
+    294.7606506347656,
+    532.3101806640625
+   ]
+  },
+  {
+   "index": 34,
+   "caption": "",
+   "image": "figures/fig_34.png",
+   "page": 14,
+   "bbox": [
+    51.496639251708984,
+    768.2012596130371,
+    129.72935485839844,
+    746.1708030700684
+   ]
+  },
+  {
+   "index": 35,
+   "caption": "",
+   "image": "figures/fig_35.png",
+   "page": 15,
+   "bbox": [
+    51.495155334472656,
+    768.1443061828613,
+    129.77049255371094,
+    746.2023506164551
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "index": 0,
+   "caption": "TABLE I. Main ALD processes used in this work.",
+   "markdown": "TABLE I. Main ALD processes used in this work.\n\n| Name                                                                                                       | Model parameters                                                                                                                                                                                                                                          |\n|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n| fast/fast, 1 \u00c5/cycle slow/slow, 1 \u00c5/cycle slow/fast, 1 \u00c5/cycle fast/fast, 0.3 \u00c5/cycle soft/fast, 1 \u00c5/cycle | k 1 = 5 s - 1 , k 2 = 4 s - 1 , GPC 0 = 1\u00c5 k 1 = 1 s - 1 , k 2 = 1.2 s - 1 , GPC 0 = 1\u00c5 k 1 = 1 s - 1 , k 2 = 4 s - 1 , GPC 0 = 1\u00c5 k 1 = 5 s - 1 , k 2 = 4 s - 1 , GPC 0 = 0.3\u00c5 k a 1 \u00bc 5 s - 1 , k b 1 \u00bc 1 s - 1 , f b = 0.2, k 2 = 4 s - 1 , GPC 0 = 1\u00c5 |"
+  },
+  {
+   "index": 1,
+   "caption": "",
+   "markdown": "| ALD process           | Guess        | Model   |   Success (%) | t 1 (s)    | t 2 (s)    | GPC (\u00c5/cy)   |   Error, \u03b5 | # Samples   | # Iter   | t 1 + t 2 (s)   |\n|-----------------------|--------------|---------|---------------|------------|------------|--------------|------------|-------------|----------|-----------------|\n| fast/fast 1.0 \u00c5/cycle | 0.2 s, 0.2 s | o3      |           100 | 0.86(0.15) | 1.3(0.3)   | 0.97(0.02)   |       0.03 | 13(5)       | 5(1)     | 2.2(0.4)        |\n| fast/fast 1.0 \u00c5/cycle | 0.2 s, 0.2 s | GPT5    |           100 | 0.87(0.11) | 1.1(0.2)   | 0.97(0.02)   |       0.03 | 11(3)       | 4.2(1.0) | 2.0(0.3)        |\n| fast/fast 1.0 \u00c5/cycle | 2 s, 2 s     | o3      |           100 | 1.6(0.4)   | 1.6(0.4)   | 0.99(0.01)   |       0.01 | 9(3)        | 2.6(0.7) | 3.2(0.9)        |\n| fast/fast 1.0 \u00c5/cycle | 2 s, 2 s     | GPT5    |           100 | 1.8(0.4)   | 1.8(0.3)   | 0.99(0.01)   |       0.01 | 4.7(1.1)    | 2.5(0.5) | 3.6(0.7)        |\n| slow/slow 1.0 \u00c5/cycle | 0.2 s, 0.2 s | o3      |           100 | 3.2(1.0)   | 3.6(0.7)   | 0.92(0.08)   |       0.08 | 26(6)       | 8.0(1.7) | 6.8(1.5)        |\n| slow/slow 1.0 \u00c5/cycle | 0.2 s, 0.2 s | GPT5    |           100 | 2.5(0.9)   | 3.2(0.5)   | 0.86(0.11)   |       0.14 | 18(5)       | 6(2)     | 5.6(1.2)        |\n| slow/slow 1.0 \u00c5/cycle | 2 s, 2 s     | o3      |           100 | 5.3(0.9)   | 4.8(0.9)   | 0.99(0.01)   |       0.01 | 10(2)       | 3.9(0.8) | 10.1(1.4)       |\n| slow/slow 1.0 \u00c5/cycle | 2 s, 2 s     | GPT5    |           100 | 5.5(0.8)   | 4.7(0.6)   | 0.99(0.01)   |       0.01 | 8(2)        | 3.8(1.0) | 10.2(1.2)       |\n| slow/fast 1.0 \u00c5/cycle | 0.2 s, 0.2 s | o3      |           100 | 3.8(0.6)   | 1.4(0.3)   | 0.97(0.01)   |       0.03 | 23(5)       | 6.7(1.2) | 5.2(0.6)        |\n| slow/fast 1.0 \u00c5/cycle | 0.2 s, 0.2 s | GPT5    |           100 | 3.4(0.8)   | 1.2(0.2)   | 0.95(0.04)   |       0.05 | 16(5)       | 7(2)     | 4.6(0.9)        |\n| slow/fast 1.0 \u00c5/cycle | 2 s, 2 s     | o3      |           100 | 3.8(0.6)   | 1.0(0.4)   | 0.97(0.01)   |       0.03 | 9(2)        | 3.3(0.4) | 5.8(0.9)        |\n| slow/fast 1.0 \u00c5/cycle | 2 s, 2 s     | GPT5    |           100 | 5.2(0.9)   | 1.8(0.3)   | 0.99(0.01)   |       0.01 | 7(2)        | 3.3(0.8) | 7.0(0.9)        |\n| fast/fast 0.3 \u00c5/cycle | 0.2 s, 0.2 s | o3      |           100 | 0.79(0.16) | 1.0(0.2)   | 0.29(0.01)   |       0.03 | 14(6)       | 5.0(1.2) | 1.8(0.3)        |\n| fast/fast 0.3 \u00c5/cycle | 0.2 s, 0.2 s | GPT5    |           100 | 0.79(0.16) | 0.9(0.2)   | 0.28(0.01)   |       0.07 | 10(2)       | 4.3(0.6) | 1.7(0.3)        |\n| fast/fast 0.3 \u00c5/cycle | 2 s, 2 s     | o3      |           100 | 1.2(0.4)   | 1.8(0.3)   | 0.30(0)      |       0    | 7.3(1.6)    | 3.3(0.8) | 3.0(0.5)        |\n| fast/fast 0.3 \u00c5/cycle | 2 s, 2 s     | GPT5    |           100 | 1.7(0.4)   | 1.95(0.15) | 0.30(0)      |       0    | 5(2)        | 2.4(0.5) | 3.6(0.6)        |\n| soft/fast             | 0.2 s, 0.2 s | o3      |            90 | 1.4(0.5)   | 1.3(0.3)   | 0.93(0.02)   |       0.07 | 15(5)       | 4.9(1.1) | 2.6(0.8)        |\n| soft/fast             | 0.2 s, 0.2 s | GPT5    |           100 | 1.6(0.5)   | 1.2(0.3)   | 0.94(0.03)   |       0.06 | 10(2)       | 3.7(1.1) | 2.8(0.6)        |\n| soft/fast             | 2 s, 2 s     | o3      |           100 | 2.8(0.8)   | 1.8(0.3)   | 0.98(0.01)   |       0.02 | 7(2)        | 3.3(0.9) | 4.7(1.0)        |\n| soft/fast             | 2 s, 2 s     | GPT5    |           100 | 3.3(0.6)   | 1.9(0.2)   | 0.99(0.01)   |       0.01 | 9(2)        | 3.2(0.9) | 5.2(0.8)        |"
+  },
+  {
+   "index": 2,
+   "caption": "TABLE III. Performance of the AI agent during the optimization of the slow/fast ALD process with no initial guess. In all cases, averages over ten independent runs are provided, with the number in parenthesis representing the standard deviation.",
+   "markdown": "TABLE  III. Performance  of  the  AI  agent  during  the  optimization  of  the  slow/fast ALD  process  with  no  initial  guess.  In  all  cases,  averages  over  ten  independent runs  are  provided,  with  the  number  in  parenthesis  representing  the  standard deviation.\n\n| Scenario   |   Success (%) | t 1 (s)   | t 2 (s)   | GPC (\u00c5/cy)   |   Error, \u03b5 | # Samples   |\n|------------|---------------|-----------|-----------|--------------|------------|-------------|\n| Baseline   |           100 | 3.9(1.0)  | 1.3(0.3)  | 0.96(0.03)   |       0.04 | 21(6)       |\n| Pressure   |           100 | 3.9(0.9)  | 1.5(0.4)  | 0.96(0.03)   |       0.04 | 13(3)       |\n| GPC        |           100 | 4.0(0.7)  | 1.4(0.4)  | 0.97(0.02)   |       0.03 | 16(4)       |\n| Both       |            90 | 3.8(0.6)  | 1.4(0.3)  | 0.97(0.01)   |       0.03 | 14(4)       |\n| Dose       |           100 | 3.8(0.7)  | 1.3(0.3)  | 0.96 (0.02)  |       0.04 | 14(4)       |"
+  },
+  {
+   "index": 3,
+   "caption": "",
+   "markdown": "| Algorithm              | ALD process        |   t 1 (s) |   t 2 (s) |   Error ( \u03b5 ) |\n|------------------------|--------------------|-----------|-----------|---------------|\n| Bayesian               | fast/fast 1 \u00c5/cy   |      0.85 |      1    |          0.03 |\n|                        | slow/slow 1 \u00c5/cy   |      2.95 |      2.65 |          0.09 |\n|                        | slow/fast 1 \u00c5/cy   |      2.95 |      1.15 |          0.06 |\n|                        | fast/fast 0.3 \u00c5/cy |      0.55 |      0.65 |          0.13 |\n|                        | soft/fast 1 \u00c5/cy   |      1.2  |      1.05 |          0.07 |\n| Rule based 0.2 s,0.2 s | fast/fast 1 \u00c5/cy   |      0.73 |      0.83 |          0.06 |\n|                        | slow/slow 1 \u00c5/cy   |      4    |      2.8  |          0.05 |\n|                        | slow/fast 1 \u00c5/cy   |      4    |      0.76 |          0.06 |\n|                        | fast/fast 0.3 \u00c5/cy |      0.73 |      0.83 |          0.06 |\n|                        | soft/fast 1 \u00c5/cy   |      1.2  |      0.83 |          0.09 |\n| Rule based             | fast/fast 1 \u00c5/cy   |      0.92 |      1.02 |          0.03 |\n| 2 s,2 s                | slow/slow 1 \u00c5/cy   |      3.74 |      2.86 |          0.05 |\n|                        | slow/fast 1 \u00c5/cy   |      3.74 |      1.02 |          0.04 |\n|                        | fast/fast 0.3 \u00c5/cy |      0.92 |      1.02 |          0.03 |\n|                        | soft/fast 1 \u00c5/cy   |      1.8  |      1.02 |          0.05 |"
+  },
+  {
+   "index": 4,
+   "caption": "TABLE V. Performance of the AI agent with memory during the optimization of the slow/fast ALD process with no initial guess. The agent uses the o3 reasoning language model. In all cases, averages over ten independent runs are provided, with the number in parenthesis representing the standard deviation.",
+   "markdown": "TABLE V. Performance of the AI agent with memory during the optimization of the slow/fast ALD process with no initial guess. The agent uses the o3 reasoning language model. In all cases, averages over ten independent runs are provided, with the number in parenthesis representing the standard deviation.\n\n| Scenario   |   Success (%) | t 1 (s)   | t 2 (s)   | GPC (\u00c5/cy)   | # Samples   |\n|------------|---------------|-----------|-----------|--------------|-------------|\n| Baseline   |           100 | 3.7(0.8)  | 1.0(0.2)  | 0.95(0.02)   | 18(5)       |\n| Pressure   |           100 | 3.9(1.1)  | 1.0(0.2)  | 0.94(0.04)   | 16(4)       |\n| GPC        |           100 | 3.7(0.7)  | 1.1(0.4)  | 0.94(0.06)   | 18(4)       |\n| Both       |           100 | 4.2(1.0)  | 1.1(0.2)  | 0.96(0.02)   | 18(2)       |\n| Dose       |           100 | 3.9(0.5)  | 1.1(0.3)  | 0.96(0.02)   | 13.6(1.4)   |"
+  }
+ ]
+}

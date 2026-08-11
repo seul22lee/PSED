@@ -1,0 +1,167 @@
+{
+ "audit": "schema_semantic_gap_audit",
+ "date": "2026-08-11",
+ "mode": "READ_ONLY",
+ "api_calls": 0,
+ "pipeline_reruns": 0,
+ "live_corpus_papers": 44,
+ "sources_read": [
+  {
+   "path": "ontology/ontology.ttl",
+   "exists": false,
+   "kind": "file",
+   "bytes": null
+  },
+  {
+   "path": "ontology/",
+   "exists": true,
+   "kind": "dir",
+   "bytes": null
+  },
+  {
+   "path": "pipeline/resolve/",
+   "exists": true,
+   "kind": "dir",
+   "bytes": null
+  },
+  {
+   "path": "pipeline/canonical/build_canonical.py",
+   "exists": true,
+   "kind": "file",
+   "bytes": 6563
+  },
+  {
+   "path": "pipeline/canonical/sources.py",
+   "exists": true,
+   "kind": "file",
+   "bytes": 18288
+  },
+  {
+   "path": "pipeline/review/build_kg.py",
+   "exists": true,
+   "kind": "file",
+   "bytes": 67656
+  },
+  {
+   "path": "pipeline/review/build_core_kg.py",
+   "exists": true,
+   "kind": "file",
+   "bytes": 36260
+  },
+  {
+   "path": "pipeline/text/geometry.py",
+   "exists": true,
+   "kind": "file",
+   "bytes": 16444
+  },
+  {
+   "path": "papers/_corpus/knowledge_graph_onto.json",
+   "exists": true,
+   "kind": "file",
+   "bytes": 13239701
+  },
+  {
+   "path": "papers/_corpus/knowledge_graph_core_flat.json",
+   "exists": true,
+   "kind": "file",
+   "bytes": 3458283
+  },
+  {
+   "path": "papers/_corpus/knowledge_graph_core_series.json",
+   "exists": true,
+   "kind": "file",
+   "bytes": 3524367
+  },
+  {
+   "path": "reports/exact_overlap_audit.json",
+   "exists": true,
+   "kind": "file",
+   "bytes": 21390
+  },
+  {
+   "path": "reports/true_deposition_overlap_12_selection.json",
+   "exists": true,
+   "kind": "file",
+   "bytes": 10073
+  }
+ ],
+ "derived_counts": {
+  "resolved_experiments": 1127,
+  "resolved_entities": 1044,
+  "canonical_curves": 1042,
+  "kg_onto": {
+   "nodes": 13323,
+   "edges": 38055,
+   "papers": 47,
+   "experiments": 1127
+  },
+  "kg_core_flat": {
+   "nodes": 1877,
+   "edges": 7243,
+   "papers": 32,
+   "experiments": 851,
+   "stale": true
+  },
+  "kg_core_series": {
+   "nodes": 1948,
+   "edges": 7385,
+   "papers": 32,
+   "experiments": 851,
+   "stale": true
+  },
+  "physical_case_id_groups": 608,
+  "physical_case_id_groups_single_figure": 608,
+  "entities_without_physical_case_id": 370,
+  "uninstantiated_target_classes": [
+   "ExperimentalCase",
+   "DepositionRun",
+   "Sample",
+   "Measurement",
+   "PlotRepresentation",
+   "ModelPrediction"
+  ],
+  "entity_representation_values": {
+   "primary": 960,
+   "scaled": 33,
+   "normalized": 30,
+   "as_measured": 20,
+   "inset": 1
+  },
+  "experimental_case_status": {
+   "supported": 500,
+   "not_an_experiment": 312,
+   "independent_process_sweep": 103,
+   "shared_measurement_event": 66,
+   "not_an_independent_sweep": 31,
+   "unresolved_settings": 27,
+   "single_setting_only": 5
+  }
+ },
+ "gap_matrix_rows": 21,
+ "severity": {
+  "CRITICAL": 2,
+  "HIGH": 8,
+  "MEDIUM": 4,
+  "NONE": 7
+ },
+ "gap_types": {
+  "A_uninstantiated": 13,
+  "B_missing_from_schema": 3,
+  "C_wrong_level": 3,
+  "D_duplicated": 1
+ },
+ "new_ontology_classes_required": 0,
+ "new_ontology_role_vocabularies_required": 2,
+ "known_extraction_issues_out_of_scope": [
+  {
+   "paper": "10.1038_am.2016.182",
+   "issue": "printed Figure 4 missing (caption grammar)",
+   "status": "KNOWN EXTRACTION ISSUE - OUTSIDE THIS AUDIT"
+  },
+  {
+   "paper": "10.1039_c7ta03257a",
+   "issue": "Fig 8b missing (Docling PictureItem gap)",
+   "status": "KNOWN EXTRACTION ISSUE - OUTSIDE THIS AUDIT"
+  }
+ ]
+}

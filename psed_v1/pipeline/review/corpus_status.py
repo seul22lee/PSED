@@ -104,11 +104,20 @@ for sd, st, i in rows:
              f'{cell(st["kb"])}{cell(st["geom"])}<td>{i["ald"]}</td><td>{i["go"]}</td>'
              f'<td>{i["nexp"]}</td><td>{i["prof"]}</td><td>{i["ser"]}</td>'
              f'<td>{i["canon"]}</td><td>{html.escape(i["mats"])}</td></tr>')
+# candidate-expansion section, rendered from reports/candidate_corpus_expansion.json.
+# Appended AFTER the live-corpus table so the existing status view is unchanged.
+try:
+    from pipeline.review.candidate_section import render as _render_candidates
+except Exception:                                   # pragma: no cover - optional section
+    _render_candidates = lambda: []
+
 h.append('</table><h2>Ontology gaps</h2>')
 for label, dd in (("materials", miss_m), ("precursors", miss_p), ("coreactants", miss_c)):
     h.append(f'<h3>{label} ({len(dd)})</h3><table><tr><th>term</th><th>papers</th></tr>')
     for k, v in sorted(dd.items()):
         h.append(f'<tr><td class="gap">{html.escape(k)}</td><td>{", ".join(v)}</td></tr>')
     h.append('</table>')
+h += _render_candidates()
+
 (P.REPORTS / "corpus_status.html").write_text("\n".join(h))
 print(f"\nwrote {P.REPORTS / 'corpus_status.html'}")

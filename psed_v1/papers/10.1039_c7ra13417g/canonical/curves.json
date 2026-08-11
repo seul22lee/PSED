@@ -1,0 +1,4072 @@
+{
+ "doi": "10.1039_c7ra13417g",
+ "generator": "pipeline/canonical/build_canonical.py",
+ "code_version": "3848481+dirty",
+ "created_at": 1786465364,
+ "ontology": "ontology/ald_ontology.json",
+ "n_curves": 17,
+ "curves": [
+  {
+   "curve_id": "10.1039_c7ra13417g::F1::a::0::f0p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "a",
+    "series": "",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig1a__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 (a) Precursor saturation studies by the variation of the [Y(DPDMG)3] pulse length at 225 /C14 C on Si(100). (b) Film thickness versus number of applied cycles. (c) GPC variation with water purge time at 225 /C14 ConSi(100). (d) GPC and thin /uniFB01 lm density as a function of deposition temperature."
+   },
+   "raw": {
+    "x": {
+     "label": "Precursor Pulse [s]",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "GPC [Å]",
+     "quantity": "growth_per_cycle",
+     "unit": "Å",
+     "log": false
+    },
+    "points": [
+     [
+      1,
+      0.38
+     ],
+     [
+      3,
+      0.76
+     ],
+     [
+      4,
+      1.02
+     ],
+     [
+      5,
+      0.98
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "Precursor Pulse [s]",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å",
+     "raw_label": "GPC [Å]",
+     "unit": "Å",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      1,
+      3,
+      4,
+      5
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "a",
+      "series": "",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1a__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "a",
+      "series": "",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1a__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 4
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F1::b::0::f0p1",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "b",
+    "series": "",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/1/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig1b__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 (a) Precursor saturation studies by the variation of the [Y(DPDMG)3] pulse length at 225 /C14 C on Si(100). (b) Film thickness versus number of applied cycles. (c) GPC variation with water purge time at 225 /C14 ConSi(100). (d) GPC and thin /uniFB01 lm density as a function of deposition temperature."
+   },
+   "raw": {
+    "x": {
+     "label": "Number of Cycles",
+     "quantity": "cycle_number",
+     "unit": "",
+     "log": false
+    },
+    "y": {
+     "label": "Film Thickness [nm]",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "log": false
+    },
+    "points": [
+     [
+      50,
+      4.5
+     ],
+     [
+      150,
+      16.5
+     ],
+     [
+      300,
+      30.1
+     ],
+     [
+      600,
+      61.0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "cycle_number",
+     "raw_unit": "",
+     "raw_label": "Number of Cycles",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": "cycle_number",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "nm",
+     "raw_label": "Film Thickness [nm]",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": {
+     "comparison_group": "film_thickness",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "values": [
+      4.5,
+      16.5,
+      30.1,
+      61.0
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "cycle_count",
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": "cycle",
+     "context": {},
+     "unresolved_reason": "unit '' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "b",
+      "series": "",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1b__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "b",
+      "series": "",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/1/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1b__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "case",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'cycle_number' is an ontology coordinate",
+    "n_points": 4
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F1::c::0::f0p2",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "c",
+    "series": "",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/2/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig1c__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 (a) Precursor saturation studies by the variation of the [Y(DPDMG)3] pulse length at 225 /C14 C on Si(100). (b) Film thickness versus number of applied cycles. (c) GPC variation with water purge time at 225 /C14 ConSi(100). (d) GPC and thin /uniFB01 lm density as a function of deposition temperature."
+   },
+   "raw": {
+    "x": {
+     "label": "Water Purge [s]",
+     "quantity": "purge_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "GPC [Å]",
+     "quantity": "growth_per_cycle",
+     "unit": "Å",
+     "log": false
+    },
+    "points": [
+     [
+      20,
+      1.23
+     ],
+     [
+      30,
+      1.0
+     ],
+     [
+      60,
+      1.02
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "purge_time",
+     "raw_unit": "s",
+     "raw_label": "Water Purge [s]",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "purge_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'purge_time' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å",
+     "raw_label": "GPC [Å]",
+     "unit": "Å",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'purge_time' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "c",
+      "series": "",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1c__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "c",
+      "series": "",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/2/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1c__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'purge_time' is an ontology condition; each point is one experiment",
+    "n_points": 3
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F1::d::0::f0p3",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "d",
+    "series": "GPC",
+    "series_index": 0,
+    "series_axis": "measured property",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/3/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig1d__exp01__case00"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 (a) Precursor saturation studies by the variation of the [Y(DPDMG)3] pulse length at 225 /C14 C on Si(100). (b) Film thickness versus number of applied cycles. (c) GPC variation with water purge time at 225 /C14 ConSi(100). (d) GPC and thin /uniFB01 lm density as a function of deposition temperature."
+   },
+   "raw": {
+    "x": {
+     "label": "Temperature [°C]",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "GPC [Å]",
+     "quantity": "growth_per_cycle",
+     "unit": "Å",
+     "log": false
+    },
+    "points": [
+     [
+      150,
+      1.7
+     ],
+     [
+      175,
+      1.5
+     ],
+     [
+      190,
+      1.34
+     ],
+     [
+      200,
+      1.1
+     ],
+     [
+      225,
+      1.07
+     ],
+     [
+      250,
+      1.27
+     ],
+     [
+      275,
+      2.31
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Temperature [°C]",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å",
+     "raw_label": "GPC [Å]",
+     "unit": "Å",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      423.15,
+      448.15,
+      463.15,
+      473.15,
+      498.15,
+      523.15,
+      548.15
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "d",
+      "series": "GPC",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1d__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "d",
+      "series": "GPC",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1d__exp01__case00"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 7
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F1::d::1::f0p3",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "1",
+    "figure_index": "4",
+    "panel": "d",
+    "series": "Density",
+    "series_index": 1,
+    "series_axis": "measured property",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/3/series/1",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig1d__exp01__case01"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 1 (a) Precursor saturation studies by the variation of the [Y(DPDMG)3] pulse length at 225 /C14 C on Si(100). (b) Film thickness versus number of applied cycles. (c) GPC variation with water purge time at 225 /C14 ConSi(100). (d) GPC and thin /uniFB01 lm density as a function of deposition temperature."
+   },
+   "raw": {
+    "x": {
+     "label": "Temperature [°C]",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "GPC [Å]",
+     "quantity": "growth_per_cycle",
+     "unit": "Å",
+     "log": false
+    },
+    "points": [
+     [
+      150,
+      4.1
+     ],
+     [
+      175,
+      4.28
+     ],
+     [
+      200,
+      4.22
+     ],
+     [
+      225,
+      4.4
+     ],
+     [
+      250,
+      4.34
+     ],
+     [
+      275,
+      3.94
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Temperature [°C]",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "growth_per_cycle",
+     "raw_unit": "Å",
+     "raw_label": "GPC [Å]",
+     "unit": "Å",
+     "unit_recovered": false,
+     "quantity": "growth_per_cycle",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      423.15,
+      448.15,
+      473.15,
+      498.15,
+      523.15,
+      548.15
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "d",
+      "series": "Density",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/1/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1d__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": null,
+     "status": "invalid",
+     "normalization_definition": null,
+     "comparison_group": "growth_per_cycle",
+     "original_value": null,
+     "original_unit": "Å",
+     "canonical_value": null,
+     "canonical_unit": "nm/cycle",
+     "context": {},
+     "unresolved_reason": "declared unit 'Å' has dimension length but the quantity's comparison group 'growth_per_cycle' is length_per_cycle — the printed unit and the quantity disagree, so no conversion is safe (needs manual review)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "1",
+      "panel": "d",
+      "series": "Density",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/3/series/1/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig1d__exp01__case01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 6
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F2::b::0::f1p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "2",
+    "figure_index": "5",
+    "panel": "b",
+    "series": "Measured",
+    "series_index": 0,
+    "series_axis": "curve type",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig2b__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 2 (Left) AFM image of a 2 /C2 2 m mspot derived from a 20 nm Y2O3 thin /uniFB01 lm deposited at 200 /C14 C. (Right) X-ray re /uniFB02 ectivity curve of a 30 nm Y2O3 thin /uniFB01 lm deposited at 225 /C14 C. The measured curve is depicted in black, while the /uniFB01 tted curve is shown in red."
+   },
+   "raw": {
+    "x": {
+     "label": "2θ [°]",
+     "quantity": "2theta",
+     "unit": "deg",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity [a.u.]",
+     "quantity": "intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      0.1,
+      -0.45
+     ],
+     [
+      0.2,
+      -0.22
+     ],
+     [
+      0.3,
+      -0.06
+     ],
+     [
+      0.4,
+      -0.02
+     ],
+     [
+      0.5,
+      -0.01
+     ],
+     [
+      0.53,
+      -0.05
+     ],
+     [
+      0.57,
+      -0.28
+     ],
+     [
+      0.61,
+      -0.81
+     ],
+     [
+      0.63,
+      -1.1
+     ],
+     [
+      0.67,
+      -0.74
+     ],
+     [
+      0.72,
+      -1.31
+     ],
+     [
+      0.76,
+      -1.86
+     ],
+     [
+      0.83,
+      -1.4
+     ],
+     [
+      0.9,
+      -2.02
+     ],
+     [
+      0.96,
+      -2.46
+     ],
+     [
+      1.05,
+      -1.9
+     ],
+     [
+      1.13,
+      -2.62
+     ],
+     [
+      1.18,
+      -3.08
+     ],
+     [
+      1.28,
+      -2.35
+     ],
+     [
+      1.37,
+      -3.12
+     ],
+     [
+      1.43,
+      -3.58
+     ],
+     [
+      1.52,
+      -2.75
+     ],
+     [
+      1.62,
+      -3.42
+     ],
+     [
+      1.67,
+      -4.26
+     ],
+     [
+      1.77,
+      -3.15
+     ],
+     [
+      1.88,
+      -4.02
+     ],
+     [
+      1.93,
+      -4.58
+     ],
+     [
+      2.0,
+      -3.55
+     ],
+     [
+      2.08,
+      -4.32
+     ],
+     [
+      2.12,
+      -4.75
+     ],
+     [
+      2.18,
+      -4.0
+     ],
+     [
+      2.25,
+      -4.42
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "2theta",
+     "raw_unit": "deg",
+     "raw_label": "2θ [°]",
+     "unit": "deg",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity '2theta' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity [a.u.]",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "deg",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity '2theta' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "2",
+      "panel": "b",
+      "series": "Measured",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig2b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "2",
+      "panel": "b",
+      "series": "Measured",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig2b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": "multi_output",
+    "resolved_representation": "unresolved",
+    "changed": true,
+    "reason": "x axis role could not be determined",
+    "n_points": 32
+   },
+   "context_available": [
+    "film_thickness",
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F2::b::1::f1p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "2",
+    "figure_index": "5",
+    "panel": "b",
+    "series": "Fitted",
+    "series_index": 1,
+    "series_axis": "curve type",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/1",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig2b__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 2 (Left) AFM image of a 2 /C2 2 m mspot derived from a 20 nm Y2O3 thin /uniFB01 lm deposited at 200 /C14 C. (Right) X-ray re /uniFB02 ectivity curve of a 30 nm Y2O3 thin /uniFB01 lm deposited at 225 /C14 C. The measured curve is depicted in black, while the /uniFB01 tted curve is shown in red."
+   },
+   "raw": {
+    "x": {
+     "label": "2θ [°]",
+     "quantity": "2theta",
+     "unit": "deg",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity [a.u.]",
+     "quantity": "intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      0.1,
+      0.0
+     ],
+     [
+      0.3,
+      0.0
+     ],
+     [
+      0.5,
+      0.0
+     ],
+     [
+      0.54,
+      -0.05
+     ],
+     [
+      0.6,
+      -0.5
+     ],
+     [
+      0.63,
+      -1.02
+     ],
+     [
+      0.67,
+      -0.86
+     ],
+     [
+      0.72,
+      -1.3
+     ],
+     [
+      0.76,
+      -1.75
+     ],
+     [
+      0.83,
+      -1.5
+     ],
+     [
+      0.9,
+      -1.98
+     ],
+     [
+      0.96,
+      -2.35
+     ],
+     [
+      1.05,
+      -2.02
+     ],
+     [
+      1.13,
+      -2.55
+     ],
+     [
+      1.18,
+      -2.95
+     ],
+     [
+      1.28,
+      -2.45
+     ],
+     [
+      1.37,
+      -3.08
+     ],
+     [
+      1.43,
+      -3.45
+     ],
+     [
+      1.52,
+      -2.85
+     ],
+     [
+      1.62,
+      -3.35
+     ],
+     [
+      1.67,
+      -3.9
+     ],
+     [
+      1.77,
+      -3.2
+     ],
+     [
+      1.88,
+      -3.82
+     ],
+     [
+      1.93,
+      -4.2
+     ],
+     [
+      2.0,
+      -3.6
+     ],
+     [
+      2.08,
+      -4.15
+     ],
+     [
+      2.12,
+      -4.4
+     ],
+     [
+      2.18,
+      -4.05
+     ],
+     [
+      2.25,
+      -4.25
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "2theta",
+     "raw_unit": "deg",
+     "raw_label": "2θ [°]",
+     "unit": "deg",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity '2theta' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity [a.u.]",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "deg",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity '2theta' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "2",
+      "panel": "b",
+      "series": "Fitted",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig2b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "2",
+      "panel": "b",
+      "series": "Fitted",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig2b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": "multi_output",
+    "resolved_representation": "unresolved",
+    "changed": true,
+    "reason": "x axis role could not be determined",
+    "n_points": 29
+   },
+   "context_available": [
+    "film_thickness",
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F3::a::0::f2p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "3",
+    "figure_index": "7",
+    "panel": "a",
+    "series": "O1s as-introduced",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/0/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig3a"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 3 XPS O 1s and Y 3d core level spectra of the thin /uniFB01 lm deposited at 225 /C14 C (30 nm). (a) Normalized O 1s peak as-introduced. (b) Normalized O 1s peak after sputtering. (c) Normalized Y 3d peak asintroduced. (d) Normalized Y 3d peak after sputtering. Blue curve: /uniFB01 tted regions for di /uniFB00 erent core contributions. Black curve: measured data."
+   },
+   "raw": {
+    "x": {
+     "label": "Binding Energy [eV]",
+     "quantity": "Binding Energy",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity [a.u.]",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      536.0,
+      0.05
+     ],
+     [
+      535.5,
+      0.05
+     ],
+     [
+      535.0,
+      0.06
+     ],
+     [
+      534.5,
+      0.07
+     ],
+     [
+      534.0,
+      0.1
+     ],
+     [
+      533.5,
+      0.16
+     ],
+     [
+      533.0,
+      0.3
+     ],
+     [
+      532.5,
+      0.6
+     ],
+     [
+      532.0,
+      0.92
+     ],
+     [
+      531.6,
+      1.0
+     ],
+     [
+      531.2,
+      0.9
+     ],
+     [
+      530.8,
+      0.68
+     ],
+     [
+      530.4,
+      0.42
+     ],
+     [
+      530.0,
+      0.28
+     ],
+     [
+      529.5,
+      0.38
+     ],
+     [
+      529.0,
+      0.52
+     ],
+     [
+      528.5,
+      0.35
+     ],
+     [
+      528.0,
+      0.15
+     ],
+     [
+      527.5,
+      0.06
+     ],
+     [
+      526.0,
+      0.05
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Binding Energy",
+     "raw_unit": "eV",
+     "raw_label": "Binding Energy [eV]",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": "binding_energy",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity [a.u.]",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "a",
+      "series": "O1s as-introduced",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3a"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "a",
+      "series": "O1s as-introduced",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3a"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'binding_energy' is an ontology coordinate",
+    "n_points": 20
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F3::b::0::f2p1",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "3",
+    "figure_index": "7",
+    "panel": "b",
+    "series": "O1s after sputtering",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/1/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig3b"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 3 XPS O 1s and Y 3d core level spectra of the thin /uniFB01 lm deposited at 225 /C14 C (30 nm). (a) Normalized O 1s peak as-introduced. (b) Normalized O 1s peak after sputtering. (c) Normalized Y 3d peak asintroduced. (d) Normalized Y 3d peak after sputtering. Blue curve: /uniFB01 tted regions for di /uniFB00 erent core contributions. Black curve: measured data."
+   },
+   "raw": {
+    "x": {
+     "label": "Binding Energy [eV]",
+     "quantity": "Binding Energy",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity [a.u.]",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      536.0,
+      0.05
+     ],
+     [
+      535.0,
+      0.05
+     ],
+     [
+      534.0,
+      0.06
+     ],
+     [
+      533.2,
+      0.12
+     ],
+     [
+      532.5,
+      0.28
+     ],
+     [
+      531.6,
+      0.38
+     ],
+     [
+      531.0,
+      0.32
+     ],
+     [
+      530.5,
+      0.42
+     ],
+     [
+      530.0,
+      0.82
+     ],
+     [
+      529.4,
+      1.0
+     ],
+     [
+      528.8,
+      0.68
+     ],
+     [
+      528.3,
+      0.28
+     ],
+     [
+      527.8,
+      0.08
+     ],
+     [
+      526.0,
+      0.05
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Binding Energy",
+     "raw_unit": "eV",
+     "raw_label": "Binding Energy [eV]",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": "binding_energy",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity [a.u.]",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "b",
+      "series": "O1s after sputtering",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3b"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "b",
+      "series": "O1s after sputtering",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/1/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3b"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'binding_energy' is an ontology coordinate",
+    "n_points": 14
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F3::c::0::f2p2",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "3",
+    "figure_index": "7",
+    "panel": "c",
+    "series": "Y3d as-introduced",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/2/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig3c"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 3 XPS O 1s and Y 3d core level spectra of the thin /uniFB01 lm deposited at 225 /C14 C (30 nm). (a) Normalized O 1s peak as-introduced. (b) Normalized O 1s peak after sputtering. (c) Normalized Y 3d peak asintroduced. (d) Normalized Y 3d peak after sputtering. Blue curve: /uniFB01 tted regions for di /uniFB00 erent core contributions. Black curve: measured data."
+   },
+   "raw": {
+    "x": {
+     "label": "Binding Energy [eV]",
+     "quantity": "Binding Energy",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity [a.u.]",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      162.0,
+      0.05
+     ],
+     [
+      161.0,
+      0.08
+     ],
+     [
+      160.2,
+      0.18
+     ],
+     [
+      159.5,
+      0.42
+     ],
+     [
+      158.9,
+      0.72
+     ],
+     [
+      158.4,
+      0.88
+     ],
+     [
+      158.0,
+      0.75
+     ],
+     [
+      157.6,
+      0.68
+     ],
+     [
+      157.2,
+      0.82
+     ],
+     [
+      156.7,
+      1.0
+     ],
+     [
+      156.2,
+      0.82
+     ],
+     [
+      155.8,
+      0.42
+     ],
+     [
+      155.2,
+      0.1
+     ],
+     [
+      153.2,
+      0.08
+     ],
+     [
+      152.0,
+      0.05
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Binding Energy",
+     "raw_unit": "eV",
+     "raw_label": "Binding Energy [eV]",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": "binding_energy",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity [a.u.]",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "c",
+      "series": "Y3d as-introduced",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/2/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3c"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "c",
+      "series": "Y3d as-introduced",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/2/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3c"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'binding_energy' is an ontology coordinate",
+    "n_points": 15
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F3::d::0::f2p3",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "3",
+    "figure_index": "7",
+    "panel": "d",
+    "series": "Y3d after sputtering",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/2/panels/3/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig3d"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 3 XPS O 1s and Y 3d core level spectra of the thin /uniFB01 lm deposited at 225 /C14 C (30 nm). (a) Normalized O 1s peak as-introduced. (b) Normalized O 1s peak after sputtering. (c) Normalized Y 3d peak asintroduced. (d) Normalized Y 3d peak after sputtering. Blue curve: /uniFB01 tted regions for di /uniFB00 erent core contributions. Black curve: measured data."
+   },
+   "raw": {
+    "x": {
+     "label": "Binding Energy [eV]",
+     "quantity": "Binding Energy",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "Intensity [a.u.]",
+     "quantity": "Intensity",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      162.0,
+      0.05
+     ],
+     [
+      160.8,
+      0.05
+     ],
+     [
+      160.0,
+      0.12
+     ],
+     [
+      159.5,
+      0.38
+     ],
+     [
+      159.0,
+      0.72
+     ],
+     [
+      158.5,
+      0.58
+     ],
+     [
+      158.0,
+      0.5
+     ],
+     [
+      157.5,
+      0.72
+     ],
+     [
+      157.0,
+      1.0
+     ],
+     [
+      156.4,
+      0.72
+     ],
+     [
+      155.8,
+      0.28
+     ],
+     [
+      155.0,
+      0.06
+     ],
+     [
+      152.0,
+      0.05
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Binding Energy",
+     "raw_unit": "eV",
+     "raw_label": "Binding Energy [eV]",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": "binding_energy",
+     "axis_role": "coordinate",
+     "axis_kind": "coordinate",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Intensity",
+     "raw_unit": "a.u.",
+     "raw_label": "Intensity [a.u.]",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": "intensity",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'binding_energy' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "d",
+      "series": "Y3d after sputtering",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/3/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3d"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'intensity' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "3",
+      "panel": "d",
+      "series": "Y3d after sputtering",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/2/panels/3/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig3d"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "multi_output",
+    "resolved_representation": "profile",
+    "changed": true,
+    "reason": "x axis 'binding_energy' is an ontology coordinate",
+    "n_points": 13
+   },
+   "context_available": [
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F4::a::0::f3p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "4",
+    "figure_index": "8",
+    "panel": "a",
+    "series": "Y2O3 thin film",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/3/panels/0/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig4a"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 4 (a) Absorbance spectrum of a 20 nm thin Y2O3 /uniFB01 lm deposited at 225 /C14 C on fused silica. (b) Tauc-plot representation of a 20 nm thin Y2O3 /uniFB01 lm deposited at 225 /C14 C on fused silica."
+   },
+   "raw": {
+    "x": {
+     "label": "Wavelength [nm]",
+     "quantity": "Wavelength",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "Absorbance",
+     "quantity": "Absorbance",
+     "unit": "",
+     "log": false
+    },
+    "points": [
+     [
+      200.0,
+      0.28
+     ],
+     [
+      205.0,
+      0.2
+     ],
+     [
+      210.0,
+      0.165
+     ],
+     [
+      215.0,
+      0.138
+     ],
+     [
+      220.0,
+      0.12
+     ],
+     [
+      225.0,
+      0.106
+     ],
+     [
+      230.0,
+      0.096
+     ],
+     [
+      235.0,
+      0.086
+     ],
+     [
+      240.0,
+      0.08
+     ],
+     [
+      250.0,
+      0.076
+     ],
+     [
+      260.0,
+      0.07
+     ],
+     [
+      275.0,
+      0.063
+     ],
+     [
+      290.0,
+      0.055
+     ],
+     [
+      310.0,
+      0.048
+     ],
+     [
+      330.0,
+      0.042
+     ],
+     [
+      350.0,
+      0.035
+     ],
+     [
+      360.0,
+      0.03
+     ],
+     [
+      380.0,
+      0.026
+     ],
+     [
+      400.0,
+      0.023
+     ],
+     [
+      450.0,
+      0.017
+     ],
+     [
+      500.0,
+      0.011
+     ],
+     [
+      550.0,
+      0.007
+     ],
+     [
+      600.0,
+      0.004
+     ],
+     [
+      650.0,
+      0.001
+     ],
+     [
+      700.0,
+      -0.001
+     ],
+     [
+      750.0,
+      -0.004
+     ],
+     [
+      800.0,
+      -0.007
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Wavelength",
+     "raw_unit": "nm",
+     "raw_label": "Wavelength [nm]",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "wavelength",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'wavelength' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Absorbance",
+     "raw_unit": "",
+     "raw_label": "Absorbance",
+     "unit": "",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Absorbance' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'wavelength' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "4",
+      "panel": "a",
+      "series": "Y2O3 thin film",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig4a"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Absorbance' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "4",
+      "panel": "a",
+      "series": "Y2O3 thin film",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig4a"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": "multi_output",
+    "resolved_representation": "correlation",
+    "changed": true,
+    "reason": "x axis 'wavelength' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 27
+   },
+   "context_available": [
+    "deposition_temperature",
+    "film_thickness",
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F4::b::0::f3p1",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "4",
+    "figure_index": "8",
+    "panel": "b",
+    "series": "Tauc plot",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/3/panels/1/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [
+     "10.1039_c7ra13417g__Fig4b"
+    ],
+    "data_source": "measured",
+    "caption": "Fig. 4 (a) Absorbance spectrum of a 20 nm thin Y2O3 /uniFB01 lm deposited at 225 /C14 C on fused silica. (b) Tauc-plot representation of a 20 nm thin Y2O3 /uniFB01 lm deposited at 225 /C14 C on fused silica."
+   },
+   "raw": {
+    "x": {
+     "label": "hν [eV]",
+     "quantity": "hν",
+     "unit": "eV",
+     "log": false
+    },
+    "y": {
+     "label": "(αhν)² [a.u.]",
+     "quantity": "(αhν)^2",
+     "unit": "a.u.",
+     "log": false
+    },
+    "points": [
+     [
+      1.5,
+      0.002
+     ],
+     [
+      2.0,
+      0.002
+     ],
+     [
+      2.5,
+      0.003
+     ],
+     [
+      3.0,
+      0.005
+     ],
+     [
+      3.5,
+      0.01
+     ],
+     [
+      4.0,
+      0.02
+     ],
+     [
+      4.5,
+      0.035
+     ],
+     [
+      5.0,
+      0.065
+     ],
+     [
+      5.2,
+      0.085
+     ],
+     [
+      5.4,
+      0.115
+     ],
+     [
+      5.5,
+      0.14
+     ],
+     [
+      5.6,
+      0.18
+     ],
+     [
+      5.7,
+      0.24
+     ],
+     [
+      5.8,
+      0.33
+     ],
+     [
+      5.9,
+      0.46
+     ],
+     [
+      6.0,
+      0.62
+     ],
+     [
+      6.1,
+      0.8
+     ],
+     [
+      6.2,
+      0.98
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "hν",
+     "raw_unit": "eV",
+     "raw_label": "hν [eV]",
+     "unit": "eV",
+     "unit_recovered": false,
+     "quantity": "feature_height",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "feature_size",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "(αhν)^2",
+     "raw_unit": "a.u.",
+     "raw_label": "(αhν)² [a.u.]",
+     "unit": "a.u.",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity '(αhν)^2' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": "feature_size",
+     "original_value": null,
+     "original_unit": "eV",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": "unit 'eV' is not a recognised, convertible unit (arbitrary/uncalibrated or unparseable)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "4",
+      "panel": "b",
+      "series": "Tauc plot",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/1/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig4b"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "a.u.",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity '(αhν)^2' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "4",
+      "panel": "b",
+      "series": "Tauc plot",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/3/panels/1/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": "10.1039_c7ra13417g__Fig4b"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "multi_output",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'feature_height' is an ontology condition; each point is one experiment",
+    "n_points": 18
+   },
+   "context_available": [
+    "deposition_temperature",
+    "film_thickness",
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F5::a::0::f4p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "5",
+    "figure_index": "10",
+    "panel": "a",
+    "series": "10 kHz",
+    "series_index": 0,
+    "series_axis": "frequency",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/4/panels/0/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Fig. 5 Capacitance -voltage curves of Y2O3 based MIS capacitors for f ¼ 10 kHz, 100 kHz and 1 MHz. The 20 nm Y2O3 thin /uniFB01 lm was deposited at 200 /C14 C."
+   },
+   "raw": {
+    "x": {
+     "label": "Voltage [V]",
+     "quantity": "voltage",
+     "unit": "V",
+     "log": false
+    },
+    "y": {
+     "label": "Capacitance [pF]",
+     "quantity": "Capacitance",
+     "unit": "pF",
+     "log": false
+    },
+    "points": [
+     [
+      -5.0,
+      6.89
+     ],
+     [
+      -4.5,
+      6.86
+     ],
+     [
+      -4.0,
+      6.87
+     ],
+     [
+      -3.0,
+      6.88
+     ],
+     [
+      -2.0,
+      6.91
+     ],
+     [
+      -1.0,
+      6.95
+     ],
+     [
+      0.0,
+      7.02
+     ],
+     [
+      1.0,
+      7.12
+     ],
+     [
+      2.0,
+      7.22
+     ],
+     [
+      3.0,
+      7.34
+     ],
+     [
+      4.0,
+      7.43
+     ],
+     [
+      5.0,
+      7.48
+     ],
+     [
+      6.0,
+      7.55
+     ],
+     [
+      7.0,
+      7.6
+     ],
+     [
+      6.0,
+      7.55
+     ],
+     [
+      5.0,
+      7.49
+     ],
+     [
+      4.0,
+      7.39
+     ],
+     [
+      3.0,
+      7.28
+     ],
+     [
+      2.0,
+      7.16
+     ],
+     [
+      1.0,
+      7.06
+     ],
+     [
+      0.0,
+      6.98
+     ],
+     [
+      -1.0,
+      6.92
+     ],
+     [
+      -2.0,
+      6.88
+     ],
+     [
+      -3.0,
+      6.86
+     ],
+     [
+      -4.0,
+      6.85
+     ],
+     [
+      -5.0,
+      6.88
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "voltage",
+     "raw_unit": "V",
+     "raw_label": "Voltage [V]",
+     "unit": "V",
+     "unit_recovered": false,
+     "quantity": "voltage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'voltage' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Capacitance",
+     "raw_unit": "pF",
+     "raw_label": "Capacitance [pF]",
+     "unit": "pF",
+     "unit_recovered": false,
+     "quantity": "capacitance",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'capacitance' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "V",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'voltage' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "5",
+      "panel": "a",
+      "series": "10 kHz",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "pF",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'capacitance' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "5",
+      "panel": "a",
+      "series": "10 kHz",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": null,
+    "resolved_representation": "correlation",
+    "changed": false,
+    "reason": "x axis 'voltage' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 26
+   },
+   "context_available": [
+    "deposition_temperature",
+    "film_thickness"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F5::a::1::f4p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "5",
+    "figure_index": "10",
+    "panel": "a",
+    "series": "100 kHz",
+    "series_index": 1,
+    "series_axis": "frequency",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/4/panels/0/series/1",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Fig. 5 Capacitance -voltage curves of Y2O3 based MIS capacitors for f ¼ 10 kHz, 100 kHz and 1 MHz. The 20 nm Y2O3 thin /uniFB01 lm was deposited at 200 /C14 C."
+   },
+   "raw": {
+    "x": {
+     "label": "Voltage [V]",
+     "quantity": "voltage",
+     "unit": "V",
+     "log": false
+    },
+    "y": {
+     "label": "Capacitance [pF]",
+     "quantity": "Capacitance",
+     "unit": "pF",
+     "log": false
+    },
+    "points": [
+     [
+      -5.0,
+      6.82
+     ],
+     [
+      -4.5,
+      6.8
+     ],
+     [
+      -4.0,
+      6.8
+     ],
+     [
+      -3.0,
+      6.82
+     ],
+     [
+      -2.0,
+      6.85
+     ],
+     [
+      -1.0,
+      6.9
+     ],
+     [
+      0.0,
+      6.98
+     ],
+     [
+      1.0,
+      7.08
+     ],
+     [
+      2.0,
+      7.18
+     ],
+     [
+      3.0,
+      7.27
+     ],
+     [
+      4.0,
+      7.36
+     ],
+     [
+      5.0,
+      7.43
+     ],
+     [
+      6.0,
+      7.5
+     ],
+     [
+      7.0,
+      7.55
+     ],
+     [
+      6.0,
+      7.51
+     ],
+     [
+      5.0,
+      7.44
+     ],
+     [
+      4.0,
+      7.33
+     ],
+     [
+      3.0,
+      7.21
+     ],
+     [
+      2.0,
+      7.1
+     ],
+     [
+      1.0,
+      7.01
+     ],
+     [
+      0.0,
+      6.93
+     ],
+     [
+      -1.0,
+      6.87
+     ],
+     [
+      -2.0,
+      6.83
+     ],
+     [
+      -3.0,
+      6.81
+     ],
+     [
+      -4.0,
+      6.8
+     ],
+     [
+      -5.0,
+      6.82
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "voltage",
+     "raw_unit": "V",
+     "raw_label": "Voltage [V]",
+     "unit": "V",
+     "unit_recovered": false,
+     "quantity": "voltage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'voltage' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Capacitance",
+     "raw_unit": "pF",
+     "raw_label": "Capacitance [pF]",
+     "unit": "pF",
+     "unit_recovered": false,
+     "quantity": "capacitance",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'capacitance' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "V",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'voltage' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "5",
+      "panel": "a",
+      "series": "100 kHz",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/0/series/1/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "pF",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'capacitance' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "5",
+      "panel": "a",
+      "series": "100 kHz",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/0/series/1/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": null,
+    "resolved_representation": "correlation",
+    "changed": false,
+    "reason": "x axis 'voltage' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 26
+   },
+   "context_available": [
+    "deposition_temperature",
+    "film_thickness"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F5::a::2::f4p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "5",
+    "figure_index": "10",
+    "panel": "a",
+    "series": "1 MHz",
+    "series_index": 2,
+    "series_axis": "frequency",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/4/panels/0/series/2",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Fig. 5 Capacitance -voltage curves of Y2O3 based MIS capacitors for f ¼ 10 kHz, 100 kHz and 1 MHz. The 20 nm Y2O3 thin /uniFB01 lm was deposited at 200 /C14 C."
+   },
+   "raw": {
+    "x": {
+     "label": "Voltage [V]",
+     "quantity": "voltage",
+     "unit": "V",
+     "log": false
+    },
+    "y": {
+     "label": "Capacitance [pF]",
+     "quantity": "Capacitance",
+     "unit": "pF",
+     "log": false
+    },
+    "points": [
+     [
+      -5.0,
+      6.76
+     ],
+     [
+      -4.5,
+      6.75
+     ],
+     [
+      -4.0,
+      6.75
+     ],
+     [
+      -3.0,
+      6.78
+     ],
+     [
+      -2.0,
+      6.82
+     ],
+     [
+      -1.0,
+      6.88
+     ],
+     [
+      0.0,
+      6.97
+     ],
+     [
+      1.0,
+      7.07
+     ],
+     [
+      2.0,
+      7.18
+     ],
+     [
+      3.0,
+      7.28
+     ],
+     [
+      4.0,
+      7.35
+     ],
+     [
+      5.0,
+      7.42
+     ],
+     [
+      6.0,
+      7.48
+     ],
+     [
+      7.0,
+      7.53
+     ],
+     [
+      6.0,
+      7.5
+     ],
+     [
+      5.0,
+      7.43
+     ],
+     [
+      4.0,
+      7.34
+     ],
+     [
+      3.0,
+      7.22
+     ],
+     [
+      2.0,
+      7.1
+     ],
+     [
+      1.0,
+      7.0
+     ],
+     [
+      0.0,
+      6.91
+     ],
+     [
+      -1.0,
+      6.85
+     ],
+     [
+      -2.0,
+      6.81
+     ],
+     [
+      -3.0,
+      6.78
+     ],
+     [
+      -4.0,
+      6.75
+     ],
+     [
+      -5.0,
+      6.76
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "voltage",
+     "raw_unit": "V",
+     "raw_label": "Voltage [V]",
+     "unit": "V",
+     "unit_recovered": false,
+     "quantity": "voltage",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'voltage' is not a comparison target (no comparison group declares it)"
+    },
+    "y": {
+     "raw_quantity": "Capacitance",
+     "raw_unit": "pF",
+     "raw_label": "Capacitance [pF]",
+     "unit": "pF",
+     "unit_recovered": false,
+     "quantity": "capacitance",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "not_applicable",
+     "unresolved_reason": "quantity 'capacitance' is not a comparison target (no comparison group declares it)"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "V",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'voltage' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "5",
+      "panel": "a",
+      "series": "1 MHz",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/0/series/2/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "not_applicable",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "pF",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "quantity 'capacitance' is not a comparison target (no comparison group declares it)",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "5",
+      "panel": "a",
+      "series": "1 MHz",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/4/panels/0/series/2/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": null,
+    "resolved_representation": "correlation",
+    "changed": false,
+    "reason": "x axis 'voltage' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 26
+   },
+   "context_available": [
+    "deposition_temperature",
+    "film_thickness"
+   ]
+  },
+  {
+   "curve_id": "10.1039_c7ra13417g::F6::a::0::f5p0",
+   "source": {
+    "paper_id": "10.1039_c7ra13417g",
+    "doi": "10.1039_c7ra13417g",
+    "figure": "6",
+    "figure_index": "11",
+    "panel": "a",
+    "series": "Device 1",
+    "series_index": 0,
+    "series_axis": "device",
+    "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+    "json_pointer": "/figures/5/panels/0/series/0",
+    "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "Fig. 6 Leakage current density J as a function of the applied electric /uniFB01 eld E of several MIS capacitors incorporating Y2O3. Each color represents a J -E characteristic of an individual device with identical device geometries. The 20 nm Y2O3 thin /uniFB01 lm was deposited at 200 /C14 C."
+   },
+   "raw": {
+    "x": {
+     "label": "Applied electric field E [MV/cm]",
+     "quantity": "Applied electric field E",
+     "unit": "MV/cm",
+     "log": false
+    },
+    "y": {
+     "label": "Current density J [A/cm²]",
+     "quantity": "Current density J",
+     "unit": "A/cm²",
+     "log": true
+    },
+    "points": [
+     [
+      0.02,
+      1e-08
+     ],
+     [
+      0.2,
+      1.8e-08
+     ],
+     [
+      0.4,
+      2.5e-08
+     ],
+     [
+      0.6,
+      3.5e-08
+     ],
+     [
+      0.8,
+      4.5e-08
+     ],
+     [
+      1.0,
+      6e-08
+     ],
+     [
+      1.2,
+      8e-08
+     ],
+     [
+      1.4,
+      1.1e-07
+     ],
+     [
+      1.6,
+      1.4e-07
+     ],
+     [
+      1.8,
+      1.8e-07
+     ],
+     [
+      2.0,
+      2.4e-07
+     ],
+     [
+      2.2,
+      3.2e-07
+     ],
+     [
+      2.4,
+      4.5e-07
+     ],
+     [
+      2.6,
+      6.5e-07
+     ],
+     [
+      2.8,
+      1e-06
+     ],
+     [
+      3.0,
+      1.8e-06
+     ],
+     [
+      3.2,
+      4e-06
+     ],
+     [
+      3.4,
+      1.2e-05
+     ],
+     [
+      3.6,
+      2.5e-05
+     ],
+     [
+      3.8,
+      5e-05
+     ],
+     [
+      4.0,
+      0.00012
+     ],
+     [
+      4.2,
+      0.0003
+     ],
+     [
+      4.4,
+      0.0006
+     ],
+     [
+      4.6,
+      0.001
+     ],
+     [
+      4.8,
+      0.0008
+     ],
+     [
+      5.0,
+      0.0012
+     ],
+     [
+      5.2,
+      0.002
+     ],
+     [
+      5.4,
+      0.0025
+     ],
+     [
+      5.6,
+      0.002
+     ],
+     [
+      5.8,
+      0.0028
+     ],
+     [
+      6.0,
+      0.003
+     ],
+     [
+      6.2,
+      0.0025
+     ],
+     [
+      6.4,
+      0.002
+     ],
+     [
+      6.6,
+      0.0022
+     ],
+     [
+      6.8,
+      0.0025
+     ],
+     [
+      7.0,
+      0.003
+     ],
+     [
+      7.2,
+      0.0032
+     ],
+     [
+      7.4,
+      0.004
+     ],
+     [
+      7.53,
+      0.0055
+     ],
+     [
+      7.55,
+      0.1
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "Applied electric field E",
+     "raw_unit": "MV/cm",
+     "raw_label": "Applied electric field E [MV/cm]",
+     "unit": "MV/cm",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "x quantity 'Applied electric field E' does not resolve to any ontology QuantityKind"
+    },
+    "y": {
+     "raw_quantity": "Current density J",
+     "raw_unit": "A/cm²",
+     "raw_label": "Current density J [A/cm²]",
+     "unit": "A/cm²",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Current density J' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": null,
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "MV/cm",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "x quantity 'Applied electric field E' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "6",
+      "panel": "a",
+      "series": "Device 1",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "A/cm²",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Current density J' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1039_c7ra13417g",
+      "doi": "10.1039_c7ra13417g",
+      "figure": "6",
+      "panel": "a",
+      "series": "Device 1",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1039_c7ra13417g/extracted/figure_data.json",
+      "json_pointer": "/figures/5/panels/0/series/0/points",
+      "source_checksum": "sha256:d3e68a96a45bec4a587763572edde690cfc263058963008621ed0629e182c414",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": null,
+    "previous_representation": null,
+    "resolved_representation": "unresolved",
+    "changed": false,
+    "reason": "x axis role could not be determined",
+    "n_points": 40
+   },
+   "context_available": [
+    "film_thickness",
+    "temperature"
+   ]
+  }
+ ]
+}

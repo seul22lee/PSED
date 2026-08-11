@@ -1,0 +1,665 @@
+<!doctype html><meta charset="utf-8"><title>Core KG — design comparison</title>
+<style>
+:root{--bg:#f7f8fa;--fg:#16181d;--mut:#5b6472;--line:#d9dee5;--card:#fff;--accent:#0f7c8a}
+@media(prefers-color-scheme:dark){:root{--bg:#12151b;--fg:#e6eaf0;--mut:#98a3b3;--line:#2b323d;--card:#1a1f27;--accent:#4fc3d1}}
+*{box-sizing:border-box}
+body{margin:0 auto;max-width:1220px;padding:30px 22px 70px;background:var(--bg);color:var(--fg);
+ font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
+h1{font-family:Georgia,serif;font-size:27px;margin:0 0 4px}
+h2{font-family:Georgia,serif;font-size:19px;margin:34px 0 8px;border-bottom:2px solid var(--accent);padding-bottom:6px}
+h3{font-size:14px;margin:18px 0 6px}
+.sub{color:var(--mut);max-width:80ch}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:4px 9px;text-align:left}
+th{background:var(--card)}
+tr.core td{background:rgba(15,124,138,.07)}
+tr.internal td{color:var(--mut)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;
+ overflow-x:auto;font-size:12px;line-height:1.45}
+.hint{color:var(--mut);font-size:12.5px}
+.big{font-size:22px;font-weight:700}
+a{color:var(--accent)}
+iframe{width:100%;height:460px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+</style>
+<h1>Core scientific KG — two designs, same corpus</h1>
+<p class="sub">Both graphs are abstractions over the identical validated corpus
+(32 papers, 833 canonical curves, 851 experiments). The existing full graph
+<code>knowledge_graph_onto.json</code> is unchanged and remains the audit/provenance
+graph. Nothing here decides which design wins.</p>
+<h2>Node counts by type</h2>
+<p class="hint">Highlighted rows are the core scientific types. The greyed rows are the internal/provenance types the core graphs deliberately do not expose as peer nodes — they remain in the full graph.</p>
+<table><tr><th>type</th><th>full</th><th>flat-core</th><th>series-core</th></tr>
+<tr class='core'><td>Coreactant</td><td>8</td><td>8</td><td>8</td></tr>
+<tr class='core'><td>Experiment</td><td>851</td><td>851</td><td>851</td></tr>
+<tr class='core'><td>ExperimentSeries</td><td>200</td><td>—</td><td>71</td></tr>
+<tr class='core'><td>GeometryClass</td><td>—</td><td>4</td><td>4</td></tr>
+<tr class='core'><td>Material</td><td>25</td><td>25</td><td>25</td></tr>
+<tr class='core'><td>Model</td><td>4</td><td>4</td><td>4</td></tr>
+<tr class='core'><td>ModelFamily</td><td>1</td><td>1</td><td>1</td></tr>
+<tr class='core'><td>Paper</td><td>35</td><td>32</td><td>32</td></tr>
+<tr class='core'><td>Precursor</td><td>19</td><td>19</td><td>19</td></tr>
+<tr class='core'><td>ProcessType</td><td>—</td><td>3</td><td>3</td></tr>
+<tr class='core'><td>QuantityKind</td><td>—</td><td>95</td><td>95</td></tr>
+<tr class='core'><td>ResultSeries</td><td>—</td><td>835</td><td>835</td></tr>
+<tr class='internal'><td>CanonicalQuantityValue</td><td>619</td><td>—</td><td>—</td></tr>
+<tr class=''><td>Carrier</td><td>4</td><td>—</td><td>—</td></tr>
+<tr class=''><td>Category</td><td>8</td><td>—</td><td>—</td></tr>
+<tr class=''><td>ComparisonGroup</td><td>11</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>Condition</td><td>68</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>ConditionAssertion</td><td>2902</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>ContextBinding</td><td>42</td><td>—</td><td>—</td></tr>
+<tr class=''><td>ContinuousTrace</td><td>83</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>Curve</td><td>833</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>Dependent</td><td>40</td><td>—</td><td>—</td></tr>
+<tr class=''><td>DerivedRepresentation</td><td>2</td><td>—</td><td>—</td></tr>
+<tr class=''><td>ExperimentalProfile</td><td>66</td><td>—</td><td>—</td></tr>
+<tr class=''><td>Family</td><td>9</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>Figure</td><td>159</td><td>—</td><td>—</td></tr>
+<tr class=''><td>Fit</td><td>15</td><td>—</td><td>—</td></tr>
+<tr class=''><td>ImportedLiteratureObservation</td><td>10</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>Independent</td><td>21</td><td>—</td><td>—</td></tr>
+<tr class=''><td>ModelSweep</td><td>92</td><td>—</td><td>—</td></tr>
+<tr class=''><td>MultiOutputMeasurement</td><td>311</td><td>—</td><td>—</td></tr>
+<tr class=''><td>NormalizationDefinition</td><td>1</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>PlotSeries</td><td>835</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>RawQuantityValue</td><td>1666</td><td>—</td><td>—</td></tr>
+<tr class=''><td>SimulationRun</td><td>112</td><td>—</td><td>—</td></tr>
+<tr class='internal'><td>TransformationExecution</td><td>1708</td><td>—</td><td>—</td></tr>
+<tr class=''><td>TransformationRule</td><td>8</td><td>—</td><td>—</td></tr>
+<tr class=''><td>UnresolvedSourceEntity</td><td>42</td><td>—</td><td>—</td></tr>
+<tr><th>TOTAL NODES</th><th>10810</th><th>1877</th><th>1948</th></tr>
+<tr><th>TOTAL EDGES</th><th>30838</th><th>7243</th><th>7385</th></tr>
+</table>
+<h2>Edge counts</h2><table><tr><th>relation</th><th>flat-core</th><th>series-core</th></tr>
+<tr><td>consumes_quantity</td><td>13</td><td>13</td></tr>
+<tr><td>contains</td><td>—</td><td>387</td></tr>
+<tr><td>deposits</td><td>807</td><td>807</td></tr>
+<tr><td>geometry</td><td>845</td><td>845</td></tr>
+<tr><td>has_result</td><td>851</td><td>851</td></tr>
+<tr><td>in_model_family</td><td>4</td><td>4</td></tr>
+<tr><td>measures</td><td>851</td><td>851</td></tr>
+<tr><td>process_type</td><td>851</td><td>851</td></tr>
+<tr><td>reports</td><td>851</td><td>535</td></tr>
+<tr><td>uses_coreactant</td><td>567</td><td>567</td></tr>
+<tr><td>uses_precursor</td><td>641</td><td>641</td></tr>
+<tr><td>varies</td><td>962</td><td>1033</td></tr>
+</table>
+<h2>Same three papers, both models</h2>
+<p class="hint">Chosen for experimental richness (most resolved sweeps, then most experiments), not for being easy.</p>
+<h3>10.1021_acs.chemmater.2c01154</h3><div class=two>
+<div class=card><b>A · flat</b> <span class=hint>— 107 direct children of Paper</span><pre>--reports--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig1a__exp01
+  --measures--&gt; QuantityKind: intensity
+  --varies--&gt; QuantityKind: wavenumber
+--reports--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig1a__exp02
+  --measures--&gt; QuantityKind: intensity
+  --varies--&gt; QuantityKind: wavenumber
+--reports--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig1a__exp03
+  --measures--&gt; QuantityKind: intensity
+  --varies--&gt; QuantityKind: wavenumber
+--reports--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig1a__exp04
+  --measures--&gt; QuantityKind: intensity
+  --varies--&gt; QuantityKind: wavenumber
+--reports--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig1a__exp05
+  --measures--&gt; QuantityKind: intensity
+  --varies--&gt; QuantityKind: wavenumber
+--reports--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig1a__exp06
+  --measures--&gt; QuantityKind: intensity
+  --varies--&gt; QuantityKind: wavenumber</pre></div>
+<div class=card><b>B · series</b> <span class=hint>— 50 direct children of Paper</span><pre>--reports--&gt; ExperimentSeries: crystallinity: Amorphous
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp01__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp01__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp01__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp01__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp01__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp01__case05
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+--reports--&gt; ExperimentSeries: crystallinity: Crystalline
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp02__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp02__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp02__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp02__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig2a__exp02__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --varies--&gt; QuantityKind: feature_height
+--reports--&gt; ExperimentSeries: deposition temperature: 450 °C
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp01__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp01__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --varies--&gt; QuantityKind: flow_rate
+--reports--&gt; ExperimentSeries: deposition temperature: 350 °C
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp02__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp02__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp02__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --varies--&gt; QuantityKind: flow_rate
+--reports--&gt; ExperimentSeries: deposition temperature: 250 °C
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp04__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp04__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp04__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp04__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp04__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp04__case05
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+--reports--&gt; ExperimentSeries: deposition temperature: 200 °C
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp05__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp05__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp05__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp05__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp05__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma
+  --contains--&gt; Experiment: 10.1021_acs.chemmater.2c01154__Fig4a__exp05__case05
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoS2
+    --process_type--&gt; ProcessType: plasma</pre></div>
+</div>
+<h3>10.1116_6.0002436</h3><div class=two>
+<div class=card><b>A · flat</b> <span class=hint>— 78 direct children of Paper</span><pre>--reports--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case00
+  --varies--&gt; QuantityKind: exposure_time
+  --measures--&gt; QuantityKind: growth_per_cycle
+--reports--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case01
+  --varies--&gt; QuantityKind: exposure_time
+  --measures--&gt; QuantityKind: growth_per_cycle
+--reports--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case02
+  --varies--&gt; QuantityKind: exposure_time
+  --measures--&gt; QuantityKind: growth_per_cycle
+--reports--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case03
+  --varies--&gt; QuantityKind: exposure_time
+  --measures--&gt; QuantityKind: growth_per_cycle
+--reports--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case04
+  --varies--&gt; QuantityKind: exposure_time
+  --measures--&gt; QuantityKind: growth_per_cycle
+--reports--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case05
+  --varies--&gt; QuantityKind: exposure_time
+  --measures--&gt; QuantityKind: growth_per_cycle</pre></div>
+<div class=card><b>B · series</b> <span class=hint>— 31 direct children of Paper</span><pre>--reports--&gt; ExperimentSeries: metric: Average GPC
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case00
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case01
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case02
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case03
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case04
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp03__case05
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+--reports--&gt; ExperimentSeries: metric: SUP
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp04__case00
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp04__case01
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp04__case02
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp04__case03
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp04__case04
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig1a__exp04__case05
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+--reports--&gt; ExperimentSeries: metric: Average GPC
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp01__case00
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp01__case01
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp01__case02
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp01__case03
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp01__case04
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp01__case05
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+--reports--&gt; ExperimentSeries: metric: Inlet GPC
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp02__case00
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp02__case01
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp02__case02
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp02__case03
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp02__case04
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp02__case05
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+--reports--&gt; ExperimentSeries: metric: Middle GPC
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp03__case00
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp03__case01
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp03__case02
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp03__case03
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp03__case04
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp03__case05
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+--reports--&gt; ExperimentSeries: metric: Outlet GPC
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp04__case00
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp04__case01
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp04__case02
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp04__case03
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp04__case04
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal
+  --contains--&gt; Experiment: 10.1116_6.0002436__Fig2a__exp04__case05
+    --geometry--&gt; GeometryClass: planar
+    --deposits--&gt; Material: MoOx
+    --uses_precursor--&gt; Precursor: Mo(NtBu)2(NMe2)2
+    --process_type--&gt; ProcessType: thermal</pre></div>
+</div>
+<h3>10.1002_pssa.201532305</h3><div class=two>
+<div class=card><b>A · flat</b> <span class=hint>— 61 direct children of Paper</span><pre>--reports--&gt; Experiment: 10.1002_pssa.201532305__Fig10a
+  --varies--&gt; QuantityKind: cycle_number
+--reports--&gt; Experiment: 10.1002_pssa.201532305__Fig10b
+  --varies--&gt; QuantityKind: cycle_number
+--reports--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case00
+  --varies--&gt; QuantityKind: exposure_time
+--reports--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case01
+  --varies--&gt; QuantityKind: exposure_time
+--reports--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case02
+  --varies--&gt; QuantityKind: exposure_time
+--reports--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case03
+  --varies--&gt; QuantityKind: exposure_time</pre></div>
+<div class=card><b>B · series</b> <span class=hint>— 31 direct children of Paper</span><pre>--reports--&gt; ExperimentSeries: pressure: 0.15 mbar
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp01__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp01__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp01__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp01__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp01__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp01__case05
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+--reports--&gt; ExperimentSeries: pressure: 0.3 mbar
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp02__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp02__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp02__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp02__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp02__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --varies--&gt; QuantityKind: deposition_temperature
+--reports--&gt; ExperimentSeries: pressure: 1 mbar
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp03__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp03__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp03__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig8a__exp03__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --varies--&gt; QuantityKind: deposition_temperature
+--reports--&gt; ExperimentSeries: series: CVD growth rate
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig9a__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig9a__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig9a__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig9a__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --varies--&gt; QuantityKind: generic_pressure
+--reports--&gt; ExperimentSeries: 10.1002_pssa.201532305-S005
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11a__case05
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+--reports--&gt; ExperimentSeries: 10.1002_pssa.201532305-S006
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11b__case00
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11b__case01
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11b__case02
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11b__case03
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11b__case04
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6
+  --contains--&gt; Experiment: 10.1002_pssa.201532305__Fig11b__case05
+    --uses_coreactant--&gt; Coreactant: H2
+    --geometry--&gt; GeometryClass: vertical_structure
+    --deposits--&gt; Material: W
+    --uses_precursor--&gt; Precursor: WF6</pre></div>
+</div>
+<h2>Material traversal — Al2O3</h2>
+<p><b>A · flat</b>: 50 experiments deposit Al2O3, across 4 papers (10.1021_acs.jpcc.9b08176, 10.1039_d0cp03358h, 10.1063_1.5028178, 10.1116_1.4938104).</p>
+<p><b>B · series</b>: 50 experiments deposit Al2O3, across 4 papers (10.1021_acs.jpcc.9b08176, 10.1039_d0cp03358h, 10.1063_1.5028178, 10.1116_1.4938104).</p>
+<p class="hint">Identical in both variants: Material is a shared node and ExperimentSeries sits above Experiment, so it does not change how a material reaches its experiments.</p>
+<h2>What ExperimentSeries changes</h2>
+<p>Variant B adds one node type between Paper and Experiment, built only from
+<code>experimental_series_id</code> — which the resolve layer mints solely for a
+<code>discrete_experimental_sweep</code>. It is not derived from figure number.</p>
+<ul>
+<li><b>Grouping is partial by construction.</b> 387 of 851 experiments belong to a sweep;
+the other 464 are not forced into singleton series and attach directly to their Paper.</li>
+<li><b>Papers get far fewer direct children.</b> A temperature sweep with 8 cases becomes
+one child of the Paper instead of eight, which is what makes a paper readable at a glance.</li>
+<li><b>The sweep variable becomes explicit.</b> Each series carries
+<code>series_type</code>, <code>varied_quantity</code> and <code>member_count</code>, so
+"this paper contains a deposition-temperature sweep" is a node property rather than
+something inferred by comparing sibling experiments.</li>
+<li><b>Cost:</b> +71 nodes and +142 edges over the flat model, and a second hop between
+Paper and Experiment.</li>
+</ul>
+<h2>Live viewers</h2><div class=two><div class=card><b>A · flat</b><br><a href="kg_core_flat.html">open kg_core_flat.html</a><iframe src='kg_core_flat.html'></iframe></div><div class=card><b>B · series</b><br><a href="kg_core_series.html">open kg_core_series.html</a><iframe src='kg_core_series.html'></iframe></div></div>
+<p class="hint">Both viewers open on a Paper/Material entry view and expand on click rather than rendering every node at once.</p>

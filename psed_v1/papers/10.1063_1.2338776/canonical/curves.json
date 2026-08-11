@@ -1,0 +1,570 @@
+{
+ "doi": "10.1063_1.2338776",
+ "generator": "pipeline/canonical/build_canonical.py",
+ "code_version": "3848481+dirty",
+ "created_at": 1786465364,
+ "ontology": "ontology/ald_ontology.json",
+ "n_curves": 3,
+ "curves": [
+  {
+   "curve_id": "10.1063_1.2338776::F1::a::0::f0p0",
+   "source": {
+    "paper_id": "10.1063_1.2338776",
+    "doi": "10.1063_1.2338776",
+    "figure": "1",
+    "figure_index": "5",
+    "panel": "a",
+    "series": "undersaturated",
+    "series_index": 0,
+    "series_axis": "TMA dosing condition",
+    "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+    "linked_experiment_ids": [
+     "10.1063_1.2338776__Fig1a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temperature with undersaturated and saturated TMA dosing conditions."
+   },
+   "raw": {
+    "x": {
+     "label": "Deposition temperature (°C)",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "WVTR (g·m⁻²·day⁻¹)",
+     "quantity": "WVTR",
+     "unit": "g·m⁻²·day⁻¹",
+     "log": false
+    },
+    "points": [
+     [
+      25.0,
+      0.008
+     ],
+     [
+      50.0,
+      0.009
+     ],
+     [
+      75.0,
+      0.012
+     ],
+     [
+      100.0,
+      0.035
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Deposition temperature (°C)",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "WVTR",
+     "raw_unit": "g·m⁻²·day⁻¹",
+     "raw_label": "WVTR (g·m⁻²·day⁻¹)",
+     "unit": "g·m⁻²·day⁻¹",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'WVTR' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      298.15,
+      323.15,
+      348.15,
+      373.15
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1063_1.2338776",
+      "doi": "10.1063_1.2338776",
+      "figure": "1",
+      "panel": "a",
+      "series": "undersaturated",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+      "experiment_id": "10.1063_1.2338776__Fig1a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "g·m⁻²·day⁻¹",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'WVTR' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1063_1.2338776",
+      "doi": "10.1063_1.2338776",
+      "figure": "1",
+      "panel": "a",
+      "series": "undersaturated",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+      "experiment_id": "10.1063_1.2338776__Fig1a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'deposition_temperature' is an ontology condition; each point is one experiment",
+    "n_points": 4
+   },
+   "context_available": [
+    "base_pressure",
+    "chamber_total_pressure",
+    "deposition_temperature",
+    "film_thickness",
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "purge_time"
+   ]
+  },
+  {
+   "curve_id": "10.1063_1.2338776::F1::a::1::f0p0",
+   "source": {
+    "paper_id": "10.1063_1.2338776",
+    "doi": "10.1063_1.2338776",
+    "figure": "1",
+    "figure_index": "5",
+    "panel": "a",
+    "series": "saturated",
+    "series_index": 1,
+    "series_axis": "TMA dosing condition",
+    "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+    "linked_experiment_ids": [
+     "10.1063_1.2338776__Fig1a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temperature with undersaturated and saturated TMA dosing conditions."
+   },
+   "raw": {
+    "x": {
+     "label": "Deposition temperature (°C)",
+     "quantity": "deposition_temperature",
+     "unit": "°C",
+     "log": false
+    },
+    "y": {
+     "label": "WVTR (g·m⁻²·day⁻¹)",
+     "quantity": "WVTR",
+     "unit": "g·m⁻²·day⁻¹",
+     "log": false
+    },
+    "points": [
+     [
+      25.0,
+      0.005
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "deposition_temperature",
+     "raw_unit": "°C",
+     "raw_label": "Deposition temperature (°C)",
+     "unit": "°C",
+     "unit_recovered": false,
+     "quantity": "deposition_temperature",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "WVTR",
+     "raw_unit": "g·m⁻²·day⁻¹",
+     "raw_label": "WVTR (g·m⁻²·day⁻¹)",
+     "unit": "g·m⁻²·day⁻¹",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'WVTR' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "process_temperature",
+     "quantity": "deposition_temperature",
+     "unit": "K",
+     "values": [
+      298.15
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "temperature_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "°C -> K",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "process_temperature",
+     "original_value": null,
+     "original_unit": "°C",
+     "canonical_value": null,
+     "canonical_unit": "K",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [
+      "affine conversion; offset units are rejected as ratio units"
+     ],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1063_1.2338776",
+      "doi": "10.1063_1.2338776",
+      "figure": "1",
+      "panel": "a",
+      "series": "saturated",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+      "experiment_id": "10.1063_1.2338776__Fig1a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "g·m⁻²·day⁻¹",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'WVTR' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1063_1.2338776",
+      "doi": "10.1063_1.2338776",
+      "figure": "1",
+      "panel": "a",
+      "series": "saturated",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+      "experiment_id": "10.1063_1.2338776__Fig1a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "case",
+    "resolved_representation": "single",
+    "changed": true,
+    "reason": "only 1 point",
+    "n_points": 1
+   },
+   "context_available": [
+    "base_pressure",
+    "chamber_total_pressure",
+    "deposition_temperature",
+    "film_thickness",
+    "generic_pressure",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "purge_time"
+   ]
+  },
+  {
+   "curve_id": "10.1063_1.2338776::F2::a::0::f1p0",
+   "source": {
+    "paper_id": "10.1063_1.2338776",
+    "doi": "10.1063_1.2338776",
+    "figure": "2",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "WVTR",
+    "series_index": 0,
+    "series_axis": "",
+    "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/0",
+    "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+    "linked_experiment_ids": [],
+    "data_source": "measured",
+    "caption": "FIG. 2. Water vapor transmission rate ( WVTR ) of PA-ALD Al2O3 films on PEN as a function of film thickness. The films are deposited at room temperature with saturated TMA dosing conditions."
+   },
+   "raw": {
+    "x": {
+     "label": "Thickness Al2O3 (nm)",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "WVTR (g·m^-2·day^-1)",
+     "quantity": "WVTR (g·m^-2·day^-1)",
+     "unit": "g·m^-2·day^-1",
+     "log": true
+    },
+    "points": [
+     [
+      0,
+      0.496
+     ],
+     [
+      10,
+      0.012
+     ],
+     [
+      20,
+      0.004
+     ],
+     [
+      40,
+      0.0047
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "nm",
+     "raw_label": "Thickness Al2O3 (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "WVTR (g·m^-2·day^-1)",
+     "raw_unit": "g·m^-2·day^-1",
+     "raw_label": "WVTR (g·m^-2·day^-1)",
+     "unit": "g·m^-2·day^-1",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'WVTR (g·m^-2·day^-1)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "film_thickness",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "values": [
+      0,
+      10,
+      20,
+      40
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1063_1.2338776",
+      "doi": "10.1063_1.2338776",
+      "figure": "2",
+      "panel": "a",
+      "series": "WVTR",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "g·m^-2·day^-1",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'WVTR (g·m^-2·day^-1)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1063_1.2338776",
+      "doi": "10.1063_1.2338776",
+      "figure": "2",
+      "panel": "a",
+      "series": "WVTR",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1063_1.2338776/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:84ac38d547cfabdfbcb102b8dfbb5b57dc15c26f6c2a7a0fe35c99f6c8b2dcc4",
+      "experiment_id": null
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "output",
+    "previous_representation": null,
+    "resolved_representation": "correlation",
+    "changed": false,
+    "reason": "x axis 'film_thickness' is an ontology OUTPUT, so the curve relates two measured outputs rather than sweeping an input",
+    "n_points": 4
+   },
+   "context_available": []
+  }
+ ]
+}

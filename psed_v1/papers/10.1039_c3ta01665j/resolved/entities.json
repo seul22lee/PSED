@@ -1,0 +1,1232 @@
+[
+ {
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp01",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|measured (ICP)|primary",
+  "entity_class": "ExperimentSeries",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "classification_method": "granularity(independent_process_sweep)(3 families)",
+  "classification_evidence": [
+   "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'progression_coordinate'",
+   "G: x is a progression axis but the paper describes separately executed runs: 'self-limiting'"
+  ],
+  "signal_families": [
+   "F",
+   "I",
+   "M",
+   "Me",
+   "R",
+   "X"
+  ],
+  "unresolved_reason": null,
+  "is_current_paper_experiment": true,
+  "paper_id": "10.1039_c3ta01665j",
+  "fig_docling_index": "1",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "panel_key": "a",
+  "source_series": "measured (ICP)",
+  "representation": "primary",
+  "plot_series": true,
+  "coordinate": "cycle_number",
+  "coordinate_unit": "cycle",
+  "measurand": "Pt loading",
+  "measurand_unit": "wt%",
+  "measurement_class": "Measurement",
+  "samples_are": "observations",
+  "n_observations": 3,
+  "observations": [
+   {
+    "index": 0,
+    "x_raw": 1,
+    "y_raw": 0.91,
+    "x_canonical": 1,
+    "y_canonical": 0.91
+   },
+   {
+    "index": 1,
+    "x_raw": 2,
+    "y_raw": 1.7,
+    "x_canonical": 2,
+    "y_canonical": 1.7
+   },
+   {
+    "index": 2,
+    "x_raw": 4,
+    "y_raw": 3.78,
+    "x_canonical": 4,
+    "y_canonical": 3.78
+   }
+  ],
+  "between_curve_condition": "method",
+  "between_curve_value": "measured (ICP)",
+  "bound_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "4",
+    "unit": "cycle",
+    "raw_evidence": "4 cycles",
+    "evidence_locator": "document.md near Fig 1",
+    "assertion_status": "approximate",
+    "source_kind": "body",
+    "evidence_kind": "experimental_condition",
+    "species": null,
+    "species_basis": null,
+    "reactant_role": null,
+    "of_reactant": null,
+    "paper_id": "10.1039_c3ta01665j",
+    "figure_index": "1",
+    "figure_number": "1",
+    "panel": "a",
+    "series_selector": null,
+    "reference_work": null,
+    "scope": "figure",
+    "confidence": 0.85,
+    "ambiguity": null,
+    "source_entity": "10.1039_c3ta01665j|1|1|a|measured (ICP)|primary",
+    "binding_key": [
+     "cycle_number",
+     null
+    ],
+    "bound_at_scope": "figure",
+    "overrode_scopes": [
+     "figure",
+     "method"
+    ],
+    "corroborating_assertions": 1
+   }
+  ],
+  "ambiguous_conditions": [],
+  "originally_reported_in": null,
+  "reported_in": null,
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "granularity_kind": "independent_process_sweep",
+  "granularity_evidence": "x is a progression axis but the paper describes separately executed runs: 'self-limiting'",
+  "granularity_review_reason": null,
+  "x_axis_role": "progression_coordinate",
+  "y_axis_role": "output",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "series_source_kind": "measured",
+  "series_source_confidence": "label_explicit",
+  "series_source_evidence": "series label 'measured (ICP)'",
+  "fit_of_series_label": null,
+  "fit_of_entity": null,
+  "geometry_class": "porous_material",
+  "structure": "mesoporous_powder",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "source_record_id": "10.1039_c3ta01665j-F1a-0",
+  "experimental_case_count": 3,
+  "experimental_case_status": "independent_process_sweep",
+  "experimental_case_reason": "3 separately executed settings on a progression_coordinate axis; x is a progression axis but the paper describes separately executed runs: 'self-limiting'",
+  "experimental_case_lower_bound": 0,
+  "distinct_setting_values_observed": null,
+  "observation_count_unresolved_as_cases": 0,
+  "experimental_series_id": "10.1039_c3ta01665j-S000",
+  "measurement_event_id": "10.1039_c3ta01665j__Fig1a__exp01__meas",
+  "shares_measurement_event": false,
+  "shares_physical_case_with": null,
+  "experiment_id": "10.1039_c3ta01665j__Fig1a__exp01",
+  "figure_slug": "Fig1a",
+  "id_has_panel": true,
+  "id_suffix_reason": "2 records share Fig1a",
+  "provisional_entity_id": "10.1039_c3ta01665j-E000",
+  "result_series_id": "10.1039_c3ta01665j__Fig1a__exp01",
+  "physical_case_id": "10.1039_c3ta01665j__Fig1a__exp01"
+ },
+ {
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp02",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|ideal ALD|primary",
+  "entity_class": "ExperimentSeries",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "classification_method": "granularity(independent_process_sweep)(3 families)",
+  "classification_evidence": [
+   "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'progression_coordinate'",
+   "G: x is a progression axis but the paper describes separately executed runs: 'self-limiting'"
+  ],
+  "signal_families": [
+   "F",
+   "I",
+   "M",
+   "Me",
+   "R",
+   "X"
+  ],
+  "unresolved_reason": null,
+  "is_current_paper_experiment": true,
+  "paper_id": "10.1039_c3ta01665j",
+  "fig_docling_index": "1",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "panel_key": "a",
+  "source_series": "ideal ALD",
+  "representation": "primary",
+  "plot_series": true,
+  "coordinate": "cycle_number",
+  "coordinate_unit": "cycle",
+  "measurand": "Pt loading",
+  "measurand_unit": "wt%",
+  "measurement_class": "Measurement",
+  "samples_are": "observations",
+  "n_observations": 3,
+  "observations": [
+   {
+    "index": 0,
+    "x_raw": 1,
+    "y_raw": 0.91,
+    "x_canonical": 1,
+    "y_canonical": 0.91
+   },
+   {
+    "index": 1,
+    "x_raw": 2,
+    "y_raw": 1.96,
+    "x_canonical": 2,
+    "y_canonical": 1.96
+   },
+   {
+    "index": 2,
+    "x_raw": 4,
+    "y_raw": 3.98,
+    "x_canonical": 4,
+    "y_canonical": 3.98
+   }
+  ],
+  "between_curve_condition": "method",
+  "between_curve_value": "ideal ALD",
+  "bound_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "4",
+    "unit": "cycle",
+    "raw_evidence": "4 cycles",
+    "evidence_locator": "document.md near Fig 1",
+    "assertion_status": "approximate",
+    "source_kind": "body",
+    "evidence_kind": "experimental_condition",
+    "species": null,
+    "species_basis": null,
+    "reactant_role": null,
+    "of_reactant": null,
+    "paper_id": "10.1039_c3ta01665j",
+    "figure_index": "1",
+    "figure_number": "1",
+    "panel": "a",
+    "series_selector": null,
+    "reference_work": null,
+    "scope": "figure",
+    "confidence": 0.85,
+    "ambiguity": null,
+    "source_entity": "10.1039_c3ta01665j|1|1|a|ideal ALD|primary",
+    "binding_key": [
+     "cycle_number",
+     null
+    ],
+    "bound_at_scope": "figure",
+    "overrode_scopes": [
+     "figure",
+     "method"
+    ],
+    "corroborating_assertions": 1
+   }
+  ],
+  "ambiguous_conditions": [],
+  "originally_reported_in": null,
+  "reported_in": null,
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "granularity_kind": "independent_process_sweep",
+  "granularity_evidence": "x is a progression axis but the paper describes separately executed runs: 'self-limiting'",
+  "granularity_review_reason": null,
+  "x_axis_role": "progression_coordinate",
+  "y_axis_role": "output",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "series_source_kind": "unknown",
+  "series_source_confidence": null,
+  "series_source_evidence": null,
+  "fit_of_series_label": null,
+  "fit_of_entity": null,
+  "geometry_class": "porous_material",
+  "structure": "mesoporous_powder",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "source_record_id": "10.1039_c3ta01665j-F1a-1",
+  "experimental_case_count": 3,
+  "experimental_case_status": "independent_process_sweep",
+  "experimental_case_reason": "3 separately executed settings on a progression_coordinate axis; x is a progression axis but the paper describes separately executed runs: 'self-limiting'",
+  "experimental_case_lower_bound": 0,
+  "distinct_setting_values_observed": null,
+  "observation_count_unresolved_as_cases": 0,
+  "experimental_series_id": "10.1039_c3ta01665j-S001",
+  "measurement_event_id": "10.1039_c3ta01665j__Fig1a__exp01__meas",
+  "shares_measurement_event": false,
+  "shares_physical_case_with": null,
+  "experiment_id": "10.1039_c3ta01665j__Fig1a__exp02",
+  "figure_slug": "Fig1a",
+  "id_has_panel": true,
+  "id_suffix_reason": "2 records share Fig1a",
+  "provisional_entity_id": "10.1039_c3ta01665j-E001",
+  "result_series_id": "10.1039_c3ta01665j__Fig1a__exp02",
+  "physical_case_id": "10.1039_c3ta01665j__Fig1a__exp02"
+ },
+ {
+  "entity_id": "10.1039_c3ta01665j__Fig1b",
+  "entity_key": "10.1039_c3ta01665j|1|1|b|Specific surface area|primary",
+  "entity_class": "ExperimentSeries",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "classification_method": "granularity(independent_process_sweep)(3 families)",
+  "classification_evidence": [
+   "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'progression_coordinate'",
+   "G: x is a progression axis but the paper describes separately executed runs: 'self-limiting'"
+  ],
+  "signal_families": [
+   "F",
+   "I",
+   "M",
+   "Me",
+   "R"
+  ],
+  "unresolved_reason": null,
+  "is_current_paper_experiment": true,
+  "paper_id": "10.1039_c3ta01665j",
+  "fig_docling_index": "1",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "panel_key": "b",
+  "source_series": "Specific surface area",
+  "representation": "primary",
+  "plot_series": true,
+  "coordinate": "cycle_number",
+  "coordinate_unit": "cycle",
+  "measurand": "specific_surface_area",
+  "measurand_unit": "m2.g-1",
+  "measurement_class": "Measurement",
+  "samples_are": "observations",
+  "n_observations": 3,
+  "observations": [
+   {
+    "index": 0,
+    "x_raw": 1,
+    "y_raw": 54.84,
+    "x_canonical": 1,
+    "y_canonical": 54.84
+   },
+   {
+    "index": 1,
+    "x_raw": 2,
+    "y_raw": 57.0,
+    "x_canonical": 2,
+    "y_canonical": 57.0
+   },
+   {
+    "index": 2,
+    "x_raw": 4,
+    "y_raw": 57.81,
+    "x_canonical": 4,
+    "y_canonical": 57.81
+   }
+  ],
+  "between_curve_condition": null,
+  "between_curve_value": null,
+  "bound_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "4",
+    "unit": "cycle",
+    "raw_evidence": "4 cycles",
+    "evidence_locator": "document.md near Fig 1",
+    "assertion_status": "approximate",
+    "source_kind": "body",
+    "evidence_kind": "experimental_condition",
+    "species": null,
+    "species_basis": null,
+    "reactant_role": null,
+    "of_reactant": null,
+    "paper_id": "10.1039_c3ta01665j",
+    "figure_index": "1",
+    "figure_number": "1",
+    "panel": "b",
+    "series_selector": null,
+    "reference_work": null,
+    "scope": "figure",
+    "confidence": 0.85,
+    "ambiguity": null,
+    "source_entity": "10.1039_c3ta01665j|1|1|b|Specific surface area|primary",
+    "binding_key": [
+     "cycle_number",
+     null
+    ],
+    "bound_at_scope": "figure",
+    "overrode_scopes": [
+     "figure",
+     "method"
+    ],
+    "corroborating_assertions": 1
+   }
+  ],
+  "ambiguous_conditions": [],
+  "originally_reported_in": null,
+  "reported_in": null,
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "granularity_kind": "independent_process_sweep",
+  "granularity_evidence": "x is a progression axis but the paper describes separately executed runs: 'self-limiting'",
+  "granularity_review_reason": null,
+  "x_axis_role": "progression_coordinate",
+  "y_axis_role": "unknown",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Specific surface area (m\u00b2\u00b7g\u207b\u00b9)",
+   "raw_quantity": "specific_surface_area",
+   "raw_unit": "m2.g-1",
+   "unit_dimension": null,
+   "canonical_quantity": "specific_surface_area",
+   "axis_role": "unknown",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Specific surface area (m\u00b2\u00b7g\u207b\u00b9)'",
+   "rejected_lexical_match": null
+  },
+  "series_source_kind": "unknown",
+  "series_source_confidence": null,
+  "series_source_evidence": null,
+  "fit_of_series_label": null,
+  "fit_of_entity": null,
+  "geometry_class": "porous_material",
+  "structure": "mesoporous_powder",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "b",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "source_record_id": "10.1039_c3ta01665j-F1b-2",
+  "experimental_case_count": 3,
+  "experimental_case_status": "independent_process_sweep",
+  "experimental_case_reason": "3 separately executed settings on a progression_coordinate axis; x is a progression axis but the paper describes separately executed runs: 'self-limiting'",
+  "experimental_case_lower_bound": 0,
+  "distinct_setting_values_observed": null,
+  "observation_count_unresolved_as_cases": 0,
+  "experimental_series_id": "10.1039_c3ta01665j-S002",
+  "measurement_event_id": "10.1039_c3ta01665j__Fig1b",
+  "shares_measurement_event": false,
+  "shares_physical_case_with": null,
+  "experiment_id": "10.1039_c3ta01665j__Fig1b",
+  "figure_slug": "Fig1b",
+  "id_has_panel": true,
+  "id_suffix_reason": null,
+  "provisional_entity_id": "10.1039_c3ta01665j-E002",
+  "result_series_id": "10.1039_c3ta01665j__Fig1b",
+  "physical_case_id": "10.1039_c3ta01665j__Fig1b"
+ },
+ {
+  "entity_id": "10.1039_c3ta01665j__Fig3a",
+  "entity_key": "10.1039_c3ta01665j|4|3|a|Frequency|primary",
+  "entity_class": "ExperimentSeries",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "classification_method": "multi_signal(3 families)",
+  "classification_evidence": [
+   "M: Fig. 3 Particle size distribution from image analysis of TEM pictures for Pt nanoclusters deposited onto the TiO2 support after 1 ALD cycle",
+   "Me: sing a carbon/sulphur determinator (LECO CS-225). TEM pictures of the samples were taken using a FEI Tecnai TF20 equipped w",
+   "I: samples with higher Pt loadings"
+  ],
+  "signal_families": [
+   "F",
+   "I",
+   "M",
+   "Me"
+  ],
+  "unresolved_reason": null,
+  "is_current_paper_experiment": true,
+  "paper_id": "10.1039_c3ta01665j",
+  "fig_docling_index": "4",
+  "printed_figure_number": "3",
+  "panel": "a",
+  "panel_key": "a",
+  "source_series": "Frequency",
+  "representation": "primary",
+  "plot_series": true,
+  "coordinate": "Pt particle size",
+  "coordinate_unit": "nm",
+  "measurand": "frequency",
+  "measurand_unit": "1",
+  "measurement_class": "Measurement",
+  "samples_are": "observations",
+  "n_observations": 10,
+  "observations": [
+   {
+    "index": 0,
+    "x_raw": 0.8,
+    "y_raw": 1.0,
+    "x_canonical": 0.8,
+    "y_canonical": 0.01
+   },
+   {
+    "index": 1,
+    "x_raw": 1.0,
+    "y_raw": 13.0,
+    "x_canonical": 1.0,
+    "y_canonical": 0.13
+   },
+   {
+    "index": 2,
+    "x_raw": 1.2,
+    "y_raw": 19.2,
+    "x_canonical": 1.2,
+    "y_canonical": 0.192
+   },
+   {
+    "index": 3,
+    "x_raw": 1.4,
+    "y_raw": 18.3,
+    "x_canonical": 1.4,
+    "y_canonical": 0.18300000000000002
+   },
+   {
+    "index": 4,
+    "x_raw": 1.6,
+    "y_raw": 22.8,
+    "x_canonical": 1.6,
+    "y_canonical": 0.228
+   },
+   {
+    "index": 5,
+    "x_raw": 1.8,
+    "y_raw": 14.6,
+    "x_canonical": 1.8,
+    "y_canonical": 0.146
+   },
+   {
+    "index": 6,
+    "x_raw": 2.0,
+    "y_raw": 8.2,
+    "x_canonical": 2.0,
+    "y_canonical": 0.08199999999999999
+   },
+   {
+    "index": 7,
+    "x_raw": 2.2,
+    "y_raw": 1.8,
+    "x_canonical": 2.2,
+    "y_canonical": 0.018000000000000002
+   },
+   {
+    "index": 8,
+    "x_raw": 2.4,
+    "y_raw": 1.0,
+    "x_canonical": 2.4,
+    "y_canonical": 0.01
+   },
+   {
+    "index": 9,
+    "x_raw": 2.6,
+    "y_raw": 1.0,
+    "x_canonical": 2.6,
+    "y_canonical": 0.01
+   }
+  ],
+  "between_curve_condition": null,
+  "between_curve_value": null,
+  "bound_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "5",
+    "unit": "cycle",
+    "raw_evidence": "5 ALD cycles",
+    "evidence_locator": "figure 3 caption, panel (a)",
+    "assertion_status": "direct",
+    "source_kind": "caption",
+    "evidence_kind": "experimental_condition",
+    "species": null,
+    "species_basis": null,
+    "reactant_role": null,
+    "of_reactant": null,
+    "paper_id": "10.1039_c3ta01665j",
+    "figure_index": "4",
+    "figure_number": "3",
+    "panel": "a",
+    "series_selector": null,
+    "reference_work": null,
+    "scope": "panel",
+    "confidence": 0.85,
+    "ambiguity": null,
+    "source_entity": "10.1039_c3ta01665j|4|3|a|Frequency|primary",
+    "binding_key": [
+     "cycle_number",
+     null
+    ],
+    "bound_at_scope": "panel",
+    "overrode_scopes": [
+     "figure",
+     "method"
+    ],
+    "corroborating_assertions": 0
+   }
+  ],
+  "ambiguous_conditions": [],
+  "originally_reported_in": null,
+  "reported_in": null,
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 3 Particle size distribution from image analysis of TEM pictures for Pt nanoclusters deposited onto the TiO2 support after 1 ALD cycle (a) and after 5 ALD cycles (b).",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "granularity_kind": "unresolved",
+  "granularity_evidence": "x-axis role could not be resolved ('unknown')",
+  "granularity_review_reason": "unresolved axis role",
+  "x_axis_role": "unknown",
+  "y_axis_role": "unknown",
+  "x_semantics": {
+   "raw_label": "Pt particle size (nm)",
+   "raw_quantity": "Pt particle size",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Frequency (%)",
+   "raw_quantity": "frequency",
+   "raw_unit": "1",
+   "unit_dimension": null,
+   "canonical_quantity": "frequency",
+   "axis_role": "unknown",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Frequency (%)'",
+   "rejected_lexical_match": null
+  },
+  "series_source_kind": "unknown",
+  "series_source_confidence": null,
+  "series_source_evidence": null,
+  "fit_of_series_label": null,
+  "fit_of_entity": null,
+  "geometry_class": "porous_material",
+  "structure": "mesoporous_powder",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "a",
+   "caption": "Fig. 3 Particle size distribution from image analysis of TEM pictures for Pt nanoclusters deposited onto the TiO2 support after 1 ALD cycle (a) and after 5 ALD cycles (b).",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "source_record_id": "10.1039_c3ta01665j-F3a-3",
+  "experimental_case_count": 0,
+  "experimental_case_status": "not_an_independent_sweep",
+  "experimental_case_reason": "granularity is 'unresolved': its points are observations of one execution, not separate executions",
+  "experimental_case_lower_bound": 0,
+  "distinct_setting_values_observed": null,
+  "observation_count_unresolved_as_cases": 0,
+  "experimental_series_id": "10.1039_c3ta01665j-S003",
+  "measurement_event_id": "10.1039_c3ta01665j__Fig3a",
+  "shares_measurement_event": false,
+  "shares_physical_case_with": null,
+  "experiment_id": "10.1039_c3ta01665j__Fig3a",
+  "figure_slug": "Fig3a",
+  "id_has_panel": true,
+  "id_suffix_reason": null,
+  "provisional_entity_id": "10.1039_c3ta01665j-E003",
+  "result_series_id": "10.1039_c3ta01665j__Fig3a",
+  "physical_case_id": null
+ },
+ {
+  "entity_id": "10.1039_c3ta01665j__Fig3b",
+  "entity_key": "10.1039_c3ta01665j|5|3|b|Pt nanoclusters|primary",
+  "entity_class": "ExperimentSeries",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "classification_method": "multi_signal(3 families)",
+  "classification_evidence": [
+   "M: Fig. 3 Particle size distribution from image analysis of TEM pictures for Pt nanoclusters deposited onto the TiO2 support after 1 ALD cycle",
+   "Me: sing a carbon/sulphur determinator (LECO CS-225). TEM pictures of the samples were taken using a FEI Tecnai TF20 equipped w",
+   "I: samples with higher Pt loadings"
+  ],
+  "signal_families": [
+   "F",
+   "I",
+   "M",
+   "Me"
+  ],
+  "unresolved_reason": null,
+  "is_current_paper_experiment": true,
+  "paper_id": "10.1039_c3ta01665j",
+  "fig_docling_index": "5",
+  "printed_figure_number": "3",
+  "panel": "b",
+  "panel_key": "b",
+  "source_series": "Pt nanoclusters",
+  "representation": "primary",
+  "plot_series": true,
+  "coordinate": "Pt particle size",
+  "coordinate_unit": "nm",
+  "measurand": "frequency",
+  "measurand_unit": "1",
+  "measurement_class": "Measurement",
+  "samples_are": "observations",
+  "n_observations": 20,
+  "observations": [
+   {
+    "index": 0,
+    "x_raw": 0.5,
+    "y_raw": 0.5,
+    "x_canonical": 0.5,
+    "y_canonical": 0.005
+   },
+   {
+    "index": 1,
+    "x_raw": 1.0,
+    "y_raw": 6.1,
+    "x_canonical": 1.0,
+    "y_canonical": 0.061
+   },
+   {
+    "index": 2,
+    "x_raw": 1.25,
+    "y_raw": 5.1,
+    "x_canonical": 1.25,
+    "y_canonical": 0.051
+   },
+   {
+    "index": 3,
+    "x_raw": 1.5,
+    "y_raw": 12.1,
+    "x_canonical": 1.5,
+    "y_canonical": 0.121
+   },
+   {
+    "index": 4,
+    "x_raw": 1.75,
+    "y_raw": 14.6,
+    "x_canonical": 1.75,
+    "y_canonical": 0.146
+   },
+   {
+    "index": 5,
+    "x_raw": 2.0,
+    "y_raw": 13.6,
+    "x_canonical": 2.0,
+    "y_canonical": 0.136
+   },
+   {
+    "index": 6,
+    "x_raw": 2.25,
+    "y_raw": 9.1,
+    "x_canonical": 2.25,
+    "y_canonical": 0.091
+   },
+   {
+    "index": 7,
+    "x_raw": 2.5,
+    "y_raw": 6.6,
+    "x_canonical": 2.5,
+    "y_canonical": 0.066
+   },
+   {
+    "index": 8,
+    "x_raw": 2.75,
+    "y_raw": 7.0,
+    "x_canonical": 2.75,
+    "y_canonical": 0.07
+   },
+   {
+    "index": 9,
+    "x_raw": 3.0,
+    "y_raw": 4.0,
+    "x_canonical": 3.0,
+    "y_canonical": 0.04
+   },
+   {
+    "index": 10,
+    "x_raw": 3.25,
+    "y_raw": 2.0,
+    "x_canonical": 3.25,
+    "y_canonical": 0.02
+   },
+   {
+    "index": 11,
+    "x_raw": 3.5,
+    "y_raw": 5.1,
+    "x_canonical": 3.5,
+    "y_canonical": 0.051
+   },
+   {
+    "index": 12,
+    "x_raw": 3.75,
+    "y_raw": 3.0,
+    "x_canonical": 3.75,
+    "y_canonical": 0.03
+   },
+   {
+    "index": 13,
+    "x_raw": 4.0,
+    "y_raw": 3.0,
+    "x_canonical": 4.0,
+    "y_canonical": 0.03
+   },
+   {
+    "index": 14,
+    "x_raw": 4.25,
+    "y_raw": 0.5,
+    "x_canonical": 4.25,
+    "y_canonical": 0.005
+   },
+   {
+    "index": 15,
+    "x_raw": 4.5,
+    "y_raw": 2.5,
+    "x_canonical": 4.5,
+    "y_canonical": 0.025
+   },
+   {
+    "index": 16,
+    "x_raw": 4.75,
+    "y_raw": 0.5,
+    "x_canonical": 4.75,
+    "y_canonical": 0.005
+   },
+   {
+    "index": 17,
+    "x_raw": 5.0,
+    "y_raw": 3.0,
+    "x_canonical": 5.0,
+    "y_canonical": 0.03
+   },
+   {
+    "index": 18,
+    "x_raw": 5.25,
+    "y_raw": 1.5,
+    "x_canonical": 5.25,
+    "y_canonical": 0.015
+   },
+   {
+    "index": 19,
+    "x_raw": 5.5,
+    "y_raw": 1.0,
+    "x_canonical": 5.5,
+    "y_canonical": 0.01
+   }
+  ],
+  "between_curve_condition": null,
+  "between_curve_value": null,
+  "bound_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "5",
+    "unit": "cycle",
+    "raw_evidence": "5 ALD cycles",
+    "evidence_locator": "document.md near Fig 3",
+    "assertion_status": "direct",
+    "source_kind": "body",
+    "evidence_kind": "experimental_condition",
+    "species": null,
+    "species_basis": null,
+    "reactant_role": null,
+    "of_reactant": null,
+    "paper_id": "10.1039_c3ta01665j",
+    "figure_index": "5",
+    "figure_number": "3",
+    "panel": "b",
+    "series_selector": null,
+    "reference_work": null,
+    "scope": "figure",
+    "confidence": 0.85,
+    "ambiguity": null,
+    "source_entity": "10.1039_c3ta01665j|5|3|b|Pt nanoclusters|primary",
+    "binding_key": [
+     "cycle_number",
+     null
+    ],
+    "bound_at_scope": "figure",
+    "overrode_scopes": [
+     "figure",
+     "method"
+    ],
+    "corroborating_assertions": 3
+   }
+  ],
+  "ambiguous_conditions": [],
+  "originally_reported_in": null,
+  "reported_in": null,
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "series_legend",
+  "material_evidence": "series label 'Pt nanoclusters'",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "granularity_kind": "unresolved",
+  "granularity_evidence": "x-axis role could not be resolved ('unknown')",
+  "granularity_review_reason": "unresolved axis role",
+  "x_axis_role": "unknown",
+  "y_axis_role": "unknown",
+  "x_semantics": {
+   "raw_label": "Pt particle size (nm)",
+   "raw_quantity": "Pt particle size",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Frequency (%)",
+   "raw_quantity": "frequency",
+   "raw_unit": "1",
+   "unit_dimension": null,
+   "canonical_quantity": "frequency",
+   "axis_role": "unknown",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Frequency (%)'",
+   "rejected_lexical_match": null
+  },
+  "series_source_kind": "unknown",
+  "series_source_confidence": null,
+  "series_source_evidence": null,
+  "fit_of_series_label": null,
+  "fit_of_entity": null,
+  "geometry_class": "porous_material",
+  "structure": "mesoporous_powder",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "5",
+   "panel": "b",
+   "caption": "Fig. 3 Particle size distribution from image analysis of TEM pictures for Pt nanoclusters deposited onto the TiO2 support after 1 ALD cycle (a) and after 5 ALD cycles (b).",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "source_record_id": "10.1039_c3ta01665j-F3b-4",
+  "experimental_case_count": 0,
+  "experimental_case_status": "not_an_independent_sweep",
+  "experimental_case_reason": "granularity is 'unresolved': its points are observations of one execution, not separate executions",
+  "experimental_case_lower_bound": 0,
+  "distinct_setting_values_observed": null,
+  "observation_count_unresolved_as_cases": 0,
+  "experimental_series_id": "10.1039_c3ta01665j-S004",
+  "measurement_event_id": "10.1039_c3ta01665j__Fig3b",
+  "shares_measurement_event": false,
+  "shares_physical_case_with": null,
+  "experiment_id": "10.1039_c3ta01665j__Fig3b",
+  "figure_slug": "Fig3b",
+  "id_has_panel": true,
+  "id_suffix_reason": null,
+  "provisional_entity_id": "10.1039_c3ta01665j-E004",
+  "result_series_id": "10.1039_c3ta01665j__Fig3b",
+  "physical_case_id": null
+ }
+]

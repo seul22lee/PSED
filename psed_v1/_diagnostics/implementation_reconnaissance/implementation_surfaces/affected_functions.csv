@@ -1,0 +1,35 @@
+file,function/class,current responsibility,semantic concepts,inputs,outputs,downstream callers,tests,modification likely required,confidence
+pipeline/resolve/to_kb.py,resolve_source_entities (L831-1278),the whole entity+case+series+event build,all,"exps list, sd, pid","entities, cases, series, assertions",main(),test_stage0_regression,YES,high
+pipeline/resolve/to_kb.py,_entity_context (L530-594),assemble caption/panel/representation context,"Representation, Measurement","sd, e",ctx dict,resolve_source_entities,-,LIKELY,high
+pipeline/resolve/to_kb.py,_representation (L764-774),panel-clause keyword match,Representation,"caption, panel",one of 5 labels,_entity_context,-,POSSIBLY,high
+pipeline/resolve/to_kb.py,figure_slug (L777-790),Fig7a from printed number + panel,document identity,"printed_figure_number, panel",slug,assign_experiment_ids,test_granularity_and_axes (printed-number test),LIKELY,high
+pipeline/resolve/to_kb.py,assign_experiment_ids (L793-828),mint final experiment_id; overwrite entity_id,ExperimentCase identity,"entities, pid","experiment_id, figure_slug, id_has_panel, id_suffix_reason",resolve_source_entities,test_granularity_and_axes,YES,high
+pipeline/resolve/to_kb.py,case-minting block (L1037-1101),decide n_cases and status,ExperimentCase multiplicity,"model, granularity_kind, observations",experimental_case_*,-,test_stage0_regression,YES,high
+pipeline/resolve/to_kb.py,case-record block (L1127-1187),deep-copy e{} per case; attach controlled,ExperimentCase,"e, bound, n_cases",case dicts,-,test_stage0_regression,YES,high
+pipeline/resolve/to_kb.py,_events block (L1210-1273),group channels; set shares/physical_case/measurement_event,"Sample proxy, Measurement",entities,3 id fields,-,test_granularity_and_axes:266,YES,high
+pipeline/resolve/to_kb.py,fit-linking block (L1193-1203),attach fit to its measured sibling,Fit provenance,entities,fit_of_entity,-,-,POSSIBLY,medium
+pipeline/resolve/to_kb.py,build_results_view (L1298-...),results.json rows incl. source_series_id=entity_key,ResultSeries,"entities, curve records",results.json,build_core_kg,test_granularity_and_axes,LIKELY,high
+pipeline/resolve/to_kb.py,_geom_for (L398-435),geometry + geometry conditions per material,Geometry,"geometry.json, material","structure, class, conditions",record loop,-,LIKELY,medium
+pipeline/canonical/entities.py,classify (L297-600),"11-way classification, 8 signal families","ExperimentCase, Measurement, Simulation","ctx, methods",classification dict,to_kb,test_stage0_regression,YES,high
+pipeline/canonical/entities.py,CLASS_MODEL / ENTITY_CLASS (L629-668),"case count, measurement class, samples_are, is_experiment","ExperimentCase, Measurement",-,static tables,"to_kb, build_kg",test_stage0_regression,YES,high
+pipeline/canonical/entities.py,supported_setting_count (L279-295),count from an enumerated sample/run list,"Sample, ExperimentCase","caption, body","(count, evidence)",classify -> _result (then discarded),-,LIKELY,high
+pipeline/canonical/entities.py,SAMPLE_ID / SAMPLE_LIST (L69-73),match sample/run/specimen/Series identifiers,"Sample, DepositionRun, StudySeries","caption, body",regex match,classify,-,LIKELY,high
+pipeline/canonical/granularity.py,classify,sweep vs scan vs profile vs trace,ExperimentCase multiplicity,"axis role, kinds, texts",granularity_kind,to_kb,test_granularity_and_axes,LIKELY,high
+pipeline/canonical/conditions.py,assertion (L188-210),one assertion dict,Conditions,values,dict,all extractors,-,"LIKELY - open dict, natural role attachment point",high
+pipeline/canonical/conditions.py,bind (L740-890),narrowest-scope resolution,Conditions,"assertions, ctx, varied","bound, ambiguous",to_kb,test_context,LIKELY,high
+pipeline/canonical/chemistry_scope.py,resolve_material (L171-245),7-rung material ladder,"Material, material role","labels, captions, materials",material dict,to_kb,-,LIKELY,high
+pipeline/canonical/build_canonical.py,curve_id (L41-59),source-slice identity,ResultSeries,curve record,string,build_curve,release audit,PROBABLY NOT,high
+pipeline/canonical/build_canonical.py,build_curve (L62-111),canonical row,"ResultSeries, provenance",curve record,row dict,build_paper,canonical tests,PROBABLY NOT,high
+pipeline/text/geometry.py,tag_experiments (L249-267),stamp paper geometry on every experiment,Geometry level,geometry.json,rewrites experiments.json,cli,-,YES,high
+pipeline/text/geometry.py,classify_deterministic,paper geometry from text,Geometry,document.md,"class, structure, evidence",main,-,POSSIBLY,medium
+pipeline/review/build_kg.py,_add_entity_layer (L276-374),"typed entity nodes, PlotSeries, assertions",all,entities.json,nodes/edges,main,-,YES,high
+pipeline/review/build_kg.py,_ENTITY_NODE (L262-273),closed 10-entry class map,all,-,map,_add_entity_layer,-,YES if new classes appear,high
+pipeline/review/build_kg.py,node/link (L403-407),generic node/edge API,all,-,dicts,everything,-,NO - already generic,high
+pipeline/review/build_kg.py,main (L376-...),Experiment nodes from experiments.json,ExperimentCase,experiments.json,nodes,-,-,LIKELY,high
+pipeline/review/build_core_kg.py,curves_for (L114-132),join canonical curves via entity_key parse,ResultSeries,source_series_id,curves,node build,-,YES - parses entity_key positionally,high
+pipeline/review/build_core_kg.py,curve_by_entity build (L112),eid.split('__case')[0],ExperimentCase identity,exp ids,index,curves_for,-,YES - parses the case-id suffix,high
+twin/twin_validation.py,_targets (L416-423),candidate ensemble from experiments.json,ExperimentCase,experiments.json,list,run(),test_twin_validation,YES,high
+twin/twin_validation.py,_coverage / _commensurability,geometry-scoped validity,"Geometry, ExperimentCase",targets,"census, verdicts",run(),test_twin_validation,LIKELY,high
+pipeline/resolve/recipe.py,from_experiment,Recipe from controlled,Conditions,case dict,Recipe,to_kb,test_m2_chemistry,POSSIBLY,medium
+ontology/vocab.py,recipe_role (L69),QuantityKind -> role,Conditions role,qid,role string,"to_kb._ctrl, core KG",test_vocab_port,POSSIBLY,high
+pipeline/canonical/schema.py,SCOPE_ORDER / scope_rank (L53-62),closed scope list,Conditions scope,-,"list, rank",conditions.bind,-,POSSIBLY,high

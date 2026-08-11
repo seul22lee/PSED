@@ -1,0 +1,2831 @@
+[
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Pt loading",
+   "unit": "wt%",
+   "raw_unit": "wt%",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "wt%",
+    "to_unit": null,
+    "reason": "unit 'wt%' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.7
+   ],
+   [
+    4,
+    3.78
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.7
+   ],
+   [
+    4,
+    3.78
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1a__exp01__case00",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "method: measured (ICP)",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "Pt loading",
+    "unit": "wt%",
+    "raw_unit": "wt%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E000-C00",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E000-C00"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E000-C00"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E000-C00"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E000-C00"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E000-C00"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E000-C00"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp01",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|measured (ICP)|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S000",
+  "case_index": 0
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Pt loading",
+   "unit": "wt%",
+   "raw_unit": "wt%",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "wt%",
+    "to_unit": null,
+    "reason": "unit 'wt%' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.7
+   ],
+   [
+    4,
+    3.78
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.7
+   ],
+   [
+    4,
+    3.78
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1a__exp01__case01",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "method: measured (ICP)",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "Pt loading",
+    "unit": "wt%",
+    "raw_unit": "wt%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E000-C01",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E000-C01"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E000-C01"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E000-C01"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E000-C01"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E000-C01"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E000-C01"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp01",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|measured (ICP)|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S000",
+  "case_index": 1
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Pt loading",
+   "unit": "wt%",
+   "raw_unit": "wt%",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "wt%",
+    "to_unit": null,
+    "reason": "unit 'wt%' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.7
+   ],
+   [
+    4,
+    3.78
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.7
+   ],
+   [
+    4,
+    3.78
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1a__exp01__case02",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "method: measured (ICP)",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "Pt loading",
+    "unit": "wt%",
+    "raw_unit": "wt%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E000-C02",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E000-C02"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E000-C02"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E000-C02"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E000-C02"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E000-C02"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E000-C02"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp01",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|measured (ICP)|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S000",
+  "case_index": 2
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Pt loading",
+   "unit": "wt%",
+   "raw_unit": "wt%",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "wt%",
+    "to_unit": null,
+    "reason": "unit 'wt%' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.96
+   ],
+   [
+    4,
+    3.98
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.96
+   ],
+   [
+    4,
+    3.98
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1a__exp02__case00",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "method: ideal ALD",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "Pt loading",
+    "unit": "wt%",
+    "raw_unit": "wt%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E001-C00",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E001-C00"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E001-C00"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E001-C00"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E001-C00"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E001-C00"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E001-C00"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp02",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|ideal ALD|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S001",
+  "case_index": 0
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Pt loading",
+   "unit": "wt%",
+   "raw_unit": "wt%",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "wt%",
+    "to_unit": null,
+    "reason": "unit 'wt%' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.96
+   ],
+   [
+    4,
+    3.98
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.96
+   ],
+   [
+    4,
+    3.98
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1a__exp02__case01",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "method: ideal ALD",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "Pt loading",
+    "unit": "wt%",
+    "raw_unit": "wt%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E001-C01",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E001-C01"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E001-C01"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E001-C01"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E001-C01"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E001-C01"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E001-C01"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp02",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|ideal ALD|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S001",
+  "case_index": 1
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "Pt loading",
+   "unit": "wt%",
+   "raw_unit": "wt%",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "wt%",
+    "to_unit": null,
+    "reason": "unit 'wt%' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.96
+   ],
+   [
+    4,
+    3.98
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    0.91
+   ],
+   [
+    2,
+    1.96
+   ],
+   [
+    4,
+    3.98
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1a__exp02__case02",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "a",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "method: ideal ALD",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "Pt loading",
+    "unit": "wt%",
+    "raw_unit": "wt%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E001-C02",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E001-C02"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E001-C02"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E001-C02"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E001-C02"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E001-C02"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E001-C02"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Pt loading (wt%)",
+   "raw_quantity": "Pt loading",
+   "raw_unit": "wt%",
+   "unit_dimension": "percent",
+   "canonical_quantity": null,
+   "axis_role": "output",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1a__exp02",
+  "entity_key": "10.1039_c3ta01665j|1|1|a|ideal ALD|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S001",
+  "case_index": 2
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "specific_surface_area",
+   "unit": "m2.g-1",
+   "raw_unit": "m2.g-1",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "m2.g-1",
+    "to_unit": null,
+    "reason": "unit 'm2.g-1' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "specific_surface_area"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    54.84
+   ],
+   [
+    2,
+    57.0
+   ],
+   [
+    4,
+    57.81
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    54.84
+   ],
+   [
+    2,
+    57.0
+   ],
+   [
+    4,
+    57.81
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1b__case00",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "b",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "series: Specific surface area",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "specific_surface_area",
+    "unit": "m2.g-1",
+    "raw_unit": "m2.g-1",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E002-C00",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E002-C00"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E002-C00"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E002-C00"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E002-C00"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E002-C00"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E002-C00"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Specific surface area (m\u00b2\u00b7g\u207b\u00b9)",
+   "raw_quantity": "specific_surface_area",
+   "raw_unit": "m2.g-1",
+   "unit_dimension": null,
+   "canonical_quantity": "specific_surface_area",
+   "axis_role": "unknown",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Specific surface area (m\u00b2\u00b7g\u207b\u00b9)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1b",
+  "entity_key": "10.1039_c3ta01665j|1|1|b|Specific surface area|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S002",
+  "case_index": 0
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "specific_surface_area",
+   "unit": "m2.g-1",
+   "raw_unit": "m2.g-1",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "m2.g-1",
+    "to_unit": null,
+    "reason": "unit 'm2.g-1' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "specific_surface_area"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    54.84
+   ],
+   [
+    2,
+    57.0
+   ],
+   [
+    4,
+    57.81
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    54.84
+   ],
+   [
+    2,
+    57.0
+   ],
+   [
+    4,
+    57.81
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1b__case01",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "b",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "series: Specific surface area",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "specific_surface_area",
+    "unit": "m2.g-1",
+    "raw_unit": "m2.g-1",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E002-C01",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E002-C01"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E002-C01"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E002-C01"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E002-C01"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E002-C01"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E002-C01"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Specific surface area (m\u00b2\u00b7g\u207b\u00b9)",
+   "raw_quantity": "specific_surface_area",
+   "raw_unit": "m2.g-1",
+   "unit_dimension": null,
+   "canonical_quantity": "specific_surface_area",
+   "axis_role": "unknown",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Specific surface area (m\u00b2\u00b7g\u207b\u00b9)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1b",
+  "entity_key": "10.1039_c3ta01665j|1|1|b|Specific surface area|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S002",
+  "case_index": 1
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes in speci /uniFB01 c",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": false,
+  "chemistry_inconsistency": "material Pt contains Pt but precursor 'MeCpPtMe3' names neither the symbol nor the element",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "MeCpPtMe3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 250,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 4.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "approximate",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "4 cycles",
+     "locator": "document.md near Fig 1"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "specific_surface_area",
+   "unit": "m2.g-1",
+   "raw_unit": "m2.g-1",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "m2.g-1",
+    "to_unit": null,
+    "reason": "unit 'm2.g-1' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "specific_surface_area"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1,
+    54.84
+   ],
+   [
+    2,
+    57.0
+   ],
+   [
+    4,
+    57.81
+   ]
+  ],
+  "points_canonical": [
+   [
+    1,
+    54.84
+   ],
+   [
+    2,
+    57.0
+   ],
+   [
+    4,
+    57.81
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c3ta01665j__Fig1b__case02",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "b",
+   "caption": "Fig. 1 Pt loading measured by ICP ( , ) and predicted for ideal ALD ( x ) along with changes in speci /uniFB01 c surface area ( A ) as a function of ALD cycles (Pt content values corrected for changes",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c3ta01665j"
+  },
+  "series_name": "series: Specific surface area",
+  "phase": null,
+  "structure": "mesoporous_powder",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('MeCpPtMe3')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "MeCpPtMe3"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "specific_surface_area",
+    "unit": "m2.g-1",
+    "raw_unit": "m2.g-1",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "MeCpPtMe3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 4.0,
+   "temperature": 250,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c3ta01665j-E002-C02",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "MeCpPtMe3",
+     "experiment_id": "10.1039_c3ta01665j-E002-C02"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c3ta01665j-E002-C02"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c3ta01665j-E002-C02"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c3ta01665j-E002-C02"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c3ta01665j-E002-C02"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 4.0,
+     "experiment_id": "10.1039_c3ta01665j-E002-C02"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 250,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "number of Pt ALD cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'number of Pt ALD cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Specific surface area (m\u00b2\u00b7g\u207b\u00b9)",
+   "raw_quantity": "specific_surface_area",
+   "raw_unit": "m2.g-1",
+   "unit_dimension": null,
+   "canonical_quantity": "specific_surface_area",
+   "axis_role": "unknown",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Specific surface area (m\u00b2\u00b7g\u207b\u00b9)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c3ta01665j__Fig1b",
+  "entity_key": "10.1039_c3ta01665j|1|1|b|Specific surface area|primary",
+  "paper_id": "10.1039_c3ta01665j",
+  "doi": "10.1039_c3ta01665j",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c3ta01665j-S002",
+  "case_index": 2
+ }
+]

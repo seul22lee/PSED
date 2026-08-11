@@ -1,0 +1,162 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "Y2O3"
+ ],
+ "precursors": [
+  "Y(DPDMG)3"
+ ],
+ "coreactants": [
+  "H2O"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": [
+  175,
+  250
+ ],
+ "gpc_nm": 0.11,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F4d"
+   ]
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F4a",
+    "F4c"
+   ]
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F4b"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F4d",
+    "F8b",
+    "F10",
+    "F11"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F5b",
+    "F7a",
+    "F7b",
+    "F7c",
+    "F7d",
+    "F8a"
+   ]
+  }
+ },
+ "drill": [
+  {
+   "where": "F4a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "precursor pulse length saturation curve"
+  },
+  {
+   "where": "F4b",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "film thickness versus number of cycles"
+  },
+  {
+   "where": "F4c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "water purge time effect on GPC"
+  },
+  {
+   "where": "F4d",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC and film density versus deposition temperature"
+  },
+  {
+   "where": "F5b",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "measured and fitted X-ray reflectivity curve"
+  },
+  {
+   "where": "F7a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "as-introduced O 1s XPS core level spectrum"
+  },
+  {
+   "where": "F7b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "sputtered O 1s XPS core level spectrum"
+  },
+  {
+   "where": "F7c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "as-introduced Y 3d XPS core level spectrum"
+  },
+  {
+   "where": "F7d",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "sputtered Y 3d XPS core level spectrum"
+  },
+  {
+   "where": "F8a",
+   "type": "xrd_or_spectrum",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "UV/Vis absorbance spectrum of Y2O3 film"
+  },
+  {
+   "where": "F8b",
+   "type": "film_property_vs_condition",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "Tauc plot for direct optical band gap determination"
+  },
+  {
+   "where": "F10",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "capacitance-voltage curves of MIS capacitors at various frequencies"
+  },
+  {
+   "where": "F11",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "leakage current density vs electric field characteristics"
+  }
+ ],
+ "go_deeper": true,
+ "_scout_samples": 2,
+ "_tokens": {
+  "in": 6780,
+  "out": 2573,
+  "thoughts": 3050,
+  "budget": 12288
+ },
+ "_scout_input_chars": 12256
+}
