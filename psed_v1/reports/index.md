@@ -7,6 +7,7 @@ Regenerate with `python3 tools/gather_reports.py` (use `--check` to detect drift
 ## .
 
 - [README.md](README.md)
+- [corpus_dashboard.html](corpus_dashboard.html)
 
 ## docs
 
@@ -75,6 +76,14 @@ Regenerate with `python3 tools/gather_reports.py` (use `--check` to detect drift
 - [papers/10.3762_bjnano.14.89/extracted/document.md](papers__10.3762_bjnano.14.89__extracted__document.md)
 - [papers/10.3762_bjnano.5.25/extracted/document.md](papers__10.3762_bjnano.5.25__extracted__document.md)
 - [papers/cremers2019/extracted/document.md](papers__cremers2019__extracted__document.md)
+
+## pipeline
+
+- [pipeline/review/analysis_dashboard.html](pipeline__review__analysis_dashboard.html)
+- [pipeline/review/experiment_dashboard.html](pipeline__review__experiment_dashboard.html)
+- [pipeline/review/kg_viewer.html](pipeline__review__kg_viewer.html)
+- [pipeline/review/m2_recipes.html](pipeline__review__m2_recipes.html)
+- [pipeline/review/recipes.html](pipeline__review__recipes.html)
 
 ## scripts
 

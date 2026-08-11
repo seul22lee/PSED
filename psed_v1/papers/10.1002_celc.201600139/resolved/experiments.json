@@ -25,7 +25,7 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "deposition_temperature",
+    "quantity": "temperature",
     "value": 150.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -61,24 +61,6 @@
     }
    },
    {
-    "quantity": "cycle_number",
-    "value": 3.0,
-    "unit": "cycle",
-    "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
-    "context_status": "resolved",
-    "assertion_status": "direct",
-    "species": null,
-    "origin": {
-     "level": "figure",
-     "from": "body",
-     "evidence": "3 ALD cycles",
-     "locator": "document.md near Fig 1"
-    }
-   },
-   {
     "quantity": "carrier_gas_partial_pressure",
     "value": 1.2,
     "unit": "Torr",
@@ -110,7 +92,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "Mass"
+   "raw_quantity": "Mass (ng/cm\u00b2)"
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
@@ -122,246 +104,126 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    0.0,
-    0.0
-   ],
-   [
-    1.0,
+    1,
     13.2
    ],
    [
-    2.0,
-    26.3
-   ],
-   [
-    3.0,
+    3,
     39.5
    ],
    [
-    4.0,
-    52.6
-   ],
-   [
-    5.0,
+    5,
     65.8
    ],
    [
-    6.0,
-    78.9
+    7,
+    92.2
    ],
    [
-    7.0,
-    92.1
+    9,
+    118.5
    ],
    [
-    8.0,
-    105.3
+    11,
+    144.8
    ],
    [
-    9.0,
-    118.4
+    13,
+    171.2
    ],
    [
-    10.0,
-    131.6
+    15,
+    197.5
    ],
    [
-    11.0,
-    144.7
+    17,
+    223.8
    ],
    [
-    12.0,
-    157.9
+    19,
+    250.2
    ],
    [
-    13.0,
-    171.1
+    21,
+    276.5
    ],
    [
-    14.0,
-    184.2
+    23,
+    302.8
    ],
    [
-    15.0,
-    197.4
+    25,
+    329.2
    ],
    [
-    16.0,
-    210.5
+    27,
+    355.5
    ],
    [
-    17.0,
-    223.7
-   ],
-   [
-    18.0,
-    236.8
-   ],
-   [
-    19.0,
-    250.0
-   ],
-   [
-    20.0,
-    263.2
-   ],
-   [
-    21.0,
-    276.3
-   ],
-   [
-    22.0,
-    289.5
-   ],
-   [
-    23.0,
-    302.6
-   ],
-   [
-    24.0,
-    315.8
-   ],
-   [
-    25.0,
-    328.9
-   ],
-   [
-    26.0,
-    342.1
-   ],
-   [
-    27.0,
-    355.3
-   ],
-   [
-    28.0,
-    368.4
-   ],
-   [
-    29.0,
-    381.6
+    29,
+    381.8
    ]
   ],
   "points_canonical": [
    [
-    0.0,
-    0.0
-   ],
-   [
-    1.0,
+    1,
     13.2
    ],
    [
-    2.0,
-    26.3
-   ],
-   [
-    3.0,
+    3,
     39.5
    ],
    [
-    4.0,
-    52.6
-   ],
-   [
-    5.0,
+    5,
     65.8
    ],
    [
-    6.0,
-    78.9
+    7,
+    92.2
    ],
    [
-    7.0,
-    92.1
+    9,
+    118.5
    ],
    [
-    8.0,
-    105.3
+    11,
+    144.8
    ],
    [
-    9.0,
-    118.4
+    13,
+    171.2
    ],
    [
-    10.0,
-    131.6
+    15,
+    197.5
    ],
    [
-    11.0,
-    144.7
+    17,
+    223.8
    ],
    [
-    12.0,
-    157.9
+    19,
+    250.2
    ],
    [
-    13.0,
-    171.1
+    21,
+    276.5
    ],
    [
-    14.0,
-    184.2
+    23,
+    302.8
    ],
    [
-    15.0,
-    197.4
+    25,
+    329.2
    ],
    [
-    16.0,
-    210.5
+    27,
+    355.5
    ],
    [
-    17.0,
-    223.7
-   ],
-   [
-    18.0,
-    236.8
-   ],
-   [
-    19.0,
-    250.0
-   ],
-   [
-    20.0,
-    263.2
-   ],
-   [
-    21.0,
-    276.3
-   ],
-   [
-    22.0,
-    289.5
-   ],
-   [
-    23.0,
-    302.6
-   ],
-   [
-    24.0,
-    315.8
-   ],
-   [
-    25.0,
-    328.9
-   ],
-   [
-    26.0,
-    342.1
-   ],
-   [
-    27.0,
-    355.3
-   ],
-   [
-    28.0,
-    368.4
-   ],
-   [
-    29.0,
-    381.6
+    29,
+    381.8
    ]
   ],
   "granularity": "trace",
@@ -378,7 +240,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "precursor: LTB:H2S",
+  "series_name": "sub-cycle type: LTB:H2S",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -412,7 +274,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Mass",
+    "quantity": "Mass (ng/cm\u00b2)",
     "unit": "ng/cm\u00b2",
     "raw_unit": "ng/cm\u00b2",
     "family": null
@@ -434,7 +296,7 @@
    "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 3.0,
+   "ncycles": null,
    "temperature": 150.0,
    "flow_rate": null,
    "carrier_gas": null,
@@ -471,12 +333,6 @@
      ],
      "experiment_id": "10.1002_celc.201600139-E000"
     },
-    "cycle_number::": {
-     "source": "experiment",
-     "from": "unknown",
-     "value": 3.0,
-     "experiment_id": "10.1002_celc.201600139-E000"
-    },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
@@ -487,7 +343,7 @@
      "panel": "b"
     }
    },
-   "completeness": 0.6
+   "completeness": 0.5
   },
   "coordinate_raw_quantity": "cycle_number",
   "x_semantics": {
@@ -503,7 +359,7 @@
   },
   "y_semantics": {
    "raw_label": "Mass (ng/cm\u00b2)",
-   "raw_quantity": "Mass",
+   "raw_quantity": "Mass (ng/cm\u00b2)",
    "raw_unit": "ng/cm\u00b2",
    "unit_dimension": "areal_mass",
    "canonical_quantity": "areal_mass",
@@ -524,9 +380,69 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 30,
+  "n_observations": 15,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
+   {
+    "quantity": "cycle_number",
+    "species": null,
+    "scope": "figure",
+    "candidates": [
+     "3 cycle"
+    ],
+    "status": "ambiguous",
+    "reason": "cycle_number is varied by a panel/series of this figure, so a figure-scope value is one panel's setting and cannot be applied to this entity",
+    "assertions": [
+     {
+      "quantity": "cycle_number",
+      "value": "3",
+      "unit": "cycle",
+      "raw_evidence": "3 ALD cycles",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1002_celc.201600139",
+      "figure_index": "4",
+      "figure_number": "1",
+      "panel": "b",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1002_celc.201600139|4|1|b|LTB:H2S|primary"
+     },
+     {
+      "quantity": "cycle_number",
+      "value": "3",
+      "unit": "cycle",
+      "raw_evidence": "3 ALD cycles",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1002_celc.201600139",
+      "figure_index": "4",
+      "figure_number": "1",
+      "panel": "b",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1002_celc.201600139|4|1|b|LTB:H2S|primary"
+     }
+    ]
+   },
    {
     "quantity": "flow_rate",
     "species": null,
@@ -616,7 +532,7 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "deposition_temperature",
+    "quantity": "temperature",
     "value": 150.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -652,24 +568,6 @@
     }
    },
    {
-    "quantity": "cycle_number",
-    "value": 3.0,
-    "unit": "cycle",
-    "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
-    "context_status": "resolved",
-    "assertion_status": "direct",
-    "species": null,
-    "origin": {
-     "level": "figure",
-     "from": "body",
-     "evidence": "3 ALD cycles",
-     "locator": "document.md near Fig 1"
-    }
-   },
-   {
     "quantity": "carrier_gas_partial_pressure",
     "value": 1.2,
     "unit": "Torr",
@@ -701,7 +599,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "Mass"
+   "raw_quantity": "Mass (ng/cm\u00b2)"
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
@@ -713,254 +611,134 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    0.5,
-    6.6
+    0,
+    0.0
    ],
    [
-    1.5,
-    19.7
+    2,
+    26.3
    ],
    [
-    2.5,
-    32.9
+    4,
+    52.7
    ],
    [
-    3.5,
-    46.1
+    6,
+    79.0
    ],
    [
-    4.5,
-    59.2
+    8,
+    105.3
    ],
    [
-    5.5,
-    72.4
+    10,
+    131.7
    ],
    [
-    6.5,
-    85.5
+    12,
+    158.0
    ],
    [
-    7.5,
-    98.7
+    14,
+    184.3
    ],
    [
-    8.5,
-    111.8
+    16,
+    210.7
    ],
    [
-    9.5,
-    125.0
+    18,
+    237.0
    ],
    [
-    10.5,
-    138.2
+    20,
+    263.3
    ],
    [
-    11.5,
-    151.3
+    22,
+    289.7
    ],
    [
-    12.5,
-    164.5
+    24,
+    316.0
    ],
    [
-    13.5,
-    177.6
+    26,
+    342.3
    ],
    [
-    14.5,
-    190.8
+    28,
+    368.7
    ],
    [
-    15.5,
-    203.9
-   ],
-   [
-    16.5,
-    217.1
-   ],
-   [
-    17.5,
-    230.3
-   ],
-   [
-    18.5,
-    243.4
-   ],
-   [
-    19.5,
-    256.6
-   ],
-   [
-    20.5,
-    269.7
-   ],
-   [
-    21.5,
-    282.9
-   ],
-   [
-    22.5,
-    296.1
-   ],
-   [
-    23.5,
-    309.2
-   ],
-   [
-    24.5,
-    322.4
-   ],
-   [
-    25.5,
-    335.5
-   ],
-   [
-    26.5,
-    348.7
-   ],
-   [
-    27.5,
-    361.8
-   ],
-   [
-    28.5,
-    375.0
-   ],
-   [
-    29.5,
-    388.2
-   ],
-   [
-    30.0,
-    394.7
+    30,
+    395.0
    ]
   ],
   "points_canonical": [
    [
-    0.5,
-    6.6
+    0,
+    0.0
    ],
    [
-    1.5,
-    19.7
+    2,
+    26.3
    ],
    [
-    2.5,
-    32.9
+    4,
+    52.7
    ],
    [
-    3.5,
-    46.1
+    6,
+    79.0
    ],
    [
-    4.5,
-    59.2
+    8,
+    105.3
    ],
    [
-    5.5,
-    72.4
+    10,
+    131.7
    ],
    [
-    6.5,
-    85.5
+    12,
+    158.0
    ],
    [
-    7.5,
-    98.7
+    14,
+    184.3
    ],
    [
-    8.5,
-    111.8
+    16,
+    210.7
    ],
    [
-    9.5,
-    125.0
+    18,
+    237.0
    ],
    [
-    10.5,
-    138.2
+    20,
+    263.3
    ],
    [
-    11.5,
-    151.3
+    22,
+    289.7
    ],
    [
-    12.5,
-    164.5
+    24,
+    316.0
    ],
    [
-    13.5,
-    177.6
+    26,
+    342.3
    ],
    [
-    14.5,
-    190.8
+    28,
+    368.7
    ],
    [
-    15.5,
-    203.9
-   ],
-   [
-    16.5,
-    217.1
-   ],
-   [
-    17.5,
-    230.3
-   ],
-   [
-    18.5,
-    243.4
-   ],
-   [
-    19.5,
-    256.6
-   ],
-   [
-    20.5,
-    269.7
-   ],
-   [
-    21.5,
-    282.9
-   ],
-   [
-    22.5,
-    296.1
-   ],
-   [
-    23.5,
-    309.2
-   ],
-   [
-    24.5,
-    322.4
-   ],
-   [
-    25.5,
-    335.5
-   ],
-   [
-    26.5,
-    348.7
-   ],
-   [
-    27.5,
-    361.8
-   ],
-   [
-    28.5,
-    375.0
-   ],
-   [
-    29.5,
-    388.2
-   ],
-   [
-    30.0,
-    394.7
+    30,
+    395.0
    ]
   ],
   "granularity": "trace",
@@ -977,7 +755,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "precursor: TDMAAl:H2S",
+  "series_name": "sub-cycle type: TDMAAl:H2S",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -1011,7 +789,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Mass",
+    "quantity": "Mass (ng/cm\u00b2)",
     "unit": "ng/cm\u00b2",
     "raw_unit": "ng/cm\u00b2",
     "family": null
@@ -1033,7 +811,7 @@
    "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 3.0,
+   "ncycles": null,
    "temperature": 150.0,
    "flow_rate": null,
    "carrier_gas": null,
@@ -1070,12 +848,6 @@
      ],
      "experiment_id": "10.1002_celc.201600139-E001"
     },
-    "cycle_number::": {
-     "source": "experiment",
-     "from": "unknown",
-     "value": 3.0,
-     "experiment_id": "10.1002_celc.201600139-E001"
-    },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
@@ -1086,7 +858,7 @@
      "panel": "b"
     }
    },
-   "completeness": 0.6
+   "completeness": 0.5
   },
   "coordinate_raw_quantity": "cycle_number",
   "x_semantics": {
@@ -1102,7 +874,7 @@
   },
   "y_semantics": {
    "raw_label": "Mass (ng/cm\u00b2)",
-   "raw_quantity": "Mass",
+   "raw_quantity": "Mass (ng/cm\u00b2)",
    "raw_unit": "ng/cm\u00b2",
    "unit_dimension": "areal_mass",
    "canonical_quantity": "areal_mass",
@@ -1123,9 +895,69 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 31,
+  "n_observations": 16,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
+   {
+    "quantity": "cycle_number",
+    "species": null,
+    "scope": "figure",
+    "candidates": [
+     "3 cycle"
+    ],
+    "status": "ambiguous",
+    "reason": "cycle_number is varied by a panel/series of this figure, so a figure-scope value is one panel's setting and cannot be applied to this entity",
+    "assertions": [
+     {
+      "quantity": "cycle_number",
+      "value": "3",
+      "unit": "cycle",
+      "raw_evidence": "3 ALD cycles",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1002_celc.201600139",
+      "figure_index": "4",
+      "figure_number": "1",
+      "panel": "b",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1002_celc.201600139|4|1|b|TDMAAl:H2S|primary"
+     },
+     {
+      "quantity": "cycle_number",
+      "value": "3",
+      "unit": "cycle",
+      "raw_evidence": "3 ALD cycles",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1002_celc.201600139",
+      "figure_index": "4",
+      "figure_number": "1",
+      "panel": "b",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1002_celc.201600139|4|1|b|TDMAAl:H2S|primary"
+     }
+    ]
+   },
    {
     "quantity": "flow_rate",
     "species": null,
@@ -1251,24 +1083,6 @@
     }
    },
    {
-    "quantity": "cycle_number",
-    "value": 3.0,
-    "unit": "cycle",
-    "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
-    "context_status": "resolved",
-    "assertion_status": "direct",
-    "species": null,
-    "origin": {
-     "level": "figure",
-     "from": "body",
-     "evidence": "3 ALD cycles",
-     "locator": "document.md near Fig 1"
-    }
-   },
-   {
     "quantity": "carrier_gas_partial_pressure",
     "value": 1.2,
     "unit": "Torr",
@@ -1300,170 +1114,50 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "resistivity"
+   "raw_quantity": "log \u03c3 (S/cm)"
   },
   "coordinate": "inverse_temperature",
-  "coordinate_family": null,
+  "coordinate_family": "process_temperature",
   "coordinate_unit": "1/K",
   "coordinate_unit_normalized": null,
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "unresolved",
-  "coordinate_unit_reason": "no parseable unit for coordinate 'inverse_temperature' and the ontology does not declare it dimensionless",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'temperature' and the ontology does not declare it dimensionless",
   "coordinate_unit_conversion": null,
   "points": [
    [
-    1.65,
-    -2.5
-   ],
-   [
-    1.75,
+    1.74,
     -2.76
    ],
    [
-    1.85,
-    -3.0
-   ],
-   [
-    1.92,
+    1.91,
     -3.12
    ],
    [
-    2.0,
-    -3.35
-   ],
-   [
     2.11,
-    -3.63
+    -3.64
    ],
    [
     2.21,
-    -3.88
-   ],
-   [
-    2.3,
-    -4.1
-   ],
-   [
-    2.4,
-    -4.35
-   ],
-   [
-    2.5,
-    -4.6
-   ],
-   [
-    2.6,
-    -4.84
-   ],
-   [
-    2.7,
-    -5.09
-   ],
-   [
-    2.8,
-    -5.33
-   ],
-   [
-    2.9,
-    -5.58
-   ],
-   [
-    3.0,
-    -5.82
-   ],
-   [
-    3.1,
-    -6.07
-   ],
-   [
-    3.2,
-    -6.31
-   ],
-   [
-    3.3,
-    -6.56
-   ],
-   [
-    3.4,
-    -6.8
+    -3.89
    ]
   ],
   "points_canonical": [
    [
-    1.65,
-    -2.5
-   ],
-   [
-    1.75,
+    1.74,
     -2.76
    ],
    [
-    1.85,
-    -3.0
-   ],
-   [
-    1.92,
+    1.91,
     -3.12
    ],
    [
-    2.0,
-    -3.35
-   ],
-   [
     2.11,
-    -3.63
+    -3.64
    ],
    [
     2.21,
-    -3.88
-   ],
-   [
-    2.3,
-    -4.1
-   ],
-   [
-    2.4,
-    -4.35
-   ],
-   [
-    2.5,
-    -4.6
-   ],
-   [
-    2.6,
-    -4.84
-   ],
-   [
-    2.7,
-    -5.09
-   ],
-   [
-    2.8,
-    -5.33
-   ],
-   [
-    2.9,
-    -5.58
-   ],
-   [
-    3.0,
-    -5.82
-   ],
-   [
-    3.1,
-    -6.07
-   ],
-   [
-    3.2,
-    -6.31
-   ],
-   [
-    3.3,
-    -6.56
-   ],
-   [
-    3.4,
-    -6.8
+    -3.89
    ]
   ],
   "granularity": "multi_output",
@@ -1480,7 +1174,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "series: 50nm LixAlyS",
+  "series_name": "series: 50nm Li_xAl_yS",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -1506,15 +1200,13 @@
     ]
    }
   },
-  "varies": [
-   "inverse_temperature"
-  ],
-  "series_varies": null,
-  "granularity_reason": "x axis 'inverse_temperature' is an ontology coordinate",
-  "axis_role": "coordinate",
+  "varies": [],
+  "series_varies": "temperature",
+  "granularity_reason": "x axis 'temperature' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
   "dependent": [
    {
-    "quantity": "resistivity",
+    "quantity": "log \u03c3 (S/cm)",
     "unit": "S/cm",
     "raw_unit": "S/cm",
     "family": null
@@ -1536,7 +1228,7 @@
    "cycle_sequence": "AB",
    "supercycle": null,
    "supercycle_repeats": null,
-   "ncycles": 3.0,
+   "ncycles": null,
    "temperature": 150.0,
    "flow_rate": null,
    "carrier_gas": null,
@@ -1573,12 +1265,6 @@
      ],
      "experiment_id": "10.1002_celc.201600139-E002"
     },
-    "cycle_number::": {
-     "source": "experiment",
-     "from": "unknown",
-     "value": 3.0,
-     "experiment_id": "10.1002_celc.201600139-E002"
-    },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
@@ -1587,12 +1273,12 @@
      "experiment_id": "10.1002_celc.201600139-E002"
     }
    },
-   "completeness": 0.6
+   "completeness": 0.5
   },
-  "coordinate_raw_quantity": "inverse_temperature",
+  "coordinate_raw_quantity": "temperature",
   "x_semantics": {
    "raw_label": "1000/T(K)",
-   "raw_quantity": "inverse_temperature",
+   "raw_quantity": "temperature",
    "raw_unit": "1/K",
    "unit_dimension": "reciprocal_temperature",
    "canonical_quantity": "inverse_temperature",
@@ -1603,7 +1289,7 @@
   },
   "y_semantics": {
    "raw_label": "log \u03c3 (S/cm)",
-   "raw_quantity": "resistivity",
+   "raw_quantity": "log \u03c3 (S/cm)",
    "raw_unit": "S/cm",
    "unit_dimension": "conductivity",
    "canonical_quantity": "ionic_conductivity",
@@ -1613,7 +1299,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.1002_celc.201600139__Fig1c",
-  "entity_key": "10.1002_celc.201600139|4|1|c|50nm LixAlyS|primary",
+  "entity_key": "10.1002_celc.201600139|4|1|c|50nm Li_xAl_yS|primary",
   "paper_id": "10.1002_celc.201600139",
   "doi": "10.1002_celc.201600139",
   "printed_figure_number": "1",
@@ -1624,9 +1310,69 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 19,
+  "n_observations": 4,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
+   {
+    "quantity": "cycle_number",
+    "species": null,
+    "scope": "figure",
+    "candidates": [
+     "3 cycle"
+    ],
+    "status": "ambiguous",
+    "reason": "cycle_number is varied by a panel/series of this figure, so a figure-scope value is one panel's setting and cannot be applied to this entity",
+    "assertions": [
+     {
+      "quantity": "cycle_number",
+      "value": "3",
+      "unit": "cycle",
+      "raw_evidence": "3 ALD cycles",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1002_celc.201600139",
+      "figure_index": "4",
+      "figure_number": "1",
+      "panel": "c",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1002_celc.201600139|4|1|c|50nm Li_xAl_yS|primary"
+     },
+     {
+      "quantity": "cycle_number",
+      "value": "3",
+      "unit": "cycle",
+      "raw_evidence": "3 ALD cycles",
+      "evidence_locator": "document.md near Fig 1",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1002_celc.201600139",
+      "figure_index": "4",
+      "figure_number": "1",
+      "panel": "c",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1002_celc.201600139|4|1|c|50nm Li_xAl_yS|primary"
+     }
+    ]
+   },
    {
     "quantity": "flow_rate",
     "species": null,
@@ -1790,14 +1536,14 @@
   ],
   "measurand": {
    "quantity": "impedance_imaginary",
-   "unit": "ohms",
-   "raw_unit": "ohms",
+   "unit": "ohm",
+   "raw_unit": "ohm",
    "family": "position",
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "ohms",
+    "from_unit": "ohm",
     "to_unit": null,
-    "reason": "unit 'ohms' is not a recognised convertible unit",
+    "reason": "unit 'ohm' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    },
@@ -1805,7 +1551,7 @@
   },
   "coordinate": "impedance_real",
   "coordinate_family": "position",
-  "coordinate_unit": "ohms",
+  "coordinate_unit": "ohm",
   "coordinate_unit_normalized": null,
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "unresolved",
@@ -1813,87 +1559,47 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    0,
-    0
-   ],
-   [
-    1000,
-    3000
-   ],
-   [
-    2000,
-    5000
-   ],
-   [
     3000,
-    7000
-   ],
-   [
-    4000,
-    8500
+    3500
    ],
    [
     5000,
     10000
    ],
    [
-    7000,
-    11500
-   ],
-   [
-    9000,
-    12800
-   ],
-   [
-    12000,
-    13800
-   ],
-   [
-    15000,
-    15000
-   ],
-   [
-    18000,
-    16000
-   ],
-   [
-    21000,
-    15200
-   ],
-   [
-    24000,
-    15000
-   ],
-   [
-    27000,
-    14800
-   ],
-   [
-    30000,
-    13200
-   ],
-   [
-    33000,
-    14800
-   ],
-   [
-    36000,
+    10000,
     13000
    ],
    [
-    39000,
-    13600
+    15000,
+    14200
    ],
    [
-    42000,
-    12500
+    20000,
+    15200
+   ],
+   [
+    25000,
+    14800
+   ],
+   [
+    28000,
+    13500
+   ],
+   [
+    32000,
+    13500
+   ],
+   [
+    36000,
+    13100
+   ],
+   [
+    40000,
+    12600
    ],
    [
     43000,
-    13800
-   ],
-   [
-    43500,
     15200
    ],
    [
@@ -1901,113 +1607,73 @@
     18500
    ],
    [
-    44200,
+    44500,
     20000
    ],
    [
-    44500,
-    23500
-   ],
-   [
     45000,
-    29200
+    23800
    ],
    [
     45500,
-    35000
+    29300
    ],
    [
-    46000,
-    43500
+    45800,
+    35200
    ],
    [
-    47000,
+    46200,
+    43300
+   ],
+   [
+    47200,
     53500
    ]
   ],
   "points_canonical": [
    [
-    0,
-    0
-   ],
-   [
-    1000,
-    3000
-   ],
-   [
-    2000,
-    5000
-   ],
-   [
     3000,
-    7000
-   ],
-   [
-    4000,
-    8500
+    3500
    ],
    [
     5000,
     10000
    ],
    [
-    7000,
-    11500
-   ],
-   [
-    9000,
-    12800
-   ],
-   [
-    12000,
-    13800
-   ],
-   [
-    15000,
-    15000
-   ],
-   [
-    18000,
-    16000
-   ],
-   [
-    21000,
-    15200
-   ],
-   [
-    24000,
-    15000
-   ],
-   [
-    27000,
-    14800
-   ],
-   [
-    30000,
-    13200
-   ],
-   [
-    33000,
-    14800
-   ],
-   [
-    36000,
+    10000,
     13000
    ],
    [
-    39000,
-    13600
+    15000,
+    14200
    ],
    [
-    42000,
-    12500
+    20000,
+    15200
+   ],
+   [
+    25000,
+    14800
+   ],
+   [
+    28000,
+    13500
+   ],
+   [
+    32000,
+    13500
+   ],
+   [
+    36000,
+    13100
+   ],
+   [
+    40000,
+    12600
    ],
    [
     43000,
-    13800
-   ],
-   [
-    43500,
     15200
    ],
    [
@@ -2015,27 +1681,27 @@
     18500
    ],
    [
-    44200,
+    44500,
     20000
    ],
    [
-    44500,
-    23500
-   ],
-   [
     45000,
-    29200
+    23800
    ],
    [
     45500,
-    35000
+    29300
    ],
    [
-    46000,
-    43500
+    45800,
+    35200
    ],
    [
-    47000,
+    46200,
+    43300
+   ],
+   [
+    47200,
     53500
    ]
   ],
@@ -2088,8 +1754,8 @@
   "dependent": [
    {
     "quantity": "spatial_coordinate",
-    "unit": "ohms",
-    "raw_unit": "ohms",
+    "unit": "ohm",
+    "raw_unit": "ohm",
     "family": "position"
    }
   ],
@@ -2162,7 +1828,7 @@
   "x_semantics": {
    "raw_label": "Z' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_real",
    "axis_role": "measurement_coordinate",
@@ -2173,7 +1839,7 @@
   "y_semantics": {
    "raw_label": "-Z'' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_imaginary",
    "axis_role": "measurement_coordinate",
@@ -2193,7 +1859,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 28,
+  "n_observations": 18,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -2544,14 +2210,14 @@
   ],
   "measurand": {
    "quantity": "impedance_imaginary",
-   "unit": "ohms",
-   "raw_unit": "ohms",
+   "unit": "ohm",
+   "raw_unit": "ohm",
    "family": "position",
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "ohms",
+    "from_unit": "ohm",
     "to_unit": null,
-    "reason": "unit 'ohms' is not a recognised convertible unit",
+    "reason": "unit 'ohm' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    },
@@ -2559,7 +2225,7 @@
   },
   "coordinate": "impedance_real",
   "coordinate_family": "position",
-  "coordinate_unit": "ohms",
+  "coordinate_unit": "ohm",
   "coordinate_unit_normalized": null,
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "unresolved",
@@ -2567,197 +2233,165 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    500,
-    1000
-   ],
-   [
     1000,
-    2000
+    2500
    ],
    [
     2000,
-    3800
-   ],
-   [
-    3000,
     5000
    ],
    [
     4000,
-    6200
+    7500
    ],
    [
-    5000,
-    7200
-   ],
-   [
-    6500,
-    8000
-   ],
-   [
-    8500,
+    6000,
     8500
    ],
    [
-    11000,
+    8000,
     8800
    ],
    [
-    13500,
+    10000,
+    8800
+   ],
+   [
+    13000,
     8800
    ],
    [
     16000,
-    8500
+    8200
    ],
    [
-    18000,
-    7800
+    19000,
+    7500
    ],
    [
-    20000,
-    7000
-   ],
-   [
-    22000,
-    7800
+    21000,
+    7300
    ],
    [
     23000,
-    8800
+    8000
    ],
    [
     24000,
-    9800
+    9500
    ],
    [
     25000,
-    11000
-   ],
-   [
-    25500,
-    12500
+    11500
    ],
    [
     26000,
-    17500
-   ],
-   [
-    26500,
-    21200
+    12700
    ],
    [
     27000,
-    25000
+    17700
    ],
    [
-    28500,
-    32800
+    28000,
+    21300
    ],
    [
-    29500,
-    40800
+    29000,
+    25300
    ],
    [
     31000,
+    32800
+   ],
+   [
+    32000,
+    40800
+   ],
+   [
+    33500,
     52500
    ]
   ],
   "points_canonical": [
    [
-    500,
-    1000
-   ],
-   [
     1000,
-    2000
+    2500
    ],
    [
     2000,
-    3800
-   ],
-   [
-    3000,
     5000
    ],
    [
     4000,
-    6200
+    7500
    ],
    [
-    5000,
-    7200
-   ],
-   [
-    6500,
-    8000
-   ],
-   [
-    8500,
+    6000,
     8500
    ],
    [
-    11000,
+    8000,
     8800
    ],
    [
-    13500,
+    10000,
+    8800
+   ],
+   [
+    13000,
     8800
    ],
    [
     16000,
-    8500
+    8200
    ],
    [
-    18000,
-    7800
+    19000,
+    7500
    ],
    [
-    20000,
-    7000
-   ],
-   [
-    22000,
-    7800
+    21000,
+    7300
    ],
    [
     23000,
-    8800
+    8000
    ],
    [
     24000,
-    9800
+    9500
    ],
    [
     25000,
-    11000
-   ],
-   [
-    25500,
-    12500
+    11500
    ],
    [
     26000,
-    17500
-   ],
-   [
-    26500,
-    21200
+    12700
    ],
    [
     27000,
-    25000
+    17700
    ],
    [
-    28500,
-    32800
+    28000,
+    21300
    ],
    [
-    29500,
-    40800
+    29000,
+    25300
    ],
    [
     31000,
+    32800
+   ],
+   [
+    32000,
+    40800
+   ],
+   [
+    33500,
     52500
    ]
   ],
@@ -2810,8 +2444,8 @@
   "dependent": [
    {
     "quantity": "spatial_coordinate",
-    "unit": "ohms",
-    "raw_unit": "ohms",
+    "unit": "ohm",
+    "raw_unit": "ohm",
     "family": "position"
    }
   ],
@@ -2884,7 +2518,7 @@
   "x_semantics": {
    "raw_label": "Z' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_real",
    "axis_role": "measurement_coordinate",
@@ -2895,7 +2529,7 @@
   "y_semantics": {
    "raw_label": "-Z'' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_imaginary",
    "axis_role": "measurement_coordinate",
@@ -2915,7 +2549,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 24,
+  "n_observations": 20,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -3266,14 +2900,14 @@
   ],
   "measurand": {
    "quantity": "impedance_imaginary",
-   "unit": "ohms",
-   "raw_unit": "ohms",
+   "unit": "ohm",
+   "raw_unit": "ohm",
    "family": "position",
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "ohms",
+    "from_unit": "ohm",
     "to_unit": null,
-    "reason": "unit 'ohms' is not a recognised convertible unit",
+    "reason": "unit 'ohm' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    },
@@ -3281,7 +2915,7 @@
   },
   "coordinate": "impedance_real",
   "coordinate_family": "position",
-  "coordinate_unit": "ohms",
+  "coordinate_unit": "ohm",
   "coordinate_unit_normalized": null,
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "unresolved",
@@ -3289,141 +2923,101 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    200,
-    200
-   ],
-   [
-    800,
+    2000,
     500
    ],
    [
-    1500,
-    1000
-   ],
-   [
-    2500,
-    1200
-   ],
-   [
     3500,
-    1500
+    2000
    ],
    [
     5000,
-    1800
+    2100
    ],
    [
-    6000,
-    2000
-   ],
-   [
-    7000,
-    2000
-   ],
-   [
-    7500,
-    3500
-   ],
-   [
-    7800,
-    8000
+    6500,
+    2100
    ],
    [
     8000,
-    14500
+    8000
    ],
    [
     8500,
+    14500
+   ],
+   [
+    8700,
     18000
    ],
    [
     9000,
-    22000
+    22200
+   ],
+   [
+    9200,
+    27200
    ],
    [
     9500,
-    27500
+    33800
    ],
    [
-    10500,
-    33500
-   ],
-   [
-    11500,
+    11000,
     43800
    ],
    [
-    12500,
+    12000,
     55000
    ]
   ],
   "points_canonical": [
    [
-    200,
-    200
-   ],
-   [
-    800,
+    2000,
     500
    ],
    [
-    1500,
-    1000
-   ],
-   [
-    2500,
-    1200
-   ],
-   [
     3500,
-    1500
+    2000
    ],
    [
     5000,
-    1800
+    2100
    ],
    [
-    6000,
-    2000
-   ],
-   [
-    7000,
-    2000
-   ],
-   [
-    7500,
-    3500
-   ],
-   [
-    7800,
-    8000
+    6500,
+    2100
    ],
    [
     8000,
-    14500
+    8000
    ],
    [
     8500,
+    14500
+   ],
+   [
+    8700,
     18000
    ],
    [
     9000,
-    22000
+    22200
+   ],
+   [
+    9200,
+    27200
    ],
    [
     9500,
-    27500
+    33800
    ],
    [
-    10500,
-    33500
-   ],
-   [
-    11500,
+    11000,
     43800
    ],
    [
-    12500,
+    12000,
     55000
    ]
   ],
@@ -3476,8 +3070,8 @@
   "dependent": [
    {
     "quantity": "spatial_coordinate",
-    "unit": "ohms",
-    "raw_unit": "ohms",
+    "unit": "ohm",
+    "raw_unit": "ohm",
     "family": "position"
    }
   ],
@@ -3550,7 +3144,7 @@
   "x_semantics": {
    "raw_label": "Z' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_real",
    "axis_role": "measurement_coordinate",
@@ -3561,7 +3155,7 @@
   "y_semantics": {
    "raw_label": "-Z'' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_imaginary",
    "axis_role": "measurement_coordinate",
@@ -3581,7 +3175,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 17,
+  "n_observations": 12,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -3932,14 +3526,14 @@
   ],
   "measurand": {
    "quantity": "impedance_imaginary",
-   "unit": "ohms",
-   "raw_unit": "ohms",
+   "unit": "ohm",
+   "raw_unit": "ohm",
    "family": "position",
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "ohms",
+    "from_unit": "ohm",
     "to_unit": null,
-    "reason": "unit 'ohms' is not a recognised convertible unit",
+    "reason": "unit 'ohm' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    },
@@ -3947,7 +3541,7 @@
   },
   "coordinate": "impedance_real",
   "coordinate_family": "position",
-  "coordinate_unit": "ohms",
+  "coordinate_unit": "ohm",
   "coordinate_unit_normalized": null,
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "unresolved",
@@ -3955,133 +3549,101 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    200,
-    200
-   ],
-   [
-    500,
+    1000,
     500
    ],
    [
-    1000,
-    1000
-   ],
-   [
-    1500,
-    1200
-   ],
-   [
-    2000,
+    1800,
     1500
    ],
    [
-    2500,
-    2500
-   ],
-   [
-    3000,
+    2800,
     4000
    ],
    [
-    3500,
-    7000
+    3800,
+    8000
    ],
    [
-    4000,
+    4800,
     11000
    ],
    [
-    4500,
+    5800,
     15000
    ],
    [
-    5000,
-    18000
+    6800,
+    18300
    ],
    [
-    5500,
+    7800,
     22000
    ],
    [
-    6000,
+    8800,
     27500
    ],
    [
-    6500,
+    9800,
     33500
    ],
    [
-    7500,
+    11800,
     40800
    ],
    [
-    8500,
+    13500,
     50800
    ]
   ],
   "points_canonical": [
    [
-    200,
-    200
-   ],
-   [
-    500,
+    1000,
     500
    ],
    [
-    1000,
-    1000
-   ],
-   [
-    1500,
-    1200
-   ],
-   [
-    2000,
+    1800,
     1500
    ],
    [
-    2500,
-    2500
-   ],
-   [
-    3000,
+    2800,
     4000
    ],
    [
-    3500,
-    7000
+    3800,
+    8000
    ],
    [
-    4000,
+    4800,
     11000
    ],
    [
-    4500,
+    5800,
     15000
    ],
    [
-    5000,
-    18000
+    6800,
+    18300
    ],
    [
-    5500,
+    7800,
     22000
    ],
    [
-    6000,
+    8800,
     27500
    ],
    [
-    6500,
+    9800,
     33500
    ],
    [
-    7500,
+    11800,
     40800
    ],
    [
-    8500,
+    13500,
     50800
    ]
   ],
@@ -4134,8 +3696,8 @@
   "dependent": [
    {
     "quantity": "spatial_coordinate",
-    "unit": "ohms",
-    "raw_unit": "ohms",
+    "unit": "ohm",
+    "raw_unit": "ohm",
     "family": "position"
    }
   ],
@@ -4208,7 +3770,7 @@
   "x_semantics": {
    "raw_label": "Z' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_real",
    "axis_role": "measurement_coordinate",
@@ -4219,7 +3781,7 @@
   "y_semantics": {
    "raw_label": "-Z'' (ohms)",
    "raw_quantity": "spatial_coordinate",
-   "raw_unit": "ohms",
+   "raw_unit": "ohm",
    "unit_dimension": "resistance",
    "canonical_quantity": "impedance_imaginary",
    "axis_role": "measurement_coordinate",
@@ -4239,7 +3801,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 16,
+  "n_observations": 12,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -4516,24 +4078,6 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "storage_time",
-    "value": 244800.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "coordinate",
-    "origin": {
-     "level": "experiment",
-     "from": "caption",
-     "paper_id": "10.1002_celc.201600139",
-     "experiment_id": "10.1002_celc.201600139__Fig3a__exp01",
-     "figure": "Fig 3",
-     "panel": "a"
-    },
-    "scope": "figure",
-    "context_status": "resolved"
-   },
-   {
     "quantity": "deposition_temperature",
     "value": 150.0,
     "unit": "\u00b0C",
@@ -4595,116 +4139,96 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    0,
-    80
+    15,
+    75
    ],
    [
     100,
-    180
+    190
    ],
    [
     200,
-    290
+    310
    ],
    [
     300,
-    400
+    420
    ],
    [
     400,
-    490
+    480
    ],
    [
     500,
-    570
+    540
    ],
    [
     600,
-    640
+    600
    ],
    [
     700,
-    700
+    650
    ],
    [
     800,
-    750
+    710
    ],
    [
     900,
-    780
+    760
    ],
    [
     1000,
-    800
+    790
    ],
    [
-    1100,
+    1160,
     820
    ],
    [
-    1200,
-    825
-   ],
-   [
-    1300,
-    825
-   ],
-   [
-    1400,
-    820
+    1330,
+    830
    ],
    [
     1500,
     800
    ],
    [
-    1600,
+    1650,
     780
    ],
    [
-    1700,
-    750
-   ],
-   [
     1800,
-    700
+    740
    ],
    [
-    1900,
-    640
-   ],
-   [
-    2000,
-    570
+    1950,
+    690
    ],
    [
     2100,
-    490
+    570
    ],
    [
     2200,
-    400
+    480
    ],
    [
     2300,
-    310
+    390
    ],
    [
     2400,
-    240
+    300
    ],
    [
     2500,
+    240
+   ],
+   [
+    2650,
     190
-   ],
-   [
-    2600,
-    170
-   ],
-   [
-    2700,
-    170
    ],
    [
     2800,
@@ -4712,121 +4236,101 @@
    ],
    [
     2900,
-    185
+    190
    ]
   ],
   "points_canonical": [
    [
-    0,
-    80
+    15,
+    75
    ],
    [
     100,
-    180
+    190
    ],
    [
     200,
-    290
+    310
    ],
    [
     300,
-    400
+    420
    ],
    [
     400,
-    490
+    480
    ],
    [
     500,
-    570
+    540
    ],
    [
     600,
-    640
+    600
    ],
    [
     700,
-    700
+    650
    ],
    [
     800,
-    750
+    710
    ],
    [
     900,
-    780
+    760
    ],
    [
     1000,
-    800
+    790
    ],
    [
-    1100,
+    1160,
     820
    ],
    [
-    1200,
-    825
-   ],
-   [
-    1300,
-    825
-   ],
-   [
-    1400,
-    820
+    1330,
+    830
    ],
    [
     1500,
     800
    ],
    [
-    1600,
+    1650,
     780
    ],
    [
-    1700,
-    750
-   ],
-   [
     1800,
-    700
+    740
    ],
    [
-    1900,
-    640
-   ],
-   [
-    2000,
-    570
+    1950,
+    690
    ],
    [
     2100,
-    490
+    570
    ],
    [
     2200,
-    400
+    480
    ],
    [
     2300,
-    310
+    390
    ],
    [
     2400,
-    240
+    300
    ],
    [
     2500,
+    240
+   ],
+   [
+    2650,
     190
-   ],
-   [
-    2600,
-    170
-   ],
-   [
-    2700,
-    170
    ],
    [
     2800,
@@ -4834,7 +4338,7 @@
    ],
    [
     2900,
-    185
+    190
    ]
   ],
   "granularity": "multi_output",
@@ -4851,7 +4355,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Pristine Li",
+  "series_name": "coating: Pristine Li",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -4989,7 +4493,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 30,
+  "n_observations": 25,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -5266,24 +4770,6 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
-    "quantity": "storage_time",
-    "value": 244800.0,
-    "unit": "s",
-    "of_reactant": null,
-    "source": "caption",
-    "recipe_role": "coordinate",
-    "origin": {
-     "level": "experiment",
-     "from": "caption",
-     "paper_id": "10.1002_celc.201600139",
-     "experiment_id": "10.1002_celc.201600139__Fig3a__exp02",
-     "figure": "Fig 3",
-     "panel": "a"
-    },
-    "scope": "figure",
-    "context_status": "resolved"
-   },
-   {
     "quantity": "deposition_temperature",
     "value": 150.0,
     "unit": "\u00b0C",
@@ -5345,117 +4831,117 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    0,
-    110
+    10,
+    70
    ],
    [
     50,
-    140
+    110
    ],
    [
     100,
-    170
+    140
    ],
    [
     150,
-    190
+    170
    ],
    [
     200,
-    205
+    190
    ],
    [
     250,
-    210
-   ],
-   [
-    300,
-    215
-   ],
-   [
-    350,
-    210
-   ],
-   [
-    400,
     200
    ],
    [
-    450,
+    300,
+    210
+   ],
+   [
+    350,
+    200
+   ],
+   [
+    400,
     180
    ],
    [
-    500,
+    450,
     150
    ],
    [
+    500,
+    120
+   ],
+   [
     550,
-    100
+    80
    ],
    [
     600,
-    40
+    30
    ],
    [
-    620,
+    650,
     0
    ]
   ],
   "points_canonical": [
    [
-    0,
-    110
+    10,
+    70
    ],
    [
     50,
-    140
+    110
    ],
    [
     100,
-    170
+    140
    ],
    [
     150,
-    190
+    170
    ],
    [
     200,
-    205
+    190
    ],
    [
     250,
-    210
-   ],
-   [
-    300,
-    215
-   ],
-   [
-    350,
-    210
-   ],
-   [
-    400,
     200
    ],
    [
-    450,
+    300,
+    210
+   ],
+   [
+    350,
+    200
+   ],
+   [
+    400,
     180
    ],
    [
-    500,
+    450,
     150
    ],
    [
+    500,
+    120
+   ],
+   [
     550,
-    100
+    80
    ],
    [
     600,
-    40
+    30
    ],
    [
-    620,
+    650,
     0
    ]
   ],
@@ -5473,7 +4959,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Li_xAl_yS coated Li",
+  "series_name": "coating: Li_xAl_yS coated Li",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -5937,7 +5423,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "resistivity"
+   "raw_quantity": "interfacial_resistance"
   },
   "coordinate": "storage_time",
   "coordinate_family": null,
@@ -5958,27 +5444,27 @@
   "points": [
    [
     0.5,
-    1800
+    1780
    ],
    [
-    2.0,
+    1.8,
     2020
    ],
    [
-    2.2,
-    2150
+    2.1,
+    2130
    ],
    [
     4.0,
-    2000
+    2010
    ],
    [
     20.0,
-    2580
+    2570
    ],
    [
     44.0,
-    2450
+    2430
    ],
    [
     68.0,
@@ -5988,27 +5474,27 @@
   "points_canonical": [
    [
     1800.0,
-    1800
+    1780
    ],
    [
-    7200.0,
+    6480.0,
     2020
    ],
    [
-    7920.000000000001,
-    2150
+    7560.0,
+    2130
    ],
    [
     14400.0,
-    2000
+    2010
    ],
    [
     72000.0,
-    2580
+    2570
    ],
    [
     158400.0,
-    2450
+    2430
    ],
    [
     244800.0,
@@ -6029,7 +5515,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Pristine Li",
+  "series_name": "coating: Pristine Li",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -6055,13 +5541,15 @@
     ]
    }
   },
-  "varies": [],
-  "series_varies": "exposure_time",
-  "granularity_reason": "x axis 'exposure_time' is an ontology condition; each point is one experiment",
-  "axis_role": "condition",
+  "varies": [
+   "storage_time"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'storage_time' is an ontology coordinate",
+  "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "resistivity",
+    "quantity": "interfacial_resistance",
     "unit": "ohms",
     "raw_unit": "ohms",
     "family": null
@@ -6130,10 +5618,10 @@
    },
    "completeness": 0.5
   },
-  "coordinate_raw_quantity": "exposure_time",
+  "coordinate_raw_quantity": "storage_time",
   "x_semantics": {
    "raw_label": "storage time (h)",
-   "raw_quantity": "exposure_time",
+   "raw_quantity": "storage_time",
    "raw_unit": "h",
    "unit_dimension": "time",
    "canonical_quantity": "storage_time",
@@ -6144,7 +5632,7 @@
   },
   "y_semantics": {
    "raw_label": "R_SEI (ohms)",
-   "raw_quantity": "resistivity",
+   "raw_quantity": "interfacial_resistance",
    "raw_unit": "ohms",
    "unit_dimension": "resistance",
    "canonical_quantity": "interfacial_resistance",
@@ -6491,7 +5979,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "resistivity"
+   "raw_quantity": "interfacial_resistance"
   },
   "coordinate": "storage_time",
   "coordinate_family": null,
@@ -6512,6 +6000,10 @@
   "points": [
    [
     1.5,
+    310
+   ],
+   [
+    2.1,
     320
    ],
    [
@@ -6524,7 +6016,7 @@
    ],
    [
     44.0,
-    620
+    630
    ],
    [
     68.0,
@@ -6534,6 +6026,10 @@
   "points_canonical": [
    [
     5400.0,
+    310
+   ],
+   [
+    7560.0,
     320
    ],
    [
@@ -6546,7 +6042,7 @@
    ],
    [
     158400.0,
-    620
+    630
    ],
    [
     244800.0,
@@ -6567,7 +6063,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Li_xAl_yS Coated Li",
+  "series_name": "coating: Li_xAl_yS Coated Li",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -6593,13 +6089,15 @@
     ]
    }
   },
-  "varies": [],
-  "series_varies": "exposure_time",
-  "granularity_reason": "x axis 'exposure_time' is an ontology condition; each point is one experiment",
-  "axis_role": "condition",
+  "varies": [
+   "storage_time"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'storage_time' is an ontology coordinate",
+  "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "resistivity",
+    "quantity": "interfacial_resistance",
     "unit": "ohms",
     "raw_unit": "ohms",
     "family": null
@@ -6668,10 +6166,10 @@
    },
    "completeness": 0.5
   },
-  "coordinate_raw_quantity": "exposure_time",
+  "coordinate_raw_quantity": "storage_time",
   "x_semantics": {
    "raw_label": "storage time (h)",
-   "raw_quantity": "exposure_time",
+   "raw_quantity": "storage_time",
    "raw_unit": "h",
    "unit_dimension": "time",
    "canonical_quantity": "storage_time",
@@ -6682,7 +6180,7 @@
   },
   "y_semantics": {
    "raw_label": "R_SEI (ohms)",
-   "raw_quantity": "resistivity",
+   "raw_quantity": "interfacial_resistance",
    "raw_unit": "ohms",
    "unit_dimension": "resistance",
    "canonical_quantity": "interfacial_resistance",
@@ -6703,7 +6201,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 5,
+  "n_observations": 6,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -7043,7 +6541,7 @@
   "points": [
    [
     1,
-    63
+    62
    ],
    [
     2,
@@ -7063,23 +6561,23 @@
    ],
    [
     20,
-    78
+    79
    ],
    [
     30,
-    77
+    76
    ],
    [
     40,
-    76
+    75
    ],
    [
     50,
-    76
+    75
    ],
    [
     60,
-    76
+    75
    ],
    [
     70,
@@ -7087,7 +6585,7 @@
    ],
    [
     80,
-    75
+    74
    ],
    [
     90,
@@ -7107,22 +6605,22 @@
    ],
    [
     130,
-    65
+    66
    ],
    [
     140,
-    60
+    62
    ],
    [
     145,
-    52
+    53
    ],
    [
     148,
-    45
+    47
    ],
    [
-    151,
+    150,
     42
    ],
    [
@@ -7133,7 +6631,7 @@
   "points_canonical": [
    [
     1,
-    0.63
+    0.62
    ],
    [
     2,
@@ -7153,23 +6651,23 @@
    ],
    [
     20,
-    0.78
+    0.79
    ],
    [
     30,
-    0.77
+    0.76
    ],
    [
     40,
-    0.76
+    0.75
    ],
    [
     50,
-    0.76
+    0.75
    ],
    [
     60,
-    0.76
+    0.75
    ],
    [
     70,
@@ -7177,7 +6675,7 @@
    ],
    [
     80,
-    0.75
+    0.74
    ],
    [
     90,
@@ -7197,22 +6695,22 @@
    ],
    [
     130,
-    0.65
+    0.66
    ],
    [
     140,
-    0.6
+    0.62
    ],
    [
     145,
-    0.52
+    0.53
    ],
    [
     148,
-    0.45
+    0.47000000000000003
    ],
    [
-    151,
+    150,
     0.42
    ],
    [
@@ -7234,7 +6732,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Pristine Cu",
+  "series_name": "coating: Pristine Cu",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -7712,7 +7210,11 @@
   "points": [
    [
     1,
-    59
+    60
+   ],
+   [
+    2,
+    75
    ],
    [
     5,
@@ -7720,15 +7222,23 @@
    ],
    [
     10,
+    76
+   ],
+   [
+    15,
     77
    ],
    [
     20,
-    78
+    77
+   ],
+   [
+    25,
+    77
    ],
    [
     30,
-    78
+    77
    ],
    [
     40,
@@ -7772,7 +7282,7 @@
    ],
    [
     140,
-    78
+    77
    ],
    [
     150,
@@ -7790,7 +7300,11 @@
   "points_canonical": [
    [
     1,
-    0.59
+    0.6
+   ],
+   [
+    2,
+    0.75
    ],
    [
     5,
@@ -7798,15 +7312,23 @@
    ],
    [
     10,
+    0.76
+   ],
+   [
+    15,
     0.77
    ],
    [
     20,
-    0.78
+    0.77
+   ],
+   [
+    25,
+    0.77
    ],
    [
     30,
-    0.78
+    0.77
    ],
    [
     40,
@@ -7850,7 +7372,7 @@
    ],
    [
     140,
-    0.78
+    0.77
    ],
    [
     150,
@@ -7879,7 +7401,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Li_xAl_yS Coated Cu",
+  "series_name": "coating: Li_xAl_yS Coated Cu",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -8017,7 +7539,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 19,
+  "n_observations": 22,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -8380,7 +7902,7 @@
    ],
    [
     140,
-    0.271
+    0.27
    ],
    [
     160,
@@ -8414,7 +7936,7 @@
    ],
    [
     140,
-    0.271
+    0.27
    ],
    [
     160,
@@ -8435,7 +7957,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Pristine Cu",
+  "series_name": "coating: Pristine Cu",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -8991,7 +8513,7 @@
    "extractor": "vision-llm",
    "doi": "10.1002_celc.201600139"
   },
-  "series_name": "electrode: Li_xAl_yS coated Cu",
+  "series_name": "coating: Li_xAl_yS coated Cu",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -9406,6 +8928,24 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "film_thickness",
+    "value": 25.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "observable",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_celc.201600139",
+     "experiment_id": "10.1002_celc.201600139__Fig4a__exp01",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
     "quantity": "deposition_temperature",
     "value": 150.0,
     "unit": "\u00b0C",
@@ -9472,112 +9012,128 @@
     78.2
    ],
    [
-    15,
-    87.5
+    10,
+    88.5
    ],
    [
-    35,
+    25,
     93.1
    ],
    [
-    60,
-    96.2
+    50,
+    96.4
    ],
    [
-    90,
-    97.8
+    75,
+    98.2
    ],
    [
-    120,
-    99.1
+    100,
+    97.0
    ],
    [
-    145,
-    101.3
-   ],
-   [
-    170,
-    98.4
-   ],
-   [
-    200,
-    97.6
-   ],
-   [
-    235,
-    96.8
-   ],
-   [
-    270,
-    97.2
-   ],
-   [
-    310,
-    98.1
-   ],
-   [
-    350,
-    99.5
-   ],
-   [
-    380,
-    100.4
-   ],
-   [
-    410,
+    125,
     101.2
    ],
    [
-    425,
-    91.5
+    150,
+    99.1
    ],
    [
-    440,
-    87.2
+    175,
+    96.3
+   ],
+   [
+    200,
+    98.0
+   ],
+   [
+    225,
+    97.4
+   ],
+   [
+    250,
+    98.1
+   ],
+   [
+    275,
+    97.5
+   ],
+   [
+    300,
+    98.3
+   ],
+   [
+    325,
+    99.0
+   ],
+   [
+    350,
+    100.1
+   ],
+   [
+    375,
+    100.2
+   ],
+   [
+    400,
+    96.0
+   ],
+   [
+    415,
+    81.5
+   ],
+   [
+    425,
+    92.1
    ],
    [
     450,
-    67.1
+    88.0
    ],
    [
-    465,
-    85.3
+    460,
+    67.2
    ],
    [
-    480,
-    58.4
+    475,
+    86.3
+   ],
+   [
+    490,
+    58.1
    ],
    [
     500,
-    78.6
+    81.0
    ],
    [
     515,
-    68.2
+    52.0
    ],
    [
-    530,
-    43.1
+    525,
+    85.2
    ],
    [
-    538,
-    24.5
+    535,
+    24.6
    ],
    [
     550,
+    45.1
+   ],
+   [
+    560,
     72.3
    ],
    [
-    565,
-    57.1
+    575,
+    50.0
    ],
    [
-    580,
-    45.6
-   ],
-   [
-    595,
-    38.5
+    590,
+    80.2
    ],
    [
     600,
@@ -9590,112 +9146,128 @@
     0.782
    ],
    [
-    15,
-    0.875
+    10,
+    0.885
    ],
    [
-    35,
+    25,
     0.9309999999999999
    ],
    [
-    60,
-    0.9620000000000001
+    50,
+    0.9640000000000001
    ],
    [
-    90,
-    0.978
+    75,
+    0.9820000000000001
    ],
    [
-    120,
-    0.991
+    100,
+    0.97
    ],
    [
-    145,
-    1.013
-   ],
-   [
-    170,
-    0.9840000000000001
-   ],
-   [
-    200,
-    0.976
-   ],
-   [
-    235,
-    0.968
-   ],
-   [
-    270,
-    0.9720000000000001
-   ],
-   [
-    310,
-    0.981
-   ],
-   [
-    350,
-    0.995
-   ],
-   [
-    380,
-    1.004
-   ],
-   [
-    410,
+    125,
     1.012
    ],
    [
-    425,
-    0.915
+    150,
+    0.991
    ],
    [
-    440,
-    0.872
+    175,
+    0.963
+   ],
+   [
+    200,
+    0.98
+   ],
+   [
+    225,
+    0.9740000000000001
+   ],
+   [
+    250,
+    0.981
+   ],
+   [
+    275,
+    0.975
+   ],
+   [
+    300,
+    0.983
+   ],
+   [
+    325,
+    0.99
+   ],
+   [
+    350,
+    1.001
+   ],
+   [
+    375,
+    1.002
+   ],
+   [
+    400,
+    0.96
+   ],
+   [
+    415,
+    0.8150000000000001
+   ],
+   [
+    425,
+    0.9209999999999999
    ],
    [
     450,
-    0.6709999999999999
+    0.88
    ],
    [
-    465,
-    0.853
+    460,
+    0.672
    ],
    [
-    480,
-    0.584
+    475,
+    0.863
+   ],
+   [
+    490,
+    0.5810000000000001
    ],
    [
     500,
-    0.7859999999999999
+    0.81
    ],
    [
     515,
-    0.682
+    0.52
    ],
    [
-    530,
-    0.43100000000000005
+    525,
+    0.8520000000000001
    ],
    [
-    538,
-    0.245
+    535,
+    0.24600000000000002
    ],
    [
     550,
+    0.451
+   ],
+   [
+    560,
     0.723
    ],
    [
-    565,
-    0.5710000000000001
+    575,
+    0.5
    ],
    [
-    580,
-    0.456
-   ],
-   [
-    595,
-    0.385
+    590,
+    0.802
    ],
    [
     600,
@@ -9854,7 +9426,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 29,
+  "n_observations": 33,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -10007,6 +9579,24 @@
   "cycle_sequence": "AB",
   "controlled": [
    {
+    "quantity": "film_thickness",
+    "value": 25.0,
+    "unit": "nm",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "observable",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1002_celc.201600139",
+     "experiment_id": "10.1002_celc.201600139__Fig4a__exp02",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
     "quantity": "deposition_temperature",
     "value": 150.0,
     "unit": "\u00b0C",
@@ -10070,189 +9660,277 @@
   "points": [
    [
     0,
-    82.5
+    83.0
    ],
    [
-    15,
-    88.2
+    10,
+    88.1
    ],
    [
-    30,
-    92.4
+    25,
+    92.3
+   ],
+   [
+    40,
+    88.0
    ],
    [
     50,
-    94.6
+    98.2
    ],
    [
     75,
-    95.8
+    93.0
    ],
    [
     100,
-    92.1
-   ],
-   [
-    120,
-    86.5
-   ],
-   [
-    150,
     91.2
    ],
    [
-    185,
-    95.3
+    120,
+    86.1
+   ],
+   [
+    140,
+    95.0
+   ],
+   [
+    160,
+    89.2
+   ],
+   [
+    180,
+    93.1
+   ],
+   [
+    200,
+    97.0
    ],
    [
     210,
-    70.4
+    70.2
    ],
    [
-    240,
-    95.8
+    230,
+    96.1
    ],
    [
-    280,
-    96.5
+    250,
+    94.3
    ],
    [
-    310,
-    97.1
+    270,
+    96.0
+   ],
+   [
+    290,
+    101.1
+   ],
+   [
+    300,
+    91.0
+   ],
+   [
+    325,
+    98.0
    ],
    [
     350,
-    97.2
+    98.2
    ],
    [
-    390,
-    97.6
-   ],
-   [
-    430,
-    97.8
-   ],
-   [
-    470,
-    97.5
-   ],
-   [
-    510,
-    97.6
-   ],
-   [
-    550,
+    375,
     98.1
    ],
    [
-    590,
-    97.4
+    400,
+    98.0
    ],
    [
-    630,
-    96.8
+    425,
+    98.0
    ],
    [
-    670,
-    96.2
+    450,
+    98.0
+   ],
+   [
+    475,
+    98.0
+   ],
+   [
+    500,
+    98.0
+   ],
+   [
+    525,
+    98.0
+   ],
+   [
+    550,
+    98.0
+   ],
+   [
+    575,
+    98.0
+   ],
+   [
+    600,
+    97.1
+   ],
+   [
+    625,
+    97.0
+   ],
+   [
+    650,
+    97.0
+   ],
+   [
+    675,
+    97.0
    ],
    [
     700,
-    92.8
+    93.8
    ]
   ],
   "points_canonical": [
    [
     0,
-    0.8250000000000001
+    0.8300000000000001
    ],
    [
-    15,
-    0.882
+    10,
+    0.881
    ],
    [
-    30,
-    0.924
+    25,
+    0.923
+   ],
+   [
+    40,
+    0.88
    ],
    [
     50,
-    0.946
+    0.9820000000000001
    ],
    [
     75,
-    0.958
+    0.93
    ],
    [
     100,
-    0.9209999999999999
-   ],
-   [
-    120,
-    0.865
-   ],
-   [
-    150,
     0.912
    ],
    [
-    185,
-    0.953
+    120,
+    0.861
+   ],
+   [
+    140,
+    0.9500000000000001
+   ],
+   [
+    160,
+    0.892
+   ],
+   [
+    180,
+    0.9309999999999999
+   ],
+   [
+    200,
+    0.97
    ],
    [
     210,
-    0.7040000000000001
+    0.7020000000000001
    ],
    [
-    240,
-    0.958
+    230,
+    0.961
    ],
    [
-    280,
-    0.965
+    250,
+    0.943
    ],
    [
-    310,
-    0.971
+    270,
+    0.96
+   ],
+   [
+    290,
+    1.011
+   ],
+   [
+    300,
+    0.91
+   ],
+   [
+    325,
+    0.98
    ],
    [
     350,
-    0.9720000000000001
+    0.9820000000000001
    ],
    [
-    390,
-    0.976
-   ],
-   [
-    430,
-    0.978
-   ],
-   [
-    470,
-    0.975
-   ],
-   [
-    510,
-    0.976
-   ],
-   [
-    550,
+    375,
     0.981
    ],
    [
-    590,
-    0.9740000000000001
+    400,
+    0.98
    ],
    [
-    630,
-    0.968
+    425,
+    0.98
    ],
    [
-    670,
-    0.9620000000000001
+    450,
+    0.98
+   ],
+   [
+    475,
+    0.98
+   ],
+   [
+    500,
+    0.98
+   ],
+   [
+    525,
+    0.98
+   ],
+   [
+    550,
+    0.98
+   ],
+   [
+    575,
+    0.98
+   ],
+   [
+    600,
+    0.971
+   ],
+   [
+    625,
+    0.97
+   ],
+   [
+    650,
+    0.97
+   ],
+   [
+    675,
+    0.97
    ],
    [
     700,
-    0.9279999999999999
+    0.938
    ]
   ],
   "granularity": "trace",
@@ -10407,7 +10085,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 23,
+  "n_observations": 34,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {

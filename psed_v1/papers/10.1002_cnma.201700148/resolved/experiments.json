@@ -1,1 +1,2346 @@
-[]
+[
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "material_scope_level": "series_legend",
+  "material_evidence": "series label 'h-BN/Si(100)'",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": 1.8,
+    "unit": "\u00c5/cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "growth per cycle (GPC) is of 1.8 \u00c5",
+     "locator": "document.md near Fig 2"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "raw_unit": "nm",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "already_canonical",
+    "from_unit": "nm",
+    "to_unit": "nm",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "film_thickness"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0.0
+   ],
+   [
+    50,
+    8.4
+   ],
+   [
+    100,
+    18.0
+   ],
+   [
+    150,
+    25.0
+   ],
+   [
+    250,
+    46.5
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    50,
+    8.4
+   ],
+   [
+    100,
+    18.0
+   ],
+   [
+    150,
+    25.0
+   ],
+   [
+    250,
+    46.5
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_cnma.201700148__Fig2a",
+  "provenance": {
+   "figure": "Fig 2",
+   "figure_number": "2",
+   "fig_docling_index": "3",
+   "panel": "a",
+   "caption": "Figure 2. a) Thicknesses of annealed BN films deposited on Si wafer as a function of the performed number of ALD cycles. The slop of the linear trend corresponds to the GPC. b) 10x10 \u00b5m area AFM image",
+   "extractor": "vision-llm",
+   "doi": "10.1002_cnma.201700148"
+  },
+  "series_name": "series: h-BN/Si(100)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "raw_unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BN",
+   "reactants": [],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": {
+    "gpc_sat": 1.8
+   },
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-E000",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-E000"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-E000"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "Number of cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Thickness (nm)",
+   "raw_quantity": "film_thickness",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "film_thickness",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Thickness (nm)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1002_cnma.201700148__Fig2a",
+  "entity_key": "10.1002_cnma.201700148|3|2|a|h-BN/Si(100)|primary",
+  "paper_id": "10.1002_cnma.201700148",
+  "doi": "10.1002_cnma.201700148",
+  "printed_figure_number": "2",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans with deconvolution ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "Transmittance",
+   "unit": "1",
+   "raw_unit": "%",
+   "family": null,
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "%",
+    "to_unit": "1",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.01
+   }
+  },
+  "coordinate": "wavenumber",
+  "coordinate_family": null,
+  "coordinate_unit": "cm^-1",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'wavenumber' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    3200,
+    98.6
+   ],
+   [
+    3100,
+    98.7
+   ],
+   [
+    3000,
+    98.8
+   ],
+   [
+    2900,
+    98.6
+   ],
+   [
+    2800,
+    99.0
+   ],
+   [
+    2700,
+    99.1
+   ],
+   [
+    2600,
+    99.2
+   ],
+   [
+    2500,
+    99.1
+   ],
+   [
+    2400,
+    99.3
+   ],
+   [
+    2300,
+    99.2
+   ],
+   [
+    2200,
+    99.5
+   ],
+   [
+    2150,
+    102.3
+   ],
+   [
+    2100,
+    100.1
+   ],
+   [
+    2050,
+    101.5
+   ],
+   [
+    2000,
+    99.4
+   ],
+   [
+    1900,
+    99.5
+   ],
+   [
+    1800,
+    99.4
+   ],
+   [
+    1700,
+    99.2
+   ],
+   [
+    1600,
+    96.5
+   ],
+   [
+    1550,
+    93.0
+   ],
+   [
+    1500,
+    87.2
+   ],
+   [
+    1450,
+    78.5
+   ],
+   [
+    1400,
+    72.1
+   ],
+   [
+    1360,
+    68.8
+   ],
+   [
+    1320,
+    73.5
+   ],
+   [
+    1280,
+    80.0
+   ],
+   [
+    1200,
+    87.2
+   ],
+   [
+    1150,
+    91.0
+   ],
+   [
+    1100,
+    93.2
+   ],
+   [
+    1000,
+    95.5
+   ],
+   [
+    900,
+    97.4
+   ],
+   [
+    850,
+    97.6
+   ],
+   [
+    820,
+    90.0
+   ],
+   [
+    796,
+    79.7
+   ],
+   [
+    770,
+    91.5
+   ],
+   [
+    720,
+    93.8
+   ],
+   [
+    650,
+    95.5
+   ],
+   [
+    550,
+    97.0
+   ],
+   [
+    450,
+    95.8
+   ],
+   [
+    400,
+    96.2
+   ]
+  ],
+  "points_canonical": [
+   [
+    3200,
+    0.986
+   ],
+   [
+    3100,
+    0.9870000000000001
+   ],
+   [
+    3000,
+    0.988
+   ],
+   [
+    2900,
+    0.986
+   ],
+   [
+    2800,
+    0.99
+   ],
+   [
+    2700,
+    0.991
+   ],
+   [
+    2600,
+    0.9920000000000001
+   ],
+   [
+    2500,
+    0.991
+   ],
+   [
+    2400,
+    0.993
+   ],
+   [
+    2300,
+    0.9920000000000001
+   ],
+   [
+    2200,
+    0.995
+   ],
+   [
+    2150,
+    1.023
+   ],
+   [
+    2100,
+    1.001
+   ],
+   [
+    2050,
+    1.0150000000000001
+   ],
+   [
+    2000,
+    0.9940000000000001
+   ],
+   [
+    1900,
+    0.995
+   ],
+   [
+    1800,
+    0.9940000000000001
+   ],
+   [
+    1700,
+    0.9920000000000001
+   ],
+   [
+    1600,
+    0.965
+   ],
+   [
+    1550,
+    0.93
+   ],
+   [
+    1500,
+    0.872
+   ],
+   [
+    1450,
+    0.785
+   ],
+   [
+    1400,
+    0.721
+   ],
+   [
+    1360,
+    0.688
+   ],
+   [
+    1320,
+    0.735
+   ],
+   [
+    1280,
+    0.8
+   ],
+   [
+    1200,
+    0.872
+   ],
+   [
+    1150,
+    0.91
+   ],
+   [
+    1100,
+    0.932
+   ],
+   [
+    1000,
+    0.9550000000000001
+   ],
+   [
+    900,
+    0.9740000000000001
+   ],
+   [
+    850,
+    0.976
+   ],
+   [
+    820,
+    0.9
+   ],
+   [
+    796,
+    0.797
+   ],
+   [
+    770,
+    0.915
+   ],
+   [
+    720,
+    0.938
+   ],
+   [
+    650,
+    0.9550000000000001
+   ],
+   [
+    550,
+    0.97
+   ],
+   [
+    450,
+    0.958
+   ],
+   [
+    400,
+    0.9620000000000001
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_cnma.201700148__Fig3a",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "a",
+   "caption": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans",
+   "extractor": "vision-llm",
+   "doi": "10.1002_cnma.201700148"
+  },
+  "series_name": "series: FTIR spectrum",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "varies": [
+   "wavenumber"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'wavenumber' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "Transmittance",
+    "unit": "1",
+    "raw_unit": "%",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BN",
+   "reactants": [],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-E001",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-E001"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-E001"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "wavenumber",
+  "x_semantics": {
+   "raw_label": "Wavenumber (cm$^{-1}$)",
+   "raw_quantity": "wavenumber",
+   "raw_unit": "cm^-1",
+   "unit_dimension": null,
+   "canonical_quantity": "wavenumber",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "vibrational spectrum coordinate",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Transmittance (%)",
+   "raw_quantity": "Transmittance",
+   "raw_unit": "1",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1002_cnma.201700148__Fig3a",
+  "entity_key": "10.1002_cnma.201700148|4|3|a|FTIR spectrum|primary",
+  "paper_id": "10.1002_cnma.201700148",
+  "doi": "10.1002_cnma.201700148",
+  "printed_figure_number": "3",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 40,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans with deconvolution ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "binding_energy",
+  "coordinate_family": null,
+  "coordinate_unit": "eV",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'binding_energy' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    1100,
+    62.0
+   ],
+   [
+    1050,
+    62.8
+   ],
+   [
+    1000,
+    63.5
+   ],
+   [
+    950,
+    64.3
+   ],
+   [
+    900,
+    65.1
+   ],
+   [
+    850,
+    66.0
+   ],
+   [
+    800,
+    66.8
+   ],
+   [
+    750,
+    67.8
+   ],
+   [
+    700,
+    68.8
+   ],
+   [
+    650,
+    69.8
+   ],
+   [
+    600,
+    71.0
+   ],
+   [
+    550,
+    72.2
+   ],
+   [
+    532,
+    74.0
+   ],
+   [
+    520,
+    72.5
+   ],
+   [
+    500,
+    72.8
+   ],
+   [
+    450,
+    73.5
+   ],
+   [
+    420,
+    72.0
+   ],
+   [
+    400,
+    71.0
+   ],
+   [
+    398,
+    105.0
+   ],
+   [
+    390,
+    58.0
+   ],
+   [
+    350,
+    58.2
+   ],
+   [
+    300,
+    58.5
+   ],
+   [
+    285,
+    65.0
+   ],
+   [
+    270,
+    58.5
+   ],
+   [
+    220,
+    58.2
+   ],
+   [
+    190,
+    78.0
+   ],
+   [
+    180,
+    55.0
+   ],
+   [
+    150,
+    55.2
+   ],
+   [
+    120,
+    55.5
+   ],
+   [
+    100,
+    56.5
+   ],
+   [
+    80,
+    56.0
+   ],
+   [
+    50,
+    55.8
+   ],
+   [
+    25,
+    58.0
+   ],
+   [
+    0,
+    57.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    1100,
+    62.0
+   ],
+   [
+    1050,
+    62.8
+   ],
+   [
+    1000,
+    63.5
+   ],
+   [
+    950,
+    64.3
+   ],
+   [
+    900,
+    65.1
+   ],
+   [
+    850,
+    66.0
+   ],
+   [
+    800,
+    66.8
+   ],
+   [
+    750,
+    67.8
+   ],
+   [
+    700,
+    68.8
+   ],
+   [
+    650,
+    69.8
+   ],
+   [
+    600,
+    71.0
+   ],
+   [
+    550,
+    72.2
+   ],
+   [
+    532,
+    74.0
+   ],
+   [
+    520,
+    72.5
+   ],
+   [
+    500,
+    72.8
+   ],
+   [
+    450,
+    73.5
+   ],
+   [
+    420,
+    72.0
+   ],
+   [
+    400,
+    71.0
+   ],
+   [
+    398,
+    105.0
+   ],
+   [
+    390,
+    58.0
+   ],
+   [
+    350,
+    58.2
+   ],
+   [
+    300,
+    58.5
+   ],
+   [
+    285,
+    65.0
+   ],
+   [
+    270,
+    58.5
+   ],
+   [
+    220,
+    58.2
+   ],
+   [
+    190,
+    78.0
+   ],
+   [
+    180,
+    55.0
+   ],
+   [
+    150,
+    55.2
+   ],
+   [
+    120,
+    55.5
+   ],
+   [
+    100,
+    56.5
+   ],
+   [
+    80,
+    56.0
+   ],
+   [
+    50,
+    55.8
+   ],
+   [
+    25,
+    58.0
+   ],
+   [
+    0,
+    57.0
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_cnma.201700148__Fig3b",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "b",
+   "caption": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans",
+   "extractor": "vision-llm",
+   "doi": "10.1002_cnma.201700148"
+  },
+  "series_name": "series: XPS Survey",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "varies": [
+   "binding_energy"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'binding_energy' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BN",
+   "reactants": [],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-E002",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-E002"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-E002"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "binding_energy",
+  "x_semantics": {
+   "raw_label": "Binding energy (eV)",
+   "raw_quantity": "binding_energy",
+   "raw_unit": "eV",
+   "unit_dimension": "energy",
+   "canonical_quantity": "binding_energy",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "photoelectron binding energy of an XPS scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Intensity (a.u.)",
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Intensity (a.u.)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1002_cnma.201700148__Fig3b",
+  "entity_key": "10.1002_cnma.201700148|4|3|b|XPS Survey|primary",
+  "paper_id": "10.1002_cnma.201700148",
+  "doi": "10.1002_cnma.201700148",
+  "printed_figure_number": "3",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 34,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans with deconvolution ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "binding_energy",
+  "coordinate_family": null,
+  "coordinate_unit": "eV",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'binding_energy' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    195.0,
+    10.0
+   ],
+   [
+    193.0,
+    10.5
+   ],
+   [
+    192.5,
+    13.0
+   ],
+   [
+    192.0,
+    22.0
+   ],
+   [
+    191.5,
+    41.0
+   ],
+   [
+    191.0,
+    70.0
+   ],
+   [
+    190.7,
+    94.0
+   ],
+   [
+    190.0,
+    78.0
+   ],
+   [
+    189.5,
+    50.0
+   ],
+   [
+    189.0,
+    26.0
+   ],
+   [
+    188.5,
+    14.0
+   ],
+   [
+    186.0,
+    10.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    195.0,
+    10.0
+   ],
+   [
+    193.0,
+    10.5
+   ],
+   [
+    192.5,
+    13.0
+   ],
+   [
+    192.0,
+    22.0
+   ],
+   [
+    191.5,
+    41.0
+   ],
+   [
+    191.0,
+    70.0
+   ],
+   [
+    190.7,
+    94.0
+   ],
+   [
+    190.0,
+    78.0
+   ],
+   [
+    189.5,
+    50.0
+   ],
+   [
+    189.0,
+    26.0
+   ],
+   [
+    188.5,
+    14.0
+   ],
+   [
+    186.0,
+    10.0
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_cnma.201700148__Fig3c__exp02",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "c",
+   "caption": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans",
+   "extractor": "vision-llm",
+   "doi": "10.1002_cnma.201700148"
+  },
+  "series_name": "peak component: B-N (93.12 %Area)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "varies": [
+   "binding_energy"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'binding_energy' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BN",
+   "reactants": [],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-E004",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-E004"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-E004"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "binding_energy",
+  "x_semantics": {
+   "raw_label": "Binding energy (eV)",
+   "raw_quantity": "binding_energy",
+   "raw_unit": "eV",
+   "unit_dimension": "energy",
+   "canonical_quantity": "binding_energy",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "photoelectron binding energy of an XPS scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Intensity (a.u.)",
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Intensity (a.u.)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1002_cnma.201700148__Fig3c__exp02",
+  "entity_key": "10.1002_cnma.201700148|4|3|c|B-N (93.12 %Area)|primary",
+  "paper_id": "10.1002_cnma.201700148",
+  "doi": "10.1002_cnma.201700148",
+  "printed_figure_number": "3",
+  "panel": "c",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 12,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans with deconvolution ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "binding_energy",
+  "coordinate_family": null,
+  "coordinate_unit": "eV",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'binding_energy' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    195.0,
+    10.0
+   ],
+   [
+    193.5,
+    10.2
+   ],
+   [
+    193.0,
+    12.0
+   ],
+   [
+    192.5,
+    16.0
+   ],
+   [
+    192.0,
+    20.0
+   ],
+   [
+    191.5,
+    18.0
+   ],
+   [
+    191.0,
+    13.0
+   ],
+   [
+    190.0,
+    10.2
+   ],
+   [
+    186.0,
+    10.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    195.0,
+    10.0
+   ],
+   [
+    193.5,
+    10.2
+   ],
+   [
+    193.0,
+    12.0
+   ],
+   [
+    192.5,
+    16.0
+   ],
+   [
+    192.0,
+    20.0
+   ],
+   [
+    191.5,
+    18.0
+   ],
+   [
+    191.0,
+    13.0
+   ],
+   [
+    190.0,
+    10.2
+   ],
+   [
+    186.0,
+    10.0
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_cnma.201700148__Fig3c__exp03",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "c",
+   "caption": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans",
+   "extractor": "vision-llm",
+   "doi": "10.1002_cnma.201700148"
+  },
+  "series_name": "peak component: B-O (6.88 %Area)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "varies": [
+   "binding_energy"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'binding_energy' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BN",
+   "reactants": [],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-E005",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-E005"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-E005"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "binding_energy",
+  "x_semantics": {
+   "raw_label": "Binding energy (eV)",
+   "raw_quantity": "binding_energy",
+   "raw_unit": "eV",
+   "unit_dimension": "energy",
+   "canonical_quantity": "binding_energy",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "photoelectron binding energy of an XPS scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Intensity (a.u.)",
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Intensity (a.u.)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1002_cnma.201700148__Fig3c__exp03",
+  "entity_key": "10.1002_cnma.201700148|4|3|c|B-O (6.88 %Area)|primary",
+  "paper_id": "10.1002_cnma.201700148",
+  "doi": "10.1002_cnma.201700148",
+  "printed_figure_number": "3",
+  "panel": "c",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 9,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans with deconvolution ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "binding_energy",
+  "coordinate_family": null,
+  "coordinate_unit": "eV",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'binding_energy' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    403.0,
+    10.0
+   ],
+   [
+    400.5,
+    10.5
+   ],
+   [
+    400.0,
+    14.0
+   ],
+   [
+    399.5,
+    32.0
+   ],
+   [
+    399.0,
+    62.0
+   ],
+   [
+    398.3,
+    99.0
+   ],
+   [
+    398.0,
+    95.0
+   ],
+   [
+    397.5,
+    68.0
+   ],
+   [
+    397.0,
+    32.0
+   ],
+   [
+    396.5,
+    15.0
+   ],
+   [
+    394.0,
+    10.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    403.0,
+    10.0
+   ],
+   [
+    400.5,
+    10.5
+   ],
+   [
+    400.0,
+    14.0
+   ],
+   [
+    399.5,
+    32.0
+   ],
+   [
+    399.0,
+    62.0
+   ],
+   [
+    398.3,
+    99.0
+   ],
+   [
+    398.0,
+    95.0
+   ],
+   [
+    397.5,
+    68.0
+   ],
+   [
+    397.0,
+    32.0
+   ],
+   [
+    396.5,
+    15.0
+   ],
+   [
+    394.0,
+    10.0
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_cnma.201700148__Fig3d__exp02",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "d",
+   "caption": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans",
+   "extractor": "vision-llm",
+   "doi": "10.1002_cnma.201700148"
+  },
+  "series_name": "peak component: N-B (93.33 %Area)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "varies": [
+   "binding_energy"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'binding_energy' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BN",
+   "reactants": [],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-E007",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-E007"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-E007"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "binding_energy",
+  "x_semantics": {
+   "raw_label": "Binding energy (eV)",
+   "raw_quantity": "binding_energy",
+   "raw_unit": "eV",
+   "unit_dimension": "energy",
+   "canonical_quantity": "binding_energy",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "photoelectron binding energy of an XPS scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Intensity (a.u.)",
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Intensity (a.u.)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1002_cnma.201700148__Fig3d__exp02",
+  "entity_key": "10.1002_cnma.201700148|4|3|d|N-B (93.33 %Area)|primary",
+  "paper_id": "10.1002_cnma.201700148",
+  "doi": "10.1002_cnma.201700148",
+  "printed_figure_number": "3",
+  "panel": "d",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 11,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "BN",
+  "material_raw": "BN",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans with deconvolution ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [],
+  "coreactants": [],
+  "reactants": [],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "A",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 80,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "binding_energy",
+  "coordinate_family": null,
+  "coordinate_unit": "eV",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'binding_energy' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    403.0,
+    10.0
+   ],
+   [
+    401.0,
+    11.5
+   ],
+   [
+    400.5,
+    14.5
+   ],
+   [
+    400.0,
+    17.5
+   ],
+   [
+    399.5,
+    16.0
+   ],
+   [
+    399.0,
+    13.0
+   ],
+   [
+    398.0,
+    10.5
+   ],
+   [
+    394.0,
+    10.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    403.0,
+    10.0
+   ],
+   [
+    401.0,
+    11.5
+   ],
+   [
+    400.5,
+    14.5
+   ],
+   [
+    400.0,
+    17.5
+   ],
+   [
+    399.5,
+    16.0
+   ],
+   [
+    399.0,
+    13.0
+   ],
+   [
+    398.0,
+    10.5
+   ],
+   [
+    394.0,
+    10.0
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1002_cnma.201700148__Fig3d__exp03",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "4",
+   "panel": "d",
+   "caption": "Figure 3. a) FTIR spectrum of obtained BN nanotube array after thermal annealing. b) XPS survey spectrum recorded from ALD BN tube array after annealing and the corresponding XPS high resolution scans",
+   "extractor": "vision-llm",
+   "doi": "10.1002_cnma.201700148"
+  },
+  "series_name": "peak component: N-C (6.67 %Area)",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "ambiguous",
+   "resolution_method": "unresolved_multi_material",
+   "confidence": 0.0,
+   "source_level": null,
+   "directly_extracted": false,
+   "material_scope": "BN",
+   "supporting_evidence": null,
+   "ambiguity_reason": "2 precursor candidate(s) ['trichloroborazine', 'hexamethyldisilazane'] and 1 material(s) ['BN']; no unique candidate carries the metal of BN (metals: ['B']) and the source provides no material-to-precursor mapping \u2014 list position is not evidence",
+   "candidate_mappings": {
+    "precursors": [
+     "trichloroborazine",
+     "hexamethyldisilazane"
+    ],
+    "coreactants": [],
+    "materials": [
+     "BN"
+    ]
+   }
+  },
+  "varies": [
+   "binding_energy"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'binding_energy' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "BN",
+   "reactants": [],
+   "cycle_sequence": "A",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 80,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1002_cnma.201700148-E008",
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "BN",
+     "experiment_id": "10.1002_cnma.201700148-E008"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "A",
+     "experiment_id": "10.1002_cnma.201700148-E008"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 80,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "binding_energy",
+  "x_semantics": {
+   "raw_label": "Binding energy (eV)",
+   "raw_quantity": "binding_energy",
+   "raw_unit": "eV",
+   "unit_dimension": "energy",
+   "canonical_quantity": "binding_energy",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "photoelectron binding energy of an XPS scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Intensity (a.u.)",
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Intensity (a.u.)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1002_cnma.201700148__Fig3d__exp03",
+  "entity_key": "10.1002_cnma.201700148|4|3|d|N-C (6.67 %Area)|primary",
+  "paper_id": "10.1002_cnma.201700148",
+  "doi": "10.1002_cnma.201700148",
+  "printed_figure_number": "3",
+  "panel": "d",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 8,
+  "observations_are_experiments": false
+ }
+]

@@ -3,7 +3,7 @@
   "series_id": "10.1021_acs.chemmater.2c02292__Fig1a__series",
   "doi": "10.1021_acs.chemmater.2c02292",
   "entity_id": "10.1021_acs.chemmater.2c02292__Fig1a",
-  "entity_key": "10.1021_acs.chemmater.2c02292|1|1|a|<single>|primary",
+  "entity_key": "10.1021_acs.chemmater.2c02292|1|1|a|GPC|primary",
   "series_varies": "pulse_time",
   "series_varies_unit": "s",
   "measurand": {
@@ -39,7 +39,7 @@
    "extractor": "vision-llm",
    "doi": "10.1021_acs.chemmater.2c02292"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "material": "RuO2",
   "relevance": "experimental"
  },
@@ -47,21 +47,22 @@
   "series_id": "10.1021_acs.chemmater.2c02292__Fig1b__series",
   "doi": "10.1021_acs.chemmater.2c02292",
   "entity_id": "10.1021_acs.chemmater.2c02292__Fig1b",
-  "entity_key": "10.1021_acs.chemmater.2c02292|1|1|b|<single>|primary",
+  "entity_key": "10.1021_acs.chemmater.2c02292|1|1|b|GPC|primary",
   "series_varies": "pulse_time",
   "series_varies_unit": "s",
   "measurand": {
    "quantity": "growth_per_cycle",
-   "unit": "\u00c5",
+   "unit": "nm/cycle",
    "raw_unit": "\u00c5",
    "family": "film_amount",
    "unit_conversion": {
-    "status": "invalid",
+    "status": "converted",
     "from_unit": "\u00c5",
-    "to_unit": null,
-    "reason": "printed unit '\u00c5' is length but ontology quantity 'growth_per_cycle' is length_per_cycle; the label and the quantity disagree \u2014 not converted, needs manual review",
-    "unit_recovered": null,
-    "values_rescaled": false
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": "\u00c5/cycle",
+    "values_rescaled": true,
+    "factor": 0.1
    },
    "raw_quantity": "growth_per_cycle"
   },
@@ -82,7 +83,7 @@
    "extractor": "vision-llm",
    "doi": "10.1021_acs.chemmater.2c02292"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "material": "RuO2",
   "relevance": "experimental"
  },
@@ -90,21 +91,22 @@
   "series_id": "10.1021_acs.chemmater.2c02292__Fig1c__series",
   "doi": "10.1021_acs.chemmater.2c02292",
   "entity_id": "10.1021_acs.chemmater.2c02292__Fig1c",
-  "entity_key": "10.1021_acs.chemmater.2c02292|1|1|c|<single>|primary",
+  "entity_key": "10.1021_acs.chemmater.2c02292|1|1|c|GPC|primary",
   "series_varies": "deposition_temperature",
   "series_varies_unit": "\u00b0C",
   "measurand": {
    "quantity": "growth_per_cycle",
-   "unit": "\u00c5",
+   "unit": "nm/cycle",
    "raw_unit": "\u00c5",
    "family": "film_amount",
    "unit_conversion": {
-    "status": "invalid",
+    "status": "converted",
     "from_unit": "\u00c5",
-    "to_unit": null,
-    "reason": "printed unit '\u00c5' is length but ontology quantity 'growth_per_cycle' is length_per_cycle; the label and the quantity disagree \u2014 not converted, needs manual review",
-    "unit_recovered": null,
-    "values_rescaled": false
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": "\u00c5/cycle",
+    "values_rescaled": true,
+    "factor": 0.1
    },
    "raw_quantity": "growth_per_cycle"
   },
@@ -125,7 +127,7 @@
    "extractor": "vision-llm",
    "doi": "10.1021_acs.chemmater.2c02292"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "material": "RuO2",
   "relevance": "experimental"
  },
@@ -212,6 +214,50 @@
    "doi": "10.1021_acs.chemmater.2c02292"
   },
   "series_name": "substrate: Si with native oxide",
+  "material": "RuO2",
+  "relevance": "experimental"
+ },
+ {
+  "series_id": "10.1021_acs.chemmater.2c02292__Fig1f__series",
+  "doi": "10.1021_acs.chemmater.2c02292",
+  "entity_id": "10.1021_acs.chemmater.2c02292__Fig1f",
+  "entity_key": "10.1021_acs.chemmater.2c02292|1|1|f|Ru L intensity profile|primary",
+  "series_varies": "Ru L intensity",
+  "series_varies_unit": "a.u.",
+  "measurand": {
+   "quantity": "spatial_coordinate",
+   "unit": "nm",
+   "raw_unit": "\u00b5m",
+   "family": "position",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00b5m",
+    "to_unit": "nm",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 1000.0
+   },
+   "raw_quantity": "spatial_coordinate"
+  },
+  "n_observations": 6,
+  "supported_case_count": 0,
+  "case_count_lower_bound": 0,
+  "distinct_setting_values_observed": null,
+  "case_count_status": "not_an_independent_sweep",
+  "case_count_reason": "granularity is 'unresolved': its points are observations of one execution, not separate executions",
+  "between_curve_condition": null,
+  "between_curve_value": null,
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "1",
+   "panel": "f",
+   "caption": "Figure 1: ALD characteristics: a) Growth per cycle (GPC) as a function of RuO4 pulse time, using a fixed pulse time of 25s for methanol. b) GPC as a function of methanol pulse time, with the RuO4 puls",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.chemmater.2c02292"
+  },
+  "series_name": "series: Ru L intensity profile",
   "material": "RuO2",
   "relevance": "experimental"
  },

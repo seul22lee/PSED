@@ -94,6 +94,60 @@
     "context_status": "resolved"
    },
    {
+    "quantity": "pulse_time",
+    "value": 5.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.3762_bjnano.14.89",
+     "experiment_id": "10.3762_bjnano.14.89__Fig1a",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "purge_time",
+    "value": 2.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.3762_bjnano.14.89",
+     "experiment_id": "10.3762_bjnano.14.89__Fig1a",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 5.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.3762_bjnano.14.89",
+     "experiment_id": "10.3762_bjnano.14.89__Fig1a",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
     "quantity": "molecular_mass",
     "value": 48.0,
     "unit": "g/mol",
@@ -160,7 +214,7 @@
    },
    "raw_quantity": "growth_per_cycle"
   },
-  "coordinate": "evaporator_temperature",
+  "coordinate": "Evaporator temperature",
   "coordinate_family": null,
   "coordinate_unit": "\u00b0C",
   "coordinate_unit_normalized": "\u00b0C",
@@ -280,7 +334,7 @@
      "role": "precursor",
      "species": "SnI4",
      "dose_time": 5,
-     "purge_time": null,
+     "purge_time": 2.0,
      "partial_pressure": null
     },
     {
@@ -288,7 +342,7 @@
      "role": "coreactant",
      "species": "O3",
      "dose_time": 5,
-     "purge_time": null,
+     "purge_time": 2.0,
      "partial_pressure": null
     }
    ],
@@ -323,6 +377,15 @@
      "paper_id": null,
      "card_field": "pulse_time_s"
     },
+    "purge_time::A": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 2.0,
+     "paper_id": "10.3762_bjnano.14.89",
+     "experiment_id": "10.3762_bjnano.14.89-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
@@ -335,6 +398,15 @@
      "value": 5,
      "paper_id": null,
      "card_field": "pulse_time_s"
+    },
+    "purge_time::B": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 2.0,
+     "paper_id": "10.3762_bjnano.14.89",
+     "experiment_id": "10.3762_bjnano.14.89-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
     },
     "material::": {
      "source": "experiment",
@@ -367,11 +439,11 @@
      "panel": "a"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.714
   },
   "x_semantics": {
-   "raw_label": null,
-   "raw_quantity": "evaporator_temperature",
+   "raw_label": "Evaporator temperature, \u00b0C",
+   "raw_quantity": "Evaporator temperature",
    "raw_unit": "\u00b0C",
    "unit_dimension": "temperature",
    "canonical_quantity": null,
@@ -381,14 +453,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Growth per cycle, nm/cycle",
    "raw_quantity": "growth_per_cycle",
    "raw_unit": "nm/cycle",
    "unit_dimension": "growth_per_cycle",
    "canonical_quantity": "growth_per_cycle",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'growth_per_cycle'",
+   "evidence": "ontology alias match on 'Growth per cycle, nm/cycle'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig1a",
@@ -563,15 +635,7 @@
     0.6
    ],
    [
-    -3.5,
-    0.6
-   ],
-   [
     -3.0,
-    0.6
-   ],
-   [
-    -2.5,
     0.6
    ],
    [
@@ -579,128 +643,96 @@
     0.6
    ],
    [
-    -1.5,
-    0.6
-   ],
-   [
     -1.0,
     0.6
    ],
    [
-    -0.5,
+    -0.3,
     0.6
    ],
    [
-    0.0,
-    0.6
+    0.2,
+    0.62
    ],
    [
-    0.3,
-    0.7
+    0.5,
+    0.72
    ],
    [
-    0.6,
+    0.8,
     1.05
    ],
    [
-    0.9,
-    1.5
+    1.1,
+    1.55
    ],
    [
-    1.2,
-    2.05
+    1.4,
+    2.08
    ],
    [
-    1.5,
-    2.5
+    1.7,
+    2.48
    ],
    [
-    1.8,
-    2.75
+    2.0,
+    2.46
    ],
    [
-    2.2,
-    2.9
-   ],
-   [
-    2.6,
-    3.05
+    2.5,
+    2.42
    ],
    [
     3.0,
-    3.18
+    2.38
    ],
    [
-    3.4,
-    3.28
+    3.5,
+    2.32
+   ],
+   [
+    3.7,
+    2.28
    ],
    [
     3.8,
-    3.32
+    1.9
    ],
    [
     4.0,
-    3.3
+    1.2
    ],
    [
-    4.4,
-    3.22
+    4.3,
+    1.0
    ],
    [
     4.8,
-    3.18
+    0.92
    ],
    [
-    5.2,
-    3.15
+    5.5,
+    0.92
    ],
    [
-    5.6,
-    3.1
+    6.0,
+    0.92
    ],
    [
-    5.9,
-    2.5
-   ],
-   [
-    6.2,
-    1.85
-   ],
-   [
-    6.5,
-    1.45
-   ],
-   [
-    6.8,
-    1.4
-   ],
-   [
-    7.2,
-    1.4
-   ],
-   [
-    7.6,
-    1.4
+    7.0,
+    0.92
    ],
    [
     8.0,
-    1.4
-   ],
-   [
-    8.5,
-    1.42
+    0.92
    ],
    [
     9.0,
-    1.45
-   ],
-   [
-    9.5,
-    1.46
+    0.92
    ],
    [
     10.0,
-    1.47
+    0.92
    ]
   ],
   "points_canonical": [
@@ -709,15 +741,7 @@
     0.6
    ],
    [
-    -3.5,
-    0.6
-   ],
-   [
     -3.0,
-    0.6
-   ],
-   [
-    -2.5,
     0.6
    ],
    [
@@ -725,128 +749,96 @@
     0.6
    ],
    [
-    -1.5,
-    0.6
-   ],
-   [
     -1.0,
     0.6
    ],
    [
-    -0.5,
+    -0.3,
     0.6
    ],
    [
-    0.0,
-    0.6
+    0.2,
+    0.62
    ],
    [
-    0.3,
-    0.7
+    0.5,
+    0.72
    ],
    [
-    0.6,
+    0.8,
     1.05
    ],
    [
-    0.9,
-    1.5
+    1.1,
+    1.55
    ],
    [
-    1.2,
-    2.05
+    1.4,
+    2.08
    ],
    [
-    1.5,
-    2.5
+    1.7,
+    2.48
    ],
    [
-    1.8,
-    2.75
+    2.0,
+    2.46
    ],
    [
-    2.2,
-    2.9
-   ],
-   [
-    2.6,
-    3.05
+    2.5,
+    2.42
    ],
    [
     3.0,
-    3.18
+    2.38
    ],
    [
-    3.4,
-    3.28
+    3.5,
+    2.32
+   ],
+   [
+    3.7,
+    2.28
    ],
    [
     3.8,
-    3.32
+    1.9
    ],
    [
     4.0,
-    3.3
+    1.2
    ],
    [
-    4.4,
-    3.22
+    4.3,
+    1.0
    ],
    [
     4.8,
-    3.18
+    0.92
    ],
    [
-    5.2,
-    3.15
+    5.5,
+    0.92
    ],
    [
-    5.6,
-    3.1
+    6.0,
+    0.92
    ],
    [
-    5.9,
-    2.5
-   ],
-   [
-    6.2,
-    1.85
-   ],
-   [
-    6.5,
-    1.45
-   ],
-   [
-    6.8,
-    1.4
-   ],
-   [
-    7.2,
-    1.4
-   ],
-   [
-    7.6,
-    1.4
+    7.0,
+    0.92
    ],
    [
     8.0,
-    1.4
-   ],
-   [
-    8.5,
-    1.42
+    0.92
    ],
    [
     9.0,
-    1.45
-   ],
-   [
-    9.5,
-    1.46
+    0.92
    ],
    [
     10.0,
-    1.47
+    0.92
    ]
   ],
   "granularity": "trace",
@@ -863,7 +855,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": "pulse sequence: 4-2-2-5 s",
+  "series_name": "pulse sequence: 2-2-2-5 s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -1000,18 +992,18 @@
   },
   "coordinate_raw_quantity": "time",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Time, s",
    "raw_quantity": "time",
    "raw_unit": "s",
    "unit_dimension": "time",
    "canonical_quantity": "time",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'time'",
+   "evidence": "ontology alias match on 'Time, s'",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Mass sensor signal, a.u.",
    "raw_quantity": "Mass sensor signal",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -1022,7 +1014,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig2a__exp01",
-  "entity_key": "10.3762_bjnano.14.89|3|2|a|4-2-2-5 s|primary",
+  "entity_key": "10.3762_bjnano.14.89|3|2|a|2-2-2-5 s|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "2",
@@ -1033,7 +1025,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 36,
+  "n_observations": 26,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -1068,7 +1060,7 @@
       "scope": "figure",
       "confidence": 0.85,
       "ambiguity": null,
-      "source_entity": "10.3762_bjnano.14.89|3|2|a|4-2-2-5 s|primary"
+      "source_entity": "10.3762_bjnano.14.89|3|2|a|2-2-2-5 s|primary"
      },
      {
       "quantity": "pulse_time",
@@ -1092,7 +1084,7 @@
       "scope": "figure",
       "confidence": 0.85,
       "ambiguity": null,
-      "source_entity": "10.3762_bjnano.14.89|3|2|a|4-2-2-5 s|primary"
+      "source_entity": "10.3762_bjnano.14.89|3|2|a|2-2-2-5 s|primary"
      }
     ]
    }
@@ -1255,120 +1247,100 @@
     0.6
    ],
    [
-    -3.0,
-    0.6
-   ],
-   [
     -2.0,
     0.6
    ],
    [
-    -1.0,
-    0.6
-   ],
-   [
-    0.0,
+    -0.3,
     0.6
    ],
    [
     0.3,
-    0.7
+    0.62
    ],
    [
-    0.6,
-    1.05
+    0.7,
+    0.8
    ],
    [
-    0.9,
-    1.5
+    1.0,
+    1.25
    ],
    [
-    1.2,
-    2.05
+    1.3,
+    1.85
    ],
    [
-    1.5,
-    2.5
+    1.6,
+    2.35
    ],
    [
     1.8,
-    2.75
-   ],
-   [
-    2.2,
-    2.7
-   ],
-   [
-    2.6,
-    2.68
-   ],
-   [
-    3.0,
-    2.65
-   ],
-   [
-    3.4,
     2.6
    ],
    [
-    3.6,
-    2.3
+    2.2,
+    2.8
    ],
    [
-    3.8,
-    1.5
+    2.7,
+    3.0
+   ],
+   [
+    3.2,
+    3.15
+   ],
+   [
+    3.7,
+    3.26
    ],
    [
     4.0,
-    1.1
+    3.16
    ],
    [
-    4.4,
-    1.0
+    4.5,
+    3.1
    ],
    [
-    4.8,
-    1.0
-   ],
-   [
-    5.2,
-    1.0
+    5.0,
+    3.08
    ],
    [
     5.6,
-    1.0
+    3.02
+   ],
+   [
+    5.7,
+    2.9
    ],
    [
     6.0,
-    1.0
+    2.0
    ],
    [
-    6.5,
-    1.0
+    6.3,
+    1.55
+   ],
+   [
+    6.6,
+    1.48
    ],
    [
     7.0,
-    1.01
-   ],
-   [
-    7.5,
-    1.02
+    1.48
    ],
    [
     8.0,
-    1.03
-   ],
-   [
-    8.5,
-    1.03
+    1.48
    ],
    [
     9.0,
-    1.03
+    1.52
    ],
    [
     10.0,
-    1.03
+    1.55
    ]
   ],
   "points_canonical": [
@@ -1377,120 +1349,100 @@
     0.6
    ],
    [
-    -3.0,
-    0.6
-   ],
-   [
     -2.0,
     0.6
    ],
    [
-    -1.0,
-    0.6
-   ],
-   [
-    0.0,
+    -0.3,
     0.6
    ],
    [
     0.3,
-    0.7
+    0.62
    ],
    [
-    0.6,
-    1.05
+    0.7,
+    0.8
    ],
    [
-    0.9,
-    1.5
+    1.0,
+    1.25
    ],
    [
-    1.2,
-    2.05
+    1.3,
+    1.85
    ],
    [
-    1.5,
-    2.5
+    1.6,
+    2.35
    ],
    [
     1.8,
-    2.75
-   ],
-   [
-    2.2,
-    2.7
-   ],
-   [
-    2.6,
-    2.68
-   ],
-   [
-    3.0,
-    2.65
-   ],
-   [
-    3.4,
     2.6
    ],
    [
-    3.6,
-    2.3
+    2.2,
+    2.8
    ],
    [
-    3.8,
-    1.5
+    2.7,
+    3.0
+   ],
+   [
+    3.2,
+    3.15
+   ],
+   [
+    3.7,
+    3.26
    ],
    [
     4.0,
-    1.1
+    3.16
    ],
    [
-    4.4,
-    1.0
+    4.5,
+    3.1
    ],
    [
-    4.8,
-    1.0
-   ],
-   [
-    5.2,
-    1.0
+    5.0,
+    3.08
    ],
    [
     5.6,
-    1.0
+    3.02
+   ],
+   [
+    5.7,
+    2.9
    ],
    [
     6.0,
-    1.0
+    2.0
    ],
    [
-    6.5,
-    1.0
+    6.3,
+    1.55
+   ],
+   [
+    6.6,
+    1.48
    ],
    [
     7.0,
-    1.01
-   ],
-   [
-    7.5,
-    1.02
+    1.48
    ],
    [
     8.0,
-    1.03
-   ],
-   [
-    8.5,
-    1.03
+    1.48
    ],
    [
     9.0,
-    1.03
+    1.52
    ],
    [
     10.0,
-    1.03
+    1.55
    ]
   ],
   "granularity": "trace",
@@ -1507,7 +1459,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": "pulse sequence: 2-2-2-5 s",
+  "series_name": "pulse sequence: 4-2-2-5 s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -1644,18 +1596,18 @@
   },
   "coordinate_raw_quantity": "time",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Time, s",
    "raw_quantity": "time",
    "raw_unit": "s",
    "unit_dimension": "time",
    "canonical_quantity": "time",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'time'",
+   "evidence": "ontology alias match on 'Time, s'",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Mass sensor signal, a.u.",
    "raw_quantity": "Mass sensor signal",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -1666,7 +1618,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig2a__exp02",
-  "entity_key": "10.3762_bjnano.14.89|3|2|a|2-2-2-5 s|primary",
+  "entity_key": "10.3762_bjnano.14.89|3|2|a|4-2-2-5 s|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "2",
@@ -1677,7 +1629,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 30,
+  "n_observations": 25,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -1712,7 +1664,7 @@
       "scope": "figure",
       "confidence": 0.85,
       "ambiguity": null,
-      "source_entity": "10.3762_bjnano.14.89|3|2|a|2-2-2-5 s|primary"
+      "source_entity": "10.3762_bjnano.14.89|3|2|a|4-2-2-5 s|primary"
      },
      {
       "quantity": "pulse_time",
@@ -1736,7 +1688,7 @@
       "scope": "figure",
       "confidence": 0.85,
       "ambiguity": null,
-      "source_entity": "10.3762_bjnano.14.89|3|2|a|2-2-2-5 s|primary"
+      "source_entity": "10.3762_bjnano.14.89|3|2|a|4-2-2-5 s|primary"
      }
     ]
    }
@@ -1896,533 +1848,325 @@
   "points": [
    [
     0.0,
-    0.2
-   ],
-   [
-    0.5,
-    0.3
+    0.24
    ],
    [
     1.0,
-    1.2
+    0.35
    ],
    [
-    2.0,
-    2.1
+    1.8,
+    1.3
    ],
    [
-    3.0,
-    2.3
+    3.5,
+    2.08
    ],
    [
-    4.0,
-    2.4
-   ],
-   [
-    5.0,
-    2.35
+    5.2,
+    2.15
    ],
    [
     6.0,
-    2.3
+    2.1
    ],
    [
     7.0,
-    1.6
+    1.35
    ],
    [
     8.0,
-    1.2
-   ],
-   [
-    9.0,
-    1.2
-   ],
-   [
-    10.0,
-    1.2
-   ],
-   [
-    11.0,
-    1.2
-   ],
-   [
-    12.0,
-    1.2
+    1.05
    ],
    [
     13.0,
-    1.25
+    1.07
    ],
    [
-    14.0,
-    2.0
+    13.8,
+    1.8
    ],
    [
-    15.0,
-    2.9
-   ],
-   [
-    16.0,
-    3.1
+    15.5,
+    2.5
    ],
    [
     17.0,
-    3.2
-   ],
-   [
-    18.0,
-    3.15
-   ],
-   [
-    19.0,
-    3.1
-   ],
-   [
-    20.0,
-    2.3
-   ],
-   [
-    21.0,
-    1.8
-   ],
-   [
-    22.0,
-    1.8
-   ],
-   [
-    23.0,
-    1.8
-   ],
-   [
-    24.0,
-    1.8
-   ],
-   [
-    25.0,
-    1.8
-   ],
-   [
-    26.0,
-    1.85
-   ],
-   [
-    27.0,
     2.7
    ],
    [
-    28.0,
-    3.7
+    18.5,
+    2.65
    ],
    [
-    29.0,
-    4.0
+    19.5,
+    1.9
+   ],
+   [
+    21.0,
+    1.55
+   ],
+   [
+    26.0,
+    1.57
+   ],
+   [
+    26.8,
+    2.3
+   ],
+   [
+    28.5,
+    3.1
    ],
    [
     30.0,
-    4.1
-   ],
-   [
-    31.0,
-    4.05
-   ],
-   [
-    32.0,
-    4.0
-   ],
-   [
-    33.0,
-    3.0
-   ],
-   [
-    34.0,
-    2.4
-   ],
-   [
-    35.0,
-    2.4
-   ],
-   [
-    36.0,
-    2.4
-   ],
-   [
-    37.0,
-    2.4
-   ],
-   [
-    38.0,
-    2.4
-   ],
-   [
-    39.0,
-    2.45
-   ],
-   [
-    40.0,
     3.3
    ],
    [
-    41.0,
-    4.4
+    31.5,
+    3.25
    ],
    [
-    42.0,
-    4.7
+    32.5,
+    2.45
+   ],
+   [
+    34.0,
+    2.05
+   ],
+   [
+    39.0,
+    2.07
+   ],
+   [
+    39.8,
+    2.8
+   ],
+   [
+    41.5,
+    3.65
    ],
    [
     43.0,
-    4.8
+    3.85
    ],
    [
-    44.0,
-    4.75
+    44.5,
+    3.8
    ],
    [
-    45.0,
-    4.7
-   ],
-   [
-    46.0,
-    3.6
+    45.5,
+    2.95
    ],
    [
     47.0,
-    3.0
-   ],
-   [
-    48.0,
-    3.0
-   ],
-   [
-    49.0,
-    3.0
-   ],
-   [
-    50.0,
-    3.0
-   ],
-   [
-    51.0,
-    3.05
+    2.55
    ],
    [
     52.0,
-    3.9
+    2.57
    ],
    [
-    53.0,
-    5.0
+    52.8,
+    3.35
    ],
    [
-    54.0,
-    5.3
-   ],
-   [
-    55.0,
-    5.4
-   ],
-   [
-    56.0,
-    5.35
-   ],
-   [
-    57.0,
-    5.3
-   ],
-   [
-    58.0,
+    54.5,
     4.2
    ],
    [
-    59.0,
-    3.6
+    56.0,
+    4.4
+   ],
+   [
+    57.5,
+    4.35
+   ],
+   [
+    58.5,
+    3.5
    ],
    [
     60.0,
-    3.6
+    3.1
    ],
    [
     65.0,
-    3.6
+    3.12
    ],
    [
     70.0,
-    3.6
+    3.12
    ],
    [
     75.0,
-    3.58
+    3.11
    ],
    [
     80.0,
-    3.55
+    3.1
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.2
-   ],
-   [
-    0.5,
-    0.3
+    0.24
    ],
    [
     1.0,
-    1.2
+    0.35
    ],
    [
-    2.0,
-    2.1
+    1.8,
+    1.3
    ],
    [
-    3.0,
-    2.3
+    3.5,
+    2.08
    ],
    [
-    4.0,
-    2.4
-   ],
-   [
-    5.0,
-    2.35
+    5.2,
+    2.15
    ],
    [
     6.0,
-    2.3
+    2.1
    ],
    [
     7.0,
-    1.6
+    1.35
    ],
    [
     8.0,
-    1.2
-   ],
-   [
-    9.0,
-    1.2
-   ],
-   [
-    10.0,
-    1.2
-   ],
-   [
-    11.0,
-    1.2
-   ],
-   [
-    12.0,
-    1.2
+    1.05
    ],
    [
     13.0,
-    1.25
+    1.07
    ],
    [
-    14.0,
-    2.0
+    13.8,
+    1.8
    ],
    [
-    15.0,
-    2.9
-   ],
-   [
-    16.0,
-    3.1
+    15.5,
+    2.5
    ],
    [
     17.0,
-    3.2
-   ],
-   [
-    18.0,
-    3.15
-   ],
-   [
-    19.0,
-    3.1
-   ],
-   [
-    20.0,
-    2.3
-   ],
-   [
-    21.0,
-    1.8
-   ],
-   [
-    22.0,
-    1.8
-   ],
-   [
-    23.0,
-    1.8
-   ],
-   [
-    24.0,
-    1.8
-   ],
-   [
-    25.0,
-    1.8
-   ],
-   [
-    26.0,
-    1.85
-   ],
-   [
-    27.0,
     2.7
    ],
    [
-    28.0,
-    3.7
+    18.5,
+    2.65
    ],
    [
-    29.0,
-    4.0
+    19.5,
+    1.9
+   ],
+   [
+    21.0,
+    1.55
+   ],
+   [
+    26.0,
+    1.57
+   ],
+   [
+    26.8,
+    2.3
+   ],
+   [
+    28.5,
+    3.1
    ],
    [
     30.0,
-    4.1
-   ],
-   [
-    31.0,
-    4.05
-   ],
-   [
-    32.0,
-    4.0
-   ],
-   [
-    33.0,
-    3.0
-   ],
-   [
-    34.0,
-    2.4
-   ],
-   [
-    35.0,
-    2.4
-   ],
-   [
-    36.0,
-    2.4
-   ],
-   [
-    37.0,
-    2.4
-   ],
-   [
-    38.0,
-    2.4
-   ],
-   [
-    39.0,
-    2.45
-   ],
-   [
-    40.0,
     3.3
    ],
    [
-    41.0,
-    4.4
+    31.5,
+    3.25
    ],
    [
-    42.0,
-    4.7
+    32.5,
+    2.45
+   ],
+   [
+    34.0,
+    2.05
+   ],
+   [
+    39.0,
+    2.07
+   ],
+   [
+    39.8,
+    2.8
+   ],
+   [
+    41.5,
+    3.65
    ],
    [
     43.0,
-    4.8
+    3.85
    ],
    [
-    44.0,
-    4.75
+    44.5,
+    3.8
    ],
    [
-    45.0,
-    4.7
-   ],
-   [
-    46.0,
-    3.6
+    45.5,
+    2.95
    ],
    [
     47.0,
-    3.0
-   ],
-   [
-    48.0,
-    3.0
-   ],
-   [
-    49.0,
-    3.0
-   ],
-   [
-    50.0,
-    3.0
-   ],
-   [
-    51.0,
-    3.05
+    2.55
    ],
    [
     52.0,
-    3.9
+    2.57
    ],
    [
-    53.0,
-    5.0
+    52.8,
+    3.35
    ],
    [
-    54.0,
-    5.3
-   ],
-   [
-    55.0,
-    5.4
-   ],
-   [
-    56.0,
-    5.35
-   ],
-   [
-    57.0,
-    5.3
-   ],
-   [
-    58.0,
+    54.5,
     4.2
    ],
    [
-    59.0,
-    3.6
+    56.0,
+    4.4
+   ],
+   [
+    57.5,
+    4.35
+   ],
+   [
+    58.5,
+    3.5
    ],
    [
     60.0,
-    3.6
+    3.1
    ],
    [
     65.0,
-    3.6
+    3.12
    ],
    [
     70.0,
-    3.6
+    3.12
    ],
    [
     75.0,
-    3.58
+    3.11
    ],
    [
     80.0,
-    3.55
+    3.1
    ]
   ],
   "granularity": "trace",
@@ -2576,18 +2320,18 @@
   },
   "coordinate_raw_quantity": "time",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Time, s",
    "raw_quantity": "time",
    "raw_unit": "s",
    "unit_dimension": "time",
    "canonical_quantity": "time",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'time'",
+   "evidence": "ontology alias match on 'Time, s'",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Mass sensor signal, a.u.",
    "raw_quantity": "Mass sensor signal",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -2609,7 +2353,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 66,
+  "n_observations": 40,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -2828,11 +2572,7 @@
   "points": [
    [
     0.0,
-    0.2
-   ],
-   [
-    0.5,
-    0.25
+    0.24
    ],
    [
     1.0,
@@ -2840,245 +2580,137 @@
    ],
    [
     2.0,
+    1.45
+   ],
+   [
+    3.5,
     1.4
    ],
    [
-    3.0,
-    1.5
-   ],
-   [
-    4.0,
-    1.5
-   ],
-   [
     4.5,
-    0.9
-   ],
-   [
-    5.0,
-    0.5
+    0.65
    ],
    [
     6.0,
     0.5
    ],
    [
-    7.0,
-    0.5
-   ],
-   [
-    8.0,
-    0.5
-   ],
-   [
-    9.0,
-    0.5
-   ],
-   [
-    10.0,
-    0.5
-   ],
-   [
     11.0,
-    0.55
+    0.52
    ],
    [
     12.0,
-    1.2
+    1.25
    ],
    [
     13.0,
-    1.7
+    2.0
    ],
    [
-    14.0,
-    1.8
-   ],
-   [
-    15.0,
-    1.8
+    14.5,
+    1.95
    ],
    [
     15.5,
-    1.2
-   ],
-   [
-    16.0,
-    0.8
-   ],
-   [
-    17.0,
-    0.8
-   ],
-   [
-    18.0,
-    0.8
-   ],
-   [
-    19.0,
-    0.8
-   ],
-   [
-    20.0,
-    0.8
-   ],
-   [
-    21.0,
-    0.8
-   ],
-   [
-    22.0,
-    0.85
-   ],
-   [
-    23.0,
-    1.5
-   ],
-   [
-    24.0,
-    2.1
-   ],
-   [
-    25.0,
-    2.2
-   ],
-   [
-    26.0,
-    2.2
-   ],
-   [
-    26.5,
-    1.6
-   ],
-   [
-    27.0,
-    1.1
-   ],
-   [
-    28.0,
-    1.1
-   ],
-   [
-    29.0,
-    1.1
-   ],
-   [
-    30.0,
-    1.1
-   ],
-   [
-    31.0,
-    1.1
-   ],
-   [
-    32.0,
-    1.1
-   ],
-   [
-    33.0,
     1.15
    ],
    [
-    34.0,
-    1.8
+    17.0,
+    0.9
    ],
    [
-    35.0,
+    22.0,
+    0.92
+   ],
+   [
+    23.0,
+    1.65
+   ],
+   [
+    24.0,
     2.5
    ],
    [
-    36.0,
-    2.6
+    25.5,
+    2.45
    ],
    [
-    37.0,
-    2.6
+    26.5,
+    1.55
+   ],
+   [
+    28.0,
+    1.25
+   ],
+   [
+    33.0,
+    1.27
+   ],
+   [
+    34.0,
+    2.05
+   ],
+   [
+    35.0,
+    3.05
+   ],
+   [
+    36.5,
+    3.0
    ],
    [
     37.5,
-    1.9
-   ],
-   [
-    38.0,
-    1.4
+    2.05
    ],
    [
     39.0,
-    1.4
-   ],
-   [
-    40.0,
-    1.4
-   ],
-   [
-    41.0,
-    1.4
-   ],
-   [
-    42.0,
-    1.4
-   ],
-   [
-    43.0,
-    1.4
+    1.65
    ],
    [
     44.0,
-    1.45
+    1.67
    ],
    [
     45.0,
-    2.1
+    2.45
    ],
    [
     46.0,
-    2.9
+    3.55
    ],
    [
-    47.0,
-    3.0
-   ],
-   [
-    48.0,
-    3.0
+    47.5,
+    3.5
    ],
    [
     48.5,
-    2.2
-   ],
-   [
-    49.0,
-    1.7
+    2.45
    ],
    [
     50.0,
-    1.7
+    2.05
    ],
    [
     55.0,
-    1.7
+    2.07
    ],
    [
     60.0,
-    1.7
+    2.07
    ],
    [
     65.0,
-    1.7
+    2.07
    ],
    [
     70.0,
-    1.7
+    2.07
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.2
-   ],
-   [
-    0.5,
-    0.25
+    0.24
    ],
    [
     1.0,
@@ -3086,235 +2718,131 @@
    ],
    [
     2.0,
+    1.45
+   ],
+   [
+    3.5,
     1.4
    ],
    [
-    3.0,
-    1.5
-   ],
-   [
-    4.0,
-    1.5
-   ],
-   [
     4.5,
-    0.9
-   ],
-   [
-    5.0,
-    0.5
+    0.65
    ],
    [
     6.0,
     0.5
    ],
    [
-    7.0,
-    0.5
-   ],
-   [
-    8.0,
-    0.5
-   ],
-   [
-    9.0,
-    0.5
-   ],
-   [
-    10.0,
-    0.5
-   ],
-   [
     11.0,
-    0.55
+    0.52
    ],
    [
     12.0,
-    1.2
+    1.25
    ],
    [
     13.0,
-    1.7
+    2.0
    ],
    [
-    14.0,
-    1.8
-   ],
-   [
-    15.0,
-    1.8
+    14.5,
+    1.95
    ],
    [
     15.5,
-    1.2
-   ],
-   [
-    16.0,
-    0.8
-   ],
-   [
-    17.0,
-    0.8
-   ],
-   [
-    18.0,
-    0.8
-   ],
-   [
-    19.0,
-    0.8
-   ],
-   [
-    20.0,
-    0.8
-   ],
-   [
-    21.0,
-    0.8
-   ],
-   [
-    22.0,
-    0.85
-   ],
-   [
-    23.0,
-    1.5
-   ],
-   [
-    24.0,
-    2.1
-   ],
-   [
-    25.0,
-    2.2
-   ],
-   [
-    26.0,
-    2.2
-   ],
-   [
-    26.5,
-    1.6
-   ],
-   [
-    27.0,
-    1.1
-   ],
-   [
-    28.0,
-    1.1
-   ],
-   [
-    29.0,
-    1.1
-   ],
-   [
-    30.0,
-    1.1
-   ],
-   [
-    31.0,
-    1.1
-   ],
-   [
-    32.0,
-    1.1
-   ],
-   [
-    33.0,
     1.15
    ],
    [
-    34.0,
-    1.8
+    17.0,
+    0.9
    ],
    [
-    35.0,
+    22.0,
+    0.92
+   ],
+   [
+    23.0,
+    1.65
+   ],
+   [
+    24.0,
     2.5
    ],
    [
-    36.0,
-    2.6
+    25.5,
+    2.45
    ],
    [
-    37.0,
-    2.6
+    26.5,
+    1.55
+   ],
+   [
+    28.0,
+    1.25
+   ],
+   [
+    33.0,
+    1.27
+   ],
+   [
+    34.0,
+    2.05
+   ],
+   [
+    35.0,
+    3.05
+   ],
+   [
+    36.5,
+    3.0
    ],
    [
     37.5,
-    1.9
-   ],
-   [
-    38.0,
-    1.4
+    2.05
    ],
    [
     39.0,
-    1.4
-   ],
-   [
-    40.0,
-    1.4
-   ],
-   [
-    41.0,
-    1.4
-   ],
-   [
-    42.0,
-    1.4
-   ],
-   [
-    43.0,
-    1.4
+    1.65
    ],
    [
     44.0,
-    1.45
+    1.67
    ],
    [
     45.0,
-    2.1
+    2.45
    ],
    [
     46.0,
-    2.9
+    3.55
    ],
    [
-    47.0,
-    3.0
-   ],
-   [
-    48.0,
-    3.0
+    47.5,
+    3.5
    ],
    [
     48.5,
-    2.2
-   ],
-   [
-    49.0,
-    1.7
+    2.45
    ],
    [
     50.0,
-    1.7
+    2.05
    ],
    [
     55.0,
-    1.7
+    2.07
    ],
    [
     60.0,
-    1.7
+    2.07
    ],
    [
     65.0,
-    1.7
+    2.07
    ],
    [
     70.0,
-    1.7
+    2.07
    ]
   ],
   "granularity": "trace",
@@ -3468,18 +2996,18 @@
   },
   "coordinate_raw_quantity": "time",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Time, s",
    "raw_quantity": "time",
    "raw_unit": "s",
    "unit_dimension": "time",
    "canonical_quantity": "time",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'time'",
+   "evidence": "ontology alias match on 'Time, s'",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Mass sensor signal, a.u.",
    "raw_quantity": "Mass sensor signal",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -3501,7 +3029,7 @@
   "measurement_class": "ContinuousTrace",
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
-  "n_observations": 61,
+  "n_observations": 34,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -3731,10 +3259,10 @@
    }
   ],
   "measurand": {
-   "quantity": "Average frequency change",
+   "quantity": "growth_per_cycle",
    "unit": "Hz/cycle",
    "raw_unit": "Hz/cycle",
-   "family": null,
+   "family": "film_amount",
    "unit_conversion": {
     "status": "unsupported",
     "from_unit": "Hz/cycle",
@@ -3742,9 +3270,10 @@
     "reason": "unit 'Hz/cycle' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
-   }
+   },
+   "raw_quantity": "growth_per_cycle"
   },
-  "coordinate": "pulse_time",
+  "coordinate": "exposure_time",
   "coordinate_family": "exposure_time",
   "coordinate_unit": "s",
   "coordinate_unit_normalized": "s",
@@ -3755,7 +3284,7 @@
   "points": [
    [
     0.5,
-    -0.2
+    -0.3
    ],
    [
     1.0,
@@ -3777,7 +3306,7 @@
   "points_canonical": [
    [
     0.5,
-    -0.2
+    -0.3
    ],
    [
     1.0,
@@ -3810,7 +3339,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: Average frequency change",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -3841,10 +3370,10 @@
   "axis_role": "condition",
   "dependent": [
    {
-    "quantity": "Average frequency change",
+    "quantity": "growth_per_cycle",
     "unit": "Hz/cycle",
     "raw_unit": "Hz/cycle",
-    "family": null
+    "family": "film_amount"
    }
   ],
   "issues": [],
@@ -3947,29 +3476,29 @@
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "SnI4 pulse length, s",
    "raw_quantity": "pulse_time",
    "raw_unit": "s",
    "unit_dimension": "time",
-   "canonical_quantity": "pulse_time",
+   "canonical_quantity": "exposure_time",
    "axis_role": "process_condition",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'pulse_time'",
+   "evidence": "a DURATION in s/min; the integrated dose (pressure x time) is a different quantity with different units",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Average frequency change",
+   "raw_label": "Average frequency change, Hz/cycle",
+   "raw_quantity": "growth_per_cycle",
    "raw_unit": "Hz/cycle",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "growth_per_cycle",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Average frequency change, Hz/cycle'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig3a",
-  "entity_key": "10.3762_bjnano.14.89|4|3|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|4|3|a|Average frequency change|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "3",
@@ -3986,8 +3515,8 @@
  {
   "material": "SnO2",
   "material_raw": "SnO2",
-  "material_scope_level": "series_legend",
-  "material_evidence": "series label 'SnO2' is one of this paper's materials",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4: SnO2 film GPC as function of the number of ALD cycles.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
   "multi_material_paper": false,
@@ -4146,7 +3675,7 @@
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
-  "coordinate_unit": "",
+  "coordinate_unit": "cycles",
   "coordinate_unit_normalized": "cycle",
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "resolved",
@@ -4226,7 +3755,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -4367,8 +3896,8 @@
   "x_semantics": {
    "raw_label": "Number of ALD cycles",
    "raw_quantity": "cycle_number",
-   "raw_unit": null,
-   "unit_dimension": null,
+   "raw_unit": "cycles",
+   "unit_dimension": "count",
    "canonical_quantity": "cycle_number",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
@@ -4387,7 +3916,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig4a",
-  "entity_key": "10.3762_bjnano.14.89|5|4|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|5|4|a|GPC|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "4",
@@ -4406,8 +3935,8 @@
  {
   "material": "SnO2",
   "material_raw": "SnO2",
-  "material_scope_level": "series_legend",
-  "material_evidence": "series label 'SnO2' is one of this paper's materials",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4: SnO2 film GPC as function of the number of ALD cycles.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
   "multi_material_paper": false,
@@ -4566,7 +4095,7 @@
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
-  "coordinate_unit": "",
+  "coordinate_unit": "cycles",
   "coordinate_unit_normalized": "cycle",
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "resolved",
@@ -4646,7 +4175,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -4787,8 +4316,8 @@
   "x_semantics": {
    "raw_label": "Number of ALD cycles",
    "raw_quantity": "cycle_number",
-   "raw_unit": null,
-   "unit_dimension": null,
+   "raw_unit": "cycles",
+   "unit_dimension": "count",
    "canonical_quantity": "cycle_number",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
@@ -4807,7 +4336,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig4a",
-  "entity_key": "10.3762_bjnano.14.89|5|4|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|5|4|a|GPC|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "4",
@@ -4826,8 +4355,8 @@
  {
   "material": "SnO2",
   "material_raw": "SnO2",
-  "material_scope_level": "series_legend",
-  "material_evidence": "series label 'SnO2' is one of this paper's materials",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4: SnO2 film GPC as function of the number of ALD cycles.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
   "multi_material_paper": false,
@@ -4986,7 +4515,7 @@
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
-  "coordinate_unit": "",
+  "coordinate_unit": "cycles",
   "coordinate_unit_normalized": "cycle",
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "resolved",
@@ -5066,7 +4595,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -5207,8 +4736,8 @@
   "x_semantics": {
    "raw_label": "Number of ALD cycles",
    "raw_quantity": "cycle_number",
-   "raw_unit": null,
-   "unit_dimension": null,
+   "raw_unit": "cycles",
+   "unit_dimension": "count",
    "canonical_quantity": "cycle_number",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
@@ -5227,7 +4756,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig4a",
-  "entity_key": "10.3762_bjnano.14.89|5|4|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|5|4|a|GPC|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "4",
@@ -5246,8 +4775,8 @@
  {
   "material": "SnO2",
   "material_raw": "SnO2",
-  "material_scope_level": "series_legend",
-  "material_evidence": "series label 'SnO2' is one of this paper's materials",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4: SnO2 film GPC as function of the number of ALD cycles.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
   "multi_material_paper": false,
@@ -5406,7 +4935,7 @@
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
-  "coordinate_unit": "",
+  "coordinate_unit": "cycles",
   "coordinate_unit_normalized": "cycle",
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "resolved",
@@ -5486,7 +5015,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -5627,8 +5156,8 @@
   "x_semantics": {
    "raw_label": "Number of ALD cycles",
    "raw_quantity": "cycle_number",
-   "raw_unit": null,
-   "unit_dimension": null,
+   "raw_unit": "cycles",
+   "unit_dimension": "count",
    "canonical_quantity": "cycle_number",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
@@ -5647,7 +5176,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig4a",
-  "entity_key": "10.3762_bjnano.14.89|5|4|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|5|4|a|GPC|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "4",
@@ -5666,8 +5195,8 @@
  {
   "material": "SnO2",
   "material_raw": "SnO2",
-  "material_scope_level": "series_legend",
-  "material_evidence": "series label 'SnO2' is one of this paper's materials",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4: SnO2 film GPC as function of the number of ALD cycles.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
   "multi_material_paper": false,
@@ -5826,7 +5355,7 @@
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
-  "coordinate_unit": "",
+  "coordinate_unit": "cycles",
   "coordinate_unit_normalized": "cycle",
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "resolved",
@@ -5906,7 +5435,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -6047,8 +5576,8 @@
   "x_semantics": {
    "raw_label": "Number of ALD cycles",
    "raw_quantity": "cycle_number",
-   "raw_unit": null,
-   "unit_dimension": null,
+   "raw_unit": "cycles",
+   "unit_dimension": "count",
    "canonical_quantity": "cycle_number",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
@@ -6067,7 +5596,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig4a",
-  "entity_key": "10.3762_bjnano.14.89|5|4|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|5|4|a|GPC|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "4",
@@ -6086,8 +5615,8 @@
  {
   "material": "SnO2",
   "material_raw": "SnO2",
-  "material_scope_level": "series_legend",
-  "material_evidence": "series label 'SnO2' is one of this paper's materials",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4: SnO2 film GPC as function of the number of ALD cycles.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
   "multi_material_paper": false,
@@ -6246,7 +5775,7 @@
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
-  "coordinate_unit": "",
+  "coordinate_unit": "cycles",
   "coordinate_unit_normalized": "cycle",
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "resolved",
@@ -6326,7 +5855,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -6467,8 +5996,8 @@
   "x_semantics": {
    "raw_label": "Number of ALD cycles",
    "raw_quantity": "cycle_number",
-   "raw_unit": null,
-   "unit_dimension": null,
+   "raw_unit": "cycles",
+   "unit_dimension": "count",
    "canonical_quantity": "cycle_number",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
@@ -6487,7 +6016,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig4a",
-  "entity_key": "10.3762_bjnano.14.89|5|4|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|5|4|a|GPC|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "4",
@@ -6506,8 +6035,8 @@
  {
   "material": "SnO2",
   "material_raw": "SnO2",
-  "material_scope_level": "series_legend",
-  "material_evidence": "series label 'SnO2' is one of this paper's materials",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4: SnO2 film GPC as function of the number of ALD cycles.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
   "multi_material_paper": false,
@@ -6666,7 +6195,7 @@
   },
   "coordinate": "cycle_number",
   "coordinate_family": null,
-  "coordinate_unit": "",
+  "coordinate_unit": "cycles",
   "coordinate_unit_normalized": "cycle",
   "coordinate_is_dimensionless": false,
   "coordinate_unit_status": "resolved",
@@ -6746,7 +6275,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": null,
+  "series_name": "series: GPC",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -6887,8 +6416,8 @@
   "x_semantics": {
    "raw_label": "Number of ALD cycles",
    "raw_quantity": "cycle_number",
-   "raw_unit": null,
-   "unit_dimension": null,
+   "raw_unit": "cycles",
+   "unit_dimension": "count",
    "canonical_quantity": "cycle_number",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
@@ -6907,7 +6436,7 @@
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig4a",
-  "entity_key": "10.3762_bjnano.14.89|5|4|a|<single>|primary",
+  "entity_key": "10.3762_bjnano.14.89|5|4|a|GPC|primary",
   "paper_id": "10.3762_bjnano.14.89",
   "doi": "10.3762_bjnano.14.89",
   "printed_figure_number": "4",
@@ -7082,7 +6611,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "intensity"
+   "raw_quantity": "Intensity, a.u."
   },
   "coordinate": "diffraction_angle",
   "coordinate_family": null,
@@ -7095,349 +6624,253 @@
   "points": [
    [
     20.0,
-    215.0
+    45.0
    ],
    [
     22.0,
-    210.0
+    43.5
    ],
    [
-    24.0,
-    205.0
+    24.5,
+    45.0
    ],
    [
-    25.0,
-    205.0
-   ],
-   [
-    26.0,
-    230.0
+    25.5,
+    43.0
    ],
    [
     26.6,
-    395.0
-   ],
-   [
-    27.2,
-    230.0
+    75.0
    ],
    [
     28.0,
-    205.0
+    42.0
    ],
    [
     30.0,
-    205.0
+    41.0
    ],
    [
     32.0,
-    205.0
-   ],
-   [
-    33.3,
-    220.0
+    41.0
    ],
    [
     33.8,
-    320.0
+    59.0
    ],
    [
-    34.3,
-    215.0
+    35.5,
+    41.0
    ],
    [
-    36.0,
-    205.0
+    37.9,
+    47.0
    ],
    [
-    37.5,
-    208.0
+    39.5,
+    41.0
    ],
    [
-    38.0,
-    248.0
+    42.0,
+    41.0
    ],
    [
-    38.5,
-    210.0
+    45.0,
+    41.0
    ],
    [
-    40.0,
-    205.0
+    48.0,
+    41.0
    ],
    [
-    43.0,
-    205.0
+    51.7,
+    59.0
    ],
    [
-    46.0,
-    205.0
+    53.2,
+    41.0
    ],
    [
-    49.0,
-    205.0
+    54.6,
+    47.0
    ],
    [
-    51.3,
-    225.0
-   ],
-   [
-    51.8,
-    325.0
-   ],
-   [
-    52.3,
-    225.0
-   ],
-   [
-    53.8,
-    210.0
-   ],
-   [
-    54.7,
-    242.0
-   ],
-   [
-    55.5,
-    205.0
+    56.2,
+    41.0
    ],
    [
     57.8,
-    212.0
+    43.0
    ],
    [
-    59.0,
-    205.0
+    60.0,
+    41.0
    ],
    [
-    61.0,
-    210.0
+    61.9,
+    45.0
    ],
    [
-    62.0,
-    225.0
+    63.5,
+    41.0
    ],
    [
-    63.0,
-    208.0
+    64.7,
+    45.0
    ],
    [
-    64.8,
-    222.0
+    65.9,
+    45.0
    ],
    [
-    66.0,
-    222.0
+    68.0,
+    41.0
    ],
    [
-    67.2,
-    205.0
+    71.2,
+    42.0
    ],
    [
-    70.0,
-    205.0
+    75.0,
+    41.0
    ],
    [
-    71.5,
-    215.0
-   ],
-   [
-    73.0,
-    205.0
-   ],
-   [
-    76.0,
-    205.0
-   ],
-   [
-    78.8,
-    218.0
-   ],
-   [
-    80.0,
-    205.0
+    78.7,
+    43.0
    ],
    [
     81.2,
-    212.0
+    42.0
    ],
    [
     83.0,
-    205.0
+    41.0
    ]
   ],
   "points_canonical": [
    [
     20.0,
-    215.0
+    45.0
    ],
    [
     22.0,
-    210.0
+    43.5
    ],
    [
-    24.0,
-    205.0
+    24.5,
+    45.0
    ],
    [
-    25.0,
-    205.0
-   ],
-   [
-    26.0,
-    230.0
+    25.5,
+    43.0
    ],
    [
     26.6,
-    395.0
-   ],
-   [
-    27.2,
-    230.0
+    75.0
    ],
    [
     28.0,
-    205.0
+    42.0
    ],
    [
     30.0,
-    205.0
+    41.0
    ],
    [
     32.0,
-    205.0
-   ],
-   [
-    33.3,
-    220.0
+    41.0
    ],
    [
     33.8,
-    320.0
+    59.0
    ],
    [
-    34.3,
-    215.0
+    35.5,
+    41.0
    ],
    [
-    36.0,
-    205.0
+    37.9,
+    47.0
    ],
    [
-    37.5,
-    208.0
+    39.5,
+    41.0
    ],
    [
-    38.0,
-    248.0
+    42.0,
+    41.0
    ],
    [
-    38.5,
-    210.0
+    45.0,
+    41.0
    ],
    [
-    40.0,
-    205.0
+    48.0,
+    41.0
    ],
    [
-    43.0,
-    205.0
+    51.7,
+    59.0
    ],
    [
-    46.0,
-    205.0
+    53.2,
+    41.0
    ],
    [
-    49.0,
-    205.0
+    54.6,
+    47.0
    ],
    [
-    51.3,
-    225.0
-   ],
-   [
-    51.8,
-    325.0
-   ],
-   [
-    52.3,
-    225.0
-   ],
-   [
-    53.8,
-    210.0
-   ],
-   [
-    54.7,
-    242.0
-   ],
-   [
-    55.5,
-    205.0
+    56.2,
+    41.0
    ],
    [
     57.8,
-    212.0
+    43.0
    ],
    [
-    59.0,
-    205.0
+    60.0,
+    41.0
    ],
    [
-    61.0,
-    210.0
+    61.9,
+    45.0
    ],
    [
-    62.0,
-    225.0
+    63.5,
+    41.0
    ],
    [
-    63.0,
-    208.0
+    64.7,
+    45.0
    ],
    [
-    64.8,
-    222.0
+    65.9,
+    45.0
    ],
    [
-    66.0,
-    222.0
+    68.0,
+    41.0
    ],
    [
-    67.2,
-    205.0
+    71.2,
+    42.0
    ],
    [
-    70.0,
-    205.0
+    75.0,
+    41.0
    ],
    [
-    71.5,
-    215.0
-   ],
-   [
-    73.0,
-    205.0
-   ],
-   [
-    76.0,
-    205.0
-   ],
-   [
-    78.8,
-    218.0
-   ],
-   [
-    80.0,
-    205.0
+    78.7,
+    43.0
    ],
    [
     81.2,
-    212.0
+    42.0
    ],
    [
     83.0,
-    205.0
+    41.0
    ]
   ],
   "granularity": "multi_output",
@@ -7479,15 +6912,13 @@
     ]
    }
   },
-  "varies": [
-   "diffraction_angle"
-  ],
+  "varies": [],
   "series_varies": null,
-  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
-  "axis_role": "coordinate",
+  "granularity_reason": "x axis role could not be determined",
+  "axis_role": null,
   "dependent": [
    {
-    "quantity": "intensity",
+    "quantity": "Intensity, a.u.",
     "unit": "a.u.",
     "raw_unit": "a.u.",
     "family": null
@@ -7591,27 +7022,27 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u0398, degree",
   "x_semantics": {
-   "raw_label": null,
-   "raw_quantity": "diffraction_angle",
+   "raw_label": "2\u0398, degree",
+   "raw_quantity": "2\u0398, degree",
    "raw_unit": "degree",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'diffraction_angle'",
+   "evidence": "diffraction angle of an XRD/XRR scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "intensity",
+   "raw_label": "Intensity, a.u.",
+   "raw_quantity": "Intensity, a.u.",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity, a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig8a__exp01",
@@ -7626,7 +7057,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 43,
+  "n_observations": 31,
   "observations_are_experiments": false
  },
  {
@@ -7788,7 +7219,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "intensity"
+   "raw_quantity": "Intensity, a.u."
   },
   "coordinate": "diffraction_angle",
   "coordinate_family": null,
@@ -7801,277 +7232,197 @@
   "points": [
    [
     20.0,
-    160.0
+    33.0
    ],
    [
-    22.0,
-    155.0
+    23.0,
+    31.0
    ],
    [
-    24.0,
-    150.0
-   ],
-   [
-    26.0,
-    170.0
+    25.0,
+    30.0
    ],
    [
     26.6,
-    235.0
-   ],
-   [
-    27.2,
-    170.0
+    43.0
    ],
    [
     28.0,
-    150.0
+    30.0
    ],
    [
     31.0,
-    150.0
-   ],
-   [
-    33.3,
-    160.0
+    29.0
    ],
    [
     33.8,
-    230.0
+    43.0
    ],
    [
-    34.3,
-    160.0
+    35.5,
+    28.0
    ],
    [
-    36.0,
-    150.0
+    37.9,
+    36.0
    ],
    [
-    37.5,
-    152.0
-   ],
-   [
-    38.0,
-    195.0
-   ],
-   [
-    38.5,
-    155.0
-   ],
-   [
-    41.0,
-    150.0
+    40.0,
+    28.0
    ],
    [
     45.0,
-    150.0
+    28.0
    ],
    [
-    49.0,
-    150.0
+    50.0,
+    28.0
    ],
    [
-    51.3,
-    165.0
+    51.7,
+    43.0
    ],
    [
-    51.8,
-    235.0
+    53.2,
+    28.0
    ],
    [
-    52.3,
-    165.0
-   ],
-   [
-    53.8,
-    152.0
-   ],
-   [
-    54.7,
-    168.0
-   ],
-   [
-    55.5,
-    150.0
+    54.6,
+    32.0
    ],
    [
     57.8,
-    152.0
+    29.0
    ],
    [
-    61.0,
-    152.0
+    61.9,
+    32.0
    ],
    [
-    62.0,
-    168.0
+    63.5,
+    28.0
    ],
    [
-    63.0,
-    152.0
+    64.7,
+    32.0
    ],
    [
-    64.8,
-    168.0
+    65.9,
+    31.0
    ],
    [
-    66.0,
-    165.0
+    71.2,
+    29.0
    ],
    [
-    67.2,
-    150.0
+    75.0,
+    28.0
    ],
    [
-    71.5,
-    155.0
-   ],
-   [
-    78.8,
-    160.0
+    78.7,
+    30.0
    ],
    [
     83.0,
-    150.0
+    28.0
    ]
   ],
   "points_canonical": [
    [
     20.0,
-    160.0
+    33.0
    ],
    [
-    22.0,
-    155.0
+    23.0,
+    31.0
    ],
    [
-    24.0,
-    150.0
-   ],
-   [
-    26.0,
-    170.0
+    25.0,
+    30.0
    ],
    [
     26.6,
-    235.0
-   ],
-   [
-    27.2,
-    170.0
+    43.0
    ],
    [
     28.0,
-    150.0
+    30.0
    ],
    [
     31.0,
-    150.0
-   ],
-   [
-    33.3,
-    160.0
+    29.0
    ],
    [
     33.8,
-    230.0
+    43.0
    ],
    [
-    34.3,
-    160.0
+    35.5,
+    28.0
    ],
    [
-    36.0,
-    150.0
+    37.9,
+    36.0
    ],
    [
-    37.5,
-    152.0
-   ],
-   [
-    38.0,
-    195.0
-   ],
-   [
-    38.5,
-    155.0
-   ],
-   [
-    41.0,
-    150.0
+    40.0,
+    28.0
    ],
    [
     45.0,
-    150.0
+    28.0
    ],
    [
-    49.0,
-    150.0
+    50.0,
+    28.0
    ],
    [
-    51.3,
-    165.0
+    51.7,
+    43.0
    ],
    [
-    51.8,
-    235.0
+    53.2,
+    28.0
    ],
    [
-    52.3,
-    165.0
-   ],
-   [
-    53.8,
-    152.0
-   ],
-   [
-    54.7,
-    168.0
-   ],
-   [
-    55.5,
-    150.0
+    54.6,
+    32.0
    ],
    [
     57.8,
-    152.0
+    29.0
    ],
    [
-    61.0,
-    152.0
+    61.9,
+    32.0
    ],
    [
-    62.0,
-    168.0
+    63.5,
+    28.0
    ],
    [
-    63.0,
-    152.0
+    64.7,
+    32.0
    ],
    [
-    64.8,
-    168.0
+    65.9,
+    31.0
    ],
    [
-    66.0,
-    165.0
+    71.2,
+    29.0
    ],
    [
-    67.2,
-    150.0
+    75.0,
+    28.0
    ],
    [
-    71.5,
-    155.0
-   ],
-   [
-    78.8,
-    160.0
+    78.7,
+    30.0
    ],
    [
     83.0,
-    150.0
+    28.0
    ]
   ],
   "granularity": "multi_output",
@@ -8113,15 +7464,13 @@
     ]
    }
   },
-  "varies": [
-   "diffraction_angle"
-  ],
+  "varies": [],
   "series_varies": null,
-  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
-  "axis_role": "coordinate",
+  "granularity_reason": "x axis role could not be determined",
+  "axis_role": null,
   "dependent": [
    {
-    "quantity": "intensity",
+    "quantity": "Intensity, a.u.",
     "unit": "a.u.",
     "raw_unit": "a.u.",
     "family": null
@@ -8225,27 +7574,27 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u0398, degree",
   "x_semantics": {
-   "raw_label": null,
-   "raw_quantity": "diffraction_angle",
+   "raw_label": "2\u0398, degree",
+   "raw_quantity": "2\u0398, degree",
    "raw_unit": "degree",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'diffraction_angle'",
+   "evidence": "diffraction angle of an XRD/XRR scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "intensity",
+   "raw_label": "Intensity, a.u.",
+   "raw_quantity": "Intensity, a.u.",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity, a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig8a__exp02",
@@ -8260,7 +7609,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 34,
+  "n_observations": 24,
   "observations_are_experiments": false
  },
  {
@@ -8422,7 +7771,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "intensity"
+   "raw_quantity": "Intensity, a.u."
   },
   "coordinate": "diffraction_angle",
   "coordinate_family": null,
@@ -8435,141 +7784,149 @@
   "points": [
    [
     20.0,
-    105.0
+    21.0
    ],
    [
-    22.0,
-    102.0
+    23.0,
+    21.0
    ],
    [
     24.5,
-    110.0
+    23.0
    ],
    [
     26.6,
-    135.0
+    28.0
    ],
    [
-    28.0,
-    105.0
-   ],
-   [
-    31.0,
-    100.0
+    29.0,
+    21.0
    ],
    [
     33.8,
-    125.0
+    23.0
    ],
    [
-    37.5,
-    105.0
+    35.5,
+    20.0
    ],
    [
-    38.3,
-    138.0
+    37.9,
+    29.0
    ],
    [
-    39.0,
-    105.0
+    40.0,
+    20.0
    ],
    [
     45.0,
-    100.0
+    20.0
    ],
    [
-    51.8,
-    132.0
+    50.0,
+    20.0
    ],
    [
-    54.7,
-    110.0
+    51.7,
+    27.0
    ],
    [
-    62.0,
-    112.0
+    54.6,
+    22.0
+   ],
+   [
+    61.9,
+    22.0
    ],
    [
     65.0,
-    108.0
+    21.0
    ],
    [
-    78.8,
-    108.0
+    70.0,
+    20.0
+   ],
+   [
+    75.0,
+    19.0
    ],
    [
     83.0,
-    100.0
+    19.0
    ]
   ],
   "points_canonical": [
    [
     20.0,
-    105.0
+    21.0
    ],
    [
-    22.0,
-    102.0
+    23.0,
+    21.0
    ],
    [
     24.5,
-    110.0
+    23.0
    ],
    [
     26.6,
-    135.0
+    28.0
    ],
    [
-    28.0,
-    105.0
-   ],
-   [
-    31.0,
-    100.0
+    29.0,
+    21.0
    ],
    [
     33.8,
-    125.0
+    23.0
    ],
    [
-    37.5,
-    105.0
+    35.5,
+    20.0
    ],
    [
-    38.3,
-    138.0
+    37.9,
+    29.0
    ],
    [
-    39.0,
-    105.0
+    40.0,
+    20.0
    ],
    [
     45.0,
-    100.0
+    20.0
    ],
    [
-    51.8,
-    132.0
+    50.0,
+    20.0
    ],
    [
-    54.7,
-    110.0
+    51.7,
+    27.0
    ],
    [
-    62.0,
-    112.0
+    54.6,
+    22.0
+   ],
+   [
+    61.9,
+    22.0
    ],
    [
     65.0,
-    108.0
+    21.0
    ],
    [
-    78.8,
-    108.0
+    70.0,
+    20.0
+   ],
+   [
+    75.0,
+    19.0
    ],
    [
     83.0,
-    100.0
+    19.0
    ]
   ],
   "granularity": "multi_output",
@@ -8611,15 +7968,13 @@
     ]
    }
   },
-  "varies": [
-   "diffraction_angle"
-  ],
+  "varies": [],
   "series_varies": null,
-  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
-  "axis_role": "coordinate",
+  "granularity_reason": "x axis role could not be determined",
+  "axis_role": null,
   "dependent": [
    {
-    "quantity": "intensity",
+    "quantity": "Intensity, a.u.",
     "unit": "a.u.",
     "raw_unit": "a.u.",
     "family": null
@@ -8723,27 +8078,27 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u0398, degree",
   "x_semantics": {
-   "raw_label": null,
-   "raw_quantity": "diffraction_angle",
+   "raw_label": "2\u0398, degree",
+   "raw_quantity": "2\u0398, degree",
    "raw_unit": "degree",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'diffraction_angle'",
+   "evidence": "diffraction angle of an XRD/XRR scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "intensity",
+   "raw_label": "Intensity, a.u.",
+   "raw_quantity": "Intensity, a.u.",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity, a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig8a__exp03",
@@ -8758,7 +8113,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 17,
+  "n_observations": 18,
   "observations_are_experiments": false
  },
  {
@@ -8920,7 +8275,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "intensity"
+   "raw_quantity": "Intensity, a.u."
   },
   "coordinate": "diffraction_angle",
   "coordinate_family": null,
@@ -8933,93 +8288,117 @@
   "points": [
    [
     20.0,
-    50.0
+    13.0
    ],
    [
     23.0,
-    50.0
+    13.0
    ],
    [
     25.0,
-    62.0
+    15.0
    ],
    [
     26.6,
-    75.0
+    18.0
    ],
    [
-    28.0,
-    55.0
+    30.0,
+    13.0
    ],
    [
-    32.0,
-    50.0
+    35.0,
+    12.0
    ],
    [
-    38.4,
-    90.0
+    38.3,
+    21.0
+   ],
+   [
+    40.0,
+    12.0
    ],
    [
     45.0,
-    50.0
+    12.0
    ],
    [
-    52.8,
-    70.0
+    52.5,
+    17.0
+   ],
+   [
+    55.0,
+    12.0
    ],
    [
     60.0,
-    50.0
+    12.0
+   ],
+   [
+    70.0,
+    11.0
    ],
    [
     83.0,
-    50.0
+    11.0
    ]
   ],
   "points_canonical": [
    [
     20.0,
-    50.0
+    13.0
    ],
    [
     23.0,
-    50.0
+    13.0
    ],
    [
     25.0,
-    62.0
+    15.0
    ],
    [
     26.6,
-    75.0
+    18.0
    ],
    [
-    28.0,
-    55.0
+    30.0,
+    13.0
    ],
    [
-    32.0,
-    50.0
+    35.0,
+    12.0
    ],
    [
-    38.4,
-    90.0
+    38.3,
+    21.0
+   ],
+   [
+    40.0,
+    12.0
    ],
    [
     45.0,
-    50.0
+    12.0
    ],
    [
-    52.8,
-    70.0
+    52.5,
+    17.0
+   ],
+   [
+    55.0,
+    12.0
    ],
    [
     60.0,
-    50.0
+    12.0
+   ],
+   [
+    70.0,
+    11.0
    ],
    [
     83.0,
-    50.0
+    11.0
    ]
   ],
   "granularity": "multi_output",
@@ -9061,15 +8440,13 @@
     ]
    }
   },
-  "varies": [
-   "diffraction_angle"
-  ],
+  "varies": [],
   "series_varies": null,
-  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
-  "axis_role": "coordinate",
+  "granularity_reason": "x axis role could not be determined",
+  "axis_role": null,
   "dependent": [
    {
-    "quantity": "intensity",
+    "quantity": "Intensity, a.u.",
     "unit": "a.u.",
     "raw_unit": "a.u.",
     "family": null
@@ -9173,27 +8550,27 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u0398, degree",
   "x_semantics": {
-   "raw_label": null,
-   "raw_quantity": "diffraction_angle",
+   "raw_label": "2\u0398, degree",
+   "raw_quantity": "2\u0398, degree",
    "raw_unit": "degree",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'diffraction_angle'",
+   "evidence": "diffraction angle of an XRD/XRR scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "intensity",
+   "raw_label": "Intensity, a.u.",
+   "raw_quantity": "Intensity, a.u.",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity, a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig8a__exp04",
@@ -9208,7 +8585,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 11,
+  "n_observations": 14,
   "observations_are_experiments": false
  },
  {
@@ -9370,7 +8747,7 @@
     "unit_recovered": null,
     "values_rescaled": false
    },
-   "raw_quantity": "intensity"
+   "raw_quantity": "Intensity, a.u."
   },
   "coordinate": "diffraction_angle",
   "coordinate_family": null,
@@ -9383,77 +8760,93 @@
   "points": [
    [
     20.0,
-    10.0
+    6.0
    ],
    [
-    25.0,
-    12.0
+    24.0,
+    6.0
    ],
    [
     26.6,
-    15.0
+    7.0
    ],
    [
     30.0,
-    10.0
+    5.0
    ],
    [
-    38.4,
-    25.0
+    35.0,
+    5.0
+   ],
+   [
+    38.3,
+    7.0
    ],
    [
     45.0,
-    10.0
+    4.0
    ],
    [
-    52.8,
-    22.0
+    52.5,
+    6.0
    ],
    [
     60.0,
-    10.0
+    3.0
+   ],
+   [
+    70.0,
+    3.0
    ],
    [
     83.0,
-    10.0
+    3.0
    ]
   ],
   "points_canonical": [
    [
     20.0,
-    10.0
+    6.0
    ],
    [
-    25.0,
-    12.0
+    24.0,
+    6.0
    ],
    [
     26.6,
-    15.0
+    7.0
    ],
    [
     30.0,
-    10.0
+    5.0
    ],
    [
-    38.4,
-    25.0
+    35.0,
+    5.0
+   ],
+   [
+    38.3,
+    7.0
    ],
    [
     45.0,
-    10.0
+    4.0
    ],
    [
-    52.8,
-    22.0
+    52.5,
+    6.0
    ],
    [
     60.0,
-    10.0
+    3.0
+   ],
+   [
+    70.0,
+    3.0
    ],
    [
     83.0,
-    10.0
+    3.0
    ]
   ],
   "granularity": "multi_output",
@@ -9495,15 +8888,13 @@
     ]
    }
   },
-  "varies": [
-   "diffraction_angle"
-  ],
+  "varies": [],
   "series_varies": null,
-  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
-  "axis_role": "coordinate",
+  "granularity_reason": "x axis role could not be determined",
+  "axis_role": null,
   "dependent": [
    {
-    "quantity": "intensity",
+    "quantity": "Intensity, a.u.",
     "unit": "a.u.",
     "raw_unit": "a.u.",
     "family": null
@@ -9607,27 +8998,27 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u0398, degree",
   "x_semantics": {
-   "raw_label": null,
-   "raw_quantity": "diffraction_angle",
+   "raw_label": "2\u0398, degree",
+   "raw_quantity": "2\u0398, degree",
    "raw_unit": "degree",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'diffraction_angle'",
+   "evidence": "diffraction angle of an XRD/XRR scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "intensity",
+   "raw_label": "Intensity, a.u.",
+   "raw_quantity": "Intensity, a.u.",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity, a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig8a__exp05",
@@ -9642,7 +9033,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 9,
+  "n_observations": 11,
   "observations_are_experiments": false
  },
  {
@@ -9839,7 +9230,7 @@
    ],
    [
     365,
-    2.167
+    2.165
    ],
    [
     400,
@@ -9847,31 +9238,31 @@
    ],
    [
     500,
-    2.072
+    2.071
    ],
    [
     600,
-    2.05
+    2.049
    ],
    [
     635,
-    2.045
+    2.044
    ],
    [
     700,
-    2.038
+    2.037
    ],
    [
     800,
-    2.031
+    2.03
    ],
    [
     900,
-    2.026
+    2.025
    ],
    [
     1000,
-    2.023
+    2.022
    ]
   ],
   "points_canonical": [
@@ -9881,7 +9272,7 @@
    ],
    [
     365,
-    2.167
+    2.165
    ],
    [
     400,
@@ -9889,31 +9280,31 @@
    ],
    [
     500,
-    2.072
+    2.071
    ],
    [
     600,
-    2.05
+    2.049
    ],
    [
     635,
-    2.045
+    2.044
    ],
    [
     700,
-    2.038
+    2.037
    ],
    [
     800,
-    2.031
+    2.03
    ],
    [
     900,
-    2.026
+    2.025
    ],
    [
     1000,
-    2.023
+    2.022
    ]
   ],
   "granularity": "multi_output",
@@ -10067,7 +9458,7 @@
   },
   "coordinate_raw_quantity": "wavelength",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Wavelength, nm",
    "raw_quantity": "wavelength",
    "raw_unit": "nm",
    "unit_dimension": "length",
@@ -10078,14 +9469,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Refractive index",
    "raw_quantity": "refractive_index",
    "raw_unit": null,
    "unit_dimension": null,
    "canonical_quantity": "refractive_index",
    "axis_role": "progression_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'refractive_index'",
+   "evidence": "ontology alias match on 'Refractive index'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig9a",
@@ -10274,206 +9665,166 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    504.0,
-    0.08
-   ],
-   [
-    502.0,
-    0.08
-   ],
-   [
     500.0,
     0.08
    ],
    [
     498.0,
-    0.09
+    0.08
    ],
    [
     497.0,
-    0.12
+    0.09
    ],
    [
-    496.5,
-    0.18
+    496.2,
+    0.16
    ],
    [
-    496.0,
-    0.35
+    495.8,
+    0.32
    ],
    [
-    495.5,
-    0.62
-   ],
-   [
-    495.3,
-    0.67
+    495.2,
+    0.64
    ],
    [
     495.0,
-    0.61
+    0.67
    ],
    [
     494.5,
-    0.38
+    0.42
    ],
    [
-    494.0,
-    0.2
+    493.8,
+    0.18
    ],
    [
     493.0,
     0.1
    ],
    [
-    491.0,
-    0.08
+    490.0,
+    0.07
    ],
    [
-    489.0,
-    0.08
+    488.2,
+    0.15
    ],
    [
-    488.0,
-    0.12
-   ],
-   [
-    487.5,
-    0.25
-   ],
-   [
-    487.0,
-    0.65
+    487.4,
+    0.48
    ],
    [
     486.8,
-    0.93
-   ],
-   [
-    486.5,
     0.88
    ],
    [
-    486.0,
-    0.5
+    486.6,
+    0.96
    ],
    [
-    485.5,
-    0.25
+    486.2,
+    0.72
    ],
    [
-    485.0,
-    0.12
+    485.4,
+    0.28
    ],
    [
-    483.0,
+    484.5,
+    0.11
+   ],
+   [
+    482.0,
     0.07
    ],
    [
     480.0,
-    0.07
+    0.06
    ]
   ],
   "points_canonical": [
    [
-    504.0,
-    0.08
-   ],
-   [
-    502.0,
-    0.08
-   ],
-   [
     500.0,
     0.08
    ],
    [
     498.0,
-    0.09
+    0.08
    ],
    [
     497.0,
-    0.12
+    0.09
    ],
    [
-    496.5,
-    0.18
+    496.2,
+    0.16
    ],
    [
-    496.0,
-    0.35
+    495.8,
+    0.32
    ],
    [
-    495.5,
-    0.62
-   ],
-   [
-    495.3,
-    0.67
+    495.2,
+    0.64
    ],
    [
     495.0,
-    0.61
+    0.67
    ],
    [
     494.5,
-    0.38
+    0.42
    ],
    [
-    494.0,
-    0.2
+    493.8,
+    0.18
    ],
    [
     493.0,
     0.1
    ],
    [
-    491.0,
-    0.08
+    490.0,
+    0.07
    ],
    [
-    489.0,
-    0.08
+    488.2,
+    0.15
    ],
    [
-    488.0,
-    0.12
-   ],
-   [
-    487.5,
-    0.25
-   ],
-   [
-    487.0,
-    0.65
+    487.4,
+    0.48
    ],
    [
     486.8,
-    0.93
-   ],
-   [
-    486.5,
     0.88
    ],
    [
-    486.0,
-    0.5
+    486.6,
+    0.96
    ],
    [
-    485.5,
-    0.25
+    486.2,
+    0.72
    ],
    [
-    485.0,
-    0.12
+    485.4,
+    0.28
    ],
    [
-    483.0,
+    484.5,
+    0.11
+   ],
+   [
+    482.0,
     0.07
    ],
    [
     480.0,
-    0.07
+    0.06
    ]
   ],
   "granularity": "multi_output",
@@ -10629,25 +9980,25 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "binding energy / eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Intensity / a.u.",
    "raw_quantity": "intensity",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity / a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig10a__exp01",
@@ -10662,7 +10013,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 25,
+  "n_observations": 20,
   "observations_are_experiments": false
  },
  {
@@ -10836,206 +10187,166 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    504.0,
-    0.08
-   ],
-   [
-    502.0,
-    0.08
-   ],
-   [
     500.0,
     0.08
    ],
    [
     498.0,
-    0.09
+    0.08
    ],
    [
     497.0,
-    0.12
+    0.09
    ],
    [
-    496.5,
-    0.18
+    496.2,
+    0.17
    ],
    [
-    496.0,
-    0.35
+    495.8,
+    0.33
    ],
    [
-    495.5,
-    0.62
-   ],
-   [
-    495.3,
-    0.67
+    495.2,
+    0.65
    ],
    [
     495.0,
-    0.61
+    0.68
    ],
    [
     494.5,
-    0.38
+    0.41
    ],
    [
-    494.0,
-    0.2
+    493.8,
+    0.17
    ],
    [
     493.0,
     0.1
    ],
    [
-    491.0,
-    0.08
+    490.0,
+    0.07
    ],
    [
-    489.0,
-    0.08
+    488.2,
+    0.16
    ],
    [
-    488.0,
-    0.12
-   ],
-   [
-    487.5,
-    0.25
-   ],
-   [
-    487.0,
-    0.65
+    487.4,
+    0.49
    ],
    [
     486.8,
-    0.93
+    0.89
    ],
    [
-    486.5,
-    0.88
+    486.6,
+    0.97
    ],
    [
-    486.0,
-    0.5
+    486.2,
+    0.73
    ],
    [
-    485.5,
-    0.25
+    485.4,
+    0.29
    ],
    [
-    485.0,
-    0.12
+    484.5,
+    0.11
    ],
    [
-    483.0,
+    482.0,
     0.07
    ],
    [
     480.0,
-    0.07
+    0.06
    ]
   ],
   "points_canonical": [
    [
-    504.0,
-    0.08
-   ],
-   [
-    502.0,
-    0.08
-   ],
-   [
     500.0,
     0.08
    ],
    [
     498.0,
-    0.09
+    0.08
    ],
    [
     497.0,
-    0.12
+    0.09
    ],
    [
-    496.5,
-    0.18
+    496.2,
+    0.17
    ],
    [
-    496.0,
-    0.35
+    495.8,
+    0.33
    ],
    [
-    495.5,
-    0.62
-   ],
-   [
-    495.3,
-    0.67
+    495.2,
+    0.65
    ],
    [
     495.0,
-    0.61
+    0.68
    ],
    [
     494.5,
-    0.38
+    0.41
    ],
    [
-    494.0,
-    0.2
+    493.8,
+    0.17
    ],
    [
     493.0,
     0.1
    ],
    [
-    491.0,
-    0.08
+    490.0,
+    0.07
    ],
    [
-    489.0,
-    0.08
+    488.2,
+    0.16
    ],
    [
-    488.0,
-    0.12
-   ],
-   [
-    487.5,
-    0.25
-   ],
-   [
-    487.0,
-    0.65
+    487.4,
+    0.49
    ],
    [
     486.8,
-    0.93
+    0.89
    ],
    [
-    486.5,
-    0.88
+    486.6,
+    0.97
    ],
    [
-    486.0,
-    0.5
+    486.2,
+    0.73
    ],
    [
-    485.5,
-    0.25
+    485.4,
+    0.29
    ],
    [
-    485.0,
-    0.12
+    484.5,
+    0.11
    ],
    [
-    483.0,
+    482.0,
     0.07
    ],
    [
     480.0,
-    0.07
+    0.06
    ]
   ],
   "granularity": "multi_output",
@@ -11191,25 +10502,25 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "binding energy / eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Intensity / a.u.",
    "raw_quantity": "intensity",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity / a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig10a__exp02",
@@ -11224,7 +10535,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 25,
+  "n_observations": 20,
   "observations_are_experiments": false
  },
  {
@@ -11406,35 +10717,31 @@
     0.08
    ],
    [
-    533.0,
-    0.09
+    532.5,
+    0.1
    ],
    [
-    532.0,
-    0.11
-   ],
-   [
-    531.5,
-    0.18
+    531.8,
+    0.2
    ],
    [
     531.0,
-    0.35
+    0.52
    ],
    [
-    530.7,
-    0.45
+    530.6,
+    0.68
    ],
    [
     530.0,
-    0.35
+    0.48
    ],
    [
-    529.5,
-    0.18
+    529.2,
+    0.2
    ],
    [
-    529.0,
+    528.5,
     0.1
    ],
    [
@@ -11452,35 +10759,31 @@
     0.08
    ],
    [
-    533.0,
-    0.09
+    532.5,
+    0.1
    ],
    [
-    532.0,
-    0.11
-   ],
-   [
-    531.5,
-    0.18
+    531.8,
+    0.2
    ],
    [
     531.0,
-    0.35
+    0.52
    ],
    [
-    530.7,
-    0.45
+    530.6,
+    0.68
    ],
    [
     530.0,
-    0.35
+    0.48
    ],
    [
-    529.5,
-    0.18
+    529.2,
+    0.2
    ],
    [
-    529.0,
+    528.5,
     0.1
    ],
    [
@@ -11641,25 +10944,25 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "binding energy / eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Intensity / a.u.",
    "raw_quantity": "intensity",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity / a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig10b__exp01",
@@ -11674,7 +10977,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 11,
+  "n_observations": 10,
   "observations_are_experiments": false
  },
  {
@@ -11849,101 +11152,85 @@
   "points": [
    [
     536.0,
-    0.5
+    0.42
    ],
    [
     534.0,
-    0.5
+    0.42
    ],
    [
     533.0,
-    0.52
+    0.44
    ],
    [
-    532.5,
-    0.55
-   ],
-   [
-    532.0,
-    0.6
+    532.3,
+    0.49
    ],
    [
     531.5,
-    0.68
-   ],
-   [
-    531.0,
-    0.85
+    0.63
    ],
    [
     530.7,
-    0.95
+    0.96
    ],
    [
     530.0,
-    0.8
+    0.72
    ],
    [
-    529.5,
-    0.58
+    529.2,
+    0.48
    ],
    [
-    529.0,
-    0.52
+    528.0,
+    0.42
    ],
    [
     527.0,
-    0.5
+    0.42
    ]
   ],
   "points_canonical": [
    [
     536.0,
-    0.5
+    0.42
    ],
    [
     534.0,
-    0.5
+    0.42
    ],
    [
     533.0,
-    0.52
+    0.44
    ],
    [
-    532.5,
-    0.55
-   ],
-   [
-    532.0,
-    0.6
+    532.3,
+    0.49
    ],
    [
     531.5,
-    0.68
-   ],
-   [
-    531.0,
-    0.85
+    0.63
    ],
    [
     530.7,
-    0.95
+    0.96
    ],
    [
     530.0,
-    0.8
+    0.72
    ],
    [
-    529.5,
-    0.58
+    529.2,
+    0.48
    ],
    [
-    529.0,
-    0.52
+    528.0,
+    0.42
    ],
    [
     527.0,
-    0.5
+    0.42
    ]
   ],
   "granularity": "multi_output",
@@ -12099,25 +11386,25 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "binding energy / eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Intensity / a.u.",
    "raw_quantity": "intensity",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity / a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig10b__exp02",
@@ -12132,7 +11419,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 12,
+  "n_observations": 10,
   "observations_are_experiments": false
  },
  {
@@ -12328,56 +11615,40 @@
     0.08
    ],
    [
-    14.0,
-    0.08
-   ],
-   [
-    13.0,
+    13.5,
     0.08
    ],
    [
     12.0,
-    0.1
-   ],
-   [
-    11.2,
-    0.18
+    0.11
    ],
    [
     10.8,
-    0.22
-   ],
-   [
-    10.2,
-    0.18
-   ],
-   [
-    9.5,
-    0.17
-   ],
-   [
-    9.0,
     0.2
    ],
    [
-    8.0,
-    0.32
+    10.5,
+    0.21
    ],
    [
-    7.0,
-    0.45
+    9.8,
+    0.18
+   ],
+   [
+    8.5,
+    0.28
+   ],
+   [
+    7.2,
+    0.48
    ],
    [
     6.0,
     0.6
    ],
    [
-    5.2,
-    0.85
-   ],
-   [
     4.8,
-    0.92
+    0.97
    ],
    [
     4.2,
@@ -12385,23 +11656,19 @@
    ],
    [
     3.5,
-    0.45
+    0.38
    ],
    [
-    3.0,
-    0.25
-   ],
-   [
-    2.0,
-    0.1
+    2.5,
+    0.14
    ],
    [
     1.0,
-    0.07
+    0.08
    ],
    [
     0.0,
-    0.06
+    0.07
    ]
   ],
   "points_canonical": [
@@ -12410,56 +11677,40 @@
     0.08
    ],
    [
-    14.0,
-    0.08
-   ],
-   [
-    13.0,
+    13.5,
     0.08
    ],
    [
     12.0,
-    0.1
-   ],
-   [
-    11.2,
-    0.18
+    0.11
    ],
    [
     10.8,
-    0.22
-   ],
-   [
-    10.2,
-    0.18
-   ],
-   [
-    9.5,
-    0.17
-   ],
-   [
-    9.0,
     0.2
    ],
    [
-    8.0,
-    0.32
+    10.5,
+    0.21
    ],
    [
-    7.0,
-    0.45
+    9.8,
+    0.18
+   ],
+   [
+    8.5,
+    0.28
+   ],
+   [
+    7.2,
+    0.48
    ],
    [
     6.0,
     0.6
    ],
    [
-    5.2,
-    0.85
-   ],
-   [
     4.8,
-    0.92
+    0.97
    ],
    [
     4.2,
@@ -12467,23 +11718,19 @@
    ],
    [
     3.5,
-    0.45
+    0.38
    ],
    [
-    3.0,
-    0.25
-   ],
-   [
-    2.0,
-    0.1
+    2.5,
+    0.14
    ],
    [
     1.0,
-    0.07
+    0.08
    ],
    [
     0.0,
-    0.06
+    0.07
    ]
   ],
   "granularity": "multi_output",
@@ -12637,25 +11884,25 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "binding energy / eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Intensity / a.u.",
    "raw_quantity": "intensity",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity / a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig10c__exp01",
@@ -12670,7 +11917,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 20,
+  "n_observations": 15,
   "observations_are_experiments": false
  },
  {
@@ -12848,80 +12095,60 @@
     0.08
    ],
    [
-    14.0,
-    0.08
-   ],
-   [
-    13.0,
+    13.5,
     0.08
    ],
    [
     12.0,
-    0.1
-   ],
-   [
-    11.2,
-    0.18
+    0.11
    ],
    [
     10.8,
-    0.22
-   ],
-   [
-    10.2,
-    0.18
-   ],
-   [
-    9.5,
-    0.17
-   ],
-   [
-    9.0,
     0.2
    ],
    [
-    8.0,
-    0.32
+    10.5,
+    0.21
    ],
    [
-    7.0,
-    0.45
+    9.8,
+    0.18
+   ],
+   [
+    8.5,
+    0.29
+   ],
+   [
+    7.2,
+    0.49
    ],
    [
     6.0,
-    0.6
-   ],
-   [
-    5.2,
-    0.85
+    0.61
    ],
    [
     4.8,
-    0.92
+    0.98
    ],
    [
     4.2,
-    0.8
+    0.81
    ],
    [
     3.5,
-    0.45
+    0.39
    ],
    [
-    3.0,
-    0.25
-   ],
-   [
-    2.0,
-    0.1
+    2.5,
+    0.14
    ],
    [
     1.0,
-    0.07
+    0.08
    ],
    [
     0.0,
-    0.06
+    0.07
    ]
   ],
   "points_canonical": [
@@ -12930,80 +12157,60 @@
     0.08
    ],
    [
-    14.0,
-    0.08
-   ],
-   [
-    13.0,
+    13.5,
     0.08
    ],
    [
     12.0,
-    0.1
-   ],
-   [
-    11.2,
-    0.18
+    0.11
    ],
    [
     10.8,
-    0.22
-   ],
-   [
-    10.2,
-    0.18
-   ],
-   [
-    9.5,
-    0.17
-   ],
-   [
-    9.0,
     0.2
    ],
    [
-    8.0,
-    0.32
+    10.5,
+    0.21
    ],
    [
-    7.0,
-    0.45
+    9.8,
+    0.18
+   ],
+   [
+    8.5,
+    0.29
+   ],
+   [
+    7.2,
+    0.49
    ],
    [
     6.0,
-    0.6
-   ],
-   [
-    5.2,
-    0.85
+    0.61
    ],
    [
     4.8,
-    0.92
+    0.98
    ],
    [
     4.2,
-    0.8
+    0.81
    ],
    [
     3.5,
-    0.45
+    0.39
    ],
    [
-    3.0,
-    0.25
-   ],
-   [
-    2.0,
-    0.1
+    2.5,
+    0.14
    ],
    [
     1.0,
-    0.07
+    0.08
    ],
    [
     0.0,
-    0.06
+    0.07
    ]
   ],
   "granularity": "multi_output",
@@ -13159,25 +12366,25 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "binding energy / eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Intensity / a.u.",
    "raw_quantity": "intensity",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
    "canonical_quantity": "intensity",
    "axis_role": "output",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity / a.u.'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.3762_bjnano.14.89__Fig10c__exp02",
@@ -13192,7 +12399,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 20,
+  "n_observations": 15,
   "observations_are_experiments": false
  },
  {
@@ -13272,7 +12479,7 @@
     "context_status": "resolved"
    },
    {
-    "quantity": "temperature",
+    "quantity": "deposition_temperature",
     "value": 300.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -13319,7 +12526,7 @@
      "level": "series",
      "from": "series_label",
      "evidence": "300 \u00b0C",
-     "locator": "series label '300 \u00b0C' (axis 'temperature')"
+     "locator": "series label '300 \u00b0C' (axis 'deposition_temperature')"
     }
    },
    {
@@ -13366,11 +12573,11 @@
   "points": [
    [
     528.5,
-    0.02
+    0.01
    ],
    [
     529.5,
-    0.03
+    0.02
    ],
    [
     530.5,
@@ -13378,129 +12585,97 @@
    ],
    [
     531.5,
-    0.12
+    0.15
    ],
    [
-    532.2,
-    0.23
-   ],
-   [
-    532.8,
-    0.45
-   ],
-   [
-    533.3,
-    0.64
+    532.5,
+    0.4
    ],
    [
     533.6,
-    0.69
-   ],
-   [
-    534.0,
-    0.63
+    0.73
    ],
    [
     534.5,
-    0.43
-   ],
-   [
-    535.0,
     0.35
    ],
    [
-    535.4,
-    0.33
-   ],
-   [
-    536.0,
-    0.38
-   ],
-   [
-    536.4,
-    0.43
-   ],
-   [
-    537.0,
-    0.47
-   ],
-   [
-    537.5,
-    0.52
-   ],
-   [
-    538.0,
-    0.57
-   ],
-   [
-    538.6,
-    0.68
-   ],
-   [
-    539.0,
-    0.82
-   ],
-   [
-    539.6,
-    0.93
-   ],
-   [
-    540.2,
-    0.89
-   ],
-   [
-    540.8,
-    0.8
-   ],
-   [
-    541.5,
-    0.68
-   ],
-   [
-    542.2,
-    0.46
-   ],
-   [
-    543.0,
-    0.31
-   ],
-   [
-    544.0,
-    0.24
-   ],
-   [
-    545.2,
-    0.22
-   ],
-   [
-    546.0,
+    535.5,
     0.23
    ],
    [
+    536.3,
+    0.38
+   ],
+   [
+    537.2,
+    0.41
+   ],
+   [
+    537.9,
+    0.52
+   ],
+   [
+    538.8,
+    0.7
+   ],
+   [
+    539.6,
+    0.96
+   ],
+   [
+    540.4,
+    0.85
+   ],
+   [
+    540.8,
+    0.72
+   ],
+   [
+    541.5,
+    0.48
+   ],
+   [
+    542.5,
+    0.28
+   ],
+   [
+    543.5,
+    0.18
+   ],
+   [
+    545.0,
+    0.15
+   ],
+   [
+    546.0,
+    0.12
+   ],
+   [
     547.0,
-    0.26
+    0.15
    ],
    [
     548.0,
-    0.31
+    0.21
    ],
    [
     549.0,
-    0.33
+    0.24
    ],
    [
-    549.5,
-    0.32
+    549.7,
+    0.24
    ]
   ],
   "points_canonical": [
    [
     528.5,
-    0.02
+    0.01
    ],
    [
     529.5,
-    0.03
+    0.02
    ],
    [
     530.5,
@@ -13508,119 +12683,87 @@
    ],
    [
     531.5,
-    0.12
+    0.15
    ],
    [
-    532.2,
-    0.23
-   ],
-   [
-    532.8,
-    0.45
-   ],
-   [
-    533.3,
-    0.64
+    532.5,
+    0.4
    ],
    [
     533.6,
-    0.69
-   ],
-   [
-    534.0,
-    0.63
+    0.73
    ],
    [
     534.5,
-    0.43
-   ],
-   [
-    535.0,
     0.35
    ],
    [
-    535.4,
-    0.33
-   ],
-   [
-    536.0,
-    0.38
-   ],
-   [
-    536.4,
-    0.43
-   ],
-   [
-    537.0,
-    0.47
-   ],
-   [
-    537.5,
-    0.52
-   ],
-   [
-    538.0,
-    0.57
-   ],
-   [
-    538.6,
-    0.68
-   ],
-   [
-    539.0,
-    0.82
-   ],
-   [
-    539.6,
-    0.93
-   ],
-   [
-    540.2,
-    0.89
-   ],
-   [
-    540.8,
-    0.8
-   ],
-   [
-    541.5,
-    0.68
-   ],
-   [
-    542.2,
-    0.46
-   ],
-   [
-    543.0,
-    0.31
-   ],
-   [
-    544.0,
-    0.24
-   ],
-   [
-    545.2,
-    0.22
-   ],
-   [
-    546.0,
+    535.5,
     0.23
    ],
    [
+    536.3,
+    0.38
+   ],
+   [
+    537.2,
+    0.41
+   ],
+   [
+    537.9,
+    0.52
+   ],
+   [
+    538.8,
+    0.7
+   ],
+   [
+    539.6,
+    0.96
+   ],
+   [
+    540.4,
+    0.85
+   ],
+   [
+    540.8,
+    0.72
+   ],
+   [
+    541.5,
+    0.48
+   ],
+   [
+    542.5,
+    0.28
+   ],
+   [
+    543.5,
+    0.18
+   ],
+   [
+    545.0,
+    0.15
+   ],
+   [
+    546.0,
+    0.12
+   ],
+   [
     547.0,
-    0.26
+    0.15
    ],
    [
     548.0,
-    0.31
+    0.21
    ],
    [
     549.0,
-    0.33
+    0.24
    ],
    [
-    549.5,
-    0.32
+    549.7,
+    0.24
    ]
   ],
   "granularity": "multi_output",
@@ -13637,7 +12780,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": "temperature: 300 \u00b0C",
+  "series_name": "deposition_temperature: 300 \u00b0C",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -13773,7 +12916,7 @@
    "completeness": 0.571
   },
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "photon energy / eV",
    "raw_quantity": "photon energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
@@ -13784,7 +12927,7 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "TEY / a.u.",
    "raw_quantity": "TEY",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -13806,7 +12949,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 32,
+  "n_observations": 24,
   "observations_are_experiments": false
  },
  {
@@ -13886,7 +13029,7 @@
     "context_status": "resolved"
    },
    {
-    "quantity": "temperature",
+    "quantity": "deposition_temperature",
     "value": 500.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -13933,7 +13076,7 @@
      "level": "series",
      "from": "series_label",
      "evidence": "500 \u00b0C",
-     "locator": "series label '500 \u00b0C' (axis 'temperature')"
+     "locator": "series label '500 \u00b0C' (axis 'deposition_temperature')"
     }
    },
    {
@@ -13980,11 +13123,11 @@
   "points": [
    [
     528.5,
-    0.02
+    0.01
    ],
    [
     529.5,
-    0.03
+    0.02
    ],
    [
     530.5,
@@ -13992,129 +13135,97 @@
    ],
    [
     531.5,
-    0.12
+    0.15
    ],
    [
-    532.2,
-    0.23
-   ],
-   [
-    532.8,
-    0.5
-   ],
-   [
-    533.3,
-    0.74
-   ],
-   [
-    533.6,
-    0.81
-   ],
-   [
-    534.0,
-    0.74
-   ],
-   [
-    534.5,
-    0.46
-   ],
-   [
-    535.0,
-    0.36
-   ],
-   [
-    535.4,
-    0.35
-   ],
-   [
-    536.0,
+    532.5,
     0.4
    ],
    [
-    536.4,
-    0.44
-   ],
-   [
-    537.0,
-    0.48
-   ],
-   [
-    537.5,
-    0.53
-   ],
-   [
-    538.0,
-    0.58
-   ],
-   [
-    538.6,
-    0.68
-   ],
-   [
-    539.0,
+    533.6,
     0.82
    ],
    [
-    539.6,
-    0.93
+    534.5,
+    0.38
    ],
    [
-    540.2,
-    0.89
+    535.5,
+    0.25
+   ],
+   [
+    536.3,
+    0.4
+   ],
+   [
+    537.2,
+    0.42
+   ],
+   [
+    537.9,
+    0.54
+   ],
+   [
+    538.8,
+    0.7
+   ],
+   [
+    539.6,
+    0.96
+   ],
+   [
+    540.4,
+    0.85
    ],
    [
     540.8,
-    0.8
+    0.72
    ],
    [
     541.5,
-    0.68
+    0.48
    ],
    [
-    542.2,
-    0.46
+    542.5,
+    0.28
    ],
    [
-    543.0,
-    0.3
+    543.5,
+    0.18
    ],
    [
-    544.0,
-    0.23
-   ],
-   [
-    545.2,
-    0.21
+    545.0,
+    0.14
    ],
    [
     546.0,
-    0.23
+    0.12
    ],
    [
     547.0,
-    0.26
+    0.15
    ],
    [
     548.0,
-    0.31
+    0.21
    ],
    [
     549.0,
-    0.33
+    0.24
    ],
    [
-    549.5,
-    0.32
+    549.7,
+    0.24
    ]
   ],
   "points_canonical": [
    [
     528.5,
-    0.02
+    0.01
    ],
    [
     529.5,
-    0.03
+    0.02
    ],
    [
     530.5,
@@ -14122,119 +13233,87 @@
    ],
    [
     531.5,
-    0.12
+    0.15
    ],
    [
-    532.2,
-    0.23
-   ],
-   [
-    532.8,
-    0.5
-   ],
-   [
-    533.3,
-    0.74
-   ],
-   [
-    533.6,
-    0.81
-   ],
-   [
-    534.0,
-    0.74
-   ],
-   [
-    534.5,
-    0.46
-   ],
-   [
-    535.0,
-    0.36
-   ],
-   [
-    535.4,
-    0.35
-   ],
-   [
-    536.0,
+    532.5,
     0.4
    ],
    [
-    536.4,
-    0.44
-   ],
-   [
-    537.0,
-    0.48
-   ],
-   [
-    537.5,
-    0.53
-   ],
-   [
-    538.0,
-    0.58
-   ],
-   [
-    538.6,
-    0.68
-   ],
-   [
-    539.0,
+    533.6,
     0.82
    ],
    [
-    539.6,
-    0.93
+    534.5,
+    0.38
    ],
    [
-    540.2,
-    0.89
+    535.5,
+    0.25
+   ],
+   [
+    536.3,
+    0.4
+   ],
+   [
+    537.2,
+    0.42
+   ],
+   [
+    537.9,
+    0.54
+   ],
+   [
+    538.8,
+    0.7
+   ],
+   [
+    539.6,
+    0.96
+   ],
+   [
+    540.4,
+    0.85
    ],
    [
     540.8,
-    0.8
+    0.72
    ],
    [
     541.5,
-    0.68
+    0.48
    ],
    [
-    542.2,
-    0.46
+    542.5,
+    0.28
    ],
    [
-    543.0,
-    0.3
+    543.5,
+    0.18
    ],
    [
-    544.0,
-    0.23
-   ],
-   [
-    545.2,
-    0.21
+    545.0,
+    0.14
    ],
    [
     546.0,
-    0.23
+    0.12
    ],
    [
     547.0,
-    0.26
+    0.15
    ],
    [
     548.0,
-    0.31
+    0.21
    ],
    [
     549.0,
-    0.33
+    0.24
    ],
    [
-    549.5,
-    0.32
+    549.7,
+    0.24
    ]
   ],
   "granularity": "multi_output",
@@ -14251,7 +13330,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": "temperature: 500 \u00b0C",
+  "series_name": "deposition_temperature: 500 \u00b0C",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -14387,7 +13466,7 @@
    "completeness": 0.571
   },
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "photon energy / eV",
    "raw_quantity": "photon energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
@@ -14398,7 +13477,7 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "TEY / a.u.",
    "raw_quantity": "TEY",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -14420,7 +13499,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 32,
+  "n_observations": 24,
   "observations_are_experiments": false
  },
  {
@@ -14500,7 +13579,7 @@
     "context_status": "resolved"
    },
    {
-    "quantity": "temperature",
+    "quantity": "deposition_temperature",
     "value": 300.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -14547,7 +13626,7 @@
      "level": "series",
      "from": "series_label",
      "evidence": "300 \u00b0C",
-     "locator": "series label '300 \u00b0C' (axis 'temperature')"
+     "locator": "series label '300 \u00b0C' (axis 'deposition_temperature')"
     }
    },
    {
@@ -14611,254 +13690,158 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    486.0,
-    0.02
-   ],
-   [
-    487.0,
+    486.2,
     0.03
    ],
    [
-    487.6,
-    0.06
+    487.3,
+    0.07
    ],
    [
     488.2,
-    0.04
+    0.05
    ],
    [
-    489.0,
-    0.02
+    489.2,
+    0.08
    ],
    [
-    489.8,
-    0.09
-   ],
-   [
-    490.3,
-    0.28
+    490.0,
+    0.25
    ],
    [
     490.9,
-    0.58
-   ],
-   [
-    491.4,
-    0.47
-   ],
-   [
-    491.9,
-    0.37
-   ],
-   [
-    492.5,
-    0.51
-   ],
-   [
-    493.1,
-    0.68
-   ],
-   [
-    493.6,
-    0.53
-   ],
-   [
-    494.0,
-    0.44
-   ],
-   [
-    494.5,
-    0.48
-   ],
-   [
-    495.1,
-    0.57
-   ],
-   [
-    495.8,
-    0.44
-   ],
-   [
-    496.8,
-    0.28
-   ],
-   [
-    497.8,
-    0.28
-   ],
-   [
-    498.6,
-    0.42
-   ],
-   [
-    499.3,
-    0.77
-   ],
-   [
-    500.0,
-    0.63
-   ],
-   [
-    500.5,
     0.55
    ],
    [
-    501.0,
-    0.66
+    492.0,
+    0.32
+   ],
+   [
+    493.1,
+    0.69
+   ],
+   [
+    494.2,
+    0.4
+   ],
+   [
+    495.1,
+    0.52
+   ],
+   [
+    496.5,
+    0.22
+   ],
+   [
+    497.8,
+    0.23
+   ],
+   [
+    499.3,
+    0.78
+   ],
+   [
+    500.2,
+    0.57
    ],
    [
     501.4,
-    0.81
-   ],
-   [
-    502.1,
-    0.67
-   ],
-   [
-    502.8,
-    0.56
-   ],
-   [
-    503.5,
-    0.68
-   ],
-   [
-    504.2,
     0.82
    ],
    [
-    505.0,
-    0.91
+    502.8,
+    0.64
    ],
    [
-    505.5,
+    504.0,
+    0.87
+   ],
+   [
+    505.0,
     0.98
+   ],
+   [
+    505.6,
+    1.05
    ]
   ],
   "points_canonical": [
    [
-    486.0,
-    0.02
-   ],
-   [
-    487.0,
+    486.2,
     0.03
    ],
    [
-    487.6,
-    0.06
+    487.3,
+    0.07
    ],
    [
     488.2,
-    0.04
+    0.05
    ],
    [
-    489.0,
-    0.02
+    489.2,
+    0.08
    ],
    [
-    489.8,
-    0.09
-   ],
-   [
-    490.3,
-    0.28
+    490.0,
+    0.25
    ],
    [
     490.9,
-    0.58
-   ],
-   [
-    491.4,
-    0.47
-   ],
-   [
-    491.9,
-    0.37
-   ],
-   [
-    492.5,
-    0.51
-   ],
-   [
-    493.1,
-    0.68
-   ],
-   [
-    493.6,
-    0.53
-   ],
-   [
-    494.0,
-    0.44
-   ],
-   [
-    494.5,
-    0.48
-   ],
-   [
-    495.1,
-    0.57
-   ],
-   [
-    495.8,
-    0.44
-   ],
-   [
-    496.8,
-    0.28
-   ],
-   [
-    497.8,
-    0.28
-   ],
-   [
-    498.6,
-    0.42
-   ],
-   [
-    499.3,
-    0.77
-   ],
-   [
-    500.0,
-    0.63
-   ],
-   [
-    500.5,
     0.55
    ],
    [
-    501.0,
-    0.66
+    492.0,
+    0.32
+   ],
+   [
+    493.1,
+    0.69
+   ],
+   [
+    494.2,
+    0.4
+   ],
+   [
+    495.1,
+    0.52
+   ],
+   [
+    496.5,
+    0.22
+   ],
+   [
+    497.8,
+    0.23
+   ],
+   [
+    499.3,
+    0.78
+   ],
+   [
+    500.2,
+    0.57
    ],
    [
     501.4,
-    0.81
-   ],
-   [
-    502.1,
-    0.67
-   ],
-   [
-    502.8,
-    0.56
-   ],
-   [
-    503.5,
-    0.68
-   ],
-   [
-    504.2,
     0.82
    ],
    [
-    505.0,
-    0.91
+    502.8,
+    0.64
    ],
    [
-    505.5,
+    504.0,
+    0.87
+   ],
+   [
+    505.0,
     0.98
+   ],
+   [
+    505.6,
+    1.05
    ]
   ],
   "granularity": "multi_output",
@@ -14875,7 +13858,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": "temperature: 300 \u00b0C",
+  "series_name": "deposition_temperature: 300 \u00b0C",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -14937,7 +13920,7 @@
    "supercycle": null,
    "supercycle_repeats": null,
    "ncycles": null,
-   "temperature": 300.0,
+   "temperature": 500.0,
    "flow_rate": null,
    "carrier_gas": {
     "species": "N2"
@@ -15000,18 +13983,16 @@
     },
     "temperature::": {
      "source": "experiment",
-     "from": "series",
-     "value": 300.0,
-     "paper_id": "10.3762_bjnano.14.89",
-     "experiment_id": "10.3762_bjnano.14.89-F11b-24",
-     "figure": "Fig 11",
-     "panel": "b"
+     "from": "caption",
+     "value": 500.0,
+     "paper_id": null,
+     "experiment_id": "10.3762_bjnano.14.89-E024"
     }
    },
    "completeness": 0.571
   },
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "photon energy / eV",
    "raw_quantity": "photon energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
@@ -15022,7 +14003,7 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "TEY / a.u.",
    "raw_quantity": "TEY",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -15044,7 +14025,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 31,
+  "n_observations": 19,
   "observations_are_experiments": false
  },
  {
@@ -15124,7 +14105,7 @@
     "context_status": "resolved"
    },
    {
-    "quantity": "temperature",
+    "quantity": "deposition_temperature",
     "value": 500.0,
     "unit": "\u00b0C",
     "of_reactant": null,
@@ -15171,7 +14152,7 @@
      "level": "series",
      "from": "series_label",
      "evidence": "500 \u00b0C",
-     "locator": "series label '500 \u00b0C' (axis 'temperature')"
+     "locator": "series label '500 \u00b0C' (axis 'deposition_temperature')"
     }
    },
    {
@@ -15217,15 +14198,11 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    486.0,
+    486.2,
     0.02
    ],
    [
-    487.0,
-    0.03
-   ],
-   [
-    487.6,
+    487.3,
     0.06
    ],
    [
@@ -15233,125 +14210,77 @@
     0.03
    ],
    [
-    489.0,
-    0.01
+    489.2,
+    0.06
    ],
    [
-    489.8,
-    0.11
-   ],
-   [
-    490.3,
-    0.35
+    490.0,
+    0.26
    ],
    [
     490.9,
-    0.7
+    0.72
    ],
    [
-    491.4,
-    0.53
-   ],
-   [
-    491.9,
-    0.37
-   ],
-   [
-    492.5,
-    0.58
+    492.0,
+    0.3
    ],
    [
     493.1,
-    0.85
+    0.91
    ],
    [
-    493.6,
-    0.58
-   ],
-   [
-    494.0,
-    0.43
-   ],
-   [
-    494.5,
-    0.52
+    494.2,
+    0.44
    ],
    [
     495.1,
-    0.67
+    0.63
    ],
    [
-    495.8,
-    0.42
-   ],
-   [
-    496.8,
-    0.22
+    496.5,
+    0.18
    ],
    [
     497.8,
-    0.2
-   ],
-   [
-    498.6,
-    0.42
+    0.16
    ],
    [
     499.3,
-    0.82
+    0.84
    ],
    [
-    500.0,
-    0.61
-   ],
-   [
-    500.5,
-    0.51
-   ],
-   [
-    501.0,
-    0.68
+    500.2,
+    0.56
    ],
    [
     501.4,
-    0.85
-   ],
-   [
-    502.1,
-    0.64
+    0.88
    ],
    [
     502.8,
-    0.5
+    0.61
    ],
    [
-    503.5,
-    0.68
-   ],
-   [
-    504.2,
-    0.83
+    504.0,
+    0.89
    ],
    [
     505.0,
-    0.92
+    0.98
    ],
    [
-    505.5,
-    0.98
+    505.6,
+    1.05
    ]
   ],
   "points_canonical": [
    [
-    486.0,
+    486.2,
     0.02
    ],
    [
-    487.0,
-    0.03
-   ],
-   [
-    487.6,
+    487.3,
     0.06
    ],
    [
@@ -15359,112 +14288,68 @@
     0.03
    ],
    [
-    489.0,
-    0.01
+    489.2,
+    0.06
    ],
    [
-    489.8,
-    0.11
-   ],
-   [
-    490.3,
-    0.35
+    490.0,
+    0.26
    ],
    [
     490.9,
-    0.7
+    0.72
    ],
    [
-    491.4,
-    0.53
-   ],
-   [
-    491.9,
-    0.37
-   ],
-   [
-    492.5,
-    0.58
+    492.0,
+    0.3
    ],
    [
     493.1,
-    0.85
+    0.91
    ],
    [
-    493.6,
-    0.58
-   ],
-   [
-    494.0,
-    0.43
-   ],
-   [
-    494.5,
-    0.52
+    494.2,
+    0.44
    ],
    [
     495.1,
-    0.67
+    0.63
    ],
    [
-    495.8,
-    0.42
-   ],
-   [
-    496.8,
-    0.22
+    496.5,
+    0.18
    ],
    [
     497.8,
-    0.2
-   ],
-   [
-    498.6,
-    0.42
+    0.16
    ],
    [
     499.3,
-    0.82
+    0.84
    ],
    [
-    500.0,
-    0.61
-   ],
-   [
-    500.5,
-    0.51
-   ],
-   [
-    501.0,
-    0.68
+    500.2,
+    0.56
    ],
    [
     501.4,
-    0.85
-   ],
-   [
-    502.1,
-    0.64
+    0.88
    ],
    [
     502.8,
-    0.5
+    0.61
    ],
    [
-    503.5,
-    0.68
-   ],
-   [
-    504.2,
-    0.83
+    504.0,
+    0.89
    ],
    [
     505.0,
-    0.92
+    0.98
    ],
    [
-    505.5,
-    0.98
+    505.6,
+    1.05
    ]
   ],
   "granularity": "multi_output",
@@ -15481,7 +14366,7 @@
    "extractor": "vision-llm",
    "doi": "10.3762_bjnano.14.89"
   },
-  "series_name": "temperature: 500 \u00b0C",
+  "series_name": "deposition_temperature: 500 \u00b0C",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -15617,7 +14502,7 @@
    "completeness": 0.571
   },
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "photon energy / eV",
    "raw_quantity": "photon energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
@@ -15628,7 +14513,7 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "TEY / a.u.",
    "raw_quantity": "TEY",
    "raw_unit": "a.u.",
    "unit_dimension": "arbitrary",
@@ -15650,7 +14535,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 31,
+  "n_observations": 19,
   "observations_are_experiments": false
  }
 ]

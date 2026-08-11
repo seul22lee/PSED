@@ -3,6 +3,597 @@
   "material": "Y2O3",
   "material_raw": "Y2O3",
   "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 5 (a) Growth rate for Y2O3 /uniFB01 lms as function of water purge time at 250 \u00b0C. (b) Saturation of Y2O3 /uniFB01 lm growth rate with increasing Y( s BuCp)3 supply time at 250 \u00b0C. (c) Y2O3 /uniFB01 lm growth rate a",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Y(sBuCp)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Y(sBuCp)3"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 250.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_d3ra05217f",
+     "experiment_id": "10.1039_d3ra05217f__Fig5d",
+     "figure": "Fig 5",
+     "panel": "d"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 350.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "deposition temperature was varied from 200 to 350 \u00b0C",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "raw_unit": "\u00c5",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5",
+    "to_unit": "nm",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "film_thickness"
+  },
+  "coordinate": "cycle_number",
+  "coordinate_family": null,
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": "cycle",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    50.0,
+    78.0
+   ],
+   [
+    100.0,
+    258.0
+   ],
+   [
+    150.0,
+    378.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    50.0,
+    7.800000000000001
+   ],
+   [
+    100.0,
+    25.8
+   ],
+   [
+    150.0,
+    37.800000000000004
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_d3ra05217f__Fig5d",
+  "provenance": {
+   "figure": "Fig 5",
+   "figure_number": "5",
+   "fig_docling_index": "9",
+   "panel": "d",
+   "caption": "Fig. 5 (a) Growth rate for Y2O3 /uniFB01 lms as function of water purge time at 250 \u00b0C. (b) Saturation of Y2O3 /uniFB01 lm growth rate with increasing Y( s BuCp)3 supply time at 250 \u00b0C. (c) Y2O3 /uniF",
+   "extractor": "vision-llm",
+   "doi": "10.1039_d3ra05217f"
+  },
+  "series_name": null,
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Y2O3",
+   "supporting_evidence": "of the candidates ['Y(sBuCp)3'] listed by the paper, only 'Y(sBuCp)3' carries the metal of Y2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Y(sBuCp)3"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Y2O3"
+    ]
+   }
+  },
+  "varies": [
+   "cycle_number"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'cycle_number' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "raw_unit": "\u00c5",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Y2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Y(sBuCp)3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 250.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_d3ra05217f-E012",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Y(sBuCp)3",
+     "experiment_id": "10.1039_d3ra05217f-E012"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1039_d3ra05217f-E012"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Y2O3",
+     "experiment_id": "10.1039_d3ra05217f-E012"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_d3ra05217f-E012"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_d3ra05217f-E012"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 250.0,
+     "paper_id": "10.1039_d3ra05217f",
+     "experiment_id": "10.1039_d3ra05217f-F5d-12",
+     "figure": "Fig 5",
+     "panel": "d"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "cycle_number",
+  "x_semantics": {
+   "raw_label": "Number of cycles",
+   "raw_quantity": "cycle_number",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "cycle_number",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of cycles'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Thickness by XRR, \u00c5",
+   "raw_quantity": "film_thickness",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "film_thickness",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Thickness by XRR, \u00c5'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_d3ra05217f__Fig5d",
+  "entity_key": "10.1039_d3ra05217f|9|5|d|<single>|primary",
+  "paper_id": "10.1039_d3ra05217f",
+  "doi": "10.1039_d3ra05217f",
+  "printed_figure_number": "5",
+  "panel": "d",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 3,
+  "observations_are_experiments": false,
+  "ambiguous_conditions": [
+   {
+    "quantity": "purge_time",
+    "species": null,
+    "scope": "figure",
+    "candidates": [
+     "30 s",
+     "60 s"
+    ],
+    "status": "ambiguous",
+    "reason": "2 distinct purge_time values at figure scope; no narrower evidence distinguishes them, so none is applied",
+    "assertions": [
+     {
+      "quantity": "purge_time",
+      "value": "60",
+      "unit": "s",
+      "raw_evidence": "purge time was longer than 60 s",
+      "evidence_locator": "document.md near Fig 5",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": "9",
+      "figure_number": "5",
+      "panel": "d",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|9|5|d|<single>|primary"
+     },
+     {
+      "quantity": "purge_time",
+      "value": "30",
+      "unit": "s",
+      "raw_evidence": "purge time was shorter than 30 s",
+      "evidence_locator": "document.md near Fig 5",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": "9",
+      "figure_number": "5",
+      "panel": "d",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|9|5|d|<single>|primary"
+     },
+     {
+      "quantity": "purge_time",
+      "value": "60",
+      "unit": "s",
+      "raw_evidence": "purge time of 60 s",
+      "evidence_locator": "document.md near Fig 5",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": "9",
+      "figure_number": "5",
+      "panel": "d",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|9|5|d|<single>|primary"
+     },
+     {
+      "quantity": "purge_time",
+      "value": "30",
+      "unit": "s",
+      "raw_evidence": "purge time was shorter than 30 s",
+      "evidence_locator": "document.md near Fig 5",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": "9",
+      "figure_number": "5",
+      "panel": "d",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|9|5|d|<single>|primary"
+     },
+     {
+      "quantity": "purge_time",
+      "value": "60",
+      "unit": "s",
+      "raw_evidence": "purge time of 60 s",
+      "evidence_locator": "document.md near Fig 5",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": "9",
+      "figure_number": "5",
+      "panel": "d",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|9|5|d|<single>|primary"
+     },
+     {
+      "quantity": "purge_time",
+      "value": "60",
+      "unit": "s",
+      "raw_evidence": "purge time of 60 s",
+      "evidence_locator": "document.md near Fig 5",
+      "assertion_status": "direct",
+      "source_kind": "body",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": "9",
+      "figure_number": "5",
+      "panel": "d",
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "figure",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|9|5|d|<single>|primary"
+     }
+    ]
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "species": null,
+    "scope": "method",
+    "candidates": [
+     "0.2 \u00c5/cycle",
+     "0.6 \u00c5/cycle",
+     "0.8 \u00c5/cycle"
+    ],
+    "status": "ambiguous",
+    "reason": "3 distinct growth_per_cycle values at method scope; no narrower evidence distinguishes them, so none is applied",
+    "assertions": [
+     {
+      "quantity": "growth_per_cycle",
+      "value": "0.2",
+      "unit": "\u00c5/cycle",
+      "raw_evidence": "growth per cycle (GPC)] for Y(thd)3 is 0.2 \u00c5 per cycle",
+      "evidence_locator": "methods section",
+      "assertion_status": "direct",
+      "source_kind": "methods",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": null,
+      "figure_number": null,
+      "panel": null,
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "method",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|14|8|b|<single>|primary"
+     },
+     {
+      "quantity": "growth_per_cycle",
+      "value": "0.2",
+      "unit": "\u00c5/cycle",
+      "raw_evidence": "0.2 \u00c5 per cycle",
+      "evidence_locator": "methods section",
+      "assertion_status": "direct",
+      "source_kind": "methods",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": null,
+      "figure_number": null,
+      "panel": null,
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "method",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|14|8|b|<single>|primary"
+     },
+     {
+      "quantity": "growth_per_cycle",
+      "value": "0.8",
+      "unit": "\u00c5/cycle",
+      "raw_evidence": "0.8 \u00c5 per cycle",
+      "evidence_locator": "methods section",
+      "assertion_status": "direct",
+      "source_kind": "methods",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": null,
+      "figure_number": null,
+      "panel": null,
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "method",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|14|8|b|<single>|primary"
+     },
+     {
+      "quantity": "growth_per_cycle",
+      "value": "0.6",
+      "unit": "\u00c5/cycle",
+      "raw_evidence": "0.6 \u00c5 per cycle",
+      "evidence_locator": "methods section",
+      "assertion_status": "direct",
+      "source_kind": "methods",
+      "evidence_kind": "experimental_condition",
+      "species": null,
+      "species_basis": null,
+      "reactant_role": null,
+      "of_reactant": null,
+      "paper_id": "10.1039_d3ra05217f",
+      "figure_index": null,
+      "figure_number": null,
+      "panel": null,
+      "series_selector": null,
+      "reference_work": null,
+      "scope": "method",
+      "confidence": 0.85,
+      "ambiguity": null,
+      "source_entity": "10.1039_d3ra05217f|14|8|b|<single>|primary"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "material": "Y2O3",
+  "material_raw": "Y2O3",
+  "material_scope_level": "figure_caption",
   "material_evidence": "Fig. 6 XPS depth pro /uniFB01 les for Y2O3 /uniFB01 lms deposited at (a) 200 \u00b0C, (b) 250 \u00b0C, and (c) 300 \u00b0C. XPS spectra of Y2O3 /uniFB01 lms deposited at (d) 200 \u00b0C, (e) 250 \u00b0C, and (f) 300 \u00b0C.",
   "material_candidates": [],
   "material_ambiguity_reason": null,
@@ -99,7 +690,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -111,7 +702,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -131,62 +723,54 @@
   },
   "points": [
    [
-    0,
-    7.0
+    0.0,
+    7.5
    ],
    [
-    1,
-    2.8
-   ],
-   [
-    2,
+    2.0,
     1.2
    ],
    [
-    4,
+    4.0,
+    1.1
+   ],
+   [
+    6.0,
     1.0
    ],
    [
-    6,
+    8.0,
     1.0
    ],
    [
-    8,
+    10.0,
     1.0
    ],
    [
-    10,
+    12.0,
     1.0
    ],
    [
-    12,
+    14.0,
     1.0
    ],
    [
-    14,
+    16.0,
     1.0
    ],
    [
-    16,
+    18.0,
     1.0
    ],
    [
-    18,
-    1.0
-   ],
-   [
-    20,
+    20.0,
     1.0
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.07
-   ],
-   [
-    60.0,
-    0.027999999999999997
+    0.075
    ],
    [
     120.0,
@@ -194,7 +778,7 @@
    ],
    [
     240.0,
-    0.01
+    0.011000000000000001
    ],
    [
     360.0,
@@ -243,7 +827,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: C1s",
+  "series_name": "elemental core level: C1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -276,7 +860,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -316,30 +900,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E009",
+    "_exp_id": "10.1039_d3ra05217f-E014",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E009"
+     "experiment_id": "10.1039_d3ra05217f-E014"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E009"
+     "experiment_id": "10.1039_d3ra05217f-E014"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E009"
+     "experiment_id": "10.1039_d3ra05217f-E014"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E009"
+     "experiment_id": "10.1039_d3ra05217f-E014"
     },
     "reactants::": {
      "source": "experiment",
@@ -348,14 +932,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E009"
+     "experiment_id": "10.1039_d3ra05217f-E014"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6a-9",
+     "experiment_id": "10.1039_d3ra05217f-F6a-14",
      "figure": "Fig 6",
      "panel": "a"
     }
@@ -364,7 +948,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -375,14 +959,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6a__exp01",
@@ -397,7 +981,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 12,
+  "n_observations": 11,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -648,7 +1232,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -660,7 +1244,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -680,47 +1265,47 @@
   },
   "points": [
    [
-    0,
+    0.0,
     1.0
    ],
    [
-    2,
+    2.0,
     1.0
    ],
    [
-    4,
+    4.0,
     1.0
    ],
    [
-    6,
+    6.0,
     1.0
    ],
    [
-    8,
+    8.0,
     1.0
    ],
    [
-    10,
+    10.0,
     1.0
    ],
    [
-    12,
+    12.0,
     1.0
    ],
    [
-    14,
+    14.0,
     1.0
    ],
    [
-    16,
-    1.0
+    16.0,
+    1.2
    ],
    [
-    18,
-    1.0
+    18.0,
+    1.1
    ],
    [
-    20,
+    20.0,
     1.0
    ]
   ],
@@ -759,11 +1344,11 @@
    ],
    [
     960.0,
-    0.01
+    0.012
    ],
    [
     1080.0,
-    0.01
+    0.011000000000000001
    ],
    [
     1200.0,
@@ -784,7 +1369,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: N1s",
+  "series_name": "elemental core level: N1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -817,7 +1402,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -857,30 +1442,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E010",
+    "_exp_id": "10.1039_d3ra05217f-E015",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E010"
+     "experiment_id": "10.1039_d3ra05217f-E015"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E010"
+     "experiment_id": "10.1039_d3ra05217f-E015"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E010"
+     "experiment_id": "10.1039_d3ra05217f-E015"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E010"
+     "experiment_id": "10.1039_d3ra05217f-E015"
     },
     "reactants::": {
      "source": "experiment",
@@ -889,14 +1474,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E010"
+     "experiment_id": "10.1039_d3ra05217f-E015"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6a-10",
+     "experiment_id": "10.1039_d3ra05217f-F6a-15",
      "figure": "Fig 6",
      "panel": "a"
     }
@@ -905,7 +1490,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -916,14 +1501,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6a__exp02",
@@ -1189,7 +1774,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -1201,7 +1786,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -1221,47 +1807,47 @@
   },
   "points": [
    [
-    0,
+    0.0,
     56.5
    ],
    [
-    2,
+    2.0,
     56.5
    ],
    [
-    4,
+    4.0,
+    56.2
+   ],
+   [
+    6.0,
+    56.2
+   ],
+   [
+    8.0,
     56.5
    ],
    [
-    6,
-    56.5
+    10.0,
+    56.2
    ],
    [
-    8,
-    56.5
-   ],
-   [
-    10,
-    56.5
-   ],
-   [
-    12,
+    12.0,
     56.0
    ],
    [
-    14,
+    14.0,
     55.5
    ],
    [
-    16,
+    16.0,
     48.0
    ],
    [
-    18,
-    28.0
+    18.0,
+    27.0
    ],
    [
-    20,
+    20.0,
     12.0
    ]
   ],
@@ -1276,11 +1862,11 @@
    ],
    [
     240.0,
-    0.5650000000000001
+    0.562
    ],
    [
     360.0,
-    0.5650000000000001
+    0.562
    ],
    [
     480.0,
@@ -1288,7 +1874,7 @@
    ],
    [
     600.0,
-    0.5650000000000001
+    0.562
    ],
    [
     720.0,
@@ -1304,7 +1890,7 @@
    ],
    [
     1080.0,
-    0.28
+    0.27
    ],
    [
     1200.0,
@@ -1325,7 +1911,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: O1s",
+  "series_name": "elemental core level: O1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -1358,7 +1944,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -1398,30 +1984,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E011",
+    "_exp_id": "10.1039_d3ra05217f-E016",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E011"
+     "experiment_id": "10.1039_d3ra05217f-E016"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E011"
+     "experiment_id": "10.1039_d3ra05217f-E016"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E011"
+     "experiment_id": "10.1039_d3ra05217f-E016"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E011"
+     "experiment_id": "10.1039_d3ra05217f-E016"
     },
     "reactants::": {
      "source": "experiment",
@@ -1430,14 +2016,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E011"
+     "experiment_id": "10.1039_d3ra05217f-E016"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6a-11",
+     "experiment_id": "10.1039_d3ra05217f-F6a-16",
      "figure": "Fig 6",
      "panel": "a"
     }
@@ -1446,7 +2032,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -1457,14 +2043,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6a__exp03",
@@ -1730,7 +2316,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -1742,7 +2328,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -1762,48 +2349,48 @@
   },
   "points": [
    [
-    0,
+    0.0,
     1.0
    ],
    [
-    2,
+    2.0,
     1.0
    ],
    [
-    4,
+    4.0,
     1.0
    ],
    [
-    6,
+    6.0,
     1.0
    ],
    [
-    8,
+    8.0,
     1.0
    ],
    [
-    10,
-    1.0
+    10.0,
+    1.1
    ],
    [
-    12,
+    12.0,
     2.5
    ],
    [
-    14,
-    7.0
+    14.0,
+    7.5
    ],
    [
-    16,
-    20.0
+    16.0,
+    22.0
    ],
    [
-    18,
-    52.0
+    18.0,
+    54.0
    ],
    [
-    20,
-    78.0
+    20.0,
+    79.5
    ]
   ],
   "points_canonical": [
@@ -1829,7 +2416,7 @@
    ],
    [
     600.0,
-    0.01
+    0.011000000000000001
    ],
    [
     720.0,
@@ -1837,19 +2424,19 @@
    ],
    [
     840.0,
-    0.07
+    0.075
    ],
    [
     960.0,
-    0.2
+    0.22
    ],
    [
     1080.0,
-    0.52
+    0.54
    ],
    [
     1200.0,
-    0.78
+    0.795
    ]
   ],
   "granularity": "multi_output",
@@ -1866,7 +2453,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: Si2p",
+  "series_name": "elemental core level: Si2p",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -1899,7 +2486,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -1939,30 +2526,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E012",
+    "_exp_id": "10.1039_d3ra05217f-E017",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E012"
+     "experiment_id": "10.1039_d3ra05217f-E017"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E012"
+     "experiment_id": "10.1039_d3ra05217f-E017"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E012"
+     "experiment_id": "10.1039_d3ra05217f-E017"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E012"
+     "experiment_id": "10.1039_d3ra05217f-E017"
     },
     "reactants::": {
      "source": "experiment",
@@ -1971,14 +2558,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E012"
+     "experiment_id": "10.1039_d3ra05217f-E017"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6a-12",
+     "experiment_id": "10.1039_d3ra05217f-F6a-17",
      "figure": "Fig 6",
      "panel": "a"
     }
@@ -1987,7 +2574,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -1998,14 +2585,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6a__exp04",
@@ -2271,7 +2858,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -2283,7 +2870,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -2303,94 +2891,94 @@
   },
   "points": [
    [
-    0,
-    35.0
+    0.0,
+    34.0
    ],
    [
-    2,
-    42.0
+    2.0,
+    41.3
    ],
    [
-    4,
-    42.0
+    4.0,
+    41.7
    ],
    [
-    6,
-    42.0
+    6.0,
+    41.8
    ],
    [
-    8,
-    42.0
+    8.0,
+    41.3
    ],
    [
-    10,
-    41.0
+    10.0,
+    40.8
    ],
    [
-    12,
-    39.0
+    12.0,
+    39.4
    ],
    [
-    14,
-    36.5
+    14.0,
+    36.0
    ],
    [
-    16,
-    28.0
+    16.0,
+    27.8
    ],
    [
-    18,
-    18.0
+    18.0,
+    16.8
    ],
    [
-    20,
-    7.5
+    20.0,
+    6.5
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.35000000000000003
+    0.34
    ],
    [
     120.0,
-    0.42
+    0.413
    ],
    [
     240.0,
-    0.42
+    0.41700000000000004
    ],
    [
     360.0,
-    0.42
+    0.418
    ],
    [
     480.0,
-    0.42
+    0.413
    ],
    [
     600.0,
-    0.41000000000000003
+    0.408
    ],
    [
     720.0,
-    0.39
+    0.394
    ],
    [
     840.0,
-    0.365
+    0.36
    ],
    [
     960.0,
-    0.28
+    0.278
    ],
    [
     1080.0,
-    0.18
+    0.168
    ],
    [
     1200.0,
-    0.075
+    0.065
    ]
   ],
   "granularity": "multi_output",
@@ -2407,7 +2995,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: Y3d",
+  "series_name": "elemental core level: Y3d",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -2440,7 +3028,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -2480,30 +3068,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E013",
+    "_exp_id": "10.1039_d3ra05217f-E018",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E013"
+     "experiment_id": "10.1039_d3ra05217f-E018"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E013"
+     "experiment_id": "10.1039_d3ra05217f-E018"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E013"
+     "experiment_id": "10.1039_d3ra05217f-E018"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E013"
+     "experiment_id": "10.1039_d3ra05217f-E018"
     },
     "reactants::": {
      "source": "experiment",
@@ -2512,14 +3100,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E013"
+     "experiment_id": "10.1039_d3ra05217f-E018"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6a-13",
+     "experiment_id": "10.1039_d3ra05217f-F6a-18",
      "figure": "Fig 6",
      "panel": "a"
     }
@@ -2528,7 +3116,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -2539,14 +3127,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6a__exp05",
@@ -2812,7 +3400,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -2824,7 +3412,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -2844,51 +3433,47 @@
   },
   "points": [
    [
-    0,
+    0.0,
     9.5
    ],
    [
-    1,
-    3.5
+    2.0,
+    1.1
    ],
    [
-    2,
+    4.0,
     1.0
    ],
    [
-    4,
+    6.0,
     1.0
    ],
    [
-    6,
+    8.0,
     1.0
    ],
    [
-    8,
+    10.0,
     1.0
    ],
    [
-    10,
+    12.0,
     1.0
    ],
    [
-    12,
+    14.0,
     1.0
    ],
    [
-    14,
+    16.0,
     1.0
    ],
    [
-    16,
+    18.0,
     1.0
    ],
    [
-    18,
-    1.0
-   ],
-   [
-    20,
+    20.0,
     1.0
    ]
   ],
@@ -2898,12 +3483,8 @@
     0.095
    ],
    [
-    60.0,
-    0.035
-   ],
-   [
     120.0,
-    0.01
+    0.011000000000000001
    ],
    [
     240.0,
@@ -2956,7 +3537,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: C1s",
+  "series_name": "elemental core level: C1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -2989,7 +3570,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -3029,30 +3610,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E014",
+    "_exp_id": "10.1039_d3ra05217f-E019",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E014"
+     "experiment_id": "10.1039_d3ra05217f-E019"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E014"
+     "experiment_id": "10.1039_d3ra05217f-E019"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E014"
+     "experiment_id": "10.1039_d3ra05217f-E019"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E014"
+     "experiment_id": "10.1039_d3ra05217f-E019"
     },
     "reactants::": {
      "source": "experiment",
@@ -3061,14 +3642,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E014"
+     "experiment_id": "10.1039_d3ra05217f-E019"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6b-14",
+     "experiment_id": "10.1039_d3ra05217f-F6b-19",
      "figure": "Fig 6",
      "panel": "b"
     }
@@ -3077,7 +3658,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -3088,14 +3669,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6b__exp01",
@@ -3110,7 +3691,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 12,
+  "n_observations": 11,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -3361,7 +3942,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -3373,7 +3954,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -3393,47 +3975,47 @@
   },
   "points": [
    [
-    0,
+    0.0,
     1.0
    ],
    [
-    2,
+    2.0,
     1.0
    ],
    [
-    4,
+    4.0,
     1.0
    ],
    [
-    6,
+    6.0,
     1.0
    ],
    [
-    8,
+    8.0,
     1.0
    ],
    [
-    10,
+    10.0,
     1.0
    ],
    [
-    12,
+    12.0,
     1.0
    ],
    [
-    14,
+    14.0,
     1.0
    ],
    [
-    16,
+    16.0,
     1.0
    ],
    [
-    18,
+    18.0,
     1.0
    ],
    [
-    20,
+    20.0,
     1.0
    ]
   ],
@@ -3497,7 +4079,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: N1s",
+  "series_name": "elemental core level: N1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -3530,7 +4112,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -3570,30 +4152,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E015",
+    "_exp_id": "10.1039_d3ra05217f-E020",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E015"
+     "experiment_id": "10.1039_d3ra05217f-E020"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E015"
+     "experiment_id": "10.1039_d3ra05217f-E020"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E015"
+     "experiment_id": "10.1039_d3ra05217f-E020"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E015"
+     "experiment_id": "10.1039_d3ra05217f-E020"
     },
     "reactants::": {
      "source": "experiment",
@@ -3602,14 +4184,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E015"
+     "experiment_id": "10.1039_d3ra05217f-E020"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6b-15",
+     "experiment_id": "10.1039_d3ra05217f-F6b-20",
      "figure": "Fig 6",
      "panel": "b"
     }
@@ -3618,7 +4200,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -3629,14 +4211,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6b__exp02",
@@ -3902,7 +4484,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -3914,7 +4496,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -3934,54 +4517,54 @@
   },
   "points": [
    [
-    0,
-    56.5
+    0.0,
+    56.3
    ],
    [
-    2,
+    2.0,
     57.5
    ],
    [
-    4,
+    4.0,
     57.5
    ],
    [
-    6,
-    57.5
+    6.0,
+    57.2
    ],
    [
-    8,
-    57.5
-   ],
-   [
-    10,
-    57.5
-   ],
-   [
-    12,
-    57.5
-   ],
-   [
-    14,
-    57.5
-   ],
-   [
-    16,
+    8.0,
     57.0
    ],
    [
-    18,
-    56.0
+    10.0,
+    57.0
    ],
    [
-    20,
+    12.0,
+    57.0
+   ],
+   [
+    14.0,
+    57.0
+   ],
+   [
+    16.0,
+    56.5
+   ],
+   [
+    18.0,
+    55.0
+   ],
+   [
+    20.0,
     48.5
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.5650000000000001
+    0.563
    ],
    [
     120.0,
@@ -3993,31 +4576,31 @@
    ],
    [
     360.0,
-    0.5750000000000001
+    0.5720000000000001
    ],
    [
     480.0,
-    0.5750000000000001
-   ],
-   [
-    600.0,
-    0.5750000000000001
-   ],
-   [
-    720.0,
-    0.5750000000000001
-   ],
-   [
-    840.0,
-    0.5750000000000001
-   ],
-   [
-    960.0,
     0.5700000000000001
    ],
    [
+    600.0,
+    0.5700000000000001
+   ],
+   [
+    720.0,
+    0.5700000000000001
+   ],
+   [
+    840.0,
+    0.5700000000000001
+   ],
+   [
+    960.0,
+    0.5650000000000001
+   ],
+   [
     1080.0,
-    0.56
+    0.55
    ],
    [
     1200.0,
@@ -4038,7 +4621,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: O1s",
+  "series_name": "elemental core level: O1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -4071,7 +4654,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -4111,30 +4694,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E016",
+    "_exp_id": "10.1039_d3ra05217f-E021",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E016"
+     "experiment_id": "10.1039_d3ra05217f-E021"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E016"
+     "experiment_id": "10.1039_d3ra05217f-E021"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E016"
+     "experiment_id": "10.1039_d3ra05217f-E021"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E016"
+     "experiment_id": "10.1039_d3ra05217f-E021"
     },
     "reactants::": {
      "source": "experiment",
@@ -4143,14 +4726,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E016"
+     "experiment_id": "10.1039_d3ra05217f-E021"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6b-16",
+     "experiment_id": "10.1039_d3ra05217f-F6b-21",
      "figure": "Fig 6",
      "panel": "b"
     }
@@ -4159,7 +4742,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -4170,14 +4753,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6b__exp03",
@@ -4443,7 +5026,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -4455,7 +5038,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -4475,48 +5059,48 @@
   },
   "points": [
    [
-    0,
+    0.0,
     1.0
    ],
    [
-    2,
+    2.0,
     1.0
    ],
    [
-    4,
+    4.0,
     1.0
    ],
    [
-    6,
+    6.0,
     1.0
    ],
    [
-    8,
+    8.0,
     1.0
    ],
    [
-    10,
+    10.0,
     1.0
    ],
    [
-    12,
+    12.0,
     1.0
    ],
    [
-    14,
-    1.5
+    14.0,
+    1.0
    ],
    [
-    16,
+    16.0,
     2.5
    ],
    [
-    18,
-    7.0
+    18.0,
+    7.5
    ],
    [
-    20,
-    22.0
+    20.0,
+    22.5
    ]
   ],
   "points_canonical": [
@@ -4550,7 +5134,7 @@
    ],
    [
     840.0,
-    0.015
+    0.01
    ],
    [
     960.0,
@@ -4558,11 +5142,11 @@
    ],
    [
     1080.0,
-    0.07
+    0.075
    ],
    [
     1200.0,
-    0.22
+    0.225
    ]
   ],
   "granularity": "multi_output",
@@ -4579,7 +5163,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: Si2p",
+  "series_name": "elemental core level: Si2p",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -4612,7 +5196,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -4652,30 +5236,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E017",
+    "_exp_id": "10.1039_d3ra05217f-E022",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E017"
+     "experiment_id": "10.1039_d3ra05217f-E022"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E017"
+     "experiment_id": "10.1039_d3ra05217f-E022"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E017"
+     "experiment_id": "10.1039_d3ra05217f-E022"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E017"
+     "experiment_id": "10.1039_d3ra05217f-E022"
     },
     "reactants::": {
      "source": "experiment",
@@ -4684,14 +5268,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E017"
+     "experiment_id": "10.1039_d3ra05217f-E022"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6b-17",
+     "experiment_id": "10.1039_d3ra05217f-F6b-22",
      "figure": "Fig 6",
      "panel": "b"
     }
@@ -4700,7 +5284,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -4711,14 +5295,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6b__exp04",
@@ -4984,7 +5568,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -4996,7 +5580,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -5016,66 +5601,66 @@
   },
   "points": [
    [
-    0,
-    33.0
+    0.0,
+    33.2
    ],
    [
-    2,
-    41.0
+    2.0,
+    40.4
    ],
    [
-    4,
-    41.0
-   ],
-   [
-    6,
-    41.0
-   ],
-   [
-    8,
-    41.0
-   ],
-   [
-    10,
-    41.0
-   ],
-   [
-    12,
-    41.0
-   ],
-   [
-    14,
+    4.0,
     40.5
    ],
    [
-    16,
+    6.0,
+    40.8
+   ],
+   [
+    8.0,
+    41.0
+   ],
+   [
+    10.0,
+    41.0
+   ],
+   [
+    12.0,
+    41.0
+   ],
+   [
+    14.0,
+    41.0
+   ],
+   [
+    16.0,
     39.5
    ],
    [
-    18,
-    36.0
+    18.0,
+    36.5
    ],
    [
-    20,
-    27.5
+    20.0,
+    28.0
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.33
+    0.332
    ],
    [
     120.0,
-    0.41000000000000003
+    0.40399999999999997
    ],
    [
     240.0,
-    0.41000000000000003
+    0.405
    ],
    [
     360.0,
-    0.41000000000000003
+    0.408
    ],
    [
     480.0,
@@ -5091,7 +5676,7 @@
    ],
    [
     840.0,
-    0.405
+    0.41000000000000003
    ],
    [
     960.0,
@@ -5099,11 +5684,11 @@
    ],
    [
     1080.0,
-    0.36
+    0.365
    ],
    [
     1200.0,
-    0.275
+    0.28
    ]
   ],
   "granularity": "multi_output",
@@ -5120,7 +5705,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: Y3d",
+  "series_name": "elemental core level: Y3d",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -5153,7 +5738,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -5193,30 +5778,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E018",
+    "_exp_id": "10.1039_d3ra05217f-E023",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E018"
+     "experiment_id": "10.1039_d3ra05217f-E023"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E018"
+     "experiment_id": "10.1039_d3ra05217f-E023"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E018"
+     "experiment_id": "10.1039_d3ra05217f-E023"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E018"
+     "experiment_id": "10.1039_d3ra05217f-E023"
     },
     "reactants::": {
      "source": "experiment",
@@ -5225,14 +5810,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E018"
+     "experiment_id": "10.1039_d3ra05217f-E023"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6b-18",
+     "experiment_id": "10.1039_d3ra05217f-F6b-23",
      "figure": "Fig 6",
      "panel": "b"
     }
@@ -5241,7 +5826,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -5252,14 +5837,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6b__exp05",
@@ -5525,7 +6110,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -5537,7 +6122,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -5557,70 +6143,62 @@
   },
   "points": [
    [
-    0,
-    13.0
+    0.0,
+    13.5
    ],
    [
-    1,
-    4.0
+    2.0,
+    1.2
    ],
    [
-    2,
+    4.0,
+    1.1
+   ],
+   [
+    6.0,
     1.0
    ],
    [
-    4,
+    8.0,
     1.0
    ],
    [
-    6,
+    10.0,
     1.0
    ],
    [
-    8,
+    12.0,
     1.0
    ],
    [
-    10,
+    14.0,
     1.0
    ],
    [
-    12,
+    16.0,
     1.0
    ],
    [
-    14,
+    18.0,
     1.0
    ],
    [
-    16,
-    1.0
-   ],
-   [
-    18,
-    1.0
-   ],
-   [
-    20,
+    20.0,
     1.0
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.13
-   ],
-   [
-    60.0,
-    0.04
+    0.135
    ],
    [
     120.0,
-    0.01
+    0.012
    ],
    [
     240.0,
-    0.01
+    0.011000000000000001
    ],
    [
     360.0,
@@ -5669,7 +6247,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: C1s",
+  "series_name": "elemental core level: C1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -5702,7 +6280,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -5742,30 +6320,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E019",
+    "_exp_id": "10.1039_d3ra05217f-E024",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E019"
+     "experiment_id": "10.1039_d3ra05217f-E024"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E019"
+     "experiment_id": "10.1039_d3ra05217f-E024"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E019"
+     "experiment_id": "10.1039_d3ra05217f-E024"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E019"
+     "experiment_id": "10.1039_d3ra05217f-E024"
     },
     "reactants::": {
      "source": "experiment",
@@ -5774,14 +6352,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E019"
+     "experiment_id": "10.1039_d3ra05217f-E024"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6c-19",
+     "experiment_id": "10.1039_d3ra05217f-F6c-24",
      "figure": "Fig 6",
      "panel": "c"
     }
@@ -5790,7 +6368,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -5801,14 +6379,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6c__exp01",
@@ -5823,7 +6401,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 12,
+  "n_observations": 11,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -6074,7 +6652,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -6086,7 +6664,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -6106,47 +6685,47 @@
   },
   "points": [
    [
-    0,
+    0.0,
     1.0
    ],
    [
-    2,
+    2.0,
     1.0
    ],
    [
-    4,
+    4.0,
     1.0
    ],
    [
-    6,
+    6.0,
     1.0
    ],
    [
-    8,
+    8.0,
     1.0
    ],
    [
-    10,
+    10.0,
     1.0
    ],
    [
-    12,
+    12.0,
     1.0
    ],
    [
-    14,
+    14.0,
     1.0
    ],
    [
-    16,
+    16.0,
     1.0
    ],
    [
-    18,
+    18.0,
     1.0
    ],
    [
-    20,
+    20.0,
     1.0
    ]
   ],
@@ -6210,7 +6789,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: N1s",
+  "series_name": "elemental core level: N1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -6243,7 +6822,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -6283,30 +6862,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E020",
+    "_exp_id": "10.1039_d3ra05217f-E025",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E020"
+     "experiment_id": "10.1039_d3ra05217f-E025"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E020"
+     "experiment_id": "10.1039_d3ra05217f-E025"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E020"
+     "experiment_id": "10.1039_d3ra05217f-E025"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E020"
+     "experiment_id": "10.1039_d3ra05217f-E025"
     },
     "reactants::": {
      "source": "experiment",
@@ -6315,14 +6894,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E020"
+     "experiment_id": "10.1039_d3ra05217f-E025"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6c-20",
+     "experiment_id": "10.1039_d3ra05217f-F6c-25",
      "figure": "Fig 6",
      "panel": "c"
     }
@@ -6331,7 +6910,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -6342,14 +6921,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6c__exp02",
@@ -6615,7 +7194,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -6627,7 +7206,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -6647,48 +7227,48 @@
   },
   "points": [
    [
-    0,
+    0.0,
     54.0
    ],
    [
-    2,
+    2.0,
     58.5
    ],
    [
-    4,
+    4.0,
     58.5
    ],
    [
-    6,
+    6.0,
     58.5
    ],
    [
-    8,
+    8.0,
     58.5
    ],
    [
-    10,
+    10.0,
     58.5
    ],
    [
-    12,
+    12.0,
     58.5
    ],
    [
-    14,
+    14.0,
     58.5
    ],
    [
-    16,
+    16.0,
     58.0
    ],
    [
-    18,
+    18.0,
     57.5
    ],
    [
-    20,
-    57.5
+    20.0,
+    57.0
    ]
   ],
   "points_canonical": [
@@ -6734,7 +7314,7 @@
    ],
    [
     1200.0,
-    0.5750000000000001
+    0.5700000000000001
    ]
   ],
   "granularity": "multi_output",
@@ -6751,7 +7331,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: O1s",
+  "series_name": "elemental core level: O1s",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -6784,7 +7364,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -6824,30 +7404,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E021",
+    "_exp_id": "10.1039_d3ra05217f-E026",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E021"
+     "experiment_id": "10.1039_d3ra05217f-E026"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E021"
+     "experiment_id": "10.1039_d3ra05217f-E026"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E021"
+     "experiment_id": "10.1039_d3ra05217f-E026"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E021"
+     "experiment_id": "10.1039_d3ra05217f-E026"
     },
     "reactants::": {
      "source": "experiment",
@@ -6856,14 +7436,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E021"
+     "experiment_id": "10.1039_d3ra05217f-E026"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6c-21",
+     "experiment_id": "10.1039_d3ra05217f-F6c-26",
      "figure": "Fig 6",
      "panel": "c"
     }
@@ -6872,7 +7452,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -6883,14 +7463,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6c__exp03",
@@ -7156,7 +7736,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -7168,7 +7748,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -7188,47 +7769,47 @@
   },
   "points": [
    [
-    0,
+    0.0,
     1.0
    ],
    [
-    2,
+    2.0,
     1.0
    ],
    [
-    4,
+    4.0,
     1.0
    ],
    [
-    6,
+    6.0,
     1.0
    ],
    [
-    8,
+    8.0,
     1.0
    ],
    [
-    10,
+    10.0,
     1.0
    ],
    [
-    12,
+    12.0,
+    1.0
+   ],
+   [
+    14.0,
+    1.0
+   ],
+   [
+    16.0,
+    1.0
+   ],
+   [
+    18.0,
     1.5
    ],
    [
-    14,
-    1.0
-   ],
-   [
-    16,
-    1.0
-   ],
-   [
-    18,
-    1.5
-   ],
-   [
-    20,
+    20.0,
     4.0
    ]
   ],
@@ -7259,7 +7840,7 @@
    ],
    [
     720.0,
-    0.015
+    0.01
    ],
    [
     840.0,
@@ -7292,7 +7873,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: Si2p",
+  "series_name": "elemental core level: Si2p",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -7325,7 +7906,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -7365,30 +7946,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E022",
+    "_exp_id": "10.1039_d3ra05217f-E027",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E022"
+     "experiment_id": "10.1039_d3ra05217f-E027"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E022"
+     "experiment_id": "10.1039_d3ra05217f-E027"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E022"
+     "experiment_id": "10.1039_d3ra05217f-E027"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E022"
+     "experiment_id": "10.1039_d3ra05217f-E027"
     },
     "reactants::": {
      "source": "experiment",
@@ -7397,14 +7978,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E022"
+     "experiment_id": "10.1039_d3ra05217f-E027"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6c-22",
+     "experiment_id": "10.1039_d3ra05217f-F6c-27",
      "figure": "Fig 6",
      "panel": "c"
     }
@@ -7413,7 +7994,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -7424,14 +8005,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6c__exp04",
@@ -7697,7 +8278,7 @@
    }
   ],
   "measurand": {
-   "quantity": "Atomic %",
+   "quantity": "impurity_content",
    "unit": "1",
    "raw_unit": "%",
    "family": null,
@@ -7709,7 +8290,8 @@
     "unit_recovered": null,
     "values_rescaled": true,
     "factor": 0.01
-   }
+   },
+   "raw_quantity": "impurity_content"
   },
   "coordinate": "sputter_depth",
   "coordinate_family": null,
@@ -7729,54 +8311,54 @@
   },
   "points": [
    [
-    0,
-    32.0
+    0.0,
+    31.5
    ],
    [
-    2,
+    2.0,
     40.0
    ],
    [
-    4,
+    4.0,
     40.0
    ],
    [
-    6,
-    40.0
+    6.0,
+    40.2
    ],
    [
-    8,
-    40.0
-   ],
-   [
-    10,
+    8.0,
     40.5
    ],
    [
-    12,
+    10.0,
+    40.2
+   ],
+   [
+    12.0,
+    40.2
+   ],
+   [
+    14.0,
     40.0
    ],
    [
-    14,
-    40.5
-   ],
-   [
-    16,
-    40.0
-   ],
-   [
-    18,
+    16.0,
     39.5
    ],
    [
-    20,
+    18.0,
+    39.0
+   ],
+   [
+    20.0,
     38.0
    ]
   ],
   "points_canonical": [
    [
     0.0,
-    0.32
+    0.315
    ],
    [
     120.0,
@@ -7788,31 +8370,31 @@
    ],
    [
     360.0,
-    0.4
+    0.402
    ],
    [
     480.0,
-    0.4
+    0.405
    ],
    [
     600.0,
-    0.405
+    0.402
    ],
    [
     720.0,
-    0.4
+    0.402
    ],
    [
     840.0,
-    0.405
-   ],
-   [
-    960.0,
     0.4
    ],
    [
-    1080.0,
+    960.0,
     0.395
+   ],
+   [
+    1080.0,
+    0.39
    ],
    [
     1200.0,
@@ -7833,7 +8415,7 @@
    "extractor": "vision-llm",
    "doi": "10.1039_d3ra05217f"
   },
-  "series_name": "element: Y3d",
+  "series_name": "elemental core level: Y3d",
   "phase": null,
   "structure": "planar_wafer",
   "geometry_class": "planar",
@@ -7866,7 +8448,7 @@
   "axis_role": "coordinate",
   "dependent": [
    {
-    "quantity": "Atomic %",
+    "quantity": "impurity_content",
     "unit": "1",
     "raw_unit": "%",
     "family": null
@@ -7906,30 +8488,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E023",
+    "_exp_id": "10.1039_d3ra05217f-E028",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E023"
+     "experiment_id": "10.1039_d3ra05217f-E028"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E023"
+     "experiment_id": "10.1039_d3ra05217f-E028"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E023"
+     "experiment_id": "10.1039_d3ra05217f-E028"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E023"
+     "experiment_id": "10.1039_d3ra05217f-E028"
     },
     "reactants::": {
      "source": "experiment",
@@ -7938,14 +8520,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E023"
+     "experiment_id": "10.1039_d3ra05217f-E028"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6c-23",
+     "experiment_id": "10.1039_d3ra05217f-F6c-28",
      "figure": "Fig 6",
      "panel": "c"
     }
@@ -7954,7 +8536,7 @@
   },
   "coordinate_raw_quantity": "sputter_depth",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Etching time, min",
    "raw_quantity": "sputter_depth",
    "raw_unit": "min",
    "unit_dimension": "time",
@@ -7965,14 +8547,14 @@
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
-   "raw_quantity": "Atomic %",
+   "raw_label": "Atomic %",
+   "raw_quantity": "impurity_content",
    "raw_unit": "1",
    "unit_dimension": null,
-   "canonical_quantity": null,
+   "canonical_quantity": "impurity_content",
    "axis_role": "unknown",
-   "semantic_status": "unresolved",
-   "evidence": null,
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Atomic %'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig6c__exp05",
@@ -8239,14 +8821,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -8261,86 +8843,70 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    164,
-    15000
+    164.0,
+    15000.0
    ],
    [
-    162,
-    15000
+    162.0,
+    13000.0
    ],
    [
-    161,
-    30000
-   ],
-   [
-    160,
-    95000
+    161.0,
+    28000.0
    ],
    [
     159.3,
-    182000
+    180000.0
    ],
    [
     158.3,
-    130000
+    128000.0
    ],
    [
     157.3,
-    255000
+    255000.0
    ],
    [
-    156.3,
-    120000
+    156.0,
+    40000.0
    ],
    [
-    155,
-    20000
-   ],
-   [
-    154,
-    10000
+    154.0,
+    12000.0
    ]
   ],
   "points_canonical": [
    [
-    164,
-    15000
+    164.0,
+    15000.0
    ],
    [
-    162,
-    15000
+    162.0,
+    13000.0
    ],
    [
-    161,
-    30000
-   ],
-   [
-    160,
-    95000
+    161.0,
+    28000.0
    ],
    [
     159.3,
-    182000
+    180000.0
    ],
    [
     158.3,
-    130000
+    128000.0
    ],
    [
     157.3,
-    255000
+    255000.0
    ],
    [
-    156.3,
-    120000
+    156.0,
+    40000.0
    ],
    [
-    155,
-    20000
-   ],
-   [
-    154,
-    10000
+    154.0,
+    12000.0
    ]
   ],
   "granularity": "multi_output",
@@ -8391,8 +8957,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -8430,30 +8996,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E024",
+    "_exp_id": "10.1039_d3ra05217f-E029",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E024"
+     "experiment_id": "10.1039_d3ra05217f-E029"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E024"
+     "experiment_id": "10.1039_d3ra05217f-E029"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E024"
+     "experiment_id": "10.1039_d3ra05217f-E029"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E024"
+     "experiment_id": "10.1039_d3ra05217f-E029"
     },
     "reactants::": {
      "source": "experiment",
@@ -8462,14 +9028,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E024"
+     "experiment_id": "10.1039_d3ra05217f-E029"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6d-24",
+     "experiment_id": "10.1039_d3ra05217f-F6d-29",
      "figure": "Fig 6",
      "panel": "d"
     }
@@ -8478,24 +9044,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -8511,7 +9077,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 10,
+  "n_observations": 8,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -8745,14 +9311,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -8767,86 +9333,70 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    164,
-    15000
+    164.0,
+    14000.0
    ],
    [
-    162,
-    15000
+    162.0,
+    12000.0
    ],
    [
-    161,
-    28000
-   ],
-   [
-    160,
-    92000
+    161.0,
+    26000.0
    ],
    [
     159.3,
-    180000
+    172000.0
    ],
    [
     158.3,
-    128000
+    125000.0
    ],
    [
     157.3,
-    245000
+    240000.0
    ],
    [
-    156.3,
-    115000
+    156.0,
+    38000.0
    ],
    [
-    155,
-    18000
-   ],
-   [
-    154,
-    10000
+    154.0,
+    12000.0
    ]
   ],
   "points_canonical": [
    [
-    164,
-    15000
+    164.0,
+    14000.0
    ],
    [
-    162,
-    15000
+    162.0,
+    12000.0
    ],
    [
-    161,
-    28000
-   ],
-   [
-    160,
-    92000
+    161.0,
+    26000.0
    ],
    [
     159.3,
-    180000
+    172000.0
    ],
    [
     158.3,
-    128000
+    125000.0
    ],
    [
     157.3,
-    245000
+    240000.0
    ],
    [
-    156.3,
-    115000
+    156.0,
+    38000.0
    ],
    [
-    155,
-    18000
-   ],
-   [
-    154,
-    10000
+    154.0,
+    12000.0
    ]
   ],
   "granularity": "multi_output",
@@ -8897,8 +9447,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -8936,30 +9486,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E025",
+    "_exp_id": "10.1039_d3ra05217f-E030",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E025"
+     "experiment_id": "10.1039_d3ra05217f-E030"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E025"
+     "experiment_id": "10.1039_d3ra05217f-E030"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E025"
+     "experiment_id": "10.1039_d3ra05217f-E030"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E025"
+     "experiment_id": "10.1039_d3ra05217f-E030"
     },
     "reactants::": {
      "source": "experiment",
@@ -8968,14 +9518,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E025"
+     "experiment_id": "10.1039_d3ra05217f-E030"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6d-25",
+     "experiment_id": "10.1039_d3ra05217f-F6d-30",
      "figure": "Fig 6",
      "panel": "d"
     }
@@ -8984,24 +9534,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -9017,7 +9567,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 10,
+  "n_observations": 8,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -9251,14 +9801,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -9273,86 +9823,70 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    164,
-    15000
+    164.0,
+    13000.0
    ],
    [
-    162,
-    15000
+    162.0,
+    11000.0
    ],
    [
-    161,
-    26000
-   ],
-   [
-    160,
-    88000
+    161.0,
+    24000.0
    ],
    [
     159.3,
-    175000
+    165000.0
    ],
    [
     158.3,
-    125000
+    122000.0
    ],
    [
     157.3,
-    235000
+    230000.0
    ],
    [
-    156.3,
-    110000
+    156.0,
+    35000.0
    ],
    [
-    155,
-    16000
-   ],
-   [
-    154,
-    10000
+    154.0,
+    11000.0
    ]
   ],
   "points_canonical": [
    [
-    164,
-    15000
+    164.0,
+    13000.0
    ],
    [
-    162,
-    15000
+    162.0,
+    11000.0
    ],
    [
-    161,
-    26000
-   ],
-   [
-    160,
-    88000
+    161.0,
+    24000.0
    ],
    [
     159.3,
-    175000
+    165000.0
    ],
    [
     158.3,
-    125000
+    122000.0
    ],
    [
     157.3,
-    235000
+    230000.0
    ],
    [
-    156.3,
-    110000
+    156.0,
+    35000.0
    ],
    [
-    155,
-    16000
-   ],
-   [
-    154,
-    10000
+    154.0,
+    11000.0
    ]
   ],
   "granularity": "multi_output",
@@ -9403,8 +9937,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -9442,30 +9976,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E026",
+    "_exp_id": "10.1039_d3ra05217f-E031",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E026"
+     "experiment_id": "10.1039_d3ra05217f-E031"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E026"
+     "experiment_id": "10.1039_d3ra05217f-E031"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E026"
+     "experiment_id": "10.1039_d3ra05217f-E031"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E026"
+     "experiment_id": "10.1039_d3ra05217f-E031"
     },
     "reactants::": {
      "source": "experiment",
@@ -9474,14 +10008,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E026"
+     "experiment_id": "10.1039_d3ra05217f-E031"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6d-26",
+     "experiment_id": "10.1039_d3ra05217f-F6d-31",
      "figure": "Fig 6",
      "panel": "d"
     }
@@ -9490,24 +10024,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -9523,7 +10057,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 10,
+  "n_observations": 8,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -9757,14 +10291,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -9779,70 +10313,62 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    535,
-    28000
+    535.0,
+    28000.0
    ],
    [
-    533,
-    28000
+    533.0,
+    32000.0
    ],
    [
-    531.5,
-    52000
+    531.8,
+    52000.0
    ],
    [
     530.5,
-    75000
+    75000.0
    ],
    [
     529.6,
-    222000
+    220000.0
    ],
    [
-    528.5,
-    90000
+    528.0,
+    32000.0
    ],
    [
-    527,
-    30000
-   ],
-   [
-    525,
-    28000
+    525.0,
+    28000.0
    ]
   ],
   "points_canonical": [
    [
-    535,
-    28000
+    535.0,
+    28000.0
    ],
    [
-    533,
-    28000
+    533.0,
+    32000.0
    ],
    [
-    531.5,
-    52000
+    531.8,
+    52000.0
    ],
    [
     530.5,
-    75000
+    75000.0
    ],
    [
     529.6,
-    222000
+    220000.0
    ],
    [
-    528.5,
-    90000
+    528.0,
+    32000.0
    ],
    [
-    527,
-    30000
-   ],
-   [
-    525,
-    28000
+    525.0,
+    28000.0
    ]
   ],
   "granularity": "multi_output",
@@ -9893,8 +10419,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -9932,30 +10458,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E027",
+    "_exp_id": "10.1039_d3ra05217f-E032",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E027"
+     "experiment_id": "10.1039_d3ra05217f-E032"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E027"
+     "experiment_id": "10.1039_d3ra05217f-E032"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E027"
+     "experiment_id": "10.1039_d3ra05217f-E032"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E027"
+     "experiment_id": "10.1039_d3ra05217f-E032"
     },
     "reactants::": {
      "source": "experiment",
@@ -9964,14 +10490,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E027"
+     "experiment_id": "10.1039_d3ra05217f-E032"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6e-27",
+     "experiment_id": "10.1039_d3ra05217f-F6e-32",
      "figure": "Fig 6",
      "panel": "e"
     }
@@ -9980,24 +10506,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -10013,7 +10539,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 8,
+  "n_observations": 7,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -10229,14 +10755,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -10251,70 +10777,62 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    535,
-    35000
+    535.0,
+    34000.0
    ],
    [
-    533,
-    35000
+    533.0,
+    38000.0
    ],
    [
-    531.5,
-    50000
+    531.8,
+    55000.0
    ],
    [
     530.5,
-    80000
+    78000.0
    ],
    [
     529.6,
-    220000
+    222000.0
    ],
    [
-    528.5,
-    88000
+    528.0,
+    36000.0
    ],
    [
-    527,
-    38000
-   ],
-   [
-    525,
-    35000
+    525.0,
+    32000.0
    ]
   ],
   "points_canonical": [
    [
-    535,
-    35000
+    535.0,
+    34000.0
    ],
    [
-    533,
-    35000
+    533.0,
+    38000.0
    ],
    [
-    531.5,
-    50000
+    531.8,
+    55000.0
    ],
    [
     530.5,
-    80000
+    78000.0
    ],
    [
     529.6,
-    220000
+    222000.0
    ],
    [
-    528.5,
-    88000
+    528.0,
+    36000.0
    ],
    [
-    527,
-    38000
-   ],
-   [
-    525,
-    35000
+    525.0,
+    32000.0
    ]
   ],
   "granularity": "multi_output",
@@ -10365,8 +10883,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -10404,30 +10922,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E028",
+    "_exp_id": "10.1039_d3ra05217f-E033",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E028"
+     "experiment_id": "10.1039_d3ra05217f-E033"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E028"
+     "experiment_id": "10.1039_d3ra05217f-E033"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E028"
+     "experiment_id": "10.1039_d3ra05217f-E033"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E028"
+     "experiment_id": "10.1039_d3ra05217f-E033"
     },
     "reactants::": {
      "source": "experiment",
@@ -10436,14 +10954,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E028"
+     "experiment_id": "10.1039_d3ra05217f-E033"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6e-28",
+     "experiment_id": "10.1039_d3ra05217f-F6e-33",
      "figure": "Fig 6",
      "panel": "e"
     }
@@ -10452,24 +10970,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -10485,7 +11003,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 8,
+  "n_observations": 7,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -10719,14 +11237,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -10741,70 +11259,62 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    535,
-    40000
+    535.0,
+    38000.0
    ],
    [
-    533,
-    40000
+    533.0,
+    42000.0
    ],
    [
-    531.5,
-    55000
+    531.8,
+    58000.0
    ],
    [
     530.5,
-    85000
+    82000.0
    ],
    [
     529.3,
-    218000
+    220000.0
    ],
    [
-    528.5,
-    95000
+    528.0,
+    40000.0
    ],
    [
-    527,
-    42000
-   ],
-   [
-    525,
-    40000
+    525.0,
+    35000.0
    ]
   ],
   "points_canonical": [
    [
-    535,
-    40000
+    535.0,
+    38000.0
    ],
    [
-    533,
-    40000
+    533.0,
+    42000.0
    ],
    [
-    531.5,
-    55000
+    531.8,
+    58000.0
    ],
    [
     530.5,
-    85000
+    82000.0
    ],
    [
     529.3,
-    218000
+    220000.0
    ],
    [
-    528.5,
-    95000
+    528.0,
+    40000.0
    ],
    [
-    527,
-    42000
-   ],
-   [
-    525,
-    40000
+    525.0,
+    35000.0
    ]
   ],
   "granularity": "multi_output",
@@ -10855,8 +11365,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -10894,30 +11404,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E029",
+    "_exp_id": "10.1039_d3ra05217f-E034",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E029"
+     "experiment_id": "10.1039_d3ra05217f-E034"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E029"
+     "experiment_id": "10.1039_d3ra05217f-E034"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E029"
+     "experiment_id": "10.1039_d3ra05217f-E034"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E029"
+     "experiment_id": "10.1039_d3ra05217f-E034"
     },
     "reactants::": {
      "source": "experiment",
@@ -10926,14 +11436,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E029"
+     "experiment_id": "10.1039_d3ra05217f-E034"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6e-29",
+     "experiment_id": "10.1039_d3ra05217f-F6e-34",
      "figure": "Fig 6",
      "panel": "e"
     }
@@ -10942,24 +11452,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -10975,7 +11485,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 8,
+  "n_observations": 7,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
@@ -11209,14 +11719,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -11231,54 +11741,54 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    290,
-    21000
+    290.0,
+    21000.0
    ],
    [
-    288,
-    21000
+    288.0,
+    21000.0
    ],
    [
-    286,
-    21000
+    286.0,
+    21000.0
    ],
    [
-    284,
-    21000
+    284.0,
+    21000.0
    ],
    [
-    282,
-    21000
+    282.0,
+    21000.0
    ],
    [
-    280,
-    21000
+    280.0,
+    21000.0
    ]
   ],
   "points_canonical": [
    [
-    290,
-    21000
+    290.0,
+    21000.0
    ],
    [
-    288,
-    21000
+    288.0,
+    21000.0
    ],
    [
-    286,
-    21000
+    286.0,
+    21000.0
    ],
    [
-    284,
-    21000
+    284.0,
+    21000.0
    ],
    [
-    282,
-    21000
+    282.0,
+    21000.0
    ],
    [
-    280,
-    21000
+    280.0,
+    21000.0
    ]
   ],
   "granularity": "multi_output",
@@ -11329,8 +11839,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -11368,30 +11878,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E030",
+    "_exp_id": "10.1039_d3ra05217f-E035",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E030"
+     "experiment_id": "10.1039_d3ra05217f-E035"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E030"
+     "experiment_id": "10.1039_d3ra05217f-E035"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E030"
+     "experiment_id": "10.1039_d3ra05217f-E035"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E030"
+     "experiment_id": "10.1039_d3ra05217f-E035"
     },
     "reactants::": {
      "source": "experiment",
@@ -11400,14 +11910,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E030"
+     "experiment_id": "10.1039_d3ra05217f-E035"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6f-30",
+     "experiment_id": "10.1039_d3ra05217f-F6f-35",
      "figure": "Fig 6",
      "panel": "f"
     }
@@ -11416,24 +11926,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -11683,14 +12193,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -11705,54 +12215,54 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    290,
-    22000
+    290.0,
+    22000.0
    ],
    [
-    288,
-    22000
+    288.0,
+    22000.0
    ],
    [
-    286,
-    22000
+    286.0,
+    22000.0
    ],
    [
-    284,
-    22000
+    284.0,
+    22000.0
    ],
    [
-    282,
-    22000
+    282.0,
+    22000.0
    ],
    [
-    280,
-    22000
+    280.0,
+    22000.0
    ]
   ],
   "points_canonical": [
    [
-    290,
-    22000
+    290.0,
+    22000.0
    ],
    [
-    288,
-    22000
+    288.0,
+    22000.0
    ],
    [
-    286,
-    22000
+    286.0,
+    22000.0
    ],
    [
-    284,
-    22000
+    284.0,
+    22000.0
    ],
    [
-    282,
-    22000
+    282.0,
+    22000.0
    ],
    [
-    280,
-    22000
+    280.0,
+    22000.0
    ]
   ],
   "granularity": "multi_output",
@@ -11803,8 +12313,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -11842,30 +12352,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E031",
+    "_exp_id": "10.1039_d3ra05217f-E036",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E031"
+     "experiment_id": "10.1039_d3ra05217f-E036"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E031"
+     "experiment_id": "10.1039_d3ra05217f-E036"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E031"
+     "experiment_id": "10.1039_d3ra05217f-E036"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E031"
+     "experiment_id": "10.1039_d3ra05217f-E036"
     },
     "reactants::": {
      "source": "experiment",
@@ -11874,14 +12384,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E031"
+     "experiment_id": "10.1039_d3ra05217f-E036"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 250.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6f-31",
+     "experiment_id": "10.1039_d3ra05217f-F6f-36",
      "figure": "Fig 6",
      "panel": "f"
     }
@@ -11890,24 +12400,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -12139,14 +12649,14 @@
   ],
   "measurand": {
    "quantity": "Counts/s",
-   "unit": "1/s",
-   "raw_unit": "1/s",
+   "unit": "Counts/s",
+   "raw_unit": "Counts/s",
    "family": null,
    "unit_conversion": {
     "status": "unsupported",
-    "from_unit": "1/s",
+    "from_unit": "Counts/s",
     "to_unit": null,
-    "reason": "unit '1/s' is not a recognised convertible unit",
+    "reason": "unit 'Counts/s' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
    }
@@ -12161,54 +12671,54 @@
   "coordinate_unit_conversion": null,
   "points": [
    [
-    290,
-    23000
+    290.0,
+    23000.0
    ],
    [
-    288,
-    23000
+    288.0,
+    23000.0
    ],
    [
-    286,
-    23000
+    286.0,
+    23000.0
    ],
    [
-    284,
-    23000
+    284.0,
+    23000.0
    ],
    [
-    282,
-    23000
+    282.0,
+    23000.0
    ],
    [
-    280,
-    23000
+    280.0,
+    23000.0
    ]
   ],
   "points_canonical": [
    [
-    290,
-    23000
+    290.0,
+    23000.0
    ],
    [
-    288,
-    23000
+    288.0,
+    23000.0
    ],
    [
-    286,
-    23000
+    286.0,
+    23000.0
    ],
    [
-    284,
-    23000
+    284.0,
+    23000.0
    ],
    [
-    282,
-    23000
+    282.0,
+    23000.0
    ],
    [
-    280,
-    23000
+    280.0,
+    23000.0
    ]
   ],
   "granularity": "multi_output",
@@ -12259,8 +12769,8 @@
   "dependent": [
    {
     "quantity": "Counts/s",
-    "unit": "1/s",
-    "raw_unit": "1/s",
+    "unit": "Counts/s",
+    "raw_unit": "Counts/s",
     "family": null
    }
   ],
@@ -12298,30 +12808,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E032",
+    "_exp_id": "10.1039_d3ra05217f-E037",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E032"
+     "experiment_id": "10.1039_d3ra05217f-E037"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E032"
+     "experiment_id": "10.1039_d3ra05217f-E037"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E032"
+     "experiment_id": "10.1039_d3ra05217f-E037"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E032"
+     "experiment_id": "10.1039_d3ra05217f-E037"
     },
     "reactants::": {
      "source": "experiment",
@@ -12330,14 +12840,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E032"
+     "experiment_id": "10.1039_d3ra05217f-E037"
     },
     "temperature::": {
      "source": "experiment",
      "from": "series",
      "value": 300.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F6f-32",
+     "experiment_id": "10.1039_d3ra05217f-F6f-37",
      "figure": "Fig 6",
      "panel": "f"
     }
@@ -12346,24 +12856,24 @@
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "Binding Energy, eV",
    "raw_quantity": "binding_energy",
    "raw_unit": "eV",
    "unit_dimension": "energy",
    "canonical_quantity": "binding_energy",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'binding_energy'",
+   "evidence": "photoelectron binding energy of an XPS scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Counts/s",
    "raw_quantity": "Counts/s",
-   "raw_unit": "1/s",
-   "unit_dimension": null,
+   "raw_unit": "Counts/s",
+   "unit_dimension": "arbitrary",
    "canonical_quantity": null,
-   "axis_role": "unknown",
-   "semantic_status": "unresolved",
+   "axis_role": "output",
+   "semantic_status": "role_only",
    "evidence": null,
    "rejected_lexical_match": null
   },
@@ -12619,445 +13129,421 @@
   "points": [
    [
     10.0,
-    0.12
+    0.08
    ],
    [
-    11.5,
-    0.12
+    12.0,
+    0.09
    ],
    [
-    13.0,
-    0.13
-   ],
-   [
-    14.5,
-    0.12
+    14.0,
+    0.08
    ],
    [
     16.0,
-    0.13
+    0.08
    ],
    [
-    17.5,
-    0.12
+    18.0,
+    0.07
    ],
    [
-    19.0,
-    0.13
+    19.5,
+    0.07
    ],
    [
-    20.0,
-    0.17
+    20.5,
+    0.2
    ],
    [
-    20.6,
-    0.23
+    21.5,
+    0.07
    ],
    [
-    21.2,
-    0.17
-   ],
-   [
-    22.0,
-    0.13
-   ],
-   [
-    23.5,
-    0.12
+    23.0,
+    0.06
    ],
    [
     25.0,
-    0.12
+    0.06
    ],
    [
-    26.5,
-    0.13
+    27.0,
+    0.08
    ],
    [
-    27.5,
-    0.16
+    28.0,
+    0.2
    ],
    [
     28.5,
     0.5
    ],
    [
-    29.2,
-    0.93
+    29.1,
+    0.92
    ],
    [
-    30.0,
-    0.5
+    29.8,
+    0.45
    ],
    [
-    30.8,
-    0.16
+    30.5,
+    0.1
    ],
    [
     31.5,
-    0.13
+    0.07
    ],
    [
     32.5,
-    0.18
+    0.1
    ],
    [
-    33.8,
-    0.45
-   ],
-   [
-    34.5,
-    0.25
-   ],
-   [
-    35.3,
-    0.14
-   ],
-   [
-    36.0,
-    0.18
-   ],
-   [
-    36.8,
-    0.13
-   ],
-   [
-    38.0,
-    0.12
-   ],
-   [
-    39.0,
-    0.14
-   ],
-   [
-    39.8,
-    0.2
-   ],
-   [
-    40.6,
-    0.14
-   ],
-   [
-    41.8,
-    0.12
-   ],
-   [
-    42.5,
-    0.14
-   ],
-   [
-    43.3,
-    0.2
-   ],
-   [
-    44.2,
-    0.14
-   ],
-   [
-    45.5,
-    0.13
-   ],
-   [
-    46.8,
-    0.16
-   ],
-   [
-    47.8,
+    33.2,
     0.3
    ],
    [
-    48.5,
-    0.45
+    33.8,
+    0.52
    ],
    [
-    49.3,
-    0.25
-   ],
-   [
-    50.5,
-    0.14
-   ],
-   [
-    51.8,
-    0.14
-   ],
-   [
-    53.0,
-    0.19
-   ],
-   [
-    54.2,
-    0.14
-   ],
-   [
-    55.5,
-    0.16
-   ],
-   [
-    56.5,
-    0.22
-   ],
-   [
-    57.5,
-    0.33
-   ],
-   [
-    58.5,
-    0.22
-   ],
-   [
-    59.5,
-    0.17
-   ],
-   [
-    61.0,
-    0.13
-   ],
-   [
-    62.5,
-    0.14
-   ],
-   [
-    64.0,
+    34.5,
     0.18
    ],
    [
-    65.5,
-    0.13
+    35.2,
+    0.08
+   ],
+   [
+    35.8,
+    0.12
+   ],
+   [
+    36.5,
+    0.07
+   ],
+   [
+    38.0,
+    0.06
+   ],
+   [
+    39.0,
+    0.08
+   ],
+   [
+    39.9,
+    0.18
+   ],
+   [
+    40.8,
+    0.07
+   ],
+   [
+    42.0,
+    0.07
+   ],
+   [
+    42.8,
+    0.1
+   ],
+   [
+    43.4,
+    0.17
+   ],
+   [
+    44.2,
+    0.08
+   ],
+   [
+    46.0,
+    0.08
+   ],
+   [
+    47.0,
+    0.15
+   ],
+   [
+    48.0,
+    0.4
+   ],
+   [
+    48.5,
+    0.51
+   ],
+   [
+    49.2,
+    0.25
+   ],
+   [
+    50.2,
+    0.1
+   ],
+   [
+    51.5,
+    0.08
+   ],
+   [
+    52.5,
+    0.1
+   ],
+   [
+    53.1,
+    0.15
+   ],
+   [
+    54.0,
+    0.08
+   ],
+   [
+    55.5,
+    0.09
+   ],
+   [
+    56.5,
+    0.15
+   ],
+   [
+    57.6,
+    0.38
+   ],
+   [
+    58.5,
+    0.18
+   ],
+   [
+    59.5,
+    0.1
+   ],
+   [
+    61.0,
+    0.08
+   ],
+   [
+    63.0,
+    0.07
+   ],
+   [
+    65.0,
+    0.06
    ],
    [
     67.0,
-    0.13
-   ],
-   [
-    68.5,
-    0.13
+    0.06
    ],
    [
     70.0,
-    0.13
+    0.06
    ]
   ],
   "points_canonical": [
    [
     10.0,
-    0.12
+    0.08
    ],
    [
-    11.5,
-    0.12
+    12.0,
+    0.09
    ],
    [
-    13.0,
-    0.13
-   ],
-   [
-    14.5,
-    0.12
+    14.0,
+    0.08
    ],
    [
     16.0,
-    0.13
+    0.08
    ],
    [
-    17.5,
-    0.12
+    18.0,
+    0.07
    ],
    [
-    19.0,
-    0.13
+    19.5,
+    0.07
    ],
    [
-    20.0,
-    0.17
+    20.5,
+    0.2
    ],
    [
-    20.6,
-    0.23
+    21.5,
+    0.07
    ],
    [
-    21.2,
-    0.17
-   ],
-   [
-    22.0,
-    0.13
-   ],
-   [
-    23.5,
-    0.12
+    23.0,
+    0.06
    ],
    [
     25.0,
-    0.12
+    0.06
    ],
    [
-    26.5,
-    0.13
+    27.0,
+    0.08
    ],
    [
-    27.5,
-    0.16
+    28.0,
+    0.2
    ],
    [
     28.5,
     0.5
    ],
    [
-    29.2,
-    0.93
+    29.1,
+    0.92
    ],
    [
-    30.0,
-    0.5
+    29.8,
+    0.45
    ],
    [
-    30.8,
-    0.16
+    30.5,
+    0.1
    ],
    [
     31.5,
-    0.13
+    0.07
    ],
    [
     32.5,
-    0.18
+    0.1
    ],
    [
-    33.8,
-    0.45
-   ],
-   [
-    34.5,
-    0.25
-   ],
-   [
-    35.3,
-    0.14
-   ],
-   [
-    36.0,
-    0.18
-   ],
-   [
-    36.8,
-    0.13
-   ],
-   [
-    38.0,
-    0.12
-   ],
-   [
-    39.0,
-    0.14
-   ],
-   [
-    39.8,
-    0.2
-   ],
-   [
-    40.6,
-    0.14
-   ],
-   [
-    41.8,
-    0.12
-   ],
-   [
-    42.5,
-    0.14
-   ],
-   [
-    43.3,
-    0.2
-   ],
-   [
-    44.2,
-    0.14
-   ],
-   [
-    45.5,
-    0.13
-   ],
-   [
-    46.8,
-    0.16
-   ],
-   [
-    47.8,
+    33.2,
     0.3
    ],
    [
-    48.5,
-    0.45
+    33.8,
+    0.52
    ],
    [
-    49.3,
-    0.25
-   ],
-   [
-    50.5,
-    0.14
-   ],
-   [
-    51.8,
-    0.14
-   ],
-   [
-    53.0,
-    0.19
-   ],
-   [
-    54.2,
-    0.14
-   ],
-   [
-    55.5,
-    0.16
-   ],
-   [
-    56.5,
-    0.22
-   ],
-   [
-    57.5,
-    0.33
-   ],
-   [
-    58.5,
-    0.22
-   ],
-   [
-    59.5,
-    0.17
-   ],
-   [
-    61.0,
-    0.13
-   ],
-   [
-    62.5,
-    0.14
-   ],
-   [
-    64.0,
+    34.5,
     0.18
    ],
    [
-    65.5,
-    0.13
+    35.2,
+    0.08
+   ],
+   [
+    35.8,
+    0.12
+   ],
+   [
+    36.5,
+    0.07
+   ],
+   [
+    38.0,
+    0.06
+   ],
+   [
+    39.0,
+    0.08
+   ],
+   [
+    39.9,
+    0.18
+   ],
+   [
+    40.8,
+    0.07
+   ],
+   [
+    42.0,
+    0.07
+   ],
+   [
+    42.8,
+    0.1
+   ],
+   [
+    43.4,
+    0.17
+   ],
+   [
+    44.2,
+    0.08
+   ],
+   [
+    46.0,
+    0.08
+   ],
+   [
+    47.0,
+    0.15
+   ],
+   [
+    48.0,
+    0.4
+   ],
+   [
+    48.5,
+    0.51
+   ],
+   [
+    49.2,
+    0.25
+   ],
+   [
+    50.2,
+    0.1
+   ],
+   [
+    51.5,
+    0.08
+   ],
+   [
+    52.5,
+    0.1
+   ],
+   [
+    53.1,
+    0.15
+   ],
+   [
+    54.0,
+    0.08
+   ],
+   [
+    55.5,
+    0.09
+   ],
+   [
+    56.5,
+    0.15
+   ],
+   [
+    57.6,
+    0.38
+   ],
+   [
+    58.5,
+    0.18
+   ],
+   [
+    59.5,
+    0.1
+   ],
+   [
+    61.0,
+    0.08
+   ],
+   [
+    63.0,
+    0.07
+   ],
+   [
+    65.0,
+    0.06
    ],
    [
     67.0,
-    0.13
-   ],
-   [
-    68.5,
-    0.13
+    0.06
    ],
    [
     70.0,
-    0.13
+    0.06
    ]
   ],
   "granularity": "multi_output",
@@ -13147,30 +13633,30 @@
    "possible": null,
    "channel_map": null,
    "param_sources": {
-    "_exp_id": "10.1039_d3ra05217f-E033",
+    "_exp_id": "10.1039_d3ra05217f-E038",
     "species::A": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y(sBuCp)3",
-     "experiment_id": "10.1039_d3ra05217f-E033"
+     "experiment_id": "10.1039_d3ra05217f-E038"
     },
     "species::B": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "H2O",
-     "experiment_id": "10.1039_d3ra05217f-E033"
+     "experiment_id": "10.1039_d3ra05217f-E038"
     },
     "material::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "Y2O3",
-     "experiment_id": "10.1039_d3ra05217f-E033"
+     "experiment_id": "10.1039_d3ra05217f-E038"
     },
     "cycle_sequence::": {
      "source": "experiment",
      "from": "experiment_record",
      "value": "AB",
-     "experiment_id": "10.1039_d3ra05217f-E033"
+     "experiment_id": "10.1039_d3ra05217f-E038"
     },
     "reactants::": {
      "source": "experiment",
@@ -13179,14 +13665,14 @@
       "A",
       "B"
      ],
-     "experiment_id": "10.1039_d3ra05217f-E033"
+     "experiment_id": "10.1039_d3ra05217f-E038"
     },
     "temperature::": {
      "source": "experiment",
      "from": "caption",
      "value": 200.0,
      "paper_id": "10.1039_d3ra05217f",
-     "experiment_id": "10.1039_d3ra05217f-F7c-33",
+     "experiment_id": "10.1039_d3ra05217f-F7c-38",
      "figure": "Fig 7",
      "panel": "c"
     }
@@ -13195,25 +13681,25 @@
   },
   "coordinate_raw_quantity": "diffraction_angle",
   "x_semantics": {
-   "raw_label": null,
+   "raw_label": "2\u03b8, degree",
    "raw_quantity": "diffraction_angle",
    "raw_unit": "degree",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
    "axis_role": "measurement_coordinate",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'diffraction_angle'",
+   "evidence": "diffraction angle of an XRD/XRR scan",
    "rejected_lexical_match": null
   },
   "y_semantics": {
-   "raw_label": null,
+   "raw_label": "Intensity, arb. units",
    "raw_quantity": "intensity",
    "raw_unit": "arb. units",
    "unit_dimension": null,
    "canonical_quantity": "intensity",
    "axis_role": "unknown",
    "semantic_status": "resolved",
-   "evidence": "ontology alias match on 'intensity'",
+   "evidence": "ontology alias match on 'Intensity, arb. units'",
    "rejected_lexical_match": null
   },
   "entity_id": "10.1039_d3ra05217f__Fig7c",
@@ -13228,7 +13714,7 @@
   "measurement_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
-  "n_observations": 55,
+  "n_observations": 52,
   "observations_are_experiments": false,
   "ambiguous_conditions": [
    {
