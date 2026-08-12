@@ -12,9 +12,7 @@
   "entity_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "performed_on": null,
-  "measures_case": [
-   "CASE-10.114-001"
-  ],
+  "measures_case": [],
   "measurement_settings": [],
   "source": {
    "printed_figure": "1",
@@ -30,13 +28,15 @@
   "representation_id": null,
   "n_observations": 41,
   "repeat_measurement": false,
-  "evidence": [],
+  "evidence": [
+   "EV-10.114-004"
+  ],
   "confidence": null,
   "_material": null,
   "_conditions": [
    {
     "quantity": "pulse_time",
-    "value": "-120",
+    "value": null,
     "unit": "ms",
     "role": "CASE_DEFINING"
    },
@@ -46,7 +46,9 @@
     "unit": null,
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none",
+  "reports_species_property": true
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig1a__exp02",
@@ -61,9 +63,7 @@
   "entity_class": "MultiOutputMeasurement",
   "classification": "multi_output_measurement",
   "performed_on": null,
-  "measures_case": [
-   "CASE-10.114-002"
-  ],
+  "measures_case": [],
   "measurement_settings": [],
   "source": {
    "printed_figure": "1",
@@ -79,13 +79,15 @@
   "representation_id": null,
   "n_observations": 26,
   "repeat_measurement": false,
-  "evidence": [],
+  "evidence": [
+   "EV-10.114-006"
+  ],
   "confidence": null,
   "_material": null,
   "_conditions": [
    {
     "quantity": "pulse_time",
-    "value": "-120",
+    "value": null,
     "unit": "ms",
     "role": "CASE_DEFINING"
    },
@@ -95,10 +97,130 @@
     "unit": null,
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none",
+  "reports_species_property": true
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig2a__exp01",
+  "paper_id": "10.1149_2.067203jes",
+  "technique": [
+   "thickness"
+  ],
+  "technique_basis": "measured quantity",
+  "technique_evidence": [
+   {
+    "technique": "ellipsometry",
+    "matched": "ellipsometry",
+    "span": "and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
+    "offset": 112
+   },
+   {
+    "technique": "thickness",
+    "matched": "film thickness",
+    "span": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
+    "offset": 59
+   }
+  ],
+  "measured_quantity": "film_thickness",
+  "measured_unit": "nm",
+  "coordinate": "cycle_number",
+  "coordinate_unit": "cycle",
+  "entity_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "performed_on": null,
+  "measures_case": [
+   "CASE-10.114-001"
+  ],
+  "measurement_settings": [],
+  "source": {
+   "printed_figure": "2",
+   "panel": "a",
+   "resolved_entity_id": "10.1149_2.067203jes__Fig2a__exp01",
+   "fig_docling_index": "3",
+   "source_series": "T_dep = 50°C"
+  },
+  "caption_reference": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
+  "result_series_ids": [
+   "RS::10.1149_2.067203jes::F2::a::0::f1p0"
+  ],
+  "representation_id": null,
+  "n_observations": 4,
+  "repeat_measurement": false,
+  "evidence": [],
+  "confidence": null,
+  "_material": "SiO2",
+  "_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "50",
+    "unit": "°C",
+    "role": "CASE_DEFINING"
+   }
+  ],
+  "specimen_binding": "none"
+ },
+ {
+  "measurement_id": "M::10.1149_2.067203jes__Fig2a__exp02",
+  "paper_id": "10.1149_2.067203jes",
+  "technique": [
+   "thickness"
+  ],
+  "technique_basis": "measured quantity",
+  "technique_evidence": [
+   {
+    "technique": "ellipsometry",
+    "matched": "ellipsometry",
+    "span": "and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
+    "offset": 112
+   },
+   {
+    "technique": "thickness",
+    "matched": "film thickness",
+    "span": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
+    "offset": 59
+   }
+  ],
+  "measured_quantity": "film_thickness",
+  "measured_unit": "nm",
+  "coordinate": "cycle_number",
+  "coordinate_unit": "cycle",
+  "entity_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "performed_on": null,
+  "measures_case": [
+   "CASE-10.114-002"
+  ],
+  "measurement_settings": [],
+  "source": {
+   "printed_figure": "2",
+   "panel": "a",
+   "resolved_entity_id": "10.1149_2.067203jes__Fig2a__exp02",
+   "fig_docling_index": "3",
+   "source_series": "T_dep = 200°C"
+  },
+  "caption_reference": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
+  "result_series_ids": [
+   "RS::10.1149_2.067203jes::F2::a::1::f1p0"
+  ],
+  "representation_id": null,
+  "n_observations": 7,
+  "repeat_measurement": false,
+  "evidence": [],
+  "confidence": null,
+  "_material": "SiO2",
+  "_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "200",
+    "unit": "°C",
+    "role": "CASE_DEFINING"
+   }
+  ],
+  "specimen_binding": "none"
+ },
+ {
+  "measurement_id": "M::10.1149_2.067203jes__Fig2a__exp03",
   "paper_id": "10.1149_2.067203jes",
   "technique": [
    "thickness"
@@ -132,122 +254,6 @@
   "source": {
    "printed_figure": "2",
    "panel": "a",
-   "resolved_entity_id": "10.1149_2.067203jes__Fig2a__exp01",
-   "fig_docling_index": "3",
-   "source_series": "T_dep = 50°C"
-  },
-  "caption_reference": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
-  "result_series_ids": [
-   "RS::10.1149_2.067203jes::F2::a::0::f1p0"
-  ],
-  "representation_id": null,
-  "n_observations": 4,
-  "repeat_measurement": false,
-  "evidence": [],
-  "confidence": null,
-  "_material": "SiO2",
-  "_conditions": [
-   {
-    "quantity": "deposition_temperature",
-    "value": "50",
-    "unit": "°C",
-    "role": "CASE_DEFINING"
-   }
-  ]
- },
- {
-  "measurement_id": "M::10.1149_2.067203jes__Fig2a__exp02",
-  "paper_id": "10.1149_2.067203jes",
-  "technique": [
-   "thickness"
-  ],
-  "technique_basis": "measured quantity",
-  "technique_evidence": [
-   {
-    "technique": "ellipsometry",
-    "matched": "ellipsometry",
-    "span": "and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
-    "offset": 112
-   },
-   {
-    "technique": "thickness",
-    "matched": "film thickness",
-    "span": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
-    "offset": 59
-   }
-  ],
-  "measured_quantity": "film_thickness",
-  "measured_unit": "nm",
-  "coordinate": "cycle_number",
-  "coordinate_unit": "cycle",
-  "entity_class": "ContinuousTrace",
-  "classification": "continuous_trace",
-  "performed_on": null,
-  "measures_case": [
-   "CASE-10.114-004"
-  ],
-  "measurement_settings": [],
-  "source": {
-   "printed_figure": "2",
-   "panel": "a",
-   "resolved_entity_id": "10.1149_2.067203jes__Fig2a__exp02",
-   "fig_docling_index": "3",
-   "source_series": "T_dep = 200°C"
-  },
-  "caption_reference": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
-  "result_series_ids": [
-   "RS::10.1149_2.067203jes::F2::a::1::f1p0"
-  ],
-  "representation_id": null,
-  "n_observations": 7,
-  "repeat_measurement": false,
-  "evidence": [],
-  "confidence": null,
-  "_material": "SiO2",
-  "_conditions": [
-   {
-    "quantity": "deposition_temperature",
-    "value": "200",
-    "unit": "°C",
-    "role": "CASE_DEFINING"
-   }
-  ]
- },
- {
-  "measurement_id": "M::10.1149_2.067203jes__Fig2a__exp03",
-  "paper_id": "10.1149_2.067203jes",
-  "technique": [
-   "thickness"
-  ],
-  "technique_basis": "measured quantity",
-  "technique_evidence": [
-   {
-    "technique": "ellipsometry",
-    "matched": "ellipsometry",
-    "span": "and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
-    "offset": 112
-   },
-   {
-    "technique": "thickness",
-    "matched": "film thickness",
-    "span": "Substrate temperatures of 50 ◦ C, 200 ◦ C and 250 ◦ C. The film thickness was measured by in situ spectroscopic ellipsometry (SE).",
-    "offset": 59
-   }
-  ],
-  "measured_quantity": "film_thickness",
-  "measured_unit": "nm",
-  "coordinate": "cycle_number",
-  "coordinate_unit": "cycle",
-  "entity_class": "ContinuousTrace",
-  "classification": "continuous_trace",
-  "performed_on": null,
-  "measures_case": [
-   "CASE-10.114-005"
-  ],
-  "measurement_settings": [],
-  "source": {
-   "printed_figure": "2",
-   "panel": "a",
    "resolved_entity_id": "10.1149_2.067203jes__Fig2a__exp03",
    "fig_docling_index": "3",
    "source_series": "T_dep = 250°C"
@@ -269,7 +275,8 @@
     "unit": "°C",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig2b__exp01",
@@ -300,7 +307,7 @@
   "classification": "continuous_trace",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-006"
+   "CASE-10.114-002"
   ],
   "measurement_settings": [],
   "source": {
@@ -320,7 +327,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig2b__exp02",
@@ -351,7 +359,7 @@
   "classification": "continuous_trace",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-007"
+   "CASE-10.114-002"
   ],
   "measurement_settings": [],
   "source": {
@@ -371,7 +379,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4a",
@@ -410,12 +419,15 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4b",
@@ -454,12 +466,15 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4c",
@@ -498,12 +513,15 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4d",
@@ -540,7 +558,7 @@
   "classification": "continuous_trace",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-008"
+   "CASE-10.114-004"
   ],
   "measurement_settings": [],
   "source": {
@@ -563,11 +581,12 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4e",
@@ -606,12 +625,15 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4f",
@@ -650,12 +672,15 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4g",
@@ -694,12 +719,15 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig4h",
@@ -745,12 +773,15 @@
   "_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1149_2.067203jes__Fig4d",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig5a",
@@ -775,7 +806,7 @@
   "classification": "continuous_trace",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-009"
+   "CASE-10.114-005"
   ],
   "measurement_settings": [],
   "source": {
@@ -795,7 +826,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig5b",
@@ -826,7 +858,7 @@
   "classification": "continuous_trace",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-010"
+   "CASE-10.114-006"
   ],
   "measurement_settings": [],
   "source": {
@@ -846,7 +878,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig6a__exp01",
@@ -871,7 +904,7 @@
   "classification": "multi_output_measurement",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-011"
+   "CASE-10.114-007"
   ],
   "measurement_settings": [],
   "source": {
@@ -891,7 +924,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig6a__exp02",
@@ -916,7 +950,7 @@
   "classification": "multi_output_measurement",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-012"
+   "CASE-10.114-008"
   ],
   "measurement_settings": [],
   "source": {
@@ -936,7 +970,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig6b__exp01",
@@ -961,7 +996,7 @@
   "classification": "multi_output_measurement",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-013"
+   "CASE-10.114-009"
   ],
   "measurement_settings": [],
   "source": {
@@ -981,7 +1016,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig6b__exp02",
@@ -1006,7 +1042,7 @@
   "classification": "multi_output_measurement",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-014"
+   "CASE-10.114-010"
   ],
   "measurement_settings": [],
   "source": {
@@ -1026,7 +1062,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig9a__exp01",
@@ -1058,7 +1095,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig9a__exp02",
@@ -1090,7 +1128,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig9b__exp01",
@@ -1124,7 +1163,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig9b__exp02",
@@ -1158,7 +1198,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig10a__exp01",
@@ -1176,7 +1217,7 @@
   "classification": "multi_output_measurement",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-015"
+   "CASE-10.114-011"
   ],
   "measurement_settings": [],
   "source": {
@@ -1197,7 +1238,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig10a__exp02",
@@ -1215,7 +1257,7 @@
   "classification": "multi_output_measurement",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-016"
+   "CASE-10.114-012"
   ],
   "measurement_settings": [],
   "source": {
@@ -1236,7 +1278,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig10b",
@@ -1268,7 +1311,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig11a__exp01",
@@ -1284,7 +1328,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-017"
+   "CASE-10.114-013"
   ],
   "measurement_settings": [],
   "source": {
@@ -1304,7 +1348,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig11a__exp02",
@@ -1320,7 +1365,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-018"
+   "CASE-10.114-014"
   ],
   "measurement_settings": [],
   "source": {
@@ -1340,7 +1385,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig11b",
@@ -1356,7 +1402,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-019"
+   "CASE-10.114-015"
   ],
   "measurement_settings": [],
   "source": {
@@ -1377,7 +1423,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig12a__exp01",
@@ -1402,7 +1449,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-020"
+   "CASE-10.114-016"
   ],
   "measurement_settings": [],
   "source": {
@@ -1422,7 +1469,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig12a__exp02",
@@ -1447,7 +1495,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-021"
+   "CASE-10.114-017"
   ],
   "measurement_settings": [],
   "source": {
@@ -1467,7 +1515,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig12a__exp03",
@@ -1492,7 +1541,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-022"
+   "CASE-10.114-018"
   ],
   "measurement_settings": [],
   "source": {
@@ -1512,7 +1561,8 @@
   "evidence": [],
   "confidence": null,
   "_material": "SiO2",
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig12b__exp01",
@@ -1537,7 +1587,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-023"
+   "CASE-10.114-019"
   ],
   "measurement_settings": [],
   "source": {
@@ -1557,7 +1607,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig12b__exp02",
@@ -1582,7 +1633,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-024"
+   "CASE-10.114-020"
   ],
   "measurement_settings": [],
   "source": {
@@ -1602,7 +1653,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig12b__exp03",
@@ -1627,7 +1679,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-025"
+   "CASE-10.114-021"
   ],
   "measurement_settings": [],
   "source": {
@@ -1647,7 +1699,8 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1149_2.067203jes__Fig12b__exp04",
@@ -1672,7 +1725,7 @@
   "classification": "discrete_experimental_sweep",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.114-026"
+   "CASE-10.114-022"
   ],
   "measurement_settings": [],
   "source": {
@@ -1692,6 +1745,127 @@
   "evidence": [],
   "confidence": null,
   "_material": null,
-  "_conditions": []
+  "_conditions": [],
+  "specimen_binding": "none"
+ },
+ {
+  "measurement_id": "M::IMG::10.1149_2.067203jes::F3",
+  "paper_id": "10.1149_2.067203jes",
+  "technique": [
+   "TEM"
+  ],
+  "technique_basis": "caption clause",
+  "technique_evidence": [],
+  "measured_quantity": null,
+  "measured_unit": null,
+  "coordinate": null,
+  "coordinate_unit": null,
+  "entity_class": null,
+  "classification": "image_supported_characterisation",
+  "performed_on": null,
+  "measures_case": [
+   "CASE-10.114-002"
+  ],
+  "measurement_settings": [],
+  "source": {
+   "printed_figure": "3",
+   "panel": "",
+   "resolved_entity_id": null,
+   "fig_docling_index": null,
+   "source_series": null
+  },
+  "caption_reference": "Figure 3. High-resolution cross-sectional TEM image of a stack with alternating layers of ALD Al2O3 and ALD SiO2 deposited using 10-40 cycles each. The substrate temperature was 200 ◦ C. The extracted layer thicknesses are shown in Fig. 2b.",
+  "result_series_ids": [],
+  "representation_id": null,
+  "n_observations": 0,
+  "repeat_measurement": false,
+  "data_recovered": false,
+  "recovery_cause": "image_only_figure",
+  "recovery_detail": "the caption reports a deposition on a described structure and states its process conditions; the figure's evidence is an image, so no x-y points exist or are claimed",
+  "_material": null,
+  "_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": 200.0,
+    "unit": "cycle",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 200.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING"
+   }
+  ],
+  "evidence": [
+   "EV-10.114-055"
+  ],
+  "confidence": "EXPLICIT"
+ },
+ {
+  "measurement_id": "M::IMG::10.1149_2.067203jes::F8",
+  "paper_id": "10.1149_2.067203jes",
+  "technique": [
+   "SEM"
+  ],
+  "technique_basis": "caption clause",
+  "technique_evidence": [],
+  "measured_quantity": null,
+  "measured_unit": null,
+  "coordinate": null,
+  "coordinate_unit": null,
+  "entity_class": null,
+  "classification": "image_supported_characterisation",
+  "performed_on": null,
+  "measures_case": [
+   "CASE-10.114-023"
+  ],
+  "measurement_settings": [],
+  "source": {
+   "printed_figure": "8",
+   "panel": "",
+   "resolved_entity_id": null,
+   "fig_docling_index": null,
+   "source_series": null
+  },
+  "caption_reference": "Figure 8. High-resolution SEM images of a high-aspect ratio trench in Si coated by 830 cycles of ALD SiO2. The SiO2 was deposited on top of thermal SiO2/ALD Al2O3 layers for optical contrast. The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30.",
+  "result_series_ids": [],
+  "representation_id": null,
+  "n_observations": 0,
+  "repeat_measurement": false,
+  "data_recovered": false,
+  "recovery_cause": "image_only_figure",
+  "recovery_detail": "the caption reports a deposition on a described structure and states its process conditions; the figure's evidence is an image, so no x-y points exist or are claimed",
+  "_material": "SiO2",
+  "_conditions": [
+   {
+    "quantity": "feature_height",
+    "value": 18.5,
+    "unit": "µm",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "feature_width",
+    "value": 0.6,
+    "unit": "µm",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "aspect_ratio",
+    "value": 30.0,
+    "unit": null,
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 830.0,
+    "unit": "cycle",
+    "role": "CASE_DEFINING"
+   }
+  ],
+  "evidence": [
+   "EV-10.114-056"
+  ],
+  "confidence": "EXPLICIT"
  }
 ]

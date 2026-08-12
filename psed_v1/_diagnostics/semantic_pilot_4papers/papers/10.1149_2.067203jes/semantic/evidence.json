@@ -3,8 +3,13 @@
   "evidence_id": "EV-10.114-001",
   "kind": "material_role",
   "subject": "Al2O3",
-  "detail": "roles read from the methods/body: ['DEPOSITED', 'STACK_COMPONENT']",
+  "detail": "roles read from the methods/body: ['DEPOSITED', 'STACK_COMPONENT', 'SUBSTRATE']",
   "roles": [
+   {
+    "role": "SUBSTRATE",
+    "matched": "deposited on top of thermal SiO2/ALD Al2O3 layers",
+    "span": "trench in Si coated by 830 cycles of ALD SiO2. The SiO2 was deposited on top of thermal SiO2/ALD Al2O3 layers for optical contrast. The depth and average width of the tr"
+   },
    {
     "role": "STACK_COMPONENT",
     "matched": "SiO2/Al2O3 stack",
@@ -28,12 +33,7 @@
    {
     "role": "DEPOSITED",
     "matched": "ALD of Al2O3",
-    "span": "one of Al(CH3)3 (TMA). This precursor is commonly used for ALD of Al2O3. The precurors are schematically represented in the figure."
-   },
-   {
-    "role": "DEPOSITED",
-    "matched": "ALD Al2O3",
-    "span": "s-sectional TEM image of a stack with alternating layers of ALD Al2O3 and ALD SiO2 deposited using 10-40 cycles each. The substra"
+    "span": ". These GPC values are similar to those obtained for plasma ALD of Al2O3. 26,27 Moreover, no indications for a significant growth de"
    }
   ]
  },
@@ -55,11 +55,6 @@
    },
    {
     "role": "DEPOSITED",
-    "matched": "ALD of SiO2",
-    "span": "pressure of the H2Si[N(C2H5)2]2 (SAM.24) precursor used for ALD of SiO2 as a function of the temperature. The vapor pressure is com"
-   },
-   {
-    "role": "DEPOSITED",
     "matched": "deposition of SiO2",
     "span": "on microscopy (SEM) was employed to visualize the conformal deposition of SiO2 in high aspect ratio trenches. The deposition process itsel"
    },
@@ -72,6 +67,11 @@
     "role": "DEPOSITED",
     "matched": "growth process of SiO2",
     "span": "rameters. The substrate temperature was set to 250 ◦ C. The growth process of SiO2 is compared to plasma-assisted ALD of Al2O3 at 250 ◦ C (Fig"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "ALD process for SiO2",
+    "span": "nt to mention here that we were unable to develop a thermal ALD process for SiO2 using SAM.24 as precursor and H2O as the oxidant. No film g"
    }
   ]
  },
@@ -83,66 +83,78 @@
  },
  {
   "evidence_id": "EV-10.114-004",
-  "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig1a__exp01",
-  "detail": "x axis 'temperature' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
+  "kind": "species_property_scope",
+  "subject": "M::10.1149_2.067203jes__Fig1a__exp01",
+  "detail": "'vapor_pressure' is a property of a chemical species, not of a deposited film"
  },
  {
   "evidence_id": "EV-10.114-005",
-  "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig1a__exp02",
-  "detail": "x axis 'temperature' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
+  "kind": "no_case",
+  "subject": "10.1149_2.067203jes__Fig1a__exp01",
+  "detail": "'vapor_pressure' is a property of a chemical species, not of a deposited film; the result is preserved as a Measurement and a ResultSeries, but no deposition case is minted and no local material role is asserted"
  },
  {
   "evidence_id": "EV-10.114-006",
+  "kind": "species_property_scope",
+  "subject": "M::10.1149_2.067203jes__Fig1a__exp02",
+  "detail": "'vapor_pressure' is a property of a chemical species, not of a deposited film"
+ },
+ {
+  "evidence_id": "EV-10.114-007",
+  "kind": "no_case",
+  "subject": "10.1149_2.067203jes__Fig1a__exp02",
+  "detail": "'vapor_pressure' is a property of a chemical species, not of a deposited film; the result is preserved as a Measurement and a ResultSeries, but no deposition case is minted and no local material role is asserted"
+ },
+ {
+  "evidence_id": "EV-10.114-008",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig2a__exp01",
   "detail": "x axis 'cycle_number' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-007",
+  "evidence_id": "EV-10.114-009",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig2a__exp02",
   "detail": "x axis 'cycle_number' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-008",
+  "evidence_id": "EV-10.114-010",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig2a__exp03",
   "detail": "x axis 'cycle_number' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-009",
+  "evidence_id": "EV-10.114-011",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig2b__exp01",
   "detail": "x axis 'cycle_number' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-010",
+  "evidence_id": "EV-10.114-012",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig2b__exp02",
   "detail": "x axis 'cycle_number' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-011",
+  "evidence_id": "EV-10.114-013",
   "kind": "representation_group",
   "subject": "10.1149_2.067203jes__Fig4a",
   "detail": "same series label '<single>' as 10.1149_2.067203jes__Fig4d in printed figure 4, declaring a different representation; no case is minted for a redrawn view"
  },
  {
-  "evidence_id": "EV-10.114-012",
+  "evidence_id": "EV-10.114-014",
   "kind": "representation_group",
   "subject": "10.1149_2.067203jes__Fig4b",
   "detail": "same series label '<single>' as 10.1149_2.067203jes__Fig4d in printed figure 4, declaring a different representation; no case is minted for a redrawn view"
  },
  {
-  "evidence_id": "EV-10.114-013",
+  "evidence_id": "EV-10.114-015",
   "kind": "representation_group",
   "subject": "10.1149_2.067203jes__Fig4c",
   "detail": "same series label '<single>' as 10.1149_2.067203jes__Fig4d in printed figure 4, declaring a different representation; no case is minted for a redrawn view"
  },
  {
-  "evidence_id": "EV-10.114-014",
+  "evidence_id": "EV-10.114-016",
   "kind": "representation",
   "subject": "10.1149_2.067203jes__Fig4d",
   "detail": "panel clause declares 'as measured'",
@@ -150,65 +162,51 @@
   "clause": "Saturation curves for the growth-per-cycle, GPC, and refractive index, n, of the SiO2 films as measured by in situ spectroscopic ellipsometry as a function of the 4 process parameters in the ALD recipe."
  },
  {
-  "evidence_id": "EV-10.114-015",
+  "evidence_id": "EV-10.114-017",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig4d",
   "detail": "x axis 'purge_time' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-016",
+  "evidence_id": "EV-10.114-018",
   "kind": "representation_group",
   "subject": "10.1149_2.067203jes__Fig4e",
   "detail": "same series label '<single>' as 10.1149_2.067203jes__Fig4d in printed figure 4, declaring a different representation; no case is minted for a redrawn view"
  },
  {
-  "evidence_id": "EV-10.114-017",
+  "evidence_id": "EV-10.114-019",
   "kind": "representation_group",
   "subject": "10.1149_2.067203jes__Fig4f",
   "detail": "same series label '<single>' as 10.1149_2.067203jes__Fig4d in printed figure 4, declaring a different representation; no case is minted for a redrawn view"
  },
  {
-  "evidence_id": "EV-10.114-018",
+  "evidence_id": "EV-10.114-020",
   "kind": "representation_group",
   "subject": "10.1149_2.067203jes__Fig4g",
   "detail": "same series label '<single>' as 10.1149_2.067203jes__Fig4d in printed figure 4, declaring a different representation; no case is minted for a redrawn view"
  },
  {
-  "evidence_id": "EV-10.114-019",
+  "evidence_id": "EV-10.114-021",
   "kind": "representation_group",
   "subject": "10.1149_2.067203jes__Fig4h",
   "detail": "same series label '<single>' as 10.1149_2.067203jes__Fig4d in printed figure 4, declaring a different representation; no case is minted for a redrawn view"
  },
  {
-  "evidence_id": "EV-10.114-020",
+  "evidence_id": "EV-10.114-022",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig5a",
   "detail": "x axis 'deposition_temperature' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-021",
+  "evidence_id": "EV-10.114-023",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig5b",
   "detail": "x axis 'deposition_temperature' is CASE_DEFINING (ontology recipe_role = control_setting); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
-  "evidence_id": "EV-10.114-022",
-  "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig6a__exp01",
-  "detail": "panel clause declares 'normalized'",
-  "panel": "a",
-  "clause": ""
- },
- {
-  "evidence_id": "EV-10.114-023",
-  "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig6a__exp01",
-  "detail": "x axis 'wavenumber' is MEASUREMENT_SETTING ('wavenumber' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
- },
- {
   "evidence_id": "EV-10.114-024",
   "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig6a__exp02",
+  "subject": "10.1149_2.067203jes__Fig6a__exp01",
   "detail": "panel clause declares 'normalized'",
   "panel": "a",
   "clause": ""
@@ -216,27 +214,27 @@
  {
   "evidence_id": "EV-10.114-025",
   "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig6a__exp02",
+  "subject": "10.1149_2.067203jes__Fig6a__exp01",
   "detail": "x axis 'wavenumber' is MEASUREMENT_SETTING ('wavenumber' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
   "evidence_id": "EV-10.114-026",
   "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig6b__exp01",
+  "subject": "10.1149_2.067203jes__Fig6a__exp02",
   "detail": "panel clause declares 'normalized'",
-  "panel": "b",
+  "panel": "a",
   "clause": ""
  },
  {
   "evidence_id": "EV-10.114-027",
   "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig6b__exp01",
+  "subject": "10.1149_2.067203jes__Fig6a__exp02",
   "detail": "x axis 'wavenumber' is MEASUREMENT_SETTING ('wavenumber' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
   "evidence_id": "EV-10.114-028",
   "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig6b__exp02",
+  "subject": "10.1149_2.067203jes__Fig6b__exp01",
   "detail": "panel clause declares 'normalized'",
   "panel": "b",
   "clause": ""
@@ -244,51 +242,51 @@
  {
   "evidence_id": "EV-10.114-029",
   "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig6b__exp02",
+  "subject": "10.1149_2.067203jes__Fig6b__exp01",
   "detail": "x axis 'wavenumber' is MEASUREMENT_SETTING ('wavenumber' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
   "evidence_id": "EV-10.114-030",
+  "kind": "representation",
+  "subject": "10.1149_2.067203jes__Fig6b__exp02",
+  "detail": "panel clause declares 'normalized'",
+  "panel": "b",
+  "clause": ""
+ },
+ {
+  "evidence_id": "EV-10.114-031",
+  "kind": "case_scope",
+  "subject": "10.1149_2.067203jes__Fig6b__exp02",
+  "detail": "x axis 'wavenumber' is MEASUREMENT_SETTING ('wavenumber' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
+ },
+ {
+  "evidence_id": "EV-10.114-032",
   "kind": "no_case",
   "subject": "10.1149_2.067203jes__Fig9a__exp01",
   "detail": "unresolved_settings: 39 distinct x values exceed the 12 beyond which digitisation density cannot be told from real markers; the paper does not enumerate the settings, so the count stays unresolved (granularity: x is a progression axis but the paper describes separately executed runs: 'films were deposited with')"
  },
  {
-  "evidence_id": "EV-10.114-031",
+  "evidence_id": "EV-10.114-033",
   "kind": "no_case",
   "subject": "10.1149_2.067203jes__Fig9a__exp02",
   "detail": "unresolved_settings: 39 distinct x values exceed the 12 beyond which digitisation density cannot be told from real markers; the paper does not enumerate the settings, so the count stays unresolved (granularity: x is a progression axis but the paper describes separately executed runs: 'films were deposited with')"
  },
  {
-  "evidence_id": "EV-10.114-032",
+  "evidence_id": "EV-10.114-034",
   "kind": "no_case",
   "subject": "10.1149_2.067203jes__Fig9b__exp01",
   "detail": "unresolved_settings: 26 distinct x values exceed the 12 beyond which digitisation density cannot be told from real markers; the paper does not enumerate the settings, so the count stays unresolved (granularity: x is a progression axis but the paper describes separately executed runs: 'films were deposited with')"
  },
  {
-  "evidence_id": "EV-10.114-033",
+  "evidence_id": "EV-10.114-035",
   "kind": "no_case",
   "subject": "10.1149_2.067203jes__Fig9b__exp02",
   "detail": "unresolved_settings: 26 distinct x values exceed the 12 beyond which digitisation density cannot be told from real markers; the paper does not enumerate the settings, so the count stays unresolved (granularity: x is a progression axis but the paper describes separately executed runs: 'films were deposited with')"
  },
  {
-  "evidence_id": "EV-10.114-034",
-  "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig10a__exp01",
-  "detail": "panel clause declares 'inset'",
-  "panel": "a",
-  "clause": ""
- },
- {
-  "evidence_id": "EV-10.114-035",
-  "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig10a__exp01",
-  "detail": "x axis 'wavelength' is MEASUREMENT_SETTING ('wavelength' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
- },
- {
   "evidence_id": "EV-10.114-036",
   "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig10a__exp02",
+  "subject": "10.1149_2.067203jes__Fig10a__exp01",
   "detail": "panel clause declares 'inset'",
   "panel": "a",
   "clause": ""
@@ -296,11 +294,25 @@
  {
   "evidence_id": "EV-10.114-037",
   "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig10a__exp02",
+  "subject": "10.1149_2.067203jes__Fig10a__exp01",
   "detail": "x axis 'wavelength' is MEASUREMENT_SETTING ('wavelength' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
  },
  {
   "evidence_id": "EV-10.114-038",
+  "kind": "representation",
+  "subject": "10.1149_2.067203jes__Fig10a__exp02",
+  "detail": "panel clause declares 'inset'",
+  "panel": "a",
+  "clause": ""
+ },
+ {
+  "evidence_id": "EV-10.114-039",
+  "kind": "case_scope",
+  "subject": "10.1149_2.067203jes__Fig10a__exp02",
+  "detail": "x axis 'wavelength' is MEASUREMENT_SETTING ('wavelength' is an instrument coordinate); its points are observations of one specimen | not an independent process sweep (status 'supported')"
+ },
+ {
+  "evidence_id": "EV-10.114-040",
   "kind": "representation",
   "subject": "10.1149_2.067203jes__Fig10b",
   "detail": "panel clause declares 'inset'",
@@ -308,29 +320,15 @@
   "clause": ""
  },
  {
-  "evidence_id": "EV-10.114-039",
+  "evidence_id": "EV-10.114-041",
   "kind": "no_case",
   "subject": "10.1149_2.067203jes__Fig10b",
   "detail": "unresolved_settings: 28 distinct x values exceed the 12 beyond which digitisation density cannot be told from real markers; the paper does not enumerate the settings, so the count stays unresolved (granularity: x is a progression axis but the paper describes separately executed runs: 'films were deposited with')"
  },
  {
-  "evidence_id": "EV-10.114-040",
-  "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig11a__exp01",
-  "detail": "panel clause declares 'inset'",
-  "panel": "a",
-  "clause": ""
- },
- {
-  "evidence_id": "EV-10.114-041",
-  "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig11a__exp01",
-  "detail": "x axis 'Injection level' is UNRESOLVED (no ontology recipe_role for 'Injection level' and no instrument term); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
- },
- {
   "evidence_id": "EV-10.114-042",
   "kind": "representation",
-  "subject": "10.1149_2.067203jes__Fig11a__exp02",
+  "subject": "10.1149_2.067203jes__Fig11a__exp01",
   "detail": "panel clause declares 'inset'",
   "panel": "a",
   "clause": ""
@@ -338,11 +336,25 @@
  {
   "evidence_id": "EV-10.114-043",
   "kind": "case_scope",
-  "subject": "10.1149_2.067203jes__Fig11a__exp02",
+  "subject": "10.1149_2.067203jes__Fig11a__exp01",
   "detail": "x axis 'Injection level' is UNRESOLVED (no ontology recipe_role for 'Injection level' and no instrument term); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
  },
  {
   "evidence_id": "EV-10.114-044",
+  "kind": "representation",
+  "subject": "10.1149_2.067203jes__Fig11a__exp02",
+  "detail": "panel clause declares 'inset'",
+  "panel": "a",
+  "clause": ""
+ },
+ {
+  "evidence_id": "EV-10.114-045",
+  "kind": "case_scope",
+  "subject": "10.1149_2.067203jes__Fig11a__exp02",
+  "detail": "x axis 'Injection level' is UNRESOLVED (no ontology recipe_role for 'Injection level' and no instrument term); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
+ },
+ {
+  "evidence_id": "EV-10.114-046",
   "kind": "representation",
   "subject": "10.1149_2.067203jes__Fig11b",
   "detail": "panel clause declares 'inset'",
@@ -350,51 +362,147 @@
   "clause": ""
  },
  {
-  "evidence_id": "EV-10.114-045",
+  "evidence_id": "EV-10.114-047",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig11b",
   "detail": "x axis 'time' is UNRESOLVED (no ontology recipe_role for 'time' and no instrument term; sweep NOT expanded because the axis is a measurement setting); its points are observations of one specimen | axis role blocks case expansion"
  },
  {
-  "evidence_id": "EV-10.114-046",
+  "evidence_id": "EV-10.114-048",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig12a__exp01",
   "detail": "x axis 'voltage' is DERIVED (ontology recipe_role = observable); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
  },
  {
-  "evidence_id": "EV-10.114-047",
+  "evidence_id": "EV-10.114-049",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig12a__exp02",
   "detail": "x axis 'voltage' is DERIVED (ontology recipe_role = observable); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
  },
  {
-  "evidence_id": "EV-10.114-048",
+  "evidence_id": "EV-10.114-050",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig12a__exp03",
   "detail": "x axis 'voltage' is DERIVED (ontology recipe_role = observable); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
  },
  {
-  "evidence_id": "EV-10.114-049",
+  "evidence_id": "EV-10.114-051",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig12b__exp01",
   "detail": "x axis 'voltage' is DERIVED (ontology recipe_role = observable); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
  },
  {
-  "evidence_id": "EV-10.114-050",
+  "evidence_id": "EV-10.114-052",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig12b__exp02",
   "detail": "x axis 'voltage' is DERIVED (ontology recipe_role = observable); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
  },
  {
-  "evidence_id": "EV-10.114-051",
+  "evidence_id": "EV-10.114-053",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig12b__exp03",
   "detail": "x axis 'voltage' is DERIVED (ontology recipe_role = observable); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
  },
  {
-  "evidence_id": "EV-10.114-052",
+  "evidence_id": "EV-10.114-054",
   "kind": "case_scope",
   "subject": "10.1149_2.067203jes__Fig12b__exp04",
   "detail": "x axis 'voltage' is DERIVED (ontology recipe_role = observable); its points are observations of one specimen | not an independent process sweep (status 'not_an_independent_sweep')"
+ },
+ {
+  "evidence_id": "EV-10.114-055",
+  "kind": "image_supported_case",
+  "subject": "figure 3",
+  "detail": "Figure 3. High-resolution cross-sectional TEM image of a stack with alternating layers of ALD Al2O3 and ALD SiO2 deposited using 10-40 cycles each. The substrate temperature was 200 ◦ C. The extracted layer thicknesses are shown in Fig. 2b.",
+  "geometry": null,
+  "materials": [
+   "Al2O3",
+   "SiO2"
+  ],
+  "conditions": [
+   [
+    "cycle_number",
+    200.0
+   ],
+   [
+    "deposition_temperature",
+    200.0
+   ]
+  ]
+ },
+ {
+  "evidence_id": "EV-10.114-056",
+  "kind": "image_supported_case",
+  "subject": "figure 8",
+  "detail": "Figure 8. High-resolution SEM images of a high-aspect ratio trench in Si coated by 830 cycles of ALD SiO2. The SiO2 was deposited on top of thermal SiO2/ALD Al2O3 layers for optical contrast. The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio ",
+  "geometry": "vertical_structure",
+  "materials": [
+   "SiO2"
+  ],
+  "conditions": [
+   [
+    "feature_height",
+    18.5
+   ],
+   [
+    "feature_width",
+    0.6
+   ],
+   [
+    "aspect_ratio",
+    30.0
+   ],
+   [
+    "cycle_number",
+    830.0
+   ]
+  ]
+ },
+ {
+  "evidence_id": "EV-10.114-057",
+  "kind": "explicit_same_statement",
+  "subject": "fig 2 -> fig 3",
+  "detail": "EM) image of Fig. 3, compared with values determined by in situ SE on the same sample. The substrate temperature Tdep was 200 ◦ C. Figure 2. The growth-per",
+  "matched": "the same sample"
+ },
+ {
+  "evidence_id": "EV-10.114-058",
+  "kind": "explicit_same_statement",
+  "subject": "fig 2 -> fig 3",
+  "detail": "EM) image of Fig. 3, compared with values determined by in situ SE on the same sample. The substrate temperature Tdep was 200 ◦ C. Figure 2. The growth-per",
+  "matched": "the same sample"
+ },
+ {
+  "evidence_id": "EV-10.114-059",
+  "kind": "explicit_same_statement",
+  "subject": "fig 2 -> fig 3",
+  "detail": "EM) image of Fig. 3, compared with values determined by in situ SE on the same sample. The substrate temperature Tdep was 200 ◦ C. Figure 2. The growth-per",
+  "matched": "the same sample"
+ },
+ {
+  "evidence_id": "EV-10.114-060",
+  "kind": "explicit_same_statement",
+  "subject": "fig 2 -> fig 3",
+  "detail": "EM) image of Fig. 3, compared with values determined by in situ SE on the same sample. The substrate temperature Tdep was 200 ◦ C. Figure 2. The growth-per",
+  "matched": "the same sample"
+ },
+ {
+  "evidence_id": "EV-10.114-061",
+  "kind": "explicit_same_statement",
+  "subject": "fig 2 -> fig 3",
+  "detail": "EM) image of Fig. 3, compared with values determined by in situ SE on the same sample. The substrate temperature Tdep was 200 ◦ C. Figure 2. The growth-per",
+  "matched": "the same sample"
+ },
+ {
+  "evidence_id": "EV-10.114-062",
+  "kind": "produced_material_placement",
+  "subject": "SiO2 films -> substrate",
+  "detail": "The surface morphology of the SiO2 films … were deposited with negligible roughening on the Si(100) substrate"
+ },
+ {
+  "evidence_id": "EV-10.114-063",
+  "kind": "produced_material_placement",
+  "subject": "SiO2 films -> substrate",
+  "detail": "the SiO2 films … were deposited with negligible roughening on the Si(100) substrate"
  }
 ]

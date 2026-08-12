@@ -58,7 +58,11 @@ def pilot_counts(o):
         "result_series": len(o["result_series"]),
         "representations": len(o["representations"]),
         "samples": len(o["samples"]),
-        "deposition_runs": len(o["deposition_runs"]),
+        # An identified process execution and an assertion that several runs exist are
+        # different objects and are counted separately.
+        "identified_deposition_runs": len(o["deposition_runs"]),
+        "run_evidence_groups": len(o.get("run_evidence") or []),
+        "provenance_chains": len(o.get("provenance_chains") or []),
         "study_series": len(o["study_series"]),
         "simulation_runs": len(o["simulation_runs"]),
         "links_merged": sum(1 for l in o["links"] if l["action"] == "MERGED"),
@@ -118,12 +122,30 @@ def classify_changes(pid, o, old):
                                   "figures": sorted({r["printed_figure"]
                                                      for r in s["source_references"]})}
                                  for s in linked[:4]]})
-    runs = [r for r in o["deposition_runs"] if r["sample_ids"] or r["kind"] == "DISTINCT_RUNS"]
-    if runs:
-        out.append({"class": "RUN_LINKED", "n": len(runs),
-                    "detail": "process executions the source states explicitly",
+    if o["deposition_runs"]:
+        out.append({"class": "RUN_LINKED", "n": len(o["deposition_runs"]),
+                    "detail": "IDENTIFIED process executions (an actual run, with specimens)",
                     "examples": [{"run_id": r["run_id"], "kind": r["kind"],
-                                  "samples": r["sample_codes"]} for r in runs[:4]]})
+                                  "samples": r["sample_codes"]}
+                                 for r in o["deposition_runs"][:4]]})
+    if o.get("run_evidence"):
+        out.append({"class": "RUN_EVIDENCE_ONLY", "n": len(o["run_evidence"]),
+                    "detail": ("assertions that several runs exist, naming none of them; "
+                               "these are NOT DepositionRun instances"),
+                    "examples": [{"id": r["run_id"], "kind": r["kind"],
+                                  "evidence": (r.get("different_run_evidence")
+                                               or r.get("same_run_evidence") or "")[:140]}
+                                 for r in o["run_evidence"][:4]]})
+    if o.get("provenance_chains"):
+        out.append({"class": "CHARACTERIZATION_PROVENANCE_CHAIN",
+                    "n": len(o["provenance_chains"]),
+                    "detail": "produced material -> device -> measurement chains",
+                    "examples": [{"product": "%s %s" % (c["product_material"],
+                                                        c["product_form"]),
+                                  "qualifier": c["qualifier"], "device": c["device"],
+                                  "status": c["status"], "cases": c["case_ids"],
+                                  "covers_figures": c.get("covers_figures")}
+                                 for c in o["provenance_chains"][:4]]})
     mm = [c for c in o["experimental_cases"] if c.get("multi_material_context")]
     if mm:
         out.append({"class": "MATERIAL_CONTEXT_SPLIT", "n": len(mm),
@@ -177,6 +199,7 @@ def main():
         for u in o["unresolved"]:
             unresolved_rows.append({
                 "paper": pid, "kind": u.get("kind", "candidate_pair"),
+                "reason_class": u.get("reason_class", "CONDITION_ONLY_NO_POSITIVE_LINK"),
                 "status": u.get("status"),
                 "a": u.get("a") or u.get("measurement_id"), "b": u.get("b", ""),
                 "a_figure": u.get("a_figure") or u.get("printed_figure", ""),
@@ -191,20 +214,44 @@ def main():
         wr.writeheader()
         wr.writerows(rows)
     with (W / "comparison" / "unresolved_links.csv").open("w", newline="") as f:
-        wr = csv.DictWriter(f, fieldnames=["paper", "kind", "status", "a", "b",
-                                           "a_figure", "b_figure", "reason"])
+        wr = csv.DictWriter(f, fieldnames=["paper", "kind", "reason_class", "status",
+                                           "a", "b", "a_figure", "b_figure", "reason"])
         wr.writeheader()
         wr.writerows(unresolved_rows)
+    # Second-pass taxonomy: an unresolved link is a classified scientific state, not a
+    # failure count. Only the classes that the source genuinely supports resolving should
+    # shrink; CONDITION_ONLY_NO_POSITIVE_LINK is expected to persist.
+    RESOLVABLE = {"VALUE_JOIN_AVAILABLE": "yes",
+                  "PARSER_MISSED_EXPLICIT_EVIDENCE": "yes",
+                  "PROVENANCE_CHAIN_AVAILABLE": "yes",
+                  "PROVENANCE_CHAIN_INCOMPLETE": "no - the source names no protocol",
+                  "CONDITION_ONLY_NO_POSITIVE_LINK": "no - by design",
+                  "REFERENCE_BY_DESIGN": "no - a control, never attributed",
+                  "MEASUREMENT_ONLY_FIGURE": "no - reports no deposition",
+                  "SOURCE_TRULY_UNSPECIFIED": "no - the source does not say",
+                  "CONFLICTING_EVIDENCE": "no - contradicted"}
+    with (W / "comparison" / "unresolved_links_second_pass.csv").open("w", newline="") as f:
+        wr = csv.DictWriter(f, fieldnames=["paper", "object_a", "object_b", "reason_class",
+                                           "evidence", "resolvable", "final_status"])
+        wr.writeheader()
+        for r in unresolved_rows:
+            rc = r["reason_class"]
+            wr.writerow({"paper": r["paper"], "object_a": r["a"], "object_b": r["b"],
+                         "reason_class": rc,
+                         "evidence": (r["reason"] or "")[:300],
+                         "resolvable": RESOLVABLE.get(rc, "unknown"),
+                         "final_status": r["status"] or "UNRESOLVED"})
+
     (W / "comparison" / "semantic_invariants.json").write_text(
         json.dumps(invariants, indent=1, ensure_ascii=False))
 
     for pid in PAPERS:
         n = summary[pid]
-        print("%-24s cases %-4d meas %-4d rs %-4d rep %-4d samp %-3d run %-2d ser %-2d sim %-3d "
-              "| PSED experiments %d"
+        print("%-24s cases %-4d meas %-4d rs %-4d rep %-4d samp %-3d runs %-2d ser %-2d "
+              "sim %-3d | PSED experiments %d"
               % (pid[:24], n["pilot"]["experimental_cases"], n["pilot"]["measurements"],
                  n["pilot"]["result_series"], n["pilot"]["representations"],
-                 n["pilot"]["samples"], n["pilot"]["deposition_runs"],
+                 n["pilot"]["samples"], n["pilot"]["identified_deposition_runs"],
                  n["pilot"]["study_series"], n["pilot"]["simulation_runs"],
                  n["current_psed"]["experiments"]))
     print("\nwrote comparison/{old_vs_pilot.json,old_vs_pilot.csv,unresolved_links.csv,"
