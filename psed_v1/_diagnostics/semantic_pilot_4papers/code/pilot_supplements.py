@@ -42,6 +42,21 @@ _NON_PLOT = re.compile(
     r"(?:SEM|TEM|FESEM|HRTEM|AFM|optical)\s+images?|"
     r"images?\s+(?:of|showing)|micrograph|cross[- ]section\s+images?|top[- ]view|"
     r"configuration|setup|layout)\b", re.I)
+#: A caption that reports a DEPOSITION performed on a described structure. Such a figure
+#: documents a real experimental case even when its evidence is an electron micrograph
+#: rather than an x-y curve — experiment existence does not require a digitisable plot.
+_DEPOSITION_CLAUSE = re.compile(
+    r"\b(?:coated|deposited|grown|conformal\w*|deposition)\b", re.I)
+#: process/geometry quantities a caption of that kind states outright
+DEPOSITION_HINTS = [
+    (re.compile(r"\b(?:coated by|using|with|after)?\s*\d[\d.,\s-]*\s*cycles\b", re.I),
+     "cycle_number", "cycle"),
+    (re.compile(r"\baspect ratio\b", re.I), "aspect_ratio", None),
+    (re.compile(r"\bdepth\b", re.I), "feature_height", "µm"),
+    (re.compile(r"\b(?:average\s+)?width\b", re.I), "feature_width", "µm"),
+    (re.compile(r"\btemperature\b", re.I), "deposition_temperature", "°C"),
+]
+
 #: printed figure numbers as they appear at the head of a caption in the document
 _CAPTION_HEAD = re.compile(r"(?:Figure|Fig\.?|FIG\.?)\s*(\d{1,2})\b(?!\d)")
 
@@ -86,6 +101,51 @@ def missing_panels(paper):
                 "reason": "the printed caption describes a plotted measurement for this "
                           "panel and no extracted entity covers it",
             })
+    return out
+
+
+def image_supported_cases(paper, note=None):
+    """Figures whose caption reports a deposition on a described structure.
+
+    Yields one record per such figure holding the case-defining conditions the caption
+    states and the geometry it describes. No x-y points are produced and none are claimed:
+    the record exists because the paper documents the experiment, not because a curve was
+    digitised.
+    """
+    import pilot_ranges as PRG
+    import pilot_roles as R
+    covered = {str(e.get("printed_figure_number")) for e in paper.entities
+               if e.get("printed_figure_number")}
+    from_doc = set(_CAPTION_HEAD.findall(paper.md))
+    out = []
+    for pf in sorted((set(paper._printed.values()) | from_doc) - covered,
+                     key=lambda x: (len(x), x)):
+        cap = paper.printed_caption(pf)
+        if not cap or not _DEPOSITION_CLAUSE.search(cap):
+            continue
+        conds = PRG.quantities_from_text(cap, DEPOSITION_HINTS)
+        roles = R.material_roles(cap, paper.materials)
+        deposited = [m for m, recs in roles.items()
+                     if R.primary_role(recs) == R.DEPOSITED]
+        # A deposition case needs a deposited material AND a process condition. Without
+        # the material requirement a device-cycling caption ("stability … for over 10 000
+        # cycles") reads as an ALD cycle count, which is a different quantity entirely.
+        if not conds or not deposited:
+            continue
+        gc, gmatch = R.geometry_in_scope(cap)
+        out.append({
+            "paper_id": paper.pid, "printed_figure": pf, "caption": cap[:600],
+            "conditions": conds, "material_roles": {m: R.primary_role(v)
+                                                    for m, v in roles.items()},
+            "deposited_materials": sorted(deposited),
+            "geometry": gc, "geometry_evidence": gmatch,
+            "techniques": [t["technique"] for t in PE.techniques(cap)],
+            "data_recovered": False,
+            "evidence_kind": "caption_and_image",
+            "reason": ("the caption reports a deposition on a described structure and "
+                       "states its process conditions; the figure's evidence is an image, "
+                       "so no x-y points exist or are claimed"),
+        })
     return out
 
 

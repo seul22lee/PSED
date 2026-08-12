@@ -108,6 +108,8 @@ _ROLE_PATTERNS = [
                 r"(?:substrates?|wafers?|slides?)"),
     (SUBSTRATE, r"({M})\s+(?:substrates?|wafers?)"),
     (SUBSTRATE, r"(?:substrates?|wafers?)\s+of\s+({M})"),
+    (SUBSTRATE, r"(?:on\s+top\s+of|deposited\s+on\s+top\s+of|over)\s+"
+                r"(?:\S+\s+){0,3}?({M})\s+layers?"),
     (SUPPORT, r"({M})\s+(?:supports?|particles?|powders?|nanoparticles?|nanotubes?|"
               r"scaffolds?|membranes?|frameworks?)"),
     (SUPPORT, r"(?:supported\s+on|deposited\s+on|grown\s+on|coated\s+on)\s+"
@@ -123,6 +125,51 @@ _ROLE_PATTERNS = [
                 r"nanotubes?\s+grown)"),
     (DEPOSITED, r"(?:deposit\w*|grow\w*|coat\w*)\s+({M})\b"),
 ]
+
+
+#: A clause stating what a chemical is FOR is not a record of a deposition. "…the SAM.24
+#: precursor used for ALD of SiO2… This precursor is commonly used for ALD of Al2O3" is a
+#: precursor-property sentence, and reading it as two depositions is how a vapour-pressure
+#: figure acquired a two-material stack context.
+_PURPOSE = re.compile(r"\b(?:used|usable|use|suitable|employed|applied|intended|known|"
+                      r"popular|common|commonly|typical|typically|standard)\b", re.I)
+
+
+def _is_purpose_clause(text, start):
+    """True when the material mention at `start` is governed by a purpose phrase.
+
+    The window is the current sentence only, so a purpose word in a previous sentence
+    cannot suppress a genuine deposition statement in this one.
+    """
+    head = text[max(0, start - 90):start]
+    cut = max(head.rfind(". "), head.rfind("; "))
+    sentence = head[cut + 1:] if cut >= 0 else head
+    return bool(_PURPOSE.search(sentence) and re.search(r"\bfor\b", sentence, re.I))
+
+
+#: Measurands that are properties of a CHEMICAL SPECIES rather than of a deposited film.
+#: A scope reporting one of these is precursor/reagent characterisation: it has no
+#: deposited material of its own, so it may contribute material candidates but never an
+#: asserted local role, and it never mints a deposition case.
+SPECIES_PROPERTY_MEASURANDS = {
+    "vapor_pressure", "vapour_pressure", "molar_mass", "molecular_mass",
+    "molecular_diameter", "precursor_molecular_diameter", "boiling_point",
+    "melting_point", "sublimation_enthalpy", "vapour_density", "viscosity",
+    "decomposition_temperature", "thermogravimetric_mass", "mass_loss",
+}
+_SPECIES_PROPERTY_HINT = re.compile(r"vapou?r[_\s-]?pressure|molar[_\s-]?mass|"
+                                    r"molecular[_\s-]?(?:mass|weight|diameter)|"
+                                    r"sublimation|thermogravimetric", re.I)
+
+
+def is_species_property(measurand, coordinate=None):
+    """(True, reason) when a scope measures a property of a chemical, not of a film."""
+    for q in (measurand, coordinate):
+        qq = str(q or "")
+        if qq in SPECIES_PROPERTY_MEASURANDS or _SPECIES_PROPERTY_HINT.search(qq):
+            return True, ("%r is a property of a chemical species, not of a deposited "
+                          "film" % qq)
+    return False, None
 
 
 def _alt(materials):
@@ -147,6 +194,8 @@ def material_roles(text, materials):
         for m in rx.finditer(text):
             name = lower.get(m.group(1).lower())
             if not name:
+                continue
+            if role == DEPOSITED and _is_purpose_clause(text, m.start(1)):
                 continue
             a, b = max(0, m.start() - 60), min(len(text), m.end() + 60)
             rec = {"role": role, "matched": re.sub(r"\s+", " ", m.group(0)).strip()[:120],

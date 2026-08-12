@@ -10,6 +10,7 @@ PDFs are inlined as data URIs so the report stays a single portable file.
 import base64
 import html
 import json
+import subprocess
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -87,18 +88,65 @@ code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.
 img.page{max-width:100%;border:1px solid var(--line);border-radius:6px;margin-top:6px}
 .bar{height:7px;border-radius:4px;background:var(--chip);overflow:hidden;margin-top:3px}
 .bar i{display:block;height:100%;background:var(--accent)}
+.kind-range{color:#0f7c8a;border-color:#0f7c8a;font-weight:700}
+.kind-approx{color:var(--mut)}
+.prov{opacity:.7;font-weight:400}
+.cand{color:var(--unres);border-color:var(--unres)}
+.ref{color:var(--sim);border-color:var(--sim)}
+.chk .P{color:var(--exp);font-weight:700}.chk .F{color:var(--warn);font-weight:700}
+.chain{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12.5px;margin:5px 0}
+.chain b{background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-weight:600}
+.chain i{color:var(--mut);font-style:normal}
+.stop{color:var(--unres);border:1px dashed var(--unres);border-radius:6px;padding:2px 8px}
 """
 
 
+#: how a value was arrived at — never flattened into one visual kind
+_KIND_TAG = {"range": ("range", "kind-range"), "approximate": ("approx", "kind-approx"),
+             "scalar": ("", "")}
+_PROV_TAG = {"directly_stated": "stated", "directly_stated_range": "stated range",
+             "derived_from_sweep_axis": "from sweep axis",
+             "methods_default": "methods default",
+             "inherited_from_explicit_sample": "inherited from specimen"}
+
+
+def fmt_value(c):
+    if c.get("value_kind") == "range":
+        return "%s&ndash;%s %s" % (e(c.get("value_lower")), e(c.get("value_upper")),
+                                   e(c.get("unit") or ""))
+    if c.get("value_status") == "REJECTED_UNPHYSICAL":
+        return "unresolved"
+    v = c.get("value")
+    if v is None:
+        return "unresolved"
+    pre = "~" if c.get("value_kind") == "approximate" else ""
+    return "%s%s %s" % (pre, e(v), e(c.get("unit") or ""))
+
+
 def conds_cell(conds, limit=8):
+    """One condition per line, with its VALUE KIND and its PROVENANCE both visible.
+
+    A stated scalar, an inherited default, a value read off a sweep axis and a stated
+    interval are four different epistemic states, and flattening them into one number is
+    how "10-120 ms" became "-120 ms" without anyone noticing."""
     if not conds:
         return '<span class="tag UNRESOLVED">none known</span>'
     out = []
     for c in conds[:limit]:
         prov = c.get("provenance_type") or ""
-        out.append('<div><code>%s = %s %s</code> <span class="tag">%s</span></div>'
-                   % (e(c.get("quantity")), e(c.get("value")), e(c.get("unit") or ""),
-                      e(prov.replace("_", " "))))
+        kind_lbl, kind_cls = _KIND_TAG.get(c.get("value_kind") or "scalar", ("", ""))
+        bits = ['<code>%s = %s</code>' % (e(c.get("quantity")), fmt_value(c))]
+        if kind_lbl:
+            bits.append('<span class="tag %s">%s</span>' % (kind_cls, e(kind_lbl)))
+        bits.append('<span class="tag prov">%s</span>'
+                    % e(_PROV_TAG.get(prov, prov.replace("_", " "))))
+        if c.get("value_status") == "REJECTED_UNPHYSICAL":
+            bits.append('<span class="tag warn" title="%s">rejected %s</span>'
+                        % (e(c.get("value_repair")), e(c.get("superseded_value"))))
+        elif c.get("value_repair"):
+            bits.append('<span class="tag warn" title="%s">repaired from %s</span>'
+                        % (e(c.get("value_repair")), e(c.get("superseded_value"))))
+        out.append("<div>%s</div>" % " ".join(bits))
     if len(conds) > limit:
         out.append('<div class="hint">+%d more</div>' % (len(conds) - limit))
     return "".join(out)
@@ -124,7 +172,47 @@ def evidence_block(o, ids, label="evidence"):
             '</table></div></details>' % (label, len(rows), "".join(rows)))
 
 
-def paper_section(pid, o, cmp_):
+def ground_truth_checks(checks, pid):
+    """The PDF-ground-truth anchors for one paper, as the test run reported them."""
+    rows = [c for c in checks if c["paper"] == pid]
+    if not rows:
+        return ""
+    npass = sum(1 for r in rows if r["pass"])
+    h = ['<h3>PDF-ground-truth checks &mdash; %d / %d pass</h3>' % (npass, len(rows))]
+    h.append('<p class="hint">Read from the original PDF, not from the pilot output. A '
+             'failure here means the pilot disagrees with the paper.</p>')
+    h.append('<div class="scroll"><table class="chk"><tr><th>check</th><th>result</th>'
+             '<th>detail</th></tr>')
+    for r in rows:
+        h.append("<tr><td>%s</td><td class='%s'>%s</td><td class='hint mono'>%s</td></tr>"
+                 % (e(r["name"]), "P" if r["pass"] else "F",
+                    "PASS" if r["pass"] else "FAIL", e(r["detail"])[:200]))
+    h.append("</table></div>")
+    return "\n".join(h)
+
+
+def material_cell(c):
+    """Local materials, their roles, and WHERE the assignment came from.
+
+    A material proposed only by the paper-wide inventory is shown as a candidate, so
+    leakage is visible at a glance instead of reading as an assertion."""
+    bits = []
+    for m, role in sorted((c.get("material_roles") or {}).items()):
+        bits.append('<span class="tag exp">%s: %s</span>' % (e(m), e(role)))
+    for m, role in sorted((c.get("material_candidates") or {}).items()):
+        bits.append('<span class="tag cand" title="paper-wide inventory only; '
+                    'not asserted for this result">%s: %s (candidate)</span>'
+                    % (e(m), e(role)))
+    if not bits:
+        bits.append('<span class="tag UNRESOLVED">unresolved</span>')
+    src = c.get("material_evidence_scope") or "none"
+    bits.append('<div class="hint">source: %s</div>' % e(src))
+    if c.get("material_status") and c["material_status"] != "ASSERTED":
+        bits.append('<div class="hint">%s</div>' % e(c.get("material_status_reason")))
+    return " ".join(bits)
+
+
+def paper_section(pid, o, cmp_, checks=None):
     ms = {m["measurement_id"]: m for m in o["measurements"]}
     cases = o["experimental_cases"]
     samples = {s["sample_id"]: s for s in o["samples"]}
@@ -137,13 +225,15 @@ def paper_section(pid, o, cmp_):
                       ("ResultSeries", old["canonical_curves"], new["result_series"]),
                       ("Representations", "&mdash;", new["representations"]),
                       ("Samples", old["physical_case_ids"], new["samples"]),
-                      ("DepositionRuns", 0, new["deposition_runs"]),
+                      ("identified DepositionRuns", 0, new["identified_deposition_runs"]),
+                      ("run-evidence groups", 0, new["run_evidence_groups"]),
                       ("SimulationRuns", old["simulation_entities"] + old["model_sweep_entities"],
                        new["simulation_runs"]),
                       ("Unresolved links", "&mdash;", new["unresolved_links"])):
         h.append('<div class="card"><b>%s &rarr; %s</b><span class="doi">%s</span></div>'
                  % (a, b, lab))
     h.append("</div>")
+    h.append(ground_truth_checks(checks or [], pid))
 
     # ---- case-centric ----
     h.append("<h3>ExperimentalCase view &mdash; one row per scientifically distinct case</h3>")
@@ -160,14 +250,13 @@ def paper_section(pid, o, cmp_):
             mrows.append("<div>%s <span class='tag'>Fig %s%s</span></div>"
                          % (e(", ".join(m["technique"]) or "—"),
                             e(m["source"]["printed_figure"]), e(m["source"]["panel"])))
-        roles = " ".join('<span class="tag">%s: %s</span>' % (e(k), e(v))
-                         for k, v in sorted((c["material_roles"] or {}).items()))
+        roles = material_cell(c)
         h.append("<tr id='%s'><td class=mono>%s%s</td><td>%s</td><td>%s<div class='hint'>%s</div></td>"
                  "<td>%s</td><td class=mono>%s</td><td class=mono>%s</td><td>%s</td>"
                  "<td class=mono>%s</td><td><span class='tag %s'>%s</span></td><td>%s</td></tr>"
                  % (e(c["case_id"]), e(c["case_id"]),
                     ("<div class='hint'>%s</div>" % e(c["label"])) if c.get("label") else "",
-                    roles or e(c["deposited_material"] or "—"),
+                    roles,
                     e(c["geometry"] or "—"), e(c.get("geometry_source") or ""),
                     conds_cell(c["case_defining_conditions"]),
                     e(", ".join(c["deposition_run_ids"]) or "—"),
@@ -263,7 +352,14 @@ def paper_section(pid, o, cmp_):
     # ---- sample / run view ----
     if o["samples"] or o["deposition_runs"]:
         h.append("<h3>Sample and DepositionRun view</h3>")
+        h.append('<p class="hint"><b>%d identified deposition run(s)</b> &mdash; an actual '
+                 'process execution with named specimens. Separately, <b>%d '
+                 'run-distinctness assertion(s)</b>: the source says several runs exist '
+                 'but names none of them, so they are NOT DepositionRun instances and are '
+                 'not counted as runs.</p>'
+                 % (len(o["deposition_runs"]), len(o.get("run_evidence") or [])))
         h.append('<div class="grid2"><div>')
+        h.append("<h3 style='margin-top:4px'>Identified deposition runs</h3>")
         for r in o["deposition_runs"]:
             h.append('<details open><summary><code>%s</code> <span class="tag %s">%s</span>'
                      '</summary>' % (e(r["run_id"]), e(r["confidence"]), e(r["kind"])))
@@ -276,6 +372,17 @@ def paper_section(pid, o, cmp_):
                 h.append("</ul>")
             elif r.get("note"):
                 h.append('<div class="hint">%s</div>' % e(r["note"]))
+            h.append("</details>")
+        if not o["deposition_runs"]:
+            h.append('<p class="hint">none &mdash; no statement in this paper identifies a '
+                     'specific process execution.</p>')
+        for r in (o.get("run_evidence") or []):
+            h.append('<details><summary><span class="tag UNRESOLVED">RUN-DISTINCTNESS '
+                     'EVIDENCE</span> &nbsp;<code>%s</code></summary>' % e(r["run_id"]))
+            h.append('<div class="q">%s</div>'
+                     % e(r.get("different_run_evidence") or r.get("same_run_evidence") or ""))
+            h.append('<div class="hint">%s</div>'
+                     % e(r.get("note") or "an assertion about runs, not a run instance"))
             h.append("</details>")
         h.append("</div><div>")
         for s in sorted(o["samples"], key=lambda x: (len(x["source_sample_code"]),
@@ -307,8 +414,9 @@ def paper_section(pid, o, cmp_):
     if o["study_series"]:
         h.append("<h3>Study series view &mdash; author-declared groupings (many-to-many)</h3>")
         h.append('<div class="scroll"><table><tr><th>Series</th><th>Varied variable</th>'
-                 '<th>Role of that variable</th><th>Member samples</th><th>Member cases</th>'
-                 '<th>Evidence</th></tr>')
+                 '<th>Role</th><th>Where the variable comes from</th>'
+                 '<th>Co-varying context</th><th>Member samples</th><th>Member cases</th>'
+                 '</tr>')
         multi = Counter()
         for s in o["study_series"]:
             for c in s["member_sample_codes"]:
@@ -317,13 +425,20 @@ def paper_section(pid, o, cmp_):
             mem = " ".join('<span class="tag%s">%s</span>'
                            % (" SUPPORTED" if multi[c] > 1 else "", e(c))
                            for c in s["member_sample_codes"])
+            cov = " ".join('<span class="tag cand">%s: %s</span>'
+                           % (e(c["quantity"]), e(", ".join(c["values"])[:40]))
+                           for c in (s.get("co_varying_context") or [])) or "—"
             h.append("<tr><td><b>%s</b></td><td class=mono>%s</td>"
-                     "<td><span class='tag %s'>%s</span></td><td>%s</td><td class=mono>%s</td>"
-                     "<td class='hint'>%s</td></tr>"
+                     "<td><span class='tag %s'>%s</span></td>"
+                     "<td><span class='tag %s'>%s</span><div class='hint'>%s</div></td>"
+                     "<td>%s</td><td>%s</td><td class=mono>%s</td></tr>"
                      % (e(s["author_series_name"]), e(s["varied_variable"] or "—"),
                         "UNRESOLVED" if s["varied_variable_role"] == "UNRESOLVED" else "",
-                        e(s["varied_variable_role"]), mem,
-                        e(", ".join(s["member_case_ids"]) or "—"), e((s["purpose"] or "")[:200])))
+                        e(s["varied_variable_role"]),
+                        "exp" if s.get("varied_variable_source") == "author_declaration" else "",
+                        e((s.get("varied_variable_source") or "").replace("_", " ")),
+                        e((s["purpose"] or "")[:160]), cov, mem,
+                        e(", ".join(s["member_case_ids"]) or "—")))
         h.append("</table></div>")
         if any(v > 1 for v in multi.values()):
             h.append('<p class="hint">Highlighted specimens belong to more than one series &mdash; '
@@ -331,19 +446,57 @@ def paper_section(pid, o, cmp_):
                      % e(", ".join("sample %s (%d series)" % (k, v)
                                    for k, v in sorted(multi.items()) if v > 1)))
 
+    # ---- provenance chains ----
+    if o.get("provenance_chains"):
+        h.append("<h3>Characterisation provenance chain</h3>")
+        h.append('<p class="hint">A measured result is attributed to a deposition case only '
+                 'when the source states that the material that case PRODUCED was placed on '
+                 'the thing that was measured. Where the chain stops, it is shown stopping.</p>')
+        for ch in o["provenance_chains"]:
+            h.append('<div class="chain"><b>%s</b><i>&rarr;</i><b>%s %s</b><i>&rarr;</i>'
+                     '<b>%s</b><i>&rarr;</i>%s</div>'
+                     % (e(", ".join(ch["case_ids"]) or "?"),
+                        e(ch.get("qualifier") or ""), e("%s %s" % (ch["product_material"],
+                                                                  ch["product_form"])),
+                        e(ch["device"]),
+                        ('<b>measurements of figure %s</b>' % e(", ".join(ch.get("covers_figures") or []))
+                         if ch["status"] == "RESOLVED" else
+                         '<span class="stop">chain stops: %s</span>' % e(ch.get("reason")))))
+            h.append('<div class="q">%s</div>' % e(ch["statement"]))
+        refs = [m for m in o["measurements"] if m.get("provenance_role") == "REFERENCE"]
+        if refs:
+            h.append('<p class="hint">Comparison controls, never attributed to a deposition '
+                     'case:</p>')
+            for m in refs:
+                h.append('<div class="chain"><span class="tag ref">REFERENCE</span>'
+                         '<b>Fig %s%s &mdash; %s</b><i>%s</i></div>'
+                         % (e(m["source"]["printed_figure"]), e(m["source"]["panel"]),
+                            e(m["source"].get("source_series") or ", ".join(m["technique"])),
+                            e(m.get("provenance_note") or "")))
+        stops = [m for m in o["measurements"] if m.get("provenance_role") == "CASE_UNRESOLVED"]
+        if stops:
+            h.append('<p class="hint">Measured, but the producing case is not identified by '
+                     'the source:</p>')
+            for m in stops:
+                h.append('<div class="chain"><b>Fig %s%s</b><i>&rarr;</i>'
+                         '<span class="stop">%s</span></div>'
+                         % (e(m["source"]["printed_figure"]), e(m["source"]["panel"]),
+                            e(m.get("provenance_note"))))
+
     # ---- unresolved ----
     if o["unresolved"]:
         h.append("<h3>Unresolved links &mdash; merges the evidence did not support</h3>")
         h.append('<p class="hint">An unresolved link is the intended outcome when the source '
                  'does not state identity. Missing information is never treated as sameness.</p>')
-        h.append('<div class="scroll"><table><tr><th>Kind</th><th>What</th><th>Why it is '
-                 'unresolved</th></tr>')
+        h.append('<div class="scroll"><table><tr><th>Reason class</th><th>What</th>'
+                 '<th>Why it is unresolved</th></tr>')
         for u in o["unresolved"][:40]:
             what = (u.get("measurement_id") or "%s &harr; %s (Fig %s vs %s)"
                     % (u.get("a"), u.get("b"), u.get("a_figure"), u.get("b_figure")))
             h.append("<tr><td><span class='tag UNRESOLVED'>%s</span></td><td class=mono>%s</td>"
                      "<td>%s</td></tr>"
-                     % (e(u.get("kind", "candidate_pair")), what, e(u.get("reason"))))
+                     % (e(u.get("reason_class", "CONDITION_ONLY_NO_POSITIVE_LINK")),
+                        what, e(u.get("reason"))))
         h.append("</table></div>")
         if len(o["unresolved"]) > 40:
             h.append('<p class="hint">showing 40 of %d</p>' % len(o["unresolved"]))
@@ -382,7 +535,33 @@ def paper_section(pid, o, cmp_):
     return "\n".join(h)
 
 
+def run_checks():
+    """The PDF-ground-truth anchors, taken from an actual run of the test suite.
+
+    Reporting a stored verdict would let the page claim a pass the tests no longer give,
+    so the suite is executed and its machine-readable ANCHOR lines are parsed. Those lines
+    carry the paper id, which is why no module here needs to name a paper."""
+    try:
+        out = subprocess.run([sys.executable, str(W / "tests" / "test_pilot_semantics.py")],
+                             capture_output=True, text=True, timeout=600).stdout
+    except Exception as exc:
+        return [], "the test suite could not be run: %s" % exc
+    rows = []
+    for line in out.splitlines():
+        if not line.startswith("ANCHOR\t"):
+            continue
+        parts = line.rstrip("\n").split("\t")
+        if len(parts) < 4:
+            continue
+        _, pid, verdict, name = parts[:4]
+        rows.append({"paper": pid, "name": name,
+                     "detail": parts[4] if len(parts) > 4 else "",
+                     "pass": verdict == "PASS"})
+    return rows, None
+
+
 def main():
+    checks, check_err = run_checks()
     cmp_all = json.loads((W / "comparison" / "old_vs_pilot.json").read_text())
     inv = json.loads((W / "comparison" / "semantic_invariants.json").read_text())
     h = ['<title>Four-Paper Semantic Pilot</title><style>%s</style><div class="wrap">' % CSS]
@@ -406,7 +585,8 @@ def main():
                        ("pilot ExperimentalCases", len(o["experimental_cases"])),
                        ("Measurements", len(o["measurements"])),
                        ("Samples", len(o["samples"])),
-                       ("DepositionRuns", len(o["deposition_runs"])),
+                       ("identified DepositionRuns", len(o["deposition_runs"])),
+                       ("run-evidence groups", len(sem(pid, "run_evidence"))),
                        ("Representations", len(o["representations"])),
                        ("SimulationRuns", len(o["simulation_runs"])),
                        ("unresolved links", len(o["unresolved"]))):
@@ -415,6 +595,12 @@ def main():
     h.append("</div>")
 
     # invariant strip
+    if checks:
+        npass = sum(1 for c in checks if c["pass"])
+        h.append('<p class="sub"><b>PDF-ground-truth checks: %d / %d pass.</b> Each paper\'s '
+                 'own checks are shown in its section below.</p>' % (npass, len(checks)))
+    elif check_err:
+        h.append('<p class="sub warn">%s</p>' % e(check_err))
     h.append("<h2>Invariants</h2>")
     h.append('<div class="scroll"><table><tr><th>Paper</th><th>source curves</th>'
              '<th>points</th><th>measured/simulated</th><th>swept cases carrying their value</th>'
@@ -442,8 +628,9 @@ def main():
         o = {k: sem(pid, k) for k in ("experimental_cases", "measurements", "result_series",
                                       "representations", "samples", "deposition_runs",
                                       "study_series", "simulation_runs", "links",
-                                      "evidence", "unresolved")}
-        h.append(paper_section(pid, o, cmp_all[pid]))
+                                      "evidence", "unresolved", "run_evidence",
+                                      "provenance_chains")}
+        h.append(paper_section(pid, o, cmp_all[pid], checks))
 
     h.append('<p class="hint" style="margin-top:40px">Generated by '
              '<code>code/build_report.py</code> from the pilot workspace. '

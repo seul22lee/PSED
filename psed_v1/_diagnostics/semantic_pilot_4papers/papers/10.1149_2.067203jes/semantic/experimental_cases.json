@@ -3,166 +3,7 @@
   "case_id": "CASE-10.114-001",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
-  "deposited_material": null,
-  "deposited_materials": [],
-  "context_materials": [
-   "Al2O3",
-   "SiO2"
-  ],
-  "material_roles": {
-   "Al2O3": "DEPOSITED",
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": true,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [
-   {
-    "quantity": "precursor",
-    "value": "H2Si[N(C2H5)2]2",
-    "unit": null,
-    "role": "CASE_DEFINING",
-    "role_basis": "process chemistry named by the source scope",
-    "provenance_type": "directly_stated",
-    "source": "figure_caption",
-    "evidence": "'Figure 1. Vapor pressure of the H2Si[N(C2H5)2]2 (SAM.24) precursor used for ALD of SiO2 as a function of the temperature' names 'H2Si[N(C2H5)2]2', one of the paper's precursor"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": "-120",
-    "unit": "ms",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "doses (10-120 ms",
-    "locator": "document.md near Fig 1"
-   }
-  ],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig1a__exp01"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-055"
-  ],
-  "source_figures": [
-   "1"
-  ],
-  "source_panels": [
-   "1a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-004"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member"
-  ]
- },
- {
-  "case_id": "CASE-10.114-002",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": null,
-  "deposited_materials": [],
-  "context_materials": [
-   "Al2O3",
-   "SiO2"
-  ],
-  "material_roles": {
-   "Al2O3": "DEPOSITED",
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": true,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [
-   {
-    "quantity": "precursor",
-    "value": "H2Si[N(C2H5)2]2",
-    "unit": null,
-    "role": "CASE_DEFINING",
-    "role_basis": "process chemistry named by the source scope",
-    "provenance_type": "directly_stated",
-    "source": "figure_caption",
-    "evidence": "'Figure 1. Vapor pressure of the H2Si[N(C2H5)2]2 (SAM.24) precursor used for ALD of SiO2 as a function of the temperature' names 'H2Si[N(C2H5)2]2', one of the paper's precursor"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": "-120",
-    "unit": "ms",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "doses (10-120 ms",
-    "locator": "document.md near Fig 1"
-   }
-  ],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig1a__exp02"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-056"
-  ],
-  "source_figures": [
-   "1"
-  ],
-  "source_panels": [
-   "1a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-005"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member"
-  ]
- },
- {
-  "case_id": "CASE-10.114-003",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -173,6 +14,10 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -192,7 +37,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "T_dep = 50°C",
-    "locator": "series label 'T_dep = 50°C' (axis 'deposition temperature')"
+    "locator": "series label 'T_dep = 50°C' (axis 'deposition temperature')",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "planar",
@@ -208,143 +54,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-057"
-  ],
-  "source_figures": [
-   "2"
-  ],
-  "source_panels": [
-   "2a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-006"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": []
- },
- {
-  "case_id": "CASE-10.114-004",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": "SiO2",
-  "deposited_materials": [
-   "SiO2"
-  ],
-  "context_materials": [
-   "SiO2"
-  ],
-  "material_roles": {
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [
-   {
-    "quantity": "deposition_temperature",
-    "value": "200",
-    "unit": "°C",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "series_label",
-    "scope": "series",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "T_dep = 200°C",
-    "locator": "series label 'T_dep = 200°C' (axis 'deposition temperature')"
-   }
-  ],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig2a__exp02"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-058"
-  ],
-  "source_figures": [
-   "2"
-  ],
-  "source_panels": [
-   "2a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-007"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": []
- },
- {
-  "case_id": "CASE-10.114-005",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": "SiO2",
-  "deposited_materials": [
-   "SiO2"
-  ],
-  "context_materials": [
-   "SiO2"
-  ],
-  "material_roles": {
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [
-   {
-    "quantity": "deposition_temperature",
-    "value": "250",
-    "unit": "°C",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "series_label",
-    "scope": "series",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "T_dep = 250°C",
-    "locator": "series label 'T_dep = 250°C' (axis 'deposition temperature')"
-   }
-  ],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig2a__exp03"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-059"
+   "CAND-10.114-055"
   ],
   "source_figures": [
    "2"
@@ -364,26 +74,59 @@
   "warnings": []
  },
  {
-  "case_id": "CASE-10.114-006",
+  "case_id": "CASE-10.114-002",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
-  "deposited_material": "SiO2",
+  "synthesis_label": null,
+  "deposited_material": null,
   "deposited_materials": [
+   "Al2O3",
    "SiO2"
   ],
   "context_materials": [
+   "Al2O3",
    "SiO2"
   ],
   "material_roles": {
+   "Al2O3": "DEPOSITED",
    "SiO2": "DEPOSITED"
   },
-  "multi_material_context": false,
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": true,
   "process_type": "plasma",
   "precursors": [],
   "coreactants": [
    "O2_plasma"
   ],
-  "case_defining_conditions": [],
+  "case_defining_conditions": [
+   {
+    "quantity": "cycle_number",
+    "unit": "cycle",
+    "span": "with alternating layers of ALD Al2O3 and ALD SiO2 deposited using 10-40 cycles each. The substrate temperature was 200 ◦ C. The extracted layer thicknesses are shown in",
+    "value": 200.0,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "with alternating layers of ALD Al2O3 and ALD SiO2 deposited using 10-40 cycles each. The substrate temperature was 200 ◦ C. The extracted layer thicknesses are shown in"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "unit": "°C",
+    "span": "d ALD SiO2 deposited using 10-40 cycles each. The substrate temperature was 200 ◦ C. The extracted layer thicknesses are shown in Fig. 2b.",
+    "value": 200.0,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "d ALD SiO2 deposited using 10-40 cycles each. The substrate temperature was 200 ◦ C. The extracted layer thicknesses are shown in Fig. 2b."
+   }
+  ],
   "geometry": "planar",
   "geometries": [
    "planar"
@@ -391,37 +134,51 @@
   "geometry_source": "paper-level default",
   "geometry_evidence": null,
   "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig2b__exp01"
+   "M::10.1149_2.067203jes__Fig2a__exp02",
+   "M::10.1149_2.067203jes__Fig2b__exp01",
+   "M::10.1149_2.067203jes__Fig2b__exp02",
+   "M::IMG::10.1149_2.067203jes::F3"
   ],
   "sample_ids": [],
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-060"
+   "CAND-10.114-056",
+   "CAND-10.114-058",
+   "CAND-10.114-059",
+   "CAND-10.114-079"
   ],
   "source_figures": [
-   "2"
+   "2",
+   "3"
   ],
   "source_panels": [
-   "2b"
+   "2a",
+   "2b",
+   "3"
   ],
-  "n_members": 1,
+  "n_members": 4,
   "member_kinds": [
+   "image_supported",
    "whole_curve"
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-009"
+   "EV-10.114-009",
+   "EV-10.114-011",
+   "EV-10.114-012",
+   "EV-10.114-055"
   ],
-  "confidence": "EXPLICIT",
+  "confidence": "SUPPORTED",
   "warnings": [
-   "no case-defining condition value is known for this case"
+   "several deposited materials linked into one case: ['Al2O3', 'SiO2']"
   ]
  },
  {
-  "case_id": "CASE-10.114-007",
+  "case_id": "CASE-10.114-003",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -432,13 +189,33 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
   "coreactants": [
    "O2_plasma"
   ],
-  "case_defining_conditions": [],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "250",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "T_dep = 250°C",
+    "locator": "series label 'T_dep = 250°C' (axis 'deposition temperature')",
+    "value_kind": "scalar"
+   }
+  ],
   "geometry": "planar",
   "geometries": [
    "planar"
@@ -446,19 +223,19 @@
   "geometry_source": "paper-level default",
   "geometry_evidence": null,
   "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig2b__exp02"
+   "M::10.1149_2.067203jes__Fig2a__exp03"
   ],
   "sample_ids": [],
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-061"
+   "CAND-10.114-057"
   ],
   "source_figures": [
    "2"
   ],
   "source_panels": [
-   "2b"
+   "2a"
   ],
   "n_members": 1,
   "member_kinds": [
@@ -469,14 +246,13 @@
    "EV-10.114-010"
   ],
   "confidence": "EXPLICIT",
-  "warnings": [
-   "no case-defining condition value is known for this case"
-  ]
+  "warnings": []
  },
  {
-  "case_id": "CASE-10.114-008",
+  "case_id": "CASE-10.114-004",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -487,6 +263,10 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -496,17 +276,22 @@
   "case_defining_conditions": [
    {
     "quantity": "cycle_number",
-    "value": "-40",
+    "value": null,
     "unit": "cycle",
     "role": "CASE_DEFINING",
     "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
+    "provenance_type": "directly_stated_range",
     "source": "body",
     "scope": "figure",
     "assertion_status": "direct",
     "species": null,
     "evidence": "-40 cycles",
-    "locator": "document.md near Fig 4"
+    "locator": "document.md near Fig 4",
+    "value_kind": "range",
+    "value_lower": 10.0,
+    "value_upper": 40.0,
+    "superseded_value": "-40",
+    "value_repair": "the source states an interval 10-40; the upstream parser read its separator as a minus sign"
    }
   ],
   "geometry": "planar",
@@ -522,7 +307,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-062"
+   "CAND-10.114-060"
   ],
   "source_figures": [
    "4"
@@ -536,15 +321,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-015"
+   "EV-10.114-017"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.114-009",
+  "case_id": "CASE-10.114-005",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -553,8 +339,12 @@
    "SiO2"
   ],
   "material_roles": {
-   "SiO2": "STACK_COMPONENT"
+   "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -575,7 +365,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-063"
+   "CAND-10.114-061"
   ],
   "source_figures": [
    "5"
@@ -589,7 +379,7 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-020"
+   "EV-10.114-022"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
@@ -597,9 +387,10 @@
   ]
  },
  {
-  "case_id": "CASE-10.114-010",
+  "case_id": "CASE-10.114-006",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -608,8 +399,12 @@
    "SiO2"
   ],
   "material_roles": {
-   "SiO2": "STACK_COMPONENT"
+   "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -630,7 +425,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-064"
+   "CAND-10.114-062"
   ],
   "source_figures": [
    "5"
@@ -644,7 +439,7 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-021"
+   "EV-10.114-023"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
@@ -652,9 +447,10 @@
   ]
  },
  {
-  "case_id": "CASE-10.114-011",
+  "case_id": "CASE-10.114-007",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -665,6 +461,10 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -685,62 +485,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-065"
-  ],
-  "source_figures": [
-   "6"
-  ],
-  "source_panels": [
-   "6a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-023"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": [
-   "no case-defining condition value is known for this case"
-  ]
- },
- {
-  "case_id": "CASE-10.114-012",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": "SiO2",
-  "deposited_materials": [
-   "SiO2"
-  ],
-  "context_materials": [
-   "SiO2"
-  ],
-  "material_roles": {
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig6a__exp02"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-066"
+   "CAND-10.114-063"
   ],
   "source_figures": [
    "6"
@@ -762,9 +507,10 @@
   ]
  },
  {
-  "case_id": "CASE-10.114-013",
+  "case_id": "CASE-10.114-008",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -775,6 +521,70 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "case_defining_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level default",
+  "geometry_evidence": null,
+  "measurement_ids": [
+   "M::10.1149_2.067203jes__Fig6a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.114-064"
+  ],
+  "source_figures": [
+   "6"
+  ],
+  "source_panels": [
+   "6a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.114-027"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "no case-defining condition value is known for this case"
+  ]
+ },
+ {
+  "case_id": "CASE-10.114-009",
+  "paper_id": "10.1149_2.067203jes",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "SiO2",
+  "deposited_materials": [
+   "SiO2"
+  ],
+  "context_materials": [
+   "SiO2"
+  ],
+  "material_roles": {
+   "SiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -795,62 +605,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-067"
-  ],
-  "source_figures": [
-   "6"
-  ],
-  "source_panels": [
-   "6b"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-027"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": [
-   "no case-defining condition value is known for this case"
-  ]
- },
- {
-  "case_id": "CASE-10.114-014",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": "SiO2",
-  "deposited_materials": [
-   "SiO2"
-  ],
-  "context_materials": [
-   "SiO2"
-  ],
-  "material_roles": {
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig6b__exp02"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-068"
+   "CAND-10.114-065"
   ],
   "source_figures": [
    "6"
@@ -872,13 +627,78 @@
   ]
  },
  {
-  "case_id": "CASE-10.114-015",
+  "case_id": "CASE-10.114-010",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
+  "deposited_material": "SiO2",
+  "deposited_materials": [
+   "SiO2"
+  ],
+  "context_materials": [
+   "SiO2"
+  ],
+  "material_roles": {
+   "SiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "case_defining_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level default",
+  "geometry_evidence": null,
+  "measurement_ids": [
+   "M::10.1149_2.067203jes__Fig6b__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.114-066"
+  ],
+  "source_figures": [
+   "6"
+  ],
+  "source_panels": [
+   "6b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.114-031"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "no case-defining condition value is known for this case"
+  ]
+ },
+ {
+  "case_id": "CASE-10.114-011",
+  "paper_id": "10.1149_2.067203jes",
+  "label": null,
+  "synthesis_label": null,
   "deposited_material": null,
   "deposited_materials": [],
   "context_materials": [],
   "material_roles": {},
+  "material_candidates": {},
+  "material_status": "UNRESOLVED",
+  "material_status_reason": "no material evidence at any scope for this result",
+  "material_evidence_scope": null,
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -899,7 +719,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-069"
+   "CAND-10.114-067"
   ],
   "source_figures": [
    "10"
@@ -913,22 +733,27 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-035"
+   "EV-10.114-037"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member",
+   "material UNRESOLVED: no material evidence at any scope for this result",
    "no case-defining condition value is known for this case"
   ]
  },
  {
-  "case_id": "CASE-10.114-016",
+  "case_id": "CASE-10.114-012",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": null,
   "deposited_materials": [],
   "context_materials": [],
   "material_roles": {},
+  "material_candidates": {},
+  "material_status": "UNRESOLVED",
+  "material_status_reason": "no material evidence at any scope for this result",
+  "material_evidence_scope": null,
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -949,7 +774,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-070"
+   "CAND-10.114-068"
   ],
   "source_figures": [
    "10"
@@ -963,18 +788,19 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-037"
+   "EV-10.114-039"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member",
+   "material UNRESOLVED: no material evidence at any scope for this result",
    "no case-defining condition value is known for this case"
   ]
  },
  {
-  "case_id": "CASE-10.114-017",
+  "case_id": "CASE-10.114-013",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -985,6 +811,10 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -1005,62 +835,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-071"
-  ],
-  "source_figures": [
-   "11"
-  ],
-  "source_panels": [
-   "11a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-041"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": [
-   "no case-defining condition value is known for this case"
-  ]
- },
- {
-  "case_id": "CASE-10.114-018",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": "SiO2",
-  "deposited_materials": [
-   "SiO2"
-  ],
-  "context_materials": [
-   "SiO2"
-  ],
-  "material_roles": {
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig11a__exp02"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-072"
+   "CAND-10.114-069"
   ],
   "source_figures": [
    "11"
@@ -1082,9 +857,10 @@
   ]
  },
  {
-  "case_id": "CASE-10.114-019",
+  "case_id": "CASE-10.114-014",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -1095,6 +871,70 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "case_defining_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level default",
+  "geometry_evidence": null,
+  "measurement_ids": [
+   "M::10.1149_2.067203jes__Fig11a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.114-070"
+  ],
+  "source_figures": [
+   "11"
+  ],
+  "source_panels": [
+   "11a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.114-045"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "no case-defining condition value is known for this case"
+  ]
+ },
+ {
+  "case_id": "CASE-10.114-015",
+  "paper_id": "10.1149_2.067203jes",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "SiO2",
+  "deposited_materials": [
+   "SiO2"
+  ],
+  "context_materials": [
+   "SiO2"
+  ],
+  "material_roles": {
+   "SiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -1115,7 +955,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-073"
+   "CAND-10.114-071"
   ],
   "source_figures": [
    "11"
@@ -1129,7 +969,7 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-045"
+   "EV-10.114-047"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
@@ -1137,9 +977,10 @@
   ]
  },
  {
-  "case_id": "CASE-10.114-020",
+  "case_id": "CASE-10.114-016",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "SiO2",
   "deposited_materials": [
    "SiO2"
@@ -1150,6 +991,10 @@
   "material_roles": {
    "SiO2": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "plasma",
   "precursors": [],
@@ -1170,117 +1015,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-074"
-  ],
-  "source_figures": [
-   "12"
-  ],
-  "source_panels": [
-   "12a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-046"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": [
-   "no case-defining condition value is known for this case"
-  ]
- },
- {
-  "case_id": "CASE-10.114-021",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": "SiO2",
-  "deposited_materials": [
-   "SiO2"
-  ],
-  "context_materials": [
-   "SiO2"
-  ],
-  "material_roles": {
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig12a__exp02"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-075"
-  ],
-  "source_figures": [
-   "12"
-  ],
-  "source_panels": [
-   "12a"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.114-047"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": [
-   "no case-defining condition value is known for this case"
-  ]
- },
- {
-  "case_id": "CASE-10.114-022",
-  "paper_id": "10.1149_2.067203jes",
-  "label": null,
-  "deposited_material": "SiO2",
-  "deposited_materials": [
-   "SiO2"
-  ],
-  "context_materials": [
-   "SiO2"
-  ],
-  "material_roles": {
-   "SiO2": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "plasma",
-  "precursors": [],
-  "coreactants": [
-   "O2_plasma"
-  ],
-  "case_defining_conditions": [],
-  "geometry": "planar",
-  "geometries": [
-   "planar"
-  ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
-  "measurement_ids": [
-   "M::10.1149_2.067203jes__Fig12a__exp03"
-  ],
-  "sample_ids": [],
-  "deposition_run_ids": [],
-  "study_series_ids": [],
-  "candidate_ids": [
-   "CAND-10.114-076"
+   "CAND-10.114-072"
   ],
   "source_figures": [
    "12"
@@ -1302,9 +1037,130 @@
   ]
  },
  {
-  "case_id": "CASE-10.114-023",
+  "case_id": "CASE-10.114-017",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
+  "deposited_material": "SiO2",
+  "deposited_materials": [
+   "SiO2"
+  ],
+  "context_materials": [
+   "SiO2"
+  ],
+  "material_roles": {
+   "SiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "case_defining_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level default",
+  "geometry_evidence": null,
+  "measurement_ids": [
+   "M::10.1149_2.067203jes__Fig12a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.114-073"
+  ],
+  "source_figures": [
+   "12"
+  ],
+  "source_panels": [
+   "12a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.114-049"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "no case-defining condition value is known for this case"
+  ]
+ },
+ {
+  "case_id": "CASE-10.114-018",
+  "paper_id": "10.1149_2.067203jes",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "SiO2",
+  "deposited_materials": [
+   "SiO2"
+  ],
+  "context_materials": [
+   "SiO2"
+  ],
+  "material_roles": {
+   "SiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [],
+  "coreactants": [
+   "O2_plasma"
+  ],
+  "case_defining_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level default",
+  "geometry_evidence": null,
+  "measurement_ids": [
+   "M::10.1149_2.067203jes__Fig12a__exp03"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.114-074"
+  ],
+  "source_figures": [
+   "12"
+  ],
+  "source_panels": [
+   "12a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.114-050"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "no case-defining condition value is known for this case"
+  ]
+ },
+ {
+  "case_id": "CASE-10.114-019",
+  "paper_id": "10.1149_2.067203jes",
+  "label": null,
+  "synthesis_label": null,
   "deposited_material": null,
   "deposited_materials": [],
   "context_materials": [
@@ -1315,6 +1171,10 @@
    "Al2O3": "STACK_COMPONENT",
    "SiO2": "STACK_COMPONENT"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": true,
   "process_type": "plasma",
   "precursors": [],
@@ -1335,7 +1195,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-077"
+   "CAND-10.114-075"
   ],
   "source_figures": [
    "12"
@@ -1349,18 +1209,18 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-049"
+   "EV-10.114-051"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member",
    "no case-defining condition value is known for this case"
   ]
  },
  {
-  "case_id": "CASE-10.114-024",
+  "case_id": "CASE-10.114-020",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": null,
   "deposited_materials": [],
   "context_materials": [
@@ -1371,6 +1231,10 @@
    "Al2O3": "STACK_COMPONENT",
    "SiO2": "STACK_COMPONENT"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": true,
   "process_type": "plasma",
   "precursors": [],
@@ -1391,7 +1255,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-078"
+   "CAND-10.114-076"
   ],
   "source_figures": [
    "12"
@@ -1405,18 +1269,18 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-050"
+   "EV-10.114-052"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member",
    "no case-defining condition value is known for this case"
   ]
  },
  {
-  "case_id": "CASE-10.114-025",
+  "case_id": "CASE-10.114-021",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": null,
   "deposited_materials": [],
   "context_materials": [
@@ -1427,6 +1291,10 @@
    "Al2O3": "STACK_COMPONENT",
    "SiO2": "STACK_COMPONENT"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": true,
   "process_type": "plasma",
   "precursors": [],
@@ -1447,7 +1315,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-079"
+   "CAND-10.114-077"
   ],
   "source_figures": [
    "12"
@@ -1461,18 +1329,18 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-051"
+   "EV-10.114-053"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member",
    "no case-defining condition value is known for this case"
   ]
  },
  {
-  "case_id": "CASE-10.114-026",
+  "case_id": "CASE-10.114-022",
   "paper_id": "10.1149_2.067203jes",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": null,
   "deposited_materials": [],
   "context_materials": [
@@ -1483,6 +1351,10 @@
    "Al2O3": "STACK_COMPONENT",
    "SiO2": "STACK_COMPONENT"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": true,
   "process_type": "plasma",
   "precursors": [],
@@ -1503,7 +1375,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.114-080"
+   "CAND-10.114-078"
   ],
   "source_figures": [
    "12"
@@ -1517,12 +1389,116 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.114-052"
+   "EV-10.114-054"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
-   "deposited material UNRESOLVED at the source scope of every member",
    "no case-defining condition value is known for this case"
   ]
+ },
+ {
+  "case_id": "CASE-10.114-023",
+  "paper_id": "10.1149_2.067203jes",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "SiO2",
+  "deposited_materials": [
+   "SiO2"
+  ],
+  "context_materials": [
+   "SiO2"
+  ],
+  "material_roles": {
+   "SiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": null,
+  "precursors": [],
+  "coreactants": [],
+  "case_defining_conditions": [
+   {
+    "quantity": "aspect_ratio",
+    "unit": null,
+    "span": "The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30.",
+    "value": 30.0,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30."
+   },
+   {
+    "quantity": "cycle_number",
+    "unit": "cycle",
+    "span": "h-resolution SEM images of a high-aspect ratio trench in Si coated by 830 cycles of ALD SiO2. The SiO2 was deposited on top of thermal SiO2/ALD Al2O3 layers for optical c",
+    "value": 830.0,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "h-resolution SEM images of a high-aspect ratio trench in Si coated by 830 cycles of ALD SiO2. The SiO2 was deposited on top of thermal SiO2/ALD Al2O3 layers for optical c"
+   },
+   {
+    "quantity": "feature_height",
+    "unit": "µm",
+    "span": "The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30.",
+    "value": 18.5,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30."
+   },
+   {
+    "quantity": "feature_width",
+    "unit": "µm",
+    "span": "The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30.",
+    "value": 0.6,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30."
+   }
+  ],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "high-aspect ratio",
+  "measurement_ids": [
+   "M::IMG::10.1149_2.067203jes::F8"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.114-080"
+  ],
+  "source_figures": [
+   "8"
+  ],
+  "source_panels": [
+   "8"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "image_supported"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.114-056"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": []
  }
 ]

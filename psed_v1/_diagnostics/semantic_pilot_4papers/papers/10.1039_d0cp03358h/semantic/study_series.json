@@ -18,8 +18,10 @@
   ],
   "varied_variable": "pillar_layout",
   "varied_variable_role": "CASE_DEFINING",
-  "purpose": "specimens 1, 2, 3 differ only in 'pillar_layout' (v1a, v1b, v2a) in the paper's specimen table",
-  "evidence": "EV-10.103-202"
+  "varied_variable_source": "author_declaration",
+  "co_varying_context": [],
+  "purpose": "| 12 13 14 | 15 12 16 | | Series a A | B | C D | E | | F | a Different pillar layout design for Series A; reflectometer magnification",
+  "evidence": "EV-10.103-201"
  },
  {
   "series_id": "SER::10.1039_d0cp03358h::B",
@@ -36,13 +38,14 @@
    "S::10.1039_d0cp03358h::6"
   ],
   "member_case_ids": [
-   "CASE-10.103-002",
-   "CASE-10.103-005"
+   "CASE-10.103-002"
   ],
   "varied_variable": "reflectometer_magnification",
   "varied_variable_role": "MEASUREMENT_SETTING",
-  "purpose": "specimens 4, 5, 6 differ only in 'reflectometer_magnification' (10, 5, 50) in the paper's specimen table",
-  "evidence": "EV-10.103-203"
+  "varied_variable_source": "author_declaration",
+  "co_varying_context": [],
+  "purpose": "| E | | F | a Different pillar layout design for Series A; reflectometer magnification for Series B; design channel height for Se",
+  "evidence": "EV-10.103-202"
  },
  {
   "series_id": "SER::10.1039_d0cp03358h::C",
@@ -63,8 +66,10 @@
   ],
   "varied_variable": "feature_height",
   "varied_variable_role": "CASE_DEFINING",
-  "purpose": "specimens 7, 8, 9 differ only in 'feature_height' (100, 2000, 500) in the paper's specimen table",
-  "evidence": "EV-10.103-204"
+  "varied_variable_source": "author_declaration",
+  "co_varying_context": [],
+  "purpose": "ign for Series A; reflectometer magnification for Series B; design channel height for Series C; ALD cycles for Series D; TMA",
+  "evidence": "EV-10.103-203"
  },
  {
   "series_id": "SER::10.1039_d0cp03358h::D",
@@ -86,8 +91,10 @@
   ],
   "varied_variable": "cycle_number",
   "varied_variable_role": "CASE_DEFINING",
-  "purpose": "specimens 10, 11, 8 differ only in 'cycle_number' (1000, 250, 500) in the paper's specimen table",
-  "evidence": "EV-10.103-205"
+  "varied_variable_source": "author_declaration",
+  "co_varying_context": [],
+  "purpose": "ification for Series B; design channel height for Series C; ALD cycles for Series D; TMA pulse time for Series E;",
+  "evidence": "EV-10.103-204"
  },
  {
   "series_id": "SER::10.1039_d0cp03358h::E",
@@ -104,18 +111,42 @@
    "S::10.1039_d0cp03358h::14"
   ],
   "member_case_ids": [
-   "CASE-10.103-006",
+   "CASE-10.103-005",
+   "CASE-10.103-012",
    "CASE-10.103-013",
    "CASE-10.103-014",
    "CASE-10.103-015",
    "CASE-10.103-016",
-   "CASE-10.103-017",
-   "CASE-10.103-018"
+   "CASE-10.103-017"
   ],
-  "varied_variable": "pillar_layout",
-  "varied_variable_role": "UNRESOLVED",
-  "purpose": "specimen table shows 2 varying columns for this series (pulse_purge_sequence, pillar_layout); prose names 'pillar_layout' but the table does not single it out",
-  "evidence": "EV-10.103-206"
+  "varied_variable": "pulse_time",
+  "varied_variable_role": "CASE_DEFINING",
+  "varied_variable_source": "author_declaration",
+  "co_varying_context": [
+   {
+    "quantity": "pulse_purge_sequence",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "values": [
+     "0.1-4.0-0.1-4.0",
+     "0.2-4.0-0.1-4.0",
+     "0.4-4.0-0.1-4.0"
+    ],
+    "evidence": "specimens 12, 13, 14 differ in 'pulse_purge_sequence' (0.1-4.0-0.1-4.0, 0.2-4.0-0.1-4.0, 0.4-4.0-0.1-4.0) in the paper's specimen table"
+   },
+   {
+    "quantity": "pillar_layout",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "values": [
+     "v1b",
+     "v2a"
+    ],
+    "evidence": "specimens 12, 13, 14 differ in 'pillar_layout' (v1b, v2a) in the paper's specimen table"
+   }
+  ],
+  "purpose": "esign channel height for Series C; ALD cycles for Series D; TMA pulse time for Series E; and purge time for Series F.",
+  "evidence": "EV-10.103-205"
  },
  {
   "series_id": "SER::10.1039_d0cp03358h::F",
@@ -132,17 +163,31 @@
    "S::10.1039_d0cp03358h::16"
   ],
   "member_case_ids": [
-   "CASE-10.103-006",
+   "CASE-10.103-005",
+   "CASE-10.103-012",
    "CASE-10.103-013",
    "CASE-10.103-014",
    "CASE-10.103-015",
    "CASE-10.103-016",
-   "CASE-10.103-017",
-   "CASE-10.103-018"
+   "CASE-10.103-017"
   ],
-  "varied_variable": "pulse_purge_sequence",
+  "varied_variable": "purge_time",
   "varied_variable_role": "CASE_DEFINING",
-  "purpose": "specimens 12, 15, 16 differ only in 'pulse_purge_sequence' (0.1-1.0-0.1-1.0, 0.1-10.0-0.1-10.0, 0.1-4.0-0.1-4.0) in the paper's specimen table",
-  "evidence": "EV-10.103-207"
+  "varied_variable_source": "author_declaration",
+  "co_varying_context": [
+   {
+    "quantity": "pulse_purge_sequence",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "values": [
+     "0.1-1.0-0.1-1.0",
+     "0.1-10.0-0.1-10.0",
+     "0.1-4.0-0.1-4.0"
+    ],
+    "evidence": "specimens 12, 15, 16 differ in 'pulse_purge_sequence' (0.1-1.0-0.1-1.0, 0.1-10.0-0.1-10.0, 0.1-4.0-0.1-4.0) in the paper's specimen table"
+   }
+  ],
+  "purpose": "es C; ALD cycles for Series D; TMA pulse time for Series E; and purge time for Series F. b Original traceable sample",
+  "evidence": "EV-10.103-206"
  }
 ]

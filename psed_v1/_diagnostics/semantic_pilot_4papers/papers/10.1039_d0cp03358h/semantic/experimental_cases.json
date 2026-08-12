@@ -3,6 +3,7 @@
   "case_id": "CASE-10.103-001",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -13,6 +14,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -34,7 +39,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "500 ALD cycles",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -48,7 +54,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -62,7 +69,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height: 500 nm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -76,7 +84,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "pillar_layout",
@@ -110,7 +119,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -148,8 +158,8 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-036",
-   "EV-10.103-038"
+   "EV-10.103-039",
+   "EV-10.103-041"
   ],
   "confidence": "SUPPORTED",
   "warnings": []
@@ -158,6 +168,7 @@
   "case_id": "CASE-10.103-002",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -168,6 +179,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -184,12 +199,13 @@
     "role": "CASE_DEFINING",
     "role_basis": "ontology recipe_role = control_setting",
     "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
-    "assertion_status": "approximate",
+    "source": "caption",
+    "scope": "panel",
+    "assertion_status": "direct",
     "species": null,
     "evidence": "500 cycles",
-    "locator": "document.md near Fig 7"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -203,7 +219,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -212,12 +229,13 @@
     "role": "CASE_DEFINING",
     "role_basis": "ontology recipe_role = structure (sample geometry)",
     "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
+    "source": "caption",
+    "scope": "panel",
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "document.md near Fig 7"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -231,7 +249,28 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_explicit_sample",
+    "source": "sample_table",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_explicit_sample",
+    "source": "sample_table",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
    },
    {
     "quantity": "working_pressure",
@@ -245,19 +284,21 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
   "geometries": [
    "lateral_channel"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "LHAR",
   "measurement_ids": [
    "M::10.1039_d0cp03358h__Fig7a__exp01",
    "M::10.1039_d0cp03358h__Fig7a__exp02",
-   "M::10.1039_d0cp03358h__Fig7a__exp03"
+   "M::10.1039_d0cp03358h__Fig7a__exp03",
+   "M::10.1039_d0cp03358h__Fig8b__exp02"
   ],
   "sample_ids": [
    "S::10.1039_d0cp03358h::4",
@@ -271,23 +312,27 @@
   "candidate_ids": [
    "CAND-10.103-085",
    "CAND-10.103-086",
-   "CAND-10.103-087"
+   "CAND-10.103-087",
+   "CAND-10.103-093"
   ],
   "source_figures": [
-   "7"
+   "7",
+   "8"
   ],
   "source_panels": [
-   "7a"
+   "7a",
+   "8b"
   ],
-  "n_members": 3,
+  "n_members": 4,
   "member_kinds": [
    "whole_curve"
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-047",
-   "EV-10.103-052",
-   "EV-10.103-057"
+   "EV-10.103-048",
+   "EV-10.103-051",
+   "EV-10.103-054",
+   "EV-10.103-072"
   ],
   "confidence": "SUPPORTED",
   "warnings": []
@@ -296,6 +341,7 @@
   "case_id": "CASE-10.103-003",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -306,6 +352,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -327,7 +377,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "500 cycles",
-    "locator": "figure 8 caption, panel (b)"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -341,7 +392,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -355,7 +407,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "figure 8 caption, panel (b)"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -369,7 +422,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "pillar_layout",
@@ -403,7 +457,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -447,11 +502,11 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
+   "EV-10.103-057",
    "EV-10.103-060",
    "EV-10.103-063",
    "EV-10.103-066",
-   "EV-10.103-069",
-   "EV-10.103-078"
+   "EV-10.103-075"
   ],
   "confidence": "SUPPORTED",
   "warnings": []
@@ -460,6 +515,7 @@
   "case_id": "CASE-10.103-004",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -470,6 +526,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -491,7 +551,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "500 cycles",
-    "locator": "figure 8 caption, panel (b)"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -505,7 +566,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -519,7 +581,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "figure 8 caption, panel (b)"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -533,7 +596,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "pillar_layout",
@@ -567,7 +631,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -603,7 +668,7 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-072"
+   "EV-10.103-069"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
@@ -612,6 +677,7 @@
   "case_id": "CASE-10.103-005",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -622,6 +688,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -643,7 +713,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "500 cycles",
-    "locator": "figure 8 caption, panel (b)"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -657,7 +728,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -671,7 +743,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "figure 8 caption, panel (b)"
+    "locator": "figure 8 caption, panel (b)",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -685,157 +758,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
-   },
-   {
-    "quantity": "pillar_layout",
-    "value": "v1b",
-    "unit": null,
-    "role": "CASE_DEFINING",
-    "role_basis": "column of the paper's own specimen table",
-    "provenance_type": "inherited_from_explicit_sample",
-    "source": "sample_table",
-    "evidence": "specimen '4' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
-   },
-   {
-    "quantity": "pulse_purge_sequence",
-    "value": "0.1-4.0-0.1-4.0",
-    "unit": null,
-    "role": "CASE_DEFINING",
-    "role_basis": "column of the paper's own specimen table",
-    "provenance_type": "inherited_from_explicit_sample",
-    "source": "sample_table",
-    "evidence": "specimen '4' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
-   },
-   {
-    "quantity": "working_pressure",
-    "value": "3",
-    "unit": "hPa",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "approximate",
-    "species": null,
-    "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
-   }
-  ],
-  "geometry": "lateral_channel",
-  "geometries": [
-   "lateral_channel"
-  ],
-  "geometry_source": "figure/panel caption",
-  "geometry_evidence": "LHAR",
-  "measurement_ids": [
-   "M::10.1039_d0cp03358h__Fig8b__exp02"
-  ],
-  "sample_ids": [
-   "S::10.1039_d0cp03358h::4"
-  ],
-  "deposition_run_ids": [],
-  "study_series_ids": [
-   "SER::10.1039_d0cp03358h::B"
-  ],
-  "candidate_ids": [
-   "CAND-10.103-093"
-  ],
-  "source_figures": [
-   "8"
-  ],
-  "source_panels": [
-   "8b"
-  ],
-  "n_members": 1,
-  "member_kinds": [
-   "whole_curve"
-  ],
-  "swept_quantities": [],
-  "identity_evidence": [
-   "EV-10.103-075"
-  ],
-  "confidence": "EXPLICIT",
-  "warnings": []
- },
- {
-  "case_id": "CASE-10.103-006",
-  "paper_id": "10.1039_d0cp03358h",
-  "label": null,
-  "deposited_material": "Al2O3",
-  "deposited_materials": [
-   "Al2O3"
-  ],
-  "context_materials": [
-   "Al2O3"
-  ],
-  "material_roles": {
-   "Al2O3": "DEPOSITED"
-  },
-  "multi_material_context": false,
-  "process_type": "thermal",
-  "precursors": [
-   "TMA"
-  ],
-  "coreactants": [
-   "H2O"
-  ],
-  "case_defining_conditions": [
-   {
-    "quantity": "cycle_number",
-    "value": "500",
-    "unit": "cycle",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "caption",
-    "scope": "panel",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "500 cycles",
-    "locator": "figure 8 caption, panel (b)"
-   },
-   {
-    "quantity": "deposition_temperature",
-    "value": "300",
-    "unit": "°C",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "grown at 300 °C",
-    "locator": "methods section"
-   },
-   {
-    "quantity": "feature_height",
-    "value": "500",
-    "unit": "nm",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = structure (sample geometry)",
-    "provenance_type": "directly_stated",
-    "source": "caption",
-    "scope": "panel",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "channel height of 500 nm",
-    "locator": "figure 8 caption, panel (b)"
-   },
-   {
-    "quantity": "flow_rate",
-    "value": "150",
-    "unit": "sccm",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "approximate",
-    "species": "N2",
-    "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "pillar_layout",
@@ -869,7 +793,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -904,15 +829,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-081"
+   "EV-10.103-078"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-007",
+  "case_id": "CASE-10.103-006",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -923,6 +849,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -944,7 +874,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -958,7 +889,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "100 nm",
-    "locator": "series label '100 nm' (axis 'channel height')"
+    "locator": "series label '100 nm' (axis 'channel height')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -972,7 +904,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -986,7 +919,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1016,15 +950,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-083"
+   "EV-10.103-080"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-008",
+  "case_id": "CASE-10.103-007",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1035,6 +970,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1056,7 +995,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -1070,7 +1010,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "500 nm",
-    "locator": "series label '500 nm' (axis 'channel height')"
+    "locator": "series label '500 nm' (axis 'channel height')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1084,7 +1025,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -1098,7 +1040,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1128,15 +1071,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-085"
+   "EV-10.103-082"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-009",
+  "case_id": "CASE-10.103-008",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1147,6 +1091,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1168,7 +1116,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -1182,7 +1131,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "2000 nm",
-    "locator": "series label '2000 nm' (axis 'channel height')"
+    "locator": "series label '2000 nm' (axis 'channel height')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1196,7 +1146,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -1210,7 +1161,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1240,15 +1192,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-087"
+   "EV-10.103-084"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-010",
+  "case_id": "CASE-10.103-009",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1259,6 +1212,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1280,7 +1237,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "250 cycles",
-    "locator": "series label '250 cycles' (axis 'number of cycles')"
+    "locator": "series label '250 cycles' (axis 'number of cycles')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -1294,7 +1252,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1308,7 +1267,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -1322,7 +1282,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1352,15 +1313,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-110"
+   "EV-10.103-107"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-011",
+  "case_id": "CASE-10.103-010",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1371,6 +1333,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1392,7 +1358,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "500 cycles",
-    "locator": "series label '500 cycles' (axis 'number of cycles')"
+    "locator": "series label '500 cycles' (axis 'number of cycles')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -1406,7 +1373,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1420,7 +1388,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -1434,7 +1403,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1464,15 +1434,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-112"
+   "EV-10.103-109"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-012",
+  "case_id": "CASE-10.103-011",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1483,6 +1454,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1504,7 +1479,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "1000 cycles",
-    "locator": "series label '1000 cycles' (axis 'number of cycles')"
+    "locator": "series label '1000 cycles' (axis 'number of cycles')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -1518,7 +1494,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1532,7 +1509,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -1546,7 +1524,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1576,15 +1555,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-114"
+   "EV-10.103-111"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-013",
+  "case_id": "CASE-10.103-012",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1595,6 +1575,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1616,7 +1600,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "500 ALD cycles",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -1630,7 +1615,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "figure 11 caption"
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -1644,7 +1630,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "document.md near Fig 11"
+    "locator": "document.md near Fig 11",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1658,7 +1645,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "precursor",
@@ -1682,7 +1670,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "0.1 s",
-    "locator": "series label '0.1 s' (axis 'pulse_time')"
+    "locator": "series label '0.1 s' (axis 'pulse_time')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -1696,7 +1685,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1733,15 +1723,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-169"
+   "EV-10.103-166"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-014",
+  "case_id": "CASE-10.103-013",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1752,6 +1743,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1773,7 +1768,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "500 ALD cycles",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -1787,7 +1783,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "figure 11 caption"
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -1801,7 +1798,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "document.md near Fig 11"
+    "locator": "document.md near Fig 11",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1815,7 +1813,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "precursor",
@@ -1839,7 +1838,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "0.2 s",
-    "locator": "series label '0.2 s' (axis 'pulse_time')"
+    "locator": "series label '0.2 s' (axis 'pulse_time')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -1853,7 +1853,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -1890,15 +1891,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-173"
+   "EV-10.103-170"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-015",
+  "case_id": "CASE-10.103-014",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -1909,6 +1911,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -1930,7 +1936,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "500 ALD cycles",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -1944,7 +1951,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "figure 11 caption"
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -1958,7 +1966,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "document.md near Fig 11"
+    "locator": "document.md near Fig 11",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -1972,7 +1981,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "precursor",
@@ -1996,7 +2006,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "0.4 s",
-    "locator": "series label '0.4 s' (axis 'pulse_time')"
+    "locator": "series label '0.4 s' (axis 'pulse_time')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -2010,7 +2021,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -2047,15 +2059,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-177"
+   "EV-10.103-174"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-016",
+  "case_id": "CASE-10.103-015",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -2066,6 +2079,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -2087,7 +2104,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "500 ALD cycles",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -2101,7 +2119,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "figure 11 caption"
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -2115,7 +2134,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "document.md near Fig 11"
+    "locator": "document.md near Fig 11",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -2129,7 +2149,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "purge_time",
@@ -2143,7 +2164,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "1 s",
-    "locator": "series label '1 s' (axis 'purge_time')"
+    "locator": "series label '1 s' (axis 'purge_time')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -2157,7 +2179,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -2194,15 +2217,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-181"
+   "EV-10.103-178"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-017",
+  "case_id": "CASE-10.103-016",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -2213,6 +2237,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -2234,7 +2262,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "500 ALD cycles",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -2248,7 +2277,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "figure 11 caption"
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -2262,7 +2292,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "document.md near Fig 11"
+    "locator": "document.md near Fig 11",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -2276,7 +2307,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "purge_time",
@@ -2290,7 +2322,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "4 s",
-    "locator": "series label '4 s' (axis 'purge_time')"
+    "locator": "series label '4 s' (axis 'purge_time')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -2304,7 +2337,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -2341,15 +2375,16 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-185"
+   "EV-10.103-182"
   ],
   "confidence": "EXPLICIT",
   "warnings": []
  },
  {
-  "case_id": "CASE-10.103-018",
+  "case_id": "CASE-10.103-017",
   "paper_id": "10.1039_d0cp03358h",
   "label": null,
+  "synthesis_label": null,
   "deposited_material": "Al2O3",
   "deposited_materials": [
    "Al2O3"
@@ -2360,6 +2395,10 @@
   "material_roles": {
    "Al2O3": "DEPOSITED"
   },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
   "multi_material_context": false,
   "process_type": "thermal",
   "precursors": [
@@ -2381,7 +2420,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "500 ALD cycles",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "deposition_temperature",
@@ -2395,7 +2435,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "grown at 300 °C",
-    "locator": "figure 11 caption"
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
    },
    {
     "quantity": "feature_height",
@@ -2409,7 +2450,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "channel height of 500 nm",
-    "locator": "document.md near Fig 11"
+    "locator": "document.md near Fig 11",
+    "value_kind": "scalar"
    },
    {
     "quantity": "flow_rate",
@@ -2423,7 +2465,8 @@
     "assertion_status": "approximate",
     "species": "N2",
     "evidence": "flow rate of 150 sccm",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    },
    {
     "quantity": "purge_time",
@@ -2437,7 +2480,8 @@
     "assertion_status": "direct",
     "species": null,
     "evidence": "10 s",
-    "locator": "series label '10 s' (axis 'purge_time')"
+    "locator": "series label '10 s' (axis 'purge_time')",
+    "value_kind": "scalar"
    },
    {
     "quantity": "working_pressure",
@@ -2451,7 +2495,8 @@
     "assertion_status": "approximate",
     "species": null,
     "evidence": "process pressure was ca. 3 hPa",
-    "locator": "methods section"
+    "locator": "methods section",
+    "value_kind": "scalar"
    }
   ],
   "geometry": "lateral_channel",
@@ -2488,7 +2533,76 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-189"
+   "EV-10.103-186"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": []
+ },
+ {
+  "case_id": "CASE-10.103-018",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": null,
+  "precursors": [],
+  "coreactants": [],
+  "case_defining_conditions": [
+   {
+    "quantity": "cycle_number",
+    "unit": "cycle",
+    "span": "nnel height of 500 nm) coated by an Al2O3 film at 300 1 C in 500 cycles (sample details at Table S4, ESI † ). The notation for Regions I-II in Fig. 3. The top me",
+    "value": 500.0,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "nnel height of 500 nm) coated by an Al2O3 film at 300 1 C in 500 cycles (sample details at Table S4, ESI † ). The notation for Regions I-II in Fig. 3. The top me"
+   }
+  ],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "LHAR",
+  "measurement_ids": [
+   "M::IMG::10.1039_d0cp03358h::F6"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-108"
+  ],
+  "source_figures": [
+   "6"
+  ],
+  "source_panels": [
+   "6"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "image_supported"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-191"
   ],
   "confidence": "EXPLICIT",
   "warnings": []

@@ -10,24 +10,33 @@ result.
 |---|---|---|---|---|
 | **current PSED** Experiments | 54 | 32 | 0 | 39 |
 | current entities / canonical curves | 16 / 16 | 38 / 38 | 4 / 4 | 70 / 70 |
-| **pilot ExperimentalCases** | 50 | 26 | **2** | **18** |
-| Measurements (of which caption-only) | 19 (5) | 38 (0) | 5 (1) | 43 (4) |
+| **pilot ExperimentalCases** | 50 | 23 | **2** | **18** |
+| Measurements (of which caption/image-only) | 19 | 40 | 5 | 44 |
 | ResultSeries | 16 | 38 | 4 | 70 |
 | PlotRepresentations | 0 | 11 | 2 | 53 |
 | Samples | 0 | 0 | 0 | **16** |
-| DepositionRuns | 0 | 0 | 0 | **3** |
+| **identified DepositionRuns** | 0 | 0 | 0 | **1** |
+| run-evidence groups (NOT runs) | 0 | 0 | 0 | **2** |
 | StudySeries | 0 | 0 | 0 | **6** |
 | SimulationRuns | 2 | 0 | 0 | **31** |
-| merges / blocked merges | 4 / **2** | 0 / 0 | 0 / 0 | 7 / 0 |
-| unresolved links | 15 | 12 | 5 | 41 |
+| provenance chains | 0 | 2 | **1** | 0 |
+| merges / blocked merges | 4 / **2** | 3 / 2 | 0 / 0 | 8 / 0 |
+| unresolved links | 15 | 14 | 3 | 62 |
 
 `c7ta03257a` gains its first two experimental cases — PSED currently reports none for it.
-Yim's 39 Experiments become 18 cases with 16 specimens, 3 runs and 6 series behind them.
+Yim's 39 Experiments become 18 cases with 16 specimens, **one identified deposition run**
+(plus 2 run-distinctness assertions counted separately) and 6 author-declared series.
+
+> Counts changed in the second pass because several were wrong, not because the rules were
+> loosened. See `second_pass_scientific_review.md` and `logs/second_pass_changes.md`.
 
 ## The fifteen questions
 
-**1. Did the new semantics work on all four papers?** Yes. All four build end to end and
-**51 of 51** checks pass — 16 generic invariants plus 35 four-paper acceptance anchors.
+**1. Did the new semantics work on all four papers?** Yes, after the second-pass
+corrections. All four build end to end and **85 of 85** checks pass — 20 generic
+invariants plus 65 PDF-ground-truth anchors. The second pass replaced every paper anchor
+with one read from the original PDF; see `second_pass_scientific_review.md` for the
+verdict per paper and dimension, which is NOT derived from the test count.
 
 **2. Which same-case cross-figure links were recovered?**
 
@@ -39,22 +48,29 @@ Yim's 39 Experiments become 18 cases with 16 specimens, 3 runs and 6 series behi
   series varies only the reflectometer objective; Fig 8a's five repeat measurements stay one
   case; Fig 9's 18 panels collapse to the 6 measurements behind them.
 
-**3. Which links remained unresolved, and why?** 73 in total.
-- `c7ta03257a`: all four CV/impedance measurements, plus the recovered Fig 8(b) — the paper
-  never states which Pt deposition produced the electrode that was measured.
-- Yim: 41, mostly candidate pairs whose case-defining conditions agree while the source
-  states no specimen or run linkage.
-- `am.2016.182`: 15; `2.067203jes`: 12 — same pattern.
-These are the intended outcome. Missing information was never read as sameness.
+**3. Which links remained unresolved, and why?** 94, now classified by reason
+(`comparison/unresolved_links_second_pass.csv`):
+
+| reason class | n | resolvable from the source? |
+|---|---|---|
+| CONDITION_ONLY_NO_POSITIVE_LINK | 54 | no — by design |
+| PROVENANCE_CHAIN_INCOMPLETE | 30 | no — the source names no protocol |
+| SOURCE_TRULY_UNSPECIFIED | 6 | no |
+| MEASUREMENT_ONLY_FIGURE | 2 | no — reports no deposition |
+| REFERENCE_BY_DESIGN | 2 | no — a control, never attributed |
+
+None is of a class the source could resolve: the two classes the second pass targeted —
+value-joinable specimen links and available provenance chains — are now **zero**, because
+both were resolved. `CONDITION_ONLY_NO_POSITIVE_LINK` remains and should.
 
 **4. Were any unsupported merges produced?** No. Every one of the 11 merges carries a
 recorded evidence id (invariant: `every_merge_has_evidence.without_evidence = 0` for all
 four papers). No merge rests on unknown-on-one-side alone.
 
-**5. Were clearly identical cases still over-split?** Yes, in two places, both reported
-rather than papered over. `am.2016.182` keeps 50 cases for 16 curves because most of its
-sweeps have no cross-figure linkage statement. `2.067203jes` keeps 26. In both, the
-splitting reflects genuine absence of linkage evidence in the source.
+**5. Were clearly identical cases still over-split?** Yes, in `am.2016.182` (50 cases for
+16 curves) and `2.067203jes` (23), because most of their sweeps carry no cross-figure
+linkage statement. That is correct under "missing ≠ same" but it is not the number of
+depositions those papers performed.
 
 **6. Did measurement settings incorrectly create cases anywhere?** No. Invariant 4 holds:
 no `MEASUREMENT_SETTING` appears among any case's case-defining conditions. Yim's Series B —
@@ -65,25 +81,31 @@ three measurements.
 Fig 9's 18 declared representation panels produce 6 cases; the 12 scaled/normalized panels
 link to their as-measured sibling through `derived_representation_of`.
 
-**8. Were Sample and DepositionRun instantiated only where supported?** Yes; invariants 9
-and 10 report zero without evidence. Only Yim yields any: 16 specimens, all from the
-paper's own specimen table, and 3 runs — one SHARED_RUN holding exactly specimens 1, 2, 3
-("All of the films were grown in the same ALD run", Series A) and two DISTINCT_RUNS markers
-from explicit reproducibility statements. The other three papers name no specimen and no
-run, so they get none.
+**8. Were Sample and DepositionRun instantiated only where supported?** Yes, and the
+second pass corrected what "a run" counts as. Only Yim yields any: 16 specimens from the
+paper's own table, and **one identified DepositionRun** holding specimens 1, 2, 3 ("All of
+the films were grown in the same ALD run", Series A). The two reproducibility statements
+are **run-evidence groups**, not runs — the first pass reported "3 runs" by counting one
+run and two assertions together. Every DepositionRun now names at least one specimen
+(invariant 20).
 
-**9. Could multi-material and mixed-geometry cases be represented?** Multi-material: yes —
-`2.067203jes` produces 6 cases naming both SiO2 and Al2O3 with `STACK_COMPONENT` roles, and
-2 more naming both as `DEPOSITED`. Mixed geometry: the mechanism works (geometry is resolved
-per figure scope and `geometry_source` records whether a paper-level default was used) but
-could not be **demonstrated** on this paper — its high-aspect-ratio figures are absent from
-the extracted set entirely. See `logs/scope_escalations.md` E1.
+**9. Could multi-material and mixed-geometry cases be represented?** Both, now.
+Multi-material: `2.067203jes`'s printed Fig 12 stack cases carry SiO2 and Al2O3 as
+`STACK_COMPONENT`, and the Fig 8 underlayer is typed `SUBSTRATE` rather than a second
+deposit. Crucially, printed Fig 1 (precursor vapour pressure) no longer acquires a stack
+context from the paper-wide inventory. Mixed geometry: **demonstrated** — printed Fig 8
+yields a `vertical_structure` case taken from its own caption (AR ~30, 830 cycles, trench
+18.5 × 0.6 µm) alongside 22 `planar` cases, each labelled with whether its geometry was
+observed or defaulted. The first pass's escalation E1 is resolved.
 
 **10. Could characterization results stay scientific results without being deposition
-Experiments?** Yes — this is `c7ta03257a`'s whole point. Two Pt deposition cases exist from
-prose alone (250 cycles, one vs three precursor exposures per cycle) with no x-y process
-curve. The CV and impedance curves are Measurements with their material (Pt) and cycle count
-(250) preserved, and their case linkage left UNRESOLVED because the source does not state it.
+Experiments?** Yes, and the second pass added the provenance the first pass withheld. Two
+Pt deposition cases exist from prose alone, now named by what they create: **"full
+replica"** and **"micron-long mesoporous Pt tubes"**. CV and impedance remain Measurements.
+Fig 8's coated results now carry an explicit chain — *tubular Pt replica → test electrodes
+→ impedance / CV* — while the bare/uncoated series are typed `REFERENCE` and attached to
+nothing, and Fig 7's coated result stays UNRESOLVED because its section says only "the
+replica".
 
 **11. Was simulation provenance preserved exactly?** Yes. `data_source` counts are
 bit-identical to PSED for all four papers (Yim: 39 measured / 31 simulated, before and
@@ -103,6 +125,15 @@ Every ResultSeries keeps its `curve_id`, `json_pointer` and `source_checksum`.
 - material roles and figure-scope geometry;
 - a curve→entity source-slice fallback join.
 
+Added by the second pass:
+- a numeric range parser and a physical sign check;
+- a purpose-clause guard and a species-property gate on material assertion;
+- author-declared series definitions outranking column differencing, with co-variation kept;
+- a value-based specimen join (legend value ↔ specimen-table column);
+- identified runs separated from run-distinctness evidence;
+- a produced-material provenance chain with reference-series typing;
+- image-supported deposition cases.
+
 **14. Which suspected changes turned out NOT to be necessary?**
 - **Forking `to_kb.py`.** The pilot is a post-resolve layer; the 2019-line resolver was
   never copied. Every source identity survives by construction.
@@ -119,9 +150,10 @@ Every ResultSeries keeps its `curve_id`, `json_pointer` and `source_checksum`.
   source provenance and simply not used as scientific identity.
 
 **15. Limitations before a 44-paper migration could be considered.**
-1. Cross-figure linking depends on explicit statements. Papers that state none keep
-   figure-shaped cases — `am.2016.182` still reports 50, `2.067203jes` 26. The pilot is
-   honest about it, but a corpus-wide run would leave many cases unlinked.
+See `logs/second_pass_remaining_limits.md` for the current list. In brief:
+
+1. Cross-figure linking still depends on explicit statements — `am.2016.182` reports 50
+   cases for 16 curves, `2.067203jes` 23.
 2. Specimen identity depends on a machine-readable specimen table or a legend/caption code.
    Only 1 of the 4 pilot papers has one; the other three produce zero Samples.
 3. Case-level geometry is implemented but unproven — no pilot paper carries per-figure

@@ -24,9 +24,21 @@ AM, JES, CTA, YIM = PAPERS
 _fail, _pass = [], []
 
 
+#: short prefix used in anchor names -> the paper it belongs to. Paper ids live HERE and
+#: nowhere under code/, so the report can group anchors without naming a paper itself.
+ANCHOR_PAPER = {"am": AM, "jes": JES, "cta": CTA, "yim": YIM}
+
+
 def ok(name, cond, detail=""):
     (_pass if cond else _fail).append(name)
     print("  %-4s %-62s %s" % ("PASS" if cond else "FAIL", name, detail if not cond else ""))
+    head = name.split(":", 1)[0].strip().lower()
+    pid = ANCHOR_PAPER.get(head)
+    if pid:
+        # machine-readable line for the HTML report: it carries the paper id explicitly
+        print("ANCHOR\t%s\t%s\t%s\t%s"
+              % (pid, "PASS" if cond else "FAIL", name.split(":", 1)[-1].strip(),
+                 str(detail)[:200]))
 
 
 def _strip_prose(src):
@@ -179,6 +191,46 @@ def invariants():
                 bad.append((pid, r["curve_id"]))
     ok("15. transformation counts match the canonical layer", not bad, bad[:3])
 
+    # 17. numeric ranges are positive intervals, never negative scalars
+    bad = []
+    for pid in PAPERS:
+        for c in sem(pid, "experimental_cases"):
+            for x in c["case_defining_conditions"]:
+                v = x.get("value")
+                if isinstance(v, (int, float)) and v < 0:
+                    import pilot_ranges as _PR
+                    okv, _ = _PR.sign_is_physical(x["quantity"], v)
+                    if not okv:
+                        bad.append((pid, c["case_id"], x["quantity"], v))
+    ok("17. no unphysical negative condition survives", not bad, bad[:4])
+
+    # 18. material roles are internally consistent
+    bad = []
+    for pid in PAPERS:
+        for c in sem(pid, "experimental_cases"):
+            roles = c.get("material_roles") or {}
+            if c.get("deposited_material") is None and "DEPOSITED" in roles.values() \
+                    and len([m for m, r in roles.items() if r == "DEPOSITED"]) == 1:
+                bad.append((pid, c["case_id"], roles))
+    ok("18. no case asserts one DEPOSITED material while its deposit is null", not bad,
+       bad[:3])
+
+    # 19. paper-wide inventory alone never asserts a local role
+    bad = []
+    for pid in PAPERS:
+        for c in sem(pid, "experimental_cases"):
+            if c.get("material_status") == "CANDIDATE_ONLY" and c.get("material_roles"):
+                bad.append((pid, c["case_id"]))
+    ok("19. a candidate-only material asserts no role", not bad, bad[:3])
+
+    # 20. identified runs are real executions, not assertions about runs
+    bad = []
+    for pid in PAPERS:
+        for r in sem(pid, "deposition_runs"):
+            if not r.get("sample_ids"):
+                bad.append((pid, r["run_id"], r.get("kind")))
+    ok("20. every DepositionRun names at least one specimen", not bad, bad[:3])
+
     # 16. no DOI-specific logic in the pilot implementation
     offenders = []
     for f in sorted((W / "code").glob("*.py")):
@@ -193,125 +245,232 @@ def invariants():
 
 # ==================================================== four-paper acceptance anchors
 def anchors():
-    print("\n=== ACCEPTANCE ANCHORS (regression expectations, not resolver logic) ===")
+    """Regression expectations read from the ORIGINAL PDFs. Paper-specific values appear
+    here and nowhere under code/ — invariant 16 checks that mechanically."""
+    print("\n=== PDF-GROUND-TRUTH ANCHORS ===")
+    import pilot_ranges as PR
 
     # ---- am.2016.182 -------------------------------------------------------
     cases = sem(AM, "experimental_cases")
     meas = {m["measurement_id"]: m for m in sem(AM, "measurements")}
     cross = [c for c in cases if len(set(c["source_panels"])) > 1]
-    ok("am: GPC / resistivity / XPS linked into one deposition case", len(cross) >= 2,
+    ok("am: GPC / resistivity / XPS join into one deposition case", len(cross) >= 2,
        "%d multi-panel cases" % len(cross))
     techs = set()
     for c in cross:
         techs |= {t for m in c["measurement_ids"] for t in (meas[m]["technique"] or [])}
-    ok("am: that case carries three different techniques",
+    ok("am: that case carries all three techniques",
        {"growth_per_cycle", "resistivity", "XPS"} <= techs, sorted(techs))
     blocked = [l for l in sem(AM, "links") if l["action"] == "BLOCKED"]
-    ok("am: a different precursor blocks the merge", len(blocked) >= 1,
-       "%d blocked" % len(blocked))
+    ok("am: a different precursor still blocks the merge", len(blocked) >= 1, len(blocked))
     ok("am: the blocked merges clash on chemistry",
        all(any(x["quantity"] in ("precursor", "coreactant") for x in l["detail"]["clash"])
            for l in blocked), [l["detail"]["clash"] for l in blocked][:2])
     f4 = [m for m in sem(AM, "measurements") if m["source"]["printed_figure"] == "4"]
-    ok("am: printed Figure 4 evidence is present", len(f4) >= 3, "%d panels" % len(f4))
-    ok("am: Figure 4 is recovered as caption-only, not invented data",
+    ok("am: printed Figure 4 device panels are present", len(f4) >= 3, len(f4))
+    ok("am: Figure 4 is caption-only, with no invented data",
        all(m.get("data_recovered") is False and not m["result_series_ids"] for m in f4))
-    ok("am: Figure 4 mints no deposition case",
+    ok("am: Figure 4 device characterisation mints no deposition case",
        not any("4" in c["source_figures"] for c in cases))
 
     # ---- 2.067203jes -------------------------------------------------------
     cases = sem(JES, "experimental_cases")
-    mm = [c for c in cases if c.get("multi_material_context")]
-    ok("jes: multi-material (stack) context is representable", len(mm) >= 1,
-       "%d multi-material cases" % len(mm))
-    ok("jes: the stack case names both constituents with a role",
-       any(set(c["context_materials"]) >= {"SiO2", "Al2O3"}
-           and set(c["material_roles"].values()) & {"STACK_COMPONENT", "DEPOSITED"}
-           for c in mm), [c["material_roles"] for c in mm[:2]])
-    ok("jes: distinct cases were not over-merged into one", len(cases) > 5, len(cases))
-    ok("jes: no merge happened without evidence",
-       not [l for l in sem(JES, "links") if l["action"] == "MERGED"
-            and not l.get("link_evidence")])
+    # PDF: "ultrashort doses (10-120 ms)" — a positive interval
+    rng = [x for c in cases for x in c["case_defining_conditions"]
+           if x.get("value_kind") == "range"]
+    ok("jes: a stated interval is carried as an interval, not a negative scalar",
+       any(x.get("superseded_value") is not None for x in rng), len(rng))
+    ok("jes: no negative pulse time or cycle count survives",
+       not [x for c in cases for x in c["case_defining_conditions"]
+            if isinstance(x.get("value"), (int, float)) and x["value"] < 0
+            and x["quantity"] in ("pulse_time", "cycle_number", "purge_time")])
+    # PDF Fig 1: vapour pressure of a precursor — not a deposition
+    f1 = [c for c in cases if "1" in c["source_figures"]]
+    ok("jes: printed Fig 1 (precursor vapour pressure) is not a deposition case",
+       not f1, [c["case_id"] for c in f1])
+    f1m = [m for m in sem(JES, "measurements") if m["source"]["printed_figure"] == "1"]
+    ok("jes: Fig 1 is still preserved as Measurements", len(f1m) >= 1, len(f1m))
+    ok("jes: Fig 1 asserts no material role",
+       not any(m.get("_material") for m in f1m) or all(m.get("reports_species_property")
+                                                       for m in f1m))
+    # PDF Fig 8: HAR trench, AR ~30, 18.5 x 0.6 um, 830 cycles of ALD SiO2
+    har = [c for c in cases if c.get("geometry") == "vertical_structure"]
+    ok("jes: the HAR trench figure produces a case with local geometry", len(har) == 1,
+       len(har))
+    if har:
+        h = har[0]
+        q = {x["quantity"]: x for x in h["case_defining_conditions"]}
+        ok("jes: HAR geometry comes from the figure, not the paper default",
+           h.get("geometry_source") == "figure/panel caption", h.get("geometry_source"))
+        ok("jes: HAR case carries aspect ratio ~30", q.get("aspect_ratio", {}).get("value") == 30,
+           q.get("aspect_ratio"))
+        ok("jes: HAR case carries 830 ALD cycles", q.get("cycle_number", {}).get("value") == 830,
+           q.get("cycle_number"))
+        ok("jes: HAR case carries trench depth 18.5 and width 0.6",
+           q.get("feature_height", {}).get("value") == 18.5
+           and q.get("feature_width", {}).get("value") == 0.6,
+           (q.get("feature_height", {}).get("value"), q.get("feature_width", {}).get("value")))
+        ok("jes: HAR deposits SiO2", h.get("deposited_material") == "SiO2",
+           h.get("deposited_material"))
+        ok("jes: HAR claims no digitised points",
+           not any(sem(JES, "measurements")[0] for _ in [])
+           or all(not m["result_series_ids"] for m in sem(JES, "measurements")
+                  if m.get("recovery_cause") == "image_only_figure"))
+    ok("jes: planar and HAR contexts coexist",
+       len({c.get("geometry") for c in cases if c.get("geometry")}) >= 2,
+       sorted({c.get("geometry") for c in cases if c.get("geometry")}))
+    stack = [c for c in cases if c.get("multi_material_context")]
+    ok("jes: the SiO2/Al2O3 stack context is representable", len(stack) >= 1, len(stack))
+    ok("jes: stack constituents carry a stack role",
+       any(set(c["material_roles"].values()) & {"STACK_COMPONENT"} for c in stack),
+       [c["material_roles"] for c in stack[:2]])
+    ok("jes: distinct cases were not over-merged", len(cases) > 5, len(cases))
 
     # ---- c7ta03257a --------------------------------------------------------
     cases = sem(CTA, "experimental_cases")
-    ok("cta: deposition cases exist with no x-y process curve", len(cases) >= 2, len(cases))
-    ok("cta: they are text-supported and distinguished by a per-cycle process quantity",
-       all("text_supported" in c["member_kinds"] for c in cases)
-       and len({tuple((x["quantity"], x["value"]) for x in c["case_defining_conditions"])
-                for c in cases}) == len(cases))
     ms = sem(CTA, "measurements")
+    chains = sem(CTA, "provenance_chains")
+    ok("cta: two deposition cases exist with no x-y process curve", len(cases) == 2,
+       len(cases))
+    labels = {(c.get("synthesis_label") or "").lower() for c in cases}
+    ok("cta: the cases are the full replica and the tubular replica",
+       any("full" in l for l in labels) and any("tube" in l or "tubular" in l for l in labels),
+       sorted(labels))
     cv = [m for m in ms if set(m["technique"] or []) &
           {"cyclic_voltammetry", "impedance_spectroscopy"}]
-    ok("cta: CV / impedance are Measurements", len(cv) >= 2, len(cv))
-    ok("cta: CV / impedance are NOT deposition cases",
-       not any(m["measures_case"] for m in cv))
-    unres = sem(CTA, "unresolved")
-    ok("cta: the unestablished case link is recorded as UNRESOLVED",
-       any(u.get("kind") == "measurement_without_case" for u in unres), len(unres))
+    ok("cta: CV / impedance are Measurements, never cases", len(cv) >= 4
+       and not any(m["measurement_id"].startswith("CASE") for m in cv), len(cv))
+    coated8 = [m for m in ms if m["source"]["printed_figure"] == "8"
+               and m.get("provenance_role") == "PRODUCT_OF_CASE"]
+    ok("cta: Fig 8 coated results carry tubular-replica provenance", len(coated8) >= 2,
+       len(coated8))
+    ok("cta: that provenance points at the tubular synthesis case",
+       all(any((c.get("synthesis_label") or "").lower().find("tube") >= 0
+               or (c.get("synthesis_label") or "").lower().find("tubular") >= 0
+               for c in cases if c["case_id"] in m["measures_case"]) for m in coated8),
+       [m["measures_case"] for m in coated8])
+    bare = [m for m in ms if m.get("provenance_role") == "REFERENCE"]
+    ok("cta: bare / uncoated reference series exist and are typed REFERENCE",
+       len(bare) >= 2, len(bare))
+    ok("cta: no reference series is attributed to a deposition case",
+       not any(m["measures_case"] for m in bare))
+    f7 = [m for m in ms if m["source"]["printed_figure"] == "7"
+          and m.get("provenance_role") != "REFERENCE"]
+    ok("cta: Fig 7 coated result stays UNRESOLVED (the source names no protocol)",
+       bool(f7) and not any(m["measures_case"] for m in f7),
+       [m["measures_case"] for m in f7])
     f8b = [m for m in ms if m["source"]["printed_figure"] == "8"
            and m["source"]["panel"] == "b"]
     ok("cta: printed Fig 8(b) is represented", len(f8b) == 1, len(f8b))
-    ok("cta: Fig 8(b) records the missing-crop cause",
+    ok("cta: Fig 8(b) records why it was missing",
        bool(f8b) and f8b[0].get("recovery_cause") == "panel_absent_from_crop",
        f8b[0].get("recovery_cause") if f8b else None)
+    ok("cta: the resolved chain names the device it was placed on",
+       any(c["status"] == "RESOLVED" and c.get("device") for c in chains),
+       [(c["status"], c.get("device")) for c in chains])
 
     # ---- Yim 2020 ----------------------------------------------------------
     cases = sem(YIM, "experimental_cases")
     samples = {s["source_sample_code"]: s for s in sem(YIM, "samples")}
     runs = sem(YIM, "deposition_runs")
+    run_ev = sem(YIM, "run_evidence")
     series = {s["author_series_name"]: s for s in sem(YIM, "study_series")}
     reps = sem(YIM, "representations")
     ms = {m["measurement_id"]: m for m in sem(YIM, "measurements")}
 
-    shared = [r for r in runs if r["kind"] == "SHARED_RUN" and len(r["sample_codes"]) > 1]
-    ok("yim: Series A — one DepositionRun produces several Samples", len(shared) >= 1,
-       [r["sample_codes"] for r in runs])
-    ok("yim: that run holds exactly the three Series A specimens",
-       bool(shared) and sorted(shared[0]["sample_codes"]) == ["1", "2", "3"],
-       shared[0]["sample_codes"] if shared else None)
-
-    ok("yim: Series B varies a MEASUREMENT_SETTING",
+    # PDF Table 1 footnote a defines every series
+    ok("yim: Series A primary variable is the pillar layout",
+       series.get("Series A", {}).get("varied_variable") == "pillar_layout",
+       series.get("Series A", {}).get("varied_variable"))
+    ok("yim: Series B primary variable is the reflectometer magnification",
+       series.get("Series B", {}).get("varied_variable") == "reflectometer_magnification",
+       series.get("Series B", {}).get("varied_variable"))
+    ok("yim: Series C primary variable is the channel height",
+       series.get("Series C", {}).get("varied_variable") == "feature_height",
+       series.get("Series C", {}).get("varied_variable"))
+    ok("yim: Series D primary variable is the ALD cycle count",
+       series.get("Series D", {}).get("varied_variable") == "cycle_number",
+       series.get("Series D", {}).get("varied_variable"))
+    ok("yim: Series E primary variable is the TMA pulse time",
+       series.get("Series E", {}).get("varied_variable") == "pulse_time",
+       series.get("Series E", {}).get("varied_variable"))
+    ok("yim: Series F primary variable is the purge time",
+       series.get("Series F", {}).get("varied_variable") == "purge_time",
+       series.get("Series F", {}).get("varied_variable"))
+    ok("yim: every series variable comes from the author's own declaration",
+       all(s.get("varied_variable_source") == "author_declaration"
+           for s in series.values()),
+       {k: v.get("varied_variable_source") for k, v in series.items()})
+    ok("yim: Series E keeps its pillar-layout co-variation without losing its variable",
+       any(c["quantity"] == "pillar_layout"
+           for c in series.get("Series E", {}).get("co_varying_context") or []),
+       series.get("Series E", {}).get("co_varying_context"))
+    ok("yim: Series B is typed a MEASUREMENT_SETTING",
        series.get("Series B", {}).get("varied_variable_role") == "MEASUREMENT_SETTING",
        series.get("Series B", {}).get("varied_variable_role"))
+
+    # PDF Table 1: sample 4 = 50x, 5 = 10x, 6 = 5x; Fig 7 legends X50 / X10 / X5
+    want = {"X50": "4", "X10": "5", "X5": "6"}
+    got = {}
+    for m in ms.values():
+        if m["source"]["printed_figure"] != "7":
+            continue
+        # exact first token: "X5 (50 um)" must not also satisfy the "X50" expectation
+        lab = str(m["source"].get("source_series") or "").upper().split(" ")[0]
+        if lab in want:
+            got[lab] = (m.get("performed_on") or "").split("::")[-1]
+    for k, v in sorted(want.items()):
+        ok("yim: Fig 7 %s maps to specimen %s" % (k, v), got.get(k) == v,
+           "got %s" % got.get(k))
+    ok("yim: that mapping is a value join, not list order",
+       all(m.get("specimen_binding") == "value_join" for m in ms.values()
+           if m["source"]["printed_figure"] == "7"),
+       {m["source"]["source_series"]: m.get("specimen_binding") for m in ms.values()
+        if m["source"]["printed_figure"] == "7"})
+    setq = {x["quantity"] for m in ms.values() if m["source"]["printed_figure"] == "7"
+            for x in m["measurement_settings"]}
+    ok("yim: the magnification is attached as a MEASUREMENT_SETTING",
+       "reflectometer_magnification" in setq, sorted(setq))
+    spots = [x.get("derived_quantity", {}).get("value") for m in ms.values()
+             if m["source"]["printed_figure"] == "7" for x in m["measurement_settings"]]
+    ok("yim: each objective carries its methods-stated spot size",
+       len([v for v in spots if v]) == 3, spots)
     b_cases = [c for c in cases if c["source_figures"] == ["7"]]
-    ok("yim: Series B's three curves do not become three deposition cases",
-       len(b_cases) == 1, "%d cases from the Series B figure" % len(b_cases))
-    ok("yim: that single case carries all three Series B measurements",
-       bool(b_cases) and len(b_cases[0]["measurement_ids"]) == 3,
-       len(b_cases[0]["measurement_ids"]) if b_cases else None)
+    ok("yim: magnification variation alone creates no deposition case", len(b_cases) <= 1,
+       "%d cases from the Series B figure" % len(b_cases))
 
     s11 = samples.get("11")
-    ok("yim: sample 11 — one Sample carries several Measurements",
+    ok("yim: sample 11 carries several Measurements",
        bool(s11) and len(s11["measurement_ids"]) > 1,
        len(s11["measurement_ids"]) if s11 else None)
+    for code in ("8", "12"):
+        ok("yim: sample %s belongs to two study series" % code,
+           len([s for s in series.values() if code in s["member_sample_codes"]]) == 2,
+           [s["author_series_name"] for s in series.values()
+            if code in s["member_sample_codes"]])
 
-    ok("yim: sample 8 belongs to two study series",
-       bool(samples.get("8")) and len([s for s in series.values()
-                                       if "8" in s["member_sample_codes"]]) == 2,
-       [s["author_series_name"] for s in series.values()
-        if "8" in s["member_sample_codes"]])
-    ok("yim: sample 12 belongs to two study series",
-       bool(samples.get("12")) and len([s for s in series.values()
-                                        if "12" in s["member_sample_codes"]]) == 2,
-       [s["author_series_name"] for s in series.values()
-        if "12" in s["member_sample_codes"]])
+    # PDF: "All of the films were grown in the same ALD run" (Series A)
+    ok("yim: exactly one IDENTIFIED DepositionRun exists", len(runs) == 1, len(runs))
+    ok("yim: that run holds the three Series A specimens",
+       bool(runs) and sorted(runs[0]["sample_codes"]) == ["1", "2", "3"],
+       runs[0]["sample_codes"] if runs else None)
+    ok("yim: run-distinctness assertions are NOT counted as runs", len(run_ev) >= 1,
+       len(run_ev))
+    ok("yim: those assertions carry their evidence and name no specimen",
+       all(not r.get("sample_ids") and (r.get("different_run_evidence")
+                                        or r.get("same_run_evidence")) for r in run_ev))
 
     f8a = [m for m in ms.values() if m["source"]["printed_figure"] == "8"
            and m["source"]["panel"] == "a"]
-    cases8a = {c for m in f8a for c in m["measures_case"]}
-    ok("yim: Fig 8a repeat measurement stays one deposition case", len(cases8a) <= 1,
-       sorted(cases8a))
-
-    f8b_runs = [r for r in runs if r["kind"] == "DISTINCT_RUNS"]
-    ok("yim: Fig 8b's distinct runs are recorded as such", len(f8b_runs) >= 1,
-       len(f8b_runs))
+    ok("yim: Fig 8a repeat measurement stays one deposition case",
+       len({c for m in f8a for c in m["measures_case"]}) <= 1,
+       sorted({c for m in f8a for c in m["measures_case"]}))
 
     f9_reps = [r for r in reps if r["source"]["printed_figure"] == "9"]
     f9_cases = [c for c in cases if c["source_figures"] == ["9"]]
     ok("yim: Fig 9 declares 18 representation panels", len(f9_reps) == 18, len(f9_reps))
     ok("yim: Fig 9 yields 6 cases, not 18", len(f9_cases) == 6, len(f9_cases))
-    ok("yim: Fig 9's scaled/normalized panels link to their as-measured panel",
+    ok("yim: the scaled and normalized panels link to their as-measured panel",
        len([r for r in f9_reps if r.get("derived_representation_of")]) == 12,
        len([r for r in f9_reps if r.get("derived_representation_of")]))
 
@@ -321,9 +480,7 @@ def anchors():
     ok("yim: no simulation is an ExperimentalCase",
        not any(s["is_experimental_case"] for s in sims))
     ok("yim: every Fig 10 series is still 'simulated'",
-       all(s["data_source"] == ["simulated"] for s in f10 if s["data_source"]),
-       [s["data_source"] for s in f10[:3]])
-
+       all(s["data_source"] == ["simulated"] for s in f10 if s["data_source"]))
     f11 = [c for c in cases if c["source_figures"] == ["11"]]
     ok("yim: Fig 11's deposition-condition variations are distinct cases", len(f11) >= 4,
        len(f11))

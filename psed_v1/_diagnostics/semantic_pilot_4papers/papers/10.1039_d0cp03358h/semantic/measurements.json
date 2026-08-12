@@ -79,7 +79,8 @@
     "unit": "nm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig5b__exp01",
@@ -162,7 +163,8 @@
     "unit": "nm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig5b__exp02",
@@ -243,7 +245,10 @@
     "unit": "nm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig5b__exp03",
@@ -324,7 +329,10 @@
     "unit": "nm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig7a__exp01",
@@ -351,7 +359,29 @@
   "measures_case": [
    "CASE-10.103-002"
   ],
-  "measurement_settings": [],
+  "measurement_settings": [
+   {
+    "quantity": "reflectometer_magnification",
+    "value": 5.0,
+    "unit": null,
+    "role": "MEASUREMENT_SETTING",
+    "role_basis": "author-declared variable of Series B",
+    "provenance_type": "directly_stated",
+    "source": "specimen_table",
+    "evidence": "Series B varies reflectometer_magnification; specimen 6 is 5",
+    "derived_quantity": {
+     "quantity": "spot_size",
+     "value": 50.0,
+     "unit": "µm",
+     "value_kind": null,
+     "value_lower": null,
+     "value_upper": null,
+     "role": "MEASUREMENT_SETTING",
+     "provenance_type": "directly_stated",
+     "evidence": "10 × and 5 × objective lenses with an estimated spot size of 25 and 50 m m"
+    }
+   }
+  ],
   "source": {
    "printed_figure": "7",
    "panel": "a",
@@ -401,7 +431,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "value_join"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig7a__exp02",
@@ -424,11 +455,33 @@
   "coordinate_unit": "nm",
   "entity_class": "ExperimentalProfile",
   "classification": "experimental_profile",
-  "performed_on": "S::10.1039_d0cp03358h::6",
+  "performed_on": "S::10.1039_d0cp03358h::5",
   "measures_case": [
    "CASE-10.103-002"
   ],
-  "measurement_settings": [],
+  "measurement_settings": [
+   {
+    "quantity": "reflectometer_magnification",
+    "value": 10.0,
+    "unit": null,
+    "role": "MEASUREMENT_SETTING",
+    "role_basis": "author-declared variable of Series B",
+    "provenance_type": "directly_stated",
+    "source": "specimen_table",
+    "evidence": "Series B varies reflectometer_magnification; specimen 5 is 10",
+    "derived_quantity": {
+     "quantity": "spot_size",
+     "value": 25.0,
+     "unit": "µm",
+     "value_kind": null,
+     "value_lower": null,
+     "value_upper": null,
+     "role": "MEASUREMENT_SETTING",
+     "provenance_type": "directly_stated",
+     "evidence": "10 × and 5 × objective lenses with an estimated spot size of 25 and 50 m m"
+    }
+   }
+  ],
   "source": {
    "printed_figure": "7",
    "panel": "a",
@@ -477,7 +530,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "value_join"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig7a__exp03",
@@ -500,11 +554,33 @@
   "coordinate_unit": "nm",
   "entity_class": "ExperimentalProfile",
   "classification": "experimental_profile",
-  "performed_on": "S::10.1039_d0cp03358h::6",
+  "performed_on": "S::10.1039_d0cp03358h::4",
   "measures_case": [
    "CASE-10.103-002"
   ],
-  "measurement_settings": [],
+  "measurement_settings": [
+   {
+    "quantity": "reflectometer_magnification",
+    "value": 50.0,
+    "unit": null,
+    "role": "MEASUREMENT_SETTING",
+    "role_basis": "author-declared variable of Series B",
+    "provenance_type": "directly_stated",
+    "source": "specimen_table",
+    "evidence": "Series B varies reflectometer_magnification; specimen 4 is 50",
+    "derived_quantity": {
+     "quantity": "spot_size",
+     "value": 5.5,
+     "unit": "µm",
+     "value_kind": "range",
+     "value_lower": 5.0,
+     "value_upper": 6.0,
+     "role": "MEASUREMENT_SETTING",
+     "provenance_type": "directly_stated",
+     "evidence": "50 × objective lens with an estimated spot size of 5-6 m m"
+    }
+   }
+  ],
   "source": {
    "printed_figure": "7",
    "panel": "a",
@@ -553,7 +629,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "value_join"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig8a__exp01",
@@ -596,7 +673,7 @@
   "n_observations": 17,
   "repeat_measurement": true,
   "evidence": [
-   "EV-10.103-058"
+   "EV-10.103-055"
   ],
   "confidence": "EXPLICIT",
   "_material": "Al2O3",
@@ -631,7 +708,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig8a__exp02",
@@ -674,7 +752,7 @@
   "n_observations": 17,
   "repeat_measurement": true,
   "evidence": [
-   "EV-10.103-061"
+   "EV-10.103-058"
   ],
   "confidence": "EXPLICIT",
   "_material": "Al2O3",
@@ -709,7 +787,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig8a__exp03",
@@ -752,7 +831,7 @@
   "n_observations": 17,
   "repeat_measurement": true,
   "evidence": [
-   "EV-10.103-064"
+   "EV-10.103-061"
   ],
   "confidence": "EXPLICIT",
   "_material": "Al2O3",
@@ -787,7 +866,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig8a__exp04",
@@ -830,7 +910,7 @@
   "n_observations": 17,
   "repeat_measurement": true,
   "evidence": [
-   "EV-10.103-067"
+   "EV-10.103-064"
   ],
   "confidence": "EXPLICIT",
   "_material": "Al2O3",
@@ -865,7 +945,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig8b__exp01",
@@ -908,6 +989,85 @@
   "n_observations": 23,
   "repeat_measurement": true,
   "evidence": [
+   "EV-10.103-067"
+  ],
+  "confidence": "EXPLICIT",
+  "_material": "Al2O3",
+  "_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING"
+   }
+  ],
+  "specimen_binding": "legend_code"
+ },
+ {
+  "measurement_id": "M::10.1039_d0cp03358h__Fig8b__exp02",
+  "paper_id": "10.1039_d0cp03358h",
+  "technique": [
+   "thickness"
+  ],
+  "technique_basis": "measured quantity",
+  "technique_evidence": [
+   {
+    "technique": "saturation_profile",
+    "matched": "saturation profile",
+    "span": "Fig. 8 Repeatability of saturation profile measurement",
+    "offset": 24
+   }
+  ],
+  "measured_quantity": "film_thickness",
+  "measured_unit": "nm",
+  "coordinate": "spatial_coordinate",
+  "coordinate_unit": "nm",
+  "entity_class": "ExperimentalProfile",
+  "classification": "experimental_profile",
+  "performed_on": "S::10.1039_d0cp03358h::4",
+  "measures_case": [
+   "CASE-10.103-002"
+  ],
+  "measurement_settings": [],
+  "source": {
+   "printed_figure": "8",
+   "panel": "b",
+   "resolved_entity_id": "10.1039_d0cp03358h__Fig8b__exp02",
+   "fig_docling_index": "14",
+   "source_series": "Sample 4"
+  },
+  "caption_reference": "for Al2O3 films made in 500 cycles on various LHAR channels, having the same design channel height of 500 nm and pillar design of v1b. Sample details are in Table 1.",
+  "result_series_ids": [
+   "RS::10.1039_d0cp03358h::F8::b::1::f3p1"
+  ],
+  "representation_id": null,
+  "n_observations": 21,
+  "repeat_measurement": true,
+  "evidence": [
    "EV-10.103-070"
   ],
   "confidence": "EXPLICIT",
@@ -943,85 +1103,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
- },
- {
-  "measurement_id": "M::10.1039_d0cp03358h__Fig8b__exp02",
-  "paper_id": "10.1039_d0cp03358h",
-  "technique": [
-   "thickness"
   ],
-  "technique_basis": "measured quantity",
-  "technique_evidence": [
-   {
-    "technique": "saturation_profile",
-    "matched": "saturation profile",
-    "span": "Fig. 8 Repeatability of saturation profile measurement",
-    "offset": 24
-   }
-  ],
-  "measured_quantity": "film_thickness",
-  "measured_unit": "nm",
-  "coordinate": "spatial_coordinate",
-  "coordinate_unit": "nm",
-  "entity_class": "ExperimentalProfile",
-  "classification": "experimental_profile",
-  "performed_on": "S::10.1039_d0cp03358h::4",
-  "measures_case": [
-   "CASE-10.103-005"
-  ],
-  "measurement_settings": [],
-  "source": {
-   "printed_figure": "8",
-   "panel": "b",
-   "resolved_entity_id": "10.1039_d0cp03358h__Fig8b__exp02",
-   "fig_docling_index": "14",
-   "source_series": "Sample 4"
-  },
-  "caption_reference": "for Al2O3 films made in 500 cycles on various LHAR channels, having the same design channel height of 500 nm and pillar design of v1b. Sample details are in Table 1.",
-  "result_series_ids": [
-   "RS::10.1039_d0cp03358h::F8::b::1::f3p1"
-  ],
-  "representation_id": null,
-  "n_observations": 21,
-  "repeat_measurement": true,
-  "evidence": [
-   "EV-10.103-073"
-  ],
-  "confidence": "EXPLICIT",
-  "_material": "Al2O3",
-  "_conditions": [
-   {
-    "quantity": "cycle_number",
-    "value": "500",
-    "unit": "cycle",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "feature_height",
-    "value": "500",
-    "unit": "nm",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "working_pressure",
-    "value": "3",
-    "unit": "hPa",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "deposition_temperature",
-    "value": "300",
-    "unit": "°C",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "flow_rate",
-    "value": "150",
-    "unit": "sccm",
-    "role": "CASE_DEFINING"
-   }
-  ]
+  "specimen_binding": "legend_code"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig8b__exp03",
@@ -1064,6 +1147,85 @@
   "n_observations": 22,
   "repeat_measurement": true,
   "evidence": [
+   "EV-10.103-073"
+  ],
+  "confidence": "EXPLICIT",
+  "_material": "Al2O3",
+  "_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING"
+   }
+  ],
+  "specimen_binding": "legend_code"
+ },
+ {
+  "measurement_id": "M::10.1039_d0cp03358h__Fig8b__exp04",
+  "paper_id": "10.1039_d0cp03358h",
+  "technique": [
+   "thickness"
+  ],
+  "technique_basis": "measured quantity",
+  "technique_evidence": [
+   {
+    "technique": "saturation_profile",
+    "matched": "saturation profile",
+    "span": "Fig. 8 Repeatability of saturation profile measurement",
+    "offset": 24
+   }
+  ],
+  "measured_quantity": "film_thickness",
+  "measured_unit": "nm",
+  "coordinate": "spatial_coordinate",
+  "coordinate_unit": "nm",
+  "entity_class": "ExperimentalProfile",
+  "classification": "experimental_profile",
+  "performed_on": "S::10.1039_d0cp03358h::12",
+  "measures_case": [
+   "CASE-10.103-005"
+  ],
+  "measurement_settings": [],
+  "source": {
+   "printed_figure": "8",
+   "panel": "b",
+   "resolved_entity_id": "10.1039_d0cp03358h__Fig8b__exp04",
+   "fig_docling_index": "14",
+   "source_series": "Sample 12"
+  },
+  "caption_reference": "for Al2O3 films made in 500 cycles on various LHAR channels, having the same design channel height of 500 nm and pillar design of v1b. Sample details are in Table 1.",
+  "result_series_ids": [
+   "RS::10.1039_d0cp03358h::F8::b::3::f3p1"
+  ],
+  "representation_id": null,
+  "n_observations": 26,
+  "repeat_measurement": true,
+  "evidence": [
    "EV-10.103-076"
   ],
   "confidence": "EXPLICIT",
@@ -1099,85 +1261,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
- },
- {
-  "measurement_id": "M::10.1039_d0cp03358h__Fig8b__exp04",
-  "paper_id": "10.1039_d0cp03358h",
-  "technique": [
-   "thickness"
   ],
-  "technique_basis": "measured quantity",
-  "technique_evidence": [
-   {
-    "technique": "saturation_profile",
-    "matched": "saturation profile",
-    "span": "Fig. 8 Repeatability of saturation profile measurement",
-    "offset": 24
-   }
-  ],
-  "measured_quantity": "film_thickness",
-  "measured_unit": "nm",
-  "coordinate": "spatial_coordinate",
-  "coordinate_unit": "nm",
-  "entity_class": "ExperimentalProfile",
-  "classification": "experimental_profile",
-  "performed_on": "S::10.1039_d0cp03358h::12",
-  "measures_case": [
-   "CASE-10.103-006"
-  ],
-  "measurement_settings": [],
-  "source": {
-   "printed_figure": "8",
-   "panel": "b",
-   "resolved_entity_id": "10.1039_d0cp03358h__Fig8b__exp04",
-   "fig_docling_index": "14",
-   "source_series": "Sample 12"
-  },
-  "caption_reference": "for Al2O3 films made in 500 cycles on various LHAR channels, having the same design channel height of 500 nm and pillar design of v1b. Sample details are in Table 1.",
-  "result_series_ids": [
-   "RS::10.1039_d0cp03358h::F8::b::3::f3p1"
-  ],
-  "representation_id": null,
-  "n_observations": 26,
-  "repeat_measurement": true,
-  "evidence": [
-   "EV-10.103-079"
-  ],
-  "confidence": "EXPLICIT",
-  "_material": "Al2O3",
-  "_conditions": [
-   {
-    "quantity": "cycle_number",
-    "value": "500",
-    "unit": "cycle",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "feature_height",
-    "value": "500",
-    "unit": "nm",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "working_pressure",
-    "value": "3",
-    "unit": "hPa",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "deposition_temperature",
-    "value": "300",
-    "unit": "°C",
-    "role": "CASE_DEFINING"
-   },
-   {
-    "quantity": "flow_rate",
-    "value": "150",
-    "unit": "sccm",
-    "role": "CASE_DEFINING"
-   }
-  ]
+  "specimen_binding": "legend_code"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9a__exp01",
@@ -1202,7 +1287,7 @@
   "classification": "experimental_profile",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.103-007"
+   "CASE-10.103-006"
   ],
   "measurement_settings": [],
   "source": {
@@ -1247,7 +1332,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9a__exp02",
@@ -1272,7 +1358,7 @@
   "classification": "experimental_profile",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.103-008"
+   "CASE-10.103-007"
   ],
   "measurement_settings": [],
   "source": {
@@ -1317,7 +1403,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9a__exp03",
@@ -1342,7 +1429,7 @@
   "classification": "experimental_profile",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.103-009"
+   "CASE-10.103-008"
   ],
   "measurement_settings": [],
   "source": {
@@ -1387,7 +1474,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9b__exp01",
@@ -1456,7 +1544,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp01"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp01",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9b__exp02",
@@ -1525,7 +1616,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp02"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp02",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9b__exp03",
@@ -1594,7 +1688,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp03"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp03",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9c__exp01",
@@ -1663,7 +1760,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp01"
+  "specimen_binding": "caption_list",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp01",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9c__exp02",
@@ -1732,7 +1832,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp02"
+  "specimen_binding": "caption_list",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp02",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9c__exp03",
@@ -1801,7 +1904,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp03"
+  "specimen_binding": "caption_list",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9a__exp03",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9d__exp01",
@@ -1826,7 +1932,7 @@
   "classification": "experimental_profile",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.103-010"
+   "CASE-10.103-009"
   ],
   "measurement_settings": [],
   "source": {
@@ -1871,7 +1977,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9d__exp02",
@@ -1896,7 +2003,7 @@
   "classification": "experimental_profile",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.103-011"
+   "CASE-10.103-010"
   ],
   "measurement_settings": [],
   "source": {
@@ -1941,7 +2048,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9d__exp03",
@@ -1966,7 +2074,7 @@
   "classification": "experimental_profile",
   "performed_on": null,
   "measures_case": [
-   "CASE-10.103-012"
+   "CASE-10.103-011"
   ],
   "measurement_settings": [],
   "source": {
@@ -2011,7 +2119,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "none"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9e__exp01",
@@ -2080,7 +2189,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp01"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp01",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9e__exp02",
@@ -2149,7 +2261,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp02"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp02",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9e__exp03",
@@ -2218,7 +2333,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp03"
+  "specimen_binding": "none",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp03",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9f__exp01",
@@ -2287,7 +2405,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp01"
+  "specimen_binding": "caption_list",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp01",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9f__exp02",
@@ -2356,7 +2477,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp02"
+  "specimen_binding": "caption_list",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp02",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig9f__exp03",
@@ -2425,7 +2549,10 @@
     "role": "CASE_DEFINING"
    }
   ],
-  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp03"
+  "specimen_binding": "caption_list",
+  "represents_same_measurement_as": "M::10.1039_d0cp03358h__Fig9d__exp03",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig11a__exp01",
@@ -2443,7 +2570,7 @@
   "classification": "experimental_profile",
   "performed_on": "S::10.1039_d0cp03358h::14",
   "measures_case": [
-   "CASE-10.103-013"
+   "CASE-10.103-012"
   ],
   "measurement_settings": [],
   "source": {
@@ -2506,7 +2633,8 @@
     "unit": null,
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig11a__exp02",
@@ -2524,7 +2652,7 @@
   "classification": "experimental_profile",
   "performed_on": "S::10.1039_d0cp03358h::14",
   "measures_case": [
-   "CASE-10.103-014"
+   "CASE-10.103-013"
   ],
   "measurement_settings": [],
   "source": {
@@ -2587,7 +2715,8 @@
     "unit": null,
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig11a__exp03",
@@ -2605,7 +2734,7 @@
   "classification": "experimental_profile",
   "performed_on": "S::10.1039_d0cp03358h::14",
   "measures_case": [
-   "CASE-10.103-015"
+   "CASE-10.103-014"
   ],
   "measurement_settings": [],
   "source": {
@@ -2668,7 +2797,8 @@
     "unit": null,
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig11b__exp01",
@@ -2686,7 +2816,7 @@
   "classification": "experimental_profile",
   "performed_on": "S::10.1039_d0cp03358h::16",
   "measures_case": [
-   "CASE-10.103-016"
+   "CASE-10.103-015"
   ],
   "measurement_settings": [],
   "source": {
@@ -2743,7 +2873,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig11b__exp02",
@@ -2761,7 +2892,7 @@
   "classification": "experimental_profile",
   "performed_on": "S::10.1039_d0cp03358h::16",
   "measures_case": [
-   "CASE-10.103-017"
+   "CASE-10.103-016"
   ],
   "measurement_settings": [],
   "source": {
@@ -2818,7 +2949,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::10.1039_d0cp03358h__Fig11b__exp03",
@@ -2836,7 +2968,7 @@
   "classification": "experimental_profile",
   "performed_on": "S::10.1039_d0cp03358h::16",
   "measures_case": [
-   "CASE-10.103-018"
+   "CASE-10.103-017"
   ],
   "measurement_settings": [],
   "source": {
@@ -2893,7 +3025,8 @@
     "unit": "sccm",
     "role": "CASE_DEFINING"
    }
-  ]
+  ],
+  "specimen_binding": "caption_list"
  },
  {
   "measurement_id": "M::SUP::10.1039_d0cp03358h::F2a",
@@ -2929,9 +3062,11 @@
   "recovery_detail": "printed figure 2 has 1 crop(s) and they cover panel(s) ['None']; no PictureItem exists for panel (a)",
   "page_render": "supplement_fig2_p3.png",
   "evidence": [
-   "EV-10.103-190"
+   "EV-10.103-187"
   ],
-  "confidence": "UNRESOLVED"
+  "confidence": "UNRESOLVED",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::SUP::10.1039_d0cp03358h::F2b",
@@ -2967,9 +3102,11 @@
   "recovery_detail": "printed figure 2 has 1 crop(s) and they cover panel(s) ['None']; no PictureItem exists for panel (b)",
   "page_render": "supplement_fig2_p3.png",
   "evidence": [
-   "EV-10.103-191"
+   "EV-10.103-188"
   ],
-  "confidence": "UNRESOLVED"
+  "confidence": "UNRESOLVED",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::SUP::10.1039_d0cp03358h::F2c",
@@ -3005,9 +3142,11 @@
   "recovery_detail": "printed figure 2 has 1 crop(s) and they cover panel(s) ['None']; no PictureItem exists for panel (c)",
   "page_render": "supplement_fig2_p3.png",
   "evidence": [
-   "EV-10.103-192"
+   "EV-10.103-189"
   ],
-  "confidence": "UNRESOLVED"
+  "confidence": "UNRESOLVED",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
  },
  {
   "measurement_id": "M::SUP::10.1039_d0cp03358h::F2d",
@@ -3043,8 +3182,58 @@
   "recovery_detail": "printed figure 2 has 1 crop(s) and they cover panel(s) ['None']; no PictureItem exists for panel (d)",
   "page_render": "supplement_fig2_p3.png",
   "evidence": [
-   "EV-10.103-193"
+   "EV-10.103-190"
   ],
-  "confidence": "UNRESOLVED"
+  "confidence": "UNRESOLVED",
+  "provenance_role": "CASE_UNRESOLVED",
+  "provenance_note": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen"
+ },
+ {
+  "measurement_id": "M::IMG::10.1039_d0cp03358h::F6",
+  "paper_id": "10.1039_d0cp03358h",
+  "technique": [
+   "AFM"
+  ],
+  "technique_basis": "caption clause",
+  "technique_evidence": [],
+  "measured_quantity": null,
+  "measured_unit": null,
+  "coordinate": null,
+  "coordinate_unit": null,
+  "entity_class": null,
+  "classification": "image_supported_characterisation",
+  "performed_on": null,
+  "measures_case": [
+   "CASE-10.103-018"
+  ],
+  "measurement_settings": [],
+  "source": {
+   "printed_figure": "6",
+   "panel": "",
+   "resolved_entity_id": null,
+   "fig_docling_index": null,
+   "source_series": null
+  },
+  "caption_reference": "Fig. 6 AFM image of the LHAR channel (design channel height of 500 nm) coated by an Al2O3 film at 300 1 C in 500 cycles (sample details at Table S4, ESI † ). The notation for Regions I-II in Fig. 3. The top membrane was removed with adhesive tape. Remaining membrane remnants are seen in white and holes left by ripped off pillars in black.",
+  "result_series_ids": [],
+  "representation_id": null,
+  "n_observations": 0,
+  "repeat_measurement": false,
+  "data_recovered": false,
+  "recovery_cause": "image_only_figure",
+  "recovery_detail": "the caption reports a deposition on a described structure and states its process conditions; the figure's evidence is an image, so no x-y points exist or are claimed",
+  "_material": "Al2O3",
+  "_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": 500.0,
+    "unit": "cycle",
+    "role": "CASE_DEFINING"
+   }
+  ],
+  "evidence": [
+   "EV-10.103-191"
+  ],
+  "confidence": "EXPLICIT"
  }
 ]
