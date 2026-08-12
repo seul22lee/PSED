@@ -1,0 +1,483 @@
+{
+ "head_before": "7e23dc603027f86c016b4c93e5d49f53aee46b28",
+ "papers": [
+  "10.1038_am.2016.182",
+  "10.1149_2.067203jes",
+  "10.1039_c7ta03257a",
+  "10.1039_d0cp03358h"
+ ],
+ "code": [
+  {
+   "source": "pipeline/figures/inventory.py",
+   "pilot_copy": "code/pilot_inventory.py",
+   "sha256_before": "e205fa1a0423eb43f4a656c75505a79792d07686f3da8c50f9f7138c5c9d1e5d",
+   "reason": "caption grammar: _PANEL_HEAD rejects a spaced parenthetical '( a )', losing am.2016.182 printed Fig 4"
+  },
+  {
+   "source": "pipeline/canonical/entities.py",
+   "pilot_copy": "code/pilot_entities.py",
+   "sha256_before": "617cc2ce8f7bcdee9900a0b2be9abfbb68fbbab49c2cb7581dadd1780e9a3c1b",
+   "reason": "SAMPLE_ID / SAMPLE_LIST regexes reused for sample/run/series evidence; classification tables read for provenance preservation"
+  }
+ ],
+ "ontology": [
+  {
+   "source": "ontology/ald_ontology.json",
+   "pilot_copy": "ontology/ald_ontology.json",
+   "sha256_before": "f84e368f3aff17b8b485573fdfe4d9030e9437dd2f32e95034422b512c4d67d8",
+   "reason": "read-only reference: reuse declared ExperimentalCase/DepositionRun/Sample/Measurement/PlotRepresentation classes and relations"
+  }
+ ],
+ "artifacts": [
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/candidate_meta.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/candidate_meta.json",
+   "sha256_before": "8a8832b27a95070515d7f10c3e226681fc4f5a756b75ff93ec3dcbe228d1adb5",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/card.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/card.json",
+   "sha256_before": "ac0f0787b0c8f336aef5215e200bca787d26365797226a0d9db91f9afac82c95",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/figure_data.json",
+   "sha256_before": "f2fe91a93605cba199e637b8bf6827d1a16c7c9b0890d862c388da5813050d52",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/figure_inventory.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/figure_inventory.json",
+   "sha256_before": "9f008e1e27e4da0389f08be25937ddcd051390d71d2e36b23dc12eb9b9756f3a",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/geometry.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/geometry.json",
+   "sha256_before": "ad2c453ccabaf6bd19cba3f17f6c50f450409de4920de14f5c4b264d5b89f432",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/pressure.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/pressure.json",
+   "sha256_before": "530518a28fd9f4511531ba77079a10a8fd53094ef990071cef6cff6fc3f93b7c",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/records.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/records.json",
+   "sha256_before": "45a45ef85c7ea45ec32e0b30e69aa2d216289348bf84f32dff10fc45727595e7",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/scout.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/scout.json",
+   "sha256_before": "b57e34ab6310bf1676560adf62ea5ba38ce29724b1b615f1bb7dfca13366d804",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/structure.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/structure.json",
+   "sha256_before": "1c8d0207c11d2d32abb1006c96086e6d634488fa95f58069c3f80914dd5dabcb",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/document.md",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/document.md",
+   "sha256_before": "639e4b40c1e153d0b8b39f73cf258e16e9dc6cdaa5369583da8155ed692ce430",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/extracted/figures",
+   "pilot_copy": "papers/10.1038_am.2016.182/extracted/figures",
+   "sha256_before": null,
+   "reason": "pilot input (figure crops, directory)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/resolved/assertions.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/resolved/assertions.json",
+   "sha256_before": "757b1e04caf98758946aea34256bae2130bb54893acc1ba6c360ac2996f20d02",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/resolved/counts.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/resolved/counts.json",
+   "sha256_before": "eff03b8229855d1e2fc31866f763bc7274f49d0140031665a043670f4bc5baf4",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/resolved/entities.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/resolved/entities.json",
+   "sha256_before": "9e225908c1b340e450f8f7b9258bc997e25d127a269e9f8b43e67b8f665283d7",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/resolved/experiments.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/resolved/experiments.json",
+   "sha256_before": "e3bdef0362de54d79ebee3743b1db8386702437c0cfd288d5e707d5c63901cf3",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/resolved/results.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/resolved/results.json",
+   "sha256_before": "19004e5ec2e1334d7adca844a0e1d299bf0f057e3233c8b26115f268debe30ba",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/resolved/series.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/resolved/series.json",
+   "sha256_before": "8010011cd000af1bdfb6f03a3545cbbce5cccc358bf4c618e381f72f8942c3f7",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1038_am.2016.182/canonical/curves.json",
+   "pilot_copy": "papers/10.1038_am.2016.182/resolved/canonical_curves.json",
+   "sha256_before": "fc24426e84c9d39d8da41097369e6ef6f312d202fb82e15a6fbc50ab86b36e0b",
+   "reason": "pilot input (canonical curves: source provenance + measured/simulated)"
+  },
+  {
+   "source": "corpus/acquisition/pdf_inbox/10.1038_am.2016.182.pdf",
+   "pilot_copy": "papers/10.1038_am.2016.182/source/10.1038_am.2016.182.pdf",
+   "sha256_before": "ac2d0d2ac57a4b80e895b2915ae3038716531f8c6e6eb0264b5e82b66299718b",
+   "reason": "scientific ground truth (original PDF)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/candidate_meta.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/candidate_meta.json",
+   "sha256_before": "5e725657296c0b805c7c1a90d9815c677650504e64857e0bea8d6867a0aeac0b",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/card.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/card.json",
+   "sha256_before": "23b5ba449619632e206757cc78483ada8a6e600bd8f5433514066c4935865b8e",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/figure_data.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/figure_data.json",
+   "sha256_before": "c2f3690b46821948812a59325bbf1f168d03ec7f320a20060f9670be4034e12f",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/figure_inventory.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/figure_inventory.json",
+   "sha256_before": "af826c6db7e39ea9ebc306684a23afb42f8555cdc4c07250474465fd8b0263bd",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/geometry.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/geometry.json",
+   "sha256_before": "ad2c453ccabaf6bd19cba3f17f6c50f450409de4920de14f5c4b264d5b89f432",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/pressure.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/pressure.json",
+   "sha256_before": "a6a8567e8cf7ae3f9c8d66b0871441bdf33d93a3a0d0b8fd7116b3c70c8b6c53",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/records.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/records.json",
+   "sha256_before": "a27b7f45f2ad8675b01298762791fcdf6d749744d820050a1421d5e0f1cb2358",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/scout.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/scout.json",
+   "sha256_before": "7dc0819919c89bd4a46edd599570137c89b1d5be74ae05384fb8ac17c195cb58",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/structure.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/structure.json",
+   "sha256_before": "eae8cca82d516329377823599559ad80607f43543a1db4425e227e0cde6d523c",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/document.md",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/document.md",
+   "sha256_before": "9df68d54b562e3cd0d5579642ab8eb51f9c1bb297f633e89b8420bbd80d0680e",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/extracted/figures",
+   "pilot_copy": "papers/10.1149_2.067203jes/extracted/figures",
+   "sha256_before": null,
+   "reason": "pilot input (figure crops, directory)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/resolved/assertions.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/resolved/assertions.json",
+   "sha256_before": "a4dbf5e281e8c7787b133eac23f09ed74f2056ca960d5f5b22093289dacd34b5",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/resolved/counts.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/resolved/counts.json",
+   "sha256_before": "f568decc945efdb0ad45d2a36586844423b563d53b88890e2f6c59a1bfd97d8e",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/resolved/entities.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/resolved/entities.json",
+   "sha256_before": "54c8cac3f7e4019eee4d0c3b33c3651606cd5779337e35b178ea51333b1be4a1",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/resolved/experiments.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/resolved/experiments.json",
+   "sha256_before": "f838d9d0a5c59bc8c1d205e3f686ae247401af232f0660b284ca2e1b95f51255",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/resolved/results.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/resolved/results.json",
+   "sha256_before": "8888fc23f1bbf0f9bd2297f1d2f0912ab35704cefbc7fa468fbe4c2ca72af1a6",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/resolved/series.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/resolved/series.json",
+   "sha256_before": "e91a413ef57c31a14fbf441e129e7db165b6d364c4a9f6f4d55edabab72e3a2a",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1149_2.067203jes/canonical/curves.json",
+   "pilot_copy": "papers/10.1149_2.067203jes/resolved/canonical_curves.json",
+   "sha256_before": "1f6264cc76d4bdae076fa2255409bba5aeec4f918e70162ea425ad53bc39bbcf",
+   "reason": "pilot input (canonical curves: source provenance + measured/simulated)"
+  },
+  {
+   "source": "corpus/acquisition/pdf_inbox/10.1149_2.067203jes.pdf",
+   "pilot_copy": "papers/10.1149_2.067203jes/source/10.1149_2.067203jes.pdf",
+   "sha256_before": "efefb46b3502a7ec9035cc42dc79109ea6210ac159ddabedf1dc9c9787d6cb6c",
+   "reason": "scientific ground truth (original PDF)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/candidate_meta.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/candidate_meta.json",
+   "sha256_before": "a72d5adb414dfaa2eaf045cf10a12db391d2c40179dfb15738e3c49a37a9f8ac",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/card.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/card.json",
+   "sha256_before": "8389431474d5122d82af2b369a58fe9fc9055ca0724472797fbb70d31f19f4c7",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/figure_data.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/figure_data.json",
+   "sha256_before": "f8677521cc5dbc0f0e279785191038d76e0ae2c95bd86845491d00722e5dd08a",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/figure_inventory.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/figure_inventory.json",
+   "sha256_before": "38849beda32ea426c25b67085d8b90318e70a71c73e88d93be730a0e5dd6e88c",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/geometry.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/geometry.json",
+   "sha256_before": "e9687a7d89a58081f792d6056c907d8d7545a5bf6a66317e962b1eab44798739",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/pressure.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/pressure.json",
+   "sha256_before": "530518a28fd9f4511531ba77079a10a8fd53094ef990071cef6cff6fc3f93b7c",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/records.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/records.json",
+   "sha256_before": "11d2c6db14412afd00653a26ea36cea21f67be2edef1cd564de02b5f25ea5393",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/scout.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/scout.json",
+   "sha256_before": "0ee217d5e6ec068b654282331ec9fbd98bd29375fe4996abb6f5abb54b55a13f",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/structure.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/structure.json",
+   "sha256_before": "f5ce10493bb934ae5ae8651ba85607eca7640c46aa2b974fd56cc6cfa85610d1",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/document.md",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/document.md",
+   "sha256_before": "4c235feb0ce3884db1fa9357a07e4457cf92e234f147fdca55c60e008648d217",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/extracted/figures",
+   "pilot_copy": "papers/10.1039_c7ta03257a/extracted/figures",
+   "sha256_before": null,
+   "reason": "pilot input (figure crops, directory)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/resolved/assertions.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/resolved/assertions.json",
+   "sha256_before": "6e15f4edc4ee95be0a2858fbcba8d169c6eb6f5ef02e7391dfc3c12cf456e5aa",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/resolved/counts.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/resolved/counts.json",
+   "sha256_before": "b2f9b0bd9957df62940486347bac33b7bfd18ceb8bed294a720be4a2d865d23a",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/resolved/entities.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/resolved/entities.json",
+   "sha256_before": "f73c860790a3ad3740330184f3275cd857783a2603d9872fa5ce0b45549b88b6",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/resolved/experiments.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/resolved/experiments.json",
+   "sha256_before": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/resolved/results.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/resolved/results.json",
+   "sha256_before": "cfb896a87a8799ee7fc13654e2a95b39f8d2d2dee0cc9ff19ab00362e5291277",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/resolved/series.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/resolved/series.json",
+   "sha256_before": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_c7ta03257a/canonical/curves.json",
+   "pilot_copy": "papers/10.1039_c7ta03257a/resolved/canonical_curves.json",
+   "sha256_before": "6ff0e5dba17ebe10979ce6bc67455e3c502d1a3af94955e13cb449fa410e40e5",
+   "reason": "pilot input (canonical curves: source provenance + measured/simulated)"
+  },
+  {
+   "source": "corpus/acquisition/pdf_inbox/10.1039_c7ta03257a.pdf",
+   "pilot_copy": "papers/10.1039_c7ta03257a/source/10.1039_c7ta03257a.pdf",
+   "sha256_before": "e226a7d38f4c0127c286fa6de6226d4b5180636389d93935949674c4da4c0dce",
+   "reason": "scientific ground truth (original PDF)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/card.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/card.json",
+   "sha256_before": "4156e259f3956f99ae935d8f7aa0f23a41178b970f376bc4b5c95b1031b200dd",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/figure_data.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/figure_data.json",
+   "sha256_before": "76030b8ca7d347a51ed15a6ef068155de7ffb292e02f551d74b2dd39a0e8e031",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/figure_inventory.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/figure_inventory.json",
+   "sha256_before": "0c5563f1051d4f249324fee47e2f3d08bcedd82380e854e33c7214de79171f3d",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/geometry.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/geometry.json",
+   "sha256_before": "7f725868c632f797fc4671d6c31cd0d61b715adb042cbdf34f4afaeb8370bec0",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/pressure.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/pressure.json",
+   "sha256_before": "530518a28fd9f4511531ba77079a10a8fd53094ef990071cef6cff6fc3f93b7c",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/records.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/records.json",
+   "sha256_before": "07be962b953ce10143cb18b5afc5b5398caad4ac401d8d3b7025077a872cf281",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/scout.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/scout.json",
+   "sha256_before": "a5139285c0010a91bb73dc6e62f405de2a3c7ab4dea5d4b281007b2f2bf711ab",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/structure.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/structure.json",
+   "sha256_before": "545eeaa17270d9fe0ff48b80b6fad2ac090c81cd804082fd53325bb41b5f087d",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/document.md",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/document.md",
+   "sha256_before": "02bd23b11f6f62622d51466c66f9893930d16277df2014599b1259c191653fed",
+   "reason": "pilot input (extraction artifact)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/extracted/figures",
+   "pilot_copy": "papers/10.1039_d0cp03358h/extracted/figures",
+   "sha256_before": null,
+   "reason": "pilot input (figure crops, directory)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/resolved/assertions.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/resolved/assertions.json",
+   "sha256_before": "278f9163654185a951a70beae063fb33a410e59d77c43e3d00d47349e8d717b8",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/resolved/counts.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/resolved/counts.json",
+   "sha256_before": "d99622dc81018cabdb8e955bdbea5f676d1cf7e8642a3c93cae8349a6c6e8a80",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/resolved/entities.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/resolved/entities.json",
+   "sha256_before": "fd043b3e9875d939e4d341552b142c2a2ae9447351db76ffc32d338087635d52",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/resolved/experiments.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/resolved/experiments.json",
+   "sha256_before": "53c168fe65061cd40098b382e7ccd517ac07356e511355922b24f4305f16cb2b",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/resolved/results.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/resolved/results.json",
+   "sha256_before": "9a0c85768376d9fb7734fc94f487f4988966ba6176eccb962929b21535b687f6",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/resolved/series.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/resolved/series.json",
+   "sha256_before": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+   "reason": "pilot input + old-vs-pilot baseline (resolved)"
+  },
+  {
+   "source": "papers/10.1039_d0cp03358h/canonical/curves.json",
+   "pilot_copy": "papers/10.1039_d0cp03358h/resolved/canonical_curves.json",
+   "sha256_before": "1b438b74e0cce90a10b200ff5e5be07952b11cd6e0d791ef7fedeeb194372ac7",
+   "reason": "pilot input (canonical curves: source provenance + measured/simulated)"
+  },
+  {
+   "source": "_diagnostics/yim2020_control/source/original_pdf.pdf",
+   "pilot_copy": "papers/10.1039_d0cp03358h/source/10.1039_d0cp03358h.pdf",
+   "sha256_before": "d017dd99e504c5557f8f457a536ba99d51f0201ec8fe561afbf416c77768b1e7",
+   "reason": "scientific ground truth (original PDF; not in the acquisition inbox, recovered from the yim2020_control diagnostic)"
+  }
+ ]
+}
