@@ -1,0 +1,990 @@
+{
+ "10.1038_am.2016.182": {
+  "current_psed": {
+   "experiments": 54,
+   "entities": 16,
+   "canonical_curves": 16,
+   "simulation_entities": 0,
+   "model_sweep_entities": 2,
+   "unresolved_entities": 0,
+   "physical_case_ids": 14,
+   "points": 112,
+   "data_source": {
+    "measured": 14,
+    "simulated": 2
+   }
+  },
+  "pilot": {
+   "experimental_cases": 50,
+   "measurements": 19,
+   "measurements_recovered_caption_only": 5,
+   "result_series": 16,
+   "representations": 0,
+   "samples": 0,
+   "deposition_runs": 0,
+   "study_series": 0,
+   "simulation_runs": 2,
+   "links_merged": 4,
+   "links_blocked": 2,
+   "unresolved_links": 15,
+   "points": 112,
+   "data_source": {
+    "measured": 14,
+    "simulated": 2
+   }
+  },
+  "changes": [
+   {
+    "class": "OVER_SPLIT_REMOVED",
+    "n": 2,
+    "detail": "cases that the current pipeline would have split by panel",
+    "examples": [
+     {
+      "case_id": "CASE-10.103-031",
+      "panels": [
+       "2a",
+       "2b",
+       "2c"
+      ]
+     },
+     {
+      "case_id": "CASE-10.103-036",
+      "panels": [
+       "2a",
+       "2b",
+       "2c"
+      ]
+     }
+    ]
+   },
+   {
+    "class": "MEASUREMENT_RECLASSIFIED",
+    "n": 5,
+    "detail": "caption-only measurements the extraction stage never reached",
+    "examples": [
+     {
+      "measurement_id": "M::SUP::10.1038_am.2016.182::F4b",
+      "figure": "4",
+      "panel": "b",
+      "cause": "caption_not_associated"
+     },
+     {
+      "measurement_id": "M::SUP::10.1038_am.2016.182::F4c",
+      "figure": "4",
+      "panel": "c",
+      "cause": "caption_not_associated"
+     },
+     {
+      "measurement_id": "M::SUP::10.1038_am.2016.182::F4d",
+      "figure": "4",
+      "panel": "d",
+      "cause": "caption_not_associated"
+     },
+     {
+      "measurement_id": "M::SUP::10.1038_am.2016.182::F4e",
+      "figure": "4",
+      "panel": "e",
+      "cause": "caption_not_associated"
+     },
+     {
+      "measurement_id": "M::SUP::10.1038_am.2016.182::F4g",
+      "figure": "4",
+      "panel": "g",
+      "cause": "caption_not_associated"
+     }
+    ]
+   },
+   {
+    "class": "GEOMETRY_CONTEXT_SPLIT",
+    "n": 0,
+    "detail": "cases whose geometry comes from their own figure scope rather than the paper-level default",
+    "examples": []
+   },
+   {
+    "class": "CHARACTERIZATION_LINKED",
+    "n": 2,
+    "detail": "characterisation measurements attached to a deposition case",
+    "examples": [
+     {
+      "measurement_id": "M::10.1038_am.2016.182__Fig2c__exp01",
+      "technique": [
+       "XPS"
+      ],
+      "case": [
+       "CASE-10.103-031"
+      ]
+     },
+     {
+      "measurement_id": "M::10.1038_am.2016.182__Fig2c__exp02",
+      "technique": [
+       "XPS"
+      ],
+      "case": [
+       "CASE-10.103-036"
+      ]
+     }
+    ]
+   },
+   {
+    "class": "UNRESOLVED",
+    "n": 15,
+    "detail": "links the evidence rule declined to make",
+    "examples": [
+     {
+      "a": "CAND-10.103-016",
+      "b": "CAND-10.103-028",
+      "a_figure": "1",
+      "b_figure": "1",
+      "shared_conditions": [
+       {
+        "quantity": "cycle_number",
+        "species": "",
+        "value": "300",
+        "unit": "cycle"
+       },
+       {
+        "quantity": "precursor",
+        "species": "",
+        "value": "MeCpPtMe3",
+        "unit": ""
+       }
+      ],
+      "status": "UNRESOLVED",
+      "reason": "case-defining conditions agree, but the source states no positive linkage (same sample / same run / shared sample code) between these results; missing is not the same as same",
+      "a_case": "CASE-10.103-016",
+      "b_case": "CASE-10.103-028"
+     },
+     {
+      "a": "CAND-10.103-017",
+      "b": "CAND-10.103-029",
+      "a_figure": "1",
+      "b_figure": "1",
+      "shared_conditions": [
+       {
+        "quantity": "cycle_number",
+        "species": "",
+        "value": "400",
+        "unit": "cycle"
+       },
+       {
+        "quantity": "precursor",
+        "species": "",
+        "value": "MeCpPtMe3",
+        "unit": ""
+       }
+      ],
+      "status": "UNRESOLVED",
+      "reason": "case-defining conditions agree, but the source states no positive linkage (same sample / same run / shared sample code) between these results; missing is not the same as same",
+      "a_case": "CASE-10.103-017",
+      "b_case": "CASE-10.103-029"
+     },
+     {
+      "a": "CAND-10.103-030",
+      "b": "CAND-10.103-041",
+      "a_figure": "2",
+      "b_figure": "2",
+      "shared_conditions": [
+       {
+        "quantity": "precursor",
+        "species": "",
+        "value": "HDMP",
+        "unit": ""
+       },
+       {
+        "quantity": "deposition_temperature",
+        "species": "",
+        "value": "80",
+        "unit": "°C"
+       }
+      ],
+      "status": "UNRESOLVED",
+      "reason": "case-defining conditions agree, but the source states no positive linkage (same sample / same run / shared sample code) between these results; missing is not the same as same",
+      "a_case": "CASE-10.103-030",
+      "b_case": "CASE-10.103-041"
+     }
+    ]
+   },
+   {
+    "class": "PRESERVED_SIMULATION",
+    "n": 2,
+    "detail": "model output kept as SimulationRun, never a case",
+    "examples": [
+     {
+      "simulation_run_id": "SIM::10.1038_am.2016.182__Fig1g__exp01",
+      "entity_class": "ModelSweep",
+      "figure": "1",
+      "data_source": [
+       "simulated"
+      ]
+     },
+     {
+      "simulation_run_id": "SIM::10.1038_am.2016.182__Fig1g__exp02",
+      "entity_class": "ModelSweep",
+      "figure": "1",
+      "data_source": [
+       "simulated"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "10.1149_2.067203jes": {
+  "current_psed": {
+   "experiments": 32,
+   "entities": 38,
+   "canonical_curves": 38,
+   "simulation_entities": 0,
+   "model_sweep_entities": 0,
+   "unresolved_entities": 0,
+   "physical_case_ids": 24,
+   "points": 624,
+   "data_source": {
+    "measured": 38
+   }
+  },
+  "pilot": {
+   "experimental_cases": 26,
+   "measurements": 38,
+   "measurements_recovered_caption_only": 0,
+   "result_series": 38,
+   "representations": 11,
+   "samples": 0,
+   "deposition_runs": 0,
+   "study_series": 0,
+   "simulation_runs": 0,
+   "links_merged": 0,
+   "links_blocked": 0,
+   "unresolved_links": 12,
+   "points": 624,
+   "data_source": {
+    "measured": 38
+   }
+  },
+  "changes": [
+   {
+    "class": "MATERIAL_CONTEXT_SPLIT",
+    "n": 6,
+    "detail": "cases whose source scope names more than one material",
+    "examples": [
+     {
+      "case_id": "CASE-10.114-001",
+      "materials": [
+       "Al2O3",
+       "SiO2"
+      ],
+      "roles": {
+       "Al2O3": "DEPOSITED",
+       "SiO2": "DEPOSITED"
+      }
+     },
+     {
+      "case_id": "CASE-10.114-002",
+      "materials": [
+       "Al2O3",
+       "SiO2"
+      ],
+      "roles": {
+       "Al2O3": "DEPOSITED",
+       "SiO2": "DEPOSITED"
+      }
+     },
+     {
+      "case_id": "CASE-10.114-023",
+      "materials": [
+       "Al2O3",
+       "SiO2"
+      ],
+      "roles": {
+       "Al2O3": "STACK_COMPONENT",
+       "SiO2": "STACK_COMPONENT"
+      }
+     },
+     {
+      "case_id": "CASE-10.114-024",
+      "materials": [
+       "Al2O3",
+       "SiO2"
+      ],
+      "roles": {
+       "Al2O3": "STACK_COMPONENT",
+       "SiO2": "STACK_COMPONENT"
+      }
+     }
+    ]
+   },
+   {
+    "class": "GEOMETRY_CONTEXT_SPLIT",
+    "n": 0,
+    "detail": "cases whose geometry comes from their own figure scope rather than the paper-level default",
+    "examples": []
+   },
+   {
+    "class": "CHARACTERIZATION_LINKED",
+    "n": 0,
+    "detail": "characterisation measurements attached to a deposition case",
+    "examples": []
+   },
+   {
+    "class": "UNRESOLVED",
+    "n": 12,
+    "detail": "links the evidence rule declined to make",
+    "examples": [
+     {
+      "kind": "measurement_without_case",
+      "measurement_id": "M::10.1149_2.067203jes__Fig4a",
+      "printed_figure": "4",
+      "panel": "a",
+      "technique": [
+       "growth_per_cycle"
+      ],
+      "status": "UNRESOLVED",
+      "reason": "no deposition case is established for this result: the source does not state which deposition produced the specimen it was measured on",
+      "preserved_context": {
+       "material": null,
+       "conditions": [
+        {
+         "quantity": "cycle_number",
+         "value": "-40",
+         "unit": "cycle",
+         "role": "CASE_DEFINING"
+        }
+       ]
+      }
+     },
+     {
+      "kind": "measurement_without_case",
+      "measurement_id": "M::10.1149_2.067203jes__Fig4b",
+      "printed_figure": "4",
+      "panel": "b",
+      "technique": [
+       "growth_per_cycle"
+      ],
+      "status": "UNRESOLVED",
+      "reason": "no deposition case is established for this result: the source does not state which deposition produced the specimen it was measured on",
+      "preserved_context": {
+       "material": null,
+       "conditions": [
+        {
+         "quantity": "cycle_number",
+         "value": "-40",
+         "unit": "cycle",
+         "role": "CASE_DEFINING"
+        }
+       ]
+      }
+     },
+     {
+      "kind": "measurement_without_case",
+      "measurement_id": "M::10.1149_2.067203jes__Fig4c",
+      "printed_figure": "4",
+      "panel": "c",
+      "technique": [
+       "growth_per_cycle"
+      ],
+      "status": "UNRESOLVED",
+      "reason": "no deposition case is established for this result: the source does not state which deposition produced the specimen it was measured on",
+      "preserved_context": {
+       "material": null,
+       "conditions": [
+        {
+         "quantity": "cycle_number",
+         "value": "-40",
+         "unit": "cycle",
+         "role": "CASE_DEFINING"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "class": "PRESERVED_SIMULATION",
+    "n": 0,
+    "detail": "model output kept as SimulationRun, never a case",
+    "examples": []
+   }
+  ]
+ },
+ "10.1039_c7ta03257a": {
+  "current_psed": {
+   "experiments": 0,
+   "entities": 4,
+   "canonical_curves": 4,
+   "simulation_entities": 0,
+   "model_sweep_entities": 0,
+   "unresolved_entities": 4,
+   "physical_case_ids": 0,
+   "points": 160,
+   "data_source": {
+    "measured": 4
+   }
+  },
+  "pilot": {
+   "experimental_cases": 2,
+   "measurements": 5,
+   "measurements_recovered_caption_only": 1,
+   "result_series": 4,
+   "representations": 2,
+   "samples": 0,
+   "deposition_runs": 0,
+   "study_series": 0,
+   "simulation_runs": 0,
+   "links_merged": 0,
+   "links_blocked": 0,
+   "unresolved_links": 5,
+   "points": 160,
+   "data_source": {
+    "measured": 4
+   }
+  },
+  "changes": [
+   {
+    "class": "MEASUREMENT_RECLASSIFIED",
+    "n": 1,
+    "detail": "caption-only measurements the extraction stage never reached",
+    "examples": [
+     {
+      "measurement_id": "M::SUP::10.1039_c7ta03257a::F8b",
+      "figure": "8",
+      "panel": "b",
+      "cause": "panel_absent_from_crop"
+     }
+    ]
+   },
+   {
+    "class": "NEW_TEXT_SUPPORTED_CASE",
+    "n": 2,
+    "detail": "deposition cases stated in prose with no x-y process curve",
+    "examples": [
+     {
+      "case_id": "CASE-10.103-001",
+      "label": "precursor_exposures_per_cycle per cycle = 1",
+      "conditions": [
+       [
+        "cycle_number",
+        250
+       ],
+       [
+        "precursor_exposures_per_cycle",
+        1
+       ]
+      ]
+     },
+     {
+      "case_id": "CASE-10.103-002",
+      "label": "precursor_exposures_per_cycle per cycle = 3",
+      "conditions": [
+       [
+        "cycle_number",
+        250
+       ],
+       [
+        "precursor_exposures_per_cycle",
+        3
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "class": "GEOMETRY_CONTEXT_SPLIT",
+    "n": 0,
+    "detail": "cases whose geometry comes from their own figure scope rather than the paper-level default",
+    "examples": []
+   },
+   {
+    "class": "CHARACTERIZATION_LINKED",
+    "n": 0,
+    "detail": "characterisation measurements attached to a deposition case",
+    "examples": []
+   },
+   {
+    "class": "UNRESOLVED",
+    "n": 5,
+    "detail": "links the evidence rule declined to make",
+    "examples": [
+     {
+      "kind": "measurement_without_case",
+      "measurement_id": "M::10.1039_c7ta03257a__Fig7a__exp01",
+      "printed_figure": "7",
+      "panel": "a",
+      "technique": [
+       "cyclic_voltammetry"
+      ],
+      "status": "UNRESOLVED",
+      "reason": "no deposition case is established for this result: the source does not state which deposition produced the specimen it was measured on",
+      "preserved_context": {
+       "material": "Pt",
+       "conditions": [
+        {
+         "quantity": "cycle_number",
+         "value": "250",
+         "unit": "cycle",
+         "role": "CASE_DEFINING"
+        }
+       ]
+      }
+     },
+     {
+      "kind": "measurement_without_case",
+      "measurement_id": "M::10.1039_c7ta03257a__Fig7a__exp02",
+      "printed_figure": "7",
+      "panel": "a",
+      "technique": [
+       "cyclic_voltammetry"
+      ],
+      "status": "UNRESOLVED",
+      "reason": "no deposition case is established for this result: the source does not state which deposition produced the specimen it was measured on",
+      "preserved_context": {
+       "material": "Pt",
+       "conditions": [
+        {
+         "quantity": "cycle_number",
+         "value": "250",
+         "unit": "cycle",
+         "role": "CASE_DEFINING"
+        }
+       ]
+      }
+     },
+     {
+      "kind": "measurement_without_case",
+      "measurement_id": "M::10.1039_c7ta03257a__Fig8a__exp01",
+      "printed_figure": "8",
+      "panel": "a",
+      "technique": [
+       "impedance_spectroscopy"
+      ],
+      "status": "UNRESOLVED",
+      "reason": "no deposition case is established for this result: the source does not state which deposition produced the specimen it was measured on",
+      "preserved_context": {
+       "material": "Pt",
+       "conditions": [
+        {
+         "quantity": "cycle_number",
+         "value": "250",
+         "unit": "cycle",
+         "role": "CASE_DEFINING"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "class": "PRESERVED_SIMULATION",
+    "n": 0,
+    "detail": "model output kept as SimulationRun, never a case",
+    "examples": []
+   }
+  ]
+ },
+ "10.1039_d0cp03358h": {
+  "current_psed": {
+   "experiments": 39,
+   "entities": 70,
+   "canonical_curves": 70,
+   "simulation_entities": 31,
+   "model_sweep_entities": 0,
+   "unresolved_entities": 0,
+   "physical_case_ids": 37,
+   "points": 1221,
+   "data_source": {
+    "simulated": 31,
+    "measured": 39
+   }
+  },
+  "pilot": {
+   "experimental_cases": 18,
+   "measurements": 43,
+   "measurements_recovered_caption_only": 4,
+   "result_series": 70,
+   "representations": 53,
+   "samples": 16,
+   "deposition_runs": 3,
+   "study_series": 6,
+   "simulation_runs": 31,
+   "links_merged": 7,
+   "links_blocked": 0,
+   "unresolved_links": 41,
+   "points": 1221,
+   "data_source": {
+    "measured": 39,
+    "simulated": 31
+   }
+  },
+  "changes": [
+   {
+    "class": "CROSS_FIGURE_CASE_LINKED",
+    "n": 1,
+    "detail": "cases spanning more than one printed figure",
+    "examples": [
+     {
+      "case_id": "CASE-10.103-001",
+      "figures": [
+       "3",
+       "5"
+      ],
+      "confidence": "SUPPORTED"
+     }
+    ]
+   },
+   {
+    "class": "OVER_SPLIT_REMOVED",
+    "n": 2,
+    "detail": "cases that the current pipeline would have split by panel",
+    "examples": [
+     {
+      "case_id": "CASE-10.103-001",
+      "panels": [
+       "3b",
+       "5b"
+      ]
+     },
+     {
+      "case_id": "CASE-10.103-003",
+      "panels": [
+       "8a",
+       "8b"
+      ]
+     }
+    ]
+   },
+   {
+    "class": "REPRESENTATION_LINKED",
+    "n": 12,
+    "detail": "redrawn views linked to the measurement they depict instead of minting a case",
+    "examples": [
+     {
+      "representation_id": "REP::10.1039_d0cp03358h__Fig9b__exp01",
+      "type": "scaled",
+      "figure": "9",
+      "panel": "b",
+      "of": "M::10.1039_d0cp03358h__Fig9a__exp01"
+     },
+     {
+      "representation_id": "REP::10.1039_d0cp03358h__Fig9b__exp02",
+      "type": "scaled",
+      "figure": "9",
+      "panel": "b",
+      "of": "M::10.1039_d0cp03358h__Fig9a__exp02"
+     },
+     {
+      "representation_id": "REP::10.1039_d0cp03358h__Fig9b__exp03",
+      "type": "scaled",
+      "figure": "9",
+      "panel": "b",
+      "of": "M::10.1039_d0cp03358h__Fig9a__exp03"
+     },
+     {
+      "representation_id": "REP::10.1039_d0cp03358h__Fig9c__exp01",
+      "type": "normalized",
+      "figure": "9",
+      "panel": "c",
+      "of": "M::10.1039_d0cp03358h__Fig9a__exp01"
+     }
+    ]
+   },
+   {
+    "class": "MEASUREMENT_RECLASSIFIED",
+    "n": 4,
+    "detail": "caption-only measurements the extraction stage never reached",
+    "examples": [
+     {
+      "measurement_id": "M::SUP::10.1039_d0cp03358h::F2a",
+      "figure": "2",
+      "panel": "a",
+      "cause": "panel_absent_from_crop"
+     },
+     {
+      "measurement_id": "M::SUP::10.1039_d0cp03358h::F2b",
+      "figure": "2",
+      "panel": "b",
+      "cause": "panel_absent_from_crop"
+     },
+     {
+      "measurement_id": "M::SUP::10.1039_d0cp03358h::F2c",
+      "figure": "2",
+      "panel": "c",
+      "cause": "panel_absent_from_crop"
+     },
+     {
+      "measurement_id": "M::SUP::10.1039_d0cp03358h::F2d",
+      "figure": "2",
+      "panel": "d",
+      "cause": "panel_absent_from_crop"
+     }
+    ]
+   },
+   {
+    "class": "SAMPLE_LINKED",
+    "n": 13,
+    "detail": "specimens carrying more than one measurement",
+    "examples": [
+     {
+      "sample": "4",
+      "n_measurements": 4,
+      "figures": [
+       "7",
+       "8"
+      ]
+     },
+     {
+      "sample": "5",
+      "n_measurements": 3,
+      "figures": [
+       "7"
+      ]
+     },
+     {
+      "sample": "6",
+      "n_measurements": 3,
+      "figures": [
+       "7"
+      ]
+     },
+     {
+      "sample": "7",
+      "n_measurements": 3,
+      "figures": [
+       "9"
+      ]
+     }
+    ]
+   },
+   {
+    "class": "RUN_LINKED",
+    "n": 3,
+    "detail": "process executions the source states explicitly",
+    "examples": [
+     {
+      "run_id": "RUN::10.1039_d0cp03358h::01",
+      "kind": "SHARED_RUN",
+      "samples": [
+       "1",
+       "2",
+       "3"
+      ]
+     },
+     {
+      "run_id": "RUNSET::10.1039_d0cp03358h::02",
+      "kind": "DISTINCT_RUNS",
+      "samples": []
+     },
+     {
+      "run_id": "RUNSET::10.1039_d0cp03358h::03",
+      "kind": "DISTINCT_RUNS",
+      "samples": []
+     }
+    ]
+   },
+   {
+    "class": "GEOMETRY_CONTEXT_SPLIT",
+    "n": 14,
+    "detail": "cases whose geometry comes from their own figure scope rather than the paper-level default",
+    "examples": [
+     {
+      "case_id": "CASE-10.103-001",
+      "geometry": "lateral_channel",
+      "evidence": "LHAR"
+     },
+     {
+      "case_id": "CASE-10.103-003",
+      "geometry": "lateral_channel",
+      "evidence": "LHAR"
+     },
+     {
+      "case_id": "CASE-10.103-004",
+      "geometry": "lateral_channel",
+      "evidence": "LHAR"
+     },
+     {
+      "case_id": "CASE-10.103-005",
+      "geometry": "lateral_channel",
+      "evidence": "LHAR"
+     }
+    ]
+   },
+   {
+    "class": "CHARACTERIZATION_LINKED",
+    "n": 1,
+    "detail": "characterisation measurements attached to a deposition case",
+    "examples": [
+     {
+      "measurement_id": "M::10.1039_d0cp03358h__Fig5b__exp01",
+      "technique": [
+       "SEM",
+       "EDS"
+      ],
+      "case": [
+       "CASE-10.103-001"
+      ]
+     }
+    ]
+   },
+   {
+    "class": "UNRESOLVED",
+    "n": 41,
+    "detail": "links the evidence rule declined to make",
+    "examples": [
+     {
+      "a": "CAND-10.103-083",
+      "b": "CAND-10.103-085",
+      "a_figure": "3",
+      "b_figure": "7",
+      "shared_conditions": [
+       {
+        "quantity": "working_pressure",
+        "species": "",
+        "value": "3",
+        "unit": "hPa"
+       },
+       {
+        "quantity": "deposition_temperature",
+        "species": "",
+        "value": "300",
+        "unit": "°C"
+       },
+       {
+        "quantity": "cycle_number",
+        "species": "",
+        "value": "500",
+        "unit": "cycle"
+       },
+       {
+        "quantity": "flow_rate",
+        "species": "N2",
+        "value": "150",
+        "unit": "sccm"
+       },
+       {
+        "quantity": "feature_height",
+        "species": "",
+        "value": "500",
+        "unit": "nm"
+       }
+      ],
+      "status": "UNRESOLVED",
+      "reason": "case-defining conditions agree, but the source states no positive linkage (same sample / same run / shared sample code) between these results; missing is not the same as same",
+      "a_case": "CASE-10.103-001",
+      "b_case": "CASE-10.103-002"
+     },
+     {
+      "a": "CAND-10.103-083",
+      "b": "CAND-10.103-086",
+      "a_figure": "3",
+      "b_figure": "7",
+      "shared_conditions": [
+       {
+        "quantity": "working_pressure",
+        "species": "",
+        "value": "3",
+        "unit": "hPa"
+       },
+       {
+        "quantity": "deposition_temperature",
+        "species": "",
+        "value": "300",
+        "unit": "°C"
+       },
+       {
+        "quantity": "cycle_number",
+        "species": "",
+        "value": "500",
+        "unit": "cycle"
+       },
+       {
+        "quantity": "flow_rate",
+        "species": "N2",
+        "value": "150",
+        "unit": "sccm"
+       },
+       {
+        "quantity": "feature_height",
+        "species": "",
+        "value": "500",
+        "unit": "nm"
+       }
+      ],
+      "status": "UNRESOLVED",
+      "reason": "case-defining conditions agree, but the source states no positive linkage (same sample / same run / shared sample code) between these results; missing is not the same as same",
+      "a_case": "CASE-10.103-001",
+      "b_case": "CASE-10.103-002"
+     },
+     {
+      "a": "CAND-10.103-083",
+      "b": "CAND-10.103-087",
+      "a_figure": "3",
+      "b_figure": "7",
+      "shared_conditions": [
+       {
+        "quantity": "working_pressure",
+        "species": "",
+        "value": "3",
+        "unit": "hPa"
+       },
+       {
+        "quantity": "deposition_temperature",
+        "species": "",
+        "value": "300",
+        "unit": "°C"
+       },
+       {
+        "quantity": "cycle_number",
+        "species": "",
+        "value": "500",
+        "unit": "cycle"
+       },
+       {
+        "quantity": "flow_rate",
+        "species": "N2",
+        "value": "150",
+        "unit": "sccm"
+       },
+       {
+        "quantity": "feature_height",
+        "species": "",
+        "value": "500",
+        "unit": "nm"
+       }
+      ],
+      "status": "UNRESOLVED",
+      "reason": "case-defining conditions agree, but the source states no positive linkage (same sample / same run / shared sample code) between these results; missing is not the same as same",
+      "a_case": "CASE-10.103-001",
+      "b_case": "CASE-10.103-002"
+     }
+    ]
+   },
+   {
+    "class": "PRESERVED_SIMULATION",
+    "n": 31,
+    "detail": "model output kept as SimulationRun, never a case",
+    "examples": [
+     {
+      "simulation_run_id": "SIM::10.1039_d0cp03358h__Fig3a",
+      "entity_class": "SimulationRun",
+      "figure": "3",
+      "data_source": []
+     },
+     {
+      "simulation_run_id": "SIM::10.1039_d0cp03358h__Fig10a__exp01",
+      "entity_class": "SimulationRun",
+      "figure": "10",
+      "data_source": [
+       "simulated"
+      ]
+     },
+     {
+      "simulation_run_id": "SIM::10.1039_d0cp03358h__Fig10a__exp02",
+      "entity_class": "SimulationRun",
+      "figure": "10",
+      "data_source": [
+       "simulated"
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

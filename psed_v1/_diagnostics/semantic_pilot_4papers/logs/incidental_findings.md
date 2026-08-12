@@ -1,0 +1,13 @@
+# Incidental findings — observed, NOT fixed
+
+Production defects noticed while building the pilot. None was repaired; none is in scope.
+
+| # | file / function | observation | affected the pilot? |
+|---|---|---|---|
+| 1 | `pipeline/figures/inventory.py` `_PANEL_HEAD` (L90) | `^\(?([a-hA-H])\)?[.,:]?\s+` rejects a spaced parenthetical `( a )`, so `_caption_body` returns `None` and the whole printed figure loses its caption. In the pilot set this costs `10.1038_am.2016.182` printed Figure 4 entirely (5 data panels). | **Yes** — worked around in the pilot's own caption parser (`code/pilot_evidence.py`), which accepts the spaced form. The production copy was not edited. |
+| 2 | Docling PictureItem emission | `10.1039_c7ta03257a` printed Fig 8 yields one crop covering panel (a) only; panel (b), a cyclic-voltammetry plot, has no PictureItem at all, so no image ever existed to digitise. | **Yes** — represented as a caption-only Measurement with the PDF page rendered locally as evidence. |
+| 3 | `pipeline/resolve/to_kb.py` condition binding | `10.1038_am.2016.182` Fig 2c entity `__exp01` carries BOTH `deposition_temperature = 100 °C` and `temperature = 300 °C`. The caption states "at the temperatures of 100 and 300 °C" and both values bind to the first entity, under two different quantity ids that are the same physical quantity. | Partly — the spurious `temperature = 300` rides along on one merged case. The pilot surfaces it rather than silencing it; it does not change which results were linked. |
+| 4 | `pipeline/resolve/to_kb.py` L1140 | `c["figure_slug"] = None  # filled by assign_experiment_ids`, but that function iterates `entities`, not `cases`. `figure_slug` is `None` on every experiment record corpus-wide. | No |
+| 5 | `pipeline/canonical/build_canonical.py` `source.linked_experiment_ids` | Populated for 14 of 16 curves in `10.1038_am.2016.182`, 40 of 70 in `10.1039_d0cp03358h`, and **0 of 4** in `10.1039_c7ta03257a` (whose entities are all `UnresolvedSourceEntity`). | **Yes** — the pilot joins curves by source slice as a fallback so no ResultSeries is lost. |
+| 6 | Docling table export | `10.1039_d0cp03358h` Table 1 is exported transposed and column-merged; the sample-code row reads `1 2 3 4 5 6 \| 7 8 9 \| ...` against a misaligned series row. The same table is cleanly recoverable from the PDF's reading order. | **Yes** — the pilot reads the specimen table from the PDF instead (`code/pilot_sample_table.py`). |
+| 7 | `pipeline/canonical/entities.py` `classify` | `supported_setting_count`, `supported_setting_evidence`, `signals` and `votes` are computed and returned but never written to any output; only the signal-family letters survive. | No — the pilot re-derives what it needs from source text. |
