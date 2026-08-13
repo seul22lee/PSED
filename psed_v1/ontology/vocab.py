@@ -92,11 +92,20 @@ def _unit_words(label):
 
 
 #: Words that make the axis a DIFFERENT measurand from the quantity named beside them.
-#: A ratio of two flows is not a flow; a fraction of a thickness is not a thickness. Kept
-#: deliberately tiny -- these transform the quantity, unlike qualifiers ("above
-#: background", "degree", "by XRR") which merely describe the same one. A quantity whose
-#: own vocabulary contains the word is exempt, so a genuine ratio quantity still resolves.
-_TRANSFORMS_MEASURAND = {"ratio", "fraction", "percentage", "proportion", "quotient"}
+#: A ratio of two flows is not a flow, so truncating "flow ratio" to "flow" changes what
+#: is being measured -- unlike qualifiers ("above background", "degree", "by XRR"), which
+#: describe the same measurand and must keep resolving.
+#:
+#: One word, because one word is what the corpus evidences. "fraction", "percentage",
+#: "proportion" and "quotient" were carried here on the same intuition and are removed:
+#: none was needed for any observed correction, and "fraction" is actively wrong --
+#: "coverage fraction" IS a surface coverage, but the word is absent from that quantity's
+#: vocabulary, so a blanket veto refuses a correct reading. Plausibility is not evidence;
+#: a word joins this set when a real label proves it must.
+#:
+#: A quantity whose own vocabulary contains the word is exempt, so "aspect ratio" still
+#: resolves to aspect_ratio.
+_TRANSFORMS_MEASURAND = {"ratio"}
 
 
 def _quantity_words(qid):
