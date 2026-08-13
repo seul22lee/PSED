@@ -337,16 +337,6 @@ def build(pid):
     #      entities, the two lists are zipped in source order. This is a provenance
     #      attachment, not a scientific claim: both sides are enumerated from the same
     #      figure_data.json in the same order, and it only runs when the counts agree.
-    curve_by_entity = defaultdict(list)
-    join_method = {}
-    joined = set()
-    for c in P.curves:
-        for eid in ((c.get("source") or {}).get("linked_experiment_ids") or []):
-            base = str(eid).split("__case")[0]
-            curve_by_entity[base].append(c)
-            joined.add(c["curve_id"])
-            join_method[c["curve_id"]] = "linked_experiment_id"
-
     def _panel_letter(x):
         m = re.match(r"\s*\(?\s*([A-Za-z])\b", str(x or ""))
         return m.group(1).lower() if m else ""
@@ -354,6 +344,34 @@ def build(pid):
     def _label(x):
         t = _norm(x)
         return "" if t in ("<single>", "primary", "None") else t
+
+    curve_by_entity = defaultdict(list)
+    join_method = {}
+    joined = set()
+    ent_by_id = {e["entity_id"]: e for e in P.entities}
+    # every series label present in one (figure, panel) scope, for the sibling test below
+    labels_in_scope = defaultdict(set)
+    for e in P.entities:
+        labels_in_scope[(str(e.get("fig_docling_index")),
+                         _panel_letter(e.get("panel") or e.get("panel_key")))].add(
+                             _label(e.get("source_series")))
+    rejected_links = []
+
+    for c in P.curves:
+        for eid in ((c.get("source") or {}).get("linked_experiment_ids") or []):
+            base = str(eid).split("__case")[0]
+            ok_link, why = link_is_supported(c.get("source") or {},
+                                             ent_by_id.get(base), labels_in_scope)
+            if not ok_link:
+                rejected_links.append({"curve_id": c["curve_id"], "linked_entity_id": eid,
+                                       "base_entity_id": base, "reason": why,
+                                       "figure": (c.get("source") or {}).get("figure"),
+                                       "panel": (c.get("source") or {}).get("panel"),
+                                       "series": (c.get("source") or {}).get("series")})
+                continue
+            curve_by_entity[base].append(c)
+            joined.add(c["curve_id"])
+            join_method[c["curve_id"]] = "linked_experiment_id"
 
     slice_groups = defaultdict(list)
     for c in P.curves:
@@ -409,6 +427,12 @@ def build(pid):
             joined.add(cs[0]["curve_id"])
             join_method[cs[0]["curve_id"]] = "panel_unique"
 
+    out["_rejected_curve_links"] = rejected_links
+    for r in rejected_links:
+        note("curve_link_rejected", r["curve_id"],
+             "the explicit link to %r was not used: %s" % (r["linked_entity_id"],
+                                                           r["reason"]),
+             figure=r["figure"], panel=r["panel"], series=r["series"])
     out["_unjoined_curves"] = [{"curve_id": c["curve_id"],
                                 "figure_index": (c.get("source") or {}).get("figure_index"),
                                 "panel": (c.get("source") or {}).get("panel"),
@@ -3176,3 +3200,64 @@ def progression_stage_links(candidates, note):
                                      % (a["progression_stage"], b["progression_stage"],
                                         a.get("progression_continuity_reason")))})
     return links
+
+
+def panel_letter(x):
+    """The leading letter of a panel label. The canonical layer keeps the printed label
+    ("a (With bottom)") while the resolver normalises it to "a"."""
+    m = re.match(r"\s*\(?\s*([A-Za-z])\b", str(x or ""))
+    return m.group(1).lower() if m else ""
+
+
+def series_label(x):
+    """A series label, or "" when the source drew no distinguishing legend."""
+    t = _norm(x)
+    return "" if t in ("<single>", "primary", "None") else t
+
+
+def link_is_supported(curve_source, entity, labels_in_scope):
+    """(ok, reason) -- may a curve be attributed to the semantic entity its link names?
+
+    An explicit `linked_experiment_id` is CANDIDATE EVIDENCE about which semantic object
+    produced a curve, not a fact that outranks the curve's own provenance. Two things go
+    wrong with it, and both are visible by comparing the two source scopes:
+
+      A. it names an entity in a different figure or panel than the curve itself reports.
+         That is a positive contradiction between two locally attributable provenances,
+         so the link cannot be used here.
+      B. it collapses onto a sibling carrying a DIFFERENT series label while the curve's
+         own label matches another entity in the same panel. Case-suffixed ids
+         (`…exp01__case00`, `…exp01__case01`) share a base, so stripping the suffix puts
+         every curve of the panel on one entity and silently discards the distinction the
+         source drew. The curve's own label recovers it.
+
+    Absence of information is never a contradiction: a missing figure, panel or label on
+    either side leaves the link acceptable, because nothing positively opposes it. Equality
+    of conditions is never consulted -- this decides which object PRODUCED a curve, not
+    which experiments are the same.
+
+    A rejected link is not an attribution: the curve is left for the source-slice matching
+    that follows, and stays unresolved if that cannot place it either.
+    """
+    if entity is None:
+        return True, ""                        # nothing to compare against
+    src = curve_source or {}
+    for got, want, what in (
+            (str(src.get("figure") or ""),
+             str(entity.get("printed_figure_number") or ""), "figure"),
+            (str(src.get("figure_index") or ""),
+             str(entity.get("fig_docling_index") or ""), "figure index"),
+            (panel_letter(src.get("panel")),
+             panel_letter(entity.get("panel") or entity.get("panel_key")), "panel")):
+        if got and want and got != want:
+            return False, ("the curve reports %s %s while the linked entity belongs to "
+                           "%s %s" % (what, got, what, want))
+    c_lab = series_label(src.get("series"))
+    e_lab = series_label(entity.get("source_series"))
+    if c_lab and e_lab and c_lab != e_lab:
+        scope = (str(src.get("figure_index")), panel_letter(src.get("panel")))
+        if c_lab in (labels_in_scope or {}).get(scope, set()):
+            return False, ("the curve is labelled %r but the linked entity is %r, and "
+                           "another entity in the same panel carries %r"
+                           % (c_lab, e_lab, c_lab))
+    return True, ""
