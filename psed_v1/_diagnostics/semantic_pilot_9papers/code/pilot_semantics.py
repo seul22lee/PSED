@@ -1580,11 +1580,82 @@ def _sample_cases(out, sample_id):
     return s["experimental_case_ids"] if s else []
 
 
+#: a word in an axis label that names a REAGENT ROLE rather than a chemical. The role is
+#: only usable when the paper's own inventory binds it to exactly one reagent.
+_ROLE_WORD = (
+    (re.compile(r"\bprecursor\b", re.I), "precursors"),
+    (re.compile(r"\b(?:co[-\s]?reactant|counter[-\s]?reactant|reactant)\b", re.I),
+     "coreactants"),
+)
+
+
+def species_repair(c, precursors, coreactants, note=None, cid=None):
+    """Correct `species` on one condition, and attribute it where evidence allows.
+
+    `species` is the reagent dimension of the case fingerprint: WHICH chemical this
+    setting applies to. Two things had been landing in it that are not reagents.
+
+    A unit: `carrier_gas_partial_pressure = 1 bar` arrived carrying `species='bar'`, the
+    pressure unit copied into the chemical slot. The carrier gas is never named.
+
+    A film material: a `structural_identity` condition describes the deposited object,
+    and the material of that object already has its own places to live -- the case's
+    `deposited_material`, and the condition's own `stack_materials`. Repeating it as
+    `species` asserts the film was the dosed reagent.
+
+    Neither is deleted for looking wrong; both are refused because the field means
+    something they are not. What replaces them is nothing: a condition whose reagent is
+    unknown stays unknown, because MISSING is not SAME and an unattributed setting must
+    not silently fingerprint as an attributed one.
+
+    Attribution runs only on positive evidence in the label the axis actually carried:
+    a chemical the paper's own reagent inventory lists (tier A), or a role word the
+    inventory binds to exactly one reagent (tier B). An inventory naming two candidates
+    resolves nothing and is left alone.
+    """
+    sp = c.get("species")
+    label = str(c.get("raw_axis_label") or "")
+    if sp:
+        why = None
+        if str(sp).strip().lower() == str(c.get("unit") or "").strip().lower():
+            why = ("%r is the unit of this condition, not a chemical species" % sp)
+        elif c.get("structural_identity"):
+            why = ("%r names the material of the deposited structure, which is not the "
+                   "reagent a process setting applies to" % sp)
+        if why:
+            c = dict(c, species=None, species_removed=sp, species_basis=None,
+                     species_evidence=why)
+            if note and cid:
+                note("invalid_species_removed", cid, why)
+        return c
+    if not label:
+        return c
+    for r in sorted([x for x in (precursors or []) + (coreactants or []) if x],
+                    key=len, reverse=True):
+        if re.search(re.escape(str(r)), label, re.I):
+            return dict(c, species=str(r), species_basis="AXIS_LABEL_EXPLICIT",
+                        species_evidence="the axis label %r names %r, a reagent this "
+                                         "paper's inventory lists" % (label, r))
+    for pat, field in _ROLE_WORD:
+        if not pat.search(label):
+            continue
+        pool = [x for x in ((precursors if field == "precursors" else coreactants) or []) if x]
+        if len(pool) == 1:
+            return dict(c, species=str(pool[0]), species_basis="LOCAL_ROLE_EXPLICIT",
+                        species_evidence="the axis label %r names the %s role, and this "
+                                         "paper's inventory lists exactly one: %r"
+                                         % (label, field[:-1], pool[0]))
+    return c
+
+
 def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, note):
     """One ExperimentalCase from its merged candidates."""
+    _prec = (P.scout.get("precursors") or []) if getattr(P, "scout", None) else []
+    _core = (P.scout.get("coreactants") or []) if getattr(P, "scout", None) else []
     conds = {}
     for m in members:
         for c in m["case_conditions"]:
+            c = species_repair(c, _prec, _core)
             k = (c["quantity"], c.get("species") or "")
             # A repaired interval outranks a scalar carrying the same key: it is the
             # value the source actually states. Directly-stated scalars outrank inherited
