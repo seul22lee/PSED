@@ -1,0 +1,158 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "Y2O3"
+ ],
+ "precursors": [
+  "Y(DPfAMD)3"
+ ],
+ "coreactants": [
+  "H2O"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": [
+  225,
+  300
+ ],
+ "gpc_nm": 0.136,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F11a"
+   ]
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F11b"
+   ]
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F11c",
+    "F11d"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F12",
+    "F13",
+    "F14",
+    "F15a",
+    "F15b"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F16",
+    "F17"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F10"
+   ]
+  }
+ },
+ "drill": [
+  {
+   "where": "F10",
+   "type": "other",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "TG analysis and vapor pressure measurements of precursor"
+  },
+  {
+   "where": "F11a",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC and critical angle as a function of deposition temperature"
+  },
+  {
+   "where": "F11b",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Film thickness vs number of ALD cycles showing linear growth"
+  },
+  {
+   "where": "F11c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC vs precursor pulse length at 200 C and 300 C"
+  },
+  {
+   "where": "F11d",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC vs precursor purge length at 200 C and 300 C"
+  },
+  {
+   "where": "F12",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "GI-XRD pattern of 43 nm Y2O3 film"
+  },
+  {
+   "where": "F13",
+   "type": "xrd_or_spectrum",
+   "measurand": "density",
+   "source": "measured",
+   "why": "Measured and simulated XRR curve for 20 nm Y2O3 film"
+  },
+  {
+   "where": "F14",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS core level spectra as-deposited and after sputtering"
+  },
+  {
+   "where": "F15a",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "UV-Vis absorbance spectrum vs wavelength"
+  },
+  {
+   "where": "F15b",
+   "type": "xrd_or_spectrum",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Tauc plot for optical direct bandgap determination"
+  },
+  {
+   "where": "F16",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "C-V and G-V characteristics of Y2O3 MIS capacitor at 1 MHz"
+  },
+  {
+   "where": "F17",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Capacitance-voltage curves across multiple frequencies"
+  }
+ ],
+ "go_deeper": true,
+ "_scout_samples": 2,
+ "_tokens": {
+  "in": 7982,
+  "out": 2509,
+  "thoughts": 2180,
+  "budget": 12288
+ },
+ "_scout_input_chars": 13949
+}

@@ -1,0 +1,2918 @@
+{
+ "doi": "10.1021_acs.langmuir.6b03119",
+ "generator": "pipeline/canonical/build_canonical.py",
+ "code_version": "3848481+dirty",
+ "created_at": 1786465364,
+ "ontology": "ontology/ald_ontology.json",
+ "n_curves": 12,
+ "curves": [
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F3::a::0::f0p0",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "3",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "0.5s",
+    "series_index": 0,
+    "series_axis": "exposure time",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/0",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig3a__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 μ m stands for the top part of the tube layer and 20 μ m for the bottom part). SEM images taken from nanotube layers for the di /uniFB00 erent TMA exposure times at the tube bottom parts: (b) 0.5 s, (c) 2 s, (d) 5 s, and (e) 10 s. The scale bar represents a distance of 100 nm."
+   },
+   "raw": {
+    "x": {
+     "label": "Nanotube inner diameter (nm)",
+     "quantity": "spatial_coordinate",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "Al2O3 coating thickness (nm)",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "log": false
+    },
+    "points": [
+     [
+      66.5,
+      17.7
+     ],
+     [
+      68.5,
+      18.0
+     ],
+     [
+      85.0,
+      24.8
+     ],
+     [
+      131.0,
+      26.8
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "nm",
+     "raw_label": "Nanotube inner diameter (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "nm",
+     "raw_label": "Al2O3 coating thickness (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.0665,
+      0.0685,
+      0.085,
+      0.131
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "film_thickness",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "values": [
+      17.7,
+      18.0,
+      24.8,
+      26.8
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "nm -> µm",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "0.5s",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "0.5s",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 4
+   },
+   "context_available": [
+    "chamber_total_pressure",
+    "cycle_number",
+    "exposure",
+    "exposure_time",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F3::a::1::f0p0",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "3",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "2s",
+    "series_index": 1,
+    "series_axis": "exposure time",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/1",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig3a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 μ m stands for the top part of the tube layer and 20 μ m for the bottom part). SEM images taken from nanotube layers for the di /uniFB00 erent TMA exposure times at the tube bottom parts: (b) 0.5 s, (c) 2 s, (d) 5 s, and (e) 10 s. The scale bar represents a distance of 100 nm."
+   },
+   "raw": {
+    "x": {
+     "label": "Nanotube inner diameter (nm)",
+     "quantity": "spatial_coordinate",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "Al2O3 coating thickness (nm)",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "log": false
+    },
+    "points": [
+     [
+      58.0,
+      15.2
+     ],
+     [
+      73.5,
+      24.5
+     ],
+     [
+      88.0,
+      25.1
+     ],
+     [
+      91.0,
+      24.2
+     ],
+     [
+      95.5,
+      25.4
+     ],
+     [
+      110.0,
+      26.2
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "nm",
+     "raw_label": "Nanotube inner diameter (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "nm",
+     "raw_label": "Al2O3 coating thickness (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.058,
+      0.0735,
+      0.088,
+      0.091,
+      0.0955,
+      0.11
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "film_thickness",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "values": [
+      15.2,
+      24.5,
+      25.1,
+      24.2,
+      25.4,
+      26.2
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "nm -> µm",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "2s",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "2s",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 6
+   },
+   "context_available": [
+    "chamber_total_pressure",
+    "cycle_number",
+    "exposure",
+    "exposure_time",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F3::a::2::f0p0",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "3",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "5s",
+    "series_index": 2,
+    "series_axis": "exposure time",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/2",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig3a__exp03"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 μ m stands for the top part of the tube layer and 20 μ m for the bottom part). SEM images taken from nanotube layers for the di /uniFB00 erent TMA exposure times at the tube bottom parts: (b) 0.5 s, (c) 2 s, (d) 5 s, and (e) 10 s. The scale bar represents a distance of 100 nm."
+   },
+   "raw": {
+    "x": {
+     "label": "Nanotube inner diameter (nm)",
+     "quantity": "spatial_coordinate",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "Al2O3 coating thickness (nm)",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "log": false
+    },
+    "points": [
+     [
+      51.5,
+      22.8
+     ],
+     [
+      80.5,
+      26.8
+     ],
+     [
+      83.5,
+      25.8
+     ],
+     [
+      128.5,
+      25.7
+     ],
+     [
+      143.0,
+      26.5
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "nm",
+     "raw_label": "Nanotube inner diameter (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "nm",
+     "raw_label": "Al2O3 coating thickness (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.051500000000000004,
+      0.0805,
+      0.0835,
+      0.1285,
+      0.14300000000000002
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "film_thickness",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "values": [
+      22.8,
+      26.8,
+      25.8,
+      25.7,
+      26.5
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "nm -> µm",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "5s",
+      "series_index": 2,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/2/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp03"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "5s",
+      "series_index": 2,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/2/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp03"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 5
+   },
+   "context_available": [
+    "chamber_total_pressure",
+    "cycle_number",
+    "exposure",
+    "exposure_time",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F3::a::3::f0p0",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "3",
+    "figure_index": "6",
+    "panel": "a",
+    "series": "10s",
+    "series_index": 3,
+    "series_axis": "exposure time",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/0/panels/0/series/3",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig3a__exp04"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 μ m stands for the top part of the tube layer and 20 μ m for the bottom part). SEM images taken from nanotube layers for the di /uniFB00 erent TMA exposure times at the tube bottom parts: (b) 0.5 s, (c) 2 s, (d) 5 s, and (e) 10 s. The scale bar represents a distance of 100 nm."
+   },
+   "raw": {
+    "x": {
+     "label": "Nanotube inner diameter (nm)",
+     "quantity": "spatial_coordinate",
+     "unit": "nm",
+     "log": false
+    },
+    "y": {
+     "label": "Al2O3 coating thickness (nm)",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "log": false
+    },
+    "points": [
+     [
+      44.8,
+      18.3
+     ],
+     [
+      48.5,
+      22.3
+     ],
+     [
+      88.5,
+      27.2
+     ],
+     [
+      94.5,
+      27.0
+     ],
+     [
+      139.5,
+      25.7
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "spatial_coordinate",
+     "raw_unit": "nm",
+     "raw_label": "Nanotube inner diameter (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "spatial_coordinate",
+     "axis_role": "coordinate",
+     "axis_kind": "spatial_coordinate",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "film_thickness",
+     "raw_unit": "nm",
+     "raw_label": "Al2O3 coating thickness (nm)",
+     "unit": "nm",
+     "unit_recovered": false,
+     "quantity": "film_thickness",
+     "axis_role": "output",
+     "axis_kind": "output",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "spatial_position",
+     "quantity": "spatial_coordinate",
+     "unit": "µm",
+     "values": [
+      0.0448,
+      0.0485,
+      0.0885,
+      0.0945,
+      0.1395
+     ],
+     "normalization_definition": null
+    },
+    "y": {
+     "comparison_group": "film_thickness",
+     "quantity": "film_thickness",
+     "unit": "nm",
+     "values": [
+      18.3,
+      22.3,
+      27.2,
+      27.0,
+      25.7
+     ],
+     "normalization_definition": null
+    }
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "length_unit_conversion",
+     "rule_version": "1.0.0",
+     "type": "unit_conversion",
+     "formula": "nm -> µm",
+     "status": "converted",
+     "normalization_definition": null,
+     "comparison_group": "spatial_position",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "µm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "10s",
+      "series_index": 3,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/3/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp04"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "film_thickness",
+     "original_value": null,
+     "original_unit": "nm",
+     "canonical_value": null,
+     "canonical_unit": "nm",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "3",
+      "panel": "a",
+      "series": "10s",
+      "series_index": 3,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/0/panels/0/series/3/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp04"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "coordinate",
+    "previous_representation": "profile",
+    "resolved_representation": "profile",
+    "changed": false,
+    "reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+    "n_points": 5
+   },
+   "context_available": [
+    "chamber_total_pressure",
+    "cycle_number",
+    "exposure",
+    "exposure_time",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::a::0::f1p0",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "a",
+    "series": "cycle 11-15",
+    "series_index": 0,
+    "series_axis": "cycle range",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/0",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4a__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "QCM frequency change (Hz)",
+     "quantity": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "log": false
+    },
+    "points": [
+     [
+      11,
+      0
+     ],
+     [
+      12,
+      -700
+     ],
+     [
+      40,
+      -700
+     ],
+     [
+      68,
+      -800
+     ],
+     [
+      70,
+      -1700
+     ],
+     [
+      100,
+      -1700
+     ],
+     [
+      128,
+      -1650
+     ],
+     [
+      130,
+      -2380
+     ],
+     [
+      160,
+      -2380
+     ],
+     [
+      188,
+      -2430
+     ],
+     [
+      190,
+      -3200
+     ],
+     [
+      220,
+      -3200
+     ],
+     [
+      248,
+      -3250
+     ],
+     [
+      250,
+      -3850
+     ],
+     [
+      280,
+      -3850
+     ],
+     [
+      300,
+      -3850
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "QCM frequency change (Hz)",
+     "raw_unit": "Hz",
+     "raw_label": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      11,
+      12,
+      40,
+      68,
+      70,
+      100,
+      128,
+      130,
+      160,
+      188,
+      190,
+      220,
+      248,
+      250,
+      280,
+      300
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "a",
+      "series": "cycle 11-15",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "Hz",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "a",
+      "series": "cycle 11-15",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 16
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::a::1::f1p0",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "a",
+    "series": "cycle 75-79",
+    "series_index": 1,
+    "series_axis": "cycle range",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/0/series/1",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4a__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "QCM frequency change (Hz)",
+     "quantity": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "log": false
+    },
+    "points": [
+     [
+      15,
+      0
+     ],
+     [
+      16,
+      -280
+     ],
+     [
+      40,
+      -280
+     ],
+     [
+      68,
+      -320
+     ],
+     [
+      70,
+      -580
+     ],
+     [
+      100,
+      -580
+     ],
+     [
+      128,
+      -630
+     ],
+     [
+      130,
+      -900
+     ],
+     [
+      160,
+      -900
+     ],
+     [
+      188,
+      -940
+     ],
+     [
+      190,
+      -1200
+     ],
+     [
+      220,
+      -1200
+     ],
+     [
+      248,
+      -1250
+     ],
+     [
+      250,
+      -1500
+     ],
+     [
+      280,
+      -1500
+     ],
+     [
+      300,
+      -1520
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "QCM frequency change (Hz)",
+     "raw_unit": "Hz",
+     "raw_label": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      15,
+      16,
+      40,
+      68,
+      70,
+      100,
+      128,
+      130,
+      160,
+      188,
+      190,
+      220,
+      248,
+      250,
+      280,
+      300
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "a",
+      "series": "cycle 75-79",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "Hz",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "a",
+      "series": "cycle 75-79",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/0/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 16
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::b::0::f1p1",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "b",
+    "series": "cycle 11-15",
+    "series_index": 0,
+    "series_axis": "cycle range",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/1/series/0",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4b__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Δ mass (ng cm⁻²)",
+     "quantity": "Δ mass (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      11,
+      5300
+     ],
+     [
+      20,
+      0
+     ],
+     [
+      40,
+      700
+     ],
+     [
+      50,
+      0
+     ],
+     [
+      70,
+      7000
+     ],
+     [
+      80,
+      0
+     ],
+     [
+      100,
+      550
+     ],
+     [
+      110,
+      0
+     ],
+     [
+      130,
+      5000
+     ],
+     [
+      140,
+      0
+     ],
+     [
+      160,
+      800
+     ],
+     [
+      170,
+      0
+     ],
+     [
+      190,
+      3200
+     ],
+     [
+      200,
+      0
+     ],
+     [
+      220,
+      700
+     ],
+     [
+      230,
+      0
+     ],
+     [
+      250,
+      3600
+     ],
+     [
+      260,
+      0
+     ],
+     [
+      280,
+      600
+     ],
+     [
+      290,
+      0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Δ mass (ng cm⁻²)",
+     "raw_unit": "ng cm^-2",
+     "raw_label": "Δ mass (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Δ mass (ng cm⁻²)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0,
+      11,
+      20,
+      40,
+      50,
+      70,
+      80,
+      100,
+      110,
+      130,
+      140,
+      160,
+      170,
+      190,
+      200,
+      220,
+      230,
+      250,
+      260,
+      280,
+      290
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "b",
+      "series": "cycle 11-15",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ng cm^-2",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Δ mass (ng cm⁻²)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "b",
+      "series": "cycle 11-15",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 21
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::b::1::f1p1",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "b",
+    "series": "cycle 75-79",
+    "series_index": 1,
+    "series_axis": "cycle range",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/1/series/1",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4b__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Δ mass (ng cm⁻²)",
+     "quantity": "Δ mass (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      16,
+      2200
+     ],
+     [
+      25,
+      0
+     ],
+     [
+      40,
+      250
+     ],
+     [
+      50,
+      0
+     ],
+     [
+      73,
+      2350
+     ],
+     [
+      83,
+      0
+     ],
+     [
+      100,
+      250
+     ],
+     [
+      110,
+      0
+     ],
+     [
+      133,
+      2300
+     ],
+     [
+      143,
+      0
+     ],
+     [
+      160,
+      250
+     ],
+     [
+      170,
+      0
+     ],
+     [
+      193,
+      2000
+     ],
+     [
+      203,
+      0
+     ],
+     [
+      220,
+      250
+     ],
+     [
+      230,
+      0
+     ],
+     [
+      253,
+      2300
+     ],
+     [
+      263,
+      0
+     ],
+     [
+      280,
+      250
+     ],
+     [
+      290,
+      0
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Δ mass (ng cm⁻²)",
+     "raw_unit": "ng cm^-2",
+     "raw_label": "Δ mass (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Δ mass (ng cm⁻²)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0,
+      16,
+      25,
+      40,
+      50,
+      73,
+      83,
+      100,
+      110,
+      133,
+      143,
+      160,
+      170,
+      193,
+      203,
+      220,
+      230,
+      253,
+      263,
+      280,
+      290
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "b",
+      "series": "cycle 75-79",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ng cm^-2",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Δ mass (ng cm⁻²)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "b",
+      "series": "cycle 75-79",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/1/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 21
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::c::0::f1p2",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "c",
+    "series": "cycle 11-15",
+    "series_index": 0,
+    "series_axis": "cycle range",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/2/series/0",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4c__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Mass gain (ng cm⁻²)",
+     "quantity": "Mass gain (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      11,
+      0
+     ],
+     [
+      12,
+      8500
+     ],
+     [
+      40,
+      8500
+     ],
+     [
+      68,
+      9500
+     ],
+     [
+      70,
+      20500
+     ],
+     [
+      100,
+      20500
+     ],
+     [
+      128,
+      20000
+     ],
+     [
+      130,
+      29000
+     ],
+     [
+      160,
+      29000
+     ],
+     [
+      188,
+      29500
+     ],
+     [
+      190,
+      39000
+     ],
+     [
+      220,
+      39000
+     ],
+     [
+      248,
+      39500
+     ],
+     [
+      250,
+      47000
+     ],
+     [
+      280,
+      47000
+     ],
+     [
+      300,
+      47000
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Mass gain (ng cm⁻²)",
+     "raw_unit": "ng cm^-2",
+     "raw_label": "Mass gain (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Mass gain (ng cm⁻²)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0,
+      11,
+      12,
+      40,
+      68,
+      70,
+      100,
+      128,
+      130,
+      160,
+      188,
+      190,
+      220,
+      248,
+      250,
+      280,
+      300
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "c",
+      "series": "cycle 11-15",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ng cm^-2",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Mass gain (ng cm⁻²)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "c",
+      "series": "cycle 11-15",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 17
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::c::1::f1p2",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "c",
+    "series": "cycle 75-79",
+    "series_index": 1,
+    "series_axis": "cycle range",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/2/series/1",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4c__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "Mass gain (ng cm⁻²)",
+     "quantity": "Mass gain (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      15,
+      0
+     ],
+     [
+      16,
+      3500
+     ],
+     [
+      40,
+      3500
+     ],
+     [
+      68,
+      4000
+     ],
+     [
+      70,
+      7200
+     ],
+     [
+      100,
+      7200
+     ],
+     [
+      128,
+      7800
+     ],
+     [
+      130,
+      11000
+     ],
+     [
+      160,
+      11000
+     ],
+     [
+      188,
+      11700
+     ],
+     [
+      190,
+      14800
+     ],
+     [
+      220,
+      14800
+     ],
+     [
+      248,
+      15500
+     ],
+     [
+      250,
+      18500
+     ],
+     [
+      280,
+      18500
+     ],
+     [
+      300,
+      18800
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "Mass gain (ng cm⁻²)",
+     "raw_unit": "ng cm^-2",
+     "raw_label": "Mass gain (ng cm⁻²)",
+     "unit": "ng cm^-2",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'Mass gain (ng cm⁻²)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0,
+      15,
+      16,
+      40,
+      68,
+      70,
+      100,
+      128,
+      130,
+      160,
+      188,
+      190,
+      220,
+      248,
+      250,
+      280,
+      300
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "c",
+      "series": "cycle 75-79",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "ng cm^-2",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'Mass gain (ng cm⁻²)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "c",
+      "series": "cycle 75-79",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/2/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 17
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::d::0::f1p3",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "d",
+    "series": "cycle 11",
+    "series_index": 0,
+    "series_axis": "cycle number",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/3/series/0",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4d__exp01"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "QCM frequency change (Hz)",
+     "quantity": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      0.2,
+      -180
+     ],
+     [
+      0.5,
+      -300
+     ],
+     [
+      1.0,
+      -420
+     ],
+     [
+      1.5,
+      -480
+     ],
+     [
+      2.0,
+      -520
+     ],
+     [
+      3.0,
+      -580
+     ],
+     [
+      4.0,
+      -620
+     ],
+     [
+      5.0,
+      -650
+     ],
+     [
+      6.0,
+      -670
+     ],
+     [
+      7.0,
+      -690
+     ],
+     [
+      8.0,
+      -700
+     ],
+     [
+      9.0,
+      -710
+     ],
+     [
+      10.0,
+      -715
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "QCM frequency change (Hz)",
+     "raw_unit": "Hz",
+     "raw_label": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0,
+      0.2,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "d",
+      "series": "cycle 11",
+      "series_index": 0,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/3/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "Hz",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "d",
+      "series": "cycle 11",
+      "series_index": 0,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/3/series/0/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp01"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 14
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  },
+  {
+   "curve_id": "10.1021_acs.langmuir.6b03119::F4::d::1::f1p3",
+   "source": {
+    "paper_id": "10.1021_acs.langmuir.6b03119",
+    "doi": "10.1021_acs.langmuir.6b03119",
+    "figure": "4",
+    "figure_index": "7",
+    "panel": "d",
+    "series": "cycle 75",
+    "series_index": 1,
+    "series_axis": "cycle number",
+    "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+    "json_pointer": "/figures/1/panels/3/series/1",
+    "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+    "linked_experiment_ids": [
+     "10.1021_acs.langmuir.6b03119__Fig4d__exp02"
+    ],
+    "data_source": "measured",
+    "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency change, (b) the mass increase, and (c) cumulative mass uptake that corresponds to the TMA and H2O exposures (as indicated by arrows), and (d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a SEM image revealing the clogging of the intertube space by the Al 2 O3 coating."
+   },
+   "raw": {
+    "x": {
+     "label": "time (s)",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "log": false
+    },
+    "y": {
+     "label": "QCM frequency change (Hz)",
+     "quantity": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "log": false
+    },
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      0.2,
+      -120
+     ],
+     [
+      0.5,
+      -210
+     ],
+     [
+      1.0,
+      -250
+     ],
+     [
+      1.5,
+      -265
+     ],
+     [
+      2.0,
+      -272
+     ],
+     [
+      3.0,
+      -277
+     ],
+     [
+      4.0,
+      -280
+     ],
+     [
+      5.0,
+      -281
+     ],
+     [
+      6.0,
+      -282
+     ],
+     [
+      7.0,
+      -283
+     ],
+     [
+      8.0,
+      -284
+     ],
+     [
+      9.0,
+      -285
+     ],
+     [
+      10.0,
+      -285
+     ]
+    ]
+   },
+   "semantics": {
+    "x": {
+     "raw_quantity": "pulse_time",
+     "raw_unit": "s",
+     "raw_label": "time (s)",
+     "unit": "s",
+     "unit_recovered": false,
+     "quantity": "pulse_time",
+     "axis_role": "condition",
+     "axis_kind": "condition_sweep",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "evidence": [],
+     "status": "resolved",
+     "unresolved_reason": null
+    },
+    "y": {
+     "raw_quantity": "QCM frequency change (Hz)",
+     "raw_unit": "Hz",
+     "raw_label": "QCM frequency change (Hz)",
+     "unit": "Hz",
+     "unit_recovered": false,
+     "quantity": null,
+     "axis_role": null,
+     "axis_kind": "unknown",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "evidence": [],
+     "status": "unsupported",
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind"
+    }
+   },
+   "canonical": {
+    "x": {
+     "comparison_group": "pulse_time",
+     "quantity": "pulse_time",
+     "unit": "s",
+     "values": [
+      0,
+      0.2,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0
+     ],
+     "normalization_definition": null
+    },
+    "y": null
+   },
+   "projections": {
+    "x": [],
+    "y": []
+   },
+   "transformations": [
+    {
+     "axis": "x",
+     "rule_id": "identity_canonical_mapping",
+     "rule_version": "1.0.0",
+     "type": "identity_canonical_mapping",
+     "formula": "identity",
+     "status": "already_canonical",
+     "normalization_definition": null,
+     "comparison_group": "pulse_time",
+     "original_value": null,
+     "original_unit": "s",
+     "canonical_value": null,
+     "canonical_unit": "s",
+     "context": {},
+     "unresolved_reason": null,
+     "confidence": 1.0,
+     "assumptions": [],
+     "invertible": true,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "d",
+      "series": "cycle 75",
+      "series_index": 1,
+      "axis": "x",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/3/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    },
+    {
+     "axis": "y",
+     "rule_id": "axis_semantic_resolution",
+     "rule_version": "1.0.0",
+     "type": "axis_semantic_resolution",
+     "formula": null,
+     "status": "unsupported",
+     "normalization_definition": null,
+     "comparison_group": null,
+     "original_value": null,
+     "original_unit": "Hz",
+     "canonical_value": null,
+     "canonical_unit": null,
+     "context": {},
+     "unresolved_reason": "y quantity 'QCM frequency change (Hz)' does not resolve to any ontology QuantityKind",
+     "confidence": 0.0,
+     "assumptions": [],
+     "invertible": null,
+     "source": {
+      "paper_id": "10.1021_acs.langmuir.6b03119",
+      "doi": "10.1021_acs.langmuir.6b03119",
+      "figure": "4",
+      "panel": "d",
+      "series": "cycle 75",
+      "series_index": 1,
+      "axis": "y",
+      "source_file": "papers/10.1021_acs.langmuir.6b03119/extracted/figure_data.json",
+      "json_pointer": "/figures/1/panels/3/series/1/points",
+      "source_checksum": "sha256:db60c8f925a53ec9296bcad5ad63079d77c700782cc208f529b15eb055854504",
+      "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp02"
+     },
+     "created_by": "pipeline/canonical/build_canonical.py",
+     "code_version": "3848481+dirty",
+     "created_at": 1786465364
+    }
+   ],
+   "granularity": {
+    "axis_role": "condition",
+    "previous_representation": "trace",
+    "resolved_representation": "series",
+    "changed": true,
+    "reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+    "n_points": 14
+   },
+   "context_available": [
+    "TMA exposure time",
+    "chamber_total_pressure",
+    "cycle_number",
+    "molecular_mass",
+    "precursor_molecular_diameter",
+    "pulse_time",
+    "temperature"
+   ]
+  }
+ ]
+}
