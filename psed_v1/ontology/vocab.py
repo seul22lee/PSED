@@ -91,6 +91,14 @@ def _unit_words(label):
             for t in re.sub(r"[^a-z0-9 ]", " ", g.lower()).split()}
 
 
+#: Words that make the axis a DIFFERENT measurand from the quantity named beside them.
+#: A ratio of two flows is not a flow; a fraction of a thickness is not a thickness. Kept
+#: deliberately tiny -- these transform the quantity, unlike qualifiers ("above
+#: background", "degree", "by XRR") which merely describe the same one. A quantity whose
+#: own vocabulary contains the word is exempt, so a genuine ratio quantity still resolves.
+_TRANSFORMS_MEASURAND = {"ratio", "fraction", "percentage", "proportion", "quotient"}
+
+
 def _quantity_words(qid):
     """Every word the ontology itself uses for this quantity."""
     m = QK_META.get(qid) or {}
@@ -150,10 +158,20 @@ def axis_label_match(label):
         qid = QK.get(norm(c))
         if not qid:
             continue
-        if k is not None and len(norm(c)) <= 2:
+        if k is not None:
             words = _quantity_words(qid)
-            if any(not (t.isdigit() or len(t) <= 1 or t in units or t in words)
-                   for t in toks[k:]):
+            dropped = toks[k:]
+            # A discarded word that TRANSFORMS the measurand is fatal at any match
+            # length. "flow ratio" truncated to "flow" became flow_rate -- but a
+            # dimensionless ratio of two flows is not a flow. The bare-symbol rule below
+            # never caught it, because "flow" is four characters. Qualifiers that merely
+            # describe the same measurand are untouched: an intensity above background is
+            # still an intensity, a coverage degree is still a coverage.
+            if any(t in _TRANSFORMS_MEASURAND and t not in words for t in dropped):
+                continue
+            if len(norm(c)) <= 2 and any(
+                    not (t.isdigit() or len(t) <= 1 or t in units or t in words)
+                    for t in dropped):
                 continue                             # descriptive text this reading ignores
         return qid, c
     return None, None
