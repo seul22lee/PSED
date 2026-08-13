@@ -599,9 +599,20 @@ def build(pid):
         # What the figure says distinguishes this curve from its siblings. Figure-local
         # direct evidence, so a stronger source (a specimen table row) still wins.
         _prog_stage = None
-        for bc in between_curve_conditions(ent, P.materials, note):
+        # every reagent this paper is known to use, so a legend can be matched against
+        # chemistry the source actually supports instead of inventing one
+        _known_species = [s for s in ((P.scout.get("precursors") or [])
+                                      + (P.scout.get("coreactants") or [])
+                                      + [r.get("species") for r in (ent.get("reactants") or [])]
+                                      + (ent.get("precursors") or [])
+                                      + (ent.get("coreactants") or [])) if s]
+        _series_reagent = None
+        for bc in between_curve_conditions(ent, P.materials, note, _known_species):
             if bc.get("progression_stage"):
                 _prog_stage = bc
+                continue
+            if bc.get("series_reagent"):
+                _series_reagent = bc
                 continue
             (cd if bc["role"] == R.CASE_DEFINING else ms).append(bc)
         # every material of the paper that THIS scope names, with the role it names it in
@@ -786,6 +797,15 @@ def build(pid):
             out["experimental_designs"].append(design)
             for _b in sweep:
                 _b["design_id"] = design["design_id"]
+        if sweep and _series_reagent:
+            # The legend named which side of the cycle this curve's dose belongs to. It
+            # qualifies the swept quantity, so an exposure of the precursor and the same
+            # exposure of the co-reactant stay distinct settings of distinct steps -- the
+            # `species` dimension the case fingerprint already carries.
+            for sc in sweep:
+                sc["species"] = _series_reagent["series_reagent"]
+                sc["species_basis"] = _series_reagent["role_basis"]
+                sc["species_evidence"] = _series_reagent["evidence"]
         if sweep:
             for k, sc in enumerate(sweep):
                 candidates.append(_cand(pid, eid, printed, panel, cd + [sc], mid,
@@ -2089,9 +2109,15 @@ _DECL_QUANTITY = [
     # Which precursor/co-reactant was used is a case-defining choice of process
     # chemistry, not a setting of it: two films grown from different precursors are
     # different depositions however identical the temperatures and timings.
-    (re.compile(r"\bco-?reactant\b|\boxidant\b", re.I), "coreactant", R.CASE_DEFINING),
-    (re.compile(r"\bprecursor\b|\breactant\b|\bchemistry\b", re.I), "precursor",
-     R.CASE_DEFINING),
+    (re.compile(r"\bco-?reactant\b|\bcounter[-\s]?reactant\b|\boxidant\b", re.I),
+     "coreactant", R.CASE_DEFINING),
+    # `precursor` only. A bare "reactant" used to land here, which inverted the role it
+    # names: in ALD prose "reactant" contrasted with "precursor" IS the counter-reactant,
+    # so the rule asserted the oxidant was the metal source. It is not remapped to
+    # `coreactant` either -- alone the word is genuinely ambiguous, and an unresolved
+    # discriminator asserts nothing. "chemistry" was dropped for the same reason: naming
+    # the topic is not evidence of which side of the cycle a curve varies.
+    (re.compile(r"\bprecursor\b", re.I), "precursor", R.CASE_DEFINING),
     (re.compile(r"pillar\s*(?:layout|design)", re.I), "pillar_layout", R.CASE_DEFINING),
     (re.compile(r"(?:reflectomet\w+\s*)?magnificat\w+|objective|spot\s*size", re.I),
      "reflectometer_magnification", R.MEASUREMENT_SETTING),
@@ -2105,6 +2131,32 @@ _DECL_QUANTITY = [
     (re.compile(r"pressure", re.I), "working_pressure", R.CASE_DEFINING),
     (re.compile(r"exposure\s*time|exposure", re.I), "exposure_time", R.CASE_DEFINING),
 ]
+
+#: the two sides of an ALD cycle, as a discriminator may name them
+_PRECURSOR_TOKEN = re.compile(r"\bprecursor\b", re.I)
+_COREACTANT_TOKEN = re.compile(r"\b(?:co-?|counter[-\s]?)?reactant\b|\boxidant\b", re.I)
+#: quantities that are a DOSE of one reagent, so a sweep of them belongs to one side of
+#: the cycle. A temperature or a cycle count is shared by both and cannot be so scoped.
+_REAGENT_SCOPED_Q = {"exposure_time", "pulse_time", "dose", "purge_time"}
+
+
+def compound_reagent_discriminator(q_raw):
+    """Whether a between-curve discriminator names BOTH sides of the ALD cycle.
+
+    "precursor/reactant" does not say the curves used different precursors -- it says one
+    curve belongs to the precursor and the other to the counter-reactant. Read as a single
+    role it collapsed to `precursor` and asserted the oxidant was the metal source.
+
+    Generic over the phrasings that name two roles at once (precursor/reactant,
+    precursor/co-reactant, precursor and oxidant); a discriminator naming ONE role is a
+    genuine chemistry choice and is left alone.
+    """
+    t = str(q_raw or "")
+    if not (_PRECURSOR_TOKEN.search(t) and _COREACTANT_TOKEN.search(t)):
+        return False
+    # "precursor" inside "co-reactant"-free text must be a separate token from the
+    # reactant word, otherwise "precursor" alone would match both patterns
+    return _COREACTANT_TOKEN.sub("", _PRECURSOR_TOKEN.sub("", t)).strip(" /,&-") != t
 
 
 def series_definitions_from_text(text):
@@ -3068,7 +3120,7 @@ def _anchors_deposition_case(members):
 _LENGTH_UNIT = re.compile(r"^\s*(?:nm|\u00b5m|um|\u03bcm|\u00c5|A|mm|cm|m)\s*$", re.I)
 
 
-def between_curve_conditions(ent, materials, note=None):
+def between_curve_conditions(ent, materials, note=None, known_species=()):
     """The condition that distinguishes THIS curve from its siblings, or [].
 
     A multi-curve figure usually says what differs between its curves -- the extraction
@@ -3091,6 +3143,35 @@ def between_curve_conditions(ent, materials, note=None):
     v_raw = ent.get("between_curve_value")
     if not q_raw or v_raw in (None, "", "<single>"):
         return []
+
+    # ---- both sides of the cycle named at once: WHOSE dose is swept, not which chemical
+    if compound_reagent_discriminator(q_raw):
+        sp = R.species_named_in(v_raw, known_species)
+        scoped = str(ent.get("coordinate") or "") in _REAGENT_SCOPED_Q
+        if sp and scoped:
+            # Not a condition. The curve does not change the process chemistry -- the
+            # paper's precursor and co-reactant are the same for both curves. It says the
+            # swept dose belongs to THIS reagent, so the species qualifies the sweep
+            # rather than standing beside it as a second, contradictory chemistry claim.
+            return [{"series_reagent": sp, "quantity": None, "role": None,
+                     "provenance_type": "figure_local_direct",
+                     "source": "between_curve_legend", "scope": "series",
+                     "role_basis": "the reagent whose dose this curve varies",
+                     "evidence": "this curve is labelled %r where the figure distinguishes "
+                                 "its curves by %r, naming both sides of the cycle; the "
+                                 "label says which reagent's %s is swept, not which "
+                                 "chemical the film was grown with"
+                                 % (_norm(str(v_raw)), q_raw, ent.get("coordinate"))}]
+        if note:
+            note("between_curve_reagent_unresolved", ent.get("entity_id"),
+                 "curves are distinguished by %r, which names both sides of the cycle, but "
+                 "%s; no chemistry condition is asserted"
+                 % (q_raw, ("the swept quantity %r is not a dose of one reagent"
+                            % ent.get("coordinate")) if sp else
+                    "the label %r matches none of the paper's known reagents %s"
+                    % (_norm(str(v_raw)), sorted(known_species or []))))
+        return []
+
     quantity = None
     for rx, qq, _role in _DECL_QUANTITY:
         if rx.search(str(q_raw)):
