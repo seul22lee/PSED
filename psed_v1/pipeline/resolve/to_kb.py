@@ -476,6 +476,31 @@ def _dedup_pressures(conds):
 _LABEL_CACHE = {}
 
 
+def _axis_canon(raw):
+    """Canonicalise an AXIS record quantity, but never a bare symbol.
+
+    The extraction layer transcribes what the axis printed, so a record may hold nothing
+    more than "j". Canonicalising that here makes it a strong claim -- `collision_flux`,
+    a molecular impingement flux -- before the axis resolver has seen the label, the unit
+    or the sibling evidence, and the resolver then has no way to tell a genuine reading
+    from a one-letter guess. Both would arrive as the same canonical id.
+
+    So a raw value whose only route to a quantity is a short ontology symbol is passed
+    through untouched, and the axis resolver decides with the rest of the evidence in
+    front of it. A record naming a quantity outright -- an id, a name, a multi-word alias
+    -- is not a bare symbol and canonicalises exactly as before.
+
+    Deliberately axis-only: `canon_quantity` keeps its behaviour everywhere else, because
+    a condition or a recipe field reaches it with different evidence and different stakes.
+    """
+    if not raw:
+        return raw
+    q = lib.canon_quantity(raw)
+    if q and lib.is_bare_symbol(lib.axis_label_match(raw)[1]):
+        return raw
+    return q or raw
+
+
 def _canon_axis(label):
     """Alias lookup used by axis_roles: the label resolver first (it strips
     units and log/ln wrappers), then the plain alias table."""
@@ -1646,8 +1671,8 @@ def to_experiments(sd, scout, records, card):
     pid = short_pid(sd)
     exps = []
     for r in records:
-        mq = lib.canon_quantity((r.get("measurand") or {}).get("quantity")) or (r.get("measurand") or {}).get("quantity")
-        cq = lib.canon_quantity(r.get("coordinate")) or r.get("coordinate")
+        mq = _axis_canon((r.get("measurand") or {}).get("quantity"))
+        cq = _axis_canon(r.get("coordinate"))
         pts = [p for p in (r.get("points") or []) if isinstance(p, list) and len(p) == 2]
 
         # ---- units: convert VALUES together with the unit -------------------

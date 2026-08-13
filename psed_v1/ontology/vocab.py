@@ -122,8 +122,21 @@ def resolve_axis_label(label):
     Refusing is the whole point: the ontology has no flow-ratio quantity, and an
     unresolved axis keeps its raw label and values while claiming nothing.
     """
+    return axis_label_match(label)[0]
+
+
+def axis_label_match(label):
+    """-> (quantity_id, winning_candidate) for the ladder above.
+
+    The candidate is what the caller needs to judge how STRONG the reading is: a match on
+    a spelled-out name or a multi-word alias states the quantity outright, while a match
+    on a bare one- or two-character symbol is the weakest evidence the ontology admits --
+    the same letter routinely means different things in different fields ("j" is a
+    molecular flux here and a current density in electrochemistry). Callers that hold
+    independent evidence can use that distinction; this function never guesses for them.
+    """
     if not label:
-        return None
+        return None, None
     units = _unit_words(label)
     s = str(label).lower()
     s = re.sub(r"\b(ln|log10|log)\b", " ", s)        # drop log wrappers (keyword)
@@ -142,8 +155,90 @@ def resolve_axis_label(label):
             if any(not (t.isdigit() or len(t) <= 1 or t in units or t in words)
                    for t in toks[k:]):
                 continue                             # descriptive text this reading ignores
-        return qid
-    return None
+        return qid, c
+    return None, None
+
+
+def is_bare_symbol(candidate):
+    """Whether a winning label candidate is only a short ontology symbol."""
+    return bool(candidate) and len(norm(candidate)) <= 2
+
+
+# ---- physical dimension, derived from the ontology's own unit ---------------
+#: QUDT locals the ontology uses, spelled the way the unit parser reads them. This is a
+#: TRANSCRIPTION of an IRI into a unit string, not a second opinion about physics: the
+#: dimension still comes from parsing the unit the ontology already declares.
+_QUDT_UNIT = {
+    "DEG_C": "°C", "K": "K", "SEC": "s", "HR": "h", "MIN": "min",
+    "NanoM": "nm", "MicroM": "um", "MilliM": "mm", "CentiM": "cm", "M": "m",
+    "ANGSTROM": "A", "PA": "Pa", "KiloPA": "kPa", "BAR": "bar", "TORR": "torr",
+    "PERCENT": "%", "UNITLESS": "1", "NUM": "1", "DEG": "deg", "RAD": "rad",
+}
+
+#: Quantities whose dimension the ontology states in a form the parser cannot read, and
+#: which are scientifically unambiguous. Kept deliberately tiny -- this is an EXCEPTION
+#: list, not a dimension registry. A long list here would mean the derivation is wrong.
+#: Each entry names the ontology unit it stands in for.
+_DIM_OVERRIDE = {
+    # ontology unit "1/m2" / "1/(m2 s)" -- an inverse-area count the parser has no
+    # dimension for; site density is unambiguous.
+    "site_density": ({"reciprocal_area", "count"}, "ontology unit 1/m2 not parseable"),
+}
+
+
+def _unit_for_dimension(unit):
+    """The ontology's declared unit as a string the unit parser can attempt."""
+    if not unit:
+        return None
+    s = str(unit)
+    return _QUDT_UNIT.get(s.rsplit("/", 1)[-1], s) if s.startswith("http") else s
+
+
+def quantity_unit(qid):
+    """The unit the ontology declares for a quantity, as a parseable string.
+
+    Returned as a STRING rather than a dimension so the caller can derive the dimension
+    with the very function it uses for observed units. Two derivations would otherwise
+    speak two vocabularies -- one saying `dimensionless` where the other says `percent` --
+    and the guard would reject correct pairings on a naming difference alone.
+    """
+    meta = QK_META.get(qid) or {}
+    return _unit_for_dimension(meta.get("unit"))
+
+
+def quantity_dimension(qid):
+    """-> (set_of_dimension_names or None, basis)
+
+    The ontology already records what each quantity is measured in. Deriving the
+    dimension from that declaration keeps ONE source of truth: a hand-kept table beside
+    it can only drift, and the table that existed covered 21 of 181 quantities, which is
+    why a current density could be read as a molecular flux and a capacitance as a
+    probability -- neither had a dimension for the guard to check.
+
+    `None` means genuinely unknown, and unknown is a legitimate answer: it is not the
+    same as dimensionless, and nothing is invented to fill the gap.
+    """
+    if not qid:
+        return None, "no quantity"
+    if qid in _DIM_OVERRIDE:
+        dims, why = _DIM_OVERRIDE[qid]
+        return set(dims), "override: %s" % why
+    meta = QK_META.get(qid) or {}
+    raw = meta.get("unit")
+    u = _unit_for_dimension(raw)
+    if not u:
+        return None, "ontology declares no unit"
+    if u in ("1", "%") or "UNITLESS" in str(raw):
+        return {"dimensionless"}, "ontology declares the quantity unitless"
+    try:
+        from pipeline.canonical import units as _U
+        p = _U.try_parse(u)
+        d = _U.DIM_NAME.get(p.dimension) if p else None
+    except Exception:
+        d = None
+    if d:
+        return {d}, "derived from ontology unit %r" % u
+    return None, "ontology unit %r is not parseable" % u
 
 
 # ---- compact ontology vocab for prompts -----------------------------------
