@@ -15,7 +15,10 @@ canonical value must never be shown against a raw unit.
 Run:  python3 tests/test_workbench_model.py
 """
 import json
+import shutil
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 W = Path(__file__).resolve().parent.parent
@@ -223,6 +226,36 @@ def main():
     ok("N: unresolved producer links are zero", A["series_without_producer"] == 0)
     ok("N: the case-link gap is reported, not zeroed",
        A["measurements_without_case"] > 0, A["measurements_without_case"])
+
+    print("=== O. the faceted filter engine, executed as shipped ===")
+    # These run the page's OWN javascript under node against the embedded corpus, so the
+    # contract is checked on the code that ships rather than on a Python restatement of it.
+    facets = FR / "facet_contract_assertions.js"
+    node = shutil.which("node")
+    if not node:
+        ok("O: node is unavailable, facet contract not executed", False, "install node")
+    elif not facets.exists():
+        ok("O: facet assertion script exists", False, str(facets))
+    else:
+        import re as _re
+        h = (FR / "psed_experiment_comparison_workbench.html").read_text()
+        js = _re.findall(r"<script>(.*?)</script>", h, _re.S)[-1]
+        blob = _re.search(r'<script id="d" type="application/json">(.*?)</script>',
+                          h, _re.S).group(1)
+        head = js[:js.index("// ---- facet UI")].replace("const sel = [];", "")
+        with tempfile.TemporaryDirectory() as td:
+            run = Path(td) / "run.js"
+            run.write_text(
+                "const DOC=" + blob + ";\n"
+                "const document={getElementById:()=>({textContent:JSON.stringify(DOC)}),"
+                "addEventListener:()=>{},querySelector:()=>null,querySelectorAll:()=>[]};\n"
+                "const sel=[];\n" + head + "\n" + facets.read_text())
+            r = subprocess.run([node, str(run)], capture_output=True, text=True)
+        if r.returncode:
+            ok("O: the shipped facet engine runs", False, r.stderr[:200])
+        else:
+            for x in json.loads(r.stdout):
+                ok("O: " + x["name"], x["ok"], x.get("detail"))
 
     print("\n%d passed, %d failed" % (len(_pass), len(_fail)))
     if _fail:
