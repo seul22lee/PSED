@@ -1,0 +1,116 @@
+<title>Result Comparability</title><style>
+:root{--bg:#fbfbfa;--fg:#1a1a18;--mut:#6b6b66;--line:#e0dfdb;--card:#fff;
+--bad:#b3261e;--good:#1e6b3a;--warn:#8a6100;--accent:#2f5d8a}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+--bg:#16161a;--fg:#e9e9e6;--mut:#9a9a95;--line:#33333a;--card:#1e1e24;
+--bad:#ff8a80;--good:#7ddba3;--warn:#e8c06a;--accent:#8fb8e0}}
+:root[data-theme=dark]{--bg:#16161a;--fg:#e9e9e6;--mut:#9a9a95;--line:#33333a;
+--card:#1e1e24;--bad:#ff8a80;--good:#7ddba3;--warn:#e8c06a;--accent:#8fb8e0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1140px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:-.02em}
+h2{font-size:18px;margin:38px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--mut);margin:0 0 24px;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(134px,1fr));gap:12px;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.card .n{font-size:23px;font-weight:600;letter-spacing:-.02em}
+.card .l{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:700px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--mut);font-size:11px;text-transform:uppercase;
+letter-spacing:.06em;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.bad{color:var(--bad);font-weight:600}.good{color:var(--good);font-weight:600}
+.warn{color:var(--warn)}.mut{color:var(--mut)}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+border-radius:6px;padding:12px 16px;margin:14px 0}
+img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+.flow{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 20px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;white-space:pre;
+overflow-x:auto;line-height:1.55}
+</style>
+<div class="wrap">
+<h1>Result / profile comparability</h1>
+<p class="sub">Can these two scientific results actually be compared? Baseline
+<code>14bff7b</code>, generating code <code>9b91d0b56ac6</code>, HEAD <code>14bff7b</code>.</p>
+
+<div class="cards">
+<div class="card"><div class="n">191</div><div class="l">curves scanned</div></div>
+<div class="card"><div class="n">70</div><div class="l">profile series</div></div>
+<div class="card"><div class="n">2031</div><div class="l">candidate pairs</div></div>
+<div class="card"><div class="n good">699</div><div class="l">cross-paper</div></div>
+<div class="card"><div class="n">12</div><div class="l">papers</div></div>
+<div class="card"><div class="n good">0</div><div class="l">source points changed</div></div>
+</div>
+
+<h2>Semantic model</h2>
+<div class="flow">paper expression      &quot;Film thickness S (nm)&quot;   vs  &quot;Distance x (µm)&quot;
+        │                 &quot;Al2O3 film thickness&quot;    vs  &quot;distance (mm)&quot;
+        ▼
+canonical quantity     film_thickness                  spatial_coordinate
+        ▼
+representation         absolute                        absolute
+        ▼
+comparison group       film_thickness (nm)             spatial_position (µm)
+        ▼
+ontology relation      same group, same dimension  →  UNIT_CONVERTIBLE
+        ▼
+required context       none for the unit step;  t_max for the normalization step
+        ▼
+status                 TRANSFORMABLE_PROFILE   /   converted
+        ▼
+common representation  film_thickness [nm]  vs  spatial_coordinate [µm]</div>
+
+<h2>Why a canonical quantity id is not enough</h2>
+<div class="note"><code>t/t_entrance</code>, <code>t/t_max</code> and
+<code>t/t_planar</code> all canonicalise to <code>normalized_thickness</code> with unit
+<code>1</code>, and they are three different physical statements &mdash; how much thinner
+the film got relative to the mouth of the feature, relative to wherever this profile
+happened to peak, or relative to a flat witness coupon. So the comparison identity is
+<strong>(quantity, comparison group, normalization definition)</strong>. Two normalized
+profiles with different bases come back <code>RELATED_NOT_COMPARABLE</code>; a normalized
+profile whose basis nobody recorded comes back <code>ambiguous</code>, which is a
+different answer from &ldquo;no&rdquo; and a very different answer from
+&ldquo;yes&rdquo;.</div>
+
+<h2>Normalization identity in the corpus</h2>
+<div class="scroll"><table><thead><tr><th>paper</th><th>printed axis label</th>
+<th>normalization</th><th>status</th></tr></thead><tbody><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃ (-)</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃ (-)</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td>Dimensionless distance x̃</td><td><code>x_over_feature_height</code></td><td class='good'>NORMALIZATION_EXPLICIT</td></tr></tbody></table></div>
+
+<h2>Pair status counts</h2>
+<div class="scroll"><table><thead><tr><th>status</th><th>pairs</th></tr></thead>
+<tbody><tr><td><code>DIRECT_PROFILE</code></td><td>1050</td></tr><tr><td><code>missing_context</code></td><td>828</td></tr><tr><td><code>ambiguous</code></td><td>153</td></tr></tbody></table></div>
+
+<h2>Real pair inventory</h2>
+<div class="scroll"><table><thead><tr><th>paper A</th><th>paper B</th><th>x</th>
+<th>y</th><th>profile status</th><th>missing context</th></tr></thead>
+<tbody><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>missing_context</td><td>missing_context</td><td class='warn'>missing_context</td><td class='mut'>feature_height, cycle_number</td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr><tr><td class='mono'>10.1021_acs.langmuir.6</td><td class='mono'>10.1039_d0cp03358h</td><td>DIRECT</td><td>DIRECT</td><td class='good'>DIRECT_PROFILE</td><td class='mut'></td></tr></tbody></table></div>
+
+<h2>Cross-paper overlay</h2>
+<div class="scroll"><table><thead><tr><th>role</th><th>paper</th>
+<th>figure</th><th>original x / y unit</th><th>points</th><th>transformations</th>
+</tr></thead><tbody><tr><td>A</td><td class='mono'>10.1039_d0cp03358h</td><td>fig7a</td><td><code>µm</code> / <code>nm</code></td><td>39</td><td class='mono'>none</td></tr><tr><td>B</td><td class='mono'>cremers2019</td><td>fig22a</td><td><code>mm</code> / <code>nm</code></td><td>35</td><td class='mono'>none</td></tr></tbody></table></div>
+<p class="sub">Normalization parameters, each from the profile's own points:</p>
+<ul class="sub"><li><code>t_max = 59.5 nm</code> &mdash; maximum of this series&#x27; own 39 extracted points</li><li><code>t_max = 15.6 nm</code> &mdash; maximum of this series&#x27; own 35 extracted points</li></ul>
+<img src="cross_paper_overlay.png" alt="cross-paper profile overlay">
+<div class="note">representation comparability only: the two profiles come from different experiments and the overlay does not assert that their process conditions were equivalent</div>
+
+<h2>What this does and does not claim</h2>
+<div class="note">The status answers a narrow question: whether two results can be placed
+in one representation, and what it costs to get them there. It does not claim the two
+experiments should agree, that their process conditions were equivalent, or that a
+<code>SHAPE_ONLY</code> pair is quantitatively equal. Transformations come only from
+declared ontology relations and extracted context &mdash; no curve is scaled, shifted or
+fitted to improve agreement, and a parameter nobody extracted stays missing rather than
+being filled from a typical literature value.</div>
+
+<h2>Deferred</h2>
+<div class="note"><code>flow_ratio</code> numerator/denominator schema; the
+natural-language query layer; the d0ra precursor-purge extraction defect; ontology alias
+hygiene; interpolation-based quantitative metrics, which need a stated resampling
+contract before they mean anything.</div>
+</div>
