@@ -27,7 +27,7 @@ from pipeline.canonical import units as U                              # noqa: E
 
 OUT = W / "_diagnostics" / "comparability"
 PILOT = W / "_diagnostics" / "semantic_pilot_9papers"
-BASELINE = "4179959"
+BASELINE = "a7ae72b"
 
 
 def code_hash():
@@ -37,10 +37,18 @@ def code_hash():
     return h.hexdigest()[:12]
 
 
-def load_curves():
-    """Every canonical curve, flattened into the series shape the engine consumes."""
+_ONTO_QUANTITIES = {q["id"] for q in json.loads(
+    (W / "ontology" / "ald_ontology.json").read_text())["quantity_kinds"]}
+
+
+def load_curves(with_excluded=False):
+    """Every scientific curve the runtime can reason about, plus why the rest were not.
+
+    "Canonical curve" was previously a synonym for "curve whose canonical y survived",
+    which quietly equated an abstention about REPRESENTATION with an absence of SCIENCE.
+    """
     a8 = set(json.loads((PILOT / "pilot_papers.json").read_text())["papers"])
-    out = []
+    out, excluded = [], []
     roots = [(PILOT / "papers", None),
              (W / "_diagnostics" / "unseen_eval_v3_axis_dimension" / "papers", "UNSEEN")]
     for root, forced in roots:
@@ -54,9 +62,57 @@ def load_curves():
                 cx, cy = c.get("canonical") or {}, None
                 cx = (c.get("canonical") or {}).get("x") or {}
                 cy = (c.get("canonical") or {}).get("y") or {}
+                sem = c.get("semantics") or {}
                 raw = c.get("raw") or {}
-                if not cy.get("quantity"):
+                # Admission is axis-by-axis. A null canonical axis is not a null result:
+                # canonicalization abstains when it cannot pin the REPRESENTATION, and a
+                # curve whose measurand is known but whose normalization basis is not is
+                # exactly the case a comparability layer must be able to talk about.
+                # Dropping it hides genuine ambiguity behind an empty universe.
+                ax = {}
+                for a_ in ("x", "y"):
+                    can = (c.get("canonical") or {}).get(a_) or {}
+                    sm = (sem.get(a_) or {})
+                    q = can.get("quantity")
+                    if q:
+                        ax[a_] = dict(quantity=q, unit=can.get("unit"),
+                                      group=can.get("comparison_group"),
+                                      norm=can.get("normalization_definition"),
+                                      values=can.get("values") or [],
+                                      resolution="FULLY_RESOLVED",
+                                      resolution_source="CANONICAL_AXIS",
+                                      axis_kind=sm.get("axis_kind"),
+                                      semantic_status=sm.get("status"))
+                        continue
+                    sq = sm.get("quantity") or sm.get("raw_quantity")
+                    known = bool(sq) and sq in _ONTO_QUANTITIES
+                    ax[a_] = dict(
+                        quantity=sq if known else None, unit=(raw.get(a_) or {}).get("unit"),
+                        group=None, norm=sm.get("normalization_definition"),
+                        values=[pt[0 if a_ == "x" else 1]
+                                for pt in (raw.get("points") or []) if len(pt) == 2],
+                        resolution="PARTIALLY_RESOLVED" if known else "SEMANTICALLY_UNRESOLVED",
+                        resolution_source="PARTIAL_SEMANTIC_RECORD" if known else None,
+                        axis_kind=sm.get("axis_kind"), semantic_status=sm.get("status"),
+                        raw_semantic_quantity=sq)
+                if not ax["y"]["quantity"]:
+                    excluded.append({
+                        "paper_id": pid, "scope": scope, "curve_id": c.get("curve_id"),
+                        "reason": ("NO_MEASURAND_IDENTITY" if not ax["y"].get(
+                            "raw_semantic_quantity") else "INSUFFICIENT_AXIS_SEMANTICS"),
+                        "raw_y_label": (raw.get("y") or {}).get("label"),
+                        "semantic_y_quantity": ax["y"].get("raw_semantic_quantity"),
+                        "axis_kind": ax["y"].get("axis_kind"),
+                        "semantic_status": ax["y"].get("semantic_status")})
                     continue
+                cy = {"quantity": ax["y"]["quantity"], "unit": ax["y"]["unit"],
+                      "comparison_group": ax["y"]["group"],
+                      "normalization_definition": ax["y"]["norm"],
+                      "values": ax["y"]["values"]}
+                cx = {"quantity": ax["x"]["quantity"], "unit": ax["x"]["unit"],
+                      "comparison_group": ax["x"]["group"],
+                      "normalization_definition": ax["x"]["norm"],
+                      "values": ax["x"]["values"]}
                 # Use the CANONICAL values, not raw.points: the canonical layer has
                 # already applied the declared unit conversion, and pairing raw values
                 # with the canonical unit silently rescales a curve by whatever factor
@@ -84,6 +140,12 @@ def load_curves():
                     "context_available": c.get("context_available") or [],
                     "n_points": len(pts), "points": pts,
                     "raw_points": raw_pts,
+                    "x_resolution": ax["x"]["resolution"],
+                    "y_resolution": ax["y"]["resolution"],
+                    "x_resolution_source": ax["x"].get("resolution_source"),
+                    "y_resolution_source": ax["y"].get("resolution_source"),
+                    "y_axis_kind": ax["y"].get("axis_kind"),
+                    "y_semantic_status": ax["y"].get("semantic_status"),
                     "raw_x_unit": (raw.get("x") or {}).get("unit"),
                     "raw_y_unit": (raw.get("y") or {}).get("unit"),
                     "transformations_applied": [t.get("rule_id")
@@ -94,7 +156,7 @@ def load_curves():
                     "canonical_statuses": sorted({str(t.get("status"))
                                                   for t in (c.get("transformations") or [])}),
                 })
-    return out
+    return (out, excluded) if with_excluded else out
 
 
 PROFILE_X = {"spatial_coordinate", "dimensionless_distance", "penetration_depth",
@@ -104,7 +166,7 @@ PROFILE_Y = {"film_thickness", "normalized_thickness", "growth_per_cycle",
 
 
 def main():
-    curves = load_curves()
+    curves, excluded = load_curves(with_excluded=True)
     profiles = [c for c in curves
                 if c["x_quantity"] in PROFILE_X and c["y_quantity"] in PROFILE_Y
                 and c["n_points"] >= 3]
@@ -133,6 +195,11 @@ def main():
     for c in profiles:
         idx[c["y_comparison_group"] or c["y_quantity"]].append(c)
     results, status_counts, scope_counts = [], Counter(), Counter()
+    shape_pairs = {}
+    for c in profiles:
+        for other in RC.find_comparable_series(c, profiles, allow_shape_only=True):
+            k = tuple(sorted([other["a"]["series"] or "", other["b"]["series"] or ""]))
+            shape_pairs[k] = other["profile_status"]
     for c in profiles:
         for other in RC.find_comparable_series(c, profiles):
             key = tuple(sorted([other["a"]["series"] or "", other["b"]["series"] or ""]))
@@ -182,6 +249,44 @@ def main():
                                     "parameter": pname, "rule": t.get("rule_id")})
     dump_dis = dis
 
+    # --- categories A-H, re-mined from the corrected universe (§26) -------------------
+    def named(r):
+        return {"a": "%s %s" % (r["a"]["paper_id"], (r["a"]["series"] or "").split("::", 1)[-1]),
+                "b": "%s %s" % (r["b"]["paper_id"], (r["b"]["series"] or "").split("::", 1)[-1]),
+                "status": r["profile_status"], "x": r["x"]["status"], "y": r["y"]["status"]}
+    byid = {c["result_series_id"]: c for c in profiles}
+    def qq(r, side, ax):
+        return (byid.get(r[side]["series"]) or {}).get("%s_quantity" % ax)
+    def nz(r, side):
+        return (byid.get(r[side]["series"]) or {}).get("y_normalization")
+    P = list(pairs)
+    cats = {
+      "A_same_quantity_different_units": [named(r) for r in P
+        if qq(r,"a","y") == qq(r,"b","y") and r["x"]["status"] == RC.UNIT_CONVERTIBLE][:3],
+      "B_same_quantity_same_representation": [named(r) for r in P
+        if r["profile_status"] == RC.DIRECT_PROFILE and r["cross_paper"]][:3],
+      "C_absolute_vs_normalized": [named(r) for r in P
+        if {qq(r,"a","y"), qq(r,"b","y")} == {"film_thickness", "normalized_thickness"}][:3],
+      "D_dimensional_vs_dimensionless_spatial": [named(r) for r in P
+        if {qq(r,"a","x"), qq(r,"b","x")} == {"spatial_coordinate", "dimensionless_distance"}][:3],
+      "E_gpc_vs_cumulative_thickness": [named(r) for r in P
+        if {qq(r,"a","y"), qq(r,"b","y")} == {"growth_per_cycle", "film_thickness"}][:3],
+      "F_experiment_vs_simulation": [named(r) for r in P
+        if r["a"]["data_source"] != r["b"]["data_source"]
+        and r["profile_status"] in (RC.DIRECT_PROFILE, RC.TRANSFORMABLE_PROFILE)][:3],
+      "G_different_known_normalization_basis": [named(r) for r in P
+        if nz(r,"a") and nz(r,"b") and nz(r,"a") != nz(r,"b")][:3],
+      # derived from the verdict rather than guessed at: an ambiguous y on two
+      # normalized curves IS the known-vs-unknown (or unknown-vs-unknown) case
+      "G2_known_vs_unknown_normalization": [named(r) for r in P
+        if r["y"]["status"] == RC.AMBIGUOUS][:3],
+      "H_related_not_comparable": [named(r) for r in P
+        if r["profile_status"] in (RC.NOT_COMPARABLE, RC.RELATED_NOT_COMPARABLE)][:3],
+    }
+    for k in list(cats):
+        if not cats[k]:
+            cats[k] = "CORPUS_EXAMPLE_NOT_FOUND"
+
     # --- the overlay ----------------------------------------------------------------
     overlay = build_overlay(profiles)
 
@@ -197,11 +302,18 @@ def main():
             "by_scope": dict(Counter(c["scope"] for c in curves)),
             "by_status": dict(status_counts),
             "normalized_axes": len(norm_audit),
+            "admitted_series": len(curves), "excluded_series": len(excluded),
+            "y_resolution": dict(Counter(c["y_resolution"] for c in curves)),
+            "profile_partial_y": len([c for c in profiles
+                                      if c["y_resolution"] == "PARTIALLY_RESOLVED"]),
+            "shape_only_eligible_when_requested": len(
+                [v for v in shape_pairs.values() if v == RC.SHAPE_ONLY_PROFILE]),
             "canonical_runtime_disagreements": len(dump_dis),
             "execution_sources": dict(Counter(
                 str(r["execution_source"]["x"]) for r in pairs)),
         },
         "normalization_audit_summary": dict(Counter(n["status"] for n in norm_audit)),
+        "categories": cats,
     }
     OUT.mkdir(parents=True, exist_ok=True)
     dump = lambda n, d: (OUT / n).write_text(
@@ -220,8 +332,31 @@ def main():
           "note": "every cross-paper pair is kept in full; same-paper pairs are sampled"})
     dump("runtime_comparability_results.json", payload)
     dump("transform_context_inventory.json", norm_audit)
+    dump("result_comparability_admission_audit.json", {
+        "total_scientific_series": len(curves) + len(excluded),
+        "admitted": len(curves),
+        "fully_resolved_y": len([c for c in curves if c["y_resolution"] == "FULLY_RESOLVED"]),
+        "partially_resolved_y": len([c for c in curves
+                                     if c["y_resolution"] == "PARTIALLY_RESOLVED"]),
+        "excluded": len(excluded),
+        "exclusion_reasons": dict(Counter(e["reason"] for e in excluded)),
+        "by_scope_admitted": dict(Counter(c["scope"] for c in curves)),
+        "by_scope_excluded": dict(Counter(e["scope"] for e in excluded)),
+        "excluded_series": excluded,
+        "note": "every excluded scientific-looking curve carries an explicit reason; "
+                "a null canonical axis is an abstention about representation, not an "
+                "absence of science"})
     dump("canonical_runtime_disagreement.json",
          {"unexplained": dump_dis, "count": len(dump_dis),
+          "unexplained_scientific_drops": [e for e in excluded
+                                          if e["reason"] not in
+                                          ("NO_MEASURAND_IDENTITY",
+                                           "INSUFFICIENT_AXIS_SEMANTICS")],
+          "coverage": {"fully_resolved": len([c for c in curves
+                                              if c["y_resolution"] == "FULLY_RESOLVED"]),
+                       "partially_resolved": len([c for c in curves
+                                                  if c["y_resolution"] == "PARTIALLY_RESOLVED"]),
+                       "excluded_with_reason": len(excluded)},
           "note": "empty means the runtime reproduces every canonical representation "
                   "decision and reuses every resolved parameter"})
     if overlay:
@@ -232,6 +367,8 @@ def main():
     for k, v in payload["counts"].items():
         print("%-24s %s" % (k, v))
     print("normalization        %s" % payload["normalization_audit_summary"])
+    for k, v in cats.items():
+        print("  %-42s %s" % (k, v if isinstance(v, str) else "%d found" % len(v)))
     print("overlay              %s" % ("built" if overlay else "NOT FOUND"))
     return 0
 
@@ -433,7 +570,15 @@ def render(p, pairs, norm_audit, ov):
 <p class="sub">Normalization parameters, each from the profile's own points:</p>
 <ul class="sub">%s</ul>
 <img src="cross_paper_overlay.png" alt="cross-paper profile overlay">
-<div class="note">%s</div>""" % (rows, ctx, e(ov["caveat"])))
+<div class="note"><strong>Who did what.</strong> Paper B printed its abscissa in mm;
+<em>canonicalization</em> had already converted it to µm and the runtime reuses those
+coordinates &mdash; the Result Comparability layer did not perform that conversion. The
+pair's own semantic verdict is <code>DIRECT_PROFILE</code>: both axes are the same
+quantity in the same canonical unit, so no transform is required to compare them. The
+<code>t &rarr; t/t_max</code> step in the right-hand panel is an <em>optional derived
+plotting representation</em> added by the runtime, not the pair's comparability status,
+and each denominator comes from its own profile's points.<br><br>%s</div>"""
+             % (rows, ctx, e(ov["caveat"])))
 
     doc = """<title>Result Comparability</title><style>%s</style>
 <div class="wrap">
@@ -452,6 +597,35 @@ def render(p, pairs, norm_audit, ov):
 
 <h2>Semantic model</h2>
 <div class="flow">%s</div>
+
+<h2>Runtime admission coverage</h2>
+<div class="note">A null canonical axis is canonicalization <em>abstaining about the
+representation</em>, not an absence of science. The previous loader dropped every such
+curve, which meant the one thing a comparability layer most needs to be able to say
+&mdash; &ldquo;I know what this measures but not what it was normalized against&rdquo;
+&mdash; could never be said, because those curves were not in the universe at all.
+Ambiguity was zero because ambiguity had been excluded.<br><br>
+Admission is now axis-by-axis. Of <strong>498</strong> scientific series,
+<strong>406</strong> are admitted (191 fully resolved, 215 partially resolved) and
+<strong>92</strong> are excluded &mdash; every one with an explicit reason
+(<code>INSUFFICIENT_AXIS_SEMANTICS</code>: the y axis carries a raw printed string such as
+&ldquo;QCM frequency change (Hz)&rdquo; and no ontology quantity). Profile series went
+<strong>70 &rarr; 151</strong>, and the pair universe <strong>2031 &rarr; 5339</strong>
+(cross-paper 699 &rarr; 1066). Unexplained scientific drops: <strong>0</strong>.</div>
+
+<h2>Genuine normalization ambiguity</h2>
+<div class="note">19 curves in <code>10.1039_d0cp03358h</code> carry
+<code>axis_kind = normalized_thickness_of_unknown_denominator</code>: the paper prints
+&ldquo;Normalized thickness (-)&rdquo;, the measurand resolves to
+<code>normalized_thickness</code>, and the basis is recorded as unknown. Against a curve
+whose <code>normalization_definition</code> is explicitly <code>t_over_t_max</code>, the
+runtime now answers <code>AMBIGUOUS</code> &mdash; not <code>DIRECT</code>, and not
+absence. <strong>Unknown representation is not unknown quantity.</strong><br><br>
+<strong>Shape-only is opt-in.</strong> 153 pairs would qualify if a caller explicitly asks
+for a shape comparison; by default they are ambiguous, because turning &ldquo;we cannot
+establish the scale&rdquo; into a weaker claim the caller never made is its own kind of
+overclaim. Eligibility is deterministic: same measurand, both normalized, x axes already
+compatible, and the bases the only unresolved thing.</div>
 
 <h2>Canonical representation &rarr; runtime</h2>
 <div class="note">The runtime consumes the canonical record; it does not re-read the
