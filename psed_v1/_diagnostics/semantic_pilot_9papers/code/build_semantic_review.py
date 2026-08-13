@@ -18,6 +18,8 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
+import pilot_status as PSTAT
+
 W = Path(__file__).resolve().parent.parent
 PAPERS = W / "papers"
 OUT = W / "comparison"
@@ -338,13 +340,17 @@ def build_html(data, inv, pre, tests):
     prim_rt = RUNTIME.get("active_set_8_papers")
     for lbl, val in (("primary papers", len(PRIMARY)),
                      ("cases", tot_cases),
-                     ("tests passed", tests["passed"]),
-                     ("tests failed", tests["failed"]),
+                     ("pilot tests", tests["label"]),
                      ("curves preserved", "100%" if cur_ok else "NO"),
                      ("points preserved", "100%" if pt_ok else "NO"),
                      ("runtime", ("%.1fs" % prim_rt) if prim_rt else "n/a")):
         A("<div><b>%s</b><span>%s</span></div>" % (esc(val), esc(lbl)))
     A("</div>")
+    if tests["state"] != "current":
+        # say WHY the tile is not a plain pass, so a stale or absent record cannot be
+        # mistaken for a run that happened
+        A('<p class="d">Pilot test status: %s &mdash; %s.</p>'
+          % (pill(tests["state"], tests["kind"]), esc(tests["detail"])))
     A('<div class="note"><b>Two generic repairs landed this cycle.</b><br>'
       '<b>1. Condition specificity precedence.</b> A condition now carries how specific '
       'its source is (specimen table &gt; figure-local &gt; methods default &gt; '
@@ -707,7 +713,7 @@ def build_html(data, inv, pre, tests):
             [[esc(SHORT[p]), esc(C[p]["curves"].get("old")),
               esc(C[p]["curves"].get("pilot")), esc(C[p]["points"].get("old")),
               esc(C[p]["points"].get("pilot")),
-              esc((inv.get(p, {}).get("data_source_preserved") or {}).get("status", "ok")),
+              pill(*PSTAT.data_source_status(inv.get(p))),
               pill("preserved", "ok")
               if C[p]["curves"].get("old") == C[p]["curves"].get("pilot")
               and C[p]["points"].get("old") == C[p]["points"].get("pilot")
@@ -743,8 +749,9 @@ def main():
     inv = json.loads((OUT / "semantic_invariants.json").read_text())
     pre_f = W / "logs" / "pre_repair_snapshot" / "current_counts.json"
     pre = json.loads(pre_f.read_text()) if pre_f.exists() else {}
-    tf = W / "logs" / "test_status.json"
-    tests = json.loads(tf.read_text()) if tf.exists() else {"passed": 126, "failed": 0}
+    # No fabricated fallback. A missing status file used to fall back to a literal
+    # pass/fail pair, printing a green count no run had produced.
+    tests = PSTAT.test_status(W / "logs" / "test_status.json", W)
 
     rows = merge_rows(data)
     with (OUT / "merge_safety_audit.csv").open("w", newline="") as f:

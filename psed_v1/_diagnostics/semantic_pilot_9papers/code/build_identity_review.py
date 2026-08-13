@@ -14,6 +14,8 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
+import pilot_status as PSTAT
+
 W = Path(__file__).resolve().parent.parent
 PAPERS_DIR = W / "papers"
 OUT = W / "comparison"
@@ -699,24 +701,17 @@ def build(papers, findings, PROV):
 def provenance():
     """Stamp identifying WHICH run produced this artifact, so two generations of the
     report are never mistaken for one another."""
-    import subprocess
-    try:
-        sha = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"],
-                                      cwd=str(W)).decode().strip()
-        dirty = bool(subprocess.check_output(["git", "status", "--porcelain", "."],
-                                             cwd=str(W)).decode().strip())
-    except Exception:
-        sha, dirty = "unknown", False
-    tf = W / "logs" / "test_status.json"
-    tests = json.loads(tf.read_text()) if tf.exists() else {}
+    sha, dirty = PSTAT.head_sha(W)
+    tests = PSTAT.test_status(W / "logs" / "test_status.json", W)
     stamp = W / "logs" / "last_semantic_run.json"
     generated_at = json.loads(stamp.read_text()).get("generated_at") \
         if stamp.exists() else None
+    # the test line reports its own freshness: a count recorded at another commit is not
+    # evidence about this one, and an absent record is not a pass
     return {"generated_at": generated_at or "not recorded",
-            "git_sha": sha + ("+dirty" if dirty else ""),
+            "git_sha": (sha or "unknown") + ("+dirty" if dirty else ""),
             "active_manifest": "%d papers: %s" % (len(PAPERS), ", ".join(PAPERS)),
-            "test_count": "%s passed, %s failed" % (tests.get("passed", "?"),
-                                                    tests.get("failed", "?"))}
+            "test_count": tests["label"]}
 
 
 def main():

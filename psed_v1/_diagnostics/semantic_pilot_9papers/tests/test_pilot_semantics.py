@@ -1060,4 +1060,11 @@ if __name__ == "__main__":
     print("\n%d papers: %d passed, %d failed" % (len(PAPERS), len(_pass), len(_fail)))
     if _fail:
         print("FAILED: %s" % _fail)
+    # This suite is the authority on its own result, so it records it. The review pages
+    # read that record and check it against the commit it was written at -- previously the
+    # file had no writer at all, and drifted quietly behind the suite it claimed to report.
+    import pilot_status as PSTAT
+    PSTAT.write_test_status(W / "logs" / "test_status.json", W,
+                            suite="test_pilot_semantics",
+                            passed=len(_pass), failed=len(_fail), papers=len(PAPERS))
     sys.exit(1 if _fail else 0)
