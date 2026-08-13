@@ -1,0 +1,132 @@
+<title>Track A3 Comparability</title><style>
+:root{--bg:#fbfbfa;--fg:#1a1a18;--mut:#6b6b66;--line:#e0dfdb;--card:#fff;
+--bad:#b3261e;--good:#1e6b3a;--warn:#8a6100;--accent:#2f5d8a}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+--bg:#16161a;--fg:#e9e9e6;--mut:#9a9a95;--line:#33333a;--card:#1e1e24;
+--bad:#ff8a80;--good:#7ddba3;--warn:#e8c06a;--accent:#8fb8e0}}
+:root[data-theme=dark]{--bg:#16161a;--fg:#e9e9e6;--mut:#9a9a95;--line:#33333a;
+--card:#1e1e24;--bad:#ff8a80;--good:#7ddba3;--warn:#e8c06a;--accent:#8fb8e0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1140px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:-.02em}
+h2{font-size:18px;margin:38px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--mut);margin:0 0 24px;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.card .n{font-size:24px;font-weight:600;letter-spacing:-.02em}
+.card .l{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:700px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--mut);font-size:11px;text-transform:uppercase;
+letter-spacing:.06em;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.bad{color:var(--bad);font-weight:600}.good{color:var(--good);font-weight:600}
+.warn{color:var(--warn)}.mut{color:var(--mut)}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+border-radius:6px;padding:12px 16px;margin:14px 0}
+.pill{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;
+border:1px solid var(--line);color:var(--mut);white-space:nowrap}
+</style>
+<div class="wrap">
+<h1>Track A3 &mdash; species-aware condition comparability</h1>
+<p class="sub">A condition is not identified by its quantity. Baseline <code>64bd859</code>,
+generating code <code>da37b8716083</code>, HEAD <code>64bd859</code>.</p>
+
+<div class="cards">
+<div class="card"><div class="n">183</div><div class="l">cases</div></div>
+<div class="card"><div class="n">35</div><div class="l">condition identities</div></div>
+<div class="card"><div class="n good">11</div><div class="l">species-conditioned</div></div>
+<div class="card"><div class="n">7</div><div class="l">sweeps found</div></div>
+<div class="card"><div class="n good">0</div><div class="l">false matches</div></div>
+<div class="card"><div class="n good">0</div><div class="l">active-8 drift</div></div>
+</div>
+
+<h2>A. Condition ontology semantics</h2>
+<div class="note">The ontology already separates these; the axis layer had been
+collapsing them. <code>pulse_time</code> <em>specialises</em> time, carries SEC, and is
+<em>qualified by reactant</em> &mdash; a valve opens for one named chemical.
+<code>exposure_time</code> has no reactant qualifier and answers the broader question of
+how long a surface was exposed. An explicit axis rule was folding every
+&ldquo;pulse length&rdquo; into <code>exposure_time</code>, discarding exactly the
+reactant dimension species-aware comparison needs, and overriding records that had
+already said <code>pulse_time</code>. <code>family</code> still relates the two, so a
+comparison layer can generalise one to the other deliberately rather than by losing the
+distinction upstream.</div>
+<div class="scroll"><table><thead><tr><th>quantity</th><th>unit</th>
+<th>ontology structure</th><th>meaning</th><th>source wordings</th></tr></thead>
+<tbody><tr><td><code>pulse_time</code></td><td class='mono'>SEC</td><td>specializes time; family exposure_time; qualified BY REACTANT</td><td>how long one named reagent&#x27;s valve is open</td><td class='mut'>SnI4 pulse length, RuO4 pulse time, Precursor Pulse</td></tr><tr><td><code>purge_time</code></td><td class='mono'>SEC</td><td>specializes time; qualified BY REACTANT</td><td>how long the chamber is purged after one reagent&#x27;s step</td><td class='mut'>Precursor Purge, Water Purge, Plasma purge</td></tr><tr><td><code>exposure_time</code></td><td class='mono'>time</td><td>no family, no reactant qualifier</td><td>how long a surface is exposed, without committing to whose valve</td><td class='mut'>Exposure time, Dose time, At-H exposure time</td></tr><tr><td><code>exposure / precursor_exposure</code></td><td class='mono'>L (langmuir)</td><td>family dose</td><td>accumulated dose -- pressure x time, NOT a duration</td><td class='mut'>Absolute exposure (L), precursor dose</td></tr><tr><td><code>exposure_dose</code></td><td class='mono'>pressure x time</td><td>control_setting</td><td>the integrated pressure-time product</td><td class='mut'>Integrated exposure, langmuir dose</td></tr></tbody></table></div>
+<div class="note">7 axes corpus-wide moved <code>exposure_time</code> &rarr;
+<code>pulse_time</code> &mdash; every one of them pulse-worded, and every one already
+carrying <code>pulse_time</code> as its extracted record quantity. None is in active-8,
+so no case identity moved. The dose quantities are untouched: a Langmuir exposure is not
+a duration, which is the distinction the original rule existed to protect.</div>
+
+<h2>C. The comparison model</h2>
+<div class="note">The key is
+<code>(quantity, species, process_step)</code>, compared value-wise through the existing
+unit layer. The rule for an unknown species is the identity rule this repository already
+runs on: <strong>MISSING is not SAME</strong>. A condition whose reagent was never
+attributed is not thereby the same control as one that was &mdash; it is reported
+<code>SPECIES_UNRESOLVED</code> rather than quietly matched or quietly dropped. This
+layer reads identity and never writes it; fingerprints and case IDs come from the
+semantic pipeline untouched.</div>
+
+<h2>E. Comparison outcomes</h2>
+<div class="scroll"><table><thead><tr><th>condition A</th><th>condition B</th>
+<th>outcome</th><th>why</th></tr></thead><tbody><tr><td><code>pulse_time@SnI4 2 s</code></td><td><code>pulse_time@H2O 2 s</code></td><td class='bad'>DIFFERENT_SPECIES</td><td class='mut'>identical number and unit; different reagent, so a different control</td></tr><tr><td><code>pulse_time@SnI4 2 s</code></td><td><code>pulse_time@? 2 s</code></td><td class='warn'>SPECIES_UNRESOLVED</td><td class='mut'>MISSING is not SAME -- an unattributed reagent is not this reagent</td></tr><tr><td><code>pulse_time@? 2 s</code></td><td><code>pulse_time@? 2 s</code></td><td class='warn'>SPECIES_UNRESOLVED</td><td class='mut'>neither side names its reagent, so neither can be shown to be the other</td></tr><tr><td><code>pulse_time@H2O 500 ms</code></td><td><code>pulse_time@H2O 0.5 s</code></td><td class='good'>EXACT_MATCH</td><td class='mut'>converted through the existing unit layer</td></tr><tr><td><code>pulse_time@H2O 2 s</code></td><td><code>pulse_time@H2O 3 s</code></td><td class='good'>SAME_CONDITION_DIFFERENT_VALUE</td><td class='mut'>same control, swept</td></tr><tr><td><code>pulse_time@H2O 2 s</code></td><td><code>purge_time@H2O 2 s</code></td><td class='bad'>DIFFERENT_QUANTITY</td><td class='mut'>a pulse is not a purge</td></tr><tr><td><code>purge_time@H2O after precursor</code></td><td><code>purge_time@H2O after plasma</code></td><td class='bad'>DIFFERENT_STEP</td><td class='mut'>the same duration at a different step is a different setting</td></tr><tr><td><code>pulse_time@H2O 2 s</code></td><td><code>pulse_time@H2O 2 nm</code></td><td class='warn'>NOT_COMPARABLE</td><td class='mut'>incomparable dimensions abstain rather than guess</td></tr><tr><td><code>pulse_time@H2O &#x27;1-8 s (short)&#x27;</code></td><td><code>pulse_time@H2O 2 ms</code></td><td class='warn'>UNIT_CONVERTIBLE</td><td class='mut'>units are compatible but a value is not numeric, so magnitude is undecidable</td></tr></tbody></table></div>
+
+<h2>D. Condition inventory</h2>
+<div class="scroll"><table><thead><tr><th>quantity</th><th>species</th><th>step</th>
+<th>cases</th><th>papers</th><th>units</th><th>distinct values</th></tr></thead>
+<tbody><tr><td><code>cycle_number</code></td><td><span class='mut'>unknown</span></td><td></td><td>72</td><td>6</td><td class='mono'>cycle</td><td>12</td></tr><tr><td><code>working_pressure</code></td><td><span class='mut'>unknown</span></td><td></td><td>53</td><td>2</td><td class='mono'>hPa, mbar</td><td>2</td></tr><tr><td><code>pulse_time</code></td><td><span class='mut'>unknown</span></td><td></td><td>47</td><td>3</td><td class='mono'>s</td><td>4</td></tr><tr><td><code>pulse_time</code></td><td><code>H2O</code></td><td></td><td>44</td><td>1</td><td class='mono'>s</td><td>1</td></tr><tr><td><code>precursor</code></td><td><span class='mut'>unknown</span></td><td></td><td>41</td><td>5</td><td class='mono'></td><td>5</td></tr><tr><td><code>deposition_temperature</code></td><td><span class='mut'>unknown</span></td><td>n/a</td><td>37</td><td>3</td><td class='mono'>°C</td><td>15</td></tr><tr><td><code>deposition_temperature</code></td><td><span class='mut'>unknown</span></td><td></td><td>33</td><td>5</td><td class='mono'>°C</td><td>7</td></tr><tr><td><code>coreactant</code></td><td><span class='mut'>unknown</span></td><td></td><td>32</td><td>4</td><td class='mono'></td><td>3</td></tr><tr><td><code>base_pressure</code></td><td><span class='mut'>unknown</span></td><td></td><td>19</td><td>1</td><td class='mono'>Torr, mbar</td><td>2</td></tr><tr><td><code>carrier_gas_partial_pressure</code></td><td><span class='mut'>unknown</span></td><td></td><td>19</td><td>1</td><td class='mono'>bar</td><td>1</td></tr><tr><td><code>feature_height</code></td><td><span class='mut'>unknown</span></td><td></td><td>12</td><td>2</td><td class='mono'>nm, µm</td><td>4</td></tr><tr><td><code>pulse_time</code></td><td><span class='mut'>unknown</span></td><td>plasma_exposure</td><td>12</td><td>1</td><td class='mono'>s</td><td>7</td></tr><tr><td><code>coreactant_pulse_time</code></td><td><code>H2O</code></td><td></td><td>11</td><td>1</td><td class='mono'>s</td><td>1</td></tr><tr><td><code>coreactant_purge_time</code></td><td><code>H2O</code></td><td></td><td>11</td><td>1</td><td class='mono'>s</td><td>3</td></tr><tr><td><code>pillar_layout</code></td><td><span class='mut'>unknown</span></td><td></td><td>11</td><td>1</td><td class='mono'></td><td>3</td></tr><tr><td><code>precursor_pulse_time</code></td><td><code>TMA</code></td><td></td><td>11</td><td>1</td><td class='mono'>s</td><td>3</td></tr><tr><td><code>precursor_purge_time</code></td><td><code>TMA</code></td><td></td><td>11</td><td>1</td><td class='mono'>s</td><td>3</td></tr><tr><td><code>pulse_purge_sequence</code></td><td><span class='mut'>unknown</span></td><td></td><td>11</td><td>1</td><td class='mono'></td><td>5</td></tr><tr><td><code>exposure_time</code></td><td><span class='mut'>unknown</span></td><td>precursor_dose</td><td>10</td><td>1</td><td class='mono'>s</td><td>7</td></tr><tr><td><code>pulse_time</code></td><td><code>Y(DPfAMD)3</code></td><td>precursor_dose</td><td>10</td><td>1</td><td class='mono'>s</td><td>5</td></tr><tr><td><code>purge_time</code></td><td><span class='mut'>unknown</span></td><td>precursor_purge</td><td>10</td><td>1</td><td class='mono'>s</td><td>9</td></tr><tr><td><code>flow_rate</code></td><td><code>N2</code></td><td></td><td>9</td><td>1</td><td class='mono'>sccm</td><td>1</td></tr><tr><td><code>purge_time</code></td><td><span class='mut'>unknown</span></td><td>plasma_purge</td><td>8</td><td>1</td><td class='mono'>s</td><td>5</td></tr><tr><td><code>deposited_layer_thickness</code></td><td><span class='mut'>unknown</span></td><td></td><td>7</td><td>1</td><td class='mono'>nm</td><td>5</td></tr><tr><td><code>purge_time</code></td><td><code>Y(DPfAMD)3</code></td><td>precursor_purge</td><td>7</td><td>1</td><td class='mono'>s</td><td>5</td></tr><tr><td><code>exposure_time</code></td><td><span class='mut'>unknown</span></td><td></td><td>6</td><td>2</td><td class='mono'>s</td><td>6</td></tr><tr><td><code>exposure_time</code></td><td><code>HDMP</code></td><td></td><td>5</td><td>1</td><td class='mono'>s</td><td>5</td></tr><tr><td><code>exposure_time</code></td><td><code>O2</code></td><td></td><td>5</td><td>1</td><td class='mono'>s</td><td>5</td></tr><tr><td><code>pulse_time</code></td><td><code>TMA</code></td><td></td><td>4</td><td>1</td><td class='mono'>s</td><td>1</td></tr><tr><td><code>purge_time</code></td><td><span class='mut'>unknown</span></td><td></td><td>3</td><td>1</td><td class='mono'>s</td><td>3</td></tr><tr><td><code>deposited_structure</code></td><td><span class='mut'>unknown</span></td><td></td><td>2</td><td>1</td><td class='mono'></td><td>2</td></tr><tr><td><code>precursor_exposures_per_cycle</code></td><td><span class='mut'>unknown</span></td><td></td><td>2</td><td>1</td><td class='mono'></td><td>2</td></tr><tr><td><code>aspect_ratio</code></td><td><span class='mut'>unknown</span></td><td></td><td>1</td><td>1</td><td class='mono'></td><td>1</td></tr><tr><td><code>feature_width</code></td><td><span class='mut'>unknown</span></td><td></td><td>1</td><td>1</td><td class='mono'>µm</td><td>1</td></tr><tr><td><code>temperature</code></td><td><span class='mut'>unknown</span></td><td></td><td>1</td><td>1</td><td class='mono'>°C</td><td>1</td></tr></tbody></table></div>
+
+<h2>F. Sweeps, found by identity rather than by label</h2>
+<div class="note">A sweep is one condition identity taking several values. Because the
+key carries the reagent, the precursor pulse sweep and the coreactant pulse are two
+sweeps, not one &mdash; which a label-similarity search cannot tell apart, both being
+drawn as &ldquo;pulse time&rdquo;.</div>
+<div class="scroll"><table><thead><tr><th>paper</th><th>quantity</th><th>species</th>
+<th>values</th><th>swept over</th></tr></thead><tbody><tr><td class='mono'>10.1038_am.2016.182</td><td><code>exposure_time</code></td><td><code>HDMP</code></td><td>5</td><td class='mono'>0.0, 1.0, 2.0, 4.0, 6.0</td></tr><tr><td class='mono'>10.1038_am.2016.182</td><td><code>exposure_time</code></td><td><code>O2</code></td><td>5</td><td class='mono'>0.0, 1.0, 2.0, 4.0, 6.0</td></tr><tr><td class='mono'>10.1039_d0ra09876k</td><td><code>pulse_time</code></td><td><code>Y(DPfAMD)3</code></td><td>5</td><td class='mono'>2.0, 3.0, 4.0, 5.0, 6.0</td></tr><tr><td class='mono'>10.1039_d0ra09876k</td><td><code>purge_time</code></td><td><code>Y(DPfAMD)3</code></td><td>5</td><td class='mono'>5.0, 10.0, 20.0, 30.0, 60.0</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td><code>coreactant_purge_time</code></td><td><code>H2O</code></td><td>3</td><td class='mono'>1.0, 4.0, 10.0</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td><code>precursor_pulse_time</code></td><td><code>TMA</code></td><td>3</td><td class='mono'>0.1, 0.2, 0.4</td></tr><tr><td class='mono'>10.1039_d0cp03358h</td><td><code>precursor_purge_time</code></td><td><code>TMA</code></td><td>3</td><td class='mono'>1.0, 4.0, 10.0</td></tr></tbody></table></div>
+
+<h2>F2. Query examples</h2>
+<div class="scroll"><table><thead><tr><th>query</th><th>matches</th>
+<th>sample (with provenance)</th></tr></thead><tbody><tr><td><code>pulse_time@H2O</code></td><td class='good'>44</td><td class='mut'>10.1039_d0ra0987/CASE-10.103-001 = 30 s; 10.1039_d0ra0987/CASE-10.103-002 = 30 s</td></tr><tr><td><code>pulse_time@Y(DPfAMD)3</code></td><td class='good'>10</td><td class='mut'>10.1039_d0ra0987/CASE-10.103-022 = 2.0 s; 10.1039_d0ra0987/CASE-10.103-023 = 3.0 s</td></tr><tr><td><code>purge_time@Y(DPfAMD)3</code></td><td class='good'>7</td><td class='mut'>10.1039_d0ra0987/CASE-10.103-032 = 20.0 s; 10.1039_d0ra0987/CASE-10.103-033 = 30.0 s</td></tr><tr><td><code>exposure_time@HDMP</code></td><td class='good'>5</td><td class='mut'>10.1038_am.2016./CASE-10.103-001 = 0.0 s; 10.1038_am.2016./CASE-10.103-002 = 1.0 s</td></tr><tr><td><code>exposure_time@O2</code></td><td class='good'>5</td><td class='mut'>10.1038_am.2016./CASE-10.103-006 = 0.0 s; 10.1038_am.2016./CASE-10.103-007 = 1.0 s</td></tr><tr><td><code>pulse_time@NoSuchReagent</code></td><td class='mut'>0</td><td class='mut'>no match &mdash; the query abstains rather than widening</td></tr></tbody></table></div>
+<div class="note">Differ-only-in for <code>pulse_time@Y(DPfAMD)3</code>: <strong>40</strong> case pairs,
+verdicts {&#x27;MATCH_ON_SHARED_CONDITIONS&#x27;: 40}. The strong verdict <code>PROVEN_DIFFER_ONLY_IN</code> requires every shared
+condition resolved and no unshared condition on either side; otherwise the pair is
+reported as <code>MATCH_ON_SHARED_CONDITIONS</code>, which is a real result and is not
+dressed up as the strong one.</div>
+
+<h2>G. Negative controls</h2>
+<div class="note">The engine refuses false equivalence:
+<code>pulse_time@SnI4</code> &ne; <code>pulse_time@H2O</code> even at identical value and
+unit; a named species is never matched to an unattributed one; <code>bar</code> and
+<code>SiO2</code> appear nowhere as species (A2 hygiene holds); <code>H2 flow ratio</code>
+remains an unsupported quantity and so is never a comparable <code>flow_rate</code>
+condition (A0.1/A0.2 hold end to end).</div>
+
+<h2>H. Active-8 identity and structure</h2>
+<div class="note">Unchanged: ResultSeries 231, points 4027, Measurements 213,
+SimulationRuns 34, DesignBranches 105, cases 25/66/2/11/44/7/7/20 = 182,
+DISTINGUISHED 130, INDISTINGUISHABLE 52. The pulse/exposure correction touched no
+active-8 axis, and the comparability layer writes nothing.</div>
+
+<h2>K. Deferred</h2>
+<div class="note">Not attempted here, and each needs its own evidence:
+a natural-language query layer over these primitives; species-aware comparability of
+<em>results</em> rather than conditions; broader unit transformation;
+the <code>flow_ratio</code> ontology gap; <code>electrode_potential</code>,
+<code>vapor_pressure</code>, <code>critical_angle</code>.<br><br>
+<strong>Still open and material:</strong> in one paper the source states precursor
+<em>purge</em> durations that upstream extraction typed as <code>pulse_time</code>. The
+persisted evidence span for those conditions is truncated to
+&ldquo;<code>pulse and 10 s</code>&rdquo; &mdash; short of the word that would settle it
+&mdash; so the correction cannot be made from the artifacts and needs either
+re-extraction or a methods-recipe parser reading the source prose. That is new extraction
+infrastructure rather than a same-layer fix, and it would move 44 cases' fingerprints,
+so it is left visible rather than guessed.</div>
+</div>

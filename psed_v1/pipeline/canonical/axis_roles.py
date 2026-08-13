@@ -145,8 +145,19 @@ _EXPLICIT = [
     (r"applied power|plasma power|rf power|icp power", "power",
      "applied_power", "process_condition", None),
     # --- exposure: duration vs integrated dose ----------------------------
-    (r"exposure\s*time|dose\s*time|pulse\s*(length|time|duration)|"
-     r"\bat-?h\s*exposure", "time", "exposure_time", "process_condition",
+    # A pulse duration is not the general exposure duration. The ontology separates them:
+    # `pulse_time` specialises `time`, carries SEC, and is qualified BY REACTANT, because
+    # a valve opens for one named chemical; `exposure_time` has no such qualifier and
+    # answers the broader question of how long a surface was exposed. Folding "pulse
+    # length" into `exposure_time` discarded that reactant dimension -- which is exactly
+    # what species-aware comparison needs -- and overrode records that had already said
+    # `pulse_time`. `family` still relates the two, so a comparison layer can generalise
+    # one to the other deliberately rather than by losing the distinction here.
+    (r"pulse\s*(length|time|duration)", "time", "pulse_time", "process_condition",
+     "the duration of one reactant's valve pulse, which the ontology qualifies by "
+     "reactant; the general exposure duration is a different quantity"),
+    (r"exposure\s*time|dose\s*time|\bat-?h\s*exposure", "time",
+     "exposure_time", "process_condition",
      "a DURATION in s/min; the integrated dose (pressure x time) is a different "
      "quantity with different units"),
     (r"exposure|dose", "dose", "exposure_dose", "process_condition",
