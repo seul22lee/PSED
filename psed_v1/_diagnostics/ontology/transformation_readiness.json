@@ -1,0 +1,554 @@
+{
+  "baseline_sha": "600320a",
+  "counts": {
+    "alias_collisions": 29,
+    "aliases": 633,
+    "comparison_groups": 24,
+    "dangling_references": 0,
+    "defined_quantities": 180,
+    "families": 11,
+    "normalization_definitions": 11,
+    "qualifier_bearing": 9,
+    "specializations": 22,
+    "transformation_rules": 25,
+    "transformation_statuses": 9,
+    "transformation_types": 10,
+    "transforms": 6,
+    "undefined_referenced": 79,
+    "unregistered_families": 0,
+    "unused": 143,
+    "used_active8": 32
+  },
+  "dangling_references": [],
+  "families": {
+    "coverage": {
+      "canonical": "surface_coverage",
+      "members": [
+        "surface_coverage",
+        "maximum_surface_coverage",
+        "saturated_coverage",
+        "step_coverage",
+        "conformality"
+      ]
+    },
+    "dose": {
+      "canonical": "exposure",
+      "members": [
+        "exposure",
+        "plasma_exposure_time"
+      ]
+    },
+    "exposure_time": {
+      "canonical": "pulse_time",
+      "members": [
+        "pulse_time",
+        "plasma_exposure_time"
+      ]
+    },
+    "film_amount": {
+      "canonical": "normalized_thickness",
+      "members": [
+        "film_thickness",
+        "normalized_thickness",
+        "growth_per_cycle",
+        "thickness_per_cycle",
+        "areal_density"
+      ]
+    },
+    "partial_pressure": {
+      "canonical": "partial_pressure",
+      "members": [
+        "co_reactant_partial_pressure",
+        "precursor_partial_pressure"
+      ]
+    },
+    "position": {
+      "canonical": "dimensionless_distance",
+      "members": [
+        "spatial_coordinate",
+        "dimensionless_distance",
+        "aspect_ratio",
+        "coated_aspect_ratio",
+        "penetration_depth",
+        "penetration_depth_50",
+        "penetration_depth_80"
+      ]
+    },
+    "pressure": {
+      "canonical": "partial_pressure",
+      "members": [
+        "partial_pressure",
+        "total_pressure",
+        "reactant_A_partial_pressure",
+        "reactant_B_partial_pressure"
+      ]
+    },
+    "process_temperature": {
+      "canonical": "deposition_temperature",
+      "members": [
+        "temperature",
+        "deposition_temperature"
+      ]
+    },
+    "rate": {
+      "canonical": "growth_rate",
+      "members": [
+        "growth_rate",
+        "deposition_rate"
+      ]
+    },
+    "reaction_efficiency": {
+      "canonical": "reaction_probability",
+      "members": [
+        "reaction_probability",
+        "recombination_probability",
+        "sticking_probability",
+        "initial_sticking_coefficient"
+      ]
+    },
+    "spectral": {
+      "canonical": "wavelength",
+      "members": [
+        "wavelength"
+      ]
+    }
+  },
+  "generating_code_sha256": "debd51c5d1fd",
+  "head_sha": "600320a",
+  "normalization_definitions": [
+    {
+      "comparison_group": "normalized_spatial_position_by_feature_height",
+      "denominator": "feature_height",
+      "denominator_symbols": [
+        "H",
+        "x/H",
+        "x̃",
+        "z/H",
+        "h"
+      ],
+      "formula": "x_tilde = x / H",
+      "id": "x_over_feature_height",
+      "invertible": true,
+      "normalization_denominator_role": "feature_height",
+      "numerator": "spatial_coordinate",
+      "reference_location": null,
+      "requires_context": [
+        "feature_height"
+      ],
+      "semantic_label": "axial position / feature height  (x/H, x̃)",
+      "valid_domain": {
+        "max": null,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "normalized_spatial_position_by_channel_length",
+      "denominator": "feature_length",
+      "denominator_symbols": [
+        "L",
+        "x/L",
+        "z/L"
+      ],
+      "formula": "x_hat = x / L",
+      "id": "x_over_channel_length",
+      "invertible": true,
+      "normalization_denominator_role": "channel_length",
+      "numerator": "spatial_coordinate",
+      "reference_location": null,
+      "requires_context": [
+        "feature_length"
+      ],
+      "semantic_label": "axial position / channel length  (x/L)",
+      "valid_domain": {
+        "max": null,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "normalized_spatial_position_by_feature_depth",
+      "denominator": "feature_depth",
+      "denominator_symbols": [
+        "d",
+        "x/d",
+        "depth"
+      ],
+      "formula": "x_norm = x / depth",
+      "id": "x_over_feature_depth",
+      "invertible": true,
+      "normalization_denominator_role": "feature_depth",
+      "numerator": "spatial_coordinate",
+      "reference_location": null,
+      "requires_context": [
+        "feature_depth"
+      ],
+      "semantic_label": "penetration position / feature depth  (x/d)",
+      "valid_domain": {
+        "max": null,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "normalized_spatial_position_by_hydraulic_diameter",
+      "denominator": "hydraulic_diameter",
+      "denominator_symbols": [
+        "Dh",
+        "D_h",
+        "x/Dh"
+      ],
+      "formula": "x_norm = x / D_h",
+      "id": "x_over_hydraulic_diameter",
+      "invertible": true,
+      "normalization_denominator_role": "hydraulic_diameter",
+      "numerator": "spatial_coordinate",
+      "reference_location": null,
+      "requires_context": [
+        "hydraulic_diameter"
+      ],
+      "semantic_label": "axial position / hydraulic diameter  (x/Dh)",
+      "valid_domain": {
+        "max": null,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "local_aspect_ratio_position",
+      "denominator": "feature_width",
+      "denominator_symbols": [
+        "w",
+        "x/w"
+      ],
+      "formula": "AR_local = x / w",
+      "id": "x_over_feature_width",
+      "invertible": true,
+      "normalization_denominator_role": "feature_width",
+      "numerator": "spatial_coordinate",
+      "reference_location": null,
+      "requires_context": [
+        "feature_width"
+      ],
+      "semantic_label": "axial position / feature width = local aspect ratio  (x/w)",
+      "valid_domain": {
+        "max": null,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "entrance_normalized_thickness",
+      "denominator": "film_thickness",
+      "denominator_symbols": [
+        "t(0)",
+        "t0",
+        "t_0",
+        "d(0)",
+        "S(0)"
+      ],
+      "formula": "t_norm(x) = t(x) / t(0)",
+      "id": "t_over_t_entrance",
+      "invertible": true,
+      "normalization_denominator_role": "entrance_thickness",
+      "numerator": "film_thickness",
+      "reference_location": "entrance",
+      "requires_context": [
+        "reference_thickness"
+      ],
+      "semantic_label": "local thickness / thickness at the feature entrance  t(x)/t(0)",
+      "valid_domain": {
+        "max": 1.5,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "maximum_normalized_thickness",
+      "denominator": "film_thickness",
+      "denominator_symbols": [
+        "tmax",
+        "t_max",
+        "t_{max}",
+        "d_max"
+      ],
+      "formula": "t_norm(x) = t(x) / t_max",
+      "id": "t_over_t_max",
+      "invertible": true,
+      "normalization_denominator_role": "maximum_thickness",
+      "numerator": "film_thickness",
+      "reference_location": "profile_maximum",
+      "requires_context": [
+        "reference_thickness"
+      ],
+      "semantic_label": "local thickness / maximum thickness of the same profile  t(x)/t_max",
+      "valid_domain": {
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "planar_normalized_thickness",
+      "denominator": "reference_thickness",
+      "denominator_symbols": [
+        "t_planar",
+        "t_flat",
+        "t_ref"
+      ],
+      "formula": "t_norm(x) = t(x) / t_planar",
+      "id": "t_over_t_planar",
+      "invertible": true,
+      "normalization_denominator_role": "planar_thickness",
+      "numerator": "film_thickness",
+      "reference_location": "planar_reference",
+      "requires_context": [
+        "reference_thickness"
+      ],
+      "semantic_label": "local thickness / thickness on an adjacent planar reference  t(x)/t_planar",
+      "valid_domain": {
+        "max": 1.5,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "step_coverage_bottom_to_top",
+      "denominator": "film_thickness",
+      "denominator_symbols": [
+        "t_top",
+        "d_top"
+      ],
+      "formula": "SC = t_bottom / t_top",
+      "id": "t_bottom_over_t_top",
+      "invertible": true,
+      "normalization_denominator_role": "top_thickness",
+      "numerator": "film_thickness",
+      "reference_location": "top",
+      "requires_context": [
+        "reference_thickness"
+      ],
+      "semantic_label": "step coverage: thickness at feature bottom / thickness at top",
+      "valid_domain": {
+        "max": 1.5,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "step_coverage_bottom_to_planar",
+      "denominator": "reference_thickness",
+      "denominator_symbols": [
+        "t_planar",
+        "t_flat"
+      ],
+      "formula": "SC_planar = t_bottom / t_planar",
+      "id": "t_bottom_over_t_planar",
+      "invertible": true,
+      "normalization_denominator_role": "planar_thickness",
+      "numerator": "film_thickness",
+      "reference_location": "planar_reference",
+      "requires_context": [
+        "reference_thickness"
+      ],
+      "semantic_label": "thickness at feature bottom / planar reference thickness",
+      "valid_domain": {
+        "max": 1.5,
+        "min": 0.0
+      }
+    },
+    {
+      "comparison_group": "local_to_planar_growth_ratio",
+      "denominator": "growth_per_cycle",
+      "denominator_symbols": [
+        "GPC_planar",
+        "GPC_0",
+        "gpc_planar"
+      ],
+      "formula": "gpc_norm(x) = GPC(x) / GPC_planar",
+      "id": "gpc_local_over_gpc_planar",
+      "invertible": true,
+      "normalization_denominator_role": "planar_growth_per_cycle",
+      "numerator": "growth_per_cycle",
+      "reference_location": "planar_reference",
+      "requires_context": [
+        "growth_per_cycle"
+      ],
+      "semantic_label": "local growth per cycle / planar growth per cycle",
+      "valid_domain": {
+        "max": 1.5,
+        "min": 0.0
+      }
+    }
+  ],
+  "qualifiers": [
+    {
+      "by": "reactant",
+      "quantity": "pulse_time",
+      "values": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "by": "reactant",
+      "quantity": "purge_time",
+      "values": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "by": "reactant",
+      "quantity": "partial_pressure",
+      "values": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "by": "reactant",
+      "quantity": "exposure",
+      "values": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "by": "reactant",
+      "quantity": "molecular_mass",
+      "values": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "by": "reactant",
+      "quantity": "precursor_molecular_diameter",
+      "values": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "by": "position",
+      "quantity": "film_thickness",
+      "values": [
+        "top",
+        "bottom",
+        "sidewall",
+        "depth_x"
+      ]
+    },
+    {
+      "by": "position",
+      "quantity": "normalized_thickness",
+      "values": [
+        "top",
+        "depth_x"
+      ]
+    },
+    {
+      "by": "position",
+      "quantity": "surface_coverage",
+      "values": [
+        "top",
+        "depth_x"
+      ]
+    }
+  ],
+  "transformation_statuses": [
+    {
+      "id": "already_canonical",
+      "meaning": "source is already the canonical quantity+unit; values copied unchanged"
+    },
+    {
+      "id": "directly_convertible",
+      "meaning": "same dimension+quantity kind, differing unit; convertible with no context"
+    },
+    {
+      "id": "contextually_convertible",
+      "meaning": "a rule exists and all required context is resolved, conversion pending/possible"
+    },
+    {
+      "id": "converted",
+      "meaning": "transformation applied successfully and validated"
+    },
+    {
+      "id": "ambiguous",
+      "meaning": "several distinct context candidates at the applicable scope; NOT resolved by picking one"
+    },
+    {
+      "id": "missing_context",
+      "meaning": "a required contextual quantity could not be found in any scope"
+    },
+    {
+      "id": "unsupported",
+      "meaning": "no rule connects the source representation to any comparison group"
+    },
+    {
+      "id": "invalid",
+      "meaning": "rule applied but validation failed (zero denominator, domain violation, bad round-trip)"
+    },
+    {
+      "id": "not_applicable",
+      "meaning": "axis is not a comparison target (e.g. XRD intensity vs 2-theta)"
+    }
+  ],
+  "transformation_types": [
+    {
+      "id": "identity_canonical_mapping",
+      "invertible": true,
+      "needs_context": false
+    },
+    {
+      "id": "unit_conversion",
+      "invertible": true,
+      "needs_context": false
+    },
+    {
+      "id": "scale_conversion",
+      "invertible": true,
+      "needs_context": false
+    },
+    {
+      "id": "algebraic_derivation",
+      "invertible": false,
+      "needs_context": true
+    },
+    {
+      "id": "normalization",
+      "invertible": true,
+      "needs_context": true
+    },
+    {
+      "id": "denormalization",
+      "invertible": true,
+      "needs_context": true
+    },
+    {
+      "id": "geometry_based_conversion",
+      "invertible": true,
+      "needs_context": true
+    },
+    {
+      "id": "cycle_based_conversion",
+      "invertible": true,
+      "needs_context": true
+    },
+    {
+      "id": "reference_value_normalization",
+      "invertible": true,
+      "needs_context": true
+    },
+    {
+      "id": "axis_semantic_resolution",
+      "invertible": false,
+      "needs_context": false
+    }
+  ],
+  "unregistered_families": []
+}

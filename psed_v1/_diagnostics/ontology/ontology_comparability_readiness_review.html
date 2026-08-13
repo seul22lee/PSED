@@ -1,0 +1,162 @@
+<title>Ontology Readiness</title><style>
+:root{--bg:#fbfbfa;--fg:#1a1a18;--mut:#6b6b66;--line:#e0dfdb;--card:#fff;
+--bad:#b3261e;--good:#1e6b3a;--warn:#8a6100;--accent:#2f5d8a}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+--bg:#16161a;--fg:#e9e9e6;--mut:#9a9a95;--line:#33333a;--card:#1e1e24;
+--bad:#ff8a80;--good:#7ddba3;--warn:#e8c06a;--accent:#8fb8e0}}
+:root[data-theme=dark]{--bg:#16161a;--fg:#e9e9e6;--mut:#9a9a95;--line:#33333a;
+--card:#1e1e24;--bad:#ff8a80;--good:#7ddba3;--warn:#e8c06a;--accent:#8fb8e0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1160px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:-.02em}
+h2{font-size:18px;margin:38px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--mut);margin:0 0 24px;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:12px;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.card .n{font-size:23px;font-weight:600;letter-spacing:-.02em}
+.card .l{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:720px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--mut);font-size:11px;text-transform:uppercase;
+letter-spacing:.06em;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.bad{color:var(--bad);font-weight:600}.good{color:var(--good);font-weight:600}
+.warn{color:var(--warn)}.mut{color:var(--mut)}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+border-radius:6px;padding:12px 16px;margin:14px 0}
+.model{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 20px;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;white-space:pre;
+overflow-x:auto;line-height:1.5}
+</style>
+<div class="wrap">
+<h1>Ontology comparability readiness</h1>
+<p class="sub">Whether the ontology already says how heterogeneous papers express the
+same physics &mdash; and where it stops. Baseline <code>600320a</code>, generating code
+<code>debd51c5d1fd</code>, HEAD <code>600320a</code>.</p>
+
+<div class="cards">
+<div class="card"><div class="n">180</div><div class="l">quantities</div></div>
+<div class="card"><div class="n">633</div><div class="l">aliases</div></div>
+<div class="card"><div class="n warn">29</div><div class="l">alias collisions</div></div>
+<div class="card"><div class="n">24</div><div class="l">comparison groups</div></div>
+<div class="card"><div class="n">25</div><div class="l">transform rules</div></div>
+<div class="card"><div class="n">11</div><div class="l">normalizations</div></div>
+<div class="card"><div class="n good">0</div><div class="l">dangling refs</div></div>
+<div class="card"><div class="n good">0</div><div class="l">scientific drift</div></div>
+</div>
+
+<div class="note"><strong>The readiness contract largely already exists.</strong>
+<code>quantity_relations</code> carries 24 comparison groups each with a canonical unit,
+11 normalization definitions with explicit numerator/denominator roles, 25 typed
+transformation rules, and &mdash; the part that matters most for an engine &mdash; 9
+transformation <em>statuses</em> that already separate a transform which ran from one
+whose context is <code>missing_context</code> or <code>ambiguous</code>. That is the
+operational/semantic distinction a comparability engine needs, and it was designed in
+rather than being something this audit had to invent. Every reference in that structure
+resolves: <strong>0 dangling</strong> across groups, normalizations, transforms,
+<code>same_as</code>, rule types and <code>specializes</code>.</div>
+
+<h2>Semantic model</h2>
+<div class="model">canonical quantity  ──┬── aliases            633 surface forms, 29 shared
+                      ├── unit / dimension   130 carry a unit; 8 base dimensions
+                      ├── family             9 registered groups (grouping, NOT equality)
+                      ├── specializes        22 narrower-than relations
+                      ├── qualifiers         by: reactant (6)   by: position (3)
+                      └── comparison group   24 groups, each with a canonical unit
+                                                │
+              normalization_definitions (11) ───┤ numerator / denominator / role
+              transformation_rules      (25) ───┤ typed, with invertible + needs_context
+              transformation_statuses    (9) ───┘ converted / missing_context / ambiguous</div>
+
+<h2>Quantity vs representation vs normalization vs transform</h2>
+<div class="note">The ontology draws the line at the <em>quantity</em>, and encodes
+representation by giving the normalized form its own id:
+<code>film_thickness</code> and <code>normalized_thickness</code> are separate
+quantities, related by a declared transform whose bridge is
+<code>reference_thickness</code>. The <em>reference</em> is then pinned not on the
+quantity but in <code>normalization_definitions</code>, which is what makes
+&ldquo;normalized&rdquo; answerable rather than vague:
+<code>t_over_t_entrance</code>, <code>t_over_t_max</code> and
+<code>t_over_t_planar</code> are three different physical statements that would otherwise
+share one label. The same applies on the abscissa: <code>spatial_coordinate</code> and
+<code>dimensionless_distance</code> are distinct, with five separate definitions for what
+the length was divided by (feature height, channel length, feature depth, hydraulic
+diameter, feature width).<br><br>
+So the four layers are represented &mdash; measurand as the quantity, representation as a
+sibling quantity, reference as a normalization definition, transform as a typed rule
+&mdash; but the representation layer is carried <em>in the quantity id</em> rather than as
+metadata on a shared measurand. That is a design choice with a real consequence, recorded
+under architecture decisions below.</div>
+<div class="scroll"><table><thead><tr><th>normalization</th><th>meaning</th>
+<th>numerator</th><th>denominator</th></tr></thead><tbody><tr><td><code>x_over_feature_height</code></td><td>axial position / feature height  (x/H, x̃)</td><td><code>spatial_coordinate</code></td><td><code>feature_height</code></td></tr><tr><td><code>x_over_channel_length</code></td><td>axial position / channel length  (x/L)</td><td><code>spatial_coordinate</code></td><td><code>feature_length</code></td></tr><tr><td><code>x_over_feature_depth</code></td><td>penetration position / feature depth  (x/d)</td><td><code>spatial_coordinate</code></td><td><code>feature_depth</code></td></tr><tr><td><code>x_over_hydraulic_diameter</code></td><td>axial position / hydraulic diameter  (x/Dh)</td><td><code>spatial_coordinate</code></td><td><code>hydraulic_diameter</code></td></tr><tr><td><code>x_over_feature_width</code></td><td>axial position / feature width = local aspect ratio  (x/w)</td><td><code>spatial_coordinate</code></td><td><code>feature_width</code></td></tr><tr><td><code>t_over_t_entrance</code></td><td>local thickness / thickness at the feature entrance  t(x)/t(0)</td><td><code>film_thickness</code></td><td><code>film_thickness</code></td></tr><tr><td><code>t_over_t_max</code></td><td>local thickness / maximum thickness of the same profile  t(x)/t_max</td><td><code>film_thickness</code></td><td><code>film_thickness</code></td></tr><tr><td><code>t_over_t_planar</code></td><td>local thickness / thickness on an adjacent planar reference  t(x)/t_planar</td><td><code>film_thickness</code></td><td><code>reference_thickness</code></td></tr><tr><td><code>t_bottom_over_t_top</code></td><td>step coverage: thickness at feature bottom / thickness at top</td><td><code>film_thickness</code></td><td><code>film_thickness</code></td></tr><tr><td><code>t_bottom_over_t_planar</code></td><td>thickness at feature bottom / planar reference thickness</td><td><code>film_thickness</code></td><td><code>reference_thickness</code></td></tr><tr><td><code>gpc_local_over_gpc_planar</code></td><td>local growth per cycle / planar growth per cycle</td><td><code>growth_per_cycle</code></td><td><code>growth_per_cycle</code></td></tr></tbody></table></div>
+
+<h2>Transformation statuses &mdash; semantic vs operational</h2>
+<div class="scroll"><table><thead><tr><th>status</th><th>meaning</th></tr></thead>
+<tbody><tr><td><code>already_canonical</code></td><td class='mut'>source is already the canonical quantity+unit; values copied unchanged</td></tr><tr><td><code>directly_convertible</code></td><td class='mut'>same dimension+quantity kind, differing unit; convertible with no context</td></tr><tr><td><code>contextually_convertible</code></td><td class='mut'>a rule exists and all required context is resolved, conversion pending/possible</td></tr><tr><td><code>converted</code></td><td class='mut'>transformation applied successfully and validated</td></tr><tr><td><code>ambiguous</code></td><td class='mut'>several distinct context candidates at the applicable scope; NOT resolved by picking one</td></tr><tr><td><code>missing_context</code></td><td class='mut'>a required contextual quantity could not be found in any scope</td></tr><tr><td><code>unsupported</code></td><td class='mut'>no rule connects the source representation to any comparison group</td></tr><tr><td><code>invalid</code></td><td class='mut'>rule applied but validation failed (zero denominator, domain violation, bad round-trip)</td></tr><tr><td><code>not_applicable</code></td><td class='mut'>axis is not a comparison target (e.g. XRD intensity vs 2-theta)</td></tr></tbody></table></div>
+
+<h2>Comparability readiness matrix</h2>
+<p class="sub">A transform that is defined is not thereby usable. The last two columns are
+the ones a future engine must read.</p>
+<div class="scroll"><table><thead><tr><th>A</th><th>B</th><th>tier</th>
+<th>required parameter</th><th>parameter availability</th>
+<th>operational now?</th></tr></thead><tbody><tr><td><code>film_thickness</code></td><td><code>normalized_thickness</code></td><td>TRANSFORMABLE_WITH_CONTEXT</td><td><code>reference_thickness</code></td><td class='warn'>NOT_EXTRACTED</td><td class='warn'>no</td></tr><tr><td><code>film_thickness</code></td><td><code>growth_per_cycle</code></td><td>TRANSFORMABLE_WITH_CONTEXT</td><td><code>cycle_number</code></td><td class='good'>AVAILABLE_IN_KG</td><td class='good'>yes</td></tr><tr><td><code>film_thickness</code></td><td><code>areal_density</code></td><td>TRANSFORMABLE_WITH_CONTEXT</td><td><code>film_density</code></td><td class='warn'>NOT_EXTRACTED</td><td class='warn'>no</td></tr><tr><td><code>spatial_coordinate</code></td><td><code>dimensionless_distance</code></td><td>TRANSFORMABLE_WITH_CONTEXT</td><td><code>feature_height</code></td><td class='good'>AVAILABLE_IN_KG</td><td class='good'>yes</td></tr><tr><td><code>spatial_coordinate</code></td><td><code>aspect_ratio</code></td><td>TRANSFORMABLE_WITH_CONTEXT</td><td><code>feature_width</code></td><td class='good'>AVAILABLE_IN_KG</td><td class='good'>yes</td></tr><tr><td><code>partial_pressure</code></td><td><code>exposure</code></td><td>TRANSFORMABLE_WITH_CONTEXT</td><td><code>pulse_time</code></td><td class='good'>AVAILABLE_IN_KG</td><td class='good'>yes</td></tr><tr><td><code>deposition_rate</code></td><td><code>growth_rate</code></td><td>DIRECT</td><td><code>&amp;mdash;</code></td><td class='good'>AVAILABLE_IN_KG</td><td class='good'>yes</td></tr><tr><td><code>thickness_per_cycle</code></td><td><code>growth_per_cycle</code></td><td>DIRECT</td><td><code>&amp;mdash;</code></td><td class='good'>AVAILABLE_IN_KG</td><td class='good'>yes</td></tr></tbody></table></div>
+
+<h2>Alias collisions</h2>
+<p class="sub">Collisions are inventoried and classified, not eliminated: several are
+intentional generic-to-specific surfaces where the resolver's explicit rules decide.</p>
+<div class="scroll"><table><thead><tr><th>alias</th><th>claiming quantities</th>
+<th>resolver outcome</th><th>classification</th></tr></thead><tbody><tr><td><code>chamber_pressure</code></td><td class='mono'>chamber_total_pressure, total_pressure</td><td><code>total_pressure</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>deposition_rate</code></td><td class='mono'>deposition_rate, growth_rate</td><td><code>deposition_rate</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>deposition_temperature</code></td><td class='mono'>deposition_temperature, temperature</td><td><code>deposition_temperature</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>dose</code></td><td class='mono'>exposure, precursor_exposure</td><td><code>precursor_exposure</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>exposure_time</code></td><td class='mono'>exposure_time, pulse_time</td><td><code>exposure_time</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>growth_temperature</code></td><td class='mono'>deposition_temperature, temperature</td><td><code>temperature</code></td><td><span class='pill'>BENIGN_SHARED_SURFACE</span></td></tr><tr><td><code>pd50</code></td><td class='mono'>penetration_depth, penetration_depth_50</td><td><code>penetration_depth</code></td><td><span class='pill'>BENIGN_SHARED_SURFACE</span></td></tr><tr><td><code>plasma_exposure_time</code></td><td class='mono'>plasma_exposure_time, pulse_time</td><td><code>plasma_exposure_time</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>plasma_power</code></td><td class='mono'>applied_power, plasma_power</td><td><code>plasma_power</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>plasma_pulse_time</code></td><td class='mono'>plasma_exposure_time, pulse_time</td><td><code>pulse_time</code></td><td><span class='pill'>BENIGN_SHARED_SURFACE</span></td></tr><tr><td><code>plasma_time</code></td><td class='mono'>plasma_exposure_time, pulse_time</td><td><code>pulse_time</code></td><td><span class='pill'>BENIGN_SHARED_SURFACE</span></td></tr><tr><td><code>precursor_dose</code></td><td class='mono'>exposure, precursor_exposure</td><td><code>precursor_exposure</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>precursor_partial_pressure</code></td><td class='mono'>partial_pressure, precursor_partial_pressure</td><td><code>precursor_partial_pressure</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>process_pressure</code></td><td class='mono'>chamber_total_pressure, total_pressure</td><td><code>total_pressure</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>process_temperature</code></td><td class='mono'>deposition_temperature, temperature</td><td><code>temperature</code></td><td><span class='pill'>BENIGN_SHARED_SURFACE</span></td></tr><tr><td><code>pulse_duration</code></td><td class='mono'>exposure_time, pulse_time</td><td><code>pulse_time</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>pulse_length</code></td><td class='mono'>exposure_time, pulse_time</td><td><code>pulse_time</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>reactant_density</code></td><td class='mono'>precursor_density, radical_density</td><td><code>radical_density</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>reactant_dose</code></td><td class='mono'>exposure, precursor_exposure</td><td><code>precursor_exposure</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>reactant_exposure</code></td><td class='mono'>exposure, precursor_exposure</td><td><code>precursor_exposure</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>reactor_pressure</code></td><td class='mono'>chamber_total_pressure, total_pressure</td><td><code>total_pressure</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>rf_power</code></td><td class='mono'>applied_power, plasma_power</td><td><code>plasma_power</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr><tr><td><code>saturation_coverage</code></td><td class='mono'>maximum_surface_coverage, saturated_coverage</td><td><code>maximum_surface_coverage</code></td><td><span class='pill'>BENIGN_SHARED_SURFACE</span></td></tr><tr><td><code>substrate_temperature</code></td><td class='mono'>deposition_temperature, temperature</td><td><code>temperature</code></td><td><span class='pill'>BENIGN_SHARED_SURFACE</span></td></tr><tr><td><code>total_pressure</code></td><td class='mono'>chamber_total_pressure, total_pressure</td><td><code>total_pressure</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>vapor_pressure</code></td><td class='mono'>vapor_pressure, vapour_pressure</td><td><code>vapor_pressure</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>vapour_pressure</code></td><td class='mono'>vapor_pressure, vapour_pressure</td><td><code>vapour_pressure</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>working_pressure</code></td><td class='mono'>chamber_total_pressure, working_pressure</td><td><code>working_pressure</code></td><td><span class='pill'>GENERIC_TO_SPECIFIC</span></td></tr><tr><td><code>z</code></td><td class='mono'>impedance_imaginary, impedance_real</td><td><code>spatial_coordinate</code></td><td><span class='pill'>RESOLVER_PRECEDENCE_DEPENDENT</span></td></tr></tbody></table></div>
+<div class="note">The <code>pulse_time</code> / <code>exposure_time</code> pair is the one
+Track A3 already settled at the resolver: <code>pulse length</code>,
+<code>pulse duration</code> and <code>exposure time</code> are claimed by both, and an
+explicit axis rule sends pulse-worded labels to <code>pulse_time</code> because the
+ontology qualifies it BY REACTANT while <code>exposure_time</code> is not. The aliases are
+left in place deliberately &mdash; removing them would make the bare words unresolvable in
+records that legitimately carry them &mdash; and the resolver rule, not alias precedence,
+is what decides. Recorded as <code>RESOLVER_PRECEDENCE_DEPENDENT</code> rather than
+repaired.</div>
+
+<h2>Dead, external and missing concepts</h2>
+<div class="scroll"><table><thead><tr><th>id</th><th>active-8 uses</th>
+<th>classification</th><th>note</th></tr></thead><tbody><tr><td><code>coreactant</code></td><td>88</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>coreactant_pulse_time</code></td><td>180</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>coreactant_purge_time</code></td><td>180</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>deposited_layer_thickness</code></td><td>14</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>deposited_structure</code></td><td>8</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>energy</code></td><td>1</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>j</code></td><td>1</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>pillar_layout</code></td><td>186</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>potential</code></td><td>10</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>precursor</code></td><td>158</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>precursor_exposures_per_cycle</code></td><td>2</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>precursor_pulse_time</code></td><td>183</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>precursor_purge_time</code></td><td>180</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>pulse_purge_sequence</code></td><td>182</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>reflectometer_magnification</code></td><td>43</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>roughness</code></td><td>0</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>scattering_vector</code></td><td>0</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>spot_size</code></td><td>3</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>sputtering_time</code></td><td>14</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>transmittance</code></td><td>0</td><td class='warn'>MISSING_ONTOLOGY_CONCEPT</td><td class='mut'></td></tr><tr><td><code>dose_time</code></td><td>0</td><td class='mut'>INTENTIONALLY_EXTERNAL</td><td class='mut'>recipe-layer Reactant dataclass field (pipeline/resolve/recipe.py), not an ontology quantity id</td></tr></tbody></table></div>
+
+<h2>Quantity inventory (top 40 by usage)</h2>
+<div class="scroll"><table><thead><tr><th>id</th><th>category</th><th>family</th>
+<th>unit</th><th>qualifier</th><th>active-8</th><th>unseen</th></tr></thead>
+<tbody><tr><td><code>deposition_temperature</code></td><td class='mut'>process_parameter</td><td>process_temperature</td><td></td><td></td><td>415</td><td>598</td></tr><tr><td><code>cycle_number</code></td><td class='mut'>process_parameter</td><td></td><td>cycle</td><td></td><td>385</td><td>300</td></tr><tr><td><code>pulse_time</code></td><td class='mut'>process_parameter</td><td>exposure_time</td><td>http://qudt.org/vocab/unit</td><td><span class='good'>reactant</span></td><td>288</td><td>262</td></tr><tr><td><code>flow_rate</code></td><td class='mut'>process_parameter</td><td></td><td></td><td></td><td>200</td><td>159</td></tr><tr><td><code>working_pressure</code></td><td class='mut'>process_parameter</td><td></td><td>Pa</td><td></td><td>297</td><td>48</td></tr><tr><td><code>feature_height</code></td><td class='mut'>geometry</td><td></td><td>http://qudt.org/vocab/unit</td><td></td><td>250</td><td>0</td></tr><tr><td><code>base_pressure</code></td><td class='mut'>process_parameter</td><td></td><td>Pa</td><td></td><td>72</td><td>114</td></tr><tr><td><code>exposure_time</code></td><td class='mut'>process_parameter</td><td></td><td></td><td></td><td>72</td><td>90</td></tr><tr><td><code>purge_time</code></td><td class='mut'>process_parameter</td><td></td><td>http://qudt.org/vocab/unit</td><td><span class='good'>reactant</span></td><td>112</td><td>10</td></tr><tr><td><code>spatial_coordinate</code></td><td class='mut'>coordinate</td><td>position</td><td>http://qudt.org/vocab/unit</td><td></td><td>74</td><td>5</td></tr><tr><td><code>temperature</code></td><td class='mut'>process_parameter</td><td>process_temperature</td><td>http://qudt.org/vocab/unit</td><td></td><td>9</td><td>66</td></tr><tr><td><code>film_thickness</code></td><td class='mut'>observable</td><td>film_amount</td><td>http://qudt.org/vocab/unit</td><td></td><td>43</td><td>22</td></tr><tr><td><code>carrier_gas_partial_pressure</code></td><td class='mut'>process_parameter</td><td></td><td>Pa</td><td><span class='good'>reactant</span></td><td>72</td><td>0</td></tr><tr><td><code>surface_coverage</code></td><td class='mut'>observable</td><td>coverage</td><td>http://qudt.org/vocab/unit</td><td></td><td>4</td><td>0</td></tr><tr><td><code>aspect_ratio</code></td><td class='mut'>geometry</td><td>position</td><td>http://qudt.org/vocab/unit</td><td></td><td>2</td><td>2</td></tr><tr><td><code>growth_per_cycle</code></td><td class='mut'>observable</td><td>film_amount</td><td>nm/cycle</td><td></td><td>39</td><td>24</td></tr><tr><td><code>impurity_content</code></td><td class='mut'>observable</td><td></td><td>http://qudt.org/vocab/unit</td><td></td><td>14</td><td>5</td></tr><tr><td><code>normalized_thickness</code></td><td class='mut'>observable</td><td>film_amount</td><td>http://qudt.org/vocab/unit</td><td></td><td>16</td><td>0</td></tr><tr><td><code>time</code></td><td class='mut'>coordinate</td><td></td><td>http://qudt.org/vocab/unit</td><td></td><td>13</td><td>6</td></tr><tr><td><code>partial_pressure</code></td><td class='mut'>process_parameter</td><td>pressure</td><td>http://qudt.org/vocab/unit</td><td><span class='good'>reactant</span></td><td>3</td><td>8</td></tr><tr><td><code>resistivity</code></td><td class='mut'>material_property</td><td></td><td>http://qudt.org/vocab/unit</td><td></td><td>6</td><td>8</td></tr><tr><td><code>exposure</code></td><td class='mut'>process_parameter</td><td>dose</td><td>L</td><td><span class='good'>reactant</span></td><td>3</td><td>2</td></tr><tr><td><code>current_density</code></td><td class='mut'>electrical</td><td></td><td>A/cm²</td><td></td><td>10</td><td>0</td></tr><tr><td><code>generic_pressure</code></td><td class='mut'>process_parameter</td><td></td><td>Pa</td><td></td><td>0</td><td>10</td></tr><tr><td><code>intensity</code></td><td class='mut'>observable</td><td></td><td>a.u.</td><td></td><td>0</td><td>10</td></tr><tr><td><code>exposure_dose</code></td><td class='mut'>process_parameter</td><td></td><td></td><td></td><td>0</td><td>9</td></tr><tr><td><code>binding_energy</code></td><td class='mut'>coordinate</td><td></td><td></td><td></td><td>5</td><td>0</td></tr><tr><td><code>capacitance</code></td><td class='mut'>electrical</td><td></td><td>pF</td><td></td><td>4</td><td>0</td></tr><tr><td><code>voltage</code></td><td class='mut'>electrical</td><td></td><td>V</td><td></td><td>4</td><td>0</td></tr><tr><td><code>wavelength</code></td><td class='mut'>optical</td><td>spectral</td><td>nm</td><td></td><td>3</td><td>1</td></tr><tr><td><code>inverse_temperature</code></td><td class='mut'>coordinate</td><td></td><td></td><td></td><td>3</td><td>0</td></tr><tr><td><code>feature_width</code></td><td class='mut'>geometry</td><td></td><td>http://qudt.org/vocab/unit</td><td></td><td>2</td><td>0</td></tr><tr><td><code>frequency</code></td><td class='mut'>process_parameter</td><td></td><td>Hz</td><td></td><td>2</td><td>0</td></tr><tr><td><code>refractive_index</code></td><td class='mut'>material_property</td><td></td><td>http://qudt.org/vocab/unit</td><td></td><td>1</td><td>1</td></tr><tr><td><code>vapor_pressure</code></td><td class='mut'>species_property</td><td></td><td>Pa</td><td></td><td>2</td><td>0</td></tr><tr><td><code>wavenumber</code></td><td class='mut'>coordinate</td><td></td><td></td><td></td><td>0</td><td>2</td></tr><tr><td><code>penetration_depth</code></td><td class='mut'>observable</td><td>position</td><td>http://qudt.org/vocab/unit</td><td></td><td>0</td><td>0</td></tr><tr><td><code>active_surface_area</code></td><td class='mut'></td><td></td><td>http://qudt.org/vocab/unit</td><td></td><td>0</td><td>0</td></tr><tr><td><code>adsorbed_species_density</code></td><td class='mut'>observable</td><td></td><td></td><td></td><td>0</td><td>0</td></tr><tr><td><code>adsorption_equilibrium_constant</code></td><td class='mut'>model_parameter</td><td>reaction_efficiency</td><td>Pa^-1</td><td></td><td>0</td><td>0</td></tr></tbody></table></div>
+
+<h2>Architecture decisions</h2>
+<div class="note"><strong>ONTOLOGY_REPRESENTATION_ARCHITECTURE_DECISION.</strong>
+Representation is encoded in the quantity id (<code>normalized_thickness</code>,
+<code>dimensionless_distance</code>) rather than as metadata on a shared measurand. This
+works today and the normalization definitions keep the reference explicit. The cost
+appears when an engine must ask &ldquo;is this the same physical quantity as that&rdquo;:
+it has to consult the transform table rather than read a field, and a profile normalized
+by an <em>unknown</em> reference has no id distinct from one normalized by a known
+reference. Options: (a) keep as is and let the engine treat the transform table as
+authoritative; (b) add a `representation` + `reference` pair on the record, leaving ids
+unchanged; (c) migrate to measurand + representation metadata. Corpus impact of (c) is
+large &mdash; <code>normalized_thickness</code> alone appears in persisted results &mdash;
+so no partial migration was attempted. Recommended: (b), decided together with the engine.
+<br><br>
+<strong>ONTOLOGY_RATIO_ARCHITECTURE_DECISION.</strong> A ratio of two quantities of the
+same kind has no numerator/denominator <em>species</em> roles in the schema.
+<code>normalization_definitions</code> solves this for thickness and position by naming a
+denominator role, but a gas <code>flow ratio</code> would need the numerator and
+denominator to each carry a reagent, which the qualifier model (one <code>by:
+reactant</code> per quantity) cannot express. This is why <code>flow_ratio</code> is
+<em>not</em> added here: a weak dimensionless quantity with no way to say which gases it
+relates would record less than the current honest refusal.</div>
+
+<h2>Deferred</h2>
+<div class="note"><code>flow_ratio</code> (blocked on the ratio decision above);
+<code>electrode_potential</code> and <code>critical_angle</code> (no corpus canonical
+usage &mdash; revisit when a record needs them); the role-prefixed composites
+(<code>precursor_pulse_time</code>, <code>coreactant_purge_time</code> and siblings) which
+are pipeline-emitted and heavily used but have no ontology entry; 147 defined quantities
+with no current corpus support, which a broader ontology may legitimately carry.</div>
+</div>

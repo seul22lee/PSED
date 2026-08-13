@@ -4461,18 +4461,18 @@
     {
       "id": "wavelength",
       "iri": "https://w3id.org/psed-ald/ontology#wavelength",
-      "domain": "characterization",
-      "symbols": [
-        "λ"
-      ],
+      "domain": "optical",
+      "symbols": [],
       "aliases": [
         "wavelength"
       ],
       "qudt_quantitykind": null,
-      "unit": null,
-      "category": "coordinate",
-      "recipe_role": "coordinate",
-      "axis_role": "coordinate"
+      "unit": "nm",
+      "category": "optical",
+      "family": "spectral",
+      "recipe_role": "observable",
+      "axis_role": "output",
+      "source": "auto-proposed"
     },
     {
       "id": "sputter_depth",
@@ -5142,22 +5142,6 @@
       "source": "auto-proposed"
     },
     {
-      "id": "wavelength",
-      "iri": "https://w3id.org/psed-ald/ontology#wavelength",
-      "domain": "optical",
-      "symbols": [],
-      "aliases": [
-        "wavelength"
-      ],
-      "qudt_quantitykind": null,
-      "unit": "nm",
-      "category": "optical",
-      "family": "spectral",
-      "recipe_role": "observable",
-      "axis_role": "output",
-      "source": "auto-proposed"
-    },
-    {
       "id": "adsorption_equilibrium_constant",
       "iri": "https://w3id.org/psed-ald/ontology#adsorption_equilibrium_constant",
       "domain": "model_parameter",
@@ -5689,6 +5673,19 @@
         "members": [
           "pulse_time",
           "plasma_exposure_time"
+        ]
+      },
+      "partial_pressure": {
+        "canonical": "partial_pressure",
+        "members": [
+          "co_reactant_partial_pressure",
+          "precursor_partial_pressure"
+        ]
+      },
+      "spectral": {
+        "canonical": "wavelength",
+        "members": [
+          "wavelength"
         ]
       }
     },

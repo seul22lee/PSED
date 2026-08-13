@@ -376,7 +376,7 @@ _FAMILY = {
                  "working_pressure"),
     "temperature": ("temperature", "deposition_temperature", "substrate_temperature",
                     "growth_temperature", "source_temperature"),
-    "time": ("pulse_time", "purge_time", "dose_time", "exposure_time", "deposition_time",
+    "time": ("pulse_time", "purge_time", "exposure_time", "deposition_time",
              "process_time", "residence_time"),
     "progression": ("cycle_number", "ncycles", "number_of_cycles"),
     "optical": ("refractive_index", "extinction_coefficient", "absorbance",
