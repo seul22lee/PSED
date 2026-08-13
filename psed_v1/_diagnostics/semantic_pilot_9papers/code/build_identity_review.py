@@ -91,6 +91,27 @@ class Paper(object):
                 self.unres_by_meas[u["measurement_id"]].append(u)
         self.ev_by_id = {e["evidence_id"]: e for e in self.d["evidence"]}
 
+    # -- how a ResultSeries relates to the cases it reaches --------------------
+    def classify_cardinality(self, rs):
+        """(status, detail) for the ResultSeries -> ExperimentalCase cardinality.
+
+        A ResultSeries is NOT required to map to one ExperimentalCase. A single measured
+        curve that sweeps a design factor legitimately spans every branch of that factor,
+        and each branch is a distinct deposition. That is structured fan-out, not an
+        unresolved identity.
+
+        The distinction is drawn from object linkage, never from condition or fingerprint
+        equality: the DesignBranches carried by this result's own Measurement are
+        collected, the cases those branches reach through their candidate/case links are
+        gathered, and the result is EXPLAINED only when that set accounts for every case
+        the ResultSeries actually reaches. Branches belonging to another Measurement or
+        panel explain nothing here.
+        """
+        mid = rs.get("produced_by")
+        return classify_cardinality(self.case_of_meas.get(mid) or [],
+                                    self.branch_of_meas.get(mid) or [],
+                                    self.d["experimental_cases"])
+
     # -- one row per source ResultSeries -------------------------------------
     def rows(self):
         out = []
@@ -134,7 +155,9 @@ class Paper(object):
             evtext = ""
             if ev and ev in self.ev_by_id:
                 evtext = (self.ev_by_id[ev].get("detail") or "")[:160]
+            card_status, card = self.classify_cardinality(rs)
             out.append({
+                "cardinality": card_status, "card": card,
                 "figure": src.get("figure"), "panel": src.get("panel"),
                 "rs_id": rs["result_series_id"], "curve_id": rs.get("curve_id"),
                 "legend": src.get("series"), "data_source": rs.get("data_source"),
@@ -223,10 +246,13 @@ def consistency(papers):
                                  "%s : %s" % (mid.split("::")[-1],
                                               ", ".join(sorted(labels)))))
         for r in P.rows():
-            if len(r["cases"]) > 1:
-                findings.append((pid, "a ResultSeries resolves to more than one "
-                                      "ExperimentalCase", "%s -> %d cases"
-                                 % (r["rs_id"].split("::", 2)[-1], len(r["cases"]))))
+            if r["cardinality"] == "UNEXPLAINED_MULTI_CASE":
+                miss = r["card"]["missing"]
+                findings.append((pid, "a ResultSeries reaches ExperimentalCases that its "
+                                      "own DesignBranches do not explain",
+                                 "%s -> %d cases, unexplained: %s"
+                                 % (r["rs_id"].split("::", 2)[-1], len(r["cases"]),
+                                    ", ".join(miss) or "no branch structure")))
         for s in P.d["samples"]:
             if s.get("produced_by_run") and not any(
                     r["run_id"] == s["produced_by_run"] for r in P.d["deposition_runs"]):
@@ -292,6 +318,54 @@ ul{margin:6px 0;padding-left:19px}li{margin:3px 0}
 """
 
 
+def classify_cardinality(linked_cases, branches, all_cases):
+    """(status, detail) for a ResultSeries -> ExperimentalCase cardinality.
+
+    A ResultSeries is NOT required to map to one ExperimentalCase. A single measured curve
+    that sweeps a design factor legitimately spans every branch of that factor, and each
+    branch is a distinct deposition. That is structured fan-out, not an unresolved
+    identity.
+
+      SINGLE_CASE            one case (or none)
+      EXPLAINED_MULTI_CASE   several cases, ALL of them reached by DesignBranches that
+                             this result's own Measurement carries
+      UNEXPLAINED_MULTI_CASE several cases that those branches do not account for
+
+    The verdict comes from object linkage only -- a branch reaches a case through its
+    recorded candidate/case links. Condition equality and matching nominal fingerprints
+    are never consulted, and branches belonging to another Measurement are never passed in,
+    so they cannot explain anything here. A branch set that explains only part of the
+    linked cases leaves the result UNEXPLAINED rather than partially credited.
+    """
+    linked = set(linked_cases or [])
+    if len(linked) <= 1:
+        return "SINGLE_CASE", {"linked": sorted(linked), "branches": [],
+                               "explained": sorted(linked), "factor": None,
+                               "values": [], "designs": [], "missing": []}
+    explained, values = set(), []
+    for b in (branches or []):
+        explained |= set(b.get("realises_case_ids") or [])
+        cand = set(b.get("candidate_ids")
+                   or ([b["candidate_id"]] if b.get("candidate_id") else []))
+        if cand:
+            for c in (all_cases or []):
+                if cand & set(c.get("candidate_ids") or []):
+                    explained.add(c["case_id"])
+        values.append(b.get("value"))
+    factors = sorted({b.get("quantity") for b in (branches or []) if b.get("quantity")})
+    missing = sorted(linked - explained)
+    detail = {"linked": sorted(linked),
+              "branches": [b.get("branch_id") for b in (branches or [])],
+              "explained": sorted(explained), "values": values,
+              "factor": " + ".join(factors) if factors else None,
+              "designs": sorted({b.get("design_id") for b in (branches or [])
+                                 if b.get("design_id")}),
+              "missing": missing}
+    if branches and not missing:
+        return "EXPLAINED_MULTI_CASE", detail
+    return "UNEXPLAINED_MULTI_CASE", detail
+
+
 def table(headers, rows, cls=""):
     h = "".join("<th>%s</th>" % esc(x) for x in headers)
     b = "".join("<tr>%s</tr>" % "".join("<td>%s</td>" % c for c in r) for r in rows)
@@ -329,6 +403,35 @@ def build(papers, findings, PROV):
                      ("indistinguishable cases", n_ind)):
         A("<div><b>%s</b><span>%s</span></div>" % (esc(val), esc(lbl)))
     A("</div>")
+    card = Counter(r["cardinality"] for rs in all_rows.values() for r in rs)
+    het = 0
+    for pid, p in papers.items():
+        lab = defaultdict(set)
+        for r in p.d["result_series"]:
+            l = (r.get("source") or {}).get("series")
+            if r.get("produced_by") and l:
+                lab[r["produced_by"]].add(l)
+        het += sum(1 for v in lab.values() if len(v) > 1)
+    A("<h2>ResultSeries &#8594; ExperimentalCase cardinality</h2>")
+    A('<div class="note">A ResultSeries is <b>not</b> required to map to one '
+      'ExperimentalCase. One measured curve that sweeps a design factor legitimately '
+      'spans every branch of that factor, and each branch is a distinct deposition. Such '
+      'a result is <b>explained structured fan-out</b>, not an unresolved identity, and '
+      'does not count as a consistency finding. It is counted separately below and its '
+      'branches are shown, so the audit trail is kept rather than hidden.</div>')
+    A(table(["class", "count", "meaning"],
+            [[pill("SINGLE_CASE", GREEN), "<b>%d</b>" % card.get("SINGLE_CASE", 0),
+              "resolves to exactly one ExperimentalCase (includes results with none)"],
+             [pill("EXPLAINED_MULTI_CASE", GREEN),
+              "<b>%d</b>" % card.get("EXPLAINED_MULTI_CASE", 0),
+              "spans several cases, and its own Measurement's DesignBranches account for "
+              "every one of them"],
+             [pill("UNEXPLAINED_MULTI_CASE", RED),
+              "<b>%d</b>" % card.get("UNEXPLAINED_MULTI_CASE", 0),
+              "spans several cases its own branches do NOT explain &mdash; review "
+              "required"],
+             [pill("heterogeneous producer", RED if het else GREEN), "<b>%d</b>" % het,
+              "one Measurement carrying curves with different legend labels"]]))
     A('<div class="note"><b>Status key.</b> %s resolved with positive evidence &nbsp; '
       '%s scientifically provisional or indistinguishable &nbsp; %s a measurement or '
       'representation needing no deposition-case identity &nbsp; %s contradiction or '
@@ -396,9 +499,11 @@ def build(papers, findings, PROV):
                     elif n == 1:
                         seen_case[r["cases"][0]] = (
                             "panel %s" % (pan or "-") if pan else "above")
+                    elif n > 1 and r["cardinality"] == "EXPLAINED_MULTI_CASE":
+                        case = "%d cases via %s branches" % (n, r["card"]["factor"] or "?")
+                        tag = "   <-- sweep spanning %d branches of one design" % n
                     elif n > 1:
-                        tag = "   <-- one Measurement serves several cases; this curve's "\
-                              "identity is not resolved to one of them"
+                        tag = "   <-- reaches %d cases its own branches do not explain" % n
                     br = (" -> %s" % r["branches"][0].split("::")[-1]) if r["branches"] else ""
                     smp = (" -> Sample %s" % ",".join(r["samples"])) if r["samples"] else ""
                     lines.append("    %-26s%s -> %s%s%s"
@@ -426,10 +531,20 @@ def build(papers, findings, PROV):
                         esc(r["factor"]) or '<span class="d">-</span>',
                         "<code>%s</code>" % esc(", ".join(str(v) for v in r["branch_values"]))
                         or '<span class="d">-</span>',
-                        ("<code>%s</code>" % esc(r["cases"][0])) if len(r["cases"]) == 1
-                        else (pill("AMBIGUOUS: %d cases" % len(r["cases"]), RED)
+                        ("<code>%s</code>" % esc(r["cases"][0]))
+                        if r["cardinality"] == "SINGLE_CASE" and r["cases"]
+                        else (pill("EXPLAINED MULTI-CASE: %d" % len(r["cases"]), GREEN)
+                              + '<br><span class="d">%d ExperimentalCases via %s '
+                                'DesignBranches%s</span>'
+                              % (len(r["cases"]), esc(r["card"]["factor"] or "?"),
+                                 (": " + esc(", ".join(str(v) for v in r["card"]["values"])))
+                                 if r["card"]["values"] else "")
                               + '<br><span class="mono d">%s</span>'
                               % esc(", ".join(r["cases"])))
+                        if r["cardinality"] == "EXPLAINED_MULTI_CASE"
+                        else (pill("UNEXPLAINED MULTI-CASE: %d" % len(r["cases"]), RED)
+                              + '<br><span class="mono d">unexplained: %s</span>'
+                              % esc(", ".join(r["card"]["missing"]) or "no branch structure"))
                         if r["cases"]
                         else pill("UNRESOLVED", YELLOW if r["unresolved_reason"] else GRAY),
                         esc(", ".join(r["samples"])) or '<span class="d">-</span>',

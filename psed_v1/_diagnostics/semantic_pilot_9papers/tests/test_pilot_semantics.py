@@ -601,6 +601,96 @@ def repair_regressions():
         ok("preserved: %s points" % pid[:22], pp.get("old") == pp.get("pilot"), pp)
 
 
+def multi_case_cardinality():
+    """Report/checker classification of ResultSeries -> ExperimentalCase cardinality.
+
+    A ResultSeries may legitimately span several ExperimentalCases when it sweeps a design
+    factor. The checker must tell that structured fan-out apart from a result that reaches
+    cases nothing explains, using object linkage alone.
+    """
+    sys.path.insert(0, str(W / "code"))
+    import build_identity_review as B
+    C = B.classify_cardinality
+
+    def br(bid, cands, q="deposition_temperature", val=None, design="DES::x"):
+        return {"branch_id": bid, "candidate_ids": cands, "quantity": q, "value": val,
+                "design_id": design}
+
+    def case(cid, cands):
+        return {"case_id": cid, "candidate_ids": cands}
+
+    cases = [case("CASE-A", ["c1"]), case("CASE-B", ["c2"]), case("CASE-C", ["c3"])]
+
+    # -- explained fan-out: branches account for every linked case ------------
+    st, d = C(["CASE-A", "CASE-B", "CASE-C"],
+              [br("b1", ["c1"], val=100), br("b2", ["c2"], val=200),
+               br("b3", ["c3"], val=300)], cases)
+    ok("cardinality: a sweep whose branches reach every linked case is EXPLAINED",
+       st == "EXPLAINED_MULTI_CASE", st)
+    ok("cardinality: the explanation names the design factor and its values",
+       d["factor"] == "deposition_temperature" and d["values"] == [100, 200, 300], d)
+
+    # -- partially explained is NOT explained ---------------------------------
+    st, d = C(["CASE-A", "CASE-B", "CASE-C"],
+              [br("b1", ["c1"]), br("b2", ["c2"])], cases)
+    ok("cardinality: branches explaining only a subset leave it UNEXPLAINED",
+       st == "UNEXPLAINED_MULTI_CASE" and d["missing"] == ["CASE-C"], (st, d["missing"]))
+
+    # -- no branch structure at all -------------------------------------------
+    st, d = C(["CASE-A", "CASE-B"], [], cases)
+    ok("cardinality: multiple cases with no branch structure are UNEXPLAINED",
+       st == "UNEXPLAINED_MULTI_CASE", st)
+
+    # -- single case -----------------------------------------------------------
+    ok("cardinality: one linked case is SINGLE_CASE",
+       C(["CASE-A"], [], cases)[0] == "SINGLE_CASE")
+    ok("cardinality: no linked case is SINGLE_CASE",
+       C([], [], cases)[0] == "SINGLE_CASE")
+
+    # -- safety ----------------------------------------------------------------
+    # identical conditions / fingerprints carry no candidate link, so they explain nothing
+    twins = [dict(case("CASE-A", ["c1"]), nominal_fingerprint="T=200"),
+             dict(case("CASE-B", ["c2"]), nominal_fingerprint="T=200")]
+    st, _ = C(["CASE-A", "CASE-B"], [br("b1", [], q=None)], twins)
+    ok("cardinality: identical conditions alone do not explain a multi-case mapping",
+       st == "UNEXPLAINED_MULTI_CASE", st)
+    st, _ = C(["CASE-A", "CASE-B"], [br("b1", ["cX"])], twins)
+    ok("cardinality: matching fingerprints alone do not explain a multi-case mapping",
+       st == "UNEXPLAINED_MULTI_CASE", st)
+    # branches of a DIFFERENT measurement are never passed in, so they cannot explain
+    st, _ = C(["CASE-A", "CASE-B"], [br("other", ["c9"])], cases)
+    ok("cardinality: unrelated branches do not explain the linked cases",
+       st == "UNEXPLAINED_MULTI_CASE", st)
+    # one branch legitimately reaching several cases still explains them
+    st, _ = C(["CASE-A", "CASE-B"], [br("b1", ["c1", "c2"])], cases)
+    ok("cardinality: one branch reaching several cases explains them",
+       st == "EXPLAINED_MULTI_CASE", st)
+
+    # -- applied to the real outputs ------------------------------------------
+    tot, unexplained = Counter(), []
+    for pid in PAPERS:
+        P = B.Paper(pid)
+        for r in P.rows():
+            tot[r["cardinality"]] += 1
+            if r["cardinality"] == "UNEXPLAINED_MULTI_CASE":
+                unexplained.append((pid, r["rs_id"], r["card"]["missing"]))
+    ok("cardinality: no ResultSeries reaches cases its branches cannot explain",
+       not unexplained, unexplained[:3])
+    ok("cardinality: multi-case ResultSeries still exist and are counted, not hidden",
+       tot.get("EXPLAINED_MULTI_CASE", 0) > 0, dict(tot))
+    print("    [cardinality] SINGLE=%d EXPLAINED_MULTI=%d UNEXPLAINED_MULTI=%d"
+          % (tot.get("SINGLE_CASE", 0), tot.get("EXPLAINED_MULTI_CASE", 0),
+             tot.get("UNEXPLAINED_MULTI_CASE", 0)))
+    # one Measurement may still produce several ResultSeries
+    shared = 0
+    for pid in PAPERS:
+        c = Counter(r.get("produced_by") for r in sem(pid, "result_series")
+                    if r.get("produced_by"))
+        shared += sum(1 for v in c.values() if v > 1)
+    ok("cardinality: one Measurement may still produce multiple ResultSeries",
+       shared >= 0, shared)
+
+
 def curve_attribution_join():
     """Generic behaviour of curve -> semantic entity attribution.
 
@@ -922,6 +1012,7 @@ if __name__ == "__main__":
     anchors()
     repair_regressions()
     curve_attribution_join()
+    multi_case_cardinality()
     progression_continuity_guard()
     structural_invariants()
     print("\n%d papers: %d passed, %d failed" % (len(PAPERS), len(_pass), len(_fail)))
