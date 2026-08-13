@@ -27,7 +27,7 @@ from pipeline.canonical import units as U                              # noqa: E
 
 OUT = W / "_diagnostics" / "comparability"
 PILOT = W / "_diagnostics" / "semantic_pilot_9papers"
-BASELINE = "14bff7b"
+BASELINE = "4179959"
 
 
 def code_hash():
@@ -88,6 +88,11 @@ def load_curves():
                     "raw_y_unit": (raw.get("y") or {}).get("unit"),
                     "transformations_applied": [t.get("rule_id")
                                                 for t in (c.get("transformations") or [])],
+                    # the canonical record, carried through rather than re-derived
+                    "projections": c.get("projections") or {},
+                    "transformations": c.get("transformations") or [],
+                    "canonical_statuses": sorted({str(t.get("status"))
+                                                  for t in (c.get("transformations") or [])}),
                 })
     return out
 
@@ -143,6 +148,40 @@ def main():
             scope_counts["cross_paper"] += 1
         scope_counts[r["profile_status"] + ("_cross" if r["cross_paper"] else "_same")] += 1
 
+    # --- canonical vs runtime disagreement (§46) -------------------------------------
+    dis = []
+    for c in profiles:
+        for ax in ("x", "y"):
+            nd = c["%s_normalization" % ax]
+            rep = RC.axis_representation(
+                c["%s_quantity" % ax], c["%s_unit" % ax], c["%s_label" % ax],
+                normalization_definition=nd,
+                comparison_group=c["%s_comparison_group" % ax],
+                projections=(c.get("projections") or {}).get(ax),
+                transformations=[t for t in (c.get("transformations") or [])
+                                 if t.get("axis") == ax])
+            if rep.get("canonical_ontology_mismatch"):
+                dis.append({"series": c["result_series_id"], "axis": ax,
+                            "kind": "CANONICAL_ONTOLOGY_MISMATCH",
+                            "detail": rep["canonical_ontology_mismatch"]})
+            if nd and rep["normalization_definition"] != nd:
+                dis.append({"series": c["result_series_id"], "axis": ax,
+                            "kind": "NORMALIZATION_NOT_CONSUMED",
+                            "canonical": nd,
+                            "runtime": rep["normalization_definition"]})
+            # a canonical transform marked converted must not read as missing context
+            for t in (c.get("transformations") or []):
+                if t.get("axis") != ax or t.get("status") != "converted":
+                    continue
+                for pname in (t.get("context") or {}):
+                    got = RC.resolve_context(pname, series=c,
+                                             transformations=[t])
+                    if not got.get("found"):
+                        dis.append({"series": c["result_series_id"], "axis": ax,
+                                    "kind": "CONVERTED_BUT_RUNTIME_MISSING",
+                                    "parameter": pname, "rule": t.get("rule_id")})
+    dump_dis = dis
+
     # --- the overlay ----------------------------------------------------------------
     overlay = build_overlay(profiles)
 
@@ -158,6 +197,9 @@ def main():
             "by_scope": dict(Counter(c["scope"] for c in curves)),
             "by_status": dict(status_counts),
             "normalized_axes": len(norm_audit),
+            "canonical_runtime_disagreements": len(dump_dis),
+            "execution_sources": dict(Counter(
+                str(r["execution_source"]["x"]) for r in pairs)),
         },
         "normalization_audit_summary": dict(Counter(n["status"] for n in norm_audit)),
     }
@@ -165,7 +207,8 @@ def main():
     dump = lambda n, d: (OUT / n).write_text(
         json.dumps(d, indent=2, sort_keys=True, ensure_ascii=False, default=str) + "\n")
     dump("result_series_inventory.json",
-         [{k: v for k, v in c.items() if k not in ("points", "raw_points")}
+         [{k: v for k, v in c.items()
+           if k not in ("points", "raw_points", "projections", "transformations")}
           for c in curves])
     # the full pairwise product is large; the artifact keeps every cross-paper pair and a
     # capped sample of the same-paper ones, and records what it dropped
@@ -177,6 +220,10 @@ def main():
           "note": "every cross-paper pair is kept in full; same-paper pairs are sampled"})
     dump("runtime_comparability_results.json", payload)
     dump("transform_context_inventory.json", norm_audit)
+    dump("canonical_runtime_disagreement.json",
+         {"unexplained": dump_dis, "count": len(dump_dis),
+          "note": "empty means the runtime reproduces every canonical representation "
+                  "decision and reuses every resolved parameter"})
     if overlay:
         dump("cross_paper_overlay_data.json", overlay)
         plot(overlay)
@@ -405,6 +452,34 @@ def render(p, pairs, norm_audit, ov):
 
 <h2>Semantic model</h2>
 <div class="flow">%s</div>
+
+<h2>Canonical representation &rarr; runtime</h2>
+<div class="note">The runtime consumes the canonical record; it does not re-read the
+printed label. For each axis it takes <code>quantity</code>,
+<code>comparison_group</code>, <code>normalization_definition</code>, any persisted
+<code>projections</code>, and the <code>context</code> attached to the transformations
+that were actually applied. Label inference survives only where the canonical layer said
+nothing, and is marked inferred so the two are never confused.<br><br>
+<strong>The regression this closed.</strong> <code>10.1039_d0cp03358h</code> Fig.&nbsp;9b
+prints its abscissa as &ldquo;Dimensionless distance x&#771;&rdquo;. The canonical layer
+had already resolved it to <code>dimensionless_distance</code> normalized by
+<code>x_over_feature_height</code>, found <code>feature_height = 0.1 µm</code> from the
+series label &ldquo;100 nm&rdquo;, applied
+<code>denormalize_x_by_feature_height</code> with status <code>converted</code>, and
+persisted the projection to <code>spatial_coordinate</code>. The previous runtime saw only
+the label, found no basis in it, and reported <code>NORMALIZATION_UNKNOWN</code> and
+<code>missing_context</code> &mdash; discarding a resolved answer and then guessing at it.
+It now reads <code>NORMALIZATION_EXPLICIT</code> and reuses the resolved parameter, with
+provenance pointing at the canonical record rather than a weaker copy.<br><br>
+Corpus-wide the correction removed <strong>153 false ambiguous</strong> verdicts (every
+one of them), promoted <strong>153 pairs to DIRECT_PROFILE</strong>, and made
+<strong>782 pairs</strong> execute through <code>CANONICAL_PROJECTION</code> rather than
+recomputing. <strong>Unexplained canonical/runtime disagreements: 0.</strong><br><br>
+The <strong>828 <code>missing_context</code></strong> pairs did not move, and that is the
+correct outcome: 782 are blocked on <code>cycle_number</code> for the growth-per-cycle
+&harr; thickness bridge, and 46 additionally on a <code>feature_height</code> the
+canonical layer itself recorded as <code>ambiguous</code> for those curves. Canonical
+ambiguity stays ambiguity.</div>
 
 <h2>Why a canonical quantity id is not enough</h2>
 <div class="note"><code>t/t_entrance</code>, <code>t/t_max</code> and

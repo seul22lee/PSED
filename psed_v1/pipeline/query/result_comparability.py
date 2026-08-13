@@ -86,18 +86,36 @@ def canonical_unit(quantity):
     return GROUPS[g].get("canonical_unit") if g else _vocab.quantity_unit(quantity)
 
 
-def axis_representation(quantity, unit, raw_label=None):
+def axis_representation(quantity, unit, raw_label=None, normalization_definition=None,
+                        comparison_group=None, projections=None, transformations=None):
     """What an axis actually represents, beyond its canonical quantity.
 
-    Returns a dict carrying the normalization identity when the axis is a normalized one.
-    A normalized axis whose basis is not stated is reported UNKNOWN rather than assumed --
-    that distinction is the whole reason this function exists.
+    The canonical layer is authoritative. It already decided that a printed
+    "Dimensionless distance x̃" is `dimensionless_distance` normalized by
+    `x_over_feature_height`, and re-deriving that from the label throws the answer away
+    and then guesses at it -- which is how a fully resolved axis came back UNKNOWN.
+
+    Reading the label is the fallback for axes the canonical layer said nothing about, and
+    an inference made that way is marked as inferred so the two are never confused.
     """
     rep = {"quantity": quantity, "unit": unit, "raw_label": raw_label,
-           "comparison_group": group_of(quantity),
+           "comparison_group": comparison_group or group_of(quantity),
+           "canonical_comparison_group": comparison_group,
            "normalized": quantity in _NORMALIZED_QUANTITIES,
            "normalization_definition": None,
-           "normalization_status": None, "normalization_evidence": None}
+           "normalization_status": None, "normalization_evidence": None,
+           "projections": list(projections or []),
+           "transformations": list(transformations or [])}
+    if comparison_group and group_of(quantity) and comparison_group != group_of(quantity):
+        rep["canonical_ontology_mismatch"] = {
+            "canonical": comparison_group, "ontology_lookup": group_of(quantity)}
+    if normalization_definition:
+        rep.update(normalization_definition=normalization_definition,
+                   normalized=True,
+                   normalization_status=NORMALIZATION_EXPLICIT,
+                   normalization_evidence="the canonical record declares %r"
+                                          % normalization_definition)
+        return rep
     if not rep["normalized"]:
         return rep
     lab = str(raw_label or "")
@@ -116,7 +134,30 @@ def axis_representation(quantity, unit, raw_label=None):
 
 
 # --- context resolution ------------------------------------------------------------
-def resolve_context(parameter, case=None, series=None, paper_records=None):
+def canonical_context(parameter, transformations):
+    """A parameter the canonical layer already resolved for this very curve.
+
+    This outranks every other source: it is the value that was actually used to produce
+    the persisted canonical coordinates, so re-deriving it elsewhere risks disagreeing
+    with the numbers already on disk.
+    """
+    for t in transformations or []:
+        ctx = (t.get("context") or {}).get(parameter)
+        if ctx and ctx.get("value") is not None and ctx.get("status") == "resolved":
+            return {"parameter": parameter, "value": ctx.get("value"),
+                    "unit": ctx.get("unit"), "found": True,
+                    "source_object": "canonical transformation %s" % t.get("rule_id"),
+                    "source_field": "transformations[].context.%s" % parameter,
+                    "source_evidence": ctx.get("evidence"),
+                    "source_location": ctx.get("source_location"),
+                    "provenance_type": "canonical_transform_context",
+                    "confidence": ctx.get("confidence"),
+                    "canonical_status": t.get("status")}
+    return None
+
+
+def resolve_context(parameter, case=None, series=None, paper_records=None,
+                    transformations=None):
     """Find a transform parameter in the knowledge graph, with its provenance.
 
     Searches only places that carry evidence for THIS result: the case's own conditions
@@ -124,6 +165,10 @@ def resolve_context(parameter, case=None, series=None, paper_records=None):
     height mentioned somewhere in a paper is not thereby the feature height of this
     profile, and a transform built on that would be untraceable.
     """
+    got = canonical_context(parameter, transformations
+                            or (series or {}).get("transformations"))
+    if got:
+        return got
     if case:
         for c in (case.get("case_defining_conditions") or []):
             if c.get("quantity") == parameter and c.get("value") is not None:
@@ -212,6 +257,26 @@ def compare_axis(a, b, a_case=None, b_case=None, a_series=None, b_series=None):
                           % (ua, ub))
         return out
 
+    # A projection the canonical layer already computed IS the common representation:
+    # it was produced from this curve's own resolved context and its values are on disk.
+    # Recomputing it would risk disagreeing with the numbers already published.
+    for side, other in ((a, b), (b, a)):
+        for pj in side.get("projections") or []:
+            if pj.get("quantity") == other["quantity"]:
+                out.update(status=TRANSFORMABLE_EXACT,
+                           reason="the canonical layer already projects %s to %s (%s), so "
+                                  "the common representation exists on disk"
+                                  % (side["quantity"], other["quantity"],
+                                     pj.get("from_normalization") or "declared rule"),
+                           semantically_transformable=True,
+                           operationally_transformable_now=True)
+                out["execution_source"] = "CANONICAL_PROJECTION"
+                out["projection"] = {k: v for k, v in pj.items() if k != "values"}
+                out["common_representation"] = {"quantity": pj.get("quantity"),
+                                                "unit": pj.get("unit"),
+                                                "comparison_group": pj.get("comparison_group")}
+                return out
+
     t, direction = transform_for(a["quantity"], b["quantity"])
     if not t:
         out.update(status=NOT_COMPARABLE,
@@ -229,13 +294,18 @@ def compare_axis(a, b, a_case=None, b_case=None, a_series=None, b_series=None):
                    operationally_transformable_now=True)
         return out
     out["required_context"] = [bridge]
-    ctx = resolve_context(bridge, case=a_case or b_case, series=a_series or b_series)
+    ctx = resolve_context(bridge, case=a_case or b_case, series=a_series or b_series,
+                          transformations=(a.get("transformations") or [])
+                          + (b.get("transformations") or []))
     if ctx["found"]:
         out["available_context"] = [ctx]
         out.update(status=TRANSFORMABLE_WITH_CONTEXT,
-                   reason="declared transform via %s, and %s is available" % (t.get("op"),
-                                                                              bridge),
+                   reason="declared transform via %s, and %s is available from %s"
+                          % (t.get("op"), bridge, ctx.get("source_object")),
                    operationally_transformable_now=True)
+        out["execution_source"] = ("CANONICAL_CONTEXT"
+                                   if ctx.get("provenance_type")
+                                   == "canonical_transform_context" else "RUNTIME_TRANSFORM")
     else:
         out["missing_context"] = [bridge]
         out.update(status=MISSING_CONTEXT,
@@ -246,16 +316,17 @@ def compare_axis(a, b, a_case=None, b_case=None, a_series=None, b_series=None):
 
 def compare_result_series(a, b, a_case=None, b_case=None):
     """Whole-profile comparability: both axes, then the profile-level verdict."""
-    ax = compare_axis(axis_representation(a.get("x_quantity"), a.get("x_unit"),
-                                          a.get("x_label")),
-                      axis_representation(b.get("x_quantity"), b.get("x_unit"),
-                                          b.get("x_label")),
-                      a_case, b_case, a, b)
-    ay = compare_axis(axis_representation(a.get("y_quantity"), a.get("y_unit"),
-                                          a.get("y_label")),
-                      axis_representation(b.get("y_quantity"), b.get("y_unit"),
-                                          b.get("y_label")),
-                      a_case, b_case, a, b)
+    def rep(s_, ax_):
+        return axis_representation(
+            s_.get("%s_quantity" % ax_), s_.get("%s_unit" % ax_),
+            s_.get("%s_label" % ax_),
+            normalization_definition=s_.get("%s_normalization" % ax_),
+            comparison_group=s_.get("%s_comparison_group" % ax_),
+            projections=(s_.get("projections") or {}).get(ax_),
+            transformations=[t for t in (s_.get("transformations") or [])
+                             if t.get("axis") == ax_])
+    ax = compare_axis(rep(a, "x"), rep(b, "x"), a_case, b_case, a, b)
+    ay = compare_axis(rep(a, "y"), rep(b, "y"), a_case, b_case, a, b)
     ok = {DIRECT, UNIT_CONVERTIBLE, TRANSFORMABLE_EXACT, TRANSFORMABLE_WITH_CONTEXT}
     if ax["status"] in ok and ay["status"] in ok:
         verdict = (DIRECT_PROFILE if ax["status"] == DIRECT and ay["status"] == DIRECT
@@ -278,6 +349,10 @@ def compare_result_series(a, b, a_case=None, b_case=None):
         "b": {"paper_id": b.get("paper_id"), "series": b.get("result_series_id"),
               "data_source": b.get("data_source")},
         "profile_status": verdict, "x": ax, "y": ay,
+        "common_representation": {"x": ax.get("common_representation"),
+                                  "y": ay.get("common_representation")},
+        "execution_source": {"x": ax.get("execution_source"),
+                             "y": ay.get("execution_source")},
         "cross_paper": a.get("paper_id") != b.get("paper_id"),
         "provenance_note": ("comparability of REPRESENTATION only; it does not assert the "
                             "two experiments were run under equivalent conditions"),
@@ -303,6 +378,23 @@ def transform_series(series, target_unit=None, normalization=None, context=None)
                       "invertible": True, "parameters": None})
     if normalization:
         nd = NORMALIZATIONS[normalization]
+        # A normalization definition names the quantity it divides. Applying t/t_max to a
+        # growth-per-cycle curve would produce numbers and destroy the measurand, so the
+        # numerator has to match before anything is divided.
+        num = nd.get("numerator")
+        if num and series.get("y_quantity") and series["y_quantity"] != num:
+            return {"source_series_id": series.get("result_series_id"),
+                    "status": "not_applicable",
+                    "reason": "%s normalizes %s, but this series' y is %s"
+                              % (normalization, num, series["y_quantity"]),
+                    "normalization_definition": normalization,
+                    "points": None, "transformations": []}
+        if not context or not context.get("found") or context.get("value") in (None, 0):
+            return {"source_series_id": series.get("result_series_id"),
+                    "status": "missing_context",
+                    "reason": "%s needs a denominator and none was resolved" % normalization,
+                    "normalization_definition": normalization,
+                    "points": None, "transformations": []}
         ref = context["value"]
         ys = [(v / ref) if v is not None else None for v in ys]
         steps.append({"axis": "y", "type": "reference_value_normalization",
