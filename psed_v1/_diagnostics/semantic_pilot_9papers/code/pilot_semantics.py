@@ -42,6 +42,37 @@ SIMULATION_CLASSES = {"SimulationRun", "ModelSweep"}
 NON_EXPERIMENTAL = SIMULATION_CLASSES | {"ImportedLiteratureObservation", "Fit",
                                          "DerivedRepresentation", "UnresolvedSourceEntity"}
 
+#: How the resolver's per-series source kind projects onto the coarse `data_source`
+#: vocabulary. `data_source` answers only "were these numbers measured, or produced by a
+#: model?", so a fit and a calculation give the same answer. The finer distinction is not
+#: lost: it stays on the entity as `series_source_kind`, and in `entity_class`
+#: (Fit / ModelSweep / SimulationRun), which is where it belongs.
+_SERIES_KIND_SOURCE = {"measured": "measured",
+                       "calculated": "simulated",
+                       "fitted": "simulated"}
+
+
+def effective_data_source(base_source, entity):
+    """The origin of one series' numbers: its own evidence first, the panel's second.
+
+    `base_source` is panel-or-figure provenance, and a panel is the FINEST scope the
+    extraction layer can express. One panel may still hold a measured curve and the model
+    curve drawn over it, and broadcasting the panel value to both labelled the model
+    curve `measured` -- an experimental claim the paper never makes.
+
+    The resolver has already decided this per series and persisted it as
+    `series_source_kind`; this only projects that decision onto the coarse vocabulary. It
+    is not a second identity resolver and never re-reads a label or a caption.
+
+    Only POSITIVE series evidence overrides. `unknown` means the series said nothing
+    about itself, which is not a contradiction of the panel -- the panel value is real
+    evidence and is kept. When neither scope knows, the answer stays None: an unknown
+    origin is not an experimental one. Producer class is deliberately not consulted; a
+    SimulationRun does not get `simulated` for free, because that would state as
+    provenance what was only ever a classification.
+    """
+    return _SERIES_KIND_SOURCE.get((entity or {}).get("series_source_kind"), base_source)
+
 
 def _clean(t):
     t = (t or "").replace("/uniFB01", "fi").replace("/uniFB02", "fl").replace("/uniFB00", "ff")
@@ -485,7 +516,7 @@ def build(pid):
                            "json_pointer": src.get("json_pointer"),
                            "source_checksum": src.get("source_checksum"),
                            "linked_experiment_ids": src.get("linked_experiment_ids") or []},
-                "data_source": src.get("data_source"),
+                "data_source": effective_data_source(src.get("data_source"), ent),
                 "x_quantity": ((c.get("semantics") or {}).get("x") or {}).get("canonical_quantity")
                               or (c.get("raw") or {}).get("x", {}).get("quantity"),
                 "y_quantity": ((c.get("semantics") or {}).get("y") or {}).get("canonical_quantity")
