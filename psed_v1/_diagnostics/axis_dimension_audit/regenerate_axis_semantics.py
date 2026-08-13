@@ -32,6 +32,7 @@ sys.path.insert(0, str(W))
 
 from ontology import vocab as lib                                  # noqa: E402
 from pipeline.canonical import axis_roles as caxis                 # noqa: E402
+from pipeline.figures.figure_extract import effective_axis         # noqa: E402
 from pipeline.resolve.to_kb import _axis_canon                     # noqa: E402
 
 PILOT = W / "_diagnostics" / "semantic_pilot_9papers"
@@ -44,21 +45,43 @@ def _canon(label):
 
 
 def raw_axis_index(pid):
-    """(printed_figure, panel, axis) -> raw quantity, as extraction wrote it.
+    """Raw axis quantities as extraction wrote them, keyed by record identity.
 
-    Keyed on record identity. Two panels may print the same label and mean different
-    quantities; that is exactly what this index must not lose.
+        (printed_figure, panel, axis)                  -- the panel axis
+        (printed_figure, panel, series_label, axis)     -- when a series owns its own axis
+
+    Two panels may print the same label and mean different quantities, and within one
+    panel a curve read against its OWN axis carries different semantics again. Neither
+    distinction may be lost, so nothing here is keyed on label text.
+
+    The series entry is added under exactly the condition production uses
+    (`_axis_labels` in to_kb): `effective_axis` reports the series owns the axis. A panel
+    axis genuinely shared by every curve stays shared -- the goal is production-equivalent
+    provenance, not maximal key uniqueness.
     """
-    idx, fd = {}, PILOT / "papers" / pid / "extracted" / "figure_data.json"
-    if not fd.exists():
-        return idx
-    for fig in json.loads(fd.read_text()).get("figures") or []:
+    fd = PILOT / "papers" / pid / "extracted" / "figure_data.json"
+    return build_index(json.loads(fd.read_text())) if fd.exists() else {}
+
+
+def build_index(figure_data):
+    """The index itself, separated from file loading so it can be tested directly."""
+    idx = {}
+    for fig in (figure_data or {}).get("figures") or []:
         for pan in fig.get("panels") or []:
+            key = (str(fig.get("printed_figure")), str(pan.get("panel")))
             for axis in ("x", "y"):
                 a = pan.get(axis) or {}
                 if a.get("label_raw"):
-                    idx[(str(fig.get("printed_figure")), str(pan.get("panel")), axis)] = \
-                        a.get("quantity")
+                    idx[key + (axis,)] = a.get("quantity")
+            for ser in pan.get("series") or []:
+                s_x, x_own = effective_axis(pan.get("x"), ser.get("x"))
+                s_y, y_own = effective_axis(pan.get("y"), ser.get("y"))
+                if not (x_own or y_own):
+                    continue
+                slab = str(ser.get("label") or "").lower()
+                for axis, sem, own in (("x", s_x, x_own), ("y", s_y, y_own)):
+                    if own and (sem or {}).get("label_raw"):
+                        idx[key + (slab, axis)] = (sem or {}).get("quantity")
     return idx
 
 
@@ -84,7 +107,11 @@ def regenerate(pid, check=False):
             # record identity first; the snapshot's own raw_quantity is the fallback, and
             # it is already post-canonicalisation, so it is only used when extraction has
             # no record for this axis at all
-            raw = idx.get(key0 + (axis,), sem.get("raw_quantity"))
+            # series-owned axis first, then the panel axis, then the snapshot's own
+            # value (already post-canonicalisation, so only a last resort)
+            slab = str(e.get("source_series") or "").lower()
+            raw = idx.get(key0 + (slab, axis),
+                          idx.get(key0 + (axis,), sem.get("raw_quantity")))
             res = caxis.resolve_axis(raw_label=sem.get("raw_label"),
                                      raw_quantity=_axis_canon(raw),
                                      unit=sem.get("unit"), caption="", context="",
