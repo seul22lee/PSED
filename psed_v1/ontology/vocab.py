@@ -79,25 +79,70 @@ for _g in ("precursors", "coreactants"):
 def species_prop(sp, prop): return (SPECIES_PROP.get(str(sp)) or {}).get(prop) if sp else None
 
 
+#: the part of an axis label that states its UNIT -- parenthesised, bracketed, or after a
+#: '/' or ',' separator. Words from here describe the scale, not the quantity, so they may
+#: be dropped without losing meaning.
+_UNIT_REGION = re.compile(r"\(([^)]*)\)|\[([^\]]*)\]|[/,]\s*(.+)$")
+
+
+def _unit_words(label):
+    return {t for m in _UNIT_REGION.finditer(str(label))
+            for g in [next((x for x in m.groups() if x), "")]
+            for t in re.sub(r"[^a-z0-9 ]", " ", g.lower()).split()}
+
+
+def _quantity_words(qid):
+    """Every word the ontology itself uses for this quantity."""
+    m = QK_META.get(qid) or {}
+    return {t for s in [m.get("id", "")] + list(m.get("aliases") or [])
+            for t in str(s).lower().replace("_", " ").split()}
+
+
 def resolve_axis_label(label):
     """Canonicalise a plot AXIS LABEL to a quantity id. Strips '(units)',
     ln/log wrappers and symbol subscripts, then tries the full label and
     progressively shorter prefixes against ontology aliases (so a trailing
-    'x' / 'x̃' subscript doesn't block the match)."""
+    'x' / 'x̃' subscript doesn't block the match).
+
+    The prefix ladder used to have no floor: it dropped trailing words until ANY candidate
+    matched, so a label opening with a one-letter symbol always found that symbol's
+    quantity no matter what followed. "H_2 flow ratio" resolved to feature_height on the
+    bare "h" -- a dimensionless gas ratio asserted to be a geometric height, on a planar
+    film with no features. "W thickness" became feature_width, "Ar Sputter Time" became
+    aspect_ratio.
+
+    So a BARE SYMBOL may only win if nothing meaningful was thrown away to reach it. A
+    dropped word is meaningless here when it is a digit, a single letter (a subscript), a
+    word from the label's unit region, or a word the ontology already uses for that very
+    quantity -- which is what keeps the genuine subscript forms working: "deposition"
+    belongs to deposition_temperature, "chamber" to total_pressure, "channel" to
+    feature_length. "flow" and "ratio" belong to no reading of feature_height, so the
+    match is refused and the axis stays honestly unresolved.
+
+    Refusing is the whole point: the ontology has no flow-ratio quantity, and an
+    unresolved axis keeps its raw label and values while claiming nothing.
+    """
     if not label:
         return None
+    units = _unit_words(label)
     s = str(label).lower()
     s = re.sub(r"\b(ln|log10|log)\b", " ", s)        # drop log wrappers (keyword)
     s = re.sub(r"[^a-z0-9 ]", " ", s)                # drop ALL symbols incl. parens (keep content)
     toks = [t for t in s.split() if t]
-    cands = [label]
+    cands = [(label, None)]
     for k in range(len(toks), 0, -1):                # full -> drop trailing tokens
-        cands.append("_".join(toks[:k]))
-        cands.append(" ".join(toks[:k]))
-    for c in cands:
+        cands.append(("_".join(toks[:k]), k))
+        cands.append((" ".join(toks[:k]), k))
+    for c, k in cands:
         qid = QK.get(norm(c))
-        if qid:
-            return qid
+        if not qid:
+            continue
+        if k is not None and len(norm(c)) <= 2:
+            words = _quantity_words(qid)
+            if any(not (t.isdigit() or len(t) <= 1 or t in units or t in words)
+                   for t in toks[k:]):
+                continue                             # descriptive text this reading ignores
+        return qid
     return None
 
 
