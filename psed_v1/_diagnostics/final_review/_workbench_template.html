@@ -78,6 +78,26 @@ svg{display:block;max-width:100%}
 .card .l{color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em}
 details.prov{margin-top:5px}
 details.prov>summary{cursor:pointer;font-size:11.5px;color:var(--accent)}
+.facet{margin-bottom:11px;position:relative}
+.facet>button.fbtn{width:100%;text-align:left;display:flex;justify-content:space-between;
+gap:6px;align-items:center;font-size:12.5px}
+.pop{position:absolute;z-index:30;left:0;right:0;top:100%;margin-top:3px;background:var(--card);
+border:1px solid var(--line);border-radius:7px;box-shadow:0 6px 22px rgba(0,0,0,.18);
+padding:7px;max-height:270px;overflow:auto}
+.pop input.s{margin-bottom:6px}
+.opt{display:flex;justify-content:space-between;gap:8px;padding:3px 6px;border-radius:4px;
+cursor:pointer;font-size:12.5px}
+.opt:hover{background:var(--soft)}
+.opt.dis{opacity:.4;cursor:not-allowed}
+.opt .n{color:var(--mut);font-size:11px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.chip{background:var(--soft);border:1px solid var(--line);border-radius:99px;
+padding:1px 7px;font-size:11px;display:inline-flex;gap:5px;align-items:center}
+.chip b{font-weight:600}
+.chip .x{cursor:pointer;color:var(--bad);font-weight:700}
+#activebar{padding:0 0 10px}
+.dim{opacity:.42}
+.outside{border-color:var(--warn)!important}
 </style></head><body>
 
 <header>
@@ -91,29 +111,17 @@ details.prov>summary{cursor:pointer;font-size:11.5px;color:var(--accent)}
   </div>
 </header>
 
-<div class="view on" id="v-explore"><div class="layout">
-  <div class="panel">
-    <h3>Filters</h3>
-    <div class="fset"><label>Search</label><input type="text" id="f-q" placeholder="paper, case, label"></div>
-    <div class="fset"><label>Deposited material <span class="mut" id="c-mat"></span></label><select id="f-mat"></select></div>
-    <div class="fset"><label>Precursor</label><select id="f-prec"></select></div>
-    <div class="fset"><label>Co-reactant</label><select id="f-core"></select></div>
-    <div class="fset"><label>Result quantity <span class="mut">(y of a linked series)</span></label><select id="f-yq"></select></div>
-    <div class="fset"><label>Measurement technique</label><select id="f-tech"></select></div>
-    <div class="fset"><label>Geometry</label><select id="f-geo"></select></div>
-    <div class="fset"><label>Paper</label><select id="f-paper"></select></div>
-    <div class="fset"><label>Data source</label><select id="f-ds"></select></div>
-    <div class="fset"><label>Deposition temperature (°C)</label>
-      <div class="row2"><input type="number" id="f-tmin" placeholder="min"><input type="number" id="f-tmax" placeholder="max"></div></div>
-    <label class="chk"><input type="checkbox" id="f-prof"> Profile results only</label>
-    <label class="chk"><input type="checkbox" id="f-multi"> Cases with &gt;1 measurement</label>
-    <div style="margin-top:10px;display:flex;gap:6px">
-      <button id="f-reset">Reset</button><button id="f-csv">CSV</button></div>
-    <div class="mut" style="margin-top:9px;font-size:11.5px" id="f-count"></div>
+<div class="view on" id="v-explore">
+  <div id="activebar"></div>
+  <div class="layout">
+    <div class="panel" id="facets"></div>
+    <div>
+      <div id="counts" class="note" style="margin-top:0"></div>
+      <div id="caselist"></div><div id="pager" style="margin-top:10px"></div>
+      <details class="case" id="unlinked" style="margin-top:14px"></details>
+    </div>
   </div>
-  <div><div id="caselist"></div><div id="pager" style="margin-top:10px"></div>
-    <details class="case" id="unlinked" style="margin-top:14px"></details></div>
-</div></div>
+</div>
 
 <div class="view" id="v-compare"><div id="cmp"></div></div>
 <div class="view" id="v-summary"><div id="sum"></div></div>
@@ -150,61 +158,270 @@ function cond(cid, q) {
 }
 function condVal(cid, q) { const c = cond(cid, q)[0]; return c ? c.value : null; }
 
-// ---- filter option construction, entirely from the data ---------------------------
-function fill(id, vals, label) {
-  const s = $(id); s.innerHTML = "";
-  s.appendChild(new Option("Any" + (label ? " " + label : ""), ""));
-  vals.forEach(([v, n]) => s.appendChild(new Option(n ? `${v} (${n})` : v, v)));
-}
-function countBy(fn) {
-  const c = {}; Object.keys(E).forEach(cid => (fn(cid) || []).forEach(v => c[v] = (c[v] || 0) + 1));
-  return Object.entries(c).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-}
-fill("#f-mat", countBy(cid => E[cid].material ? [E[cid].material] : []));
-fill("#f-prec", countBy(cid => (E[cid].chemistry.precursor || [])));
-fill("#f-core", countBy(cid => (E[cid].chemistry.coreactant || [])));
-fill("#f-yq", countBy(cid => uniq(allSeriesOfCase(cid).map(s => (S[s].y || {}).quantity))));
-fill("#f-tech", countBy(cid => uniq(measOf(cid).map(m => M[m].technique))));
-fill("#f-geo", countBy(cid => E[cid].geometry ? [E[cid].geometry] : []));
-fill("#f-paper", countBy(cid => [E[cid].paper_id]));
-fill("#f-ds", countBy(cid => uniq(allSeriesOfCase(cid).map(s => S[s].data_source))));
+// ---- FACETED FILTER ENGINE --------------------------------------------------------
+// Facets are evaluated at their own entity level and joined existentially:
+//   Case satisfies case facets
+//   AND EXISTS Measurement satisfying measurement facets
+//       AND EXISTS ResultSeries in THAT measurement satisfying result facets
+// The nesting is what keeps "ellipsometry" and "film_thickness" bound to one
+// measurement instead of being satisfied by two unrelated ones in the same case.
+const FACETS = [
+  { id: "material",  label: "Deposition material", scope: "case",
+    vals: cid => E[cid].material ? [E[cid].material] : [] },
+  { id: "precursor", label: "Precursor", scope: "case",
+    vals: cid => E[cid].chemistry.precursor || [] },
+  { id: "coreactant", label: "Co-reactant", scope: "case",
+    vals: cid => E[cid].chemistry.coreactant || [] },
+  { id: "geometry",  label: "Geometry", scope: "case",
+    vals: cid => E[cid].geometry ? [E[cid].geometry] : [] },
+  { id: "paper",     label: "Paper", scope: "case", vals: cid => [E[cid].paper_id] },
+  { id: "technique", label: "Measurement technique", scope: "meas",
+    vals: mid => M[mid].technique ? [M[mid].technique] : [] },
+  { id: "quantity",  label: "Result quantity", scope: "result",
+    vals: sid => S[sid].y.quantity ? [S[sid].y.quantity] : [] },
+  { id: "xquantity", label: "Result coordinate", scope: "result",
+    vals: sid => S[sid].x.quantity ? [S[sid].x.quantity] : [] },
+  { id: "datasource", label: "Data source", scope: "result",
+    vals: sid => S[sid].data_source ? [S[sid].data_source] : [] },
+  { id: "normalization", label: "Normalization", scope: "result",
+    vals: sid => [S[sid].y.norm || (S[sid].y.quantity === "normalized_thickness"
+      ? "(basis unresolved)" : null)].filter(Boolean) },
+];
+const FBY = Object.fromEntries(FACETS.map(f => [f.id, f]));
+const active = Object.fromEntries(FACETS.map(f => [f.id, new Set()]));
+const NUM = { temperature: { q: "deposition_temperature", label: "Deposition temperature (°C)" },
+              pressure: { q: "working_pressure", label: "Working pressure" },
+              cycles: { q: "cycle_number", label: "Cycle count" },
+              aspect: { q: "aspect_ratio", label: "Aspect ratio" } };
+const nrange = Object.fromEntries(Object.keys(NUM).map(k => [k, { min: "", max: "" }]));
+let profileOnly = false, multiOnly = false, showUnavailable = false, onlyComparable = "";
+let qtext = "";
 
-// ---- filtering. Each filter is applied at its own entity level. -------------------
-let page = 0;
-function matches(cid) {
-  const e = E[cid], q = $("#f-q").value.toLowerCase();
-  if (q && !(cid + " " + e.paper_id + " " + (e.label || "") + " " +
-             (e.synthesis_label || "")).toLowerCase().includes(q)) return false;
-  const v = id => $(id).value;
-  if (v("#f-mat") && e.material !== v("#f-mat")) return false;
-  if (v("#f-prec") && !(e.chemistry.precursor || []).includes(v("#f-prec"))) return false;
-  if (v("#f-core") && !(e.chemistry.coreactant || []).includes(v("#f-core"))) return false;
-  if (v("#f-geo") && e.geometry !== v("#f-geo")) return false;
-  if (v("#f-paper") && e.paper_id !== v("#f-paper")) return false;
-  if (v("#f-multi" ) !== undefined && $("#f-multi").checked && measOf(cid).length < 2) return false;
-  // measurement-level and result-level filters must be satisfied by the SAME
-  // measurement when both are given, otherwise unrelated measurements could combine
-  const tech = v("#f-tech"), yq = v("#f-yq"), ds = v("#f-ds"), prof = $("#f-prof").checked;
-  if (tech || yq || ds || prof) {
-    const ok = measOf(cid).some(mid => {
-      if (tech && M[mid].technique !== tech) return false;
-      const ss = seriesOf(mid).filter(s =>
-        (!yq || (S[s].y || {}).quantity === yq) &&
-        (!ds || S[s].data_source === ds) && (!prof || S[s].is_profile));
-      return ss.length > 0;
-    });
-    if (!ok) return false;
-  }
-  const t = condVal(cid, "deposition_temperature"), lo = v("#f-tmin"), hi = v("#f-tmax");
-  if (lo || hi) {
-    const n = parseFloat(t);
-    if (!isFinite(n)) return false;                    // unresolved never passes a range
-    if (lo && n < parseFloat(lo)) return false;
-    if (hi && n > parseFloat(hi)) return false;
+function hit(set, vals) { return !set.size || vals.some(v => set.has(v)); }
+
+function numOK(cid, skip) {
+  for (const k of Object.keys(NUM)) {
+    if (k === skip) continue;
+    const r = nrange[k]; if (!r.min && !r.max) continue;
+    const c = ((E[cid] || {}).conditions || []).find(x => x.quantity === NUM[k].q);
+    const n = c ? parseFloat(c.value) : NaN;
+    if (!isFinite(n)) return false;                 // unresolved never passes a range
+    if (r.min !== "" && n < parseFloat(r.min)) return false;
+    if (r.max !== "" && n > parseFloat(r.max)) return false;
   }
   return true;
 }
 
+function seriesOK(sid, act) {
+  const s = S[sid];
+  if (profileOnly && !s.is_profile) return false;
+  if (onlyComparable && sel.length) {
+    const pol = { direct: ["DIRECT_PROFILE"],
+      transformable: ["DIRECT_PROFILE", "TRANSFORMABLE_PROFILE"],
+      missing: ["DIRECT_PROFILE", "TRANSFORMABLE_PROFILE", "missing_context"],
+      ambiguous: ["DIRECT_PROFILE", "TRANSFORMABLE_PROFILE", "missing_context", "ambiguous"]
+    }[onlyComparable] || [];
+    const okc = sel.some(t => { const p = pairOf(t, sid); return p && pol.includes(p.status); });
+    if (!okc && !sel.includes(sid)) return false;
+  }
+  for (const f of FACETS) if (f.scope === "result" && !hit(act[f.id], f.vals(sid))) return false;
+  return true;
+}
+function measOK(mid, act) {
+  for (const f of FACETS) if (f.scope === "meas" && !hit(act[f.id], f.vals(mid))) return false;
+  return true;
+}
+function hasResultFacets(act) {
+  return profileOnly || (onlyComparable && sel.length) ||
+    FACETS.some(f => f.scope === "result" && act[f.id].size);
+}
+function hasMeasFacets(act) { return FACETS.some(f => f.scope === "meas" && act[f.id].size); }
+
+function caseOK(cid, act, skipNum) {
+  const e = E[cid]; if (!e) return false;
+  if (qtext && !(cid + " " + e.paper_id + " " + (e.label || "") + " " +
+      (e.synthesis_label || "")).toLowerCase().includes(qtext)) return false;
+  for (const f of FACETS) if (f.scope === "case" && !hit(act[f.id], f.vals(cid))) return false;
+  if (!numOK(cid, skipNum)) return false;
+  if (multiOnly && measOf(cid).length < 2) return false;
+  if (!hasMeasFacets(act) && !hasResultFacets(act)) return true;
+  // existential join through ONE measurement
+  return measOf(cid).some(mid => measOK(mid, act) &&
+    (!hasResultFacets(act) || seriesOf(mid).some(sid => seriesOK(sid, act))));
+}
+
+function matchingCases(act, skipNum) {
+  return Object.keys(E).filter(cid => caseOK(cid, act || active, skipNum));
+}
+/** Values available for one facet, computed with that facet's OWN selection removed,
+ *  so the user can widen a choice without clearing everything first. */
+function facetOptions(fid) {
+  const f = FBY[fid];
+  const others = Object.fromEntries(FACETS.map(x => [x.id,
+    x.id === fid ? new Set() : active[x.id]]));
+  const base = matchingCases(others);
+  const counts = new Map();
+  base.forEach(cid => {
+    let vs = [];
+    if (f.scope === "case") vs = f.vals(cid);
+    else if (f.scope === "meas") vs = measOf(cid).filter(m => m in M).flatMap(f.vals);
+    else vs = measOf(cid).flatMap(seriesOf).flatMap(f.vals);
+    new Set(vs).forEach(v => counts.set(v, (counts.get(v) || 0) + 1));
+  });
+  // the count for a value is the number of cases that survive if it is added
+  return [...counts.entries()].map(([v, n]) => ({ v, n }))
+    .sort((a, b) => b.n - a.n || String(a.v).localeCompare(String(b.v)));
+}
+
+// ---- facet UI ---------------------------------------------------------------------
+let openPop = null;
+function closePop() { if (openPop) { openPop.remove(); openPop = null; } }
+document.addEventListener("click", e => {
+  if (openPop && !openPop.contains(e.target) && !e.target.classList.contains("fbtn")) closePop();
+});
+
+function drawFacets() {
+  const box = $("#facets"); box.innerHTML = "";
+  const head = el("div", "", `<h3 style="margin:0 0 8px">Filters</h3>`);
+  box.appendChild(head);
+  const q = el("div", "facet",
+    `<label style="font-size:11px;color:var(--mut)">Search</label>
+     <input type="text" id="f-q" value="${esc(qtext)}" placeholder="paper, case, label">`);
+  box.appendChild(q);
+  q.querySelector("input").addEventListener("input", e => {
+    qtext = e.target.value.toLowerCase(); render();
+  });
+
+  FACETS.forEach(f => {
+    const d = el("div", "facet");
+    const sels = [...active[f.id]];
+    d.innerHTML = `<button class="fbtn" data-f="${f.id}">
+        <span>${esc(f.label)}${sels.length ? ` (${sels.length})` : ""}</span>
+        <span class="mut">▾</span></button>
+      <div class="chips">${sels.map(v =>
+        `<span class="chip"><b>${esc(v)}</b><span class="x" data-f="${f.id}"
+          data-v="${esc(v)}">×</span></span>`).join("")}
+      ${sels.length ? `<span class="chip" style="cursor:pointer" data-clear="${f.id}">
+        clear</span>` : ""}</div>`;
+    box.appendChild(d);
+    d.querySelector(".fbtn").onclick = ev => { ev.stopPropagation(); openFacet(f.id, d); };
+    d.querySelectorAll(".x").forEach(x => x.onclick = () => {
+      active[f.id].delete(x.dataset.v); render();
+    });
+    const c = d.querySelector("[data-clear]");
+    if (c) c.onclick = () => { active[f.id].clear(); render(); };
+  });
+
+  Object.entries(NUM).forEach(([k, meta]) => {
+    const d = el("div", "facet",
+      `<label style="font-size:11px;color:var(--mut)">${esc(meta.label)}</label>
+       <div class="row2"><input type="number" placeholder="min" value="${nrange[k].min}">
+       <input type="number" placeholder="max" value="${nrange[k].max}"></div>`);
+    box.appendChild(d);
+    const [mn, mx] = d.querySelectorAll("input");
+    mn.addEventListener("change", () => { nrange[k].min = mn.value; render(); });
+    mx.addEventListener("change", () => { nrange[k].max = mx.value; render(); });
+  });
+
+  const t = el("div", "facet", "");
+  t.appendChild(chk("Profile results only", profileOnly, v => { profileOnly = v; render(); }));
+  t.appendChild(chk("Cases with >1 measurement", multiOnly, v => { multiOnly = v; render(); }));
+  t.appendChild(chk("Show unavailable values", showUnavailable,
+    v => { showUnavailable = v; render(); }));
+  box.appendChild(t);
+
+  if (sel.length) {
+    const c = el("div", "facet",
+      `<label style="font-size:11px;color:var(--mut)">Only results comparable to selected</label>
+       <select id="f-cmp">
+        <option value="">off</option>
+        <option value="direct">Direct only</option>
+        <option value="transformable">Direct + transformable</option>
+        <option value="missing">Include missing-context</option>
+        <option value="ambiguous">Include ambiguous</option></select>`);
+    box.appendChild(c);
+    c.querySelector("select").value = onlyComparable;
+    c.querySelector("select").onchange = e => { onlyComparable = e.target.value; render(); };
+  }
+  const btns = el("div", "", "");
+  const ca = el("button", "", "Clear all filters");
+  ca.onclick = () => {
+    FACETS.forEach(f => active[f.id].clear());
+    Object.keys(NUM).forEach(k => { nrange[k] = { min: "", max: "" }; });
+    profileOnly = multiOnly = false; onlyComparable = ""; qtext = ""; page = 0; render();
+  };
+  const cs = el("button", "", "CSV"); cs.onclick = exportCsv;
+  btns.appendChild(ca); btns.appendChild(cs); box.appendChild(btns);
+}
+function chk(label, val, fn) {
+  const l = el("label", "chk", `<input type="checkbox" ${val ? "checked" : ""}> ${esc(label)}`);
+  l.querySelector("input").onchange = e => fn(e.target.checked);
+  return l;
+}
+function openFacet(fid, anchor) {
+  closePop();
+  const f = FBY[fid], opts = facetOptions(fid);
+  const pop = el("div", "pop");
+  pop.innerHTML = `<input class="s" type="text" placeholder="search ${esc(f.label.toLowerCase())}…">`;
+  const list = el("div", ""); pop.appendChild(list);
+  const paint = q => {
+    const shown = opts.filter(o => !q || String(o.v).toLowerCase().includes(q));
+    list.innerHTML = shown.length
+      ? shown.map(o => `<div class="opt ${o.n ? "" : "dis"}" data-v="${esc(o.v)}">
+          <span>${active[fid].has(String(o.v)) ? "✓ " : ""}${esc(o.v)}</span>
+          <span class="n">${o.n}</span></div>`).join("")
+      : '<div class="mut" style="padding:6px">no values available under the current filters</div>';
+    list.querySelectorAll(".opt").forEach(o => o.onclick = () => {
+      if (o.classList.contains("dis")) return;
+      const v = o.dataset.v;
+      // a click commits immediately and closes; reopen to add another value
+      active[fid].has(v) ? active[fid].delete(v) : active[fid].add(v);
+      closePop(); page = 0; render();
+    });
+  };
+  paint("");
+  pop.querySelector("input.s").addEventListener("input", e => paint(e.target.value.toLowerCase()));
+  anchor.appendChild(pop); openPop = pop;
+  pop.querySelector("input.s").focus();
+}
+
+function drawActiveBar() {
+  const bar = $("#activebar");
+  const chips = FACETS.flatMap(f => [...active[f.id]].map(v =>
+    `<span class="chip"><span class="mut">${esc(f.label)}:</span><b>${esc(v)}</b>
+      <span class="x" data-f="${f.id}" data-v="${esc(v)}">×</span></span>`));
+  Object.entries(NUM).forEach(([k, m]) => {
+    const r = nrange[k];
+    if (r.min || r.max) chips.push(`<span class="chip"><span class="mut">${esc(m.label)}:</span>
+      <b>${esc(r.min || "−∞")} – ${esc(r.max || "∞")}</b>
+      <span class="x" data-n="${k}">×</span></span>`);
+  });
+  if (profileOnly) chips.push(`<span class="chip"><b>profiles only</b>
+    <span class="x" data-t="prof">×</span></span>`);
+  bar.innerHTML = chips.length
+    ? `<div class="note" style="margin:0 0 10px"><b style="font-size:11px;color:var(--mut);
+        text-transform:uppercase;letter-spacing:.06em">Filtered by</b>
+       <div class="chips" style="margin-top:6px">${chips.join("")}</div></div>` : "";
+  bar.querySelectorAll(".x").forEach(x => x.onclick = () => {
+    if (x.dataset.f) active[x.dataset.f].delete(x.dataset.v);
+    else if (x.dataset.n) nrange[x.dataset.n] = { min: "", max: "" };
+    else if (x.dataset.t === "prof") profileOnly = false;
+    page = 0; render();
+  });
+}
+
+function exportCsv() {
+  const ids = matchingCases();
+  const rows = [["case_key", "paper", "material", "geometry", "measurements", "series"]]
+    .concat(ids.map(c => [c, E[c].paper_id, E[c].material || "", E[c].geometry || "",
+      measOf(c).length, allSeriesOfCase(c).length]));
+  const blob = new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" });
+  const u = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = u; a.download = "psed_experiments.csv"; a.click(); URL.revokeObjectURL(u);
+}
+
+
+// ---- experiment / measurement / result rendering ----------------------------------
 function condRows(cid) {
   const groups = [["Chemistry", ["precursor", "coreactant", "carrier_gas"]],
     ["Process", ["deposition_temperature", "temperature", "working_pressure", "base_pressure",
@@ -215,8 +432,7 @@ function condRows(cid) {
       "coreactant_purge_time"]],
     ["Geometry", ["feature_height", "feature_width", "feature_length", "feature_depth",
       "aspect_ratio", "pillar_layout", "deposited_layer_thickness", "deposited_structure"]]];
-  const cs = (E[cid].conditions || []); let h = "";
-  const shown = new Set();
+  const cs = (E[cid].conditions || []); let h = ""; const shown = new Set();
   groups.forEach(([g, qs]) => {
     const rows = cs.filter(c => qs.includes(c.quantity));
     rows.forEach(r => shown.add(r));
@@ -229,26 +445,30 @@ function condRows(cid) {
         <td class="mut">${esc(r.provenance_type || "")}</td></tr>`).join("") + "</table></div>";
   });
   const rest = cs.filter(c => !shown.has(c));
-  if (rest.length) h += `<div style="margin-top:7px"><b style="font-size:11px;color:var(--mut)">OTHER</b><table>` +
-    rest.map(r => `<tr><td><code>${esc(r.quantity)}</code></td><td>${esc(r.value)} ${esc(r.unit || "")}</td>
-    <td class="mut">${esc(r.provenance_type || "")}</td></tr>`).join("") + "</table></div>";
+  if (rest.length) h += `<div style="margin-top:7px"><b style="font-size:11px;color:var(--mut)">OTHER</b><table>`
+    + rest.map(r => `<tr><td><code>${esc(r.quantity)}</code></td>
+      <td>${esc(r.value)} ${esc(r.unit || "")}</td>
+      <td class="mut">${esc(r.provenance_type || "")}</td></tr>`).join("") + "</table></div>";
   return h || '<p class="mut">no case-defining conditions extracted</p>';
 }
 
-function seriesRow(sid) {
+function seriesRow(sid, matching) {
   const s = S[sid], on = sel.includes(sid);
-  const norm = s.y.norm ? `, ${s.y.norm}` :
-    (s.y.quantity === "normalized_thickness" || s.y.quantity === "dimensionless_distance"
+  const norm = s.y.norm ? `, ${esc(s.y.norm)}` :
+    ((s.y.quantity === "normalized_thickness" || s.y.quantity === "dimensionless_distance")
       ? ' <span class="pill warn">basis unresolved</span>' : "");
-  return `<div class="ser">
-    <input type="checkbox" data-sid="${esc(sid)}" ${on ? "checked" : ""} ${(!on && sel.length >= MAXSEL) ? "disabled" : ""}>
+  return `<div class="ser${matching === false ? " dim" : ""}">
+    <input type="checkbox" data-sid="${esc(sid)}" ${on ? "checked" : ""}
+      ${(!on && sel.length >= MAXSEL) ? "disabled" : ""}>
     <div style="flex:1">
-      <div class="lab">Fig. ${esc(s.figure)}${esc(s.panel || "")} ${s.series_label ? "· " + esc(s.series_label) : ""}
+      <div class="lab">Fig. ${esc(s.figure)}${esc(s.panel || "")} ${
+        s.series_label ? "· " + esc(s.series_label) : ""}
         <span class="pill ${s.data_source === "simulated" ? "warn" : "good"}">${esc(s.data_source)}</span>
         ${s.is_profile ? '<span class="pill">profile</span>' : '<span class="pill">scalar/other</span>'}
         ${s.y_resolution === "PARTIALLY_RESOLVED" ? '<span class="pill warn">partial</span>' : ""}</div>
       <div class="meta">x: <code>${esc(s.x.quantity)}</code> [${esc(s.x.unit)}]
-        ${s.x.raw_unit && s.x.raw_unit !== s.x.unit ? `<span class="mut">(printed ${esc(s.x.raw_unit)})</span>` : ""}
+        ${s.x.raw_unit && s.x.raw_unit !== s.x.unit
+          ? `<span class="mut">(printed ${esc(s.x.raw_unit)})</span>` : ""}
         &nbsp;·&nbsp; y: <code>${esc(s.y.quantity)}</code> [${esc(s.y.unit)}]${norm}
         &nbsp;·&nbsp; ${esc(s.n_points)} points</div>
       <details class="prov"><summary>Provenance</summary>
@@ -262,65 +482,87 @@ function seriesRow(sid) {
     </div></div>`;
 }
 
-function measCard(mid) {
-  const m = M[mid], ss = seriesOf(mid);
-  return `<div class="meas"><div class="mtitle">${esc(m.technique || "technique not extracted")}
+function measCard(mid, matching) {
+  const m = M[mid], all = seriesOf(mid);
+  const good = all.filter(sid => seriesOK(sid, active));
+  const rest = all.filter(sid => !good.includes(sid));
+  return `<div class="meas${matching === false ? " dim" : ""}">
+    <div class="mtitle">${esc(m.technique || "technique not extracted")}
       <span class="pill">${esc(m.kind)}</span>
       ${m.case_link_status !== "LINKED" ? '<span class="pill bad">case link unresolved</span>' : ""}</div>
     <div class="meta mut">${esc(m.measured_quantity || "measurand not extracted")}
       ${m.measured_unit ? "[" + esc(m.measured_unit) + "]" : ""}
-      · ${ss.length} ResultSeries · <code>${esc(mid)}</code></div>
+      · ${all.length} ResultSeries · <code>${esc(mid)}</code></div>
     ${m.evidence ? `<details class="prov"><summary>Measurement provenance</summary>
       <div class="meta">${esc(m.evidence)}</div></details>` : ""}
-    ${ss.map(seriesRow).join("")}</div>`;
+    ${good.map(sid => seriesRow(sid, true)).join("")}
+    ${rest.length ? `<details style="margin-top:4px"><summary class="mut"
+        style="cursor:pointer;font-size:11.5px">Show ${rest.length} non-matching result
+        series</summary><div>${rest.map(sid => seriesRow(sid, false)).join("")}</div>
+      </details>` : ""}</div>`;
 }
 
 function render() {
-  const ids = Object.keys(E).filter(matches);
-  $("#f-count").textContent = `${ids.length} experiments · ` +
-    `${ids.reduce((a, c) => a + measOf(c).length, 0)} measurements · ` +
-    `${ids.reduce((a, c) => a + allSeriesOfCase(c).length, 0)} result series`;
+  drawFacets(); drawActiveBar();
+  const ids = matchingCases();
+  let nm = 0, ns = 0;
+  ids.forEach(cid => measOf(cid).forEach(mid => {
+    if (!measOK(mid, active)) return;
+    const ss = seriesOf(mid).filter(sid => seriesOK(sid, active));
+    if (hasResultFacets(active) && !ss.length) return;
+    nm++; ns += ss.length;
+  }));
+  $("#counts").innerHTML = `<b>${ids.length}</b> ExperimentalCases ·
+    <b>${nm}</b> matching Measurements · <b>${ns}</b> matching ResultSeries
+    <span class="mut">(of ${Object.keys(E).length} cases, ${Object.keys(S).length} series)</span>`;
+
   const per = 25, pages = Math.max(1, Math.ceil(ids.length / per));
   page = Math.min(page, pages - 1);
   const list = $("#caselist"); list.innerHTML = "";
   ids.slice(page * per, page * per + per).forEach(cid => {
     const e = E[cid], ms = measOf(cid), ss = allSeriesOfCase(cid);
-    const d = el("details", "case");
+    const matchM = ms.filter(mid => measOK(mid, active) &&
+      (!hasResultFacets(active) || seriesOf(mid).some(sid => seriesOK(sid, active))));
+    const otherM = ms.filter(m => !matchM.includes(m));
     const bits = [e.material, (e.chemistry.precursor || []).join("+"),
       (e.chemistry.coreactant || []).join("+"),
       condVal(cid, "deposition_temperature") ? condVal(cid, "deposition_temperature") + " °C" : null,
       e.geometry].filter(Boolean).join(" · ");
-    d.innerHTML = `<summary><div><div class="ctitle">${esc(cid)}
+    const d = el("details", "case");
+    d.innerHTML = `<summary><div><div class="ctitle">${esc(e.case_id)}
         <span class="mut" style="font-weight:400">${esc(e.paper_id)}</span></div>
         <div class="csub">${esc(bits) || '<span class="mut">no summary conditions extracted</span>'}</div></div>
       <div class="counts">${ms.length} Measurements<br>${ss.length} ResultSeries<br>
-        ${ss.filter(s => S[s].is_profile).length} profiles</div></summary>
+        ${ss.filter(x => S[x].is_profile).length} profiles</div></summary>
       <div class="cbody">${condRows(cid)}
         <div style="margin-top:10px"><b style="font-size:11px;color:var(--mut);
-          text-transform:uppercase;letter-spacing:.06em">Measurements</b>
-        ${ms.length ? ms.map(measCard).join("")
-          : '<p class="mut">no measurement linked to this case in the frozen KG</p>'}</div></div>`;
+          text-transform:uppercase;letter-spacing:.06em">Measurements matching the filter</b>
+        ${matchM.length ? matchM.map(mid => measCard(mid, true)).join("")
+          : '<p class="mut">no measurement linked to this case in the frozen KG</p>'}
+        ${otherM.length ? `<details style="margin-top:6px"><summary class="mut"
+            style="cursor:pointer;font-size:11.5px">Show ${otherM.length} other measurement(s)
+            in this experiment</summary><div>${
+              otherM.map(mid => measCard(mid, false)).join("")}</div></details>` : ""}
+        </div></div>`;
     list.appendChild(d);
   });
-  // Measurements the frozen KG never linked to a case. Their series are real and must be
-  // visible; attaching them to a case on a guess would invent parentage the KG does not have.
-  const orphans = Object.keys(M).filter(m => M[m].case_link_status !== "LINKED"
-    && seriesOf(m).length);
-  const ub = $("#unlinked");
-  ub.innerHTML = `<summary><div><div class="ctitle">Measurements without a case link
-      <span class="pill bad">unresolved parentage</span></div>
-      <div class="csub">${orphans.length} measurements · ${
-        orphans.reduce((a, m) => a + seriesOf(m).length, 0)} result series.
-      The frozen KG carries no <code>measures_case</code> relation for these, so they are
-      shown here rather than attached to an experiment on a guess.</div></div></summary>
-    <div class="cbody">${orphans.slice(0, 40).map(measCard).join("")}
-      ${orphans.length > 40 ? `<p class="mut">…and ${orphans.length - 40} more</p>` : ""}</div>`;
   $("#pager").innerHTML = pages > 1
     ? `<button id="pp" ${page === 0 ? "disabled" : ""}>← prev</button>
        <span class="mut" style="margin:0 8px">page ${page + 1} / ${pages}</span>
        <button id="pn" ${page >= pages - 1 ? "disabled" : ""}>next →</button>` : "";
   if ($("#pp")) $("#pp").onclick = () => { page--; render(); };
   if ($("#pn")) $("#pn").onclick = () => { page++; render(); };
+
+  const orphans = Object.keys(M).filter(m => M[m].case_link_status !== "LINKED"
+    && seriesOf(m).length);
+  $("#unlinked").innerHTML = `<summary><div><div class="ctitle">Measurements without a case link
+      <span class="pill bad">unresolved parentage</span></div>
+      <div class="csub">${orphans.length} measurements · ${
+        orphans.reduce((a, m) => a + seriesOf(m).length, 0)} result series.
+      The frozen KG carries no <code>measures_case</code> relation for these, so they are shown
+      here rather than attached to an experiment on a guess.</div></div></summary>
+    <div class="cbody">${orphans.slice(0, 40).map(m => measCard(m, false)).join("")}
+      ${orphans.length > 40 ? `<p class="mut">…and ${orphans.length - 40} more</p>` : ""}</div>`;
   drawTray();
 }
 
@@ -336,11 +578,15 @@ document.addEventListener("change", ev => {
 function drawTray() {
   const t = $("#tray"); t.innerHTML = "";
   t.appendChild(el("b", "", `Selected: ${sel.length}/${MAXSEL}`));
+  const visible = new Set(matchingCases().flatMap(allSeriesOfCase)
+    .filter(x => seriesOK(x, active)));
   sel.forEach(sid => {
-    const s = S[sid], cid = caseOfSeries(sid);
-    const n = el("span", "trayitem",
+    const s = S[sid], cid = caseOfSeries(sid), out = !visible.has(sid);
+    const n = el("span", "trayitem" + (out ? " outside" : ""),
       `<b>${esc(s.paper_id.slice(0, 18))}</b> ${esc(cid || "—")} Fig.${esc(s.figure)}${esc(s.panel || "")}
-       <span class="mut">${esc(s.y.quantity)}</span> <span class="x" title="${esc(sid)}">×</span>`);
+       <span class="mut">${esc(s.y.quantity)}</span>${out
+         ? ' <span class="pill warn">outside current filter</span>' : ""}
+       <span class="x" title="${esc(sid)}">×</span>`);
     n.querySelector(".x").onclick = () => { sel.splice(sel.indexOf(sid), 1); render(); renderCompare(); };
     t.appendChild(n);
   });
