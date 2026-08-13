@@ -314,8 +314,15 @@ def compare_axis(a, b, a_case=None, b_case=None, a_series=None, b_series=None):
     return out
 
 
-def compare_result_series(a, b, a_case=None, b_case=None):
-    """Whole-profile comparability: both axes, then the profile-level verdict."""
+def compare_result_series(a, b, a_case=None, b_case=None, allow_shape_only=False):
+    """Whole-profile comparability: both axes, then the profile-level verdict.
+
+    `allow_shape_only` has to be asked for. Ambiguity is the honest default: two profiles
+    whose normalization bases are unrecorded cannot be shown to be on the same scale, and
+    silently calling that a shape comparison would turn "we do not know" into a weaker
+    claim the caller never made. Shape comparison is a real and useful question -- it is
+    just a different one.
+    """
     def rep(s_, ax_):
         return axis_representation(
             s_.get("%s_quantity" % ax_), s_.get("%s_unit" % ax_),
@@ -334,11 +341,17 @@ def compare_result_series(a, b, a_case=None, b_case=None):
     elif MISSING_CONTEXT in (ax["status"], ay["status"]):
         verdict = MISSING_CONTEXT
     elif AMBIGUOUS in (ax["status"], ay["status"]):
-        # dimensionless on both sides with an unrecorded basis: the shape is still a
-        # legitimate object of comparison, the absolute values are not
-        verdict = (SHAPE_ONLY_PROFILE
-                   if ax["status"] in ok | {AMBIGUOUS} and ay["status"] == AMBIGUOUS
-                   else AMBIGUOUS)
+        # Shape-only is deterministic and opt-in: the measurand must match, the y axis
+        # must be a normalized/dimensionless representation on both sides, the x axes must
+        # already line up, and the bases must be the thing that is unresolved. Anything
+        # else stays ambiguous.
+        shape_eligible = (
+            allow_shape_only
+            and ay["status"] == AMBIGUOUS
+            and ax["status"] in ok
+            and a.get("y_quantity") == b.get("y_quantity")
+            and a.get("y_quantity") in _NORMALIZED_QUANTITIES)
+        verdict = SHAPE_ONLY_PROFILE if shape_eligible else AMBIGUOUS
     elif RELATED_NOT_COMPARABLE in (ax["status"], ay["status"]):
         verdict = RELATED_NOT_COMPARABLE
     else:
@@ -354,6 +367,7 @@ def compare_result_series(a, b, a_case=None, b_case=None):
         "execution_source": {"x": ax.get("execution_source"),
                              "y": ay.get("execution_source")},
         "cross_paper": a.get("paper_id") != b.get("paper_id"),
+        "shape_only_requested": bool(allow_shape_only),
         "provenance_note": ("comparability of REPRESENTATION only; it does not assert the "
                             "two experiments were run under equivalent conditions"),
     }
@@ -422,7 +436,7 @@ def transform_series(series, target_unit=None, normalization=None, context=None)
 
 
 def find_comparable_series(target, universe, cross_paper_only=False,
-                           statuses=None, cases=None):
+                           statuses=None, cases=None, allow_shape_only=False):
     """Every series in `universe` comparable to `target`, with the reason attached.
 
     Pre-indexed on comparison group so unrelated series are never pairwise compared.
@@ -442,7 +456,8 @@ def find_comparable_series(target, universe, cross_paper_only=False,
                                                 s.get("y_quantity"))[0]:
             continue
         r = compare_result_series(target, s, cases.get(target.get("paper_id")),
-                                  cases.get(s.get("paper_id")))
+                                  cases.get(s.get("paper_id")),
+                                  allow_shape_only=allow_shape_only)
         if statuses and r["profile_status"] not in statuses:
             continue
         out.append(r)

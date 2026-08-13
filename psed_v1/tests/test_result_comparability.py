@@ -148,9 +148,15 @@ def main():
            yl="Normalized thickness")
     n4 = S("A", "spatial_coordinate", "um", "normalized_thickness", "1",
            yl="Normalized thickness")
-    ok("F: two unknown-basis normalized profiles are shape-only",
-       RC.compare_result_series(n4, b4)["profile_status"] == RC.SHAPE_ONLY_PROFILE,
+    # shape-only used to be granted automatically here; it is now opt-in, because
+    # "we cannot establish the scale" must not silently become a weaker claim the caller
+    # never asked for
+    ok("F: two unknown-basis normalized profiles are ambiguous by default",
+       RC.compare_result_series(n4, b4)["profile_status"] == RC.AMBIGUOUS,
        RC.compare_result_series(n4, b4)["profile_status"])
+    ok("F: and shape-only only when explicitly requested",
+       RC.compare_result_series(n4, b4, allow_shape_only=True)["profile_status"]
+       == RC.SHAPE_ONLY_PROFILE)
 
     print("=== G. provenance difference alone is not incomparability ===")
     sim = S("B", "spatial_coordinate", "um", "film_thickness", "nm", ds="simulated",
@@ -301,6 +307,78 @@ def main():
     ok("N: a normalization with no denominator is missing_context, not a division by None",
        RC.transform_series(th, normalization="t_over_t_max",
                            context={"found": False})["status"] == "missing_context")
+
+    print("=== O. a partially resolved series stays in the universe ===")
+    # canonical.y is null because canonicalization could not pin the BASIS, not because
+    # the science is absent -- the measurand is known and the curve must remain comparable
+    partial = S("P", "spatial_coordinate", "um", "normalized_thickness", "1",
+                yl="Normalized thickness (-)", sid="P1")
+    known = S("K", "spatial_coordinate", "um", "normalized_thickness", "1",
+              yl="t / t_max", sid="K1")
+    known["y_normalization"] = "t_over_t_max"
+    ok("O: a known basis against an unknown one is ambiguous, not direct",
+       RC.compare_result_series(known, partial)["profile_status"] == RC.AMBIGUOUS,
+       RC.compare_result_series(known, partial)["profile_status"])
+    ok("O: and never DIRECT",
+       RC.compare_result_series(known, partial)["profile_status"] != RC.DIRECT_PROFILE)
+    ok("O: two unknown bases are ambiguous by default, not shape-only",
+       RC.compare_result_series(partial, dict(partial, paper_id="Q", result_series_id="Q1"))
+       ["profile_status"] == RC.AMBIGUOUS)
+    # the partial series must actually appear in a search, not vanish
+    hits = RC.find_comparable_series(known, [partial])
+    ok("O: the partial series is found, not absent", len(hits) == 1, len(hits))
+    ok("O: with an explicit ambiguity verdict",
+       hits[0]["profile_status"] == RC.AMBIGUOUS, hits[0]["profile_status"])
+    # unknown REPRESENTATION is not unknown QUANTITY
+    rep = RC.axis_representation("normalized_thickness", "1", "Normalized thickness")
+    ok("O: the measurand is still known", rep["quantity"] == "normalized_thickness")
+    ok("O: only the basis is unknown",
+       rep["normalization_status"] == RC.NORMALIZATION_UNKNOWN
+       and rep["normalization_definition"] is None, rep)
+
+    print("=== P. shape-only is opt-in and deterministic ===")
+    r = RC.compare_result_series(partial,
+                                 dict(partial, paper_id="Q", result_series_id="Q1"),
+                                 allow_shape_only=True)
+    ok("P: requested shape-only on two normalized profiles is granted",
+       r["profile_status"] == RC.SHAPE_ONLY_PROFILE, r["profile_status"])
+    ok("P: and the request is recorded", r["shape_only_requested"] is True)
+    ok("P: not requested means ambiguous",
+       RC.compare_result_series(partial,
+                                dict(partial, paper_id="Q", result_series_id="Q1"))
+       ["profile_status"] == RC.AMBIGUOUS)
+    # eligibility is gated on the measurand, not merely on ambiguity existing
+    other = S("Q", "spatial_coordinate", "um", "surface_coverage", "1",
+              yl="Coverage", sid="Q2")
+    ok("P: a different measurand is not shape-only eligible",
+       RC.compare_result_series(partial, other, allow_shape_only=True)["profile_status"]
+       != RC.SHAPE_ONLY_PROFILE)
+    # an unresolved x axis blocks it too: shapes plotted against incomparable abscissae
+    # are not comparable shapes
+    badx = S("Q", "dimensionless_distance", "1", "normalized_thickness", "1",
+             xl="x/H", yl="Normalized thickness", sid="Q3")
+    ok("P: an unresolved x axis blocks shape-only",
+       RC.compare_result_series(partial, badx, allow_shape_only=True)["profile_status"]
+       != RC.SHAPE_ONLY_PROFILE)
+
+    print("=== Q. ambiguity and missing context stay distinct ===")
+    xh = S("A", "dimensionless_distance", "1", "film_thickness", "nm", xl="x/H", sid="A9")
+    xa = S("B", "spatial_coordinate", "um", "film_thickness", "nm", sid="B9")
+    ok("Q: a known transform with no parameter is missing_context",
+       RC.compare_result_series(xh, xa)["profile_status"] == RC.MISSING_CONTEXT)
+    ok("Q: an unknown representation basis is ambiguous, not missing_context",
+       RC.compare_result_series(known, partial)["profile_status"] == RC.AMBIGUOUS)
+    ok("Q: the two are different statuses", RC.MISSING_CONTEXT != RC.AMBIGUOUS)
+
+    print("=== R. the false-ambiguity fix from a7ae72b still holds ===")
+    # a canonical normalization must survive a generic printed label
+    both = S("A", "spatial_coordinate", "um", "normalized_thickness", "1",
+             yl="Normalized thickness", sid="A8")
+    both["y_normalization"] = "t_over_t_max"
+    other2 = dict(both, paper_id="B", result_series_id="B8")
+    ok("R: two canonically t_over_t_max curves are direct despite a vague label",
+       RC.compare_result_series(both, other2)["profile_status"] == RC.DIRECT_PROFILE,
+       RC.compare_result_series(both, other2)["profile_status"])
 
     print("=== J. the published artifacts are consistent ===")
     d = W / "_diagnostics" / "comparability"
