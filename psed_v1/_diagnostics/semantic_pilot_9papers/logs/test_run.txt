@@ -216,6 +216,20 @@ ANCHOR	10.1039_d0cp03358h	PASS	Fig 6 mints no unsupported deposition case	[[]]
   PASS join: no Measurement carries curves with different legend labels 
     [join] ResultSeries reaching >1 case through branches: 22
   PASS join: a simulated curve binds to a SimulationRun and mints no case 
+  PASS cardinality: a sweep whose branches reach every linked case is EXPLAINED 
+  PASS cardinality: the explanation names the design factor and its values 
+  PASS cardinality: branches explaining only a subset leave it UNEXPLAINED 
+  PASS cardinality: multiple cases with no branch structure are UNEXPLAINED 
+  PASS cardinality: one linked case is SINGLE_CASE                    
+  PASS cardinality: no linked case is SINGLE_CASE                     
+  PASS cardinality: identical conditions alone do not explain a multi-case mapping 
+  PASS cardinality: matching fingerprints alone do not explain a multi-case mapping 
+  PASS cardinality: unrelated branches do not explain the linked cases 
+  PASS cardinality: one branch reaching several cases explains them   
+  PASS cardinality: no ResultSeries reaches cases its branches cannot explain 
+  PASS cardinality: multi-case ResultSeries still exist and are counted, not hidden 
+    [cardinality] SINGLE=209 EXPLAINED_MULTI=22 UNEXPLAINED_MULTI=0
+  PASS cardinality: one Measurement may still produce multiple ResultSeries 
   PASS guard: same specimen is continuity evidence                    
   PASS guard: same specimen re-measured is continuity evidence        
   PASS guard: no vacuum break is continuity evidence                  
@@ -365,4 +379,4 @@ ANCHOR	10.1039_d0cp03358h	PASS	Fig 6 mints no unsupported deposition case	[[]]
   PASS S14 10.1039_d0ra01602k: no blocked edge rests on a superseded condition 
   PASS S15 10.1039_d0ra01602k: every merge decision is classified     
 
-8 papers: 285 passed, 0 failed
+8 papers: 298 passed, 0 failed
