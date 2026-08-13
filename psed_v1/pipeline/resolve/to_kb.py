@@ -2006,10 +2006,17 @@ def _counts(entities, cases, series):
         "experimental_cases_lower_bound": len(cases) + sum(
             e.get("experimental_case_lower_bound", 0) for e in entities
             if e.get("experimental_case_status") == "unresolved_settings"),
-        "deposition_runs": sum(1 for c in cases
-                               if (c.get("measurand") or {}).get("quantity") in
-                               ("film_thickness", "growth_per_cycle", "growth_rate",
-                                "normalized_thickness", "step_coverage")),
+        # ExperimentalCases whose reported measurand is a film-growth result. This is a
+        # RESULT-TYPE tally, not a count of physical depositions: it consults no run
+        # identity, no Sample, and no same-run evidence, so a case can leave it merely by
+        # reporting a different measurand. It was called `deposition_runs`, which invited
+        # exactly that misreading. Explicit physical DepositionRun objects are not
+        # modelled in production yet.
+        "film_growth_result_cases": sum(
+            1 for c in cases
+            if (c.get("measurand") or {}).get("quantity") in
+            ("film_thickness", "growth_per_cycle", "growth_rate",
+             "normalized_thickness", "step_coverage")),
         "unique_samples": len({(c.get("material"), c.get("entity_id")) for c in cases}),
         "measurements": sum(1 for e in entities if e.get("measurement_class")),
         "experimental_profiles": cls.get("experimental_profile", 0),
