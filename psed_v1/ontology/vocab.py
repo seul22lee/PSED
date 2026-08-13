@@ -115,6 +115,29 @@ def _quantity_words(qid):
             for t in str(s).lower().replace("_", " ").split()}
 
 
+def transform_conflict(label, qid):
+    """The word in `label` announcing a measurand `qid` does not carry, or None.
+
+    A0.1 refuses a LABEL reading that had to drop such a word to match: "H2 flow ratio"
+    is not a flow_rate, because a ratio of two flows is not a flow. That refusal is
+    evidence about the AXIS, not merely about one candidate, so it also bounds what a
+    RECORD may assert about the same axis -- a record quantity is frequently inherited
+    from a neighbouring panel and can be stale.
+
+    A quantity whose own vocabulary contains the word is exempt, which is what keeps
+    "aspect ratio" resolving to aspect_ratio; so is a word that belongs to the label's
+    unit region. Returns the offending token so callers can say why they refused.
+    """
+    if not label or not qid:
+        return None
+    words = _quantity_words(qid)
+    units = _unit_words(label)
+    for t in re.split(r"[^a-z0-9]+", norm(label)):
+        if t in _TRANSFORMS_MEASURAND and t not in words and t not in units:
+            return t
+    return None
+
+
 def resolve_axis_label(label):
     """Canonicalise a plot AXIS LABEL to a quantity id. Strips '(units)',
     ln/log wrappers and symbol subscripts, then tries the full label and

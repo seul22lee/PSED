@@ -324,6 +324,29 @@ def resolve_axis(raw_label, raw_quantity, unit, caption="", context="",
                         "independently names %r, which the ontology supports"
                         % (label, q, _rec))
                     q = _rec
+    # A record semantic may stand in for a label the alias table cannot read. It may not
+    # stand in for a label that says the axis measures something else. A0.1 refuses
+    # "H2 flow ratio" as a flow_rate because "ratio" transforms the measurand, but that
+    # refusal returns a bare None -- indistinguishable here from a label with no opinion --
+    # so the record fallback below silently resurrected a supported quantity and the
+    # dimensionless ratio was asserted to be a partial_pressure.
+    #
+    # This is a veto and never a selector: it can only withhold the record's own answer,
+    # never choose a different one, and it fires only on positive lexical evidence in the
+    # label. A weak, symbolic or absent label makes no claim to conflict with, so genuine
+    # record recovery -- "SiO2 thickness (nm)" -> film_thickness, "j" -> current_density --
+    # is untouched.
+    def _record_vetoed(cand):
+        t = _vocab.transform_conflict(label, cand) if cand else None
+        if not t:
+            return False
+        out["rejected_record_quantity"] = cand
+        out["semantic_status"] = "unsupported_preserved"
+        out["evidence"] = (
+            "the record offers %r, but the label %r states the axis is a %r of that "
+            "measurand, which %r is not" % (cand, label, t, cand))
+        return True
+
     if q is None and raw_quantity and canon:
         # The record is held to the same standard as the label. A record that says only
         # "j" repeats the symbol rather than corroborating it, so canonicalising it here
@@ -338,13 +361,14 @@ def resolve_axis(raw_label, raw_quantity, unit, caption="", context="",
                 "symbol for %r, and the axis unit %r does not support it"
                 % (label, raw_quantity, _rq, unit))
             _rq = None
-        q = _rq
+        q = None if _record_vetoed(_rq) else _rq
     if q is None and raw_quantity and str(raw_quantity) in (
             set(_QUANTITY_DIM) | set(_PROCESS_QUANTITIES)
             | set(_MEASUREMENT_COORDS) | set(_PROGRESSION)):
         # the record already carries a canonical id; an alias table that has no
         # entry for the id itself must not throw it away
-        q = str(raw_quantity)
+        if not _record_vetoed(str(raw_quantity)):
+            q = str(raw_quantity)
     if q and not dimensionally_compatible(q, dim):
         out["rejected_lexical_match"] = q
         out["semantic_status"] = "unsupported_preserved"
@@ -357,7 +381,8 @@ def resolve_axis(raw_label, raw_quantity, unit, caption="", context="",
         # a panel whose recovered x label is the between-curve variable
         # ("H2 flow ratio") still has a deposition_temperature abscissa in C.
         if raw_quantity and dimensionally_compatible(str(raw_quantity), dim) \
-                and _QUANTITY_DIM.get(str(raw_quantity)):
+                and _QUANTITY_DIM.get(str(raw_quantity)) \
+                and not _record_vetoed(str(raw_quantity)):
             q = str(raw_quantity)
             out["semantic_status"] = "resolved_from_record_quantity"
             out["evidence"] += ("; the record's own quantity %r is consistent "
