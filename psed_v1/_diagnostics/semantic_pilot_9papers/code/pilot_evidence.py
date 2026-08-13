@@ -69,6 +69,11 @@ SAMPLE_ONE = re.compile(_SAMPLE_HEAD + r"\s+([A-Za-z]?\d{1,3}[A-Za-z]?)(?=\b)", 
 SERIES_REF = re.compile(r"\bseries\s+([A-Z]|\d{1,2})\b", re.I)
 
 #: measurement techniques, as the source names them. The value is the canonical label.
+#: A physical measurement / characterisation technique, and ONLY that. A measured
+#: quantity is not a technique and a result concept is not a technique: matching
+#: "GPC" or "thickness" here answered "what was measured" when the field asks "with
+#: what instrument", so those entries are gone. Aliases are collapsed only where they
+#: are unambiguous in this corpus.
 TECHNIQUES = [
     (r"\bcyclic voltammetr\w+|\bcyclic voltammogram\w*|\bCV\b", "cyclic_voltammetry"),
     (r"\bimpedance spectroscop\w+|\bimpedance spectra|\bEIS\b", "impedance_spectroscopy"),
@@ -76,24 +81,19 @@ TECHNIQUES = [
     (r"\bX-?ray diffract\w+|\bXRD\b|\bGIXRD\b", "XRD"),
     (r"\bRutherford backscatter\w+|\bRBS\b", "RBS"),
     (r"\belastic recoil detect\w+|\bERDA?\b", "ERD"),
-    (r"\bellipsometr\w+", "ellipsometry"),
-    (r"\breflectomet\w+", "reflectometry"),
+    (r"\bellipsometr\w+|\bSE\b", "ellipsometry"),
+    (r"\bXRR\b|X-?ray reflectomet\w+|X-?ray reflectivit\w+", "XRR"),
+    (r"(?<!X-ray )(?<!X ray )\breflectomet\w+", "reflectometry"),
     (r"\bscanning electron micro\w+|\bSEM\b|\bFESEM\b", "SEM"),
     (r"\btransmission electron micro\w+|\bTEM\b|\bHRTEM\b", "TEM"),
     (r"\benergy[- ]dispersive X-?ray\w*|\bEDS\b|\bEDX\b|\bEDXS\b", "EDS"),
     (r"\bX-?ray (?:count )?map|\bK\s*[aα]\s*X-?ray\b|\belemental map\w*", "xray_map"),
     (r"\batomic force micro\w+|\bAFM\b", "AFM"),
-    (r"\bfour[- ]point probe\b|\bsheet resistance\b|\bresistivit\w+", "resistivity"),
+    (r"\bfour[- ]point probe\b", "four_point_probe"),
     (r"\bquartz crystal microbalance\b|\bQCM\b", "QCM"),
+    (r"\bQMS\b|\bmass spectrometr\w+|\bquadrupole mass\b", "QMS"),
     (r"\bRaman\b", "Raman"),
     (r"\bFT-?IR\b|\binfrared spectroscop\w+", "FTIR"),
-    (r"\bgrowth (?:rate )?per cycle\b|\bGPC\b|\bgrowth rate\b", "growth_per_cycle"),
-    (r"\bfilm thickness\b|\bthickness\b", "thickness"),
-    (r"\bcapacit\w+ (?:response|change)\b|\bcapacitance\b", "capacitance"),
-    (r"\bsaturation profile\b", "saturation_profile"),
-    (r"\bconformalit\w+|\bstep coverage\b", "conformality"),
-    (r"\brefractive index\b", "refractive_index"),
-    (r"\bnucleation\b", "nucleation"),
 ]
 TECHNIQUES = [(re.compile(rx, re.I), lab) for rx, lab in TECHNIQUES]
 
