@@ -162,12 +162,23 @@ def main():
     b = {"paper_id": "p", "case_id": "B", "case_defining_conditions": [
         C("pulse_time", "H2O", 3, "s"), C("deposition_temperature", None, 200, "degC")]}
     r = Q.compare_cases(a, b, focus=("pulse_time", "H2O"))
-    # the temperature carries no species, so it is unresolved and the strong claim fails
-    ok("H: an unresolved shared condition blocks the strong verdict",
-       r["verdict"] == Q.MATCH_ON_SHARED_CONDITIONS, r)
+    # the temperature carries no species, but the ontology does not ask it to: species
+    # absence there is not missing evidence, so it no longer blocks anything
+    ok("H: a species-independent condition does not block the strong verdict",
+       r["verdict"] == Q.PROVEN_DIFFER_ONLY_IN, r)
     ok("H: the differing condition is still reported",
        ["pulse_time", "H2O", None] in r["differing"], r["differing"])
-    ok("H: and the unresolved one is named, not hidden", r["unresolved"], r)
+    ok("H: and nothing is left spuriously unresolved", not r["unresolved"], r)
+    # a reactant-qualified condition with no reagent IS a real blocker, and is named
+    a1 = {"paper_id": "p", "case_id": "A", "case_defining_conditions": [
+        C("pulse_time", "H2O", 2, "s"), C("purge_time", None, 5, "s")]}
+    b1 = {"paper_id": "p", "case_id": "B", "case_defining_conditions": [
+        C("pulse_time", "H2O", 3, "s"), C("purge_time", None, 5, "s")]}
+    r1 = Q.compare_cases(a1, b1, focus=("pulse_time", "H2O"))
+    ok("H: an unattributed reactant-qualified condition still blocks",
+       r1["verdict"] == Q.MATCH_ON_SHARED_CONDITIONS, r1)
+    ok("H: and the blocker is named",
+       Q.UNRESOLVED_REACTANT_QUALIFIER in r1["blockers"], r1["blockers"])
     a2 = {"paper_id": "p", "case_id": "A", "case_defining_conditions": [
         C("pulse_time", "H2O", 2, "s"), C("purge_time", "H2O", 5, "s")]}
     b2 = {"paper_id": "p", "case_id": "B", "case_defining_conditions": [
@@ -181,6 +192,7 @@ def main():
     r3 = Q.compare_cases(a2, b3, focus=("pulse_time", "H2O"))
     ok("H: an unshared condition prevents 'differ only in'",
        r3["verdict"] == Q.MATCH_ON_SHARED_CONDITIONS and r3["only_in_b"], r3)
+    ok("H: and that blocker is named too", Q.EXTRA_CONDITION in r3["blockers"], r3["blockers"])
     ok("H: a different species in the focus is not the requested difference",
        Q.compare_cases(a2, {"paper_id": "p", "case_id": "C",
                             "case_defining_conditions": [C("pulse_time", "SnI4", 3, "s"),
@@ -210,6 +222,117 @@ def main():
        len({i["species"] for i in inv if i["quantity"] == "pulse_time"}) >= 2,
        sorted(str(i["species"]) for i in inv if i["quantity"] == "pulse_time"))
 
+    print("=== L. the ontology decides whether a species is required ===")
+    # a quantity the ontology qualifies BY REACTANT is not identified until you say whose
+    for q in ("pulse_time", "purge_time", "partial_pressure", "exposure",
+              "precursor_pulse_time", "coreactant_purge_time",
+              "carrier_gas_partial_pressure"):
+        ok("L: %-30s requires a species" % q, Q.requires_species(q))
+    for q in ("deposition_temperature", "working_pressure", "cycle_number",
+              "exposure_time", "film_thickness"):
+        ok("L: %-30s does not" % q, not Q.requires_species(q))
+    # role-prefixed composites are not ontology entries; they inherit from what they extend
+    ok("L: the composites inherit rather than being listed",
+       Q.requires_species("precursor_pulse_time") and not
+       Q.requires_species("nonexistent_quantity_xyz"))
+
+    print("=== M. species absence is only unresolved where the ontology asks ===")
+    ok("M: two unattributed temperatures compare normally",
+       outcome(C("deposition_temperature", None, 200, "degC"),
+               C("deposition_temperature", None, 200, "degC")) == Q.EXACT_MATCH)
+    ok("M: and differ when they differ",
+       outcome(C("deposition_temperature", None, 200, "degC"),
+               C("deposition_temperature", None, 250, "degC"))
+       == Q.SAME_CONDITION_DIFFERENT_VALUE)
+    ok("M: two unattributed pressures compare normally",
+       outcome(C("working_pressure", None, 5, "mbar"),
+               C("working_pressure", None, 5, "mbar")) == Q.EXACT_MATCH)
+    ok("M: two unattributed pulses do not",
+       outcome(C("pulse_time", None, 2, "s"), C("pulse_time", None, 2, "s"))
+       == Q.SPECIES_UNRESOLVED)
+    # a stated species is never discarded, whatever the ontology requires
+    ok("M: an explicit species against a missing one stays unresolved",
+       outcome(C("deposition_temperature", "Ar", 200, "degC"),
+               C("deposition_temperature", None, 200, "degC")) == Q.SPECIES_UNRESOLVED)
+    ok("M: two explicit different species differ even on a free quantity",
+       outcome(C("deposition_temperature", "Ar", 200, "degC"),
+               C("deposition_temperature", "N2", 200, "degC")) == Q.DIFFERENT_SPECIES)
+
+    print("=== N. values are compared as physics, not as printed text ===")
+    ok("N: 500 ms is 0.5 s",
+       outcome(C("pulse_time", "H2O", 500, "ms"), C("pulse_time", "H2O", 0.5, "s"))
+       == Q.EXACT_MATCH)
+    ok("N: 500 ms is not 1 s",
+       outcome(C("pulse_time", "H2O", 500, "ms"), C("pulse_time", "H2O", 1, "s"))
+       == Q.SAME_CONDITION_DIFFERENT_VALUE)
+    # the inversion the raw-string implementation produced
+    ok("N: 1 ms is not 1 s, though both print as 1",
+       outcome(C("pulse_time", "H2O", 1, "ms"), C("pulse_time", "H2O", 1, "s"))
+       == Q.SAME_CONDITION_DIFFERENT_VALUE)
+    ok("N: offset units convert too (200 degC is 473.15 K)",
+       outcome(C("deposition_temperature", None, 200, "degC"),
+               C("deposition_temperature", None, 473.15, "K")) == Q.EXACT_MATCH)
+    ok("N: matching digits across dimensions are a coincidence, not equality",
+       outcome(C("pulse_time", "H2O", 1, "s"), C("pulse_time", "H2O", 1, "nm"))
+       == Q.NOT_COMPARABLE)
+    ok("N: a bare number is not a second's worth of anything",
+       outcome(C("cycle_number", None, 5, None), C("cycle_number", None, 5, "s"))
+       == Q.NOT_COMPARABLE)
+    ok("N: two bare numbers still compare",
+       outcome(C("cycle_number", None, 5, None), C("cycle_number", None, 5, None))
+       == Q.EXACT_MATCH)
+
+    print("=== O. UNIT_CONVERTIBLE requires units that actually convert ===")
+    ok("O: non-numeric values under one dimension are convertible-but-undecided",
+       outcome(C("pulse_time", "H2O", "short", "s"), C("pulse_time", "H2O", "long", "ms"))
+       == Q.UNIT_CONVERTIBLE)
+    ok("O: non-numeric values across dimensions are not comparable at all",
+       outcome(C("pulse_time", "H2O", "short", "s"), C("pulse_time", "H2O", "low", "nm"))
+       == Q.NOT_COMPARABLE)
+    ok("O: differing spellings of one dimension are compatible",
+       Q.units_compatible("s", "ms") and Q.units_compatible("s", "s"))
+    ok("O: different dimensions are not", not Q.units_compatible("s", "nm"))
+    ok("O: one missing unit is not compatibility",
+       not Q.units_compatible("s", None) and Q.units_compatible(None, None))
+
+    print("=== P. one normalization serves comparison, sweeps and inventory ===")
+    tok = Q._value_token
+    ok("P: 500 ms and 0.5 s are one level",
+       tok(C("pulse_time", "H2O", 500, "ms")) == tok(C("pulse_time", "H2O", 0.5, "s")))
+    ok("P: 1 ms and 1 s are two levels",
+       tok(C("pulse_time", "H2O", 1, "ms")) != tok(C("pulse_time", "H2O", 1, "s")))
+    # the three APIs must not disagree about what "distinct" means
+    two = [{"paper_id": "p", "case_id": "A", "case_defining_conditions":
+            [C("pulse_time", "H2O", 500, "ms")]},
+           {"paper_id": "p", "case_id": "B", "case_defining_conditions":
+            [C("pulse_time", "H2O", 0.5, "s")]}]
+    ok("P: equal-by-conversion values are not a sweep",
+       Q.cases_varying_condition(two, "pulse_time", species="H2O") == [])
+    ok("P: and the inventory counts them as one value",
+       [i["n_distinct_values"] for i in Q.condition_inventory(two)] == [1])
+    ms = [{"paper_id": "p", "case_id": "A", "case_defining_conditions":
+           [C("pulse_time", "H2O", 1, "ms")]},
+          {"paper_id": "p", "case_id": "B", "case_defining_conditions":
+           [C("pulse_time", "H2O", 1, "s")]}]
+    ok("P: genuinely different magnitudes are a sweep",
+       len(Q.cases_varying_condition(ms, "pulse_time", species="H2O")) == 1)
+    ok("P: and the inventory counts two values",
+       [i["n_distinct_values"] for i in Q.condition_inventory(ms)] == [2])
+
+    print("=== Q. corpus scope is explicit ===")
+    a8 = Q.load_cases(CORPUS, scope=Q.ACTIVE8)
+    dev = Q.load_cases(CORPUS, scope=Q.EXCLUDED_DEVELOPMENT)
+    ok("Q: ACTIVE8 is exactly 182 cases", len(a8) == 182, len(a8))
+    ok("Q: over 8 papers", len({c["paper_id"] for c in a8}) == 8,
+       sorted({c["paper_id"] for c in a8}))
+    ok("Q: the development paper is separated, not merged", len(dev) >= 1, len(dev))
+    ok("Q: and never appears in ACTIVE8",
+       not ({c["paper_id"] for c in dev} & {c["paper_id"] for c in a8}))
+    ok("Q: every case is tagged with its scope",
+       all(c["corpus_scope"] == Q.ACTIVE8 for c in a8)
+       and all(c["corpus_scope"] == Q.EXCLUDED_DEVELOPMENT for c in dev))
+    ok("Q: the default scope is ACTIVE8", len(Q.load_cases(CORPUS)) == 182)
+
     print("=== K. this layer reads identity, it does not write it ===")
     src = (W / "pipeline" / "query" / "condition_query.py").read_text()
     code = "".join("" if t.type in (tokenize.COMMENT, tokenize.STRING) else t.string
@@ -220,8 +343,16 @@ def main():
     ok("K: no DOI in executable query code", not re.search(r"10\.\d{4}[_/]", code))
     for lit in ("SnI4", "H2O", "Y(DPfAMD)3", "TMA"):
         ok("K: no literal %-12r in executable code" % lit, lit not in code)
-    ok("K: unit conversion is delegated, not reimplemented",
-       "U.convert" in src and "pipeline.canonical" in src)
+    # every unit decision -- dimension, compatibility, magnitude -- goes to the existing
+    # unit model; no conversion factor is written here
+    ok("K: unit semantics are delegated, not reimplemented",
+       "pipeline.canonical import units" in src
+       and all(t in src for t in ("U.parse", "U.same_dimension", "U.DIM_NAME")))
+    ok("K: no conversion arithmetic is hand-rolled",
+       not re.search(r"[/*]\s*1e[-+]?\d|1000\.0\s*[*/]", code))
+    ok("K: the species requirement is asked of the ontology, not listed here",
+       "quantity_requires_species" in src
+       and not re.search(r"\{\s*[\"']pulse_time[\"']\s*,", src))
 
     print("\n%d passed, %d failed" % (len(_pass), len(_fail)))
     if _fail:

@@ -25,9 +25,11 @@ sys.path.insert(0, str(W))
 from pipeline.query import condition_query as Q                # noqa: E402
 
 PILOT = W / "_diagnostics" / "semantic_pilot_9papers"
-OUT_EVAL = W / "_diagnostics" / "unseen_eval_v6_track_a3"
+OUT_EVAL = W / "_diagnostics" / "unseen_eval_v7_track_a3_final"
 OUT_HTML = W / "_diagnostics" / "track_a" / "track_a3_species_comparability_review.html"
-BASELINE = "64bd859"
+SCOPE_NOTE = ("ACTIVE8 only. A development paper in the same directory is excluded by "
+              "roster, not merged into any headline count.")
+BASELINE = "59ade46"
 
 
 def code_hash():
@@ -80,7 +82,8 @@ COMPARISONS = [
 
 
 def main():
-    cases = Q.load_cases(PILOT / "papers")
+    cases = Q.load_cases(PILOT / "papers", scope=Q.ACTIVE8)
+    dev = Q.load_cases(PILOT / "papers", scope=Q.EXCLUDED_DEVELOPMENT)
     inv = Q.condition_inventory(cases)
     sweeps = Q.cases_varying_condition(cases)
     payload = {
@@ -89,7 +92,12 @@ def main():
         "head_sha": subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(W),
                                    capture_output=True, text=True).stdout.strip(),
         "note": "species-aware condition comparability; no identity is written by this layer",
+        "corpus_scope": Q.ACTIVE8, "scope_note": SCOPE_NOTE,
         "n_cases": len(cases),
+        "excluded_development": {"papers": sorted({c["paper_id"] for c in dev}),
+                                 "n_cases": len(dev)},
+        "n_reactant_qualified_identities": len(
+            [i for i in inv if Q.requires_species(i["quantity"])]),
         "n_condition_identities": len(inv),
         "n_species_conditioned": len([i for i in inv if i["species"]]),
         "inventory": sorted(inv, key=lambda x: (-x["n_cases"], str(x["quantity"]))),
@@ -106,12 +114,16 @@ def main():
     d = Q.cases_differing_only_in(cases, "pulse_time", species="Y(DPfAMD)3")
     payload["differ_only_in"] = {
         "requested": "pulse_time@Y(DPfAMD)3", "n_pairs": len(d),
-        "verdicts": dict(Counter(r["verdict"] for r in d)), "sample": d[:3]}
+        "verdicts": dict(Counter(r["verdict"] for r in d)),
+        "blockers": dict(Counter(x for r in d for x in r.get("blockers") or [])),
+        "sample": d[:3]}
     OUT_EVAL.mkdir(parents=True, exist_ok=True)
     (OUT_EVAL / "track_a3_comparability_eval.json").write_text(
         json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False, default=str) + "\n")
     render(payload)
-    print("cases                 %d" % len(cases))
+    print("ACTIVE8 cases         %d" % len(cases))
+    print("excluded development  %d %s" % (len(dev), payload["excluded_development"]["papers"]))
+    print("differ-only-in blockers %s" % payload["differ_only_in"]["blockers"])
     print("condition identities  %d (species-conditioned %d)"
           % (len(inv), payload["n_species_conditioned"]))
     print("sweeps                %d" % len(sweeps))
@@ -212,6 +224,44 @@ generating code <code>%s</code>, HEAD <code>%s</code>.</p>
 <div class="card"><div class="n good">0</div><div class="l">active-8 drift</div></div>
 </div>
 
+<h2>G. Corpus scope</h2>
+<div class="note"><strong>ACTIVE8 = %d cases across 8 papers.</strong> A development
+paper sitting in the same directory contributes %d case and is excluded by roster rather
+than merged in &mdash; folding it into a headline number would make every count slightly
+about something the corpus excludes. Unseen papers are a separate evaluation domain and
+are never blended into these metrics.</div>
+
+<h2>A1. Species qualifier semantics</h2>
+<div class="note">The ontology decides whether naming the chemical is part of identifying
+a quantity. Six quantities are qualified <code>by: reactant</code> &mdash;
+<code>pulse_time</code>, <code>purge_time</code>, <code>partial_pressure</code>,
+<code>exposure</code>, <code>molecular_mass</code>,
+<code>precursor_molecular_diameter</code> &mdash; and the role-prefixed composites the
+pipeline builds on them (<code>precursor_pulse_time</code>,
+<code>coreactant_purge_time</code>, <code>carrier_gas_partial_pressure</code>) inherit
+that qualifier through a suffix relation over ontology ids, so a new composite is covered
+the day it appears rather than when someone remembers to list it.<br><br>
+Previously <em>every</em> unattributed condition was reported unresolved, which made
+<code>deposition_temperature = 200 &deg;C</code> incomparable to itself. Species absence
+is only missing information where the ontology asks for a species. Across active-8 shared
+conditions this removed <strong>3378</strong> false <code>SPECIES_UNRESOLVED</code>
+verdicts while retaining <strong>1034</strong> real ones. A stated species is still never
+discarded: an explicit reagent against a missing one stays unresolved on any quantity.</div>
+
+<h2>C1. Unit normalization and compatibility</h2>
+<div class="note">Values are compared as physics rather than as printed text, through the
+existing dimension-aware unit model. <code>500 ms</code> and <code>0.5 s</code> are one
+value; <code>1 ms</code> and <code>1 s</code> are two, though both print as
+&ldquo;1&rdquo;; <code>200 &deg;C</code> and <code>473.15 K</code> are one. Matching
+digits across dimensions are a coincidence, not an equality, so <code>1 s</code> and
+<code>1 nm</code> are <code>NOT_COMPARABLE</code>.<br><br>
+<code>UNIT_CONVERTIBLE</code> now requires units that actually convert:
+<code>&ldquo;short&rdquo; s</code> vs <code>&ldquo;long&rdquo; ms</code> is convertible-
+but-undecided, while <code>&ldquo;short&rdquo; s</code> vs <code>&ldquo;low&rdquo; nm</code>
+is not comparable at all &mdash; previously any two differing unit strings earned the
+convertible verdict. One helper serves comparison, sweep detection and the inventory, so
+the three cannot disagree about what &ldquo;distinct&rdquo; means.</div>
+
 <h2>A. Condition ontology semantics</h2>
 <div class="note">The ontology already separates these; the axis layer had been
 collapsing them. <code>pulse_time</code> <em>specialises</em> time, carries SEC, and is
@@ -263,7 +313,7 @@ drawn as &ldquo;pulse time&rdquo;.</div>
 <div class="scroll"><table><thead><tr><th>query</th><th>matches</th>
 <th>sample (with provenance)</th></tr></thead><tbody>%s</tbody></table></div>
 <div class="note">Differ-only-in for <code>%s</code>: <strong>%d</strong> case pairs,
-verdicts %s. The strong verdict <code>PROVEN_DIFFER_ONLY_IN</code> requires every shared
+verdicts %s, blockers %s. The strong verdict <code>PROVEN_DIFFER_ONLY_IN</code> requires every shared
 condition resolved and no unshared condition on either side; otherwise the pair is
 reported as <code>MATCH_ON_SHARED_CONDITIONS</code>, which is a real result and is not
 dressed up as the strong one.</div>
@@ -298,9 +348,12 @@ infrastructure rather than a same-layer fix, and it would move 44 cases' fingerp
 so it is left visible rather than guessed.</div>
 </div>""" % (CSS, e(p["baseline_sha"]), e(p["generating_code_sha256"]), e(p["head_sha"]),
              p["n_cases"], p["n_condition_identities"], p["n_species_conditioned"],
-             len(p["sweeps"]), onto, comp, invr, swr, qr,
+             len(p["sweeps"]),
+             p["n_cases"], p["excluded_development"]["n_cases"],
+             onto, comp, invr, swr, qr,
              e(p["differ_only_in"]["requested"]), p["differ_only_in"]["n_pairs"],
-             e(str(p["differ_only_in"]["verdicts"])))
+             e(str(p["differ_only_in"]["verdicts"])),
+             e(str(p["differ_only_in"]["blockers"])))
     OUT_HTML.write_text(doc)
 
 
