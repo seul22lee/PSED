@@ -22,6 +22,7 @@ import json
 import re
 from pathlib import Path
 
+from ontology import vocab as _vocab
 from pipeline.canonical import units as U
 
 # --- comparison outcomes ----------------------------------------------------------
@@ -38,6 +39,18 @@ NOT_COMPARABLE = "NOT_COMPARABLE"
 MATCH_ON_SHARED_CONDITIONS = "MATCH_ON_SHARED_CONDITIONS"
 PROVEN_DIFFER_ONLY_IN = "PROVEN_DIFFER_ONLY_IN"
 
+#: why a pair fell short of the strong verdict, so "not proven" is never just a shrug
+UNRESOLVED_REACTANT_QUALIFIER = "UNRESOLVED_REACTANT_QUALIFIER"
+UNIT_NOT_COMPARABLE = "UNIT_NOT_COMPARABLE"
+EXTRA_CONDITION = "EXTRA_CONDITION"
+MISSING_CONDITION = "MISSING_CONDITION"
+VALUE_DIFFERENCE_OUTSIDE_TARGET = "VALUE_DIFFERENCE_OUTSIDE_TARGET"
+
+
+def requires_species(quantity):
+    """Whether the ontology makes the reagent part of this quantity's identity."""
+    return _vocab.quantity_requires_species(quantity)
+
 _NUM = re.compile(r"^\s*[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?\s*$")
 
 
@@ -46,6 +59,12 @@ def species_of(cond):
     s = cond.get("species")
     s = str(s).strip() if s is not None else ""
     return s or None
+
+
+def _value_token(cond):
+    """A hashable token that is equal exactly when two values are physically equal."""
+    n = normalized_value(cond)
+    return "%s|%s" % n if n else "raw:%s|%s" % (cond.get("value"), cond.get("unit") or "")
 
 
 def condition_key(cond):
@@ -64,31 +83,70 @@ def _numeric(v):
     return None
 
 
+def units_compatible(ua, ub):
+    """Whether two unit strings belong to the same convertible dimension.
+
+    Differing spellings are not incompatibility and differing dimensions are not a
+    conversion problem; only the unit system can tell them apart, so it is asked rather
+    than guessed at from the strings.
+    """
+    if not ua or not ub:
+        return ua == ub          # both absent is compatible; one absent is not
+    if str(ua) == str(ub):
+        return True
+    try:
+        return bool(U.same_dimension(ua, ub))
+    except Exception:
+        return False
+
+
+def normalized_value(cond):
+    """(dimension, magnitude) for a condition, or None when it has no physical value.
+
+    The one place any part of this module decides whether two values are the same
+    quantity of the same thing. 500 ms and 0.5 s are one physical value; 1 ms and 1 s are
+    two, though both print as "1". Comparison, sweep detection and the inventory all read
+    this, so they cannot drift into disagreeing about what "distinct" means.
+    """
+    v = _numeric(cond.get("value"))
+    if v is None:
+        return None
+    u = cond.get("unit") or None
+    if not u:
+        return ("", v)           # a bare number is only ever equal to another bare number
+    try:
+        # reduce to the dimension's own SI reference, which is what `convert` does
+        # internally -- comparing within each unit's own spelling would make 1 ms and
+        # 1 s equal and 500 ms and 0.5 s different, the exact inversion of the physics
+        fu = U.parse(u)
+        return (U.DIM_NAME.get(fu.dimension, fu.dimension),
+                float(v) * fu.factor + fu.offset)
+    except Exception:
+        return (str(u), v)       # unknown unit: comparable only to the same unit string
+
+
 def _same_value(a, b):
-    """(verdict, detail) for two condition values, converting units where possible."""
-    va, vb = _numeric(a.get("value")), _numeric(b.get("value"))
+    """(verdict, detail) for two condition values. None means 'cannot be decided'."""
+    na, nb = normalized_value(a), normalized_value(b)
     ua, ub = (a.get("unit") or None), (b.get("unit") or None)
-    if va is None or vb is None:
+    if na is None or nb is None:
         # not numeric on at least one side: only an exact literal match is defensible
         if str(a.get("value")) == str(b.get("value")) and ua == ub:
             return True, {"basis": "identical literal value"}
-        if ua and ub and ua != ub:
+        if units_compatible(ua, ub) and ua and ub:
             return None, {"basis": "values are not numeric, so unit-compatible "
-                                   "conditions cannot be compared by magnitude"}
-        return False, {"basis": "differing non-numeric values"}
-    if ua == ub:
-        return va == vb, {"basis": "same unit"}
-    if not ua or not ub:
-        return None, {"basis": "one side carries no unit, so magnitudes are not "
-                               "comparable"}
-    try:
-        conv = U.convert(va, ua, ub)
-    except Exception:
-        conv = None
-    if conv is None:
-        return None, {"basis": "units %r and %r are not convertible" % (ua, ub)}
-    return conv == vb, {"basis": "converted %s %s -> %s %s" % (va, ua, conv, ub),
-                        "unit_converted": True}
+                                   "conditions cannot be compared by magnitude",
+                          "units_compatible": True}
+        return None, {"basis": "units %r and %r are not of one dimension" % (ua, ub),
+                      "units_compatible": False}
+    if na[0] != nb[0]:
+        # different dimensions, or a bare number against a dimensional one: equal
+        # magnitudes here would be a coincidence of digits, not a physical equality
+        return None, {"basis": "units %r and %r are not of one dimension" % (ua, ub),
+                      "units_compatible": False}
+    return na[1] == nb[1], {"basis": "compared as %s: %s vs %s" % (na[0] or "bare number",
+                                                                  na[1], nb[1]),
+                            "unit_converted": str(ua) != str(ub)}
 
 
 def compare_conditions(a, b):
@@ -103,31 +161,60 @@ def compare_conditions(a, b):
         return DIFFERENT_QUANTITY, {"a": ka, "b": kb}
     if ka[2] != kb[2]:
         return DIFFERENT_STEP, {"a": ka, "b": kb}
-    if ka[1] is None or kb[1] is None:
-        # MISSING is not SAME. One side names its reagent and the other does not, or
-        # neither does; either way there is no evidence these are the same control.
+    if ka[1] is not None and kb[1] is not None:
+        if ka[1] != kb[1]:
+            return DIFFERENT_SPECIES, {"a_species": ka[1], "b_species": kb[1]}
+    elif ka[1] is not None or kb[1] is not None:
+        # One side names its reagent and the other does not. MISSING is not SAME, whatever
+        # the ontology says about this quantity: a stated difference must not be dropped
+        # just because the quantity does not oblige anyone to state it.
         return SPECIES_UNRESOLVED, {
-            "a_species": ka[1], "b_species": kb[1],
-            "basis": "at least one condition has no attributed species, so the two "
-                     "cannot be shown to control the same reagent"}
-    if ka[1] != kb[1]:
-        return DIFFERENT_SPECIES, {"a_species": ka[1], "b_species": kb[1]}
+            "a_species": ka[1], "b_species": kb[1], "reason": UNRESOLVED_REACTANT_QUALIFIER,
+            "basis": "one condition names its reagent and the other does not, so they "
+                     "cannot be shown to control the same chemical"}
+    elif requires_species(ka[0]):
+        # Neither names a reagent, and for THIS quantity the ontology says the reagent is
+        # part of what identifies the condition -- a pulse belongs to one reactant's
+        # valve. Two unattributed pulses are not thereby the same pulse.
+        return SPECIES_UNRESOLVED, {
+            "a_species": None, "b_species": None, "reason": UNRESOLVED_REACTANT_QUALIFIER,
+            "basis": "%r is qualified by reactant in the ontology and neither condition "
+                     "names one" % ka[0]}
+    # Either both name the same reagent, or the quantity does not need one: a deposition
+    # temperature is complete without a chemical, so its absence is not missing evidence.
     same, detail = _same_value(a, b)
     if same is None:
-        return (UNIT_CONVERTIBLE if detail.get("basis", "").startswith("values are not")
+        return (UNIT_CONVERTIBLE if detail.get("units_compatible")
                 else NOT_COMPARABLE), detail
     return (EXACT_MATCH if same else SAME_CONDITION_DIFFERENT_VALUE), detail
 
 
 # --- loading ----------------------------------------------------------------------
-def load_cases(corpus_dir):
-    """Every ExperimentalCase under `corpus_dir`, each tagged with its paper."""
+ACTIVE8 = "ACTIVE8"
+EXCLUDED_DEVELOPMENT = "EXCLUDED_DEVELOPMENT"
+
+
+def load_cases(corpus_dir, scope=ACTIVE8, roster=None):
+    """ExperimentalCases under `corpus_dir`, restricted to one corpus scope.
+
+    A development paper sitting in the same directory is not part of the corpus any
+    headline number describes, and silently folding it in makes every count a little bit
+    about something the corpus excluded. The roster file is the authority on membership;
+    `scope=None` returns everything, each case tagged so a caller can still separate them.
+    """
+    roster = Path(roster) if roster else Path(corpus_dir).parent / "pilot_papers.json"
+    members = set(json.loads(roster.read_text())["papers"]) if roster.exists() else None
     out = []
     for p in sorted(Path(corpus_dir).glob("*/semantic/experimental_cases.json")):
+        pid = p.parents[1].name
+        sc = ACTIVE8 if (members is None or pid in members) else EXCLUDED_DEVELOPMENT
+        if scope is not None and sc != scope:
+            continue
         d = json.loads(p.read_text())
         for c in (d.get("experimental_cases", d) if isinstance(d, dict) else d):
             c = dict(c)
-            c.setdefault("paper_id", p.parents[1].name)
+            c.setdefault("paper_id", pid)
+            c["corpus_scope"] = sc
             out.append(c)
     return out
 
@@ -194,7 +281,7 @@ def condition_inventory(cases):
             e["papers"].add(c.get("paper_id"))
             if cond.get("unit"):
                 e["units"].add(cond["unit"])
-            e["values"].add(str(cond.get("value")))
+            e["values"].add(_value_token(cond))
     return [{"quantity": v["quantity"], "species": v["species"],
              "process_step": v["process_step"], "n_cases": len(v["cases"]),
              "n_papers": len(v["papers"]), "units": sorted(v["units"]),
@@ -223,13 +310,14 @@ def cases_varying_condition(cases, quantity=None, species=None, min_values=2,
             groups.setdefault((c.get("paper_id"),) + k, []).append((c, cond))
     out = []
     for k, members in groups.items():
-        vals = {str(cond.get("value")) for _, cond in members}
+        vals = {_value_token(cond) for _, cond in members}
         if len(vals) < min_values:
             continue
         out.append({"paper_id": k[0], "quantity": k[1], "species": k[2],
                     "process_step": k[3], "n_values": len(vals),
                     "values": sorted(vals, key=lambda v: (_numeric(v) is None,
                                                           _numeric(v) or 0, v)),
+                    "raw_values": sorted({str(cond.get("value")) for _, cond in members}),
                     "n_cases": len(members),
                     "cases": [_provenance(c, cond) for c, cond in members]})
     return sorted(out, key=lambda x: (-x["n_values"], x["paper_id"]))
@@ -255,15 +343,25 @@ def compare_cases(a, b, focus=None):
     differing = [k for k, (o, _) in results.items() if o == SAME_CONDITION_DIFFERENT_VALUE]
     unresolved = [k for k, (o, _) in results.items()
                   if o in (SPECIES_UNRESOLVED, UNIT_CONVERTIBLE, NOT_COMPARABLE)]
-    verdict = MATCH_ON_SHARED_CONDITIONS
+    verdict, blockers = MATCH_ON_SHARED_CONDITIONS, []
     if focus is not None:
         want = [k for k in differing if (k[0], k[1]) == tuple(focus)]
-        if (want and len(differing) == len(want) and not unresolved
-                and not only_a and not only_b):
+        # every way the strong claim can fail, named rather than collapsed into "no"
+        if any(results[k][0] == SPECIES_UNRESOLVED for k in unresolved):
+            blockers.append(UNRESOLVED_REACTANT_QUALIFIER)
+        if any(results[k][0] in (UNIT_CONVERTIBLE, NOT_COMPARABLE) for k in unresolved):
+            blockers.append(UNIT_NOT_COMPARABLE)
+        if only_b:
+            blockers.append(EXTRA_CONDITION)
+        if only_a:
+            blockers.append(MISSING_CONDITION)
+        if len(differing) != len(want):
+            blockers.append(VALUE_DIFFERENCE_OUTSIDE_TARGET)
+        if want and not blockers:
             verdict = PROVEN_DIFFER_ONLY_IN
     return {"a": {"paper_id": a.get("paper_id"), "case_id": a.get("case_id")},
             "b": {"paper_id": b.get("paper_id"), "case_id": b.get("case_id")},
-            "verdict": verdict,
+            "verdict": verdict, "blockers": sorted(set(blockers)),
             "differing": [list(k) for k in differing],
             "unresolved": [list(k) for k in unresolved],
             "only_in_a": [list(k) for k in only_a],

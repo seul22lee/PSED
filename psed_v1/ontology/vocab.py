@@ -115,6 +115,42 @@ def _quantity_words(qid):
             for t in str(s).lower().replace("_", " ").split()}
 
 
+def quantity_qualifiers(qid):
+    """What the ontology says this quantity is qualified BY, e.g. {"reactant"}.
+
+    A qualifier is the ontology stating that the quantity is not fully identified until
+    you say whose it is: a pulse time belongs to one reactant's valve, a partial pressure
+    to one gas. Quantities without one -- a deposition temperature, a cycle count -- are
+    complete on their own.
+    """
+    m = QK_META.get(qid) or {}
+    return {str(x.get("by")) for x in (m.get("qualifiers") or [])
+            if isinstance(x, dict) and x.get("by")}
+
+
+def quantity_requires_species(qid):
+    """Whether naming the chemical is part of identifying this quantity.
+
+    The ontology answers directly for the quantities it defines. It also answers
+    indirectly for the role-prefixed composites the pipeline builds on top of them --
+    `precursor_pulse_time`, `coreactant_purge_time`, `carrier_gas_partial_pressure` --
+    which are not ontology entries but are the same measurement narrowed to a role, and
+    so inherit the qualifier of the quantity they extend. The relation is a suffix over
+    ontology ids rather than a list, so a new composite is covered the day it appears.
+
+    Answering False here means "species absence is not missing information", which is why
+    it is derived rather than assumed: getting it wrong in that direction silently
+    equates two conditions that were never shown to control the same chemical.
+    """
+    if not qid:
+        return False
+    qid = str(qid)
+    if "reactant" in quantity_qualifiers(qid):
+        return True
+    return any(qid.endswith("_" + base) and "reactant" in quantity_qualifiers(base)
+               for base in QK_META)
+
+
 def transform_conflict(label, qid):
     """The word in `label` announcing a measurand `qid` does not carry, or None.
 
