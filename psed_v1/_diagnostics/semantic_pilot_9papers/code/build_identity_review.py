@@ -304,7 +304,7 @@ def figkey(f):
     return (len(s), s)
 
 
-def build(papers, findings):
+def build(papers, findings, PROV):
     P_, A = [], None
     P_ = []
     A = P_.append
@@ -338,6 +338,9 @@ def build(papers, findings):
       % (pill("green", GREEN), pill("yellow", YELLOW), pill("gray", GRAY),
          pill("red", RED)))
 
+    A("<h2>Provenance of this report</h2>")
+    A(table(["field", "value"],
+            [[esc(k), "<code>%s</code>" % esc(v)] for k, v in sorted(PROV.items())]))
     A("<h2>Consistency check</h2>")
     if findings:
         A(table(["paper", "finding", "detail"],
@@ -578,10 +581,35 @@ def build(papers, findings):
     return "\n".join(P_)
 
 
+def provenance():
+    """Stamp identifying WHICH run produced this artifact, so two generations of the
+    report are never mistaken for one another."""
+    import subprocess
+    try:
+        sha = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"],
+                                      cwd=str(W)).decode().strip()
+        dirty = bool(subprocess.check_output(["git", "status", "--porcelain", "."],
+                                             cwd=str(W)).decode().strip())
+    except Exception:
+        sha, dirty = "unknown", False
+    tf = W / "logs" / "test_status.json"
+    tests = json.loads(tf.read_text()) if tf.exists() else {}
+    stamp = W / "logs" / "last_semantic_run.json"
+    generated_at = json.loads(stamp.read_text()).get("generated_at") \
+        if stamp.exists() else None
+    return {"generated_at": generated_at or "not recorded",
+            "git_sha": sha + ("+dirty" if dirty else ""),
+            "active_manifest": "%d papers: %s" % (len(PAPERS), ", ".join(PAPERS)),
+            "test_count": "%s passed, %s failed" % (tests.get("passed", "?"),
+                                                    tests.get("failed", "?"))}
+
+
 def main():
     papers = {pid: Paper(pid) for pid in PAPERS}
     findings = consistency(papers)
-    (OUT / "semantic_identity_review.html").write_text(build(papers, findings))
+    prov = provenance()
+    (OUT / "semantic_identity_review.html").write_text(build(papers, findings, prov))
+    print("provenance: %s" % json.dumps(prov))
     rows = {pid: p.rows() for pid, p in papers.items()}
     n_rs = sum(len(r) for r in rows.values())
     n_case = sum(1 for rs in rows.values() for r in rs if r["cases"])

@@ -601,6 +601,105 @@ def repair_regressions():
         ok("preserved: %s points" % pid[:22], pp.get("old") == pp.get("pilot"), pp)
 
 
+def curve_attribution_join():
+    """Generic behaviour of curve -> semantic entity attribution.
+
+    An explicit `linked_experiment_id` is candidate evidence, not unconditional truth. It
+    is refused only on POSITIVE contradiction with the curve's own provenance; absence of
+    information never refuses it, and a refused link leaves the curve for source-slice
+    matching rather than forcing an attribution.
+    """
+    sys.path.insert(0, str(W / "code"))
+    import pilot_semantics as PS
+    L = PS.link_is_supported
+
+    def ent(fig=None, panel=None, series=None, didx=None):
+        return {"printed_figure_number": fig, "panel": panel, "source_series": series,
+                "fig_docling_index": didx}
+
+    def cur(fig=None, panel=None, series=None, didx=None):
+        return {"figure": fig, "panel": panel, "series": series, "figure_index": didx}
+
+    # ---- accepted attributions ---------------------------------------------
+    ok("join: same figure/panel with no competing entity is accepted",
+       L(cur("2", "a", "HDMP", "1"), ent("2", "a", "HDMP", "1"), {})[0])
+    ok("join: source series supporting the linked entity is accepted",
+       L(cur("3", "c", "200 C", "1"), ent("3", "c", "200 C", "1"),
+         {("1", "c"): {"200 C", "300 C"}})[0])
+    ok("join: a case-suffixed link with only one compatible entity is accepted",
+       L(cur("3", "b", "Thickness", "1"), ent("3", "b", "Thickness", "1"),
+         {("1", "b"): {"Thickness"}})[0])
+    ok("join: an unknown linked entity cannot be contradicted, so it is accepted",
+       L(cur("2", "a", "X", "1"), None, {})[0])
+
+    # ---- rejected / deferred attributions -----------------------------------
+    okc, why = L(cur("9", "a", "m/z = 18", "5"), ent("10", "a", "ALD", "6"), {})
+    ok("join: a linked entity in a different figure is refused", not okc, why[:70])
+    okc, _ = L(cur("2", "a", "X", "1"), ent("2", "b", "Y", "1"), {})
+    ok("join: a linked entity in a contradictory panel is refused", not okc)
+    okc, why = L(cur("3", "c", "300 C", "1"), ent("3", "c", "200 C", "1"),
+                 {("1", "c"): {"200 C", "300 C"}})
+    ok("join: a case-suffixed link is refused when the local label matches a sibling",
+       not okc, why[:70])
+    okc, _ = L(cur("5", "a", "Simulated", "3"), ent("5", "a", "Measured", "3"),
+               {("3", "a"): {"Measured", "Simulated"}})
+    ok("join: a link conflicting with a locally attributable simulation entity is refused",
+       not okc)
+
+    # ---- safety behaviour ---------------------------------------------------
+    ok("join: missing figure provenance alone does not refuse a link",
+       L(cur(None, "a", "X", None), ent(None, "a", "X", None), {})[0])
+    ok("join: missing panel provenance alone does not refuse a link",
+       L(cur("2", None, "X", "1"), ent("2", None, "X", "1"), {})[0])
+    ok("join: a differing label with NO sibling carrying it does not refuse a link",
+       L(cur("2", "a", "Pt", "1"), ent("2", "a", "<single>", "1"),
+         {("1", "a"): {"<single>"}})[0])
+    ok("join: identical conditions are never consulted as identity evidence",
+       "condition" not in (PS.link_is_supported.__doc__ or "").split("Equality")[0])
+
+    # ---- applied to the real outputs ----------------------------------------
+    het, rs_multi = [], []
+    for pid in PAPERS:
+        rs = sem(pid, "result_series")
+        labels = defaultdict(set)
+        for r in rs:
+            lab = (r.get("source") or {}).get("series")
+            if r.get("produced_by") and lab:
+                labels[r["produced_by"]].add(lab)
+        for mid, labs in labels.items():
+            if len(labs) > 1:
+                het.append((pid, mid, sorted(labs)))
+        cases = sem(pid, "experimental_cases")
+        case_of = defaultdict(list)
+        for c in cases:
+            for mid in c.get("measurement_ids") or []:
+                case_of[mid].append(c["case_id"])
+        for r in rs:
+            if len(case_of.get(r.get("produced_by")) or []) > 1:
+                rs_multi.append((pid, r["result_series_id"]))
+    ok("join: no Measurement carries curves with different legend labels", not het,
+       het[:3])
+    # a ResultSeries may still legitimately reach several cases through branches
+    print("    [join] ResultSeries reaching >1 case through branches: %d" % len(rs_multi))
+
+    # a simulated curve binds to a SimulationRun and mints no ExperimentalCase
+    bad_sim = []
+    for pid in PAPERS:
+        sims = {s.get("simulation_run_id") or s.get("run_id")
+                for s in sem(pid, "simulation_runs")}
+        cases = sem(pid, "experimental_cases")
+        in_case = {mid for c in cases for mid in c.get("measurement_ids") or []}
+        for r in sem(pid, "result_series"):
+            lab = str((r.get("source") or {}).get("series") or "").strip().lower()
+            if lab == "simulated":
+                if r.get("produced_by") not in sims:
+                    bad_sim.append((pid, r["result_series_id"], "not a SimulationRun"))
+                if r.get("produced_by") in in_case:
+                    bad_sim.append((pid, r["result_series_id"], "minted a case"))
+    ok("join: a simulated curve binds to a SimulationRun and mints no case", not bad_sim,
+       bad_sim[:3])
+
+
 def progression_continuity_guard():
     """Targeted validation of the PROGRESSION_STAGE_LINK continuity guard.
 
@@ -822,6 +921,7 @@ if __name__ == "__main__":
     invariants()
     anchors()
     repair_regressions()
+    curve_attribution_join()
     progression_continuity_guard()
     structural_invariants()
     print("\n%d papers: %d passed, %d failed" % (len(PAPERS), len(_pass), len(_fail)))

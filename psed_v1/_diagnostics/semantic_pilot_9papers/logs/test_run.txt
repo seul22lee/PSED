@@ -201,6 +201,33 @@ ANCHOR	10.1039_d0cp03358h	PASS	Fig 6 mints no unsupported deposition case	[[]]
   PASS preserved: 10.1039_d0ra09876k points                           
   PASS preserved: 10.1149_2.067203jes curves                          
   PASS preserved: 10.1149_2.067203jes points                          
+  PASS join: same figure/panel with no competing entity is accepted   
+  PASS join: source series supporting the linked entity is accepted   
+  PASS join: a case-suffixed link with only one compatible entity is accepted 
+  PASS join: an unknown linked entity cannot be contradicted, so it is accepted 
+  PASS join: a linked entity in a different figure is refused         
+  PASS join: a linked entity in a contradictory panel is refused      
+  PASS join: a case-suffixed link is refused when the local label matches a sibling 
+  PASS join: a link conflicting with a locally attributable simulation entity is refused 
+  PASS join: missing figure provenance alone does not refuse a link   
+  PASS join: missing panel provenance alone does not refuse a link    
+  PASS join: a differing label with NO sibling carrying it does not refuse a link 
+  PASS join: identical conditions are never consulted as identity evidence 
+  PASS join: no Measurement carries curves with different legend labels 
+    [join] ResultSeries reaching >1 case through branches: 22
+  PASS join: a simulated curve binds to a SimulationRun and mints no case 
+  PASS guard: same specimen is continuity evidence                    
+  PASS guard: same specimen re-measured is continuity evidence        
+  PASS guard: no vacuum break is continuity evidence                  
+  PASS guard: continuous recording is continuity evidence             
+  PASS guard: 'after N cycles' is NOT continuity evidence             
+  PASS guard: 'in situ' alone is NOT continuity evidence              
+  PASS guard: generic growth prose is NOT continuity evidence         
+  PASS guard: silence is NOT continuity evidence                      
+  PASS guard: separately prepared specimens block a merge             
+  PASS guard: every applied progression merge cites positive identity evidence 
+  PASS guard: declined progression pairs are recorded with a reason   
+    [guard] applied progression merges: 0 ; declined and recorded: 4
   PASS S1 10.1038_am.2016.182: colliding cases are marked, never presented as distinct 
   PASS S1b 10.1038_am.2016.182: every case records what distinguishes it 
   PASS S1c 10.1038_am.2016.182: a specimen-derived case keeps its full condition set 
@@ -338,4 +365,4 @@ ANCHOR	10.1039_d0cp03358h	PASS	Fig 6 mints no unsupported deposition case	[[]]
   PASS S14 10.1039_d0ra01602k: no blocked edge rests on a superseded condition 
   PASS S15 10.1039_d0ra01602k: every merge decision is classified     
 
-8 papers: 260 passed, 0 failed
+8 papers: 285 passed, 0 failed
