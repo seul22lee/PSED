@@ -34,6 +34,40 @@ def _load_key():
     return os.environ.get("GOOGLE_API_KEY")
 
 
+#: The axis fields a panel axis carries. A per-series override reuses exactly these, so
+#: there is one axis vocabulary rather than two competing ones.
+AXIS_FIELDS = ("quantity", "unit", "log", "label_raw", "unit_raw", "is_normalized",
+               "normalization_expression", "normalization_denominator_symbol")
+#: Fields whose presence is EVIDENCE that a series really was read off its own axis.
+#: `log` and `is_normalized` are excluded on purpose: both have defaults that a schema
+#: filler emits for every series, so neither can distinguish a real secondary axis from
+#: boilerplate.
+_AXIS_EVIDENCE = ("quantity", "unit", "label_raw", "unit_raw",
+                  "normalization_expression", "normalization_denominator_symbol")
+
+
+def effective_axis(panel_axis, series_axis):
+    """(axis, is_override) -- the axis semantics that apply to ONE series.
+
+    A panel states its primary axes. A series may additionally carry its own `x`/`y` when
+    the figure shows it against a different axis -- a second ordinate, a different plotted
+    quantity. The series wins only when it carries actual axis EVIDENCE; an absent key, a
+    non-dict, or a dict holding nothing but schema defaults falls back to the panel, so
+    every record written before this field existed behaves exactly as before.
+
+    This is deliberately not an axis-identity model: two series that share a secondary
+    ordinate each carry their own copy. What downstream needs is the quantity, unit, raw
+    label and normalization of the axis a curve was read against, and that is expressible
+    per series without giving plot axes identities of their own.
+    """
+    panel_axis = panel_axis if isinstance(panel_axis, dict) else {}
+    if not isinstance(series_axis, dict):
+        return panel_axis, False
+    if any(series_axis.get(k) not in (None, "", [], {}) for k in _AXIS_EVIDENCE):
+        return series_axis, True
+    return panel_axis, False
+
+
 MEASURANDS = ["growth_per_cycle", "film_thickness", "penetration_depth", "surface_coverage",
               "normalized_thickness", "density", "refractive_index", "resistivity",
               "impurity_content", "roughness", "saturated_coverage"]
@@ -70,7 +104,15 @@ data precisely. Return ONLY JSON:
        blank for a multi-curve panel — if unsure, infer the physical quantity the labels
        measure.>",
     "series":[{{"label":"<this curve's label verbatim, e.g. '0.20' or 'Al2O3' or 'Methanol'>",
-       "points":[[x,y],[x,y],...]}}],
+       "points":[[x,y],[x,y],...],
+       "y":<OPTIONAL. Include ONLY when THIS curve is plotted against a DIFFERENT y axis
+          than the panel "y" above - a second ordinate on the right-hand side, or a
+          different plotted quantity. Same fields as the panel axis
+          (quantity, unit, log, label_raw, unit_raw, is_normalized,
+          normalization_expression, normalization_denominator_symbol), read from the axis
+          THIS curve belongs to. OMIT the key entirely when the curve uses the panel's own
+          y axis - which is the normal case.>,
+       "x":<OPTIONAL. Same rule for a second abscissa. Almost always omitted.>}}],
     "conditions":{{"<name>":<numeric_value_with_unit_as_string>}}   // NUMERIC process
       // conditions held fixed in this panel (e.g. temperature "150 °C", pressure,
       // dose/pulse time, number of cycles). ONLY quantities with a numeric value.
@@ -78,6 +120,15 @@ data precisely. Return ONLY JSON:
 ]}}
 Rules: x.quantity in {COORDINATES}; y.quantity in {MEASURANDS} (pick the closest; if none
 fits, use the axis label verbatim).
+A SECOND AXIS IS A DRAWN AXIS, NOT A LEGEND DIFFERENCE. Give a series its own "y" only
+when the figure itself shows a second ordinate that curve is read against: two y axes with
+different labels or units, a right-hand axis, or curves whose plotted quantities are
+plainly different. Curves that differ only in WHICH SAMPLE, SPECIES, CHANNEL, ISOTOPE,
+TECHNIQUE or PROVENANCE they represent all share ONE axis - "O"/"Al"/"Si" on one intensity
+axis, "m/z = 18"/"m/z = 44" on one signal axis, "Measured"/"Simulated" on one axis,
+"TEM"/"SE" measuring one plotted quantity, or any legend of temperatures, pulse times or
+precursors - and each of those must OMIT the per-series axis. `series_axis` names what
+distinguishes the curves; it never implies a second axis. When in doubt, omit the override.
 LABELS ARE MANDATORY. `label_raw` must always be filled from the printed axis text —
 it is what makes a dimensionless axis interpretable later. Transcribe, do not
 interpret: an axis reading 'x/H' is 'x/H', NOT 'distance divided by feature height'.
@@ -487,6 +538,10 @@ def flatten_records(sd, scout, figresults):
             # paper's film (substrate Al2O3/Si, coreactant Methanol) stays a condition.
             axis = (p.get("series_axis") or "").strip()
             for s in p.get("series", []):
+                # the axis THIS curve was read against: its own when the figure shows one,
+                # the panel's otherwise
+                s_y, _y_override = effective_axis(y, s.get("y"))
+                s_x, _x_override = effective_axis(x, s.get("x"))
                 lab = (s.get("label") or "").strip()
                 _cls, _match = _classify_label(lab, mats)          # scout.materials anchor
                 if _cls == "empty":                                # single-curve panel, no legend
@@ -522,8 +577,10 @@ def flatten_records(sd, scout, figresults):
                     "series_kind": series_kind,         # numeric_sweep | categorical | material
                     "series_value_num": series_value_num,  # float, only when numeric_sweep
                     "series_unit": series_unit,            # unit, only when numeric_sweep
-                    "measurand": {"quantity": y.get("quantity"), "unit": y.get("unit")},
-                    "coordinate": x.get("quantity"), "coordinate_unit": x.get("unit"),
+                    "measurand": {"quantity": s_y.get("quantity"), "unit": s_y.get("unit")},
+                    "measurand_axis_scope": "series" if _y_override else "panel",
+                    "coordinate": s_x.get("quantity"), "coordinate_unit": s_x.get("unit"),
+                    "coordinate_axis_scope": "series" if _x_override else "panel",
                     "points": s.get("points", []),
                     "controlled": _clean_conditions(p.get("conditions", {})),
                     "chemistry": {"precursors": scout.get("precursors"),
