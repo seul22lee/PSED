@@ -706,12 +706,15 @@ def provenance():
     stamp = W / "logs" / "last_semantic_run.json"
     generated_at = json.loads(stamp.read_text()).get("generated_at") \
         if stamp.exists() else None
-    # the test line reports its own freshness: a count recorded at another commit is not
-    # evidence about this one, and an absent record is not a pass
+    # Every field here is a HISTORICAL fact about the run that produced this page, so it
+    # stays true however the repository moves afterwards. A live freshness verdict must
+    # not be baked in: this page gets committed, which changes HEAD, which would make any
+    # such verdict wrong immediately. Freshness is reported to the console at build time.
     return {"generated_at": generated_at or "not recorded",
-            "git_sha": (sha or "unknown") + ("+dirty" if dirty else ""),
+            "generated_from": (sha or "unknown") + ("+uncommitted" if dirty else ""),
             "active_manifest": "%d papers: %s" % (len(PAPERS), ", ".join(PAPERS)),
-            "test_count": tests["label"]}
+            "test_count": "%s (recorded at %s)" % (tests["counts"],
+                                                   tests["recorded_sha"] or "no commit")}
 
 
 def main():
@@ -720,6 +723,10 @@ def main():
     prov = provenance()
     (OUT / "semantic_identity_review.html").write_text(build(papers, findings, prov))
     print("provenance: %s" % json.dumps(prov))
+    # freshness is about the tree you are standing in, so it is reported here and not
+    # written into the page
+    _t = PSTAT.test_status(W / "logs" / "test_status.json", W)
+    print("pilot tests           : %s [%s] %s" % (_t["counts"], _t["state"], _t["detail"]))
     rows = {pid: p.rows() for pid, p in papers.items()}
     n_rs = sum(len(r) for r in rows.values())
     n_case = sum(1 for rs in rows.values() for r in rs if r["cases"])

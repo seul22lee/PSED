@@ -60,12 +60,12 @@ ul{margin:8px 0;padding-left:20px}li{margin:4px 0}
 <div class="big">
 <div><b>8</b><span>primary papers</span></div>
 <div><b>182</b><span>cases</span></div>
-<div><b>300 passed, 0 failed (tree modified)</b><span>pilot tests</span></div>
+<div><b>300 passed, 0 failed</b><span>pilot tests</span></div>
 <div><b>100%</b><span>curves preserved</span></div>
 <div><b>100%</b><span>points preserved</span></div>
 <div><b>58.5s</b><span>runtime</span></div>
 </div>
-<p class="d">Pilot test status: <span class="pill warn">modified</span> &mdash; recorded at c4dfdd2, uncommitted changes since.</p>
+<p class="d">Pilot suite: 300 passed, 0 failed, recorded at c2f5987. Whether that matches your checkout is reported by the build, not by this page.</p>
 <div class="note"><b>Two generic repairs landed this cycle.</b><br><b>1. Condition specificity precedence.</b> A condition now carries how specific its source is (specimen table &gt; figure-local &gt; methods default &gt; paper-wide default). When two sources disagree the more specific one wins, the other is retained under <code>superseded</code>, and the disagreement is no longer reported as a scientific contradiction. This is what lets a result measured on a named specimen use that specimen's tabulated conditions instead of an inherited default.<br><b>2. Case-minting evidence threshold.</b> A Measurement anchors a deposition ExperimentalCase only on positive deposition identity: a named specimen, an author-defined table row or design branch, or a local synthesis description. Inherited defaults, an image, a technique or a plotted result are not sufficient on their own. Such results keep their Measurement and ResultSeries and their case link is recorded UNRESOLVED.</div>
 <div class="note"><b>Remaining blockers.</b><ul><li><b>2.067203jes</b> — 66 cases for 38 curves; the source-positive cross-panel identity audit has not been done, so this count is <b>provisional</b>.</li><li><b>d0ra09876k</b> &mdash; its whole-curve cases beyond the Fig 3 design branches are not individually audited against the PDF.</li><li><b>JES Figs 11 &amp; 12</b> — the PDF anchors 2 and 7 deposited-structure branches. Those structures are stated as film thicknesses in the legends, which the extraction does not surface as case-defining conditions, so they resolve UNRESOLVED rather than as branches.</li></ul></div>
 <h2>B. Per-paper summary</h2>
