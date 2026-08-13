@@ -1,0 +1,117 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "both",
+ "materials": [
+  "BaO",
+  "BaTiO3"
+ ],
+ "precursors": [
+  "py-Ba",
+  "TTIP"
+ ],
+ "coreactants": [
+  "H2O"
+ ],
+ "process_type": "thermal",
+ "temperature_window_C": [
+  180,
+  210
+ ],
+ "gpc_nm": 0.045,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F7a"
+   ]
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F7b",
+    "F8a",
+    "F8b"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F9a",
+    "F9b",
+    "F12a"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F13"
+   ]
+  }
+ },
+ "drill": [
+  {
+   "where": "F7a",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC plotted versus substrate temperature"
+  },
+  {
+   "where": "F7b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "GPC versus precursor boosting time"
+  },
+  {
+   "where": "F8a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Film thickness versus number of Ba precursor exposures"
+  },
+  {
+   "where": "F8b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "Thickness variation as a function of oxidant pulses"
+  },
+  {
+   "where": "F9a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS depth profile of BaO film"
+  },
+  {
+   "where": "F9b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "High-resolution XPS spectra of surface and post surface etching"
+  },
+  {
+   "where": "F12a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS depth profile of as-deposited BTO film"
+  },
+  {
+   "where": "F13",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "Leakage current I-V characteristics of Pt/BTO/Ru capacitor"
+  }
+ ],
+ "go_deeper": true,
+ "_tokens": {
+  "in": 3093,
+  "out": 860,
+  "thoughts": 2093,
+  "budget": 12288
+ },
+ "_scout_input_chars": 11881
+}

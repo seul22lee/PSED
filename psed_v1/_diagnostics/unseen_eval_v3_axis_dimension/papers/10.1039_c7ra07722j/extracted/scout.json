@@ -1,0 +1,152 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "Li2CO3",
+  "Li2O"
+ ],
+ "precursors": [
+  "lithium tert-butoxide"
+ ],
+ "coreactants": [
+  "O2 plasma",
+  "H2O",
+  "CO2"
+ ],
+ "process_type": "plasma",
+ "temperature_window_C": [
+  50,
+  300
+ ],
+ "gpc_nm": 0.082,
+ "data": {
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F4a",
+    "F4b"
+   ]
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F5a",
+    "F7"
+   ]
+  },
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F5b"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F6"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F8a",
+    "F8b",
+    "F8c",
+    "F9"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F12a"
+   ]
+  }
+ },
+ "drill": [
+  {
+   "where": "F4a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "saturation curve for thermal ALD of Li2CO3"
+  },
+  {
+   "where": "F4b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "saturation curve for plasma-assisted ALD of Li2CO3"
+  },
+  {
+   "where": "F5a",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "in situ SE thickness versus ALD cycles at different temperatures"
+  },
+  {
+   "where": "F5b",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "growth per cycle as a function of substrate temperature"
+  },
+  {
+   "where": "F6",
+   "type": "film_property_vs_condition",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "ellipsometric phase shift Delta as a function of reaction pulses"
+  },
+  {
+   "where": "F7",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "in situ thickness growth for different O2 plasma exposure times"
+  },
+  {
+   "where": "F8a",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS C 1s spectrum"
+  },
+  {
+   "where": "F8b",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS Li 1s spectrum"
+  },
+  {
+   "where": "F8c",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XPS O 1s spectrum"
+  },
+  {
+   "where": "F9",
+   "type": "xrd_or_spectrum",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "XRD gonio scans at various processing temperatures"
+  },
+  {
+   "where": "F12a",
+   "type": "other",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "impedance spectroscopy data plots for thermal and plasma ALD films"
+  }
+ ],
+ "go_deeper": true,
+ "_tokens": {
+  "in": 3948,
+  "out": 1140,
+  "thoughts": 2837,
+  "budget": 12288
+ },
+ "_scout_input_chars": 14185
+}

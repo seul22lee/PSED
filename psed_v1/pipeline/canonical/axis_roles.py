@@ -36,6 +36,8 @@ from __future__ import annotations
 
 import re
 
+from ontology import vocab as _vocab
+
 ROLES = ("process_condition", "measurement_condition", "progression_coordinate",
          "spatial_coordinate", "measurement_coordinate", "output",
          "derived_representation", "unknown")
@@ -175,11 +177,41 @@ def _label_unit(label):
     return m.group(1).strip() if m else None
 
 
+def symbol_dimension(quantity):
+    """The dimension a quantity must have, for WEAK-SYMBOL corroboration only.
+
+    Derived from the unit the ontology already declares, through THIS module's
+    `unit_dimension` so both sides of the comparison speak one vocabulary.
+
+    Deliberately NOT wired into `dimensionally_compatible` below. Doing that armed the
+    general guard against every strong match too, and it promptly rejected correct
+    readings: `Intensity (counts)` died because the ontology says `a.u.` while the axis
+    says `counts` -- two spellings of "a reporting scale", not a contradiction -- and
+    `Thickness/cycles S/N (nm)` was displaced by `growth_per_cycle`, which is the same
+    physical quantity wearing a different id. Both are the same mistake: physics was
+    asked to arbitrate meaning it cannot see.
+
+    So the derived map answers one narrow question -- "could this SYMBOL plausibly mean
+    this quantity here?" -- and never overrules a label that states its quantity outright.
+    """
+    if not quantity:
+        return None
+    over = _QUANTITY_DIM.get(quantity)
+    if over:
+        return over
+    u = _vocab.quantity_unit(quantity)
+    d = unit_dimension(u) if u else None
+    return {d} if d else None
+
+
 def dimensionally_compatible(quantity, dim):
     """False only when we can PROVE the pairing is impossible.
 
-    Silent when either side is unknown -- the guard exists to reject
-    demonstrable contradictions, not to demand a complete unit table.
+    Silent when either side is unknown -- the guard exists to reject demonstrable
+    contradictions, not to demand a complete unit table. Its evidence stays the explicit
+    `_QUANTITY_DIM` table: a dimension is a VETO on the impossible, never a chooser
+    between two quantities that share one. Widening it to every ontology-derived
+    dimension is what broke `intensity` and `thickness_per_cycle`.
     """
     if not quantity or not dim:
         return True
@@ -187,6 +219,28 @@ def dimensionally_compatible(quantity, dim):
     if not want:
         return True
     return dim in want
+
+
+def symbol_is_corroborated(quantity, unit):
+    """Whether a BARE-SYMBOL reading of an axis is physically supportable.
+
+    A one- or two-character symbol is the weakest evidence the ontology admits -- the
+    same letter is a molecular flux in one field and a current density in another. So a
+    symbol-only match must be corroborated by physics: the quantity's dimension and the
+    axis unit have to agree.
+
+    Absence is not corroboration. An axis that carries a unit the parser cannot read
+    offers nothing to check, so the symbol stays uncorroborated rather than being
+    believed by default -- this is where `j / mA cm^-2` stops becoming a collision flux.
+    An axis with NO unit at all is different: there the symbol stands alone and is all
+    the author wrote, which is how a bare `H` still reads as a feature height.
+    """
+    want = symbol_dimension(quantity)
+    if not want:
+        return False
+    if not unit or not str(unit).strip():
+        return True                      # symbol alone, nothing to contradict it
+    return unit_dimension(unit) in want
 
 
 def resolve_axis(raw_label, raw_quantity, unit, caption="", context="",
@@ -235,8 +289,56 @@ def resolve_axis(raw_label, raw_quantity, unit, caption="", context="",
                                    "chemical-element token of %r" % (stripped, label))
         if not q:
             q = canon(label)
+            # A symbol-only reading must be physically supportable. Track B already
+            # refuses a symbol that ignores descriptive words; this refuses one the
+            # physics cannot back -- an ellipsometric angle read as a coverage fraction,
+            # a capacitance read as a probability, a current density read as a molecular
+            # flux. All three matched a legitimate ontology symbol; none survives its own
+            # unit.
+            if q and _vocab.is_bare_symbol(_vocab.axis_label_match(label)[1]) \
+                    and not symbol_is_corroborated(q, unit):
+                out["uncorroborated_symbol_match"] = q
+                out["evidence"] = (
+                    "label %r offers only the ontology symbol for %r, and that reading is "
+                    "not supported by the axis unit %r" % (label, q, unit))
+                q = None
+            # A match on a bare one- or two-character symbol is the weakest reading the
+            # ontology admits: the same letter means different things in different
+            # fields. "j / mA cm^-2" matched the symbol J of `collision_flux` -- a
+            # molecular impingement flux -- when the axis is an electrochemical current
+            # density. The record itself already said `current_density`, and that answer
+            # was never consulted because a symbol match is not "wrong" enough for the
+            # dimension guard to reject (neither quantity carries a dimension entry).
+            #
+            # So when the label offers only a symbol AND the record independently names a
+            # quantity the ontology supports, the record wins. This is deliberately not
+            # "trust raw_quantity": an arbitrary raw string that canonicalises to nothing
+            # promotes nothing, and a spelled-out label keeps its authority because a
+            # name or multi-word alias is not a bare symbol.
+            if q and _vocab.is_bare_symbol(_vocab.axis_label_match(label)[1]):
+                _rec = canon(raw_quantity) if raw_quantity else None
+                if _rec and _rec != q:
+                    out["displaced_symbol_match"] = q
+                    out["evidence"] = (
+                        "label %r offers only the ontology symbol for %r; the record "
+                        "independently names %r, which the ontology supports"
+                        % (label, q, _rec))
+                    q = _rec
     if q is None and raw_quantity and canon:
-        q = canon(raw_quantity)
+        # The record is held to the same standard as the label. A record that says only
+        # "j" repeats the symbol rather than corroborating it, so canonicalising it here
+        # would smuggle back the reading the label was just refused. A record naming a
+        # quantity outright is not a bare symbol and passes through untouched.
+        _rq = canon(raw_quantity)
+        if _rq and _vocab.is_bare_symbol(_vocab.axis_label_match(raw_quantity)[1]) \
+                and not symbol_is_corroborated(_rq, unit):
+            out.setdefault("uncorroborated_symbol_match", _rq)
+            out["evidence"] = (
+                "neither the label %r nor the record %r offers more than an ontology "
+                "symbol for %r, and the axis unit %r does not support it"
+                % (label, raw_quantity, _rq, unit))
+            _rq = None
+        q = _rq
     if q is None and raw_quantity and str(raw_quantity) in (
             set(_QUANTITY_DIM) | set(_PROCESS_QUANTITIES)
             | set(_MEASUREMENT_COORDS) | set(_PROGRESSION)):

@@ -91,8 +91,13 @@ def main():
                            canon=lib.resolve_axis_label)
     ok("H: a length quantity under an incompatible unit is rejected",
        r.get("canonical_quantity") != "feature_height", r.get("canonical_quantity"))
+    # The rejection must leave a trace, whichever layer caught it: the general
+    # dimension guard records `rejected_lexical_match`, the weak-symbol corroboration
+    # records `uncorroborated_symbol_match`. Both are a refusal with a reason attached;
+    # neither is silent.
     ok("H: and the rejection is recorded, not silent",
-       r.get("rejected_lexical_match") == "feature_height"
+       "feature_height" in (r.get("rejected_lexical_match"),
+                            r.get("uncorroborated_symbol_match"))
        or r.get("semantic_status") == "unsupported_preserved", r)
     # absence of a unit is NOT contradiction
     r2 = caxis.resolve_axis(raw_label="H (nm)", raw_quantity=None, unit="nm",

@@ -1,0 +1,207 @@
+<title>Axis Semantic Repair Candidate</title>
+<style>
+:root{--bg:#fbfaf8;--fg:#1a1a1a;--mut:#6b6b6b;--line:#e2ded8;--card:#fff;--acc:#7c4dff;--accbg:#f1ecff;
+--ok:#0a7d54;--okbg:#e6f5ee;--bad:#b3261e;--badbg:#fdecea;--warn:#8a6100;--warnbg:#fdf3e2}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16151a;--fg:#eceaf2;--mut:#a09daa;
+--line:#312e39;--card:#1e1c24;--acc:#b39dff;--accbg:#2a2340;--ok:#4ed6a1;--okbg:#12312a;--bad:#ff8b80;
+--badbg:#3a1c1a;--warn:#f0c070;--warnbg:#33280f}}
+[data-theme=dark]{--bg:#16151a;--fg:#eceaf2;--mut:#a09daa;--line:#312e39;--card:#1e1c24;--acc:#b39dff;
+--accbg:#2a2340;--ok:#4ed6a1;--okbg:#12312a;--bad:#ff8b80;--badbg:#3a1c1a;--warn:#f0c070;--warnbg:#33280f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1300px;margin:0 auto;padding:34px 22px 90px}
+h1{font:600 30px/1.25 Georgia,serif;margin:0 0 6px}
+h2{font:600 20px/1.3 Georgia,serif;margin:46px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--line)}
+h3{font:600 12px/1.3 Georgia,serif;margin:22px 0 8px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.sub{color:var(--mut);font-size:13px}
+code{font:12.5px ui-monospace,Menlo,monospace;background:var(--accbg);color:var(--acc);padding:1px 5px;border-radius:4px;white-space:nowrap}
+.cards{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-width:112px;flex:1}
+.card b{display:block;font-size:24px;line-height:1.15;font-variant-numeric:tabular-nums}
+.card span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.card.ok b{color:var(--ok)}.card.bad b{color:var(--bad)}
+.gate{background:linear-gradient(135deg,var(--okbg),var(--card));border:2px solid var(--ok);border-radius:12px;padding:20px 24px;margin:22px 0}
+.gate .g{font:700 18px ui-monospace,monospace;color:var(--ok)}
+.note{background:var(--card);border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;font-size:13.5px}
+.warnbox{background:var(--warnbg);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;font-size:13.5px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th{position:sticky;top:0;background:var(--bg);text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);padding:8px;border-bottom:2px solid var(--line);z-index:2}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:var(--accbg)}
+.tw{overflow-x:auto;max-height:540px;overflow-y:auto;border:1px solid var(--line);border-radius:10px}
+.badge{display:inline-block;padding:2px 7px;border-radius:11px;font-size:10px;font-weight:700;white-space:nowrap}
+.b-ok{background:var(--okbg);color:var(--ok)}.b-no{background:var(--badbg);color:var(--bad)}
+.b-inc{background:var(--badbg);color:var(--bad)}.b-noc{background:var(--warnbg);color:var(--warn)}
+.none{color:var(--mut);font-style:italic;font-size:12px}.old{color:var(--bad)}.new{color:var(--ok)}.bad{color:var(--bad)}
+.num{text-align:right;font-variant-numeric:tabular-nums}.lab{max-width:190px;font-size:12px}
+.mono{font:11.5px ui-monospace,monospace;color:var(--mut)}.sym{white-space:nowrap}
+input,select{font:13px inherit;padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--fg)}
+.ctl{display:flex;gap:9px;margin:12px 0;flex-wrap:wrap}
+details summary{cursor:pointer;color:var(--acc);font-size:11.5px}
+.why{font-size:11.5px;color:var(--mut);padding:5px 0}
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:16px 0}
+.layer{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:15px 17px}
+.layer.ok{border:2px solid var(--ok)}
+.layer h4{margin:0 0 8px;font:600 13px Georgia,serif}
+.layer .v{font-size:22px;font-weight:600;color:var(--ok);font-variant-numeric:tabular-nums}
+.defer{display:grid;grid-template-columns:repeat(auto-fit,minmax(184px,1fr));gap:9px;margin:12px 0}
+.dcard{background:var(--card);border:1px dashed var(--line);border-radius:9px;padding:11px 13px}
+.dcard b{font-size:12.5px}.dcard p{margin:4px 0 0;font-size:11px;color:var(--mut)}
+.ck{list-style:none;padding:0}.ck li{padding:5px 0;font-size:13.5px}
+.ck input{margin-right:9px;transform:scale(1.15)}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--mut)}
+</style>
+<div class=wrap>
+<h1>Axis Semantic Repair Candidate</h1>
+<p class=sub>Post-repair review &middot; generated from <code>4c65b52</code> with an uncommitted working tree &middot; 2026-08-13 18:55 UTC</p>
+
+<div class=gate><div class=g>ALL CANDIDATE GATES PASS &mdash; PENDING EXTERNAL REVIEW</div>
+<p style="margin:10px 0 0;font-size:13.5px">The resolver removes 11 false canonical claims and creates none.
+The persisted artifacts carry exactly those corrections plus four source-verified ones.
+Case identity is byte-identical to the frozen baseline.</p></div>
+
+<h2>1 &middot; Three layers, checked separately</h2>
+<p class=sub>An earlier attempt proved a correct resolver can still be persisted incorrectly. These are therefore verified independently.</p>
+<div class=layers>
+<div class="layer ok"><h4>A &middot; Resolver</h4><div class=v>11 / 0 / 0</div>
+<p class=sub>corrections / regressions / substitutions over 822 axes</p></div>
+<div class="layer ok"><h4>B &middot; Persisted</h4><div class=v>30 fields</div>
+<p class=sub>Measurement <code>coordinate</code> + <code>measured_quantity</code> only, in 3 papers</p></div>
+<div class="layer ok"><h4>C &middot; Identity</h4><div class=v>0 changes</div>
+<p class=sub>fingerprints, case conditions, membership, branches</p></div>
+</div>
+
+<h2>2 &middot; Resolver result</h2>
+<div class=cards><div class="card "><b>822</b><span>axes evaluated</span></div><div class="card ok"><b>11</b><span>corrections</span></div>
+<div class="card ok"><b>0</b><span>regressions</span></div><div class="card ok"><b>0</b><span>unauthorized substitutions</span></div><div class="card ok"><b>0</b><span>uncertain</span></div></div>
+<div class=ctl><input id=fc placeholder="filter paper, label, quantity&hellip;" style="flex:1;min-width:220px">
+<select id=fg><option value="">all corpora</option><option>ACTIVE8</option><option>UNSEEN5</option><option>SUPPORT44</option></select></div>
+<div class=tw><table id=tc><thead><tr><th>corpus</th><th>paper</th><th>figure</th><th>raw axis</th><th>unit</th>
+<th>frozen</th><th>actual</th><th>rejection reason</th><th></th></tr></thead><tbody><tr data-g="ACTIVE8"><td>ACTIVE8</td><td><code>10.1039_c5ta00205b</code></td><td>fig 10 / a</td><td class=lab>j / µA cm⁻²</td><td><code>µA cm⁻²</code></td><td class=old><code>collision_flux</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit unparseable</div></details></td></tr><tr data-g="ACTIVE8"><td>ACTIVE8</td><td><code>10.1039_d0ra09876k</code></td><td>fig 7 / b</td><td class=lab>(αhν)² / (eV cm⁻¹)²</td><td><code>(eV cm⁻¹)²</code></td><td class=old><code>feature_height</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension [&#x27;length&#x27;] · axis unit unparseable</div></details></td></tr><tr data-g="ACTIVE8"><td>ACTIVE8</td><td><code>10.1149_2.067203jes</code></td><td>fig 12 / a</td><td class=lab>C (fF/µm²)</td><td><code>fF/µm²</code></td><td class=old><code>sticking_probability</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit unparseable</div></details></td></tr><tr data-g="ACTIVE8"><td>ACTIVE8</td><td><code>10.1149_2.067203jes</code></td><td>fig 12 / b</td><td class=lab>C (fF/µm²)</td><td><code>fF/µm²</code></td><td class=old><code>sticking_probability</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit unparseable</div></details></td></tr><tr data-g="SUPPORT44"><td>SUPPORT44</td><td><code>10.1016_j.tsf.2012.11.127</code></td><td>fig 4 / a</td><td class=lab>Ψ (°)</td><td><code>°</code></td><td class=old><code>surface_coverage</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit angle</div></details></td></tr><tr data-g="SUPPORT44"><td>SUPPORT44</td><td><code>10.1016_j.tsf.2012.11.127</code></td><td>fig 4 / b</td><td class=lab>Δ (°)</td><td><code>°</code></td><td class=old><code>surface_coverage</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit angle</div></details></td></tr><tr data-g="SUPPORT44"><td>SUPPORT44</td><td><code>10.1039_c4nr05049e</code></td><td>fig 7 / a</td><td class=lab>q_y (nm^-1)</td><td><code>nm^-1</code></td><td class=old><code>site_density</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension [&#x27;count&#x27;, &#x27;reciprocal_area&#x27;] · axis unit unparseable</div></details></td></tr><tr data-g="SUPPORT44"><td>SUPPORT44</td><td><code>10.1039_c6dt03571j</code></td><td>fig 9 / b</td><td class=lab>(αhν)² (cm⁻¹ eV)²</td><td><code>(cm⁻¹ eV)²</code></td><td class=old><code>feature_height</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension [&#x27;length&#x27;] · axis unit unparseable</div></details></td></tr><tr data-g="SUPPORT44"><td>SUPPORT44</td><td><code>10.1063_1.4867469</code></td><td>fig 4 / a</td><td class=lab>C/A, µF/cm²</td><td><code>µF/cm²</code></td><td class=old><code>sticking_probability</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit unparseable</div></details></td></tr><tr data-g="SUPPORT44"><td>SUPPORT44</td><td><code>10.1116_1.4938104</code></td><td>fig 12 / b</td><td class=lab>C/C_0</td><td><code>—</code></td><td class=old><code>sticking_probability</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit unparseable</div></details></td></tr><tr data-g="UNSEEN5"><td>UNSEEN5</td><td><code>10.1039_c7ra07722j</code></td><td>fig 4 / a</td><td class=lab>Δ (°)</td><td><code>°</code></td><td class=old><code>surface_coverage</code></td><td class=new><span class=none>unsupported</span></td><td><span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span></td><td><details><summary>why</summary><div class=why>quantity dimension unknown · axis unit angle</div></details></td></tr></tbody></table></div>
+<div class=note><b>Two distinct reasons, never conflated.</b>
+<span class="badge b-inc">DIMENSION_INCOMPATIBLE</span> means the axis unit positively contradicts the quantity.
+<span class="badge b-noc">NO_POSITIVE_DIMENSION_CORROBORATION</span> means nothing could be checked &mdash; the quantity
+declares no dimension, or the unit will not parse. Absence of evidence is never reported as a proven mismatch.</div>
+
+<h2>3 &middot; Cyclic-voltammetry proof &mdash; all nine Measurements</h2>
+<div class=tw><table><thead><tr><th>fig</th><th>series</th><th>raw x</th><th>frozen x</th><th>actual x</th>
+<th>raw y</th><th>record semantic</th><th>frozen y</th><th>actual y</th><th>reason</th></tr></thead>
+<tbody><tr><td>fig 10</td><td class=lab>H2SO4 / H2O</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>E vs. Ag/AgCl</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>j</code></td><td><span class="badge b-noc">RAW_SYMBOL_RECORD_DEFERRED</span></td></tr><tr><td>fig 10</td><td class=lab>EtOH / H2SO4 / H2O</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr><tr><td>fig 11</td><td class=lab>KOH / H2O</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr><tr><td>fig 11</td><td class=lab>EtOH / KOH / H2O</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr><tr><td>fig 13</td><td class=lab>anodized Ti fleece + Pt ALD</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr><tr><td>fig 13</td><td class=lab>Ti fleece + Pt ALD</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr><tr><td>fig 13</td><td class=lab>Ti fleece + sputtered Pt</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr><tr><td>fig 13</td><td class=lab>anodized Ti fleece</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr><tr><td>fig 13</td><td class=lab>Ti fleece</td><td class=lab></td><td class=old><code>precursor_exposure</code></td><td class=new><code>potential</code></td><td class=lab></td><td><code></code></td><td class=old><code>collision_flux</code></td><td class=new><code>current_density</code></td><td><span class="badge b-ok">STRONG_RECORD_SEMANTIC_PRECEDENCE</span></td></tr></tbody></table></div>
+<div class=cards><div class="card ok"><b>9 / 9</b><span>x no longer precursor_exposure</span></div>
+<div class="card ok"><b>8</b><span>y &amp;rarr; current_density</span></div><div class="card ok"><b>1</b><span>y unsupported (raw j)</span></div><div class="card ok"><b>0</b><span>y collision_flux</span></div></div>
+<div class=note>The ninth abstains on purpose. Its record says only <code>j</code>; that raw symbol now survives to the
+axis resolver instead of being canonicalised on the way in, finds no corroboration and no independent record
+semantic, and asserts nothing. It is <b>not</b> inferred from the technique, the unit, the neighbouring panels or
+the other eight.</div>
+
+<h2>4 &middot; Source-verified substitutions</h2>
+<div class=note><b>JES Fig. 5a &mdash; <code>n</code>: <code>cycle_number</code> &rarr; <code>refractive_index</code></b><br>
+Caption defines the symbol in words: <i>&ldquo;Influence of the substrate temperature during deposition on
+(a) the refractive index, n, and (b) the growth-per-cycle, GPC, of SiO<sub>2</sub>&hellip;&rdquo;</i>
+Plotted values 1.42&ndash;1.455 are the refractive index of SiO<sub>2</sub>; the x axis is substrate temperature,
+so nothing on the panel counts cycles. <span class="badge b-ok">AUTHORIZED_SOURCE_CORRECTION</span></div>
+<div class=note><b>d0ra09876k Fig. 2b &times;3 &mdash; <code>p (Pa)</code>: <code>total_pressure</code> &rarr; <code>partial_pressure</code></b><br>
+Caption: <i>&ldquo;Bottom: vapor pressure measurements for all three complexes.&rdquo;</i> Body:
+<i>&ldquo;The vapor pressure of the compounds was determined using stepped isothermal TGA.&rdquo;</i>
+One curve per precursor complex against <code>1/T</code> &mdash; a Clausius&ndash;Clapeyron plot. A vapour pressure
+belongs to one species, never to the chamber. <span class="badge b-ok">AUTHORIZED_SOURCE_CORRECTION</span></div>
+<div class=warnbox><b>Caveat, recorded not hidden.</b> Strictly this is a <i>vapour</i> pressure &mdash; an intrinsic
+property of the substance, not a partial pressure within a mixture. The ontology has no <code>vapor_pressure</code>
+quantity, so <code>partial_pressure</code> is the closest supported reading and is unambiguously better than
+<code>total_pressure</code>. <code>vapor_pressure</code> is logged as deferred ontology coverage debt.</div>
+
+<h2>5 &middot; Preserved controls</h2>
+<p class=sub>The fastest check that this is precision hardening, not suppression.</p>
+<div class=tw><table><thead><tr><th>label</th><th>unit</th><th>actual</th><th>status</th></tr></thead><tbody><tr><td class=lab>Intensity (counts)</td><td><code>counts</code></td><td><code>intensity</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>intensity (counts)</td><td><code>counts</code></td><td><code>intensity</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>Thickness/cycles S/N (nm)</td><td><code>nm</code></td><td><code>thickness_per_cycle</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>Time (cycles)</td><td><code>cycles</code></td><td><code>time</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>P_chamber (Pa)</td><td><code>Pa</code></td><td><code>total_pressure</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>T_deposition (°C)</td><td><code>°C</code></td><td><code>deposition_temperature</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>L_channel (um)</td><td><code>um</code></td><td><code>feature_length</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>2θ (degrees)</td><td><code>degrees</code></td><td><code>diffraction_angle</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>2Θ (°)</td><td><code>°</code></td><td><code>diffraction_angle</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>H (nm)</td><td><code>nm</code></td><td><code>feature_height</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>H</td><td><code>—</code></td><td><code>feature_height</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>Thickness (nm)</td><td><code>nm</code></td><td><code>film_thickness</code></td><td><span class="badge b-ok">PASS</span></td></tr><tr><td class=lab>Current density, A/cm²</td><td><code>A/cm²</code></td><td><code>current_density</code></td><td><span class="badge b-ok">PASS</span></td></tr></tbody></table></div>
+
+<h2>6 &middot; Symbol risk matrix</h2>
+<p class=sub>Short symbols are not globally refused. Only the instances physics cannot support are.</p>
+<div class=tw><table><thead><tr><th>symbol</th><th>candidate quantity</th><th>dimension</th>
+<th class=num>total uses</th><th class=num>preserved correct</th><th class=num>rejected false</th>
+<th class=num>unresolved/other</th></tr></thead><tbody><tr><td class=sym><code>c</code></td><td><code>sticking_probability</code></td><td><span class=none>unknown</span></td><td class=num>4</td><td class=num style="color:var(--ok)">0</td><td class=num><b class=bad>4</b></td><td class=num>0</td></tr><tr><td class=sym><code>β</code></td><td><code>sticking_probability</code></td><td><span class=none>unknown</span></td><td class=num>4</td><td class=num style="color:var(--ok)">0</td><td class=num><b class=bad>4</b></td><td class=num>0</td></tr><tr><td class=sym><code>θ</code></td><td><code>surface_coverage</code></td><td><span class=none>unknown</span></td><td class=num>28</td><td class=num style="color:var(--ok)">25</td><td class=num><b class=bad>3</b></td><td class=num>0</td></tr><tr><td class=sym><code>H</code></td><td><code>feature_height</code></td><td>length</td><td class=num>2</td><td class=num style="color:var(--ok)">0</td><td class=num><b class=bad>2</b></td><td class=num>0</td></tr><tr><td class=sym><code>F</code></td><td><code>collision_flux</code></td><td><span class=none>unknown</span></td><td class=num>1</td><td class=num style="color:var(--ok)">0</td><td class=num><b class=bad>1</b></td><td class=num>0</td></tr><tr><td class=sym><code>J</code></td><td><code>collision_flux</code></td><td><span class=none>unknown</span></td><td class=num>1</td><td class=num style="color:var(--ok)">0</td><td class=num><b class=bad>1</b></td><td class=num>0</td></tr><tr><td class=sym><code>q</code></td><td><code>site_density</code></td><td>count,reciprocal_area</td><td class=num>1</td><td class=num style="color:var(--ok)">0</td><td class=num><b class=bad>1</b></td><td class=num>0</td></tr><tr><td class=sym><code>BE</code></td><td><code>binding_energy</code></td><td><span class=none>unknown</span></td><td class=num>60</td><td class=num style="color:var(--ok)">60</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>S</code></td><td><code>film_thickness</code></td><td>length</td><td class=num>51</td><td class=num style="color:var(--ok)">51</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>x</code></td><td><code>spatial_coordinate</code></td><td>length</td><td class=num>40</td><td class=num style="color:var(--ok)">40</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>y</code></td><td><code>spatial_coordinate</code></td><td>length</td><td class=num>40</td><td class=num style="color:var(--ok)">40</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>z</code></td><td><code>spatial_coordinate</code></td><td>length</td><td class=num>40</td><td class=num style="color:var(--ok)">40</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>N</code></td><td><code>cycle_number</code></td><td>count</td><td class=num>34</td><td class=num style="color:var(--ok)">34</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>2θ</code></td><td><code>diffraction_angle</code></td><td><span class=none>unknown</span></td><td class=num>30</td><td class=num style="color:var(--ok)">30</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>T</code></td><td><code>deposition_temperature</code></td><td>temperature</td><td class=num>26</td><td class=num style="color:var(--ok)">26</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>x̃</code></td><td><code>dimensionless_distance</code></td><td><span class=none>unknown</span></td><td class=num>11</td><td class=num style="color:var(--ok)">11</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>ξ</code></td><td><code>dimensionless_distance</code></td><td><span class=none>unknown</span></td><td class=num>11</td><td class=num style="color:var(--ok)">11</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>PD</code></td><td><code>penetration_depth</code></td><td>length</td><td class=num>8</td><td class=num style="color:var(--ok)">8</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>λ</code></td><td><code>wavelength</code></td><td>length</td><td class=num>7</td><td class=num style="color:var(--ok)">7</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>Δm</code></td><td><code>areal_mass</code></td><td><span class=none>unknown</span></td><td class=num>6</td><td class=num style="color:var(--ok)">6</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>AR</code></td><td><code>aspect_ratio</code></td><td><span class=none>unknown</span></td><td class=num>3</td><td class=num style="color:var(--ok)">3</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>λ</code></td><td><code>mean_free_path</code></td><td>length</td><td class=num>2</td><td class=num style="color:var(--ok)">2</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>Q</code></td><td><code>flow_rate</code></td><td>flow</td><td class=num>2</td><td class=num style="color:var(--ok)">2</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>F</code></td><td><code>flow_rate</code></td><td>flow</td><td class=num>2</td><td class=num style="color:var(--ok)">2</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>Q</code></td><td><code>scattering_vector_q</code></td><td><span class=none>unknown</span></td><td class=num>2</td><td class=num style="color:var(--ok)">2</td><td class=num>0</td><td class=num>0</td></tr><tr><td class=sym><code>Z&#x27;</code></td><td><code>impedance_real</code></td><td><span class=none>unknown</span></td><td class=num>2</td><td class=num style="color:var(--ok)">2</td><td class=num>0</td><td class=num>0</td></tr></tbody></table></div>
+
+<h2>7 &middot; Regeneration provenance repair</h2>
+<div class=note><b>BEFORE</b> &mdash; the harness rebuilt raw axis semantics with a lookup keyed on the axis
+<i>label text</i>. Labels repeat across panels, so records collapsed onto one reading.<br>
+<b>AFTER</b> &mdash; the key is the record's own identity: printed figure, panel, axis. Distinct extraction
+semantics survive.<br>This is a <b>REGENERATION PROVENANCE REPAIR</b>, not an ontology or resolver correction.</div>
+<div class=tw><table><thead><tr><th>paper</th><th>repeated label</th><th class=num>records</th>
+<th>record identities</th><th>distinct raw quantities collapsed</th></tr></thead><tbody><tr><td><code>10.1149_2.067203jes</code></td><td class=lab>Time (s)</td><td class=num>3</td><td class=mono>9a.x, 9b.x, 10b.x</td><td><code>Time</code> <code>time</code></td></tr><tr><td><code>10.1039_d0ra09876k</code></td><td class=lab>Temperature (°C)</td><td class=num>2</td><td class=mono>2a.x, 3a.x</td><td><code>deposition_temperature</code> <code>temperature</code></td></tr><tr><td><code>10.1039_d0ra09876k</code></td><td class=lab>Voltage (V)</td><td class=num>3</td><td class=mono>8a.x, 8b.x, 9a.x</td><td><code>Voltage</code> <code>voltage</code></td></tr><tr><td><code>10.1039_d0ra09876k</code></td><td class=lab>Capacitance (pF)</td><td class=num>2</td><td class=mono>8a.y, 9a.y</td><td><code>Capacitance</code> <code>capacitance</code></td></tr><tr><td><code>10.1039_c5ta00205b</code></td><td class=lab>E vs. Ag/AgCl / V</td><td class=num>4</td><td class=mono>10a.x, 10b.x, 11a.x, 13a.x</td><td><code>E vs. Ag/AgCl</code> <code>potential</code></td></tr><tr><td><code>10.1039_d0ra01602k</code></td><td class=lab>Binding Energy (eV)</td><td class=num>6</td><td class=mono>1a.x, 4a.x, 4b.x, 7a.x, 7b.x, 7c.x</td><td><code>Binding Energy</code> <code>binding_energy</code></td></tr><tr><td><code>10.1039_d0ra01602k</code></td><td class=lab>Intensity (a.u.)</td><td class=num>6</td><td class=mono>1a.y, 4a.y, 4b.y, 7a.y, 7b.y, 7c.y</td><td><code>Intensity</code> <code>Intensity (a.u.)</code></td></tr><tr><td><code>10.1039_d0ra01602k</code></td><td class=lab>Time (s)</td><td class=num>4</td><td class=mono>2a.x, 3a.x, 3b.x, 3c.x</td><td><code>pulse_time</code> <code>time</code></td></tr></tbody></table></div>
+<div class=warnbox>The label-keyed run let <code>Temperature (&deg;C)</code> on one figure overwrite
+<code>deposition_temperature</code> on another, moving <b>20 case fingerprints</b> in a paper this repair does not
+even touch. The corrected harness returns that to <b>0</b>.</div>
+
+<h2>8 &middot; Identity freeze</h2>
+<div class=cards><div class="card ok"><b>231 &amp;rarr; 231</b><span>ResultSeries</span></div><div class="card ok"><b>4027 &amp;rarr; 4027</b><span>points</span></div>
+<div class="card ok"><b>105</b><span>DesignBranches</span></div><div class="card ok"><b>0</b><span>fingerprint changes</span></div>
+<div class="card ok"><b>0</b><span>case-condition changes</span></div><div class="card ok"><b>0</b><span>membership changes</span></div></div>
+<div class=note>ExperimentalCases <code>[25, 66, 2, 11, 44, 7, 7, 20]</code> &mdash; identical.
+Identity classes <b>120</b> DISTINGUISHED / <b>62</b>
+INDISTINGUISHABLE &mdash; identical. <code>experimental_cases</code>, <code>result_series</code>,
+<code>design_branches</code>, <code>simulation_runs</code> and <code>links</code> are byte-identical to
+<code>4c65b52</code>; only Measurement axis fields moved.
+<br><br>Contrast: the <b>rejected</b> label-keyed harness produced 20 fingerprint and 20 case-condition changes.
+The corrected harness produces <b>0 and 0</b>.</div>
+
+<h2>9 &middot; Unseen v3</h2>
+<div class=cards><div class="card ok"><b>174</b><span>ResultSeries</span></div><div class="card ok"><b>2443</b><span>points</span></div>
+<div class="card ok"><b>182</b><span>Measurements</span></div><div class="card ok"><b>7</b><span>semantic deltas</span></div><div class="card ok"><b>0</b><span>referential defects</span></div></div>
+<div class=tw><table><thead><tr><th>paper</th><th>object</th><th>field</th><th>before</th><th>actual</th></tr></thead>
+<tbody><tr><td><code>10.1021_acs.chemmater.2c02292</code></td><td class=mono>10.1021_acs.chemmater.2c02292__Fig4d__</td><td>coordinate</td><td class=old><code>recombination_probability</code></td><td class=new><code>spatial_coordinate</code></td></tr><tr><td><code>10.1021_acs.chemmater.2c02292</code></td><td class=mono>10.1021_acs.chemmater.2c02292__Fig4e__</td><td>coordinate</td><td class=old><code>recombination_probability</code></td><td class=new><code>spatial_coordinate</code></td></tr><tr><td><code>10.1021_acs.chemmater.2c02292</code></td><td class=mono>10.1021_acs.chemmater.2c02292__Fig4d__</td><td>coordinate</td><td class=old><code>recombination_probability</code></td><td class=new><code>spatial_coordinate</code></td></tr><tr><td><code>10.1021_acs.chemmater.2c02292</code></td><td class=mono>10.1021_acs.chemmater.2c02292__Fig4e__</td><td>coordinate</td><td class=old><code>recombination_probability</code></td><td class=new><code>spatial_coordinate</code></td></tr><tr><td><code>10.1039_c7ra07722j</code></td><td class=mono>10.1039_c7ra07722j__Fig4a__exp03</td><td>measured_quantity</td><td class=old><code>surface_coverage</code></td><td class=new><code>Δ (°)</code></td></tr><tr><td><code>10.1039_c7ra07722j</code></td><td class=mono>10.1039_c7ra07722j__Fig4a__exp01</td><td>measured_quantity</td><td class=old><code>surface_coverage</code></td><td class=new><code>Δ (°)</code></td></tr><tr><td><code>10.1039_c7ra07722j</code></td><td class=mono>10.1039_c7ra07722j__Fig4a__exp02</td><td>measured_quantity</td><td class=old><code>surface_coverage</code></td><td class=new><code>Δ (°)</code></td></tr></tbody></table></div>
+<div class=note>Series recovery, point counts, case counts <code>[78, 54, 45, 50, 15]</code>, technique, producer,
+<code>data_source</code> and chemistry are all identical to v2. Zero false merges, zero false splits.
+<b><code>Δ (°)</code></b> &mdash; an ellipsometric angle &mdash; is no longer <code>surface_coverage</code>.
+<b><code>r (Å)</code></b> in the PDF panels is no longer <code>recombination_probability</code>; the record already
+said <code>spatial_coordinate</code> and the unit is a length.
+<b><code>H_2 flow ratio</code> remains unsupported</b> &mdash; <code>flow_ratio</code> was not added.</div>
+
+<h2>10 &middot; Frozen unseen evidence</h2>
+<div class=note><b>v1 scientific evidence changed: NO &middot; v2 scientific evidence changed: NO</b><br>
+The earlier apparent drift was a measurement artifact: <code>sha256sum</code> prints the path beside the hash, so an
+aggregate over relative paths changes with the working directory. Re-run from the repository root, both historical
+values reproduce exactly.
+<br><br><span class=mono>v1 historical (repo-root cwd) ac19ace95aba21b753da80a0fe7406528f62ef95e84d669d3a4e3e84b8328384<br>
+v1 content-only&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 851ea293a9b1b60d2dfb1f9ea815b29cef80f573c7a59c5cf95e36d5384f8413<br>
+v2 historical (repo-root cwd) 181b9b9f156851811b9d6b0bd3a36c555b1b20aefc6b0950dc79a13ff047ceb3<br>
+v2 content-only&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4cf1440450995a3dfe8a854a662add2329f1290047117338271839ce0d004770</span></div>
+
+<h2>11 &middot; Deferred &mdash; not part of this candidate</h2>
+<div class=defer>
+<div class=dcard><b>vapor_pressure</b><p>No ontology quantity; <code>partial_pressure</code> is the closest supported reading.</p></div>
+<div class=dcard><b>dimension vocabulary</b><p><code>arbitrary</code> vs <code>count</code>, <code>percent</code> vs <code>dimensionless</code>.</p></div>
+<div class=dcard><b>_QUANTITY_DIM cleanup</b><p>14 redundant, 6 legacy-family, 1 parser gap, 1 genuine.</p></div>
+<div class=dcard><b>duplicate wavelength id</b><p>181 quantity_kinds, 180 unique ids.</p></div>
+<div class=dcard><b>shared symbols</b><p><code>F</code> <code>λ</code> <code>n</code> <code>Q</code> each map to two quantities.</p></div>
+<div class=dcard><b>flow_ratio + suffix matcher</b><p>Prefix-only ladder cannot reach a suffix alias.</p></div>
+<div class=dcard><b>electrode_potential</b><p>Absent; <code>E vs. Ag/AgCl</code> stays raw.</p></div>
+<div class=dcard><b>electrical unit parsing</b><p><code>V</code>, <code>mA cm⁻²</code>, <code>A/cm²</code> unparsed.</p></div>
+<div class=dcard><b>unit propagation</b><p>Entity units lost before axis resolution.</p></div>
+<div class=dcard><b>Track A</b><p>Reagent-species axis attribution &mdash; still blocked.</p></div>
+<div class=dcard><b>critical_angle</b><p>Raw preserved, canonical unsupported.</p></div>
+<div class=dcard><b>production migration</b><p>44-paper corpus not regenerated.</p></div>
+</div>
+
+<h2>12 &middot; Reviewer checklist</h2>
+<ul class=ck>
+<li><input type=checkbox> 9 CV x axes no longer <code>precursor_exposure</code></li>
+<li><input type=checkbox> 8 CV y axes are <code>current_density</code></li>
+<li><input type=checkbox> 1 CV y axis is unresolved, not guessed</li>
+<li><input type=checkbox> 11 resolver corrections, 0 regressions</li>
+<li><input type=checkbox> 4 source-verified substitutions match the captions quoted in §4</li>
+<li><input type=checkbox> all 13 preserved controls PASS</li>
+<li><input type=checkbox> 0 fingerprint / case-condition / membership changes</li>
+<li><input type=checkbox> unseen v3 shows only axis-field deltas, no identity movement</li>
+<li><input type=checkbox> <code>flow_ratio</code> and Track A remain deferred</li>
+</ul>
+
+<footer>Generated from <code>4c65b52</code> plus an uncommitted working tree &middot;
+active-8 identity baseline <code>3e7f630</code> &middot; Track B baseline <code>4c65b52</code>.<br>
+This is a review artifact describing the source state it was generated from. It is not a committed freeze record and
+carries no live freshness verdict.</footer>
+</div>
+<script>
+var i=document.getElementById('fc'),s=document.getElementById('fg'),t=document.getElementById('tc');
+function f(){var q=(i.value||'').toLowerCase(),v=s.value;
+Array.prototype.forEach.call(t.tBodies[0].rows,function(r){
+r.style.display=((!q||r.textContent.toLowerCase().indexOf(q)>-1)&&(!v||r.getAttribute('data-g')===v))?'':'none';});}
+i.addEventListener('input',f);s.addEventListener('change',f);
+</script>
