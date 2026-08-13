@@ -79,6 +79,18 @@ def main():
                             ("W thickness (nm)", "nm", "film_thickness")):
         ok("D: %-34r -> %s" % (lab, want), R(lab, unit) == want, R(lab, unit))
 
+    print("=== E1. the guard carries only the word the corpus evidences ===")
+    # "fraction" was in this set on plausibility alone and is actively wrong: a coverage
+    # fraction IS a surface coverage, but the word is absent from that quantity's
+    # vocabulary, so a blanket veto refuses a correct reading. This test fails under the
+    # wider set and passes with the guard restricted to what the evidence supports.
+    ok("E1: 'coverage fraction' still reads as a surface coverage",
+       R("coverage fraction") == "surface_coverage", R("coverage fraction"))
+    ok("E1: the guard holds exactly one word", lib._TRANSFORMS_MEASURAND == {"ratio"},
+       sorted(lib._TRANSFORMS_MEASURAND))
+    for w in ("fraction", "percentage", "proportion", "quotient"):
+        ok("E1: %-11r is NOT a blanket veto" % w, w not in lib._TRANSFORMS_MEASURAND)
+
     print("=== E. a quantity that IS a ratio keeps its own word ===")
     # the exemption: a transforming word belonging to the quantity's own vocabulary
     ok("E: aspect_ratio owns 'ratio'", "ratio" in lib._quantity_words("aspect_ratio"))
