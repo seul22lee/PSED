@@ -94,13 +94,20 @@ def main():
     r = repair({"quantity": "pulse_time", "unit": "s",
                 "raw_axis_label": "SnI4 pulse length, s"}, prec=["SnI4"], core=["H2O"])
     ok("C: an explicit chemical in the label attributes it", r["species"] == "SnI4", r)
-    ok("C: tier A is recorded", r["species_basis"] == "AXIS_LABEL_EXPLICIT", r)
+    ok("C: tier A is recorded", r["species_basis"] == "EXPLICIT_LABEL_SPECIES", r)
     # tier B: a role word the inventory binds uniquely
     r = repair({"quantity": "purge_time", "unit": "s",
                 "raw_axis_label": "Precursor Purge (s)"},
                prec=["Y(DPfAMD)3"], core=["H2O"])
     ok("C: a role word with one candidate attributes it", r["species"] == "Y(DPfAMD)3", r)
-    ok("C: tier B is recorded", r["species_basis"] == "LOCAL_ROLE_EXPLICIT", r)
+    # the role is explicit and local; the SPECIES is reached by paper-wide uniqueness,
+    # and the tier has to say which of the two actually happened
+    ok("C: the tier names the weaker, paper-wide evidence",
+       r["species_basis"] == "ROLE_LABEL_PAPER_UNIQUE", r)
+    ok("C: it is not claimed as local-explicit species evidence",
+       r["species_basis"] != "LOCAL_ROLE_EXPLICIT", r)
+    ok("C: the evidence says the species came from the paper, not the label",
+       "paper-wide" in str(r["species_evidence"]), r["species_evidence"])
     # ambiguity resolves nothing
     r = repair({"quantity": "purge_time", "raw_axis_label": "Precursor Purge (s)"},
                prec=["TMA", "TDMAT"], core=["H2O"])
@@ -114,6 +121,61 @@ def main():
     r = repair({"quantity": "pulse_time", "raw_axis_label": "MoCl2O2 pulse (s)"},
                prec=["Mo", "MoCl2O2"])
     ok("C: the longest matching reagent wins", r["species"] == "MoCl2O2", r)
+
+    print("=== C2. a reagent must occupy a COMPLETE chemical span ===")
+    # Substring containment is not naming. "H2O dose" contains the characters of H2 and
+    # "MoCl2O2 pulse" contains those of Mo; neither label names that reagent. Longest-match
+    # only hid this when a longer reagent happened to also be present -- alone, the
+    # fragment won and attributed the wrong chemical.
+    for lab, pool in (("H2O dose", ["H2"]), ("H2O2 pulse", ["H2"]), ("CH2O pulse", ["H2"]),
+                      ("MoCl2O2 pulse (s)", ["Mo"]), ("Y(sBuCp)3 supply time", ["Y"]),
+                      ("at-H pulse (s)", ["H"])):
+        ok("C2: %-26r does not name %-6r" % (lab, pool[0]),
+           repair({"quantity": "pulse_time", "raw_axis_label": lab},
+                  prec=pool).get("species") is None,
+           repair({"quantity": "pulse_time", "raw_axis_label": lab}, prec=pool).get("species"))
+    # A hyphenated role prefix is not the element: "Er-Precursor" does not NAME Er. The
+    # span matcher is where that is decided -- through species_repair the same label
+    # legitimately attributes via the role path when the inventory holds one precursor,
+    # which is a different mechanism recorded under a different tier.
+    for lab, pool in (("Er-Precursor pulse length (s)", ["Er"]),
+                      ("at-H pulse (s)", ["H"]), ("MoCl2O2 pulse (s)", ["Mo"])):
+        ok("C2: the matcher refuses %-6r inside %r" % (pool[0], lab),
+           PS.R.complete_species_span(lab, pool) is None,
+           PS.R.complete_species_span(lab, pool))
+    r = repair({"quantity": "pulse_time", "raw_axis_label": "Er-Precursor pulse length (s)"},
+               prec=["Er"])
+    ok("C2: and it reaches Er only as the paper's unique precursor role",
+       r.get("species_basis") == "ROLE_LABEL_PAPER_UNIQUE", r.get("species_basis"))
+    ok("C2: with two precursors that role resolves nothing",
+       repair({"quantity": "pulse_time", "raw_axis_label": "Er-Precursor pulse length (s)"},
+              prec=["Er", "ErCp3"]).get("species") is None)
+    # the fragment must not even enter the candidate set, so the answer is the same
+    # whether or not the longer reagent is there to outrank it
+    for lab, pool, want in (("H2O dose", ["H2", "H2O"], "H2O"),
+                            ("MoCl2O2 pulse (s)", ["Mo", "MoCl2O2"], "MoCl2O2")):
+        ok("C2: %-26r -> %s only" % (lab, want),
+           repair({"quantity": "pulse_time", "raw_axis_label": lab},
+                  prec=pool).get("species") == want)
+    ok("C2: H2 still names itself where it stands alone",
+       all(repair({"quantity": "pulse_time", "raw_axis_label": l},
+                  prec=["H2"]).get("species") == "H2"
+           for l in ("H2 pulse", "H2 flow", "H2 exposure (s)")))
+    # complex printed forms keep their recall: brackets, ligands, Unicode subscripts
+    for lab, r0, want in (("SnI4 pulse length, s", "SnI4", "SnI4"),
+                          ("RuO4 pulse time (s)", "RuO4", "RuO4"),
+                          ("H₂O dose (ms)", "H2O", "H2O"),
+                          ("CO₂ dose (s)", "CO2", "CO2"),
+                          ("MoCl2O2 pulse (s)", "MoCl2O2", "MoCl2O2"),
+                          ("Y(sBuCp)3 supply time, s", "Y(sBuCp)3", "Y(sBuCp)3"),
+                          ("Number of micropulses of Pt(acac)2", "Pt(acac)2", "Pt(acac)2"),
+                          ("(Pt(acac)2)", "Pt(acac)2", "Pt(acac)2")):
+        ok("C2: %-34r -> %s" % (lab, want),
+           repair({"quantity": "pulse_time", "raw_axis_label": lab},
+                  prec=[r0]).get("species") == want,
+           repair({"quantity": "pulse_time", "raw_axis_label": lab}, prec=[r0]).get("species"))
+    ok("C2: the matcher is shared, not a second copy",
+       hasattr(PS.R, "complete_species_span"))
 
     print("=== D. negative controls: things that are not species ===")
     for lab, pool in (("Number of bending cycles", ["TMA"]),
@@ -169,9 +231,10 @@ def main():
     ok("F: real reagents survive", {"H2O", "TMA"} <= vals, sorted(vals))
 
     print("=== G. every persisted species is evidenced or pre-existing, never invented ===")
+    TIERS = ("EXPLICIT_LABEL_SPECIES", "LOCAL_EXPLICIT_SPECIES", "ROLE_LABEL_PAPER_UNIQUE")
     attributed = [(pid, c["case_id"], x) for pid, c in all_cases()
                   for x in c.get("case_defining_conditions") or []
-                  if x.get("species_basis") in ("AXIS_LABEL_EXPLICIT", "LOCAL_ROLE_EXPLICIT")]
+                  if x.get("species_basis") in TIERS]
     ok("G: attribution actually ran on the corpus", attributed, len(attributed))
     ok("G: every attributed condition records its evidence",
        all(x.get("species_evidence") for _, _, x in attributed))

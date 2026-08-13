@@ -179,6 +179,59 @@ _SUBSTANCE_BULK = re.compile(
 _RAMP_COORD = re.compile(r"^(?:temperature|time|inverse_temperature)$", re.I)
 
 
+#: Unicode formula typography, mapped one character to one so a match position found in
+#: the normalised text still points at the same place in the raw text. This is the
+#: repository's conservative species normalisation -- subscripts and superscripts printed
+#: as such -- and deliberately not a chemical-synonym resolver.
+CHEM_NORM = str.maketrans({
+    **{c: str(i) for i, c in enumerate("₀₁₂₃₄₅₆₇₈₉")},
+    **{c: str(i) for i, c in enumerate("⁰¹²³⁴⁵⁶⁷⁸⁹")},
+    "ᵗ": "t", "ⁿ": "n", "ˢ": "s", "ᵇ": "b", "ⁱ": "i", "·": "-", "⋅": "-",
+})
+
+#: A character that CONTINUES a chemical token. A reagent running straight into one of
+#: these is a fragment of a longer formula rather than the formula itself. Brackets are
+#: directional: an opening bracket on the right starts a ligand (Y -> Y(sBuCp)3), a
+#: closing bracket on the left ends one. Enclosing punctuation is therefore not
+#: continuation, so a parenthesised "(Pt(acac)2)" still names Pt(acac)2.
+_CHEM_LEFT = re.compile(r"[A-Za-z0-9)\]\-]")
+_CHEM_RIGHT = re.compile(r"[A-Za-z0-9(\[\-]")
+
+
+def chem_norm(s):
+    return str(s or "").translate(CHEM_NORM)
+
+
+def complete_species_span(text, species):
+    """The longest reagent from `species` that occupies a COMPLETE chemical span in `text`.
+
+    Substring containment is not naming. "H2O dose" contains the characters of H2 and
+    "MoCl2O2 pulse" contains those of Mo, but neither label names that reagent: the
+    letters belong to a longer formula. Attributing on such a match asserts the wrong
+    chemical, and a longer reagent happening to also be present only hides the bad
+    candidate rather than excluding it.
+
+    So a candidate has to occupy a whole chemical span -- neither end running into a
+    character that would continue the token -- before it is a candidate at all. Among
+    those that do, the longest wins, which is specificity between real readings rather
+    than a guard against false ones.
+    """
+    t = chem_norm(text)
+    for sp in sorted([s for s in (species or []) if s], key=lambda x: len(str(x)),
+                     reverse=True):
+        pat = chem_norm(sp)
+        if not pat:
+            continue
+        for m in re.finditer(re.escape(pat), t, re.I):
+            i, j = m.start(), m.end()
+            if i and _CHEM_LEFT.match(t[i - 1]):
+                continue
+            if j < len(t) and _CHEM_RIGHT.match(t[j]):
+                continue
+            return sp
+    return None
+
+
 def species_named_in(text, species):
     """The chemical from `species` that this text names outright, or None.
 

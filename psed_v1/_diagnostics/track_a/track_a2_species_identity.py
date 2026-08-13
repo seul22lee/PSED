@@ -25,7 +25,8 @@ PILOT = W / "_diagnostics" / "semantic_pilot_9papers"
 REL = "psed_v1/_diagnostics/semantic_pilot_9papers/papers/%s/semantic/experimental_cases.json"
 OUT_MAP = W / "_diagnostics" / "track_a" / "track_a2_migration_map.json"
 OUT_HTML = W / "_diagnostics" / "track_a" / "track_a2_species_identity_migration_review.html"
-BASELINE = "18bdb09"
+BASELINE = "18bdb09"          # the pre-A2 state this migration is measured from
+HARDENED_FROM = "9d764c7"     # the reviewed A2 candidate this precision pass builds on
 
 
 def unwrap(d, k):
@@ -124,6 +125,7 @@ def main():
 
     payload = {
         "baseline_sha": BASELINE,
+        "hardened_from_sha": HARDENED_FROM,
         "generating_code_sha256": code_hash(),
         "head_sha": subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(W),
                                    capture_output=True, text=True).stdout.strip(),
@@ -309,6 +311,40 @@ machine-readable map in <code>track_a2_migration_map.json</code>.</p>
 <div class="scroll"><table><thead><tr><th>paper</th><th>case ID</th><th>ID</th>
 <th>fingerprint before</th><th>fingerprint after</th><th>reason</th></tr></thead>
 <tbody>%s</tbody></table></div>
+
+<h2>Species match precision</h2>
+<div class="note">Attribution used to accept a reagent that merely occurred as a
+<em>substring</em> of the label, so <code>H2</code> matched <code>H2O dose</code> and
+<code>Mo</code> matched <code>MoCl2O2 pulse</code>. Nothing in the corpus was actually
+mis-attributed &mdash; a longer reagent happened to be present and outranked the fragment
+&mdash; but longest-match was hiding the bad candidate rather than excluding it, so the
+guarantee rested on an accident of each paper's inventory.<br><br>
+A reagent must now occupy a <strong>complete chemical span</strong>: neither end may run
+into a character that continues a chemical token &mdash; a letter or digit either side, an
+opening bracket on the right (a ligand follows, so <code>Y</code> is not
+<code>Y(sBuCp)3</code>), a closing bracket on the left, or a hyphen (<code>at-H</code> is
+not <code>H</code>). Enclosing punctuation is not continuation, so a parenthesised
+<code>(Pt(acac)2)</code> still matches. Longest-match remains, but now only ever chooses
+between readings that are each already complete.<br><br>
+The same normalisation made two printed forms legible that the raw matcher could not see:
+<code>H&#8322;O dose</code> and <code>CO&#8322; dose</code> now resolve to
+<code>H2O</code> and <code>CO2</code>. Across unseen and support papers: <strong>0
+attributions lost, 0 species changed, 2 recovered</strong>, and 0 false partial matches
+existed to remove.</div>
+
+<h2>Attribution provenance scope</h2>
+<div class="note">The 17 active-8 additions were recorded as
+<code>LOCAL_ROLE_EXPLICIT</code>, which overstated what was known. The
+<em>role</em> is explicit and local &mdash; the axis says <code>Precursor Pulse (s)</code>
+&mdash; but the <em>species</em> is not named anywhere local; it is reached because the
+paper's inventory lists exactly one precursor. Those are different evidence scopes, so
+the tier is now <code>ROLE_LABEL_PAPER_UNIQUE</code>: the label names the role, the paper
+names the chemical. All 17 were checked rather than bulk-relabelled &mdash; they share one
+mechanism, two axis labels, one inventory entry (<code>Y(DPfAMD)3</code>), and no local
+caption or body text names the species itself. Species values, fingerprints, case IDs and
+topology are byte-identical to the reviewed candidate; only the provenance label moved.
+<code>EXPLICIT_LABEL_SPECIES</code> remains reserved for a label that names the chemical
+outright, and <code>LOCAL_EXPLICIT_SPECIES</code> for local evidence that does.</div>
 
 <h2>Deferred</h2>
 <div class="note">Kept out of A2 deliberately: species-aware comparability and query;

@@ -1630,21 +1630,25 @@ def species_repair(c, precursors, coreactants, note=None, cid=None):
         return c
     if not label:
         return c
-    for r in sorted([x for x in (precursors or []) + (coreactants or []) if x],
-                    key=len, reverse=True):
-        if re.search(re.escape(str(r)), label, re.I):
-            return dict(c, species=str(r), species_basis="AXIS_LABEL_EXPLICIT",
-                        species_evidence="the axis label %r names %r, a reagent this "
-                                         "paper's inventory lists" % (label, r))
+    named = R.complete_species_span(label, list(precursors or []) + list(coreactants or []))
+    if named:
+        return dict(c, species=str(named), species_basis="EXPLICIT_LABEL_SPECIES",
+                    species_evidence="the axis label %r names %r outright, a reagent this "
+                                     "paper's inventory lists" % (label, named))
     for pat, field in _ROLE_WORD:
         if not pat.search(label):
             continue
         pool = [x for x in ((precursors if field == "precursors" else coreactants) or []) if x]
         if len(pool) == 1:
-            return dict(c, species=str(pool[0]), species_basis="LOCAL_ROLE_EXPLICIT",
-                        species_evidence="the axis label %r names the %s role, and this "
-                                         "paper's inventory lists exactly one: %r"
-                                         % (label, field[:-1], pool[0]))
+            # The ROLE is explicit and local; the SPECIES is not. It is reached by the
+            # paper's inventory listing exactly one reagent in that role, which is a
+            # paper-wide uniqueness argument and weaker than the label naming the
+            # chemical. The tier says which of the two actually happened.
+            return dict(c, species=str(pool[0]), species_basis="ROLE_LABEL_PAPER_UNIQUE",
+                        species_evidence="the axis label %r names the %s role explicitly; "
+                                         "the species is resolved paper-wide, this paper's "
+                                         "inventory listing exactly one %s: %r"
+                                         % (label, field[:-1], field[:-1], pool[0]))
     return c
 
 
