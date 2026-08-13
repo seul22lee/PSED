@@ -171,10 +171,40 @@ def invariants():
            if v["simulation_never_a_case"]["simulation_runs_marked_as_case"]]
     ok("12. SimulationRun is never an ExperimentalCase", not bad, bad)
 
-    # 13. measured/simulated provenance unchanged
-    bad = [(p, v["data_source_unchanged"]) for p, v in inv.items()
-           if v["data_source_unchanged"]["old"] != v["data_source_unchanged"]["pilot"]]
-    ok("13. measured/simulated provenance is bit-identical to PSED", not bad, bad)
+    # 13. measured/simulated provenance changes ONLY on positive series evidence.
+    # This was once a bit-identity check against PSED. PSED answers provenance at PANEL
+    # scope -- its finest -- so a panel holding a measured curve and the model curve drawn
+    # over it gave both the same answer, and the model curve claimed to be measured. The
+    # pilot now projects the resolver's own per-series `series_source_kind` on top. The
+    # guard that matters is unchanged: no value may drift for any other reason.
+    import pilot_semantics as _PS
+    bad, overridden = [], []
+    for pid in PAPERS:
+        ents = {e["entity_id"]: e for e in resolved(pid, "entities")}
+        canon = {c["curve_id"]: (c.get("source") or {}).get("data_source")
+                 for c in curves(pid)}
+        for r in sem(pid, "result_series"):
+            base = canon.get(r["curve_id"])
+            want = _PS.effective_data_source(base, ents.get(r["resolved_entity_id"]))
+            if r["data_source"] != want:
+                bad.append((pid, r["result_series_id"], base, r["data_source"], want))
+            elif r["data_source"] != base:
+                overridden.append((r["result_series_id"], base, r["data_source"]))
+    ok("13. provenance differs from PSED only where series evidence overrides it",
+       not bad, bad[:3])
+    # every override must be backed by a positive kind on the entity -- never by producer
+    # class, and never by absence of evidence
+    unbacked = []
+    for pid in PAPERS:
+        ents = {e["entity_id"]: e for e in resolved(pid, "entities")}
+        ids = {r["result_series_id"]: r for r in sem(pid, "result_series")}
+        for rid, _, _ in overridden:
+            if rid in ids:
+                k = (ents.get(ids[rid]["resolved_entity_id"]) or {}).get("series_source_kind")
+                if k not in _PS._SERIES_KIND_SOURCE:
+                    unbacked.append((rid, k))
+    ok("13. every provenance override cites positive series evidence", not unbacked,
+       unbacked[:3])
 
     # 14. imported-literature provenance preserved
     bad = []
