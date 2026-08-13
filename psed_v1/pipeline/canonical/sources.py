@@ -28,6 +28,7 @@ import json
 import re
 from pathlib import Path
 
+from pipeline.figures.figure_extract import effective_axis
 from .context import ContextPool
 from .schema import REPO
 
@@ -399,6 +400,19 @@ def iter_curves(doi):
                 pts = [p for p in (series.get("points") or [])
                        if isinstance(p, (list, tuple)) and len(p) == 2]
                 exp = exps[si] if si < len(exps) else (exps[0] if exps else None)
+                # A curve is read against ONE axis. That is the panel's axis unless the
+                # figure shows this curve on its own, in which case the series carries it.
+                s_x, x_is_own = effective_axis(x, series.get("x"))
+                s_y, y_is_own = effective_axis(y, series.get("y"))
+                # A series that owns its axis owns its LABEL too: the panel's recovered
+                # label describes the panel axis and would otherwise be re-applied to a
+                # curve that was never read against it.
+                s_x_label = (s_x.get("label_raw") or s_x.get("label")) if x_is_own \
+                    else x_label
+                s_y_label = (s_y.get("label_raw") or s_y.get("label")) if y_is_own \
+                    else y_label
+                s_texts_x = _texts(s_x_label, "x") if x_is_own else texts_x
+                s_texts_y = _texts(s_y_label, "y") if y_is_own else texts_y
                 yield {
                     "doi": doi,
                     "figure": fignum,
@@ -409,14 +423,16 @@ def iter_curves(doi):
                     "series_axis": panel.get("series_axis"),
                     "caption": caption,
                     "panel_caption": panel_caption,
-                    "x_raw": x, "y_raw": y,
-                    "x_label": x_label, "y_label": y_label,
+                    "x_raw": s_x, "y_raw": s_y,
+                    "x_label": s_x_label, "y_label": s_y_label,
+                    "x_axis_scope": "series" if x_is_own else "panel",
+                    "y_axis_scope": "series" if y_is_own else "panel",
                     "recovery": rec or None,
                     "points": pts,
                     "source_file": fd_file,
                     "source_checksum": fd_sum,
                     "json_pointer": "/figures/%d/panels/%d/series/%d" % (fi, pi, si),
-                    "texts_x": texts_x, "texts_y": texts_y,
+                    "texts_x": s_texts_x, "texts_y": s_texts_y,
                     "experiment": exp,
                     "experiment_id": (exp or {}).get("exp_id"),
                     "source": fig.get("source"),

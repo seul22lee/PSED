@@ -15,6 +15,7 @@ papers actually enter the KB alongside the existing corpus.
 Run with the psed310 env python.
 """
 import paths as P
+from pipeline.figures.figure_extract import effective_axis as _effective_axis
 import json, os, re, sys
 from collections import defaultdict
 from pathlib import Path
@@ -499,6 +500,17 @@ def _axis_labels(sd, record):
                     key = (str(fig.get("figure")), str(pan.get("panel") or "").lower())
                     idx[key] = {"x": (pan.get("x") or {}).get("label_raw"),
                                 "y": (pan.get("y") or {}).get("label_raw")}
+                    # A curve read against its OWN axis carries that axis's label. The
+                    # panel label describes the panel axis and would otherwise be applied
+                    # to a curve that was never read against it.
+                    for ser in pan.get("series") or []:
+                        s_x, x_own = _effective_axis(pan.get("x"), ser.get("x"))
+                        s_y, y_own = _effective_axis(pan.get("y"), ser.get("y"))
+                        if not (x_own or y_own):
+                            continue
+                        idx[key + (str(ser.get("label") or "").lower(),)] = {
+                            "x": (s_x or {}).get("label_raw"),
+                            "y": (s_y or {}).get("label_raw")}
         except Exception:
             pass
         # 2. labels recovered afterwards for papers extracted with the old schema.
@@ -526,9 +538,14 @@ def _axis_labels(sd, record):
                     ("by_printed", str(prov.get("figure_number") or ""))):
         if not key:
             continue
-        rec = (maps.get(ns) or {}).get((key, panel))
-        if rec and (rec.get("x") or rec.get("y")):
-            return rec
+        # the series' own axis label first, the panel's as the fallback
+        # the series label, however this caller names it: a flatten record calls it
+        # `series_value`, a resolved entity `source_series`
+        slab = str(record.get("series_value") or record.get("source_series") or "").lower()
+        for k in (((key, panel, slab) if slab else None), (key, panel)):
+            rec = (maps.get(ns) or {}).get(k) if k else None
+            if rec and (rec.get("x") or rec.get("y")):
+                return rec
     return {}
 
 
@@ -861,7 +878,9 @@ def resolve_source_entities(sd, exps, pid):
         ctx["series_source_kind"] = _sid["kind"]
 
         # ---- axis SEMANTICS, then GRANULARITY, as two separate questions ----
-        _labels = _axis_labels(sd, e)
+        # the series label lives in the context bundle at this point, and a curve read
+        # against its own axis is looked up by it
+        _labels = _axis_labels(sd, dict(e, source_series=ctx["source_series"]))
         _xsem = caxis.resolve_axis(
             raw_label=_labels.get("x"), raw_quantity=e.get("coordinate"),
             unit=e.get("coordinate_unit"), caption=ctx["caption"],
