@@ -1,0 +1,7191 @@
+[
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp01__case00",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.08
+   ],
+   [
+    2,
+    0.28
+   ],
+   [
+    3,
+    0.59
+   ],
+   [
+    4,
+    0.68
+   ],
+   [
+    6,
+    0.76
+   ],
+   [
+    8,
+    0.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.008
+   ],
+   [
+    2,
+    0.028000000000000004
+   ],
+   [
+    3,
+    0.059
+   ],
+   [
+    4,
+    0.068
+   ],
+   [
+    6,
+    0.07600000000000001
+   ],
+   [
+    8,
+    0.08000000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp01__case00",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E000-C00",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E000-C00"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E000-C00"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E000-C00"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E000-C00"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E000-C00"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp01",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 7,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S000",
+  "case_index": 0
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp01__case01",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.08
+   ],
+   [
+    2,
+    0.28
+   ],
+   [
+    3,
+    0.59
+   ],
+   [
+    4,
+    0.68
+   ],
+   [
+    6,
+    0.76
+   ],
+   [
+    8,
+    0.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.008
+   ],
+   [
+    2,
+    0.028000000000000004
+   ],
+   [
+    3,
+    0.059
+   ],
+   [
+    4,
+    0.068
+   ],
+   [
+    6,
+    0.07600000000000001
+   ],
+   [
+    8,
+    0.08000000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp01__case01",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E000-C01",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E000-C01"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E000-C01"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E000-C01"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E000-C01"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E000-C01"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp01",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 7,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S000",
+  "case_index": 1
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp01__case02",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.08
+   ],
+   [
+    2,
+    0.28
+   ],
+   [
+    3,
+    0.59
+   ],
+   [
+    4,
+    0.68
+   ],
+   [
+    6,
+    0.76
+   ],
+   [
+    8,
+    0.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.008
+   ],
+   [
+    2,
+    0.028000000000000004
+   ],
+   [
+    3,
+    0.059
+   ],
+   [
+    4,
+    0.068
+   ],
+   [
+    6,
+    0.07600000000000001
+   ],
+   [
+    8,
+    0.08000000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp01__case02",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E000-C02",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E000-C02"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E000-C02"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E000-C02"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E000-C02"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E000-C02"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp01",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 7,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S000",
+  "case_index": 2
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp01__case03",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.08
+   ],
+   [
+    2,
+    0.28
+   ],
+   [
+    3,
+    0.59
+   ],
+   [
+    4,
+    0.68
+   ],
+   [
+    6,
+    0.76
+   ],
+   [
+    8,
+    0.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.008
+   ],
+   [
+    2,
+    0.028000000000000004
+   ],
+   [
+    3,
+    0.059
+   ],
+   [
+    4,
+    0.068
+   ],
+   [
+    6,
+    0.07600000000000001
+   ],
+   [
+    8,
+    0.08000000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp01__case03",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E000-C03",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E000-C03"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E000-C03"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E000-C03"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E000-C03"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E000-C03"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp01",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 7,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S000",
+  "case_index": 3
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp01__case04",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.08
+   ],
+   [
+    2,
+    0.28
+   ],
+   [
+    3,
+    0.59
+   ],
+   [
+    4,
+    0.68
+   ],
+   [
+    6,
+    0.76
+   ],
+   [
+    8,
+    0.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.008
+   ],
+   [
+    2,
+    0.028000000000000004
+   ],
+   [
+    3,
+    0.059
+   ],
+   [
+    4,
+    0.068
+   ],
+   [
+    6,
+    0.07600000000000001
+   ],
+   [
+    8,
+    0.08000000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp01__case04",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E000-C04",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E000-C04"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E000-C04"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E000-C04"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E000-C04"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E000-C04"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp01",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 7,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S000",
+  "case_index": 4
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp01__case05",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.08
+   ],
+   [
+    2,
+    0.28
+   ],
+   [
+    3,
+    0.59
+   ],
+   [
+    4,
+    0.68
+   ],
+   [
+    6,
+    0.76
+   ],
+   [
+    8,
+    0.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.008
+   ],
+   [
+    2,
+    0.028000000000000004
+   ],
+   [
+    3,
+    0.059
+   ],
+   [
+    4,
+    0.068
+   ],
+   [
+    6,
+    0.07600000000000001
+   ],
+   [
+    8,
+    0.08000000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp01__case05",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E000-C05",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E000-C05"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E000-C05"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E000-C05"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E000-C05"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E000-C05"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp01",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 7,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S000",
+  "case_index": 5
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp01__case06",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.08
+   ],
+   [
+    2,
+    0.28
+   ],
+   [
+    3,
+    0.59
+   ],
+   [
+    4,
+    0.68
+   ],
+   [
+    6,
+    0.76
+   ],
+   [
+    8,
+    0.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.008
+   ],
+   [
+    2,
+    0.028000000000000004
+   ],
+   [
+    3,
+    0.059
+   ],
+   [
+    4,
+    0.068
+   ],
+   [
+    6,
+    0.07600000000000001
+   ],
+   [
+    8,
+    0.08000000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp01__case06",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E000-C06",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E000-C06"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E000-C06"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E000-C06"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E000-C06"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E000-C06"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-0",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp01",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 7,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S000",
+  "case_index": 6
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp02__case00",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure",
+    "value": 30.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "30 s",
+     "locator": "series label '30 s (long)' (axis 'exposure duration')"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.51
+   ],
+   [
+    2,
+    0.72
+   ],
+   [
+    4,
+    1.13
+   ],
+   [
+    8,
+    1.82
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.051000000000000004
+   ],
+   [
+    2,
+    0.072
+   ],
+   [
+    4,
+    0.11299999999999999
+   ],
+   [
+    8,
+    0.18200000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp02__case00",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 30 s (long)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E001-C00",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E001-C00"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E001-C00"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E001-C00"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E001-C00"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E001-C00"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-1",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp02",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|30 s (long)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S001",
+  "case_index": 0
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp02__case01",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure",
+    "value": 30.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "30 s",
+     "locator": "series label '30 s (long)' (axis 'exposure duration')"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.51
+   ],
+   [
+    2,
+    0.72
+   ],
+   [
+    4,
+    1.13
+   ],
+   [
+    8,
+    1.82
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.051000000000000004
+   ],
+   [
+    2,
+    0.072
+   ],
+   [
+    4,
+    0.11299999999999999
+   ],
+   [
+    8,
+    0.18200000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp02__case01",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 30 s (long)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E001-C01",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E001-C01"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E001-C01"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E001-C01"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E001-C01"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E001-C01"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-1",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp02",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|30 s (long)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S001",
+  "case_index": 1
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp02__case02",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure",
+    "value": 30.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "30 s",
+     "locator": "series label '30 s (long)' (axis 'exposure duration')"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.51
+   ],
+   [
+    2,
+    0.72
+   ],
+   [
+    4,
+    1.13
+   ],
+   [
+    8,
+    1.82
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.051000000000000004
+   ],
+   [
+    2,
+    0.072
+   ],
+   [
+    4,
+    0.11299999999999999
+   ],
+   [
+    8,
+    0.18200000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp02__case02",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 30 s (long)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E001-C02",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E001-C02"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E001-C02"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E001-C02"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E001-C02"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E001-C02"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-1",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp02",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|30 s (long)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S001",
+  "case_index": 2
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp02__case03",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure",
+    "value": 30.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "30 s",
+     "locator": "series label '30 s (long)' (axis 'exposure duration')"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.51
+   ],
+   [
+    2,
+    0.72
+   ],
+   [
+    4,
+    1.13
+   ],
+   [
+    8,
+    1.82
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.051000000000000004
+   ],
+   [
+    2,
+    0.072
+   ],
+   [
+    4,
+    0.11299999999999999
+   ],
+   [
+    8,
+    0.18200000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp02__case03",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 30 s (long)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E001-C03",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E001-C03"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E001-C03"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E001-C03"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E001-C03"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E001-C03"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-1",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp02",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|30 s (long)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S001",
+  "case_index": 3
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give ris",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1a__exp02__case04",
+     "figure": "Fig 1",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure",
+    "value": 30.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "30 s",
+     "locator": "series label '30 s (long)' (axis 'exposure duration')"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.51
+   ],
+   [
+    2,
+    0.72
+   ],
+   [
+    4,
+    1.13
+   ],
+   [
+    8,
+    1.82
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.051000000000000004
+   ],
+   [
+    2,
+    0.072
+   ],
+   [
+    4,
+    0.11299999999999999
+   ],
+   [
+    8,
+    0.18200000000000002
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1a__exp02__case04",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "a",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "exposure duration: 30 s (long)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E001-C04",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E001-C04"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E001-C04"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E001-C04"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E001-C04"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E001-C04"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 150.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1a-1",
+     "figure": "Fig 1",
+     "panel": "a"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1a__exp02",
+  "entity_key": "10.1039_c5ta00205b|2|1|a|30 s (long)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S001",
+  "case_index": 4
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give rise to self-limiting ALD behavior, the latter do not.",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 130.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1b__case00",
+     "figure": "Fig 1",
+     "panel": "b"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.38
+   ],
+   [
+    2,
+    0.52
+   ],
+   [
+    3,
+    0.58
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.038000000000000006
+   ],
+   [
+    2,
+    0.052000000000000005
+   ],
+   [
+    3,
+    0.057999999999999996
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1b__case00",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "b",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "series: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 130.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E002-C00",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E002-C00"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E002-C00"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E002-C00"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E002-C00"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E002-C00"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 130.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1b-2",
+     "figure": "Fig 1",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1b",
+  "entity_key": "10.1039_c5ta00205b|2|1|b|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 4,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S002",
+  "case_index": 0
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give rise to self-limiting ALD behavior, the latter do not.",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 130.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1b__case01",
+     "figure": "Fig 1",
+     "panel": "b"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.38
+   ],
+   [
+    2,
+    0.52
+   ],
+   [
+    3,
+    0.58
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.038000000000000006
+   ],
+   [
+    2,
+    0.052000000000000005
+   ],
+   [
+    3,
+    0.057999999999999996
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1b__case01",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "b",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "series: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 130.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E002-C01",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E002-C01"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E002-C01"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E002-C01"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E002-C01"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E002-C01"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 130.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1b-2",
+     "figure": "Fig 1",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1b",
+  "entity_key": "10.1039_c5ta00205b|2|1|b|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 4,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S002",
+  "case_index": 1
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give rise to self-limiting ALD behavior, the latter do not.",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 130.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1b__case02",
+     "figure": "Fig 1",
+     "panel": "b"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.38
+   ],
+   [
+    2,
+    0.52
+   ],
+   [
+    3,
+    0.58
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.038000000000000006
+   ],
+   [
+    2,
+    0.052000000000000005
+   ],
+   [
+    3,
+    0.057999999999999996
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1b__case02",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "b",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "series: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 130.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E002-C02",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E002-C02"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E002-C02"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E002-C02"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E002-C02"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E002-C02"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 130.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1b-2",
+     "figure": "Fig 1",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1b",
+  "entity_key": "10.1039_c5ta00205b|2|1|b|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 4,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S002",
+  "case_index": 2
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations. The former give rise to self-limiting ALD behavior, the latter do not.",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 130.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b__Fig1b__case03",
+     "figure": "Fig 1",
+     "panel": "b"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   }
+  ],
+  "measurand": {
+   "quantity": "growth_rate",
+   "unit": "nm/cycle",
+   "raw_unit": "\u00c5/cycle",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "converted",
+    "from_unit": "\u00c5/cycle",
+    "to_unit": "nm/cycle",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": true,
+    "factor": 0.1
+   },
+   "raw_quantity": "growth_per_cycle"
+  },
+  "coordinate": "exposure",
+  "coordinate_family": "dose",
+  "coordinate_unit": "",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'exposure' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    1,
+    0.38
+   ],
+   [
+    2,
+    0.52
+   ],
+   [
+    3,
+    0.58
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0.0
+   ],
+   [
+    1,
+    0.038000000000000006
+   ],
+   [
+    2,
+    0.052000000000000005
+   ],
+   [
+    3,
+    0.057999999999999996
+   ]
+  ],
+  "granularity": "case",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig1b__case03",
+  "provenance": {
+   "figure": "Fig 1",
+   "figure_number": "1",
+   "fig_docling_index": "2",
+   "panel": "b",
+   "caption": "Fig. 1 Growth rates determined at 150 /C14 C (a) and at 130 /C14 C (b) as a function of the Pt(acac)2 dosage by GCM for depositions using short 1 to 8 s (green) and long 30 s (red) exposure durations.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "series: 1-8 s (short)",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "exposure",
+  "granularity_reason": "x axis 'exposure' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "growth_per_cycle",
+    "unit": "nm/cycle",
+    "raw_unit": "\u00c5/cycle",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": null,
+   "temperature": 130.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E002-C03",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E002-C03"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E002-C03"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E002-C03"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E002-C03"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E002-C03"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "caption",
+     "value": 130.0,
+     "paper_id": "10.1039_c5ta00205b",
+     "experiment_id": "10.1039_c5ta00205b-F1b-2",
+     "figure": "Fig 1",
+     "panel": "b"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "exposure",
+  "x_semantics": {
+   "raw_label": "Number of micropulses of Pt(acac)2 per cycle",
+   "raw_quantity": "exposure",
+   "raw_unit": null,
+   "unit_dimension": null,
+   "canonical_quantity": "exposure",
+   "axis_role": "process_condition",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Number of micropulses of Pt(acac)2 per cycle'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Growth rate / \u00c5/cycle",
+   "raw_quantity": "growth_per_cycle",
+   "raw_unit": "nm/cycle",
+   "unit_dimension": "growth_per_cycle",
+   "canonical_quantity": "growth_rate",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Growth rate / \u00c5/cycle'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig1b",
+  "entity_key": "10.1039_c5ta00205b|2|1|b|1-8 s (short)|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "1",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "Measurement",
+  "classification": "discrete_experimental_sweep",
+  "classification_confidence": "corroborated",
+  "n_observations": 4,
+  "observations_are_experiments": false,
+  "in_series": "10.1039_c5ta00205b-S002",
+  "case_index": 3
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 7 X-ray di /uniFB00 ractograms of Pt deposited on AAO membranes by ALD at 130 /C14 C (a) and 150 /C14 C (b).",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 130.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "130 \u00b0C",
+     "locator": "series label '(a) 130 \u00b0C' (axis 'temperature')"
+    }
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 100.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "100 ALD cycles",
+     "locator": "document.md near Fig 7"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "diffraction_angle",
+  "coordinate_family": null,
+  "coordinate_unit": "deg",
+  "coordinate_unit_normalized": "deg",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    30.0,
+    80.0
+   ],
+   [
+    31.0,
+    78.0
+   ],
+   [
+    32.0,
+    75.0
+   ],
+   [
+    33.0,
+    70.0
+   ],
+   [
+    34.0,
+    65.0
+   ],
+   [
+    35.0,
+    60.0
+   ],
+   [
+    36.0,
+    56.0
+   ],
+   [
+    37.0,
+    55.0
+   ],
+   [
+    38.0,
+    60.0
+   ],
+   [
+    38.8,
+    70.0
+   ],
+   [
+    39.3,
+    95.0
+   ],
+   [
+    39.8,
+    128.0
+   ],
+   [
+    40.3,
+    105.0
+   ],
+   [
+    41.0,
+    75.0
+   ],
+   [
+    42.0,
+    55.0
+   ],
+   [
+    43.5,
+    45.0
+   ],
+   [
+    45.0,
+    42.0
+   ],
+   [
+    45.8,
+    48.0
+   ],
+   [
+    46.2,
+    58.0
+   ],
+   [
+    46.8,
+    48.0
+   ],
+   [
+    48.0,
+    41.0
+   ],
+   [
+    50.0,
+    36.0
+   ],
+   [
+    52.5,
+    34.0
+   ],
+   [
+    55.0,
+    32.0
+   ],
+   [
+    57.5,
+    31.0
+   ],
+   [
+    60.0,
+    30.0
+   ],
+   [
+    62.5,
+    28.0
+   ],
+   [
+    65.0,
+    27.0
+   ],
+   [
+    66.5,
+    30.0
+   ],
+   [
+    67.1,
+    38.0
+   ],
+   [
+    67.5,
+    48.0
+   ],
+   [
+    67.9,
+    38.0
+   ],
+   [
+    68.5,
+    28.0
+   ],
+   [
+    70.0,
+    24.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    30.0,
+    80.0
+   ],
+   [
+    31.0,
+    78.0
+   ],
+   [
+    32.0,
+    75.0
+   ],
+   [
+    33.0,
+    70.0
+   ],
+   [
+    34.0,
+    65.0
+   ],
+   [
+    35.0,
+    60.0
+   ],
+   [
+    36.0,
+    56.0
+   ],
+   [
+    37.0,
+    55.0
+   ],
+   [
+    38.0,
+    60.0
+   ],
+   [
+    38.8,
+    70.0
+   ],
+   [
+    39.3,
+    95.0
+   ],
+   [
+    39.8,
+    128.0
+   ],
+   [
+    40.3,
+    105.0
+   ],
+   [
+    41.0,
+    75.0
+   ],
+   [
+    42.0,
+    55.0
+   ],
+   [
+    43.5,
+    45.0
+   ],
+   [
+    45.0,
+    42.0
+   ],
+   [
+    45.8,
+    48.0
+   ],
+   [
+    46.2,
+    58.0
+   ],
+   [
+    46.8,
+    48.0
+   ],
+   [
+    48.0,
+    41.0
+   ],
+   [
+    50.0,
+    36.0
+   ],
+   [
+    52.5,
+    34.0
+   ],
+   [
+    55.0,
+    32.0
+   ],
+   [
+    57.5,
+    31.0
+   ],
+   [
+    60.0,
+    30.0
+   ],
+   [
+    62.5,
+    28.0
+   ],
+   [
+    65.0,
+    27.0
+   ],
+   [
+    66.5,
+    30.0
+   ],
+   [
+    67.1,
+    38.0
+   ],
+   [
+    67.5,
+    48.0
+   ],
+   [
+    67.9,
+    38.0
+   ],
+   [
+    68.5,
+    28.0
+   ],
+   [
+    70.0,
+    24.0
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig7a__exp01",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "8",
+   "panel": "a",
+   "caption": "Fig. 7 X-ray di /uniFB00 ractograms of Pt deposited on AAO membranes by ALD at 130 /C14 C (a) and 150 /C14 C (b).",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "temperature: (a) 130 \u00b0C",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "diffraction_angle"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 100.0,
+   "temperature": 130.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E008",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E008"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E008"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E008"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E008"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E008"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 100.0,
+     "experiment_id": "10.1039_c5ta00205b-E008"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "series",
+     "value": 130.0,
+     "paper_id": null,
+     "experiment_id": "10.1039_c5ta00205b-E008"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "diffraction_angle",
+  "x_semantics": {
+   "raw_label": "2\u03b8 / deg",
+   "raw_quantity": "diffraction_angle",
+   "raw_unit": "deg",
+   "unit_dimension": "angle",
+   "canonical_quantity": "diffraction_angle",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "diffraction angle of an XRD/XRR scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Intensity (a.u.)",
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Intensity (a.u.)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig7a__exp01",
+  "entity_key": "10.1039_c5ta00205b|8|7|a|(a) 130 \u00b0C|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "7",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 34,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 7 X-ray di /uniFB00 ractograms of Pt deposited on AAO membranes by ALD at 130 /C14 C (a) and 150 /C14 C (b).",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": 150.0,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "150 \u00b0C",
+     "locator": "series label '(b) 150 \u00b0C' (axis 'temperature')"
+    }
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 100.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "100 ALD cycles",
+     "locator": "document.md near Fig 7"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "diffraction_angle",
+  "coordinate_family": null,
+  "coordinate_unit": "deg",
+  "coordinate_unit_normalized": "deg",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    30.0,
+    190.0
+   ],
+   [
+    31.5,
+    190.0
+   ],
+   [
+    33.0,
+    190.0
+   ],
+   [
+    34.5,
+    190.0
+   ],
+   [
+    36.0,
+    192.0
+   ],
+   [
+    37.0,
+    195.0
+   ],
+   [
+    38.0,
+    210.0
+   ],
+   [
+    38.8,
+    260.0
+   ],
+   [
+    39.3,
+    380.0
+   ],
+   [
+    39.8,
+    570.0
+   ],
+   [
+    40.3,
+    380.0
+   ],
+   [
+    40.8,
+    260.0
+   ],
+   [
+    41.5,
+    210.0
+   ],
+   [
+    42.5,
+    193.0
+   ],
+   [
+    44.0,
+    190.0
+   ],
+   [
+    45.2,
+    195.0
+   ],
+   [
+    45.8,
+    240.0
+   ],
+   [
+    46.2,
+    308.0
+   ],
+   [
+    46.7,
+    240.0
+   ],
+   [
+    47.5,
+    198.0
+   ],
+   [
+    49.0,
+    191.0
+   ],
+   [
+    51.0,
+    190.0
+   ],
+   [
+    54.0,
+    190.0
+   ],
+   [
+    57.0,
+    190.0
+   ],
+   [
+    60.0,
+    190.0
+   ],
+   [
+    63.0,
+    190.0
+   ],
+   [
+    65.5,
+    192.0
+   ],
+   [
+    66.8,
+    205.0
+   ],
+   [
+    67.2,
+    230.0
+   ],
+   [
+    67.5,
+    252.0
+   ],
+   [
+    67.8,
+    230.0
+   ],
+   [
+    68.2,
+    202.0
+   ],
+   [
+    69.0,
+    191.0
+   ],
+   [
+    70.0,
+    190.0
+   ]
+  ],
+  "points_canonical": [
+   [
+    30.0,
+    190.0
+   ],
+   [
+    31.5,
+    190.0
+   ],
+   [
+    33.0,
+    190.0
+   ],
+   [
+    34.5,
+    190.0
+   ],
+   [
+    36.0,
+    192.0
+   ],
+   [
+    37.0,
+    195.0
+   ],
+   [
+    38.0,
+    210.0
+   ],
+   [
+    38.8,
+    260.0
+   ],
+   [
+    39.3,
+    380.0
+   ],
+   [
+    39.8,
+    570.0
+   ],
+   [
+    40.3,
+    380.0
+   ],
+   [
+    40.8,
+    260.0
+   ],
+   [
+    41.5,
+    210.0
+   ],
+   [
+    42.5,
+    193.0
+   ],
+   [
+    44.0,
+    190.0
+   ],
+   [
+    45.2,
+    195.0
+   ],
+   [
+    45.8,
+    240.0
+   ],
+   [
+    46.2,
+    308.0
+   ],
+   [
+    46.7,
+    240.0
+   ],
+   [
+    47.5,
+    198.0
+   ],
+   [
+    49.0,
+    191.0
+   ],
+   [
+    51.0,
+    190.0
+   ],
+   [
+    54.0,
+    190.0
+   ],
+   [
+    57.0,
+    190.0
+   ],
+   [
+    60.0,
+    190.0
+   ],
+   [
+    63.0,
+    190.0
+   ],
+   [
+    65.5,
+    192.0
+   ],
+   [
+    66.8,
+    205.0
+   ],
+   [
+    67.2,
+    230.0
+   ],
+   [
+    67.5,
+    252.0
+   ],
+   [
+    67.8,
+    230.0
+   ],
+   [
+    68.2,
+    202.0
+   ],
+   [
+    69.0,
+    191.0
+   ],
+   [
+    70.0,
+    190.0
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig7a__exp02",
+  "provenance": {
+   "figure": "Fig 7",
+   "figure_number": "7",
+   "fig_docling_index": "8",
+   "panel": "a",
+   "caption": "Fig. 7 X-ray di /uniFB00 ractograms of Pt deposited on AAO membranes by ALD at 130 /C14 C (a) and 150 /C14 C (b).",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "temperature: (b) 150 \u00b0C",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "diffraction_angle"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 100.0,
+   "temperature": 150.0,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E009",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E009"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E009"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E009"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E009"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E009"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 100.0,
+     "experiment_id": "10.1039_c5ta00205b-E009"
+    },
+    "temperature::": {
+     "source": "experiment",
+     "from": "series",
+     "value": 150.0,
+     "paper_id": null,
+     "experiment_id": "10.1039_c5ta00205b-E009"
+    }
+   },
+   "completeness": 0.5
+  },
+  "coordinate_raw_quantity": "diffraction_angle",
+  "x_semantics": {
+   "raw_label": "2\u03b8 / deg",
+   "raw_quantity": "diffraction_angle",
+   "raw_unit": "deg",
+   "unit_dimension": "angle",
+   "canonical_quantity": "diffraction_angle",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "diffraction angle of an XRD/XRR scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Intensity (a.u.)",
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Intensity (a.u.)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig7a__exp02",
+  "entity_key": "10.1039_c5ta00205b|8|7|a|(b) 150 \u00b0C|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "7",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 34,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Fig. 9 (a) Energy-dispersive X-ray spectroscopy analysis and (b) X-ray di /uniFB00 ractogram performed on Pt deposited by ALD on annealed TiO2 nanotubes.",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 100.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "100 ALD cycles",
+     "locator": "document.md near Fig 9"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "Energy",
+  "coordinate_family": null,
+  "coordinate_unit": "keV",
+  "coordinate_unit_normalized": null,
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "unresolved",
+  "coordinate_unit_reason": "no parseable unit for coordinate 'Energy' and the ontology does not declare it dimensionless",
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0.0,
+    0.05
+   ],
+   [
+    0.3,
+    0.05
+   ],
+   [
+    0.5,
+    0.15
+   ],
+   [
+    0.7,
+    0.05
+   ],
+   [
+    1.0,
+    0.05
+   ],
+   [
+    1.5,
+    0.08
+   ],
+   [
+    1.7,
+    0.2
+   ],
+   [
+    1.9,
+    0.1
+   ],
+   [
+    2.1,
+    0.98
+   ],
+   [
+    2.3,
+    0.15
+   ],
+   [
+    2.6,
+    0.05
+   ],
+   [
+    3.0,
+    0.05
+   ],
+   [
+    3.5,
+    0.05
+   ],
+   [
+    4.0,
+    0.05
+   ],
+   [
+    4.3,
+    0.2
+   ],
+   [
+    4.5,
+    0.95
+   ],
+   [
+    4.7,
+    0.15
+   ],
+   [
+    4.9,
+    0.22
+   ],
+   [
+    5.1,
+    0.07
+   ],
+   [
+    5.5,
+    0.05
+   ],
+   [
+    6.0,
+    0.05
+   ],
+   [
+    7.0,
+    0.05
+   ],
+   [
+    8.0,
+    0.04
+   ],
+   [
+    9.0,
+    0.04
+   ],
+   [
+    9.4,
+    0.2
+   ],
+   [
+    9.6,
+    0.04
+   ],
+   [
+    10.0,
+    0.04
+   ],
+   [
+    10.5,
+    0.04
+   ],
+   [
+    11.0,
+    0.08
+   ],
+   [
+    11.2,
+    0.09
+   ],
+   [
+    11.5,
+    0.05
+   ],
+   [
+    12.0,
+    0.04
+   ],
+   [
+    13.0,
+    0.04
+   ],
+   [
+    14.0,
+    0.04
+   ],
+   [
+    15.0,
+    0.04
+   ],
+   [
+    16.0,
+    0.04
+   ]
+  ],
+  "points_canonical": [
+   [
+    0.0,
+    0.05
+   ],
+   [
+    0.3,
+    0.05
+   ],
+   [
+    0.5,
+    0.15
+   ],
+   [
+    0.7,
+    0.05
+   ],
+   [
+    1.0,
+    0.05
+   ],
+   [
+    1.5,
+    0.08
+   ],
+   [
+    1.7,
+    0.2
+   ],
+   [
+    1.9,
+    0.1
+   ],
+   [
+    2.1,
+    0.98
+   ],
+   [
+    2.3,
+    0.15
+   ],
+   [
+    2.6,
+    0.05
+   ],
+   [
+    3.0,
+    0.05
+   ],
+   [
+    3.5,
+    0.05
+   ],
+   [
+    4.0,
+    0.05
+   ],
+   [
+    4.3,
+    0.2
+   ],
+   [
+    4.5,
+    0.95
+   ],
+   [
+    4.7,
+    0.15
+   ],
+   [
+    4.9,
+    0.22
+   ],
+   [
+    5.1,
+    0.07
+   ],
+   [
+    5.5,
+    0.05
+   ],
+   [
+    6.0,
+    0.05
+   ],
+   [
+    7.0,
+    0.05
+   ],
+   [
+    8.0,
+    0.04
+   ],
+   [
+    9.0,
+    0.04
+   ],
+   [
+    9.4,
+    0.2
+   ],
+   [
+    9.6,
+    0.04
+   ],
+   [
+    10.0,
+    0.04
+   ],
+   [
+    10.5,
+    0.04
+   ],
+   [
+    11.0,
+    0.08
+   ],
+   [
+    11.2,
+    0.09
+   ],
+   [
+    11.5,
+    0.05
+   ],
+   [
+    12.0,
+    0.04
+   ],
+   [
+    13.0,
+    0.04
+   ],
+   [
+    14.0,
+    0.04
+   ],
+   [
+    15.0,
+    0.04
+   ],
+   [
+    16.0,
+    0.04
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig9a",
+  "provenance": {
+   "figure": "Fig 9",
+   "figure_number": "9",
+   "fig_docling_index": "10",
+   "panel": "a",
+   "caption": "Fig. 9 (a) Energy-dispersive X-ray spectroscopy analysis and (b) X-ray di /uniFB00 ractogram performed on Pt deposited by ALD on annealed TiO2 nanotubes.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "series: EDX spectrum",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": null,
+  "granularity_reason": "x axis role could not be determined",
+  "axis_role": null,
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 100.0,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E010",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E010"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E010"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E010"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E010"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E010"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 100.0,
+     "experiment_id": "10.1039_c5ta00205b-E010"
+    }
+   },
+   "completeness": 0.429
+  },
+  "x_semantics": {
+   "raw_label": "Energy / keV",
+   "raw_quantity": "Energy",
+   "raw_unit": "keV",
+   "unit_dimension": "energy",
+   "canonical_quantity": null,
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "role_only",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": null,
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'intensity'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig9a",
+  "entity_key": "10.1039_c5ta00205b|10|9|a|EDX spectrum|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "9",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 36,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Pt",
+  "material_raw": "Pt",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(b) X-ray di /uniFB00 ractogram performed on Pt deposited by ALD on annealed TiO2 nanotubes.",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "Pt(acac)2"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "Pt(acac)2"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "O3"
+   }
+  ],
+  "carrier_gas": null,
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "molecular_mass",
+    "value": 48.0,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "O3",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 100.0,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "100 ALD cycles",
+     "locator": "document.md near Fig 9"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "intensity",
+   "unit": "a.u.",
+   "raw_unit": "a.u.",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "a.u.",
+    "to_unit": null,
+    "reason": "unit 'a.u.' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "intensity"
+  },
+  "coordinate": "diffraction_angle",
+  "coordinate_family": null,
+  "coordinate_unit": "deg",
+  "coordinate_unit_normalized": "deg",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    22.0,
+    0.1
+   ],
+   [
+    24.0,
+    0.1
+   ],
+   [
+    25.3,
+    0.25
+   ],
+   [
+    26.5,
+    0.1
+   ],
+   [
+    30.0,
+    0.08
+   ],
+   [
+    35.0,
+    0.08
+   ],
+   [
+    37.0,
+    0.12
+   ],
+   [
+    38.3,
+    0.35
+   ],
+   [
+    38.8,
+    0.18
+   ],
+   [
+    39.8,
+    0.62
+   ],
+   [
+    40.2,
+    0.7
+   ],
+   [
+    42.0,
+    0.12
+   ],
+   [
+    44.0,
+    0.08
+   ],
+   [
+    46.5,
+    0.22
+   ],
+   [
+    48.5,
+    0.08
+   ],
+   [
+    51.0,
+    0.06
+   ],
+   [
+    53.0,
+    0.75
+   ],
+   [
+    53.5,
+    0.06
+   ],
+   [
+    55.0,
+    0.05
+   ],
+   [
+    58.0,
+    0.05
+   ],
+   [
+    62.0,
+    0.05
+   ],
+   [
+    63.2,
+    0.07
+   ],
+   [
+    65.0,
+    0.05
+   ],
+   [
+    67.2,
+    0.15
+   ],
+   [
+    68.8,
+    0.05
+   ],
+   [
+    69.5,
+    0.95
+   ],
+   [
+    70.0,
+    0.1
+   ]
+  ],
+  "points_canonical": [
+   [
+    22.0,
+    0.1
+   ],
+   [
+    24.0,
+    0.1
+   ],
+   [
+    25.3,
+    0.25
+   ],
+   [
+    26.5,
+    0.1
+   ],
+   [
+    30.0,
+    0.08
+   ],
+   [
+    35.0,
+    0.08
+   ],
+   [
+    37.0,
+    0.12
+   ],
+   [
+    38.3,
+    0.35
+   ],
+   [
+    38.8,
+    0.18
+   ],
+   [
+    39.8,
+    0.62
+   ],
+   [
+    40.2,
+    0.7
+   ],
+   [
+    42.0,
+    0.12
+   ],
+   [
+    44.0,
+    0.08
+   ],
+   [
+    46.5,
+    0.22
+   ],
+   [
+    48.5,
+    0.08
+   ],
+   [
+    51.0,
+    0.06
+   ],
+   [
+    53.0,
+    0.75
+   ],
+   [
+    53.5,
+    0.06
+   ],
+   [
+    55.0,
+    0.05
+   ],
+   [
+    58.0,
+    0.05
+   ],
+   [
+    62.0,
+    0.05
+   ],
+   [
+    63.2,
+    0.07
+   ],
+   [
+    65.0,
+    0.05
+   ],
+   [
+    67.2,
+    0.15
+   ],
+   [
+    68.8,
+    0.05
+   ],
+   [
+    69.5,
+    0.95
+   ],
+   [
+    70.0,
+    0.1
+   ]
+  ],
+  "granularity": "multi_output",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1039_c5ta00205b__Fig9b",
+  "provenance": {
+   "figure": "Fig 9",
+   "figure_number": "9",
+   "fig_docling_index": "10",
+   "panel": "b",
+   "caption": "Fig. 9 (a) Energy-dispersive X-ray spectroscopy analysis and (b) X-ray di /uniFB00 ractogram performed on Pt deposited by ALD on annealed TiO2 nanotubes.",
+   "extractor": "vision-llm",
+   "doi": "10.1039_c5ta00205b"
+  },
+  "series_name": "series: XRD pattern",
+  "phase": null,
+  "structure": "mesoporous_film",
+  "geometry_class": "porous_material",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "single_material_single_species",
+   "confidence": 0.6,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Pt",
+   "supporting_evidence": "the paper reports one material (['Pt']) and one precursor ('Pt(acac)2')",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "Pt(acac)2"
+    ],
+    "coreactants": [
+     "O3"
+    ],
+    "materials": [
+     "Pt"
+    ]
+   }
+  },
+  "varies": [
+   "diffraction_angle"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "intensity",
+    "unit": "a.u.",
+    "raw_unit": "a.u.",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Pt",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "Pt(acac)2",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "O3",
+     "dose_time": null,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 100.0,
+   "temperature": null,
+   "flow_rate": null,
+   "carrier_gas": null,
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1039_c5ta00205b-E011",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt(acac)2",
+     "experiment_id": "10.1039_c5ta00205b-E011"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "O3",
+     "experiment_id": "10.1039_c5ta00205b-E011"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Pt",
+     "experiment_id": "10.1039_c5ta00205b-E011"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1039_c5ta00205b-E011"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1039_c5ta00205b-E011"
+    },
+    "cycle_number::": {
+     "source": "experiment",
+     "from": "unknown",
+     "value": 100.0,
+     "experiment_id": "10.1039_c5ta00205b-E011"
+    }
+   },
+   "completeness": 0.429
+  },
+  "coordinate_raw_quantity": "diffraction_angle",
+  "x_semantics": {
+   "raw_label": "2\u03b8 / deg",
+   "raw_quantity": "diffraction_angle",
+   "raw_unit": "deg",
+   "unit_dimension": "angle",
+   "canonical_quantity": "diffraction_angle",
+   "axis_role": "measurement_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "diffraction angle of an XRD/XRR scan",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": null,
+   "raw_quantity": "intensity",
+   "raw_unit": "a.u.",
+   "unit_dimension": "arbitrary",
+   "canonical_quantity": "intensity",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'intensity'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1039_c5ta00205b__Fig9b",
+  "entity_key": "10.1039_c5ta00205b|10|9|b|XRD pattern|primary",
+  "paper_id": "10.1039_c5ta00205b",
+  "doi": "10.1039_c5ta00205b",
+  "printed_figure_number": "9",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "MultiOutputMeasurement",
+  "classification": "multi_output_measurement",
+  "classification_confidence": "corroborated",
+  "n_observations": 27,
+  "observations_are_experiments": false
+ }
+]

@@ -1,0 +1,6828 @@
+[
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM images taken from nanotube layers",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 0.5,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp01",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "scope": "experiment",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "exposure",
+    "value": 0.5,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "0.5s",
+     "locator": "series label '0.5s' (axis 'exposure time')"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.5,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure time (5 and 10 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "raw_unit": "nm",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "already_canonical",
+    "from_unit": "nm",
+    "to_unit": "nm",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "film_thickness"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "coordinate_unit": "nm",
+  "coordinate_unit_normalized": "nm",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    66.5,
+    17.7
+   ],
+   [
+    68.5,
+    18.0
+   ],
+   [
+    85.0,
+    24.8
+   ],
+   [
+    131.0,
+    26.8
+   ]
+  ],
+  "points_canonical": [
+   [
+    66.5,
+    17.7
+   ],
+   [
+    68.5,
+    18.0
+   ],
+   [
+    85.0,
+    24.8
+   ],
+   [
+    131.0,
+    26.8
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp01",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "6",
+   "panel": "a",
+   "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM ima",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "exposure time: 0.5s",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "raw_unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E000",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E000"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E000"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E000"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E000"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E000"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "scope": "paper",
+    "values": [
+     0.5,
+     10.0
+    ],
+    "reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "spatial_coordinate",
+  "x_semantics": {
+   "raw_label": "Nanotube inner diameter (nm)",
+   "raw_quantity": "spatial_coordinate",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "spatial_coordinate",
+   "axis_role": "spatial_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Nanotube inner diameter (nm)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Al2O3 coating thickness (nm)",
+   "raw_quantity": "film_thickness",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "film_thickness",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Al2O3 coating thickness (nm)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp01",
+  "entity_key": "10.1021_acs.langmuir.6b03119|6|3|a|0.5s|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "3",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ExperimentalProfile",
+  "classification": "experimental_profile",
+  "classification_confidence": "corroborated",
+  "n_observations": 4,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM images taken from nanotube layers",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 2.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp02",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "scope": "experiment",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "exposure",
+    "value": 2.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "2s",
+     "locator": "series label '2s' (axis 'exposure time')"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.5,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure time (5 and 10 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "raw_unit": "nm",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "already_canonical",
+    "from_unit": "nm",
+    "to_unit": "nm",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "film_thickness"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "coordinate_unit": "nm",
+  "coordinate_unit_normalized": "nm",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    58.0,
+    15.2
+   ],
+   [
+    73.5,
+    24.5
+   ],
+   [
+    88.0,
+    25.1
+   ],
+   [
+    91.0,
+    24.2
+   ],
+   [
+    95.5,
+    25.4
+   ],
+   [
+    110.0,
+    26.2
+   ]
+  ],
+  "points_canonical": [
+   [
+    58.0,
+    15.2
+   ],
+   [
+    73.5,
+    24.5
+   ],
+   [
+    88.0,
+    25.1
+   ],
+   [
+    91.0,
+    24.2
+   ],
+   [
+    95.5,
+    25.4
+   ],
+   [
+    110.0,
+    26.2
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp02",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "6",
+   "panel": "a",
+   "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM ima",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "exposure time: 2s",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "raw_unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E001",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E001"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E001"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E001"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E001"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E001"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "scope": "paper",
+    "values": [
+     0.5,
+     10.0
+    ],
+    "reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "spatial_coordinate",
+  "x_semantics": {
+   "raw_label": "Nanotube inner diameter (nm)",
+   "raw_quantity": "spatial_coordinate",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "spatial_coordinate",
+   "axis_role": "spatial_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Nanotube inner diameter (nm)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Al2O3 coating thickness (nm)",
+   "raw_quantity": "film_thickness",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "film_thickness",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Al2O3 coating thickness (nm)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp02",
+  "entity_key": "10.1021_acs.langmuir.6b03119|6|3|a|2s|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "3",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ExperimentalProfile",
+  "classification": "experimental_profile",
+  "classification_confidence": "corroborated",
+  "n_observations": 6,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM images taken from nanotube layers",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 5.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp03",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "scope": "experiment",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "exposure",
+    "value": 5.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "5s",
+     "locator": "series label '5s' (axis 'exposure time')"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.5,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure time (5 and 10 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "raw_unit": "nm",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "already_canonical",
+    "from_unit": "nm",
+    "to_unit": "nm",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "film_thickness"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "coordinate_unit": "nm",
+  "coordinate_unit_normalized": "nm",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    51.5,
+    22.8
+   ],
+   [
+    80.5,
+    26.8
+   ],
+   [
+    83.5,
+    25.8
+   ],
+   [
+    128.5,
+    25.7
+   ],
+   [
+    143.0,
+    26.5
+   ]
+  ],
+  "points_canonical": [
+   [
+    51.5,
+    22.8
+   ],
+   [
+    80.5,
+    26.8
+   ],
+   [
+    83.5,
+    25.8
+   ],
+   [
+    128.5,
+    25.7
+   ],
+   [
+    143.0,
+    26.5
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp03",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "6",
+   "panel": "a",
+   "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM ima",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "exposure time: 5s",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "raw_unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E002",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E002"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E002"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E002"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E002"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E002"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "scope": "paper",
+    "values": [
+     0.5,
+     10.0
+    ],
+    "reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "spatial_coordinate",
+  "x_semantics": {
+   "raw_label": "Nanotube inner diameter (nm)",
+   "raw_quantity": "spatial_coordinate",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "spatial_coordinate",
+   "axis_role": "spatial_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Nanotube inner diameter (nm)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Al2O3 coating thickness (nm)",
+   "raw_quantity": "film_thickness",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "film_thickness",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Al2O3 coating thickness (nm)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp03",
+  "entity_key": "10.1021_acs.langmuir.6b03119|6|3|a|5s|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "3",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ExperimentalProfile",
+  "classification": "experimental_profile",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM images taken from nanotube layers",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "experiment",
+     "from": "series",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp04",
+     "figure": "Fig 3",
+     "panel": "a"
+    },
+    "scope": "experiment",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "exposure",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "series",
+    "assertion_source_kind": "series_label",
+    "scope": "curve",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "series",
+     "from": "series_label",
+     "evidence": "10s",
+     "locator": "series label '10s' (axis 'exposure time')"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.5,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "body",
+    "assertion_source_kind": "body",
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "figure",
+     "from": "body",
+     "evidence": "exposure time (5 and 10 s",
+     "locator": "document.md near Fig 3"
+    },
+    "context_conflict_reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "measurand": {
+   "quantity": "film_thickness",
+   "unit": "nm",
+   "raw_unit": "nm",
+   "family": "film_amount",
+   "unit_conversion": {
+    "status": "already_canonical",
+    "from_unit": "nm",
+    "to_unit": "nm",
+    "reason": null,
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "film_thickness"
+  },
+  "coordinate": "spatial_coordinate",
+  "coordinate_family": "position",
+  "coordinate_unit": "nm",
+  "coordinate_unit_normalized": "nm",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    44.8,
+    18.3
+   ],
+   [
+    48.5,
+    22.3
+   ],
+   [
+    88.5,
+    27.2
+   ],
+   [
+    94.5,
+    27.0
+   ],
+   [
+    139.5,
+    25.7
+   ]
+  ],
+  "points_canonical": [
+   [
+    44.8,
+    18.3
+   ],
+   [
+    48.5,
+    22.3
+   ],
+   [
+    88.5,
+    27.2
+   ],
+   [
+    94.5,
+    27.0
+   ],
+   [
+    139.5,
+    25.7
+   ]
+  ],
+  "granularity": "profile",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp04",
+  "provenance": {
+   "figure": "Fig 3",
+   "figure_number": "3",
+   "fig_docling_index": "6",
+   "panel": "a",
+   "caption": "Figure 3. (a) Thickness of Al2O3 coating (by ALD) as a function of the inner TiO2 tube diameter and tube depth (0 \u03bc m stands for the top part of the tube layer and 20 \u03bc m for the bottom part). SEM ima",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "exposure time: 10s",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [
+   "spatial_coordinate"
+  ],
+  "series_varies": null,
+  "granularity_reason": "x axis 'spatial_coordinate' is an ontology coordinate",
+  "axis_role": "coordinate",
+  "dependent": [
+   {
+    "quantity": "film_thickness",
+    "unit": "nm",
+    "raw_unit": "nm",
+    "family": "film_amount"
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E003",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E003"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E003"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E003"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E003"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E003"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "scope": "paper",
+    "values": [
+     0.5,
+     10.0
+    ],
+    "reason": "2 distinct pulse_time values at paper scope (0.5, 10); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "spatial_coordinate",
+  "x_semantics": {
+   "raw_label": "Nanotube inner diameter (nm)",
+   "raw_quantity": "spatial_coordinate",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "spatial_coordinate",
+   "axis_role": "spatial_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Nanotube inner diameter (nm)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Al2O3 coating thickness (nm)",
+   "raw_quantity": "film_thickness",
+   "raw_unit": "nm",
+   "unit_dimension": "length",
+   "canonical_quantity": "film_thickness",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'Al2O3 coating thickness (nm)'",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig3a__exp04",
+  "entity_key": "10.1021_acs.langmuir.6b03119|6|3|a|10s|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "3",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ExperimentalProfile",
+  "classification": "experimental_profile",
+  "classification_confidence": "corroborated",
+  "n_observations": 5,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp01",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "QCM frequency change (Hz)",
+   "unit": "Hz",
+   "raw_unit": "Hz",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "Hz",
+    "to_unit": null,
+    "reason": "unit 'Hz' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    11,
+    0
+   ],
+   [
+    12,
+    -700
+   ],
+   [
+    40,
+    -700
+   ],
+   [
+    68,
+    -800
+   ],
+   [
+    70,
+    -1700
+   ],
+   [
+    100,
+    -1700
+   ],
+   [
+    128,
+    -1650
+   ],
+   [
+    130,
+    -2380
+   ],
+   [
+    160,
+    -2380
+   ],
+   [
+    188,
+    -2430
+   ],
+   [
+    190,
+    -3200
+   ],
+   [
+    220,
+    -3200
+   ],
+   [
+    248,
+    -3250
+   ],
+   [
+    250,
+    -3850
+   ],
+   [
+    280,
+    -3850
+   ],
+   [
+    300,
+    -3850
+   ]
+  ],
+  "points_canonical": [
+   [
+    11,
+    0
+   ],
+   [
+    12,
+    -700
+   ],
+   [
+    40,
+    -700
+   ],
+   [
+    68,
+    -800
+   ],
+   [
+    70,
+    -1700
+   ],
+   [
+    100,
+    -1700
+   ],
+   [
+    128,
+    -1650
+   ],
+   [
+    130,
+    -2380
+   ],
+   [
+    160,
+    -2380
+   ],
+   [
+    188,
+    -2430
+   ],
+   [
+    190,
+    -3200
+   ],
+   [
+    220,
+    -3200
+   ],
+   [
+    248,
+    -3250
+   ],
+   [
+    250,
+    -3850
+   ],
+   [
+    280,
+    -3850
+   ],
+   [
+    300,
+    -3850
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp01",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle range: cycle 11-15",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "QCM frequency change (Hz)",
+    "unit": "Hz",
+    "raw_unit": "Hz",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E004",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E004"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E004"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E004"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E004"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E004"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "QCM frequency change (Hz)",
+   "raw_quantity": "QCM frequency change (Hz)",
+   "raw_unit": "Hz",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp01",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|a|cycle 11-15|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 16,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp02",
+     "figure": "Fig 4",
+     "panel": "a"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "QCM frequency change (Hz)",
+   "unit": "Hz",
+   "raw_unit": "Hz",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "Hz",
+    "to_unit": null,
+    "reason": "unit 'Hz' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    15,
+    0
+   ],
+   [
+    16,
+    -280
+   ],
+   [
+    40,
+    -280
+   ],
+   [
+    68,
+    -320
+   ],
+   [
+    70,
+    -580
+   ],
+   [
+    100,
+    -580
+   ],
+   [
+    128,
+    -630
+   ],
+   [
+    130,
+    -900
+   ],
+   [
+    160,
+    -900
+   ],
+   [
+    188,
+    -940
+   ],
+   [
+    190,
+    -1200
+   ],
+   [
+    220,
+    -1200
+   ],
+   [
+    248,
+    -1250
+   ],
+   [
+    250,
+    -1500
+   ],
+   [
+    280,
+    -1500
+   ],
+   [
+    300,
+    -1520
+   ]
+  ],
+  "points_canonical": [
+   [
+    15,
+    0
+   ],
+   [
+    16,
+    -280
+   ],
+   [
+    40,
+    -280
+   ],
+   [
+    68,
+    -320
+   ],
+   [
+    70,
+    -580
+   ],
+   [
+    100,
+    -580
+   ],
+   [
+    128,
+    -630
+   ],
+   [
+    130,
+    -900
+   ],
+   [
+    160,
+    -900
+   ],
+   [
+    188,
+    -940
+   ],
+   [
+    190,
+    -1200
+   ],
+   [
+    220,
+    -1200
+   ],
+   [
+    248,
+    -1250
+   ],
+   [
+    250,
+    -1500
+   ],
+   [
+    280,
+    -1500
+   ],
+   [
+    300,
+    -1520
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp02",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "a",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle range: cycle 75-79",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "QCM frequency change (Hz)",
+    "unit": "Hz",
+    "raw_unit": "Hz",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E005",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E005"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E005"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E005"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E005"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E005"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "QCM frequency change (Hz)",
+   "raw_quantity": "QCM frequency change (Hz)",
+   "raw_unit": "Hz",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4a__exp02",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|a|cycle 75-79|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "a",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 16,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp01",
+     "figure": "Fig 4",
+     "panel": "b"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "\u0394 mass (ng cm\u207b\u00b2)",
+   "unit": "ng cm^-2",
+   "raw_unit": "ng cm^-2",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "ng cm^-2",
+    "to_unit": null,
+    "reason": "unit 'ng cm^-2' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    11,
+    5300
+   ],
+   [
+    20,
+    0
+   ],
+   [
+    40,
+    700
+   ],
+   [
+    50,
+    0
+   ],
+   [
+    70,
+    7000
+   ],
+   [
+    80,
+    0
+   ],
+   [
+    100,
+    550
+   ],
+   [
+    110,
+    0
+   ],
+   [
+    130,
+    5000
+   ],
+   [
+    140,
+    0
+   ],
+   [
+    160,
+    800
+   ],
+   [
+    170,
+    0
+   ],
+   [
+    190,
+    3200
+   ],
+   [
+    200,
+    0
+   ],
+   [
+    220,
+    700
+   ],
+   [
+    230,
+    0
+   ],
+   [
+    250,
+    3600
+   ],
+   [
+    260,
+    0
+   ],
+   [
+    280,
+    600
+   ],
+   [
+    290,
+    0
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0
+   ],
+   [
+    11,
+    5300
+   ],
+   [
+    20,
+    0
+   ],
+   [
+    40,
+    700
+   ],
+   [
+    50,
+    0
+   ],
+   [
+    70,
+    7000
+   ],
+   [
+    80,
+    0
+   ],
+   [
+    100,
+    550
+   ],
+   [
+    110,
+    0
+   ],
+   [
+    130,
+    5000
+   ],
+   [
+    140,
+    0
+   ],
+   [
+    160,
+    800
+   ],
+   [
+    170,
+    0
+   ],
+   [
+    190,
+    3200
+   ],
+   [
+    200,
+    0
+   ],
+   [
+    220,
+    700
+   ],
+   [
+    230,
+    0
+   ],
+   [
+    250,
+    3600
+   ],
+   [
+    260,
+    0
+   ],
+   [
+    280,
+    600
+   ],
+   [
+    290,
+    0
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp01",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "b",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle range: cycle 11-15",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "\u0394 mass (ng cm\u207b\u00b2)",
+    "unit": "ng cm^-2",
+    "raw_unit": "ng cm^-2",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E006",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E006"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E006"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E006"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E006"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E006"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "\u0394 mass (ng cm\u207b\u00b2)",
+   "raw_quantity": "\u0394 mass (ng cm\u207b\u00b2)",
+   "raw_unit": "ng cm^-2",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp01",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|b|cycle 11-15|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 21,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp02",
+     "figure": "Fig 4",
+     "panel": "b"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "\u0394 mass (ng cm\u207b\u00b2)",
+   "unit": "ng cm^-2",
+   "raw_unit": "ng cm^-2",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "ng cm^-2",
+    "to_unit": null,
+    "reason": "unit 'ng cm^-2' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    16,
+    2200
+   ],
+   [
+    25,
+    0
+   ],
+   [
+    40,
+    250
+   ],
+   [
+    50,
+    0
+   ],
+   [
+    73,
+    2350
+   ],
+   [
+    83,
+    0
+   ],
+   [
+    100,
+    250
+   ],
+   [
+    110,
+    0
+   ],
+   [
+    133,
+    2300
+   ],
+   [
+    143,
+    0
+   ],
+   [
+    160,
+    250
+   ],
+   [
+    170,
+    0
+   ],
+   [
+    193,
+    2000
+   ],
+   [
+    203,
+    0
+   ],
+   [
+    220,
+    250
+   ],
+   [
+    230,
+    0
+   ],
+   [
+    253,
+    2300
+   ],
+   [
+    263,
+    0
+   ],
+   [
+    280,
+    250
+   ],
+   [
+    290,
+    0
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0
+   ],
+   [
+    16,
+    2200
+   ],
+   [
+    25,
+    0
+   ],
+   [
+    40,
+    250
+   ],
+   [
+    50,
+    0
+   ],
+   [
+    73,
+    2350
+   ],
+   [
+    83,
+    0
+   ],
+   [
+    100,
+    250
+   ],
+   [
+    110,
+    0
+   ],
+   [
+    133,
+    2300
+   ],
+   [
+    143,
+    0
+   ],
+   [
+    160,
+    250
+   ],
+   [
+    170,
+    0
+   ],
+   [
+    193,
+    2000
+   ],
+   [
+    203,
+    0
+   ],
+   [
+    220,
+    250
+   ],
+   [
+    230,
+    0
+   ],
+   [
+    253,
+    2300
+   ],
+   [
+    263,
+    0
+   ],
+   [
+    280,
+    250
+   ],
+   [
+    290,
+    0
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp02",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "b",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle range: cycle 75-79",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "\u0394 mass (ng cm\u207b\u00b2)",
+    "unit": "ng cm^-2",
+    "raw_unit": "ng cm^-2",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E007",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E007"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E007"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E007"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E007"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E007"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "\u0394 mass (ng cm\u207b\u00b2)",
+   "raw_quantity": "\u0394 mass (ng cm\u207b\u00b2)",
+   "raw_unit": "ng cm^-2",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4b__exp02",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|b|cycle 75-79|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "b",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 21,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp01",
+     "figure": "Fig 4",
+     "panel": "c"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "areal_mass",
+   "unit": "ng cm^-2",
+   "raw_unit": "ng cm^-2",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "ng cm^-2",
+    "to_unit": null,
+    "reason": "unit 'ng cm^-2' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "Mass gain (ng cm\u207b\u00b2)"
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    11,
+    0
+   ],
+   [
+    12,
+    8500
+   ],
+   [
+    40,
+    8500
+   ],
+   [
+    68,
+    9500
+   ],
+   [
+    70,
+    20500
+   ],
+   [
+    100,
+    20500
+   ],
+   [
+    128,
+    20000
+   ],
+   [
+    130,
+    29000
+   ],
+   [
+    160,
+    29000
+   ],
+   [
+    188,
+    29500
+   ],
+   [
+    190,
+    39000
+   ],
+   [
+    220,
+    39000
+   ],
+   [
+    248,
+    39500
+   ],
+   [
+    250,
+    47000
+   ],
+   [
+    280,
+    47000
+   ],
+   [
+    300,
+    47000
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0
+   ],
+   [
+    11,
+    0
+   ],
+   [
+    12,
+    8500
+   ],
+   [
+    40,
+    8500
+   ],
+   [
+    68,
+    9500
+   ],
+   [
+    70,
+    20500
+   ],
+   [
+    100,
+    20500
+   ],
+   [
+    128,
+    20000
+   ],
+   [
+    130,
+    29000
+   ],
+   [
+    160,
+    29000
+   ],
+   [
+    188,
+    29500
+   ],
+   [
+    190,
+    39000
+   ],
+   [
+    220,
+    39000
+   ],
+   [
+    248,
+    39500
+   ],
+   [
+    250,
+    47000
+   ],
+   [
+    280,
+    47000
+   ],
+   [
+    300,
+    47000
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp01",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "c",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle range: cycle 11-15",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "Mass gain (ng cm\u207b\u00b2)",
+    "unit": "ng cm^-2",
+    "raw_unit": "ng cm^-2",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E008",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E008"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E008"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E008"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E008"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E008"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Mass gain (ng cm\u207b\u00b2)",
+   "raw_quantity": "Mass gain (ng cm\u207b\u00b2)",
+   "raw_unit": "ng cm^-2",
+   "unit_dimension": null,
+   "canonical_quantity": "areal_mass",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "a QCM mass reading",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp01",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|c|cycle 11-15|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "c",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 17,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "figure_caption",
+  "material_evidence": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed as (a) the frequency ",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp02",
+     "figure": "Fig 4",
+     "panel": "c"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "areal_mass",
+   "unit": "ng cm^-2",
+   "raw_unit": "ng cm^-2",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "ng cm^-2",
+    "to_unit": null,
+    "reason": "unit 'ng cm^-2' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   },
+   "raw_quantity": "Mass gain (ng cm\u207b\u00b2)"
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    15,
+    0
+   ],
+   [
+    16,
+    3500
+   ],
+   [
+    40,
+    3500
+   ],
+   [
+    68,
+    4000
+   ],
+   [
+    70,
+    7200
+   ],
+   [
+    100,
+    7200
+   ],
+   [
+    128,
+    7800
+   ],
+   [
+    130,
+    11000
+   ],
+   [
+    160,
+    11000
+   ],
+   [
+    188,
+    11700
+   ],
+   [
+    190,
+    14800
+   ],
+   [
+    220,
+    14800
+   ],
+   [
+    248,
+    15500
+   ],
+   [
+    250,
+    18500
+   ],
+   [
+    280,
+    18500
+   ],
+   [
+    300,
+    18800
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0
+   ],
+   [
+    15,
+    0
+   ],
+   [
+    16,
+    3500
+   ],
+   [
+    40,
+    3500
+   ],
+   [
+    68,
+    4000
+   ],
+   [
+    70,
+    7200
+   ],
+   [
+    100,
+    7200
+   ],
+   [
+    128,
+    7800
+   ],
+   [
+    130,
+    11000
+   ],
+   [
+    160,
+    11000
+   ],
+   [
+    188,
+    11700
+   ],
+   [
+    190,
+    14800
+   ],
+   [
+    220,
+    14800
+   ],
+   [
+    248,
+    15500
+   ],
+   [
+    250,
+    18500
+   ],
+   [
+    280,
+    18500
+   ],
+   [
+    300,
+    18800
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp02",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "c",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle range: cycle 75-79",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "Mass gain (ng cm\u207b\u00b2)",
+    "unit": "ng cm^-2",
+    "raw_unit": "ng cm^-2",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E009",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E009"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E009"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E009"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E009"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E009"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "Mass gain (ng cm\u207b\u00b2)",
+   "raw_quantity": "Mass gain (ng cm\u207b\u00b2)",
+   "raw_unit": "ng cm^-2",
+   "unit_dimension": null,
+   "canonical_quantity": "areal_mass",
+   "axis_role": "output",
+   "semantic_status": "resolved",
+   "evidence": "a QCM mass reading",
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4c__exp02",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|c|cycle 75-79|primary",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "c",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 17,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a S",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp01",
+     "figure": "Fig 4",
+     "panel": "d"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "QCM frequency change (Hz)",
+   "unit": "Hz",
+   "raw_unit": "Hz",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "Hz",
+    "to_unit": null,
+    "reason": "unit 'Hz' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    0.2,
+    -180
+   ],
+   [
+    0.5,
+    -300
+   ],
+   [
+    1.0,
+    -420
+   ],
+   [
+    1.5,
+    -480
+   ],
+   [
+    2.0,
+    -520
+   ],
+   [
+    3.0,
+    -580
+   ],
+   [
+    4.0,
+    -620
+   ],
+   [
+    5.0,
+    -650
+   ],
+   [
+    6.0,
+    -670
+   ],
+   [
+    7.0,
+    -690
+   ],
+   [
+    8.0,
+    -700
+   ],
+   [
+    9.0,
+    -710
+   ],
+   [
+    10.0,
+    -715
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0
+   ],
+   [
+    0.2,
+    -180
+   ],
+   [
+    0.5,
+    -300
+   ],
+   [
+    1.0,
+    -420
+   ],
+   [
+    1.5,
+    -480
+   ],
+   [
+    2.0,
+    -520
+   ],
+   [
+    3.0,
+    -580
+   ],
+   [
+    4.0,
+    -620
+   ],
+   [
+    5.0,
+    -650
+   ],
+   [
+    6.0,
+    -670
+   ],
+   [
+    7.0,
+    -690
+   ],
+   [
+    8.0,
+    -700
+   ],
+   [
+    9.0,
+    -710
+   ],
+   [
+    10.0,
+    -715
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp01",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "d",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle number: cycle 11",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "QCM frequency change (Hz)",
+    "unit": "Hz",
+    "raw_unit": "Hz",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E010",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E010"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E010"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E010"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E010"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E010"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "QCM frequency change (Hz)",
+   "raw_quantity": "QCM frequency change (Hz)",
+   "raw_unit": "Hz",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp01",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|d|cycle 11|normalized",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "d",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 14,
+  "observations_are_experiments": false
+ },
+ {
+  "material": "Al2O3",
+  "material_raw": "Al2O3",
+  "material_scope_level": "panel_caption_clause",
+  "material_evidence": "(d) normalized comparison of TMA saturation curves. For comparison, two di /uniFB00 erent stages of the coating process (corresponding to a speci /uniFB01 c number of cycles) are shown here. The inset in part d shows a S",
+  "material_candidates": [],
+  "material_ambiguity_reason": null,
+  "multi_material_paper": false,
+  "chemistry_consistent": true,
+  "chemistry_inconsistency": null,
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "reactants": [
+   {
+    "label": "A",
+    "role": "precursor",
+    "species": "TMA"
+   },
+   {
+    "label": "B",
+    "role": "coreactant",
+    "species": "H2O"
+   }
+  ],
+  "carrier_gas": {
+   "species": "argon"
+  },
+  "process_type": "thermal",
+  "cycle_sequence": "AB",
+  "controlled": [
+   {
+    "quantity": "temperature",
+    "value": 200,
+    "unit": "\u00b0C",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "temperature_C",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": 200,
+    "unit": "cycle",
+    "of_reactant": null,
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "ncycles",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10,
+    "unit": "s",
+    "of_reactant": "B",
+    "source": "methods",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "card",
+     "card_field": "pulse_time_s",
+     "card_provenance": {
+      "level": "paper",
+      "origin": "methods_prose",
+      "status": "direct",
+      "evidence": null
+     }
+    },
+    "scope": "method",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "TMA exposure time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "caption",
+    "recipe_role": null,
+    "origin": {
+     "level": "experiment",
+     "from": "caption",
+     "paper_id": "10.1021_acs.langmuir.6b03119",
+     "experiment_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp02",
+     "figure": "Fig 4",
+     "panel": "d"
+    },
+    "scope": "figure",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "chamber_total_pressure",
+    "value": 50.0,
+    "unit": "Pa",
+    "of_reactant": null,
+    "source": "pressure_extraction",
+    "recipe_role": "control_setting",
+    "origin": {
+     "level": "paper",
+     "from": "pressure_extraction",
+     "evidence_id": "10.1021_acs.langmuir.6b03119::pressure::chamber_total_pressure::0",
+     "pressure_type": "chamber_total_pressure",
+     "named_species": null,
+     "reactant_role": null,
+     "context": "process_condition",
+     "source_section": "methods",
+     "directly_reported": true,
+     "confidence": 1.0,
+     "evidence": "The process chamber temperature was set to 200 \u00b0 C, while pressure was kept at 50 Pa, by controlling pumping power by a butter /uniFB02 y valve.",
+     "original_value": 50,
+     "original_unit": "Pa"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 72.09,
+    "unit": "g/mol",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.591,
+    "unit": "nm",
+    "of_reactant": "A",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "TMA",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "molecular_mass",
+    "value": 18.02,
+    "unit": "g/mol",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molar_mass"
+    },
+    "scope": "paper",
+    "context_status": "resolved"
+   },
+   {
+    "quantity": "precursor_molecular_diameter",
+    "value": 0.265,
+    "unit": "nm",
+    "of_reactant": "B",
+    "source": "species",
+    "origin": {
+     "level": "ontology",
+     "from": "species_property",
+     "species": "H2O",
+     "property": "molecular_diameter"
+    },
+    "scope": "paper",
+    "context_status": "ambiguous",
+    "context_conflict_reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 10.0,
+    "unit": "s",
+    "of_reactant": null,
+    "source": "methods",
+    "assertion_source_kind": "methods",
+    "scope": "method",
+    "context_status": "resolved",
+    "assertion_status": "direct",
+    "species": null,
+    "origin": {
+     "level": "method",
+     "from": "methods",
+     "evidence": "exposure times (5 and 10 s",
+     "locator": "methods section"
+    }
+   }
+  ],
+  "measurand": {
+   "quantity": "QCM frequency change (Hz)",
+   "unit": "Hz",
+   "raw_unit": "Hz",
+   "family": null,
+   "unit_conversion": {
+    "status": "unsupported",
+    "from_unit": "Hz",
+    "to_unit": null,
+    "reason": "unit 'Hz' is not a recognised convertible unit",
+    "unit_recovered": null,
+    "values_rescaled": false
+   }
+  },
+  "coordinate": "time",
+  "coordinate_family": "exposure_time",
+  "coordinate_unit": "s",
+  "coordinate_unit_normalized": "s",
+  "coordinate_is_dimensionless": false,
+  "coordinate_unit_status": "resolved",
+  "coordinate_unit_reason": null,
+  "coordinate_unit_conversion": null,
+  "points": [
+   [
+    0,
+    0
+   ],
+   [
+    0.2,
+    -120
+   ],
+   [
+    0.5,
+    -210
+   ],
+   [
+    1.0,
+    -250
+   ],
+   [
+    1.5,
+    -265
+   ],
+   [
+    2.0,
+    -272
+   ],
+   [
+    3.0,
+    -277
+   ],
+   [
+    4.0,
+    -280
+   ],
+   [
+    5.0,
+    -281
+   ],
+   [
+    6.0,
+    -282
+   ],
+   [
+    7.0,
+    -283
+   ],
+   [
+    8.0,
+    -284
+   ],
+   [
+    9.0,
+    -285
+   ],
+   [
+    10.0,
+    -285
+   ]
+  ],
+  "points_canonical": [
+   [
+    0,
+    0
+   ],
+   [
+    0.2,
+    -120
+   ],
+   [
+    0.5,
+    -210
+   ],
+   [
+    1.0,
+    -250
+   ],
+   [
+    1.5,
+    -265
+   ],
+   [
+    2.0,
+    -272
+   ],
+   [
+    3.0,
+    -277
+   ],
+   [
+    4.0,
+    -280
+   ],
+   [
+    5.0,
+    -281
+   ],
+   [
+    6.0,
+    -282
+   ],
+   [
+    7.0,
+    -283
+   ],
+   [
+    8.0,
+    -284
+   ],
+   [
+    9.0,
+    -285
+   ],
+   [
+    10.0,
+    -285
+   ]
+  ],
+  "granularity": "trace",
+  "relevance": "experimental",
+  "is_model_result": false,
+  "analysis_ready": true,
+  "exp_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp02",
+  "provenance": {
+   "figure": "Fig 4",
+   "figure_number": "4",
+   "fig_docling_index": "7",
+   "panel": "d",
+   "caption": "Figure 4. QCM measurements showing the frequency change per cycle as a function of the deposition time, recorded during Al2O3 coating of the TiO2 nanotube layer for 10 s TMA exposure time, expressed a",
+   "extractor": "vision-llm",
+   "doi": "10.1021_acs.langmuir.6b03119"
+  },
+  "series_name": "cycle number: cycle 75",
+  "phase": null,
+  "structure": "planar_wafer",
+  "geometry_class": "planar",
+  "chemistry_provenance": {
+   "resolution_status": "fully_resolved",
+   "resolution_method": "material_element_match",
+   "confidence": 0.7,
+   "source_level": "scout",
+   "directly_extracted": false,
+   "material_scope": "Al2O3",
+   "supporting_evidence": "of the candidates ['TMA'] listed by the paper, only 'TMA' carries the metal of Al2O3",
+   "ambiguity_reason": null,
+   "candidate_mappings": {
+    "precursors": [
+     "TMA"
+    ],
+    "coreactants": [
+     "H2O"
+    ],
+    "materials": [
+     "Al2O3"
+    ]
+   }
+  },
+  "varies": [],
+  "series_varies": "pulse_time",
+  "granularity_reason": "x axis 'pulse_time' is an ontology condition; each point is one experiment",
+  "axis_role": "condition",
+  "dependent": [
+   {
+    "quantity": "QCM frequency change (Hz)",
+    "unit": "Hz",
+    "raw_unit": "Hz",
+    "family": null
+   }
+  ],
+  "issues": [],
+  "recipe": {
+   "material": "Al2O3",
+   "reactants": [
+    {
+     "label": "A",
+     "role": "precursor",
+     "species": "TMA",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    },
+    {
+     "label": "B",
+     "role": "coreactant",
+     "species": "H2O",
+     "dose_time": 10,
+     "purge_time": null,
+     "partial_pressure": null
+    }
+   ],
+   "cycle_sequence": "AB",
+   "supercycle": null,
+   "supercycle_repeats": null,
+   "ncycles": 200,
+   "temperature": 200,
+   "flow_rate": null,
+   "carrier_gas": {
+    "species": "argon"
+   },
+   "structure": null,
+   "targets": null,
+   "provenance": "extracted",
+   "possible": null,
+   "channel_map": null,
+   "param_sources": {
+    "_exp_id": "10.1021_acs.langmuir.6b03119-E011",
+    "species::A": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "TMA",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E011"
+    },
+    "pulse_time::A": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "species::B": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "H2O",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E011"
+    },
+    "pulse_time::B": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 10,
+     "paper_id": null,
+     "card_field": "pulse_time_s"
+    },
+    "material::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "Al2O3",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E011"
+    },
+    "cycle_sequence::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": "AB",
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E011"
+    },
+    "reactants::": {
+     "source": "experiment",
+     "from": "experiment_record",
+     "value": [
+      "A",
+      "B"
+     ],
+     "experiment_id": "10.1021_acs.langmuir.6b03119-E011"
+    },
+    "cycle_number::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "ncycles"
+    },
+    "temperature::": {
+     "source": "paper",
+     "from": "methods_prose",
+     "value": 200,
+     "paper_id": null,
+     "card_field": "temperature_C"
+    }
+   },
+   "completeness": 0.643
+  },
+  "context_conflicts": [
+   {
+    "quantity": "precursor_molecular_diameter",
+    "scope": "paper",
+    "values": [
+     0.265,
+     0.591
+    ],
+    "reason": "2 distinct precursor_molecular_diameter values at paper scope (0.265, 0.591); not applied to this experiment without narrower evidence"
+   }
+  ],
+  "coordinate_raw_quantity": "pulse_time",
+  "x_semantics": {
+   "raw_label": "time (s)",
+   "raw_quantity": "pulse_time",
+   "raw_unit": "s",
+   "unit_dimension": "time",
+   "canonical_quantity": "time",
+   "axis_role": "progression_coordinate",
+   "semantic_status": "resolved",
+   "evidence": "ontology alias match on 'time (s)'",
+   "rejected_lexical_match": null
+  },
+  "y_semantics": {
+   "raw_label": "QCM frequency change (Hz)",
+   "raw_quantity": "QCM frequency change (Hz)",
+   "raw_unit": "Hz",
+   "unit_dimension": null,
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": null,
+   "rejected_lexical_match": null
+  },
+  "entity_id": "10.1021_acs.langmuir.6b03119__Fig4d__exp02",
+  "entity_key": "10.1021_acs.langmuir.6b03119|7|4|d|cycle 75|normalized",
+  "paper_id": "10.1021_acs.langmuir.6b03119",
+  "doi": "10.1021_acs.langmuir.6b03119",
+  "printed_figure_number": "4",
+  "panel": "d",
+  "figure_slug": null,
+  "entity_class": "ExperimentalCase",
+  "record_kind": "ExperimentalCase",
+  "measurement_class": "ContinuousTrace",
+  "classification": "continuous_trace",
+  "classification_confidence": "corroborated",
+  "n_observations": 14,
+  "observations_are_experiments": false
+ }
+]

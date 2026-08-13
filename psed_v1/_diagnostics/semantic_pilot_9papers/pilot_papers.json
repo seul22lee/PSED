@@ -1,0 +1,31 @@
+{
+ "note": "Active work list for the semantic pilot: EIGHT experimental papers. The four originals are regression CONTROLS whose corrected second-pass behaviour must reproduce; the rest are development/validation papers -- none of them is 'unseen' any more, since all have influenced resolver development. The list lives here rather than in code so no module names a paper.",
+ "frozen_four_paper_baseline_commit": "24f4b282bdcda91153b39c3ea745e9a9d7b9e540",
+ "papers": [
+  "10.1038_am.2016.182",
+  "10.1149_2.067203jes",
+  "10.1039_c7ta03257a",
+  "10.1039_d0cp03358h",
+  "10.1039_d0ra09876k",
+  "10.1039_c5ta00205b",
+  "10.1021_acs.langmuir.6b03119",
+  "10.1039_d0ra01602k"
+ ],
+ "roles": {
+  "10.1038_am.2016.182": "original_control",
+  "10.1149_2.067203jes": "original_control",
+  "10.1039_c7ta03257a": "original_control",
+  "10.1039_d0cp03358h": "original_control",
+  "10.1039_d0ra09876k": "development_validation",
+  "10.1039_c5ta00205b": "development_validation",
+  "10.1021_acs.langmuir.6b03119": "development_validation",
+  "10.1039_d0ra01602k": "development_validation"
+ },
+ "runtime_seconds_measured": {
+  "active_set_8_papers": 58.5,
+  "note": "measured once by code/profile_pilot.py; the earlier 458.2 s figure covered a nine-paper set that included the now-excluded review paper and does not describe this workflow"
+ },
+ "excluded": {
+  "cremers2019": "Review paper: its figures reproduce other groups' work, so its data is predominantly model output and imported observations rather than experiments the paper performed. Out of scope for the semantic pilot. Its previously generated files remain on disk under papers/cremers2019/ but are not loaded, counted, displayed, tested or profiled by this workflow."
+ }
+}

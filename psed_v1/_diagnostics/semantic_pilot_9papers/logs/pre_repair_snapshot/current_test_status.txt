@@ -1,0 +1,157 @@
+
+=== GENERIC INVARIANTS ===
+  PASS 1. every source curve is traceable (curve_id + json_pointer)   
+  PASS 2. no extracted point was lost                                 
+  PASS 3. every swept case carries its own varied value               
+  PASS 4. no MEASUREMENT_SETTING appears among case-defining conditions 
+  PASS 5. a linked representation mints no ExperimentalCase           
+  PASS 6. one ExperimentalCase can carry several Measurements         
+  PASS 7. no merge rests on unknown-on-one-side alone (non-EXPLICIT)  
+  PASS 8. a contradiction always blocks the merge                     
+  PASS 9. no Sample without source evidence                           
+  PASS 10. no DepositionRun without source evidence                   
+  PASS 11. every Measurement keeps its figure/panel provenance        
+  PASS 12. SimulationRun is never an ExperimentalCase                 
+  PASS 13. measured/simulated provenance is bit-identical to PSED     
+  PASS 14. imported-literature entities are preserved                 
+  PASS 15. transformation counts match the canonical layer            
+  PASS 17. no unphysical negative condition survives                  
+  PASS 18. no case asserts one DEPOSITED material while its deposit is null 
+  PASS 19. a candidate-only material asserts no role                  
+  PASS 20. every DepositionRun names at least one specimen            
+  PASS 16. no DOI / paper-id equality test in executable pilot code   
+
+=== PDF-GROUND-TRUTH ANCHORS ===
+  PASS am: GPC / resistivity / XPS join into one deposition case      
+ANCHOR	10.1038_am.2016.182	PASS	GPC / resistivity / XPS join into one deposition case	10 multi-panel cases
+  PASS am: that case carries all three techniques                     
+ANCHOR	10.1038_am.2016.182	PASS	that case carries all three techniques	['XPS', 'growth_per_cycle', 'resistivity']
+  PASS am: a different precursor still blocks the merge               
+ANCHOR	10.1038_am.2016.182	PASS	a different precursor still blocks the merge	6
+  PASS am: the blocked merges clash on chemistry                      
+ANCHOR	10.1038_am.2016.182	PASS	the blocked merges clash on chemistry	[[{'quantity': 'precursor', 'species': '', 'left': 'HDMP ', 'right': 'MeCpPtMe3 '}], [{'quantity': 'precursor', 'species': '', 'left': 'HDMP ', 'right': 'MeCpPtMe3 '}]]
+  PASS am: printed Figure 4 device panels are present                 
+ANCHOR	10.1038_am.2016.182	PASS	printed Figure 4 device panels are present	5
+  PASS am: Figure 4 is caption-only, with no invented data            
+ANCHOR	10.1038_am.2016.182	PASS	Figure 4 is caption-only, with no invented data	
+  PASS am: Figure 4 device characterisation mints no deposition case  
+ANCHOR	10.1038_am.2016.182	PASS	Figure 4 device characterisation mints no deposition case	
+  PASS jes: a stated interval is carried as an interval, not a negative scalar 
+ANCHOR	10.1149_2.067203jes	PASS	a stated interval is carried as an interval, not a negative scalar	24
+  PASS jes: no negative pulse time or cycle count survives            
+ANCHOR	10.1149_2.067203jes	PASS	no negative pulse time or cycle count survives	
+  PASS jes: printed Fig 1 (precursor vapour pressure) is not a deposition case 
+ANCHOR	10.1149_2.067203jes	PASS	printed Fig 1 (precursor vapour pressure) is not a deposition case	[]
+  PASS jes: Fig 1 is still preserved as Measurements                  
+ANCHOR	10.1149_2.067203jes	PASS	Fig 1 is still preserved as Measurements	2
+  PASS jes: Fig 1 asserts no material role                            
+ANCHOR	10.1149_2.067203jes	PASS	Fig 1 asserts no material role	
+  PASS jes: the HAR trench figure produces a case with local geometry 
+ANCHOR	10.1149_2.067203jes	PASS	the HAR trench figure produces a case with local geometry	1
+  PASS jes: HAR geometry comes from the figure, not the paper default 
+ANCHOR	10.1149_2.067203jes	PASS	HAR geometry comes from the figure, not the paper default	figure/panel caption
+  PASS jes: HAR case carries aspect ratio ~30                         
+ANCHOR	10.1149_2.067203jes	PASS	HAR case carries aspect ratio ~30	{'quantity': 'aspect_ratio', 'unit': None, 'span': 'The depth and average width of the trench were 18.5 and 0.6 µ m, respectively, resulting in an aspect ratio of ∼ 30.', 'value': 30.0, 'value_kind': 
+  PASS jes: HAR case carries 830 ALD cycles                           
+ANCHOR	10.1149_2.067203jes	PASS	HAR case carries 830 ALD cycles	{'quantity': 'cycle_number', 'unit': 'cycle', 'span': 'h-resolution SEM images of a high-aspect ratio trench in Si coated by 830 cycles of ALD SiO2. The SiO2 was deposited on top of thermal SiO2/ALD A
+  PASS jes: HAR case carries trench depth 18.5 and width 0.6          
+ANCHOR	10.1149_2.067203jes	PASS	HAR case carries trench depth 18.5 and width 0.6	(18.5, 0.6)
+  PASS jes: HAR deposits SiO2                                         
+ANCHOR	10.1149_2.067203jes	PASS	HAR deposits SiO2	SiO2
+  PASS jes: HAR claims no digitised points                            
+ANCHOR	10.1149_2.067203jes	PASS	HAR claims no digitised points	
+  PASS jes: planar and HAR contexts coexist                           
+ANCHOR	10.1149_2.067203jes	PASS	planar and HAR contexts coexist	['planar', 'vertical_structure']
+  PASS jes: the SiO2/Al2O3 stack context is representable             
+ANCHOR	10.1149_2.067203jes	PASS	the SiO2/Al2O3 stack context is representable	8
+  PASS jes: stack constituents carry a stack role                     
+ANCHOR	10.1149_2.067203jes	PASS	stack constituents carry a stack role	[{'Al2O3': 'DEPOSITED', 'SiO2': 'DEPOSITED'}, {'Al2O3': 'DEPOSITED', 'SiO2': 'DEPOSITED'}]
+  PASS jes: distinct cases were not over-merged                       
+ANCHOR	10.1149_2.067203jes	PASS	distinct cases were not over-merged	52
+  PASS cta: two deposition cases exist with no x-y process curve      
+ANCHOR	10.1039_c7ta03257a	PASS	two deposition cases exist with no x-y process curve	2
+  PASS cta: the cases are the full replica and the tubular replica    
+ANCHOR	10.1039_c7ta03257a	PASS	the cases are the full replica and the tubular replica	['full replica', 'micron-long mesoporous pt tubes']
+  PASS cta: CV / impedance are Measurements, never cases              
+ANCHOR	10.1039_c7ta03257a	PASS	CV / impedance are Measurements, never cases	5
+  PASS cta: Fig 8 coated results carry tubular-replica provenance     
+ANCHOR	10.1039_c7ta03257a	PASS	Fig 8 coated results carry tubular-replica provenance	2
+  PASS cta: that provenance points at the tubular synthesis case      
+ANCHOR	10.1039_c7ta03257a	PASS	that provenance points at the tubular synthesis case	[['CASE-10.103-001'], ['CASE-10.103-001']]
+  PASS cta: bare / uncoated reference series exist and are typed REFERENCE 
+ANCHOR	10.1039_c7ta03257a	PASS	bare / uncoated reference series exist and are typed REFERENCE	2
+  PASS cta: no reference series is attributed to a deposition case    
+ANCHOR	10.1039_c7ta03257a	PASS	no reference series is attributed to a deposition case	
+  PASS cta: Fig 7 coated result stays UNRESOLVED (the source names no protocol) 
+ANCHOR	10.1039_c7ta03257a	PASS	Fig 7 coated result stays UNRESOLVED (the source names no protocol)	[[]]
+  PASS cta: printed Fig 8(b) is represented                           
+ANCHOR	10.1039_c7ta03257a	PASS	printed Fig 8(b) is represented	1
+  PASS cta: Fig 8(b) records why it was missing                       
+ANCHOR	10.1039_c7ta03257a	PASS	Fig 8(b) records why it was missing	panel_absent_from_crop
+  PASS cta: the resolved chain names the device it was placed on      
+ANCHOR	10.1039_c7ta03257a	PASS	the resolved chain names the device it was placed on	[('RESOLVED', 'test electrodes')]
+  PASS yim: Series A primary variable is the pillar layout            
+ANCHOR	10.1039_d0cp03358h	PASS	Series A primary variable is the pillar layout	pillar_layout
+  PASS yim: Series B primary variable is the reflectometer magnification 
+ANCHOR	10.1039_d0cp03358h	PASS	Series B primary variable is the reflectometer magnification	reflectometer_magnification
+  PASS yim: Series C primary variable is the channel height           
+ANCHOR	10.1039_d0cp03358h	PASS	Series C primary variable is the channel height	feature_height
+  PASS yim: Series D primary variable is the ALD cycle count          
+ANCHOR	10.1039_d0cp03358h	PASS	Series D primary variable is the ALD cycle count	cycle_number
+  PASS yim: Series E primary variable is the TMA pulse time           
+ANCHOR	10.1039_d0cp03358h	PASS	Series E primary variable is the TMA pulse time	pulse_time
+  PASS yim: Series F primary variable is the purge time               
+ANCHOR	10.1039_d0cp03358h	PASS	Series F primary variable is the purge time	purge_time
+  PASS yim: every series variable comes from the author's own declaration 
+ANCHOR	10.1039_d0cp03358h	PASS	every series variable comes from the author's own declaration	{'Series A': 'author_declaration', 'Series B': 'author_declaration', 'Series C': 'author_declaration', 'Series D': 'author_declaration', 'Series E': 'author_declaration', 'Series F': 'author_declarati
+  PASS yim: Series E keeps its pillar-layout co-variation without losing its variable 
+ANCHOR	10.1039_d0cp03358h	PASS	Series E keeps its pillar-layout co-variation without losing its variable	[{'quantity': 'pulse_purge_sequence', 'unit': None, 'role': 'CASE_DEFINING', 'values': ['0.1-4.0-0.1-4.0', '0.2-4.0-0.1-4.0', '0.4-4.0-0.1-4.0'], 'evidence': "specimens 12, 13, 14 differ in 'pulse_pur
+  PASS yim: Series B is typed a MEASUREMENT_SETTING                   
+ANCHOR	10.1039_d0cp03358h	PASS	Series B is typed a MEASUREMENT_SETTING	MEASUREMENT_SETTING
+  PASS yim: Fig 7 X10 maps to specimen 5                              
+ANCHOR	10.1039_d0cp03358h	PASS	Fig 7 X10 maps to specimen 5	got 5
+  PASS yim: Fig 7 X5 maps to specimen 6                               
+ANCHOR	10.1039_d0cp03358h	PASS	Fig 7 X5 maps to specimen 6	got 6
+  PASS yim: Fig 7 X50 maps to specimen 4                              
+ANCHOR	10.1039_d0cp03358h	PASS	Fig 7 X50 maps to specimen 4	got 4
+  PASS yim: that mapping is a value join, not list order              
+ANCHOR	10.1039_d0cp03358h	PASS	that mapping is a value join, not list order	{'X5 (50 µm)': 'value_join', 'X10 (25 µm)': 'value_join', 'X50 (5 µm)': 'value_join'}
+  PASS yim: the magnification is attached as a MEASUREMENT_SETTING    
+ANCHOR	10.1039_d0cp03358h	PASS	the magnification is attached as a MEASUREMENT_SETTING	['reflectometer_magnification']
+  PASS yim: each objective carries its methods-stated spot size       
+ANCHOR	10.1039_d0cp03358h	PASS	each objective carries its methods-stated spot size	[50.0, 25.0, 5.5]
+  PASS yim: magnification variation alone creates no deposition case  
+ANCHOR	10.1039_d0cp03358h	PASS	magnification variation alone creates no deposition case	0 cases from the Series B figure
+  PASS yim: sample 11 carries several Measurements                    
+ANCHOR	10.1039_d0cp03358h	PASS	sample 11 carries several Measurements	6
+  PASS yim: sample 8 belongs to two study series                      
+ANCHOR	10.1039_d0cp03358h	PASS	sample 8 belongs to two study series	['Series C', 'Series D']
+  PASS yim: sample 12 belongs to two study series                     
+ANCHOR	10.1039_d0cp03358h	PASS	sample 12 belongs to two study series	['Series E', 'Series F']
+  PASS yim: exactly one IDENTIFIED DepositionRun exists               
+ANCHOR	10.1039_d0cp03358h	PASS	exactly one IDENTIFIED DepositionRun exists	1
+  PASS yim: that run holds the three Series A specimens               
+ANCHOR	10.1039_d0cp03358h	PASS	that run holds the three Series A specimens	['1', '2', '3']
+  PASS yim: run-distinctness assertions are NOT counted as runs       
+ANCHOR	10.1039_d0cp03358h	PASS	run-distinctness assertions are NOT counted as runs	2
+  PASS yim: those assertions carry their evidence and name no specimen 
+ANCHOR	10.1039_d0cp03358h	PASS	those assertions carry their evidence and name no specimen	
+  PASS yim: Fig 8a repeat measurement stays one deposition case       
+ANCHOR	10.1039_d0cp03358h	PASS	Fig 8a repeat measurement stays one deposition case	['CASE-10.103-002']
+  PASS yim: Fig 9 declares 18 representation panels                   
+ANCHOR	10.1039_d0cp03358h	PASS	Fig 9 declares 18 representation panels	18
+  FAIL yim: Fig 9 yields 6 cases, not 18                              5
+ANCHOR	10.1039_d0cp03358h	FAIL	Fig 9 yields 6 cases, not 18	5
+  PASS yim: the scaled and normalized panels link to their as-measured panel 
+ANCHOR	10.1039_d0cp03358h	PASS	the scaled and normalized panels link to their as-measured panel	12
+  PASS yim: Fig 10 remains SimulationRun                              
+ANCHOR	10.1039_d0cp03358h	PASS	Fig 10 remains SimulationRun	30
+  PASS yim: no simulation is an ExperimentalCase                      
+ANCHOR	10.1039_d0cp03358h	PASS	no simulation is an ExperimentalCase	
+  PASS yim: every Fig 10 series is still 'simulated'                  
+ANCHOR	10.1039_d0cp03358h	PASS	every Fig 10 series is still 'simulated'	
+  PASS yim: Fig 11's deposition-condition variations are distinct cases 
+ANCHOR	10.1039_d0cp03358h	PASS	Fig 11's deposition-condition variations are distinct cases	6
+
+84 passed, 1 failed
+FAILED: ['yim: Fig 9 yields 6 cases, not 18']

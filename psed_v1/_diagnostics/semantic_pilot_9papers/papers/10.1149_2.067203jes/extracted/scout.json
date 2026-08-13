@@ -1,0 +1,216 @@
+{
+ "is_ald_process_paper": true,
+ "study_type": "experimental",
+ "materials": [
+  "SiO2",
+  "Al2O3"
+ ],
+ "precursors": [
+  "H2Si[N(C2H5)2]2",
+  "Al(CH3)3"
+ ],
+ "coreactants": [
+  "O2 plasma"
+ ],
+ "process_type": "plasma",
+ "temperature_window_C": [
+  100,
+  300
+ ],
+ "gpc_nm": 0.12,
+ "data": {
+  "gpc_vs_temperature": {
+   "present": true,
+   "where": [
+    "F6b"
+   ]
+  },
+  "gpc_vs_dose_saturation": {
+   "present": true,
+   "where": [
+    "F5a",
+    "F5b",
+    "F5c",
+    "F5d",
+    "F5e",
+    "F5f",
+    "F5g",
+    "F5h"
+   ]
+  },
+  "gpc_vs_cycles": {
+   "present": true,
+   "where": [
+    "F3a",
+    "F3b"
+   ]
+  },
+  "film_property_vs_condition": {
+   "present": true,
+   "where": [
+    "F6a",
+    "F12",
+    "F13a",
+    "F13b"
+   ]
+  },
+  "xrd_or_spectrum": {
+   "present": true,
+   "where": [
+    "F7",
+    "F11"
+   ]
+  },
+  "other": {
+   "present": true,
+   "where": [
+    "F2",
+    "F10"
+   ]
+  }
+ },
+ "drill": [
+  {
+   "where": "F2",
+   "type": "other",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "plots precursor vapor pressure versus temperature"
+  },
+  {
+   "where": "F3a",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "plots SiO2 film thickness as a function of ALD cycle number at different temperatures"
+  },
+  {
+   "where": "F3b",
+   "type": "gpc_vs_cycles",
+   "measurand": "film_thickness",
+   "source": "measured",
+   "why": "plots SiO2 film thickness extracted from TEM compared with spectroscopic ellipsometry values vs cycles"
+  },
+  {
+   "where": "F5a",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots SiO2 GPC and refractive index vs precursor dosing time"
+  },
+  {
+   "where": "F5b",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots SiO2 GPC and refractive index vs precursor purge time"
+  },
+  {
+   "where": "F5c",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots SiO2 GPC and refractive index vs plasma exposure time"
+  },
+  {
+   "where": "F5d",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots SiO2 GPC and refractive index vs plasma purge time"
+  },
+  {
+   "where": "F5e",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots Al2O3 GPC vs precursor dosing time"
+  },
+  {
+   "where": "F5f",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots Al2O3 GPC vs precursor purge time"
+  },
+  {
+   "where": "F5g",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots Al2O3 GPC vs plasma exposure time"
+  },
+  {
+   "where": "F5h",
+   "type": "gpc_vs_dose_saturation",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots Al2O3 GPC vs plasma purge time"
+  },
+  {
+   "where": "F6a",
+   "type": "film_property_vs_condition",
+   "measurand": "refractive_index",
+   "source": "measured",
+   "why": "plots SiO2 refractive index vs substrate temperature"
+  },
+  {
+   "where": "F6b",
+   "type": "gpc_vs_temperature",
+   "measurand": "growth_per_cycle",
+   "source": "measured",
+   "why": "plots SiO2 GPC vs substrate temperature"
+  },
+  {
+   "where": "F7",
+   "type": "xrd_or_spectrum",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "plots normalized FTIR absorbance spectra of ALD and thermal SiO2 films"
+  },
+  {
+   "where": "F10",
+   "type": "other",
+   "measurand": "impurity_content",
+   "source": "measured",
+   "why": "plots quadrupole mass spectrometry signal intensity vs time for ALD cycle steps"
+  },
+  {
+   "where": "F11",
+   "type": "xrd_or_spectrum",
+   "measurand": "normalized_thickness",
+   "source": "measured",
+   "why": "plots optical emission spectra intensity vs wavelength for plasma steps"
+  },
+  {
+   "where": "F12",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "plots effective carrier lifetime vs injection level for SiO2 single layer and stack"
+  },
+  {
+   "where": "F13a",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "plots capacitance vs voltage for single layer ALD SiO2 films"
+  },
+  {
+   "where": "F13b",
+   "type": "film_property_vs_condition",
+   "measurand": "resistivity",
+   "source": "measured",
+   "why": "plots capacitance vs voltage for SiO2/Al2O3 stacks"
+  }
+ ],
+ "go_deeper": true,
+ "_scout_samples": 2,
+ "_tokens": {
+  "in": 7880,
+  "out": 3480,
+  "thoughts": 1763,
+  "budget": 12288
+ },
+ "_scout_input_chars": 14481
+}
