@@ -209,6 +209,99 @@ def main():
        not RC.find_comparable_series(
            a, [S("Z", "cycle_number", "cycle", "atomic_concentration", "%")]))
 
+    print("=== K. the canonical record is authoritative, not the printed label ===")
+    # the regression this task exists to close: a fully resolved axis whose label says
+    # only "Dimensionless distance x̃" must not be downgraded to UNKNOWN
+    rep = RC.axis_representation(
+        "dimensionless_distance", "1", "Dimensionless distance x\u0303",
+        normalization_definition="x_over_feature_height",
+        comparison_group="normalized_spatial_position_by_feature_height")
+    ok("K: a canonical normalization is used verbatim",
+       rep["normalization_definition"] == "x_over_feature_height", rep)
+    ok("K: and marked EXPLICIT, not inferred from the label",
+       rep["normalization_status"] == RC.NORMALIZATION_EXPLICIT, rep["normalization_status"])
+    ok("K: the canonical comparison group wins over the ontology lookup",
+       rep["comparison_group"] == "normalized_spatial_position_by_feature_height")
+    # label inference survives only where the canonical record said nothing
+    bare = RC.axis_representation("normalized_thickness", "1", "t / t_max")
+    ok("K: label inference still works as a fallback",
+       bare["normalization_definition"] == "t_over_t_max"
+       and bare["normalization_status"] == RC.NORMALIZATION_INFERRED, bare)
+    ok("K: and a silent label is still UNKNOWN",
+       RC.axis_representation("normalized_thickness", "1", "Normalized thickness")
+       ["normalization_status"] == RC.NORMALIZATION_UNKNOWN)
+    mism = RC.axis_representation("film_thickness", "nm", "t",
+                                  comparison_group="spatial_position")
+    ok("K: a canonical/ontology group disagreement is surfaced, not overwritten",
+       mism.get("canonical_ontology_mismatch"), mism)
+
+    print("=== L. resolved canonical context is reused, never re-derived ===")
+    tr = [{"axis": "x", "rule_id": "denormalize_x_by_feature_height",
+           "status": "converted", "type": "geometry_based_conversion",
+           "context": {"feature_height": {"value": 0.1, "unit": "um",
+                                          "status": "resolved", "confidence": 0.9,
+                                          "evidence": "100 nm",
+                                          "source_location": "series label"}}}]
+    got = RC.resolve_context("feature_height", transformations=tr)
+    ok("L: the parameter the canonical layer actually used is found",
+       got["found"] and got["value"] == 0.1, got)
+    ok("L: provenance points at the canonical record, not a weaker copy",
+       got["provenance_type"] == "canonical_transform_context"
+       and got["source_field"].startswith("transformations"), got)
+    ok("L: and it carries the canonical status", got["canonical_status"] == "converted")
+    # a context entry the canonical layer could NOT resolve must not be used
+    unres = [{"axis": "x", "rule_id": "r", "status": "ambiguous",
+              "context": {"feature_height": {"value": 3, "status": "ambiguous"}}}]
+    ok("L: an unresolved canonical context is not consumed",
+       not RC.resolve_context("feature_height", transformations=unres)["found"])
+    # §43: converted upstream may not read as missing downstream
+    x = RC.axis_representation("dimensionless_distance", "1", "x/H",
+                               normalization_definition="x_over_feature_height",
+                               transformations=tr)
+    xa = RC.axis_representation("spatial_coordinate", "um", "x")
+    d = RC.compare_axis(x, xa)
+    ok("L: a converted canonical transform is not reported missing_context",
+       d["status"] != RC.MISSING_CONTEXT, d["status"])
+    ok("L: and the execution source names the canonical context",
+       d.get("execution_source") in ("CANONICAL_CONTEXT", "CANONICAL_PROJECTION"),
+       d.get("execution_source"))
+
+    print("=== M. persisted projections are reused ahead of recomputation ===")
+    proj = [{"quantity": "spatial_coordinate", "unit": "µm",
+             "comparison_group": "spatial_position",
+             "from_normalization": "x_over_feature_height",
+             "values": [-2.0, 0.0, 4.0]}]
+    xp = RC.axis_representation("dimensionless_distance", "1", "x/H",
+                                normalization_definition="x_over_feature_height",
+                                projections=proj)
+    d = RC.compare_axis(xp, xa)
+    ok("M: a persisted projection makes the pair transformable",
+       d["status"] == RC.TRANSFORMABLE_EXACT, d["status"])
+    ok("M: and is marked as reused rather than recomputed",
+       d["execution_source"] == "CANONICAL_PROJECTION", d.get("execution_source"))
+    ok("M: the common representation is stated explicitly",
+       d["common_representation"]["quantity"] == "spatial_coordinate"
+       and d["common_representation"]["unit"] == "µm", d.get("common_representation"))
+
+    print("=== N. normalization applicability is validated ===")
+    gpc = S("p", "spatial_coordinate", "um", "growth_per_cycle", "nm/cycle",
+            pts=[[0, 1.0], [1, 2.0]])
+    r = RC.transform_series(gpc, normalization="t_over_t_max",
+                            context=RC.resolve_context("t_max", series=gpc))
+    ok("N: t/t_max is refused on a growth-per-cycle curve",
+       r["status"] == "not_applicable", r["status"])
+    ok("N: and says which numerator it expected",
+       "film_thickness" in r["reason"], r["reason"])
+    th = S("p", "spatial_coordinate", "um", "film_thickness", "nm",
+           pts=[[0, 10.0], [1, 20.0]])
+    ok("N: and accepted on a thickness curve",
+       RC.transform_series(th, normalization="t_over_t_max",
+                           context=RC.resolve_context("t_max", series=th))["status"]
+       == "converted")
+    ok("N: a normalization with no denominator is missing_context, not a division by None",
+       RC.transform_series(th, normalization="t_over_t_max",
+                           context={"found": False})["status"] == "missing_context")
+
     print("=== J. the published artifacts are consistent ===")
     d = W / "_diagnostics" / "comparability"
     for n in ("result_series_inventory.json", "real_pair_inventory.json",
