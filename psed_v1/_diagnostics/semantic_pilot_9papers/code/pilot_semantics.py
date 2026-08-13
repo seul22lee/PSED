@@ -541,8 +541,21 @@ def build(pid):
         # panels that measure different things
         # The printed axis label overrules a canonical quantity that contradicts it.
         meas_q, meas_u, meas_fix = R.measurand_of(ent)
+        # How many curves share this scope decides whether a shared clause can be
+        # attributed to one of them. Body-near-figure text is no longer consulted for
+        # technique: it is the widest scope in the pipeline and cannot be tied to one
+        # Measurement, so it produced sibling contamination rather than evidence.
+        _n_in_scope = sum(1 for e2 in P.entities
+                          if str(e2.get("printed_figure_number")) == str(printed)
+                          and (e2.get("panel") or "") == (panel or ""))
+        _src_tech, _src_basis, _src_ev = techniques_for_series(
+            clause, ent.get("source_series"), meas_q, _n_in_scope)
+        if not _src_tech:
+            _src_tech, _src_basis, _src_ev = techniques_for_series(
+                preamble, ent.get("source_series"), meas_q, _n_in_scope)
+        # inference ranks BELOW anything the source states
         axis_tech = _tech_from_axes(ent, meas_q)
-        cap_tech = PE.techniques(clause) or PE.techniques(preamble) or PE.techniques(body)
+        cap_tech = _src_ev
         mid = "M::%s" % eid
         cd, ms, other = PC.entity_conditions(ent)
         # An upstream parser can read the separator of "10-120 ms" as a minus sign. Every
@@ -588,10 +601,13 @@ def build(pid):
                 cd.append(c)
         meas = {
             "measurement_id": mid, "paper_id": pid,
-            "technique": axis_tech or [t["technique"] for t in cap_tech],
-            "technique_basis": ("measured quantity" if axis_tech
-                                else "caption clause" if cap_tech else "unresolved"),
-            "technique_evidence": cap_tech[:3],
+            "technique": _src_tech or axis_tech,
+            "technique_basis": (_src_basis if _src_tech
+                                else _infer_basis(ent, meas_q) if axis_tech
+                                else "unresolved"),
+            "technique_evidence": (_src_ev if _src_tech
+                                   else _inference_note(ent, meas_q) if axis_tech
+                                   else []),
             "measured_quantity": meas_q,
             "measured_unit": meas_u,
             "coordinate": ent.get("coordinate"), "coordinate_unit": ent.get("coordinate_unit"),
@@ -801,7 +817,8 @@ def build(pid):
     for sp in SUP.build(P, P.root / "diagnostics" / "assets"):
         out["measurements"].append({
             "measurement_id": sp["measurement_id"], "paper_id": pid,
-            "technique": sp["techniques"], "technique_basis": "caption clause",
+            "technique": sp["techniques"],
+            "technique_basis": "source_reported_panel" if sp["techniques"] else "unresolved",
             "technique_evidence": [], "measured_quantity": None, "measured_unit": None,
             "coordinate": None, "coordinate_unit": None,
             "entity_class": None, "classification": "caption_only_measurement",
@@ -1349,7 +1366,7 @@ def build(pid):
     out["provenance_chains"] = produced_material_chain(P, out["experimental_cases"], note)
     resolved_chains = [c for c in out["provenance_chains"] if c["status"] == "RESOLVED"]
     for m in out["measurements"]:
-        if m["measures_case"] or not m.get("technique"):
+        if not provenance_eligible(m):
             continue
         is_ref, ref_word = is_reference_series(m["source"].get("source_series"))
         if is_ref:
@@ -1449,15 +1466,17 @@ def _model_stmt(text):
     return _norm(m.group(0))[:260] if m else None
 
 
-#: measurand/coordinate -> the technique that produces it. The measured quantity is a
-#: far more reliable technique signal than a caption clause, which a panel range marker
-#: can spread across panels that measure different things.
-_AXIS_TECH = {"growth_per_cycle": "growth_per_cycle", "gpc": "growth_per_cycle",
-              "thickness": "thickness", "film_thickness": "thickness",
-              "resistivity": "resistivity", "sheet_resistance": "resistivity",
-              "current_density": "cyclic_voltammetry", "impedance": "impedance_spectroscopy",
-              "|z|": "impedance_spectroscopy", "capacitance": "capacitance",
-              "refractive_index": "ellipsometry", "roughness": "AFM"}
+#: measurand -> the technique that MOST LIKELY produced it. This is an INFERENCE, not a
+#: reading of the source, so it ranks below any technique the paper actually states and is
+#: recorded with an inferred basis. Entries whose output was merely the quantity again
+#: ("growth_per_cycle" -> "growth_per_cycle") are gone: they answered "what was measured"
+#: when the field asks "with what instrument", and they made 87 of 169 assignments a
+#: measurand wearing a technique's name.
+_AXIS_TECH = {"current_density": "cyclic_voltammetry",
+              "impedance": "impedance_spectroscopy",
+              "|z|": "impedance_spectroscopy",
+              "refractive_index": "ellipsometry",
+              "roughness": "AFM"}
 _COORD_TECH = {"binding_energy": "XPS", "two_theta": "XRD", "2theta": "XRD",
                "raman_shift": "Raman", "wavenumber": "FTIR", "frequency": "impedance_spectroscopy",
                "potential": "cyclic_voltammetry", "wavelength": "spectroscopy",
@@ -2907,7 +2926,8 @@ def _emit_image_measurement(out, pid, ic, note, minted_case, ev=None, material=N
     mid_i = "M::IMG::%s::F%s" % (pid, ic["printed_figure"])
     out["measurements"].append({
         "measurement_id": mid_i, "paper_id": pid,
-        "technique": ic["techniques"], "technique_basis": "caption clause",
+        "technique": ic["techniques"],
+        "technique_basis": "source_reported_panel" if ic["techniques"] else "unresolved",
         "technique_evidence": [], "measured_quantity": None, "measured_unit": None,
         "coordinate": None, "coordinate_unit": None,
         "entity_class": None, "classification": "image_supported_characterisation",
@@ -3261,3 +3281,155 @@ def link_is_supported(curve_source, entity, labels_in_scope):
                            "another entity in the same panel carries %r"
                            % (c_lab, e_lab, c_lab))
     return True, ""
+
+
+#: A clause splits into segments at the connectives that separate one statement about one
+#: curve from the next. "GPC on temperature and the critical angle obtained from XRR"
+#: is two statements, and only the second is about the critical angle.
+_SEGMENT = re.compile(r"\s*(?:;|,| and | but | while | whereas |\. )\s*", re.I)
+#: an explicit statement that one method covers everything the scope shows
+_SHARED_TECHNIQUE = re.compile(
+    r"\b(?:both|all|each|every|either)\b[^.]{0,60}\b(?:were|was|are|is)\b|"
+    r"\ball\s+(?:profiles|curves|samples|films|spectra|measurements)\b", re.I)
+
+
+#: Words that name the SCAFFOLDING of a figure rather than one curve in it. They appear
+#: in every segment of a caption, so they identify nothing.
+_GENERIC_LABEL_WORDS = {"the", "and", "for", "with", "from", "series", "sample", "samples",
+                        "curve", "curves", "panel", "profile", "profiles", "data",
+                        "measurement", "measurements", "plot", "line", "lines"}
+
+
+def _identifiers(series_label, measurand):
+    """((long, short)) -- the tokens that identify ONE curve inside a shared clause.
+
+    Long tokens carry meaning and are matched case-insensitively. Short ones are usually
+    bare label letters ("A", "B"), which match only case-sensitively: lower-case "a" is
+    the English article and would attach a technique to whichever segment happened to
+    contain it.
+    """
+    long_, short = set(), set()
+    for src in (series_label, measurand):
+        for w in re.findall(r"[A-Za-z0-9\u0370-\u03ff]+", str(src or "")):
+            if w.lower() in _GENERIC_LABEL_WORDS:
+                continue
+            (long_ if len(w) >= 3 else short).add(w.lower() if len(w) >= 3 else w)
+    return long_, short
+
+
+def techniques_for_series(clause, series_label, measurand, n_series_in_scope):
+    """(techniques, basis, evidence) for ONE Measurement, from shared scope text.
+
+    A caption clause describes a whole panel. Handing every technique it mentions to
+    every curve in that panel is how one curve acquires its sibling's instrument. So a
+    technique is attributed to THIS curve only when the evidence ties it to this curve:
+
+      * the clause names one technique and the scope holds one curve -- nothing else it
+        could belong to;
+      * the source says the method covers all of them ("both profiles were measured
+        by X");
+      * or the technique sits in the same segment of the sentence as a word that
+        identifies this curve -- its own legend, or its own measured quantity.
+
+    Anything else is left unattributed. A curve whose instrument the source does not
+    make attributable keeps no technique at all, which is the honest answer and is
+    preferable to inheriting a sibling's.
+    """
+    hits = PE.techniques(clause or "")
+    if not hits:
+        return [], None, []
+    if n_series_in_scope <= 1:
+        return ([h["technique"] for h in hits], "source_reported_panel", hits[:3])
+    if _SHARED_TECHNIQUE.search(clause or ""):
+        return ([h["technique"] for h in hits], "source_reported_panel_shared", hits[:3])
+    ident_long, ident_short = _identifiers(series_label, measurand)
+    if not (ident_long or ident_short):
+        return [], None, []
+    segs, pos = [], 0
+    for m in _SEGMENT.finditer(clause or ""):
+        segs.append((pos, m.start()))
+        pos = m.end()
+    segs.append((pos, len(clause or "")))
+    keep, ev = [], []
+    for h in hits:
+        seg = next((clause[a:b] for a, b in segs if a <= h["offset"] < b), "")
+        toks = re.findall(r"[A-Za-z0-9\u0370-\u03ff]+", seg)
+        long_hit = ident_long & {w.lower() for w in toks if len(w) >= 3}
+        short_hit = ident_short & {w for w in toks if len(w) < 3}
+        if long_hit or short_hit:
+            keep.append(h["technique"])
+            ev.append(h)
+    if keep:
+        return keep, "source_reported_series", ev[:3]
+    return [], None, []
+
+
+def _infer_basis(ent, measurand):
+    """Which side of the record an inferred technique came from."""
+    q = str(measurand if measurand is not None else ent.get("measurand") or "").lower()
+    return "inferred_from_measurand" if q in _AXIS_TECH else "inferred_from_coordinate"
+
+
+def _inference_note(ent, measurand):
+    """Evidence for an INFERRED technique. It must not look like a source match: the
+    paper never said this, the resolver concluded it from the quantity."""
+    q = str(measurand if measurand is not None else ent.get("measurand") or "").lower()
+    if q in _AXIS_TECH:
+        return [{"technique": _AXIS_TECH[q], "inferred": True,
+                 "matched": None,
+                 "basis": "the measured quantity %r is characteristically produced by "
+                          "this technique; the source does not state it" % q}]
+    c = str(ent.get("coordinate") or "").lower()
+    if c in _COORD_TECH:
+        return [{"technique": _COORD_TECH[c], "inferred": True,
+                 "matched": None,
+                 "basis": "the plotted coordinate %r is characteristic of this "
+                          "technique; the source does not state it" % c}]
+    return []
+
+
+#: Entity classes that cannot be an observation of a locally deposited product: model
+#: output, a fit, a redrawn view, and data imported from another work.
+#:
+#: NON_EXPERIMENTAL is used earlier to prevent CASE MINTING from entity classification
+#: alone. An UnresolvedSourceEntity cannot mint a case, but it may still be LINKED to an
+#: existing case when independent, positive produced-material evidence establishes that
+#: relationship -- an unresolved entity KIND and an unresolved product provenance are
+#: different uncertainties. So the provenance set is narrower than the minting set.
+_NOT_A_LOCAL_PRODUCT = NON_EXPERIMENTAL - {"UnresolvedSourceEntity"}
+
+
+def provenance_eligible(m):
+    """Whether a Measurement should be resolved against the paper's produced-material
+    chains.
+
+    The question this gate answers is "could one of this paper's ExperimentalCases have
+    produced the thing that was measured?" -- which has nothing to do with whether the
+    paper named the instrument. Eligibility used to require a non-empty `technique`, so
+    correcting the technique field silently removed 31 Measurements from provenance
+    resolution and added 4, with no change to their identity, quantity, source or case
+    candidates. Instrument knowledge is not provenance evidence.
+
+    Only categories the resolver has ALREADY classified as not-a-local-product are
+    excluded, each on its own recorded evidence:
+
+      * `measures_case`  -- provenance is already established; do not re-resolve it.
+      * IMPORTED_LITERATURE -- the caption attributes the observation to another work.
+      * `reports_species_property` -- a property of a chemical, not of a deposited film;
+        no local material role was asserted for it and none may be acquired here.
+      * `represents_same_measurement_as` -- a redrawn view of a Measurement represented
+        elsewhere; attaching provenance again would duplicate the relation.
+      * an entity class in NON_EXPERIMENTAL -- model output, fits and imported
+        observations never carry a current-paper deposition product.
+    """
+    if m.get("measures_case"):
+        return False
+    if m.get("provenance_role") == "IMPORTED_LITERATURE":
+        return False
+    if m.get("reports_species_property"):
+        return False
+    if m.get("represents_same_measurement_as"):
+        return False
+    if m.get("entity_class") in _NOT_A_LOCAL_PRODUCT:
+        return False
+    return True

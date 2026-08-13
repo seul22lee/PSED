@@ -262,11 +262,23 @@ def anchors():
     cross = [c for c in cases if len(set(c["source_panels"])) > 1]
     ok("am: GPC / resistivity / XPS join into one deposition case", len(cross) >= 2,
        "%d multi-panel cases" % len(cross))
+    # The point of this anchor is that ONE deposition case spans panels reporting
+    # DIFFERENT measured quantities. It used to assert that on `technique`, which is why
+    # it required "growth_per_cycle" and "resistivity" to be techniques -- they are
+    # measured quantities, and asserting them here is what kept the conflation alive.
+    # The quantities are checked on measured_quantity, where they belong; technique is
+    # checked for what it now means.
+    quants = set()
     techs = set()
     for c in cross:
+        quants |= {meas[m].get("measured_quantity") for m in c["measurement_ids"]}
         techs |= {t for m in c["measurement_ids"] for t in (meas[m]["technique"] or [])}
-    ok("am: that case carries all three techniques",
-       {"growth_per_cycle", "resistivity", "XPS"} <= techs, sorted(techs))
+    ok("am: that case spans growth-per-cycle and resistivity measurements",
+       {"growth_per_cycle", "resistivity"} <= quants, sorted(x for x in quants if x))
+    ok("am: its techniques, where resolved, are real instruments not quantities",
+       not (techs & {"growth_per_cycle", "resistivity", "thickness", "capacitance",
+                     "refractive_index", "saturation_profile", "nucleation"}),
+       sorted(techs))
     blocked = [l for l in sem(AM, "links") if l["action"] == "BLOCKED"]
     ok("am: a different precursor still blocks the merge", len(blocked) >= 1, len(blocked))
     ok("am: the blocked merges clash on chemistry",
