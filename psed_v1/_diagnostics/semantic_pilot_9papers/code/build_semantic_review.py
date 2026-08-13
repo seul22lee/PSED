@@ -340,17 +340,19 @@ def build_html(data, inv, pre, tests):
     prim_rt = RUNTIME.get("active_set_8_papers")
     for lbl, val in (("primary papers", len(PRIMARY)),
                      ("cases", tot_cases),
-                     ("pilot tests", tests["label"]),
+                     ("pilot tests", tests["counts"]),
                      ("curves preserved", "100%" if cur_ok else "NO"),
                      ("points preserved", "100%" if pt_ok else "NO"),
                      ("runtime", ("%.1fs" % prim_rt) if prim_rt else "n/a")):
         A("<div><b>%s</b><span>%s</span></div>" % (esc(val), esc(lbl)))
     A("</div>")
-    if tests["state"] != "current":
-        # say WHY the tile is not a plain pass, so a stale or absent record cannot be
-        # mistaken for a run that happened
-        A('<p class="d">Pilot test status: %s &mdash; %s.</p>'
-          % (pill(tests["state"], tests["kind"]), esc(tests["detail"])))
+    # WHICH source state those numbers describe -- a historical fact, unlike a live
+    # freshness verdict, which this page cannot carry: committing the page changes HEAD
+    # and would falsify the verdict immediately.
+    A('<p class="d">Pilot suite: %s, recorded at %s. Whether that matches your checkout '
+      'is reported by the build, not by this page.</p>'
+      % (esc(tests["counts"]),
+         esc(tests["recorded_sha"] or "no commit — provenance not recorded")))
     A('<div class="note"><b>Two generic repairs landed this cycle.</b><br>'
       '<b>1. Condition specificity precedence.</b> A condition now carries how specific '
       'its source is (specimen table &gt; figure-local &gt; methods default &gt; '
@@ -761,6 +763,7 @@ def main():
 
     (OUT / "semantic_review.html").write_text(build_html(data, inv, pre, tests))
     print("wrote comparison/semantic_review.html  (%d merge rows)" % len(rows))
+    print("pilot tests: %s [%s] %s" % (tests["counts"], tests["state"], tests["detail"]))
     return 0
 
 

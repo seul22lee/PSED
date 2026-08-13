@@ -63,6 +63,7 @@ def test_status(status_file, repo_dir):
     a pass, because a count from another commit is not evidence about this one.
     """
     out = {"state": "unknown", "label": "unknown", "detail": "", "kind": WARN,
+           "counts": "unknown",
            "passed": None, "failed": None, "suite": None, "recorded_sha": None}
     try:
         raw = json.loads(status_file.read_text())
@@ -76,7 +77,11 @@ def test_status(status_file, repo_dir):
 
     out.update(passed=raw["passed"], failed=raw["failed"],
                suite=raw.get("suite"), recorded_sha=raw.get("git_sha"))
-    counts = "%d passed, %d failed" % (raw["passed"], raw["failed"])
+    # `counts` is what was observed; `label`/`state` add how that relates to the tree
+    # RIGHT NOW. Only the former belongs in a committed artifact -- a freshness verdict
+    # baked into a file decays the moment anything is committed, which is the same
+    # self-reference that made a tracked status file unsatisfiable.
+    counts = out["counts"] = "%d passed, %d failed" % (raw["passed"], raw["failed"])
     sha, dirty = head_sha(repo_dir, ignore=status_file)
 
     if not out["recorded_sha"]:
