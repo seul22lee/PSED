@@ -372,3 +372,115 @@ and y points, every representation's `target_id` and values, every pair verdict 
 overlay eligibility, samples, runs and measurements — all **UNCHANGED**. The four
 `tests/canonical_layer` failures were confirmed identical at `25f725b`:
 **PRE_EXISTING / UNCHANGED / NOT WORKBENCH DRIFT**.
+
+---
+
+# Case-scoped filter conjunction repair
+
+One defect remained, and it was the root of two symptoms.
+
+## The defect
+
+Filters were declared with scopes — Condition Case, MeasurementAct, ResultSeries — but the
+case-scoped ones were not evaluated together on a case. `facetsOk()` tested every facet,
+*including* the case-scoped ones, against the precomputed **series** index; `rangeOk()`
+conjoined numeric bands on one case. The two never met:
+
+```
+old:   geometry satisfied because case A has it        (series-level index)
+       temperature satisfied because case B is hot     (any-case existential)
+       -> the ResultSeries matched a combination no single case ever had
+```
+
+For a sweep spanning `A: LHAR, 400 K` and `B: planar, 550 K`, a user asking for
+*LHAR and ≥ 500 K* got the series back. No experiment in it was ever both.
+
+The same root cause fed the facet counts: `facetOptions()` counted **every case traversed
+by a candidate series**, so a case excluded by the active filters still incremented the
+number next to an option.
+
+## The repair
+
+Scope is now model metadata (`facet_defs`), and the algorithm iterates on scope, never on
+a facet name — adding a facet is a metadata change. One predicate is the authority:
+
+```js
+caseMatchesFilters(cid, skipFacet, skipRange, candidate)
+    every Condition Case-scoped facet:  OR within, AND across, on THIS cid
+    every active numeric range:         exact field_id, canonical magnitude, on THIS cid
+```
+
+`matchingCases()` is that predicate mapped over `all_case_ids`, and series eligibility is
+defined *from it* — `matchingCases(s).length > 0` — so the results column and the sweep
+card's own "N match filters" cannot disagree. `rangeOk()` is gone; its logic lives inside
+the one predicate. `nonCaseFacetsOk()` keeps ResultSeries- and MeasurementAct-scoped
+facets on the series index, which is correct for them and preserves technique + quantity
+describing one act → series path.
+
+`hasActiveCaseFilters()` is asked explicitly, so "no case filters" never silently becomes
+"must have a Condition Case": the 121 results with no case link stay visible until a
+case-scoped constraint is actually set, and are then excluded rather than passed through
+as wildcards.
+
+Facet option counts changed meaning to **eligible Condition Cases** — cases that satisfy
+the candidate option *together with* every other active case-scoped constraint, on the
+same case, with the facet's own selections lifted for leave-one-out. Cases and series are
+deduplicated independently.
+
+## What the corpus can and cannot prove
+
+**REAL CORPUS.** Under *Deposition temperature ≥ 500 K*, the `Deposited material` counts:
+
+| option | old (traversed cases) | new (eligible cases) |
+|---|---|---|
+| Y2O3 | 29 | **17** |
+| Pt | 11 | **5** |
+| SiO2 | 9 | **5** |
+| Al2O3 | 9 | 9 |
+
+The 10-case sweep still reports `all_case_ids = 10`, `matching_case_ids = 4`,
+6 traversed-only, and remains eligible because 4 > 0.
+
+**The corpus cannot exhibit the cross-case false positive.** All **22** of its multi-case
+sweeps are categorically homogeneous — every case a sweep traverses carries the same
+material, geometry, paper, precursor and co-reactant; only numeric conditions vary. The
+exhaustive builder metric therefore has an **empty universe**, and reports it:
+
+```
+cross_case_constraint_universe                       0
+cross_case_constraint_false_positive_violations      0     (vacuous - empty universe)
+cross_case_false_positives_under_series_level_rule   0     (vacuous - empty universe)
+multi_case_series_with_varying_case_facets           0     <- why the universe is empty
+```
+
+A zero over an empty universe is not evidence. The behavioural proof is therefore a
+**CONTROLLED FILTER-SCOPE FIXTURE** injected into the live page, driving the real
+predicate:
+
+```
+FIXTURE  case A: geometry A, 400 K      case B: geometry B, 550 K
+         geometry A + >= 500 K  ->  excluded, matching_case_ids = []
+         geometry B + >= 500 K  ->  included, matching_case_ids = [B]
+         each constraint alone  ->  still matches
+FIXTURE  material on A + geometry on B  ->  rejected
+         both on A                      ->  accepted
+         material A OR B + geometry B   ->  accepted via B   (OR within, AND across)
+```
+
+The defect is latent rather than absent: any future paper whose sweep crosses a geometry
+or material would have triggered it.
+
+**REAL CORPUS**, exhaustive over every case-scoped facet option, bare and paired with a
+temperature band (46 filter states):
+
+```
+matching_series_with_zero_matching_cases_under_case_filters   0
+facet_case_count_leakage_violations                           0
+```
+
+## Generalizability
+
+The filter engine contains no DOI, Condition Case id, ResultSeries id, material, geometry
+or species literal, no branch on a facet name, and no branch on a corpus cardinality; its
+only `sort` orders options for display. Asserted by test, over the builder, the template
+and the generated HTML.

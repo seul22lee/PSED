@@ -412,6 +412,29 @@ def comparability(series):
     return pairs, counts
 
 
+#: Facet declarations. `scope` is the whole contract: a Condition Case-scoped facet must
+#: be satisfied together with every other case-scoped constraint on ONE case, while
+#: MeasurementAct- and ResultSeries-scoped facets are properties of the result itself.
+#: Adding a facet is a change here, not a change to the filtering algorithm.
+FACET_DEFS = [
+    {"id": "material", "label": "Deposited material", "scope": "Condition Case"},
+    {"id": "precursor", "label": "Precursor", "scope": "Condition Case"},
+    {"id": "coreactant", "label": "Co-reactant", "scope": "Condition Case"},
+    {"id": "geometry", "label": "Geometry", "scope": "Condition Case"},
+    {"id": "paper", "label": "Paper", "scope": "Condition Case"},
+    {"id": "technique", "label": "Measurement technique", "scope": "MeasurementAct"},
+    {"id": "quantity", "label": "Result quantity", "scope": "ResultSeries"},
+    {"id": "coordinate", "label": "Result coordinate", "scope": "ResultSeries"},
+    {"id": "normalization", "label": "Normalization basis", "scope": "ResultSeries"},
+    {"id": "data_source", "label": "Result type", "scope": "ResultSeries"},
+]
+CASE_SCOPE = "Condition Case"
+
+
+def case_scoped_facet_ids():
+    return [f["id"] for f in FACET_DEFS if f["scope"] == CASE_SCOPE]
+
+
 def facets(cases, acts, series):
     """Facet option -> the entity ids it is compatible with, precomputed."""
     idx = defaultdict(lambda: defaultdict(lambda: {"cases": set(), "series": set()}))
@@ -648,6 +671,7 @@ def main():
         "cases": cases, "acts": acts, "series": series, "samples": samples,
         "runs": runs, "measurements": measurements,
         "pairs": pairs, "facets": facets(cases, acts, series),
+        "facet_defs": FACET_DEFS,
         "numeric_conditions": nums,
         "range_fields": range_fields(nums),
         "sweep_series_ids": sweeps,
@@ -920,6 +944,82 @@ def validate(m, counts):
     c["ambiguous_first_match_range_lookups"] = ambiguous
     c["prefix_match_ambiguous_lookups_avoided"] = prefix_ambiguous
 
+    # ---- case-scoped filter conjunction ---------------------------------------------
+    # Exhaustive over an explicitly defined universe: every ResultSeries linked to more
+    # than one Condition Case, every ordered pair of its cases (A, B), every case-scoped
+    # facet option that A satisfies and B does not, paired with every numeric field where
+    # B carries a canonical value that A does not reach. Under such a filter NO single
+    # linked case satisfies both constraints, so admitting the series is a false positive.
+    # The universe size is reported alongside the count: a zero over an empty universe is
+    # not evidence, and this corpus must be allowed to say so.
+    fidx = m["facets"]
+    case_facets = case_scoped_facet_ids()
+
+    def case_has(cid, fid, v):
+        e = fidx.get(fid, {}).get(v)
+        return bool(e and cid in e["cases"])
+
+    def canon_values(cid, field):
+        return [e["canonical"] for e in numeric.get(cid, {}).get(field, [])
+                if e.get("canonical") is not None]
+
+    fields = sorted({f for fs in numeric.values() for f in fs})
+    universe = old_admits = new_admits = 0
+    for s2 in series.values():
+        cs = s2["all_case_ids"]
+        if len(cs) < 2:
+            continue
+        for a in cs:
+            for b in cs:
+                if a == b:
+                    continue
+                for fid in case_facets:
+                    for v in fidx.get(fid, {}):
+                        if not case_has(a, fid, v) or case_has(b, fid, v):
+                            continue
+                        for field in fields:
+                            vb = canon_values(b, field)
+                            if not vb:
+                                continue
+                            lo = max(vb)
+                            # the band admits b and must not admit a
+                            if any(x >= lo for x in canon_values(a, field)):
+                                continue
+                            # ... nor any other linked case that also carries the option
+                            if any(case_has(c, fid, v)
+                                   and any(x >= lo for x in canon_values(c, field))
+                                   for c in cs):
+                                continue
+                            universe += 1
+                            # the pre-repair rule: facet checked against the SERIES, band
+                            # against ANY case -- two different cases could answer
+                            series_level = any(case_has(c, fid, v) for c in cs) and any(
+                                any(x >= lo for x in canon_values(c, field)) for c in cs)
+                            if series_level:
+                                old_admits += 1
+                            # the repaired rule: one case must satisfy both
+                            if any(case_has(c, fid, v)
+                                   and any(x >= lo for x in canon_values(c, field))
+                                   for c in cs):
+                                new_admits += 1
+    c["cross_case_constraint_universe"] = universe
+    c["cross_case_constraint_false_positive_violations"] = new_admits
+    c["cross_case_false_positives_under_series_level_rule"] = old_admits
+    # why the universe is the size it is: a sweep whose cases all share their categorical
+    # values cannot express a cross-case contradiction at all
+    hetero = 0
+    for s2 in series.values():
+        cs = s2["all_case_ids"]
+        if len(cs) < 2:
+            continue
+        for fid in case_facets:
+            vals = {frozenset(v for v in fidx.get(fid, {}) if case_has(cid, fid, v))
+                    for cid in cs}
+            if len(vals) > 1:
+                hetero += 1
+                break
+    c["multi_case_series_with_varying_case_facets"] = hetero
+
     c["physical_specimens_resolved"] = len(
         {x["physical_specimen"] for x in m["samples"].values()
          if x.get("physical_specimen")})
@@ -952,6 +1052,9 @@ def validate(m, counts):
         c["multi_case_primary_entries"] == c["multi_case_result_series"])
     inv["no_range_field_loses_its_qualifier"] = losing == 0
     inv["no_ambiguous_range_lookups"] = ambiguous == 0
+    inv["no_cross_case_constraint_false_positives"] = new_admits == 0
+    inv["every_facet_declares_a_scope"] = all(
+        f.get("scope") for f in m["facet_defs"])
     inv["key_based_intersection_would_have_been_wrong"] = key_based_false_common > 0
     return {"counts": c, "invariants": inv, "invariants_ok": all(inv.values()),
             "pair_statuses": dict(counts),

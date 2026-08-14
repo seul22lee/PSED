@@ -141,6 +141,115 @@ def main(outdir):
             if (c) c.scrollIntoView({block:'center'});
         }""")
         shot("10_sweep_condition_summary")
+
+        # --- case-scoped filter conjunction ---------------------------------------
+        reset = lambda: pg.evaluate("""() => {
+            tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+            RANGES.forEach(r => range[r.id] = {min:"",max:""});
+            profileOnly = false; page = 0; render();
+        }""")
+
+        # facet option counts while a case-scoped constraint is active: the counts must
+        # be eligible Condition Cases, not every case a candidate sweep traverses
+        reset()
+        pg.evaluate("""() => {
+            const r = RANGES.find(x => x.field_id === "deposition_temperature");
+            range[r.id] = {min:"500", max:""}; page = 0; render();
+        }""")
+        pg.locator('.fbtn[data-f="material"]').click()
+        shot("11_facet_counts_under_case_constraint")
+        pg.evaluate("() => closePop()")
+
+        # results with no Condition Case, before and after a case-scoped filter
+        reset()
+        pg.evaluate("""() => {
+            for (page = 0; page < 60; page++) { render();
+                if (document.body.innerText.indexOf("no Condition Case") >= 0) break; }
+            const d = [...document.querySelectorAll('#results details.case')]
+                .find(x => x.innerText.indexOf("no Condition Case") >= 0);
+            if (d) { d.open = true; d.scrollIntoView({block:'center'}); }
+        }""")
+        shot("12_no_case_section_unfiltered")
+        pg.evaluate("""() => {
+            const f = FDEF.find(x => x.scope === "Condition Case"
+                                  && Object.keys(FACETS[x.id]||{}).length);
+            active[f.id].add(Object.keys(FACETS[f.id])[0]); page = 0; render();
+        }""")
+        shot("13_no_case_excluded_by_case_filter")
+
+        # the cross-case contradiction. This corpus cannot show it -- every one of its
+        # multi-case sweeps is categorically homogeneous -- so it is drawn from clearly
+        # labelled fixture data and must not be read as a corpus state.
+        reset()
+        pg.evaluate("""() => {
+            const A = "__fx_case_A__", B = "__fx_case_B__", S = "__fx_series__";
+            const G1 = "__fixture_geometry_A__", G2 = "__fixture_geometry_B__";
+            FACETS.geometry[G1] = {cases:[A], series:[S]};
+            FACETS.geometry[G2] = {cases:[B], series:[S]};
+            NUM[A] = {"deposition_temperature":[{raw:400,unit:"K",canonical:400,
+                       quantity:"deposition_temperature",species:null}]};
+            NUM[B] = {"deposition_temperature":[{raw:550,unit:"K",canonical:550,
+                       quantity:"deposition_temperature",species:null}]};
+            CASES[A] = {case_id:"FIXTURE-CASE-A", paper_id:"__fixture__", material:null,
+                        geometry:G1, chemistry:{}, conditions:[], series_ids:[S],
+                        case_local_series_ids:[], traversed_by_series_ids:[S],
+                        measurement_act_ids:[], simulation_run_ids:[],
+                        realization:{samples:[], source_sample_records:0,
+                                     physical_specimen_identity:"unresolved"}};
+            CASES[B] = Object.assign({}, CASES[A],
+                                     {case_id:"FIXTURE-CASE-B", geometry:G2});
+            SERIES[S] = {id:S, series_id:"FIXTURE-SERIES", all_case_ids:[A,B], n_cases:2,
+                         placement:"MULTI_CASE_SWEEP", placement_case_id:null,
+                         is_profile:false, act_id:null, paper_id:"__fixture__",
+                         figure:"—", panel:"", series_label:"fixture",
+                         data_source:"measured", y_resolution:"RESOLVED",
+                         normalization_basis:null, n_points:0,
+                         x:{x_quantity:null,x_unit:null,x_label:"",x_raw_unit:null},
+                         y:{y_quantity:null,y_unit:null,y_label:"",y_raw_unit:null},
+                         x_representations:{}, y_representations:{}};
+            M.sweep_series_ids.push(S);
+            const b = document.createElement("div");
+            b.id = "fixture-banner";
+            b.textContent = "FIXTURE DATA \u2014 not corpus. One ResultSeries over two "
+                + "contradictory Condition Cases: geometry A at 400 K, geometry B at 550 K.";
+            b.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99;"
+                + "padding:6px 12px;background:#8a6100;color:#fff;font:12px sans-serif";
+            document.body.appendChild(b);
+            active.geometry.add(G1);
+            const r = RANGES.find(x => x.field_id === "deposition_temperature");
+            range[r.id] = {min:"500", max:""}; page = 0; render();
+        }""")
+        shot("14_cross_case_contradiction_FIXTURE_excluded")
+        pg.evaluate("""() => {
+            active.geometry.clear();
+            active.geometry.add("__fixture_geometry_B__"); page = 0; render();
+            const d = document.querySelector('[data-sweep="__fx_series__"]');
+            if (d) { d.open = true; d.scrollIntoView({block:'center'}); }
+        }""")
+        shot("15_cross_case_satisfiable_FIXTURE_included")
+        pg.evaluate("""() => {
+            const b = document.getElementById("fixture-banner"); if (b) b.remove();
+            active.geometry.clear();
+            const r = RANGES.find(x => x.field_id === "deposition_temperature");
+            range[r.id] = {min:"",max:""};
+            delete FACETS.geometry["__fixture_geometry_A__"];
+            delete FACETS.geometry["__fixture_geometry_B__"];
+            delete CASES["__fx_case_A__"]; delete CASES["__fx_case_B__"];
+            delete NUM["__fx_case_A__"]; delete NUM["__fx_case_B__"];
+            delete SERIES["__fx_series__"];
+            M.sweep_series_ids = M.sweep_series_ids.filter(x => x !== "__fx_series__");
+            page = 0; render();
+        }""")
+
+        # the tray survives a case-scoped filter change
+        reset()
+        pg.evaluate("""() => {
+            tray.length = 0; tray.push(M.sweep_series_ids[0]); render();
+            const f = FDEF.find(x => x.scope === "Condition Case"
+                                  && Object.keys(FACETS[x.id]||{}).length);
+            active[f.id].add(Object.keys(FACETS[f.id])[0]); page = 0; render();
+        }""")
+        shot("16_tray_survives_case_filter")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))
