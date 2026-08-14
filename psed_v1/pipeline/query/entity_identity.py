@@ -7,7 +7,7 @@ experiment. One case can have several physical realizations, and its conditions 
 nominal -- they describe the design point, not something measured on any particular chip.
 A UI that calls it "Experiment" asserts a physical identity the data does not carry.
 
-Two repairs live here.
+Three repairs live here.
 
 `MeasurementAct` makes the model's own `represents_same_measurement_as` operational. That
 field already records that Fig 9a, 9b and 9c are one observing act rendered three ways,
@@ -16,6 +16,10 @@ structure disagreed with it. Grouping is by transitive closure and only ever fol
 explicit link -- never "same figure", never "same conditions", because neither is evidence
 about an observing act. Existing Measurement ids are preserved; an act is a grouping over
 them, not a replacement for them.
+
+`persisted_run_id` exists because a reader that guessed the field name produced a run with
+a null identity, and a null identity that groups things asserts a shared run nobody
+recorded. Run membership is read from explicit links only.
 
 `cases_for_result_series` closes the first-case collapse. A sweep curve legitimately
 belongs to every case it traverses, and returning `case_ids[0]` silently discards the
@@ -37,6 +41,97 @@ RUNS_OBSERVED_AMONG_CASE_REALIZATIONS = "RUNS_OBSERVED_AMONG_CASE_REALIZATIONS"
 
 MULTI_CASE = "MULTI_CASE"
 NO_CASE = "NO_CASE"
+
+#: A run record whose identifier cannot be resolved. It is never given a synthetic id and
+#: never becomes a bucket: a null identity that groups things asserts a shared run that
+#: nobody recorded.
+INVALID_RUN_RECORD = "INVALID_RUN_RECORD"
+
+#: Field names a persisted DepositionRun may carry, in authority order. The live schema
+#: uses `run_id`; a reader that only knew `deposition_run_id`/`id` silently produced a
+#: null-identified run and swept run-less samples into it.
+_RUN_ID_FIELDS = ("run_id", "deposition_run_id", "id")
+
+#: how a canonical physical specimen was established
+SPECIMEN_FROM_TRACEABLE_ID = "TRACEABLE_SPECIMEN_ID"
+SPECIMEN_UNRESOLVED = "PHYSICAL_IDENTITY_UNRESOLVED"
+RUN_LINK_VIA_CANONICAL_PHYSICAL_IDENTITY = "RUN_LINK_VIA_CANONICAL_PHYSICAL_IDENTITY"
+
+#: Field names that denote a PERSISTENT PHYSICAL specimen identifier. Deliberately narrow:
+#: a bare "sample code" is a paper-local analysis label, not a specimen identity, and
+#: treating it as one would manufacture physical identity out of table row numbers.
+_SPECIMEN_ID_FIELDS = ("traceable_sample_code", "traceable_specimen_id",
+                       "unique_sample_code", "unique_specimen_code",
+                       "physical_specimen_id", "specimen_id", "chip_id", "wafer_id")
+
+
+def persisted_run_id(record):
+    """The identifier of a persisted DepositionRun record, or None.
+
+    One reader, so a schema field name lives in exactly one place.
+    """
+    for f in _RUN_ID_FIELDS:
+        v = record.get(f)
+        if v not in (None, "", "None", "null"):
+            return str(v)
+    return None
+
+
+def traceable_specimen_id(sample):
+    """A persistent physical specimen identifier for this sample record, or None.
+
+    Only fields that mean a specimen count. `source_sample_code` deliberately does not:
+    it is the paper's analysis label, and several of them may denote one specimen -- which
+    is precisely the distinction this function exists to keep.
+    """
+    for f in _SPECIMEN_ID_FIELDS:
+        v = sample.get(f)
+        if v not in (None, "", "None", "null"):
+            # conservative normalisation: whitespace only, never case or punctuation,
+            # because those can carry identity in a specimen code
+            return " ".join(str(v).split())
+    return None
+
+
+def canonical_specimens(samples, paper_id):
+    """Group Sample records by traceable specimen identity, scoped to the paper.
+
+    A specimen code is only known to be unique within its source, so the identity key is
+    (paper, code) unless the code is documented as global. Records without such a code are
+    each their own unresolved specimen -- never one shared "unknown" bucket, which would
+    assert that every unidentified sample is the same piece of silicon.
+    """
+    groups, unresolved = {}, []
+    for s in samples:
+        sid = s.get("sample_id")
+        tid = traceable_specimen_id(s)
+        if tid:
+            key = "SPECIMEN::%s::%s" % (paper_id, tid)
+            g = groups.setdefault(key, {"canonical_specimen_id": key, "paper_id": paper_id,
+                                        "traceable_specimen_id": tid, "sample_ids": [],
+                                        "source_aliases": [],
+                                        "basis": SPECIMEN_FROM_TRACEABLE_ID})
+            g["sample_ids"].append(sid)
+            if s.get("source_sample_code") is not None:
+                g["source_aliases"].append(str(s["source_sample_code"]))
+        else:
+            unresolved.append({"sample_id": sid, "paper_id": paper_id,
+                               "source_sample_code": s.get("source_sample_code"),
+                               "status": SPECIMEN_UNRESOLVED,
+                               "basis": "no persistent specimen identifier on the record"})
+    for g in groups.values():
+        g["sample_ids"] = sorted(g["sample_ids"])
+        g["source_aliases"] = sorted(set(g["source_aliases"]))
+        g["n_aliases"] = len(g["source_aliases"])
+    return groups, unresolved
+
+
+def specimen_run_conflicts(group, samples_by_id):
+    """Explicit run ids disagreeing among aliases of one specimen. Never resolved here."""
+    runs = {samples_by_id[s].get("produced_by_run")
+            for s in group["sample_ids"] if s in samples_by_id}
+    runs = {r for r in runs if r}
+    return sorted(runs) if len(runs) > 1 else []
 
 
 def _unwrap(d, k):
@@ -170,6 +265,21 @@ def realizations(case, samples_by_id, sample_runs):
                                  if s.get("produced_by_run")}),
         "run_link_semantics": RUNS_OBSERVED_AMONG_CASE_REALIZATIONS,
     }
+
+
+def run_members(run_record, samples):
+    """Samples explicitly belonging to a run. Membership is never inferred.
+
+    A sample whose `produced_by_run` is null is unresolved, not a member of anything; the
+    run record's own declared members are honoured, and everything else must point back.
+    """
+    rid = persisted_run_id(run_record)
+    if not rid:
+        return None, []
+    declared = set(run_record.get("sample_ids") or [])
+    pointing = {s["sample_id"] for s in samples
+                if s.get("produced_by_run") == rid and s.get("sample_id")}
+    return rid, sorted(declared | pointing)
 
 
 def case_run_links(case, samples_by_id):

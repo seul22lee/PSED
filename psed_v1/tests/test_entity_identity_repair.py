@@ -148,6 +148,79 @@ def main():
        len({EI.DIRECT_SAMPLE_EVIDENCE, EI.CASE_CONTEXT, EI.RUN_CONTEXT,
             EI.MEASUREMENT_SETTING}) == 4)
 
+    print("=== J. the run identifier is read from the real schema ===")
+    # the exact regression: the live schema uses run_id, and a reader that only knew
+    # deposition_run_id/id produced a null-identified run and swept run-less samples in
+    ok("J: run_id is resolved", EI.persisted_run_id({"run_id": "RUN::X::01"}) == "RUN::X::01")
+    ok("J: a reader ignoring run_id would have failed",
+       ({"run_id": "RUN::X::01"}.get("deposition_run_id")
+        or {"run_id": "RUN::X::01"}.get("id")) is None)
+    ok("J: legacy field names still work",
+       EI.persisted_run_id({"deposition_run_id": "R"}) == "R"
+       and EI.persisted_run_id({"id": "R"}) == "R")
+    ok("J: run_id outranks the legacy names",
+       EI.persisted_run_id({"id": "B", "run_id": "A"}) == "A")
+    for bad in ({}, {"run_id": None}, {"run_id": ""}, {"run_id": "None"},
+                {"run_id": "null"}, {"kind": "SHARED_RUN"}):
+        ok("J: %-28s resolves to None, never a synthetic id" % json.dumps(bad)[:28],
+           EI.persisted_run_id(bad) is None, EI.persisted_run_id(bad))
+
+    print("=== K. a null run never becomes a shared bucket ===")
+    nulls = [{"sample_id": "A", "produced_by_run": None},
+             {"sample_id": "B", "produced_by_run": None}]
+    rid, members = EI.run_members({"kind": "x"}, nulls)
+    ok("K: an unidentifiable run record yields no run", rid is None and members == [],
+       (rid, members))
+    rid2, m2 = EI.run_members({"run_id": "R1"}, nulls)
+    ok("K: run-less samples are not members of a real run", m2 == [], m2)
+    rid3, m3 = EI.run_members({"run_id": "R1", "sample_ids": ["A"]},
+                              [{"sample_id": "B", "produced_by_run": "R1"},
+                               {"sample_id": "C", "produced_by_run": None}])
+    ok("K: membership is declared members plus explicit pointers only",
+       m3 == ["A", "B"], m3)
+    ok("K: and never includes a run-less sibling", "C" not in m3)
+
+    print("=== L. specimen identity comes from a specimen field, never a row label ===")
+    ok("L: a source_sample_code is not a specimen identifier",
+       EI.traceable_specimen_id({"source_sample_code": "4"}) is None)
+    ok("L: a persistent specimen field is",
+       EI.traceable_specimen_id({"traceable_sample_code": "V0004"}) == "V0004")
+    ok("L: whitespace is trimmed but case and punctuation are not",
+       EI.traceable_specimen_id({"specimen_id": "  v-0004 "}) == "v-0004")
+    # the 4/5/6 pattern, from positive specimen evidence rather than row numbers
+    fix = [{"sample_id": "S4", "source_sample_code": "4", "traceable_sample_code": "V0004"},
+           {"sample_id": "S5", "source_sample_code": "5", "traceable_sample_code": "V0004"},
+           {"sample_id": "S6", "source_sample_code": "6", "traceable_sample_code": "V0004"},
+           {"sample_id": "S8", "source_sample_code": "8", "traceable_sample_code": "V0001"}]
+    groups, unres = EI.canonical_specimens(fix, "P1")
+    ok("L: three aliases collapse to one canonical specimen",
+       len(groups) == 2 and any(g["n_aliases"] == 3 for g in groups.values()), groups)
+    v4 = [g for g in groups.values() if g["traceable_specimen_id"] == "V0004"][0]
+    ok("L: its source aliases are retained", v4["source_aliases"] == ["4", "5", "6"], v4)
+    ok("L: and all member records stay addressable",
+       v4["sample_ids"] == ["S4", "S5", "S6"], v4)
+    ok("L: a different specimen id stays a different specimen",
+       len({g["traceable_specimen_id"] for g in groups.values()}) == 2)
+    ok("L: identity is scoped to the paper",
+       all(g["canonical_specimen_id"].startswith("SPECIMEN::P1::") for g in groups.values()))
+    # conditions never merge anything
+    same_cond = [{"sample_id": "A", "deposition_temperature": 300},
+                 {"sample_id": "B", "deposition_temperature": 300}]
+    g2, u2 = EI.canonical_specimens(same_cond, "P1")
+    ok("L: equal conditions create no specimen group", g2 == {}, g2)
+    ok("L: and each unidentified record is its own unresolved entry",
+       len(u2) == 2 and all(x["status"] == EI.SPECIMEN_UNRESOLVED for x in u2), u2)
+
+    print("=== M. contradictory run identity among aliases is raised, not resolved ===")
+    by = {"S4": {"sample_id": "S4", "produced_by_run": "RUN_A"},
+          "S5": {"sample_id": "S5", "produced_by_run": "RUN_B"},
+          "S6": {"sample_id": "S6", "produced_by_run": None}}
+    ok("M: two explicit runs on one specimen is a conflict",
+       EI.specimen_run_conflicts({"sample_ids": ["S4", "S5", "S6"]}, by)
+       == ["RUN_A", "RUN_B"])
+    ok("M: one explicit run plus silence is not a conflict",
+       EI.specimen_run_conflicts({"sample_ids": ["S4", "S6"]}, by) == [])
+
     print("=== I. the repaired corpus artifacts agree with the model ===")
     for n in ("entity_relation_graph.json", "measurement_act_inventory.json",
               "sample_identity_inventory.json", "deposition_run_linkage_inventory.json",
@@ -170,14 +243,31 @@ def main():
            for a in inv["acts"].values() if a["n_members"] > 1))
 
     sam = json.loads((R / "sample_identity_inventory.json").read_text())
-    ok("I: no Sample was merged without a specimen id",
-       sam["aliases_merged"] == 0 and sam["samples_with_traceable_specimen_id"] == 0, sam)
-    ok("I: the gap is classified as extraction debt",
-       sam["classification"] == "PHYSICAL_IDENTITY_NOT_EXTRACTED")
+    ok("I: source records and canonical specimens are counted separately",
+       "source_sample_records" in sam and "canonical_physical_specimens" in sam, sorted(sam))
+    ok("I: no specimen was canonicalised without a specimen identifier",
+       sam["canonical_physical_specimens"]
+       <= sam["records_with_traceable_physical_identifier"], sam)
+    ok("I: the gap names the ingestion cause, not an absence of source evidence",
+       "NOT_INGESTED" in sam["source_identity_status"], sam["source_identity_status"])
+    ok("I: and is classified as an extraction gap",
+       sam["classification"] == "PHYSICAL_IDENTITY_EXTRACTION_GAP")
+    ok("I: no specimen carries contradictory run identity",
+       sam["specimen_run_contradictions"] == 0, sam["specimen_run_contradictions"])
 
     run = json.loads((R / "deposition_run_linkage_inventory.json").read_text())
     ok("I: no whole-case run propagation remains",
        run["overpropagated_links_after"] == 0, run["overpropagated_links_after"])
+    ok("I: no run key contains a null identity",
+       run["null_run_keys"] == 0 and not [k for k in run["runs"] if "None" in k],
+       [k for k in run["runs"] if "None" in k])
+    ok("I: every persisted run record resolved an id",
+       run["invalid_run_records"] == 0, run["invalid_run_records"])
+    ok("I: every run resolves a real identifier",
+       all(r.get("run_id") for r in run["runs"].values()), list(run["runs"]))
+    ok("I: no run lists a sample that carries no run link",
+       all(r["n_samples"] == len(r["explicit_sample_members"])
+           for r in run["runs"].values()))
     ok("I: every run lists its explicit sample members",
        all("explicit_sample_members" in r for r in run["runs"].values()))
 
