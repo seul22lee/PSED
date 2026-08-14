@@ -829,38 +829,100 @@ def final_hardening_tests(M, V, hp):
            for x in M["series"].values()))
     ok("N21: every resolved series' arrays are proven to be one point vector",
        all(M["series"][k]["point_index_contract"]["aligned"] for k in resolved_ids))
-    # fixture: native y deliberately non-monotonic -- sorting rows must not remap y
-    mk = lambda nx, ny, cx, cy=None: {
-        "native_points": {"x": {"values": nx, "unit": "s", "label": "x (s)"},
-                          "y": {"values": ny, "unit": "u", "label": "y (u)"}},
-        "x_canonical": {"values": cx, "unit": "s"},
-        "y_canonical": {"values": cy or [], "unit": "cu"}}
-    fx = mk([3, 1, 2], [8, 3, 7], [3, 1, 2])
+    # fixtures build the SOURCE TUPLES, because that is the authority now
+    def mkpts(pairs, cx=None, cy=None, xu="s", cu="s"):
+        return {"native_points": {
+                    "points": [{"x": a, "y": b} for a, b in pairs],
+                    "n_points": len(pairs),
+                    "x": {"values": [a for a, _ in pairs], "unit": xu, "label": "x"},
+                    "y": {"values": [b for _, b in pairs], "unit": "u", "label": "y"}},
+                "x_canonical": {"values": cx if cx is not None
+                                else [a for a, _ in pairs], "unit": cu},
+                "y_canonical": {"values": cy or [], "unit": "cu"}}
+
+    # §16 interior missing Y: the dangerous case
+    fx = mkpts([(1, 10), (2, None), (3, 30)])
+    ok("N21: FIXTURE an interior missing y keeps its own index",
+       [wb3.native_point(fx, i) for i in range(3)]
+       == [{"x": 1, "y": 10}, {"x": 2, "y": None}, {"x": 3, "y": 30}])
+    ok("N21: FIXTURE point 1 has no observation, and does NOT take point 2's",
+       wb3.native_point(fx, 1)["y"] is None
+       and wb3.native_point(fx, 2)["y"] == 30)
+    ok("N21: FIXTURE the per-axis arrays keep positional placeholders",
+       fx["native_points"]["y"]["values"] == [10, None, 30])
+    ok("N21: FIXTURE and are one entry per source tuple",
+       len(fx["native_points"]["y"]["values"]) == fx["native_points"]["n_points"] == 3)
+    ok("N21: FIXTURE the series is still NATIVE_ONLY despite the gap",
+       wb3.native_result_status(fx) == "NATIVE_ONLY")
+
+    # §17 missing X: unresolvable through x matching, but y stays attached to its index
+    fy = mkpts([(1, 10), (None, 20), (3, 30)], cx=[1, None, 3])
+    ok("N21: FIXTURE a point with no x cannot be identified positionally",
+       wb3.point_index_contract(fy)["aligned"] is False
+       and wb3.point_index_contract(fy).get("first_unverifiable_index") == 1,
+       wb3.point_index_contract(fy))
+    ok("N21: FIXTURE and its y stays on source index 1",
+       wb3.native_point(fy, 1) == {"x": None, "y": 20})
+
+    # §18 interior gap in a longer vector
+    fz = mkpts([(1, 1), (2, None), (3, 3), (4, None), (5, 5)])
+    ok("N21: FIXTURE interior gaps in a longer vector keep every index",
+       [wb3.native_point(fz, i)["y"] for i in range(5)] == [1, None, 3, None, 5])
+
+    # §19 non-monotonic, with source indices pinned
+    fn = mkpts([(3, 8), (1, 3), (2, 7)])
     ok("N21: FIXTURE an unsorted point vector is still aligned",
-       wb3.point_index_contract(fx)["aligned"], wb3.point_index_contract(fx))
-    ok("N21: FIXTURE index 0 keeps y=8, index 1 keeps y=3",
-       fx["native_points"]["y"]["values"][0] == 8
-       and fx["native_points"]["y"]["values"][1] == 3)
-    bad = mk([1, 2, 3], [1, 2, 3], [1, 2])
+       wb3.point_index_contract(fn)["aligned"], wb3.point_index_contract(fn))
+    rows = sorted([{"i": i, "x": wb3.native_point(fn, i)["x"],
+                    "y": wb3.native_point(fn, i)["y"]} for i in range(3)],
+                  key=lambda r: r["x"])
+    ok("N21: FIXTURE sorting by x moves whole tuples",
+       [(r["x"], r["y"], r["i"]) for r in rows] == [(1, 3, 1), (2, 7, 2), (3, 8, 0)], rows)
+
+    bad = mkpts([(1, 1), (2, 2), (3, 3)], cx=[1, 2])
     ok("N21: FIXTURE differing point counts are not aligned",
        wb3.point_index_contract(bad)["aligned"] is False
        and "count" in wb3.point_index_contract(bad)["reason"], wb3.point_index_contract(bad))
-    bad2 = mk([1, 2, 3], [1, 2, 3], [1, 2, 99])
+    bad2 = mkpts([(1, 1), (2, 2), (3, 3)], cx=[1, 2, 99])
     ok("N21: FIXTURE a canonical x that is a different number is not aligned",
-       wb3.point_index_contract(bad2)["aligned"] is False, wb3.point_index_contract(bad2))
-    conv = {"native_points": {"x": {"values": [58.0], "unit": "nm", "label": ""},
-                              "y": {"values": [1], "unit": "u", "label": ""}},
-            "x_canonical": {"values": [0.058], "unit": "µm"},
-            "y_canonical": {"values": [], "unit": None}}
+       wb3.point_index_contract(bad2)["aligned"] is False
+       and wb3.point_index_contract(bad2)["first_mismatch_index"] == 2,
+       wb3.point_index_contract(bad2))
+    conv = mkpts([(58.0, 1)], cx=[0.058], xu="nm", cu="µm")
     ok("N21: FIXTURE the same number in two units is one encoding",
        wb3.point_index_contract(conv)["aligned"], wb3.point_index_contract(conv))
     ok("N21: FIXTURE native-only reports NATIVE_ONLY",
-       wb3.native_result_status(mk([1], [1.2], [1])) == "NATIVE_ONLY")
+       wb3.native_result_status(mkpts([(1, 1.2)])) == "NATIVE_ONLY")
     ok("N21: FIXTURE native plus canonical reports both",
-       wb3.native_result_status(mk([1], [1.5], [1], [0.15]))
+       wb3.native_result_status(mkpts([(1, 1.5)], cy=[0.15]))
        == "NATIVE_AND_CANONICAL_AVAILABLE")
-    ok("N21: FIXTURE no native observation reports NO_NATIVE_RESULT",
-       wb3.native_result_status(mk([1], [], [1])) == "NO_NATIVE_RESULT")
+    ok("N21: FIXTURE no observation anywhere reports NO_NATIVE_RESULT",
+       wb3.native_result_status(mkpts([(1, None), (2, None)])) == "NO_NATIVE_RESULT")
+
+    print("=== N23. tuple integrity metrics ===")
+    for k, want in (("native_point_tuples_total", 4027), ("native_points_missing_x", 0),
+                    ("native_points_missing_y", 0), ("native_points_missing_both", 0),
+                    ("series_with_internal_missing_x", 0),
+                    ("series_with_internal_missing_y", 0),
+                    ("independent_compaction_alignment_risk_series", 0),
+                    ("native_axis_arrays_out_of_step_with_tuples", 0),
+                    ("resolved_links_with_missing_native_y", 0),
+                    ("resolved_links_with_wrong_native_y_index", 0),
+                    ("case_data_tuple_integrity_violations", 0)):
+        ok("N23: %-46s = %d" % (k, want), C[k] == want, C[k])
+    for g in ("native_axis_arrays_are_one_entry_per_source_tuple",
+              "no_row_takes_another_points_native_y",
+              "no_case_data_tuple_integrity_violations"):
+        ok("N23: the build gates on %s" % g, V["invariants"][g] is True)
+    ok("N23: this corpus never exercises the unsafe path (latent, not active)",
+       C["native_points_missing_x"] == 0 and C["native_points_missing_y"] == 0)
+    ok("N23: every model series carries its source tuples",
+       all(isinstance((x.get("native_points") or {}).get("points"), list)
+           for x in M["series"].values()))
+    ok("N23: and the per-axis arrays match them one for one",
+       all(len(x["native_points"]["x"]["values"])
+           == len(x["native_points"]["y"]["values"])
+           == len(x["native_points"]["points"]) for x in M["series"].values()))
 
     print("=== N19. the resolver is generic ===")
     prodR = {"builder": strip_comments(WB / "build_workbench_model.py"),
@@ -956,6 +1018,23 @@ def final_hardening_tests(M, V, hp):
     for bad in ("sorted(", "reversed(", ".sort("):
         ok("N22: the native value path never reorders coordinates (%s)" % bad,
            bad not in vp, bad)
+    # the tuple builder must not compact either axis on its own
+    nt = vpraw[vpraw.index("def native_tuples"):vpraw.index("def native_point")]
+    for bad in ("if p[0] is not None", "if p[1] is not None"):
+        ok("N22: the tuple builder never filters one axis alone (%s)" % bad,
+           bad not in nt, bad)
+    # the axis arrays are projections of the tuple list, so they cannot fall out of step;
+    # `x_available`/`y_available` filter to COUNT, which produces no coordinate array
+    ok("N22: each axis array is a straight projection of the tuples",
+       '[t["x"] for t in tuples]' in nt and '[t["y"] for t in tuples]' in nt)
+    ok("N22: the only filtering is counting availability",
+       nt.count("is not None]") == 2 and nt.count("len([t for t in tuples if") == 2)
+    ok("N22: it emits one entry per source point", '"points": tuples' in nt)
+    tplT = prodN["template"]
+    vp2 = tplT.split("function caseDataRows")[1].split("function drawConds")[0]
+    ok("N22: the page reaches an observation only through the source tuple",
+       "nativePoint(s, i)" in vp2 and "nativeY(s).values" not in vp2)
+    ok("N22: and never indexes a compacted axis array", "nv[i]" not in vp2)
 
     print("=== N14. the filtering algorithm is generic ===")
     # Every identifier the regressions rely on is searched for in production code. A
@@ -2330,6 +2409,82 @@ def case_data_dom(pg, errors):
     for want in ("observation", "derived relation", "canonical representation unresolved",
                  "point index"):
         ok("T: the drawer separates %s" % want, want in prov2, prov2[:140])
+
+    # --- FIXTURE: an interior missing observation must not borrow its neighbour's ----
+    # This corpus has no such point (0 of 4027), so the state is injected into the live
+    # page and driven through the real production path. No corpus claim is made by it.
+    reset()
+    gap = pg.evaluate("""() => {
+        // a native-only series, so nothing else can stand in for the blanked observation
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                       && SERIES[k].native_result_status === "NATIVE_ONLY"
+                       && SERIES[k].native_points.points.length >= 3);
+        const s = SERIES[id];
+        const keep = JSON.parse(JSON.stringify(s.native_points));
+        // blank the observation on the SECOND resolved point only
+        const links = PCL[id].links.filter(l => l.resolution_status === "RESOLVED");
+        const victim = links[1].point_index, after = links[2].point_index;
+        const expectAfter = s.native_points.points[after].y;
+        s.native_points.points[victim].y = null;
+        s.native_points.y.values[victim] = null;
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const rows = [...document.querySelectorAll('#casedata tr[data-sid]')];
+        const cell = i => { const r = rows.find(x => +x.dataset.pt === i);
+            return r ? r.children[r.children.length-1].innerText : null; };
+        const out = {id, victim, after, expectAfter,
+                     victimCell: cell(victim), afterCell: cell(after),
+                     n: rows.length, links: links.length};
+        SERIES[id].native_points = keep; render();
+        return out;
+    }""")
+    ok("T: FIXTURE the point with no observation says so",
+       "not persisted" in (gap["victimCell"] or ""), gap)
+    ok("T: FIXTURE and the series is not downgraded by one missing point",
+       gap["n"] == gap["links"], gap)
+    ok("T: FIXTURE it does not borrow the next point's value",
+       str(gap["expectAfter"]) not in (gap["victimCell"] or ""), gap)
+    ok("T: FIXTURE the next point still shows its own value",
+       str(gap["expectAfter"]) in (gap["afterCell"] or ""), gap)
+    ok("T: FIXTURE every other row is unaffected", gap["n"] == gap["links"], gap)
+
+    # --- FIXTURE: sorting a non-monotonic vector keeps each y with its own point -----
+    reset()
+    nm = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                       && SERIES[k].native_points.points.length >= 3);
+        const s = SERIES[id];
+        const keep = JSON.parse(JSON.stringify(s.native_points));
+        // give the observations a deliberately unsorted, unique pattern
+        s.native_points.points.forEach((t, i) => {
+            t.y = (i % 2 === 0) ? 900 + i : 100 + i;
+            s.native_points.y.values[i] = t.y;
+        });
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const rows = [...document.querySelectorAll('#casedata tr[data-sid]')];
+        const seen = rows.map(r => ({i: +r.dataset.pt,
+            txt: r.children[r.children.length-1].innerText,
+            want: String(s.native_points.points[+r.dataset.pt].y)}));
+        const xs = rows.map(r => parseFloat(r.children[1].innerText));
+        const out = {ok: seen.every(v => v.txt.indexOf(v.want) >= 0),
+                     sorted: xs.every((v, k) => k === 0 || v >= xs[k-1]),
+                     order: seen.map(v => v.i), n: rows.length};
+        SERIES[id].native_points = keep; render();
+        return out;
+    }""")
+    ok("T: FIXTURE each sorted row keeps the observation of its own source point",
+       nm["ok"], nm)
+    ok("T: FIXTURE and the display is still sorted by the sweep value", nm["sorted"], nm)
+
+    prov3 = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const tr = document.querySelector('#casedata tr[data-sid]');
+        tr.click();
+        return document.querySelector(`#casedata tr.prov[data-for="${
+            CSS.escape(tr.dataset.sid + "|" + tr.dataset.pt)}"]`).innerText;
+    }""")
+    ok("T: the drawer names the source point index", "source point index" in prov3,
+       prov3[:120])
 
     reset()
     ok("T: no console errors in the case data view", not errors, errors[:2])

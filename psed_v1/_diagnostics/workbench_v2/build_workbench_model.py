@@ -115,24 +115,51 @@ def canonical_curves(pid):
             # was drawn in. Canonicalisation can fail for the y axis while the observed
             # number is perfectly well recorded, so the two are kept apart and the native
             # one is never derived from the canonical one.
-            "native": {
-                "x": {"quantity": (raw.get("x") or {}).get("quantity"),
-                      "label": (raw.get("x") or {}).get("label"),
-                      "unit": (raw.get("x") or {}).get("unit"),
-                      "values": [p[0] for p in (raw.get("points") or [])
-                                 if len(p) > 1 and p[0] is not None]},
-                "y": {"quantity": (raw.get("y") or {}).get("quantity"),
-                      "label": (raw.get("y") or {}).get("label"),
-                      "unit": (raw.get("y") or {}).get("unit"),
-                      "values": [p[1] for p in (raw.get("points") or [])
-                                 if len(p) > 1 and p[1] is not None]},
-                "n_points": len(raw.get("points") or []),
-                "source": c.get("source") or {}},
+            "native": native_tuples(raw, c.get("source") or {}),
             "projections": c.get("projections") or {},
             "transformations": c.get("transformations") or [],
             "y_resolution": "FULLY_RESOLVED" if cy.get("quantity") else "PARTIALLY_RESOLVED",
         }
     return out
+
+
+def native_tuples(raw, source):
+    """The source observation, one entry per extracted point, index preserved.
+
+    A point is the pair. Compacting x and y independently -- dropping the missing ones
+    from each array separately -- renumbers them against each other, so a later y slides
+    up into the index of an earlier point and an observation is reported against the wrong
+    Condition Case. The tuple list is the identity authority; the per-axis arrays are kept
+    for readers that want one axis, but with POSITIONAL PLACEHOLDERS so index i still
+    means point i in both.
+    """
+    pts = raw.get("points") or []
+    tuples = []
+    for p in pts:
+        seq = list(p) if isinstance(p, (list, tuple)) else []
+        tuples.append({"x": seq[0] if len(seq) > 0 else None,
+                       "y": seq[1] if len(seq) > 1 else None})
+    return {
+        "points": tuples,
+        "n_points": len(tuples),
+        "x": {"quantity": (raw.get("x") or {}).get("quantity"),
+              "label": (raw.get("x") or {}).get("label"),
+              "unit": (raw.get("x") or {}).get("unit"),
+              "values": [t["x"] for t in tuples]},          # placeholders preserved
+        "y": {"quantity": (raw.get("y") or {}).get("quantity"),
+              "label": (raw.get("y") or {}).get("label"),
+              "unit": (raw.get("y") or {}).get("unit"),
+              "values": [t["y"] for t in tuples]},          # placeholders preserved
+        "x_available": len([t for t in tuples if t["x"] is not None]),
+        "y_available": len([t for t in tuples if t["y"] is not None]),
+        "source": source,
+    }
+
+
+def native_point(s, i):
+    """The source tuple at an index, or None. The one way to reach an observation."""
+    pts = (s.get("native_points") or {}).get("points") or []
+    return pts[i] if 0 <= i < len(pts) else None
 
 
 def target_id(axis, quantity, normalization, unit):
@@ -906,9 +933,11 @@ RESULT_NONE = "NO_NATIVE_RESULT"
 
 
 def native_result_status(s):
-    ny = ((s.get("native_points") or {}).get("y") or {}).get("values") or []
+    """Series-level availability. A single point may still lack its y; that is a ROW-level
+    fact and is reported per row, never by downgrading the series."""
+    pts = (s.get("native_points") or {}).get("points") or []
     cy = (s.get("y_canonical") or {}).get("values") or []
-    if not ny:
+    if not any(t.get("y") is not None for t in pts):
         return RESULT_NONE
     return RESULT_NATIVE_AND_CANONICAL if cy else RESULT_NATIVE_ONLY
 
@@ -922,23 +951,29 @@ def point_index_contract(s):
     canonical x the same extracted number as its native x.
     """
     nat = (s.get("native_points") or {}).get("x") or {}
-    nx, nu = nat.get("values") or [], nat.get("unit")
+    pts = (s.get("native_points") or {}).get("points") or []
+    nu = nat.get("unit")
     cx = (s.get("x_canonical") or {}).get("values") or []
     cu = (s.get("x_canonical") or {}).get("unit")
-    if not nx or not cx:
-        return {"aligned": False, "reason": "one side has no coordinates",
-                "n_native": len(nx), "n_canonical": len(cx)}
-    if len(nx) != len(cx):
-        return {"aligned": False, "reason": "different point counts",
-                "n_native": len(nx), "n_canonical": len(cx)}
-    for a, b in zip(nx, cx):
-        if not _same_encoded_number(a, nu, b, cu):
-            return {"aligned": False, "reason": "a canonical x is not the same extracted "
-                                                "number as its native x",
-                    "n_native": len(nx), "n_canonical": len(cx)}
-    return {"aligned": True, "reason": "same length and elementwise the same extracted "
-                                       "numbers", "n_native": len(nx),
-            "n_canonical": len(cx)}
+    base = {"n_native_tuples": len(pts), "n_canonical": len(cx)}
+    if not pts or not cx:
+        return dict(base, aligned=False, reason="one side has no coordinates")
+    if len(pts) != len(cx):
+        return dict(base, aligned=False, reason="different point counts")
+    for i, (t, b) in enumerate(zip(pts, cx)):
+        # identity is positional: canonical index i must BE source tuple i, whatever unit
+        # each is written in. A source point with no x cannot be identified this way.
+        if t.get("x") is None:
+            return dict(base, aligned=False, first_unverifiable_index=i,
+                        reason="source point %d has no x, so its canonical counterpart "
+                               "cannot be identified" % i)
+        if not _same_encoded_number(t["x"], nu, b, cu):
+            return dict(base, aligned=False, first_mismatch_index=i,
+                        reason="canonical x at index %d is not the same extracted number "
+                               "as source point %d" % (i, i))
+    return dict(base, aligned=True,
+                reason="one canonical value per source tuple, each the same extracted "
+                       "number as its own tuple's x")
 
 
 def point_case_links(series, cases):
@@ -1083,8 +1118,8 @@ def main():
 def _case_data_cell_has_value(s, i):
     """What the page will put in the result cell: the native observation comes first, and
     a missing canonical form never removes it."""
-    ny = ((s.get("native_points") or {}).get("y") or {}).get("values") or []
-    if i < len(ny) and ny[i] is not None:
+    t = native_point(s, i)
+    if t is not None and t.get("y") is not None:
         return True
     cy = (s.get("y_canonical") or {}).get("values") or []
     return i < len(cy) and cy[i] is not None
@@ -1502,7 +1537,6 @@ def validate(m, counts):
     rows = nat_ok = nat_missing = can_ok = nat_only = suppressed = 0
     for sid, v in pcl.items():
         s2 = series[sid]
-        ny = ((s2.get("native_points") or {}).get("y") or {}).get("values") or []
         cy = (s2.get("y_canonical") or {}).get("values") or []
         aligned = (s2.get("point_index_contract") or {}).get("aligned")
         for l in v["links"]:
@@ -1510,7 +1544,8 @@ def validate(m, counts):
                 continue
             rows += 1
             i = l["point_index"]
-            has_native = bool(aligned and i < len(ny))
+            t = native_point(s2, i)
+            has_native = bool(aligned and t is not None and t.get("y") is not None)
             has_canon = bool(aligned and i < len(cy))
             nat_ok += has_native
             nat_missing += (not has_native)
@@ -1532,24 +1567,82 @@ def validate(m, counts):
         [1 for sid, v in pcl.items() for l in v["links"]
          if l["resolution_status"] == POINT_RESOLVED
          and (series[sid].get("point_index_contract") or {}).get("aligned")
-         and l["point_index"] < len(((series[sid].get("native_points") or {})
-                                     .get("y") or {}).get("values") or [])
+         and (native_point(series[sid], l["point_index"]) or {}).get("y") is not None
          and not _case_data_cell_has_value(series[sid], l["point_index"])])
     c["case_data_rows_suppressed_by_canonicalization"] = c[
         "resolved_link_with_available_native_y_but_empty_result"]
     c["series_with_native_y"] = len(
         [1 for s2 in series.values()
-         if ((s2.get("native_points") or {}).get("y") or {}).get("values")])
+         if any(t.get("y") is not None
+                for t in (s2.get("native_points") or {}).get("points") or [])])
     c["series_with_canonical_y"] = len(
         [1 for s2 in series.values() if (s2.get("y_canonical") or {}).get("values")])
     c["series_native_y_only"] = len(
         [1 for s2 in series.values()
-         if ((s2.get("native_points") or {}).get("y") or {}).get("values")
+         if any(t.get("y") is not None
+                for t in (s2.get("native_points") or {}).get("points") or [])
          and not (s2.get("y_canonical") or {}).get("values")])
     c["series_canonical_y_only"] = len(
         [1 for s2 in series.values()
          if (s2.get("y_canonical") or {}).get("values")
-         and not ((s2.get("native_points") or {}).get("y") or {}).get("values")])
+         and not any(t.get("y") is not None
+                     for t in (s2.get("native_points") or {}).get("points") or [])])
+    # ---- native point tuple integrity ------------------------------------------------
+    tup = mx = my = mb = 0
+    internal_x = internal_y = risk = 0
+    for s2 in series.values():
+        pts = (s2.get("native_points") or {}).get("points") or []
+        tup += len(pts)
+        xs = [i for i, t in enumerate(pts) if t.get("x") is None]
+        ys = [i for i, t in enumerate(pts) if t.get("y") is None]
+        mx += len(xs)
+        my += len(ys)
+        mb += len(set(xs) & set(ys))
+        # a gap anywhere but the very end shifts every later value under independent
+        # compaction; a trailing gap only shortens the array
+        if xs and max(xs) < len(pts) - 1:
+            internal_x += 1
+        if ys and max(ys) < len(pts) - 1:
+            internal_y += 1
+        if (xs and max(xs) < len(pts) - 1) or (ys and max(ys) < len(pts) - 1):
+            risk += 1
+    c["native_point_tuples_total"] = tup
+    c["native_points_missing_x"] = mx
+    c["native_points_missing_y"] = my
+    c["native_points_missing_both"] = mb
+    c["series_with_internal_missing_x"] = internal_x
+    c["series_with_internal_missing_y"] = internal_y
+    c["independent_compaction_alignment_risk_series"] = risk
+    # every per-axis array must still be one entry per source tuple
+    c["native_axis_arrays_out_of_step_with_tuples"] = len(
+        [1 for s2 in series.values()
+         for np_ in [(s2.get("native_points") or {})]
+         if np_.get("points") is not None
+         and (len((np_.get("x") or {}).get("values") or []) != len(np_["points"])
+              or len((np_.get("y") or {}).get("values") or []) != len(np_["points"]))])
+    c["resolved_links_with_missing_native_y"] = len(
+        [1 for sid, v in pcl.items() for l in v["links"]
+         if l["resolution_status"] == POINT_RESOLVED
+         and (native_point(series[sid], l["point_index"]) or {}).get("y") is None])
+    # the value a row shows must be the y of ITS OWN source tuple, so the check is that
+    # the per-axis array agrees with the tuple at that index -- the only way they could
+    # disagree is an independent compaction
+    wrong = 0
+    for sid, v in pcl.items():
+        arr = ((series[sid].get("native_points") or {}).get("y") or {}).get("values") or []
+        for l in v["links"]:
+            if l["resolution_status"] != POINT_RESOLVED:
+                continue
+            i = l["point_index"]
+            t = native_point(series[sid], i)
+            if t is None:
+                continue
+            if i >= len(arr) or arr[i] != t.get("y"):
+                wrong += 1
+    c["resolved_links_with_wrong_native_y_index"] = wrong
+    c["case_data_tuple_integrity_violations"] = (
+        wrong + c["native_axis_arrays_out_of_step_with_tuples"])
+
     c["point_index_contract_aligned_series"] = len(
         [1 for s2 in series.values()
          if (s2.get("point_index_contract") or {}).get("aligned")])
@@ -1592,6 +1685,12 @@ def validate(m, counts):
     inv["every_sequence_occurrence_is_classified"] = all(
         r["status"] in (SEQ_EXPLICIT_PRESENT, SEQ_DERIVATION_SAFE, SEQ_AMBIGUOUS,
                         SEQ_NOT_TIMES, SEQ_NO_CONTEXT) for r in audit)
+    inv["native_axis_arrays_are_one_entry_per_source_tuple"] = (
+        c["native_axis_arrays_out_of_step_with_tuples"] == 0)
+    inv["no_row_takes_another_points_native_y"] = (
+        c["resolved_links_with_wrong_native_y_index"] == 0)
+    inv["no_case_data_tuple_integrity_violations"] = (
+        c["case_data_tuple_integrity_violations"] == 0)
     inv["no_resolved_link_hides_an_available_native_result"] = (
         c["resolved_link_with_available_native_y_but_empty_result"] == 0)
     inv["no_point_links_outside_the_series_case_set"] = (

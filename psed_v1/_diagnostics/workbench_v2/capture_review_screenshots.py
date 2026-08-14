@@ -364,6 +364,28 @@ def main(outdir):
             document.querySelector('#workspace').scrollTop = 0;
         }""")
         shot("25_case_data_native_and_canonical")
+
+        # A source point carrying no observation. This corpus has none (0 of 4027), so
+        # the state is injected and the shot is labelled: it is not a corpus claim.
+        reset()
+        pg.evaluate("""() => {
+            const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                           && SERIES[k].native_result_status === "NATIVE_ONLY"
+                           && SERIES[k].native_points.points.length >= 4);
+            const links = PCL[id].links.filter(l => l.resolution_status === "RESOLVED");
+            const v = links[1].point_index;
+            SERIES[id].native_points.points[v].y = null;
+            SERIES[id].native_points.y.values[v] = null;
+            tray.length = 0; tray.push(id); mode = "case"; render();
+            const b = document.createElement("div");
+            b.textContent = "FIXTURE \u2014 not corpus. One source point's observation is "
+                + "blanked to show that its neighbours keep their own values.";
+            b.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99;"
+                + "padding:6px 12px;background:#8a6100;color:#fff;font:12px sans-serif";
+            document.body.appendChild(b);
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("26_missing_observation_row_FIXTURE")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))
