@@ -1,0 +1,698 @@
+{
+  "by_classification": {
+    "CONDITION_CASE_NOT_PHYSICAL_RUN": 1,
+    "EXPECTED_CARDINALITY": 3,
+    "INSUFFICIENT_EVIDENCE": 1,
+    "MEASUREMENT_OVERMINTING": 6,
+    "RESULT_SERIES_SPANS_MULTIPLE_CASES": 22
+  },
+  "conflicts": [
+    {
+      "classification": "EXPECTED_CARDINALITY",
+      "confidence": "medium",
+      "entity_ids": [
+        "CASE-10.103-016"
+      ],
+      "entity_type": "ExperimentalCase",
+      "n_distinct_acts": 3,
+      "n_measurements": 3,
+      "n_runs": 0,
+      "n_samples": 0,
+      "n_series": 3,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "MULTIPLE_MEASURANDS"
+      ],
+      "relation": "Case -> Measurement",
+      "source_evidence": "deposition_temperature=100|precursor=HDMP|temperature=300|material=Pt|geometry=planar"
+    },
+    {
+      "classification": "EXPECTED_CARDINALITY",
+      "confidence": "medium",
+      "entity_ids": [
+        "CASE-10.103-021"
+      ],
+      "entity_type": "ExperimentalCase",
+      "n_distinct_acts": 3,
+      "n_measurements": 3,
+      "n_runs": 0,
+      "n_samples": 0,
+      "n_series": 3,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "MULTIPLE_MEASURANDS"
+      ],
+      "relation": "Case -> Measurement",
+      "source_evidence": "deposition_temperature=300|precursor=HDMP|material=Pt|geometry=planar"
+    },
+    {
+      "classification": "CONDITION_CASE_NOT_PHYSICAL_RUN",
+      "confidence": "high",
+      "entity_ids": [
+        "CASE-10.103-002"
+      ],
+      "entity_type": "ExperimentalCase",
+      "n_distinct_acts": 15,
+      "n_measurements": 15,
+      "n_runs": 1,
+      "n_samples": 6,
+      "n_series": 15,
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "MULTIPLE_PHYSICAL_SAMPLES",
+        "MULTIPLE_FIGURE_REPRESENTATIONS",
+        "RUN_LINK_PARTIAL"
+      ],
+      "relation": "Case -> Measurement",
+      "source_evidence": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor=TMA|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|pulse_time=0.1|purge_time=4|working_pressure=3|material=Al2O3|geometry=lateral_channel"
+    },
+    {
+      "classification": "EXPECTED_CARDINALITY",
+      "confidence": "medium",
+      "entity_ids": [
+        "CASE-10.114-002"
+      ],
+      "entity_type": "ExperimentalCase",
+      "n_distinct_acts": 4,
+      "n_measurements": 4,
+      "n_runs": 0,
+      "n_samples": 0,
+      "n_series": 3,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "MULTIPLE_MEASURANDS"
+      ],
+      "relation": "Case -> Measurement",
+      "source_evidence": "cycle_number=200|deposition_temperature=200|material=?|geometry=planar"
+    },
+    {
+      "cases": [
+        "CASE-10.103-001",
+        "CASE-10.103-002",
+        "CASE-10.103-003",
+        "CASE-10.103-004",
+        "CASE-10.103-005"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1038_am.2016.182__Fig1a__exp01"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 5,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-006",
+        "CASE-10.103-007",
+        "CASE-10.103-008",
+        "CASE-10.103-009",
+        "CASE-10.103-010"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1038_am.2016.182__Fig1a__exp02"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 5,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-015",
+        "CASE-10.103-016",
+        "CASE-10.103-017",
+        "CASE-10.103-018",
+        "CASE-10.103-019",
+        "CASE-10.103-020",
+        "CASE-10.103-021"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1038_am.2016.182__Fig2a__exp01"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 7,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-022",
+        "CASE-10.103-023",
+        "CASE-10.103-024",
+        "CASE-10.103-025"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1038_am.2016.182__Fig2a__exp02"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 4,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-015",
+        "CASE-10.103-016",
+        "CASE-10.103-017",
+        "CASE-10.103-018",
+        "CASE-10.103-019",
+        "CASE-10.103-020",
+        "CASE-10.103-021"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1038_am.2016.182__Fig2b__exp01"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 7,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-023",
+        "CASE-10.103-024",
+        "CASE-10.103-025"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1038_am.2016.182__Fig2b__exp02"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 3,
+      "paper": "10.1038_am.2016.182",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-001",
+        "CASE-10.103-002",
+        "CASE-10.103-003",
+        "CASE-10.103-004",
+        "CASE-10.103-005",
+        "CASE-10.103-006",
+        "CASE-10.103-007",
+        "CASE-10.103-008",
+        "CASE-10.103-009",
+        "CASE-10.103-010"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1039_d0ra09876k__Fig3a__exp01"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 10,
+      "paper": "10.1039_d0ra09876k",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-011",
+        "CASE-10.103-012",
+        "CASE-10.103-013",
+        "CASE-10.103-014",
+        "CASE-10.103-015",
+        "CASE-10.103-016",
+        "CASE-10.103-017",
+        "CASE-10.103-018",
+        "CASE-10.103-019",
+        "CASE-10.103-020"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1039_d0ra09876k__Fig3a__exp02"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 10,
+      "paper": "10.1039_d0ra09876k",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-022",
+        "CASE-10.103-023",
+        "CASE-10.103-024",
+        "CASE-10.103-025",
+        "CASE-10.103-026"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1039_d0ra09876k__Fig3c__exp01"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 5,
+      "paper": "10.1039_d0ra09876k",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-027",
+        "CASE-10.103-028",
+        "CASE-10.103-029",
+        "CASE-10.103-030",
+        "CASE-10.103-031"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1039_d0ra09876k__Fig3c__exp02"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 5,
+      "paper": "10.1039_d0ra09876k",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-032",
+        "CASE-10.103-033",
+        "CASE-10.103-034"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1039_d0ra09876k__Fig3d__exp01"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 3,
+      "paper": "10.1039_d0ra09876k",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.103-035",
+        "CASE-10.103-036",
+        "CASE-10.103-037",
+        "CASE-10.103-038"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1039_d0ra09876k__Fig3d__exp02"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 4,
+      "paper": "10.1039_d0ra09876k",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-004",
+        "CASE-10.114-005",
+        "CASE-10.114-006",
+        "CASE-10.114-007",
+        "CASE-10.114-008",
+        "CASE-10.114-009"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4a"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 6,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-010",
+        "CASE-10.114-011",
+        "CASE-10.114-012",
+        "CASE-10.114-013",
+        "CASE-10.114-014",
+        "CASE-10.114-015"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4b"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 6,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-016",
+        "CASE-10.114-017",
+        "CASE-10.114-018",
+        "CASE-10.114-019",
+        "CASE-10.114-020",
+        "CASE-10.114-021"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4c"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 6,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-022",
+        "CASE-10.114-023",
+        "CASE-10.114-024",
+        "CASE-10.114-025"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4d"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 4,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-026",
+        "CASE-10.114-027",
+        "CASE-10.114-028",
+        "CASE-10.114-029"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4e"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 4,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-030",
+        "CASE-10.114-031",
+        "CASE-10.114-032",
+        "CASE-10.114-033"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4f"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 4,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-034",
+        "CASE-10.114-035",
+        "CASE-10.114-036",
+        "CASE-10.114-037",
+        "CASE-10.114-038",
+        "CASE-10.114-039"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4g"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 6,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-040",
+        "CASE-10.114-041",
+        "CASE-10.114-042",
+        "CASE-10.114-043"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig4h"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 4,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-044",
+        "CASE-10.114-045",
+        "CASE-10.114-046",
+        "CASE-10.114-047",
+        "CASE-10.114-048",
+        "CASE-10.114-049",
+        "CASE-10.114-050",
+        "CASE-10.114-051"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig5a"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 8,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "cases": [
+        "CASE-10.114-044",
+        "CASE-10.114-045",
+        "CASE-10.114-046",
+        "CASE-10.114-047",
+        "CASE-10.114-048",
+        "CASE-10.114-049",
+        "CASE-10.114-050",
+        "CASE-10.114-051"
+      ],
+      "classification": "RESULT_SERIES_SPANS_MULTIPLE_CASES",
+      "confidence": "medium",
+      "entity_ids": [
+        "M::10.1149_2.067203jes__Fig5b"
+      ],
+      "entity_type": "Measurement",
+      "n_cases": 8,
+      "paper": "10.1149_2.067203jes",
+      "reasons": [
+        "SWEEP_SERIES_SPANS_CASES"
+      ],
+      "relation": "Measurement -> Case",
+      "source_evidence": ""
+    },
+    {
+      "classification": "MEASUREMENT_OVERMINTING",
+      "confidence": "high",
+      "entity_ids": [
+        "M::10.1039_d0cp03358h__Fig9a__exp01",
+        "M::10.1039_d0cp03358h__Fig9b__exp01",
+        "M::10.1039_d0cp03358h__Fig9c__exp01"
+      ],
+      "entity_type": "Measurement",
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "one observing act rendered in several panels"
+      ],
+      "relation": "Measurement -> Measurement",
+      "source_evidence": "represents_same_measurement_as is persisted on the record"
+    },
+    {
+      "classification": "MEASUREMENT_OVERMINTING",
+      "confidence": "high",
+      "entity_ids": [
+        "M::10.1039_d0cp03358h__Fig9a__exp02",
+        "M::10.1039_d0cp03358h__Fig9b__exp02",
+        "M::10.1039_d0cp03358h__Fig9c__exp02"
+      ],
+      "entity_type": "Measurement",
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "one observing act rendered in several panels"
+      ],
+      "relation": "Measurement -> Measurement",
+      "source_evidence": "represents_same_measurement_as is persisted on the record"
+    },
+    {
+      "classification": "MEASUREMENT_OVERMINTING",
+      "confidence": "high",
+      "entity_ids": [
+        "M::10.1039_d0cp03358h__Fig9a__exp03",
+        "M::10.1039_d0cp03358h__Fig9b__exp03",
+        "M::10.1039_d0cp03358h__Fig9c__exp03"
+      ],
+      "entity_type": "Measurement",
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "one observing act rendered in several panels"
+      ],
+      "relation": "Measurement -> Measurement",
+      "source_evidence": "represents_same_measurement_as is persisted on the record"
+    },
+    {
+      "classification": "MEASUREMENT_OVERMINTING",
+      "confidence": "high",
+      "entity_ids": [
+        "M::10.1039_d0cp03358h__Fig9d__exp01",
+        "M::10.1039_d0cp03358h__Fig9e__exp01",
+        "M::10.1039_d0cp03358h__Fig9f__exp01"
+      ],
+      "entity_type": "Measurement",
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "one observing act rendered in several panels"
+      ],
+      "relation": "Measurement -> Measurement",
+      "source_evidence": "represents_same_measurement_as is persisted on the record"
+    },
+    {
+      "classification": "MEASUREMENT_OVERMINTING",
+      "confidence": "high",
+      "entity_ids": [
+        "M::10.1039_d0cp03358h__Fig9d__exp02",
+        "M::10.1039_d0cp03358h__Fig9e__exp02",
+        "M::10.1039_d0cp03358h__Fig9f__exp02"
+      ],
+      "entity_type": "Measurement",
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "one observing act rendered in several panels"
+      ],
+      "relation": "Measurement -> Measurement",
+      "source_evidence": "represents_same_measurement_as is persisted on the record"
+    },
+    {
+      "classification": "MEASUREMENT_OVERMINTING",
+      "confidence": "high",
+      "entity_ids": [
+        "M::10.1039_d0cp03358h__Fig9d__exp03",
+        "M::10.1039_d0cp03358h__Fig9e__exp03",
+        "M::10.1039_d0cp03358h__Fig9f__exp03"
+      ],
+      "entity_type": "Measurement",
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "one observing act rendered in several panels"
+      ],
+      "relation": "Measurement -> Measurement",
+      "source_evidence": "represents_same_measurement_as is persisted on the record"
+    },
+    {
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "confidence": "high",
+      "entity_ids": [
+        "CASE-10.103-002"
+      ],
+      "entity_type": "ExperimentalCase",
+      "paper": "10.1039_d0cp03358h",
+      "reasons": [
+        "case carries 6 samples but conditions are stored only on the case, so per-realization variation cannot be checked"
+      ],
+      "relation": "Case -> Sample conditions",
+      "source_evidence": null
+    }
+  ],
+  "count": 33
+}

@@ -1,0 +1,22 @@
+{
+  "can_case_measurement_series_be_rendered_as_a_tree": {
+    "answer": "NO",
+    "reason": "22 Measurements link to more than one Case (max 10), so the relation is N:M and a tree must duplicate or drop nodes"
+  },
+  "can_counts_under_case_cards_be_treated_as_unique_entity_counts": {
+    "answer": "NO",
+    "reason": "summing measurements under cases counts Case-Measurement incidences (218) rather than unique Measurements (247)"
+  },
+  "can_experimentalcase_be_labelled_Experiment": {
+    "answer": "NO",
+    "reason": "one case carries up to 6 physical Samples under a single nominal fingerprint, so it is a condition-defined case, not a physical experiment or run"
+  },
+  "can_measurement_be_presented_as_a_real_observing_act": {
+    "answer": "CONDITIONALLY",
+    "reason": "247 Measurement entities reduce to 235 distinct acts once represents_same_measurement_as is applied; the remainder are one curve each, so the entity is per-curve, not per-act"
+  },
+  "can_one_resultseries_be_shown_under_one_case_only": {
+    "answer": "NO",
+    "reason": "a series reaches its cases through its producer, and a producer with several cases gives the series several cases; picking the first silently hides the rest"
+  }
+}
