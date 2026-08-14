@@ -877,24 +877,33 @@ const PCL = M.point_case_links || {};
 // number, and suppressing it answered "what was observed here" with silence.
 function nativeY(s) { return ((s.native_points || {}).y) || {}; }
 function nativeX(s) { return ((s.native_points || {}).x) || {}; }
+// A point is the PAIR. Reading y out of a separately compacted y array would let a later
+// observation slide into an earlier point's index and be reported against the wrong
+// Condition Case, so the source tuple is the only route to an observation.
+function nativePoint(s, i) {
+  const pts = (s.native_points || {}).points || [];
+  return (i >= 0 && i < pts.length) ? pts[i] : null;
+}
 function caseDataRows(sid) {
   const s = SERIES[sid], rec = PCL[sid] || {};
   const aligned = (s.point_index_contract || {}).aligned;
-  const nv = nativeY(s).values || [];
   const cv = (s.y_canonical || {}).values || [];
   return (rec.links || []).filter(l => l.resolution_status === "RESOLVED").map(l => {
     const i = l.point_index;
-    // the index is only followed into an array proven to be the same point vector
-    const hasN = aligned && i < nv.length && nv[i] !== null && nv[i] !== undefined;
+    const t = aligned ? nativePoint(s, i) : null;
+    const hasN = !!t && t.y !== null && t.y !== undefined;
     const hasC = aligned && i < cv.length && cv[i] !== null && cv[i] !== undefined;
     return {sid, case_id: l.case_id, point_index: i,
             x: l.point_x_value, x_unit: l.point_x_unit,
-            y_native: hasN ? nv[i] : null, y_native_unit: nativeY(s).unit,
+            x_native: t ? t.x : null,
+            y_native: hasN ? t.y : null, y_native_unit: nativeY(s).unit,
             y_native_label: nativeY(s).label,
             y_canonical: hasC ? cv[i] : null,
             y_canonical_unit: (s.y_canonical || {}).unit,
             y_canonical_available: hasC,
-            result_status: s.native_result_status,
+            // availability is a property of THIS point, not of the series
+            native_result_available: hasN,
+            series_result_status: s.native_result_status,
             point_case_resolution_status: l.resolution_status,
             link: l};
   });
@@ -1022,8 +1031,9 @@ function drawCaseData() {
           ${r.y_canonical_available
             ? `· canonical ${esc(fmtNum(r.y_canonical))} ${esc(r.y_canonical_unit||"")}`
             : '· <span class="warn">canonical representation unresolved</span>'}<br>
-          native x ${esc(String((nativeX(s).values||[])[r.point_index]))}
-          ${esc(nativeX(s).unit||"")} · source ${esc((nativeY(s).quantity)||"")}<br>
+          source point index ${r.point_index} · native x
+          ${esc(String(r.x_native))} ${esc(nativeX(s).unit||"")} · source
+          ${esc((nativeY(s).quantity)||"")}<br>
           <b>derived relation</b><br>
           x ${esc(String(r.link.point_x_value))} ${esc(r.link.point_x_unit||"")} ↔ case
           condition ${esc(String(r.link.case_condition_value))}
@@ -1050,7 +1060,7 @@ const fmtNum = v => (v === null || v === undefined) ? "" :
 // Native first, canonical beside it when it exists. "unresolved" is reserved for the
 // case where no observation was persisted at all -- not for a missing canonical form.
 function fmtResult(r) {
-  if (r.y_native !== null && r.y_native !== undefined) {
+  if (r.native_result_available) {
     const n = `${esc(fmtNum(r.y_native))}${r.y_native_unit
       ? ` <span class="dim">${esc(r.y_native_unit)}</span>` : ""}`;
     return r.y_canonical_available

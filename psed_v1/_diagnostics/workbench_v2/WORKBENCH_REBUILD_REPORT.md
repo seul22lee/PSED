@@ -806,3 +806,282 @@ CSS. Unit-bearing headers no longer uppercase, and a test pins it.
 
 A resistivity sweep that read *result unresolved* on all seven rows now reads
 172, 147, 70, 30, 17, 19, 11 µΩ·cm.
+
+---
+
+# Final hardening: graph and range semantics
+
+An original-code review of the hardened workbench found five narrower defects. Four were
+places where a semantic distinction the frozen layers already carry was thrown away on the
+way to the screen; the fifth was a set of validation metrics that measured nothing.
+
+## A. Numeric range facets discarded species identity
+
+`range_fields()` derived a facet from `key.split("@")[0]`, so `pulse_time`,
+`pulse_time@TMA` and `pulse_time@H2O` collapsed into one box called *Pulse time*, and the
+browser resolved it with
+
+```js
+Object.keys(vals).find(k => k === r.id || k.indexOf(r.id + "@") === 0)
+```
+
+— the first key that happened to start with the field name. Which species a filter
+actually compared therefore depended on object key order. This is precisely the ambiguity
+the frozen condition-comparability layer exists to prevent, reintroduced at the last step.
+
+A range field is now the exact condition key and carries its own identity as data:
+
+```
+field_id         pulse_time@TMA
+quantity_id      pulse_time
+species_or_role  TMA
+display_label    TMA pulse time
+canonical_unit   s
+```
+
+`numeric_conditions()` emits `quantity` and `species` on every entry, so nothing
+downstream has to parse them back out of a string. The page addresses one key with
+`hasOwnProperty`, never a prefix. A field is offered on case coverage, and every qualified
+sibling of an offered quantity comes with it — showing an H2O pulse time without its TMA
+counterpart is its own kind of misleading. An unqualified field standing beside qualified
+siblings is labelled *(species unattributed)* rather than being allowed to read as all of
+them. Role-prefixed composites (`precursor_pulse_time@TMA`, `coreactant_purge_time@H2O`)
+are preserved whole.
+
+19 range fields are now offered, 10 of them species-qualified. 42 Condition Cases carry
+more than one species for the same base quantity, and 3 base quantities are split by
+species corpus-wide — so the old prefix lookup was ambiguous in 42 (field, case)
+combinations, which is the counterfactual the validation now reports.
+
+## B. Multi-case ResultSeries had an invented primary case
+
+The previous repair stopped a sweep being listed under all ten of its cases by giving it a
+"home" — `case_ids[0]`. That is one entry, but it asserts a scientific primacy the data
+does not carry: the lowest case id is not the case a sweep belongs to.
+
+Placement is now decided in the model, and there are three populations, because they are
+three different situations:
+
+- **case-local** (88 series) — exactly one Condition Case, shown inside it;
+- **multi-case sweep** (22 series) — a dedicated *Multi-case / sweep results* section, one
+  entry each, `placement_case_id: null`;
+- **no case** (121 series) — a producer with no case link, which is missing context, not a
+  sweep.
+
+The series field is now named `all_case_ids`, because there is no other kind.
+
+A Condition Case shows *Related sweep results* — a cross-reference, not a result card.
+
+## C. Matching cases are distinguished from traversed cases
+
+A sweep may match a filter because one of the cases it traverses satisfies it. Presenting
+the other traversed cases as matches would be false. Each sweep entry now reports both
+populations, and lists every linked case with its own verdict:
+
+```
+Sweep result RS::10.1039_d0ra09876k::F3::a::0::f1p0
+spans 10 cases · 4 match filters · 6 more traversed
+
+CASE-10.103-001  Y2O3 · 100 °C   traversed only
+...
+CASE-10.103-007  Y2O3 · 250 °C   matches
+CASE-10.103-010  Y2O3 · 325 °C   matches
+```
+
+under a *deposition temperature ≥ 500 K* filter — 226.85 °C, so exactly the four cases at
+250 °C and above match. Point-to-case mapping remains reported as unresolved: knowing
+which cases match does not reveal which points came from which case.
+
+The tray and the condition table follow the same rule. A condition that differs across a
+sweep's cases is summarised, never taken from one of them:
+
+```
+deposition_temperature   varies  100 °C … 325 °C (10 values)
+pulse_time               10 s                        (identical across the span)
+```
+
+## D. Per-case producer counts conflated the two kinds
+
+The global counts were already partitioned, but each case still said "N acts" under a
+heading reading *Measurement acts with matching results*. Cases now carry
+`measurement_act_ids` and `simulation_run_ids`, and render separate **Measurements** and
+**Simulations** sections, each shown only when non-empty. Producer kind comes from the
+act's entity kind, never from the series' `data_source` label.
+
+One corpus fact this exposes, reported rather than papered over: **all 34
+SimulationRun-produced series carry no Condition Case link at all**, so no real case in
+this corpus contains both kinds. The partition is therefore exercised by giving a real
+case a simulation producer inside the live page and re-rendering through the real code
+path — nothing is asserted about the corpus by doing so. The six XPS MeasurementActs in
+`10.1039_d0ra09876k` whose series are labelled simulated are left exactly as they are;
+that is an extraction-provenance question, not a workbench one.
+
+## E. Validation metrics were literal zeros
+
+Four fields claiming to be corpus-wide violation counts were assigned `0`. They are now
+derived by replaying the page's own decision functions in Python and checking the
+invariant each is supposed to guarantee, exhaustively:
+
+| metric | how it is computed | value |
+|---|---|---|
+| `false_common_native_targets` | every series pair, the UI's own `commonTargets` rule, then checks all participants mean the same (quantity, normalization, dimension, unit) | **0** |
+| `key_based_false_common_targets` | the same sweep under the *pre-repair* key-intersection rule | **1784** |
+| `incompatible_plotted_pair_violations` | every pair offered an overlay must have a `DIRECT_PROFILE`/`TRANSFORMABLE_PROFILE` verdict | **0** |
+| `multi_series_target_violations` | every trio within every target's member set — 25 622 sets checked | **0** |
+| `duplicate_primary_entries` | the actual UI grouping, counting series with more than one entry | **0** |
+| `multi_case_series_with_primary_case` | multi-case series carrying a `placement_case_id` | **0** |
+| `qualified_range_fields_losing_qualifier` | offered fields whose id does not encode the species their own entries carry | **0** |
+| `ambiguous_first_match_range_lookups` | offered fields that could reach more than one condition key | **0** |
+| `prefix_match_ambiguous_lookups_avoided` | the same count under the *old* prefix rule | **42** |
+
+The two counterfactuals matter: a check that can only return zero is not a check. 1784 and
+42 are what the pre-repair rules would have produced on this corpus.
+
+Each is a build gate, not a report: `invariants_ok` includes every one of them, and
+`build_workbench_model.py` exits non-zero when any fails.
+
+## F. The static audit could pass by accident
+
+The no-first-case test stripped comments with `re.sub(r"//.*|/\*.*?\*/", "", src, re.S)`.
+With `DOTALL`, the single-line branch `//.*` consumes every line after the first comment
+it meets — so the audit ran against a file with most of its code deleted and passed by
+having nothing left to look at. Comment stripping now goes through `tokenize` for Python
+and two separate regexes for JS/HTML: `/\*.*?\*/` with `DOTALL`, `//[^\n]*` without. The
+suite asserts that the stripper keeps the code it is auditing, and that the broken pattern
+would have hidden the very thing the test looks for.
+
+The audit covers the builder, the template, and the generated HTML.
+
+## Tests
+
+`tests/test_workbench_v2.py`: **278 assertions**, up from 149. New sections:
+
+- **N8** species-qualified range identity (field ids, labels, no `split("@")` anywhere in
+  production code, exact-key addressing, the counterfactual ambiguity count);
+- **N9** per-case producer partition by entity kind, plus the corpus fact it rests on;
+- **N10** every violation metric is computed rather than literal, has teeth, and is a gate;
+- **N11/N12** sweep condition summarisation and matching-vs-traversed case membership;
+- **Q** (Chromium) — species independence driven on the real page including a controlled
+  0.1 s / 2 s and 500 ms / 2 s fixture, a sweep under a partial filter, absence of any
+  primary/home-case text, the condition summary, the producer partition, and tray
+  persistence for a multi-case series.
+
+Full project suite: 892 workbench-and-science assertions passing across 14 files. The four
+pre-existing `tests/canonical_layer` failures were re-confirmed identical at `25f725b` via
+a read-only worktree: **PRE_EXISTING, UNCHANGED, NOT WORKBENCH DRIFT**.
+
+## Scientific drift
+
+Model-to-model comparison against `25f725b` over case ids and fingerprints, act kinds and
+membership, ResultSeries ids, case membership sets, native x/y points, target ids, pair
+verdicts and canonical numeric values: **UNCHANGED on every one**.
+
+---
+
+# Native point tuple integrity
+
+## Root cause
+
+The builder derived the native arrays by filtering each axis on its own:
+
+```python
+x_values = [p[0] for p in raw_points if p[0] is not None]
+y_values = [p[1] for p in raw_points if p[1] is not None]
+```
+
+A point is the *pair*. Compacting the axes separately renumbers them against each other,
+so with
+
+```
+index 0 = [1, 10]      index 1 = [2, null]      index 2 = [3, 30]
+```
+
+the arrays become `x = [1, 2, 3]`, `y = [10, 30]`, and reading `y[1]` for point 1 returns
+**30** — point 2's observation, reported against point 1's Condition Case. Silent, and
+wrong in the way that matters most: the number is real, it is just attached to the wrong
+experiment.
+
+## New authority
+
+`native_points.points` is the identity: one entry per extracted point, index preserved.
+
+```json
+{"points": [{"x": 1.0, "y": 10.0}, {"x": 2.0, "y": null}, {"x": 3.0, "y": 30.0}],
+ "n_points": 3, "x_available": 3, "y_available": 2,
+ "x": {"label": …, "unit": …, "values": [1.0, 2.0, 3.0]},
+ "y": {"label": …, "unit": …, "values": [10.0, null, 30.0]}}
+```
+
+The per-axis arrays are kept for readers that want one axis, but as straight projections
+of the tuple list with **positional placeholders**, so index *i* means point *i* in both.
+`x_available` / `y_available` are counts and produce no coordinate array. The page reaches
+an observation only through `nativePoint(s, i)`; nothing indexes a compacted array.
+
+## Corpus audit — latent, not active
+
+| | |
+|---|---|
+| native point tuples | **4027** |
+| points missing x | **0** |
+| points missing y | **0** |
+| points missing both | **0** |
+| series with an interior gap | **0** |
+| series at alignment risk under the old compaction | **0** |
+
+**This corpus never exercises the unsafe path.** The defect was a latent generic integrity
+defect in the implementation, not an observed corruption — reported as such rather than
+dressed up as a caught failure. Of the 69 resolved links, 0 lack a y at their source index,
+so the previously reported `case_data_native_results_available = 69` was not an overcount
+and needs no correction.
+
+## The contract, end to end
+
+```
+raw.points[i]  →  native_points.points[i]  →  point_case_link.point_index = i  →  row
+```
+
+`point_index_contract` now verifies tuple identity rather than lengths: one canonical
+value per source tuple, and each canonical x the same extracted number as **its own
+tuple's** x, reporting the first offending index. A source point with no x is explicitly
+unverifiable — it cannot be identified positionally — and says so rather than being
+skipped. The `1e-9` agreement is retained and still documented as comparing two encodings
+of one source point (58.0 nm against 0.058 µm), never two distinct observations.
+
+Row-level availability is now distinct from series-level: a series stays `NATIVE_ONLY`
+while one of its points reads *"observed result value not persisted"*. One missing
+observation never downgrades the mapping status or its neighbours.
+
+## Plot versus case data
+
+The plot draws `zip(canonical_x, canonical_y)` filtered on **whole pairs** — an incomplete
+point cannot be drawn, so it is omitted. Case Data keeps the row and states that the
+observation is absent. Both are correct for their purpose, and neither filters an axis
+alone.
+
+## Metrics
+
+```
+native_point_tuples_total                     4027
+native_points_missing_x / _y / _both          0 / 0 / 0
+series_with_internal_missing_x / _y           0 / 0
+independent_compaction_alignment_risk_series  0
+native_axis_arrays_out_of_step_with_tuples    0   <- build gate
+resolved_links_with_missing_native_y          0
+resolved_links_with_wrong_native_y_index      0   <- build gate
+case_data_tuple_integrity_violations          0   <- build gate
+```
+
+## Fixtures
+
+The corpus cannot demonstrate the failure, so it is demonstrated by construction — in the
+model layer and, injected into the live page, in the browser:
+
+```
+[1,10] [2,null] [3,30]   → 1→10 · 2→"not persisted" · 3→30, never 2→30
+[1,10] [null,20] [3,30]  → point 1 unverifiable, its y stays on index 1
+[3,8] [1,3] [2,7]        → sorted display 1→3, 2→7, 3→8, source indices 1, 2, 0
+```
+
+plus interior gaps in a longer vector, and a live-page fixture blanking one observation in
+a native-only series: the blanked row reads *not persisted*, its neighbour keeps its own
+value, and no later row shifts.
