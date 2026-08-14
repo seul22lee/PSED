@@ -1,0 +1,45 @@
+{
+  "DepositionRun": {
+    "case_link_semantics": "RUNS_OBSERVED_AMONG_CASE_REALIZATIONS",
+    "label": "Deposition run",
+    "optional": true
+  },
+  "ExperimentalCase": {
+    "label": "Condition Case",
+    "may_have": "multiple physical realizations, multiple measurements",
+    "must_not_be_called": "Experiment, Sample, DepositionRun",
+    "semantics": "a condition-defined experimental state or design point"
+  },
+  "Measurement": {
+    "label": "Extracted observation record",
+    "semantics": "legacy per-curve representation; ids remain addressable"
+  },
+  "MeasurementAct": {
+    "grouped_by": "represents_same_measurement_as, transitive closure only",
+    "label": "Measurement act",
+    "semantics": "canonical observing-act grouping over Measurement records"
+  },
+  "ResultSeries": {
+    "case_ids": "0..N, never first-picked",
+    "helper": "cases_for_result_series / single_case_for_series",
+    "label": "Result series"
+  },
+  "Sample": {
+    "label": "Physical realization",
+    "optional": true,
+    "semantics": "a physical specimen, only when positive evidence identifies it"
+  },
+  "counts_must_be_named": [
+    "Condition Cases",
+    "Physical Samples",
+    "MeasurementActs",
+    "ResultSeries"
+  ],
+  "filter_scopes": {
+    "material/precursor/process conditions": "ConditionCase",
+    "measurement technique/settings": "MeasurementAct / Measurement",
+    "physical specimen identifiers": "Sample",
+    "result quantity/normalization/data source": "ResultSeries"
+  },
+  "navigation": "graph-aware: Cases <-> Samples <-> MeasurementActs <-> ResultSeries, plus ResultSeries -> all associated Condition Cases"
+}
