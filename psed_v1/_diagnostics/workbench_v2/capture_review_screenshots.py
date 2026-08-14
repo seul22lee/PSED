@@ -30,7 +30,9 @@ def main(outdir):
         reset = lambda: pg.evaluate("""() => {
             tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
             RANGES.forEach(r => range[r.id] = {min:"",max:""});
-            profileOnly = false; page = 0; render();
+            profileOnly = false; page = 0; mode = "plot"; render();
+            // a fixture banner must never survive into a shot of real corpus data
+            document.querySelectorAll('[data-fixture-banner]').forEach(n => n.remove());
         }""")
         shot("01_initial")
 
@@ -146,7 +148,9 @@ def main(outdir):
         reset = lambda: pg.evaluate("""() => {
             tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
             RANGES.forEach(r => range[r.id] = {min:"",max:""});
-            profileOnly = false; page = 0; render();
+            profileOnly = false; page = 0; mode = "plot"; render();
+            // a fixture banner must never survive into a shot of real corpus data
+            document.querySelectorAll('[data-fixture-banner]').forEach(n => n.remove());
         }""")
 
         # facet option counts while a case-scoped constraint is active: the counts must
@@ -212,6 +216,7 @@ def main(outdir):
             b.id = "fixture-banner";
             b.textContent = "FIXTURE DATA \u2014 not corpus. One ResultSeries over two "
                 + "contradictory Condition Cases: geometry A at 400 K, geometry B at 550 K.";
+            b.setAttribute("data-fixture-banner", "1");
             b.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99;"
                 + "padding:6px 12px;background:#8a6100;color:#fff;font:12px sans-serif";
             document.body.appendChild(b);
@@ -380,6 +385,7 @@ def main(outdir):
             const b = document.createElement("div");
             b.textContent = "FIXTURE \u2014 not corpus. One source point's observation is "
                 + "blanked to show that its neighbours keep their own values.";
+            b.setAttribute("data-fixture-banner", "1");
             b.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99;"
                 + "padding:6px 12px;background:#8a6100;color:#fff;font:12px sans-serif";
             document.body.appendChild(b);
@@ -426,12 +432,35 @@ def main(outdir):
             bn.textContent = "FIXTURE \u2014 not corpus. One source point's x is removed so "
                 + "canonical x no longer indexes the same points; no point may then be "
                 + "reported as resolved.";
+            bn.setAttribute("data-fixture-banner", "1");
             bn.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99;"
                 + "padding:6px 12px;background:#8a6100;color:#fff;font:12px sans-serif";
             document.body.appendChild(bn);
             document.querySelector('#workspace').scrollTop = 0;
         }""")
         shot("29_unproven_source_index_FIXTURE")
+
+        # a real curve that no page could draw before: canonical x never produced
+        reset()
+        pg.evaluate("""() => {
+            const id = Object.keys(SERIES).find(k => !SERIES[k].x_canonical.values.length
+                           && SERIES[k].x_representations.native_source
+                           && SERIES[k].native_points.points.length >= 5);
+            tray.length = 0; tray.push(id); mode = "plot"; render();
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("30_native_source_plot_no_canonical_x")
+
+        # two source axes whose units never resolved: no false shared axis
+        reset()
+        pg.evaluate("""() => {
+            const blanks = Object.keys(SERIES).filter(k => {
+                const r = SERIES[k].x_representations.native_source;
+                return r && !r.unit; });
+            tray.length = 0; tray.push(blanks[0], blanks[1]); mode = "plot"; render();
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("31_unresolved_units_no_false_overlay")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))

@@ -665,15 +665,19 @@ function commonTargets(axis) {
   let common = null;
   tray.forEach(sid => {
     const reps = SERIES[sid][key] || {};
+    // a display-only source representation has no shared target: two curves whose units
+    // never resolved are not thereby in the same units
     const ok = new Set(Object.values(reps)
-      .filter(r => r.available && r.values).map(r => r.target_id));
+      .filter(r => r.available && r.values && r.overlay_authorized !== false)
+      .map(r => r.target_id).filter(Boolean));
     common = common===null ? ok : new Set([...common].filter(t=>ok.has(t)));
   });
   return [...(common||[])].sort();
 }
 function repByTarget(sid, axis, tid) {
   const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
-  return Object.values(reps).find(r => r.target_id === tid && r.available && r.values) || null;
+  return Object.values(reps).find(r => r.target_id === tid && r.available && r.values
+                                       && r.overlay_authorized !== false) || null;
 }
 function drawCompare() {
   const box = $("#cmp");
@@ -738,11 +742,18 @@ function drawCompare() {
 function repOpts(axis, common) {
   const cur = axis==="x"?TX:TY;
   const seen = new Map();
+  let displayOnly = 0;
   tray.forEach(sid => {
     const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"]||{};
-    Object.values(reps).forEach(r => { if(!seen.has(r.target_id)) seen.set(r.target_id,r); });
+    Object.values(reps).forEach(r => {
+      // a display-only source representation is not an overlay option; it has no target
+      if (r.overlay_authorized === false || !r.target_id) { displayOnly++; return; }
+      if(!seen.has(r.target_id)) seen.set(r.target_id,r);
+    });
   });
-  if (!seen.size) return '<div class="dim">no representation</div>';
+  if (!seen.size) return '<div class="dim">no shared representation'
+    + (displayOnly ? ' \u2014 the selected source axes have no resolved unit, so they '
+       + 'can be viewed individually but not overlaid' : '') + '</div>';
   const allowed = physicalOverlayAllowed();
   const rows = [...seen.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([tid,r])=>{
     const ok = common.indexOf(tid)>=0;
@@ -756,6 +767,19 @@ function repOpts(axis, common) {
     '<div class="warn" style="font-size:10.5px;margin-top:5px">Every option is disabled: '
     + 'the frozen pair verdicts do not authorise a shared physical axis for this selection.'
     + '</div>');
+}
+function nativeSourceRep(sid, axis) {
+  const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
+  const r = reps.native_source;
+  return (r && r.display_available && r.values && r.values.length) ? r : null;
+}
+// Displaying ONE recorded curve asks nothing about shared axes. Requiring a common
+// semantic target for a single selection is what hid three quarters of this corpus
+// behind a canonicalisation failure.
+function singleSeriesNative() {
+  if (tray.length !== 1) return null;
+  const x = nativeSourceRep(tray[0], "x"), y = nativeSourceRep(tray[0], "y");
+  return (x && y && x.values.length === y.values.length) ? {sid: tray[0], x, y} : null;
 }
 function repFor(sid, axis) {
   const want = axis==="x"?TX:TY;
@@ -775,22 +799,29 @@ const chip = sid => `<span class="sw" style="background:${seriesColor(sid)}"></s
 function drawPlot() {
   const box = $("#plot"); if (!box) return;
   const data = [];
+  const solo = singleSeriesNative();
   tray.forEach(sid => {
     const s = SERIES[sid];
-    const xr = repFor(sid,"x"), yr = repFor(sid,"y");
+    let xr = repFor(sid,"x"), yr = repFor(sid,"y");
+    if ((!xr || !yr) && solo && solo.sid === sid) { xr = solo.x; yr = solo.y; }
     if (!xr || !yr || xr.values.length!==yr.values.length) return;
     data.push({sid, x:xr.values, y:yr.values, xr, yr});
   });
   const skipped = tray.length - data.length;
-  if (!data.length) { box.innerHTML = physicalOverlayAllowed()
-    ? '<div class="note bad">No selected series can materialise a shared semantic target, '
-      + 'so there is no axis they can honestly share.</div>'
-    : '<div class="note bad">Overlay disabled: the frozen pair verdicts do not authorise a '
-      + 'shared physical axis for this selection. Comparable quantity, normalization and '
-      + 'unit dimension are all required.</div>'; return; }
+  if (!data.length) {
+    const drawable = tray.filter(sid => nativeSourceRep(sid,"x") && nativeSourceRep(sid,"y"));
+    box.innerHTML = (tray.length > 1 && drawable.length)
+      ? `<div class="note">Shared overlay unavailable for this selection${
+          physicalOverlayAllowed() ? "" : ": the frozen pair verdicts do not authorise a "
+          + "shared physical axis"}. ${drawable.length} of ${tray.length} selected source
+          curves remain individually inspectable \u2014 select one to view its source
+          representation, or use <b>Case data</b> to compare by Condition Case.</div>`
+      : '<div class="note bad">No selected series carries coordinates that can be drawn.</div>';
+    return; }
   // the label may already carry its unit; the axis states it exactly once
+  // a source label usually already carries its unit, in its own punctuation
   const axLab = d => { const l = d.display_label || d.label || d.quantity_id || "";
-    return (d.unit && l.indexOf("["+d.unit+"]") < 0) ? `${l} [${d.unit}]` : l; };
+    return (d.unit && l.indexOf(d.unit) < 0) ? `${l} [${d.unit}]` : l; };
   const W=560,H=300,P=48;
   const xs=data.flatMap(d=>d.x), ys=data.flatMap(d=>d.y);
   const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);

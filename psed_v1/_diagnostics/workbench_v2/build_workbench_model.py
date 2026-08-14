@@ -182,13 +182,83 @@ def target_id(axis, quantity, normalization, unit):
 def _sig(axis, rep):
     tid, dim = target_id(axis, rep.get("quantity"), rep.get("normalization"),
                          rep.get("unit"))
+    if rep.get("representation_kind") == REP_NATIVE_SOURCE:
+        # a source representation is a shared target only when its unit named a
+        # dimension; otherwise it is display-only and must never intersect with another
+        # series' equally unresolved axis
+        tid, dim = rep.get("overlay_target_id"), rep.get("dimension")
+    rep.setdefault("representation_kind", REP_CANONICAL if rep.get("transform") is None
+                   else REP_TRANSFORMED)
+    rep.setdefault("display_available", bool(rep.get("values")))
+    rep.setdefault("overlay_target_id", tid)
+    rep.setdefault("overlay_authorized", tid is not None)
     rep["target_id"] = tid
     rep["quantity_id"] = rep.get("quantity")
     rep["normalization_id"] = rep.get("normalization")
     rep["dimension"] = dim
-    rep["display_label"] = rep.get("label")
+    rep.setdefault("display_label", rep.get("label"))
     rep["axis"] = axis
     return rep
+
+
+#: What a representation is FOR. Displaying one curve and putting two curves on one axis
+#: are different capabilities, and a single flag standing for both is what hid three
+#: quarters of this corpus behind a canonicalisation failure.
+REP_NATIVE_SOURCE = "NATIVE_SOURCE"
+REP_CANONICAL = "CANONICAL"
+REP_TRANSFORMED = "TRANSFORMED"
+
+
+def _overlay_target(axis, quantity, normalization, unit):
+    """A shared-axis identity, or None when the unit does not resolve to a dimension.
+
+    Two curves whose unit strings are both blank are not thereby in the same units; they
+    are two curves whose units are unknown. A representation that cannot name its
+    dimension can still be drawn on its own, and can never be a shared target.
+    """
+    if not unit:
+        return None, None
+    try:
+        dim = U.dimension_name(unit)
+    except Exception:
+        return None, None
+    tid, _ = target_id(axis, quantity, normalization, unit)
+    return tid, dim
+
+
+def native_source_representations(s):
+    """The source curve, drawn from the persisted tuples.
+
+    Only complete (x, y) tuples are plotted, filtered as whole pairs so a point never
+    contributes its x to one place and its y to another. This is display capability and
+    nothing else: canonicalisation, comparability and overlay authority are separate
+    questions asked elsewhere, and a failure in any of them has no bearing on whether a
+    single recorded curve can be shown.
+    """
+    np_ = s.get("native_points") or {}
+    pairs = [(t.get("x"), t.get("y")) for t in (np_.get("points") or [])
+             if t.get("x") is not None and t.get("y") is not None]
+    if not pairs:
+        return {}, {}
+    out = {}
+    for axis, meta, vals in (("x", np_.get("x") or {}, [a for a, _ in pairs]),
+                             ("y", np_.get("y") or {}, [b for _, b in pairs])):
+        unit = meta.get("unit") or None
+        tid, dim = _overlay_target(axis, meta.get("quantity"), None, unit)
+        label = meta.get("label") or meta.get("quantity") or axis
+        out[axis] = {"native_source": {
+            "id": "native_source", "representation_kind": REP_NATIVE_SOURCE,
+            "quantity": meta.get("quantity"), "unit": unit,
+            "label": label, "display_label": label,
+            "source_label": meta.get("label"), "source_unit": meta.get("unit"),
+            "unit_resolved": bool(tid),
+            "values": vals, "transform": None,
+            "available": True, "display_available": True,
+            "overlay_target_id": tid, "overlay_authorized": bool(tid),
+            "dimension": dim, "axis": axis,
+            "n_source_points": len(np_.get("points") or []),
+            "n_plotted_points": len(pairs)}}
+    return out["x"], out["y"]
 
 
 def derived_representations(s, cur):
@@ -200,10 +270,13 @@ def derived_representations(s, cur):
     """
     pts = cur["points"]
     if not pts:
-        return {}, {}
+        # No canonical pair does not mean no curve. The source observation is a
+        # representation in its own right, and returning nothing here is what made a
+        # perfectly recorded sweep unplottable.
+        return native_source_representations(s)
     xs = [p[0] for p in pts]
     ys = [p[1] for p in pts]
-    xr, yr = {}, {}
+    xr, yr = native_source_representations(s)
 
     xr["native"] = {"id": "native", "quantity": cur["x_quantity"], "unit": cur["x_unit"],
                     "label": "%s [%s]" % (cur["x_quantity"], cur["x_unit"]),
@@ -415,6 +488,8 @@ def build():
                                          if cu["y_quantity"] in RC._NORMALIZED_QUANTITIES
                                          else None)),
             }
+            # native_points is already on `rec` above, and it is what a source
+            # representation is built from
             xr, yr = derived_representations(rec, cu)
             rec["x_representations"] = {k: _sig("x", v) for k, v in xr.items()}
             rec["y_representations"] = {k: _sig("y", v) for k, v in yr.items()}
@@ -1752,6 +1827,43 @@ def validate(m, counts):
     c["case_data_tuple_integrity_violations"] = (
         wrong + c["native_axis_arrays_out_of_step_with_tuples"])
 
+    # ---- native display, independent of canonicalisation -----------------------------
+    def _ns(s2, ax):
+        return (s2.get(ax + "_representations") or {}).get("native_source")
+    with_pts = [s2 for s2 in series.values()
+                if any(t.get("x") is not None and t.get("y") is not None
+                       for t in (s2.get("native_points") or {}).get("points") or [])]
+    c["series_with_native_points"] = len(with_pts)
+    c["series_native_display_available"] = len(
+        [s2 for s2 in series.values() if _ns(s2, "x") and _ns(s2, "y")])
+    c["series_native_points_but_no_display_representation"] = len(
+        [s2 for s2 in with_pts if not (_ns(s2, "x") and _ns(s2, "y"))])
+    c["series_canonical_x_missing_but_native_display_available"] = len(
+        [s2 for s2 in with_pts if not (s2.get("x_canonical") or {}).get("values")
+         and _ns(s2, "x") and _ns(s2, "y")])
+    c["series_canonical_y_missing_but_native_display_available"] = len(
+        [s2 for s2 in with_pts if not (s2.get("y_canonical") or {}).get("values")
+         and _ns(s2, "x") and _ns(s2, "y")])
+    # the false negative this repair removes: a recorded curve no page could draw
+    c["single_series_native_display_false_negative_violations"] = len(
+        [s2 for s2 in with_pts if not (_ns(s2, "x") and _ns(s2, "y"))])
+    # a blank unit must never have become a shared target
+    c["blank_unit_treated_as_dimensionless_without_ontology_violations"] = len(
+        [1 for s2 in series.values()
+         for ax in ("x_representations", "y_representations")
+         for r in s2[ax].values()
+         if not r.get("unit") and r.get("overlay_target_id")])
+    c["native_source_representations_display_only"] = len(
+        [1 for s2 in series.values()
+         for ax in ("x_representations", "y_representations")
+         for r in s2[ax].values()
+         if r.get("representation_kind") == REP_NATIVE_SOURCE
+         and not r.get("overlay_authorized")])
+    c["series_plottable_before_repair"] = len(
+        [s2 for s2 in series.values()
+         if (s2.get("x_representations") or {}).get("native")
+         and (s2.get("y_representations") or {}).get("native")])
+
     c["point_index_contract_aligned_series"] = len(
         [1 for s2 in series.values()
          if (s2.get("point_index_contract") or {}).get("aligned")])
@@ -1768,9 +1880,17 @@ def validate(m, counts):
         for cc in cases.values())
 
     inv["measurement_acts_exclude_simulations"] = c["measurement_acts"] == 201
-    inv["every_representation_has_target_id"] = all(
+    # A representation offered for OVERLAY must name its target. A source representation
+    # whose unit never resolved has no target by design -- it is display-only, and giving
+    # it one would let two unknown units intersect.
+    inv["every_overlay_representation_has_target_id"] = all(
         r.get("target_id") for s2 in series.values()
-        for ax in ("x_representations", "y_representations") for r in s2[ax].values())
+        for ax in ("x_representations", "y_representations") for r in s2[ax].values()
+        if r.get("overlay_authorized"))
+    inv["display_only_representations_have_no_overlay_target"] = all(
+        r.get("target_id") is None for s2 in series.values()
+        for ax in ("x_representations", "y_representations") for r in s2[ax].values()
+        if r.get("overlay_authorized") is False)
     inv["native_targets_are_not_universal"] = len(native_y) > 1
     inv["every_pair_declares_overlay_eligibility"] = all(
         "physical_overlay_allowed" in p for p in m["pairs"].values())
@@ -1802,6 +1922,10 @@ def validate(m, counts):
         c["resolved_series_with_unaligned_point_identity"] == 0)
     inv["point_index_is_always_the_source_point_index"] = (
         c["resolved_links_where_point_index_is_not_the_source_index"] == 0)
+    inv["every_series_with_native_points_can_be_displayed"] = (
+        c["single_series_native_display_false_negative_violations"] == 0)
+    inv["no_blank_unit_became_a_shared_target"] = (
+        c["blank_unit_treated_as_dimensionless_without_ontology_violations"] == 0)
     inv["native_axis_arrays_are_one_entry_per_source_tuple"] = (
         c["native_axis_arrays_out_of_step_with_tuples"] == 0)
     inv["no_row_takes_another_points_native_y"] = (

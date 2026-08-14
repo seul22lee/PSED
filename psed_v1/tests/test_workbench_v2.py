@@ -192,10 +192,21 @@ def main():
     ok("E: every unavailable one says why",
        all(r.get("unavailable_reason") for _, _, _, r in offered
            if not r.get("available")))
-    # length agreement is what makes plotting safe
-    bad = [sid for sid, ax, k, r in avail
-           if len(r["values"]) != len(SER[sid]["x_representations"]["native"]["values"])]
-    ok("E: coordinate arrays all agree in length", not bad, bad[:3])
+    # Length agreement is what makes plotting safe. Compared within representation kind:
+    # a source curve and a canonical one need not have the same point count, because
+    # canonicalisation may fail on points the source recorded.
+    def ref_len(sid, r):
+        key = ("native_source" if r.get("representation_kind") == "NATIVE_SOURCE"
+               else "native")
+        ref = (SER[sid]["x_representations"] or {}).get(key) or {}
+        return len(ref.get("values") or [])
+    bad = [(sid, k) for sid, ax, k, r in avail
+           if len(r["values"]) != ref_len(sid, r)]
+    ok("E: coordinate arrays agree in length within their kind", not bad, bad[:3])
+    ok("E: every series offers a source representation on both axes",
+       all((SER[sid]["x_representations"] or {}).get("native_source")
+           and (SER[sid]["y_representations"] or {}).get("native_source")
+           for sid in SER), [s for s in list(SER)[:3]])
 
     print("=== F. t/t_max is computed, t/t_entrance is refused ===")
     tm = [(s["id"], r) for s in SER.values()
@@ -312,13 +323,19 @@ def hardening_tests(M, V, hp):
             for ax in ("x_representations", "y_representations")
             for k, r in (s.get(ax) or {}).items()]
     ok("N1: representations exist", len(reps) > 0, len(reps))
-    ok("N1: every representation has a target_id",
-       all(r.get("target_id") for _, _, _, r in reps),
-       [(a, b) for a, b, c, r in reps if not r.get("target_id")][:3])
+    # A representation offered for OVERLAY names its target. A display-only source
+    # representation deliberately has none -- see N26.
+    over = [(sid, ax, k, r) for sid, ax, k, r in reps if r.get("overlay_authorized")]
+    ok("N1: every overlay representation has a target_id",
+       all(r.get("target_id") for _, _, _, r in over),
+       [(a, b) for a, b, c, r in over if not r.get("target_id")][:3])
     ok("N1: a target_id names axis, quantity, normalization, dimension and unit",
-       all(r["target_id"].count("|") == 4 for _, _, _, r in reps))
+       all(r["target_id"].count("|") == 4 for _, _, _, r in over))
     ok("N1: x and y targets can never collide",
-       all(r["target_id"].startswith(ax[0] + "|") for _, ax, _, r in reps))
+       all(r["target_id"].startswith(ax[0] + "|") for _, ax, _, r in over))
+    ok("N1: display-only representations carry no target",
+       all(r.get("target_id") is None for _, _, _, r in reps
+           if r.get("overlay_authorized") is False))
 
     print("=== N2. 'native' is a local label, not a shared target ===")
     natives = {r["target_id"] for _, ax, k, r in reps
@@ -569,13 +586,17 @@ def final_hardening_tests(M, V, hp):
        b3["counts"]["qualified_range_fields_losing_qualifier"])
     ok("N10: and that fails the build", b3["invariants_ok"] is False
        and b3["invariants"]["no_range_field_loses_its_qualifier"] is False)
-    ok("N10: the exhaustive sweeps really are exhaustive",
-       C["pairs_offered_a_physical_overlay"] == 819
-       and C["multi_series_target_sets_checked"] == 25622
-       and C["key_based_false_common_targets"] == 1784,
-       (C["pairs_offered_a_physical_overlay"],
-        C["multi_series_target_sets_checked"],
-        C["key_based_false_common_targets"]))
+    ok("N10: the authorised overlay population is unchanged by native display",
+       C["pairs_offered_a_physical_overlay"] == 819,
+       C["pairs_offered_a_physical_overlay"])
+    ok("N10: the 3+ series sweep is exhaustive over the enlarged target set",
+       C["multi_series_target_sets_checked"] == 26142,
+       C["multi_series_target_sets_checked"])
+    # adding a source representation to every series gives the pre-repair key rule one
+    # more universal key to be wrong about, so the counterfactual grows
+    ok("N10: the counterfactual grows with the new universal key",
+       C["key_based_false_common_targets"] == 53752,
+       C["key_based_false_common_targets"])
 
     print("=== N11. a sweep's conditions are summarised, never taken from one case ===")
     ok("N11: the page has a deterministic across-cases summariser",
@@ -1007,6 +1028,90 @@ def final_hardening_tests(M, V, hp):
        all({"source_point_index", "point_identity_status", "native_x_value"}
            <= set(l) for v in M["point_case_links"].values() for l in v["links"]))
 
+    print("=== N26. native display is decoupled from canonicalisation ===")
+    ok("N26: every series with source points can be displayed",
+       C["series_native_display_available"] == 231
+       and C["series_native_points_but_no_display_representation"] == 0,
+       (C["series_native_display_available"],
+        C["series_native_points_but_no_display_representation"]))
+    ok("N26: only %d were plottable before this repair" % C["series_plottable_before_repair"],
+       C["series_plottable_before_repair"] == 59, C["series_plottable_before_repair"])
+    ok("N26: 130 lacked a canonical x and are now displayable",
+       C["series_canonical_x_missing_but_native_display_available"] == 130,
+       C["series_canonical_x_missing_but_native_display_available"])
+    ok("N26: 161 lacked a canonical y and are now displayable",
+       C["series_canonical_y_missing_but_native_display_available"] == 161,
+       C["series_canonical_y_missing_but_native_display_available"])
+    ok("N26: no single-series display false negative remains",
+       C["single_series_native_display_false_negative_violations"] == 0)
+    ok("N26: the build gates on it",
+       V["invariants"]["every_series_with_native_points_can_be_displayed"] is True)
+    # a source representation is display capability, never overlay authority
+    ok("N26: a blank unit never became a shared target",
+       C["blank_unit_treated_as_dimensionless_without_ontology_violations"] == 0
+       and V["invariants"]["no_blank_unit_became_a_shared_target"] is True)
+    ok("N26: %d source representations are display-only"
+       % C["native_source_representations_display_only"],
+       C["native_source_representations_display_only"] > 0)
+    ok("N26: display-only representations carry no overlay target",
+       V["invariants"]["display_only_representations_have_no_overlay_target"] is True)
+    ok("N26: representation purpose is explicit, not one boolean",
+       all({"representation_kind", "display_available", "overlay_target_id",
+            "overlay_authorized"} <= set(r)
+           for x in M["series"].values()
+           for ax in ("x_representations", "y_representations")
+           for r in x[ax].values()))
+    kinds = {r["representation_kind"] for x in M["series"].values()
+             for ax in ("x_representations", "y_representations")
+             for r in x[ax].values()}
+    ok("N26: the three kinds are distinguished",
+       kinds <= {"NATIVE_SOURCE", "CANONICAL", "TRANSFORMED"} and "NATIVE_SOURCE" in kinds,
+       sorted(kinds))
+    # source values are the persisted observations, paired as whole tuples
+    bad = []
+    for x in M["series"].values():
+        xr = x["x_representations"].get("native_source")
+        yr = x["y_representations"].get("native_source")
+        if not xr or not yr:
+            continue
+        pairs = [(t["x"], t["y"]) for t in x["native_points"]["points"]
+                 if t["x"] is not None and t["y"] is not None]
+        if xr["values"] != [a for a, _ in pairs] or yr["values"] != [b for _, b in pairs]:
+            bad.append(x["series_id"])
+    ok("N26: source representations are whole tuples from the persisted points",
+       not bad, bad[:3])
+    ok("N26: and the source label and unit are preserved, not canonicalised",
+       all((x["x_representations"]["native_source"]["source_label"]
+            == (x["native_points"]["x"] or {}).get("label"))
+           for x in M["series"].values()
+           if x["x_representations"].get("native_source")))
+
+    print("=== N27. blank unit is not dimensionless ===")
+    import importlib.util as _u2
+    _s3 = _u2.spec_from_file_location("wbb4", WB / "build_workbench_model.py")
+    wb4 = _u2.module_from_spec(_s3); _s3.loader.exec_module(wb4)
+    for u in ("", None, "   "):
+        tid, dim = wb4._overlay_target("x", "__q__", None, u)
+        ok("N27: unit %r yields no overlay target" % u, tid is None and dim is None)
+    ok("N27: an unparseable unit yields no overlay target",
+       wb4._overlay_target("x", "__q__", None, "__not_a_unit__") == (None, None))
+    tid, dim = wb4._overlay_target("x", "__q__", None, "s")
+    ok("N27: a resolvable unit does yield one", tid and dim == "time", (tid, dim))
+    # the ontology's own count contract, applied generically
+    tid2, dim2 = wb4._overlay_target("x", "cycle_number", None, "cycle")
+    ok("N27: the ontology's declared count unit resolves to a dimension",
+       tid2 and dim2 == "cycle", (tid2, dim2))
+    ok("N27: but a blank unit on the same quantity does not",
+       wb4._overlay_target("x", "cycle_number", None, "") == (None, None))
+    # two blank-unit series must not intersect
+    blanks = [x for x in M["series"].values()
+              if x["x_representations"].get("native_source")
+              and not x["x_representations"]["native_source"]["unit"]]
+    ok("N27: the corpus really has blank-unit source axes", len(blanks) >= 2, len(blanks))
+    ok("N27: none of them offers a shared target",
+       all(b["x_representations"]["native_source"]["overlay_target_id"] is None
+           for b in blanks))
+
     print("=== N23. tuple integrity metrics ===")
     for k, want in (("native_point_tuples_total", 4027), ("native_points_missing_x", 0),
                     ("native_points_missing_y", 0), ("native_points_missing_both", 0),
@@ -1156,6 +1261,22 @@ def final_hardening_tests(M, V, hp):
        "numericValues(cid, k)" in srt and "localeCompare" in srt)
     for q in ("temperature", "pulse_time", "purge_time", "cycle_number"):
         ok("N22: the sort names no quantity (%s)" % q, q not in srt, q)
+    # the native display path must name no quantity, unit or corpus identifier
+    nsrc = vpraw[vpraw.index("def native_source_representations"):
+                 vpraw.index("def derived_representations")]
+    ot = vpraw[vpraw.index("def _overlay_target"):
+               vpraw.index("def native_source_representations")]
+    for tok in ("cycle_number", "film_thickness", "ALD", "SiO2", "cycle", '"%"', "'%'"):
+        ok("N22: the native display path names no %s" % tok,
+           tok not in nsrc and tok not in ot, tok)
+    ok("N22: overlay authority comes from the unit system, not a blank-string test",
+       "U.dimension_name(unit)" in ot and 'unit == ""' not in ot)
+    ok("N22: display availability comes from the source tuples",
+       'np_.get("points")' in nsrc and "x_canonical" not in nsrc)
+    tplN = prodN["template"]
+    sp = tplN[tplN.index("function singleSeriesNative"):tplN.index("function repFor")]
+    ok("N22: the single-series path consults no comparability gate",
+       "physicalOverlayAllowed" not in sp and "commonTargets" not in sp)
 
     print("=== N14. the filtering algorithm is generic ===")
     # Every identifier the regressions rely on is searched for in production code. A
@@ -2683,6 +2804,62 @@ def case_data_dom(pg, errors):
            ord_["columns_follow_tray"], (ord_["colAB"], ord_["colBA"]))
     else:
         ok("T: no two resolved series share cases (reported)", True)
+
+    # --- native display: a real curve with no canonical x still plots -----------------
+    reset()
+    nd = pg.evaluate("""() => {
+        const id = Object.keys(SERIES).find(k => !SERIES[k].x_canonical.values.length
+                       && SERIES[k].x_representations.native_source);
+        tray.length = 0; tray.push(id); mode = "plot"; render();
+        const xr = SERIES[id].x_representations.native_source;
+        return {id, poly: document.querySelectorAll('#plot polyline').length,
+                pts: document.querySelectorAll('#plot circle').length,
+                n: xr.values.length,
+                xlab: (document.querySelector('#plot #xlab')||{}).textContent||"",
+                srcLabel: xr.source_label, unit: xr.unit,
+                note: (document.querySelector('#plot .note')||{}).textContent||""};
+    }""")
+    ok("T: a series with no canonical x still draws its source curve",
+       nd["poly"] == 1 and nd["pts"] == nd["n"], nd)
+    ok("T: the axis keeps the source label", (nd["srcLabel"] or "") in nd["xlab"], nd)
+    ok("T: and no unit is fabricated when the source had none",
+       nd["unit"] is not None or "[" not in nd["xlab"], nd)
+    ok("T: no incompatibility warning is shown for a displayable source curve",
+       "no axis they can honestly share" not in nd["note"], nd["note"][:80])
+
+    # an ordinary canonicalised series is unchanged
+    canon = pg.evaluate("""() => {
+        const id = Object.keys(SERIES).find(k => SERIES[k].x_canonical.values.length
+                       && SERIES[k].y_canonical.values.length
+                       && SERIES[k].x_representations.native);
+        tray.length = 0; tray.push(id); mode = "plot"; render();
+        return {id, poly: document.querySelectorAll('#plot polyline').length,
+                n: SERIES[id].x_representations.native.values.length,
+                pts: document.querySelectorAll('#plot circle').length};
+    }""")
+    ok("T: an ordinary canonicalised series is unchanged",
+       canon["poly"] == 1 and canon["pts"] == canon["n"], canon)
+
+    # two series whose source units never resolved must not share an axis
+    incompat = pg.evaluate("""() => {
+        const blanks = Object.keys(SERIES).filter(k => {
+            const r = SERIES[k].x_representations.native_source;
+            return r && !r.unit; });
+        if (blanks.length < 2) return null;
+        tray.length = 0; tray.push(blanks[0], blanks[1]); mode = "plot"; render();
+        return {a: blanks[0], b: blanks[1],
+                poly: document.querySelectorAll('#plot polyline').length,
+                common: commonTargets("x").length,
+                note: (document.querySelector('#plot .note')||{}).textContent||""};
+    }""")
+    if incompat:
+        ok("T: two unresolved-unit source axes offer no common target",
+           incompat["common"] == 0, incompat)
+        ok("T: and are not drawn on one axis", incompat["poly"] == 0, incompat)
+        ok("T: the message says they remain individually inspectable",
+           "individually inspectable" in incompat["note"], incompat["note"][:100])
+    else:
+        ok("T: the corpus has two blank-unit source axes to test", False)
 
     reset()
     ok("T: no console errors in the case data view", not errors, errors[:2])
