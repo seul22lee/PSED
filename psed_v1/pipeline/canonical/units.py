@@ -306,6 +306,20 @@ def canonical_symbol(symbol, allow_empty_as_dimensionless=False):
     return parse(symbol, allow_empty_as_dimensionless).symbol
 
 
+def base_symbol(symbol, allow_empty_as_dimensionless=False):
+    """The unit a NORMALISED value is expressed in ('°C' -> 'K', 'mbar' -> 'Pa').
+
+    A caller that reports value*factor+offset is holding a number in this unit, and
+    labelling it with the original symbol is how 80 °C gets shown as "80 K" or a range
+    box asks for °C while filtering kelvin. Returns None when the dimension has no
+    unit-scale-1 member in the registry.
+    """
+    d = dimension_of(symbol, allow_empty_as_dimensionless)
+    cands = {u.symbol for u in _REG.values()
+             if u.dimension == d and u.factor == 1.0 and u.offset == 0.0}
+    return sorted(cands, key=lambda x: (len(x), x))[0] if cands else None
+
+
 # --- QUDT bridge ----------------------------------------------------------
 # The ontology stores QUDT unit IRIs on quantity kinds. Map the trailing token
 # back to a registry symbol so ontology-declared canonical units resolve here.

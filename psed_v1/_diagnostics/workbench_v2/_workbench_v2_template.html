@@ -145,17 +145,14 @@ const FDEF = [
   {id:"normalization",label:"Normalization basis",scope:"ResultSeries"},
   {id:"data_source",label:"Result type",scope:"ResultSeries"},
 ];
-const RANGES = [
-  {id:"deposition_temperature",label:"Deposition temperature",unit:"°C"},
-  {id:"working_pressure",label:"Working pressure",unit:""},
-  {id:"cycle_number",label:"Cycle count",unit:""},
-];
+// declared by the model, in the unit the comparison actually runs in
+const RANGES = M.range_fields;
 const sel = new Set(FDEF.map(f=>f.id)); // placeholder, replaced below
 const active = {}; FDEF.forEach(f => active[f.id] = new Set());
 const range = {}; RANGES.forEach(r => range[r.id] = {min:"",max:""});
 const tray = [];                       // selected ResultSeries ids, persistent
 let profileOnly = false, onlyComparable = "", shapeOnly = false;
-let TX = "native", TY = "native", page = 0, openPop = null;
+let TX = null, TY = null, page = 0, openPop = null;
 const MAXSEL = 8;
 
 // ---------------------------------------------------------------- facet engine
@@ -196,8 +193,10 @@ function rangeOk(s, skip) {
       const key = Object.keys(vals).find(k => k === r.id || k.indexOf(r.id+"@")===0);
       if (!key) return false;
       return vals[key].some(v => {
-        const n = v.raw;
-        if (!isFinite(n)) return false;
+        // canonical, never raw: 500 ms and 0.5 s must land in the same place, and two
+        // raw numbers in different units are not comparable magnitudes
+        const n = (v.canonical !== null && v.canonical !== undefined) ? v.canonical : null;
+        if (n === null || !isFinite(n)) return false;
         if (q.min !== "" && n < parseFloat(q.min)) return false;
         if (q.max !== "" && n > parseFloat(q.max)) return false;
         return true;
@@ -256,9 +255,14 @@ function drawFacets() {
   });
   RANGES.forEach(r => {
     const d = el("div","facet",
-      `<div style="font-size:11px;color:var(--mut)">${esc(r.label)} ${esc(r.unit)}</div>
-       <div class="rng"><input type="number" placeholder="min" value="${range[r.id].min}">
-       <input type="number" placeholder="max" value="${range[r.id].max}"></div>`);
+      `<div style="font-size:11px;color:var(--mut)">${esc(r.label)}
+         <span class="dim">[${esc(r.canonical_unit)}]</span></div>
+       <div class="dim" style="font-size:9.5px">canonical magnitude${
+         r.raw_units.length?" · reported as "+r.raw_units.map(esc).join(", "):""}</div>
+       <div class="rng"><input type="number" placeholder="min" data-r="${esc(r.id)}"
+         data-b="min" value="${range[r.id].min}">
+       <input type="number" placeholder="max" data-r="${esc(r.id)}" data-b="max"
+         value="${range[r.id].max}"></div>`);
     box.appendChild(d);
     const [a,b] = d.querySelectorAll("input");
     a.onchange = ()=>{ range[r.id].min=a.value; page=0; render(); };
@@ -318,15 +322,30 @@ function openFacet(fid, anchor) {
 function render() {
   drawFacets();
   const matched = new Set(seriesMatching());
-  const byCase = {};
-  matched.forEach(sid => (SERIES[sid].case_ids.length ? SERIES[sid].case_ids : ["__nocase__"])
-    .forEach(c => (byCase[c] = byCase[c] || []).push(sid)));
-  const caseIds = Object.keys(byCase).sort();
-  const acts = new Set(); matched.forEach(s=>acts.add(SERIES[s].act_id));
+  // A sweep ResultSeries belongs to every case it traverses, but it is ONE curve. Listing
+  // it under each case made one series read as several results. It is listed once, under
+  // its lowest-id case, and every other case it spans carries a cross-reference instead.
+  const byCase = {}, alsoIn = {};
+  matched.forEach(sid => {
+    const cs = SERIES[sid].case_ids;
+    const home = cs.length ? cs[0] : "__nocase__";
+    (byCase[home] = byCase[home] || []).push(sid);
+    cs.slice(1).forEach(c => (alsoIn[c] = alsoIn[c] || []).push(sid));
+  });
+  const caseIds = [...new Set([...Object.keys(byCase), ...Object.keys(alsoIn)])].sort();
+  const acts = new Set(), sims = new Set();
+  matched.forEach(s=>{ const a=ACTS[SERIES[s].act_id];
+    if (a && a.kind==="SIMULATION_RUN") sims.add(SERIES[s].act_id); else acts.add(SERIES[s].act_id); });
 
   const box = $("#results"); box.innerHTML = "";
   box.appendChild(el("h2","",
-    `Matching results &nbsp;<span class="dim">${caseIds.length} condition cases · ${acts.size} measurement acts · ${matched.size} result series</span>`));
+    // cases that only cross-reference a traversing sweep are NOT cases with a matching
+    // result, and counting them together overstated the answer to a condition filter
+    `Matching results &nbsp;<span class="dim">${Object.keys(byCase).length} condition cases`
+    + `${caseIds.length - Object.keys(byCase).length
+        ? " · " + (caseIds.length - Object.keys(byCase).length) + " more traversed by a matching series"
+        : ""} · ${acts.size} measurement acts · ${sims.size} simulation runs · `
+    + `${matched.size} result series</span>`));
   if (!matched.size) {
     box.appendChild(el("div","empty",
       "No ResultSeries match the active semantic constraints.<br>"
@@ -338,7 +357,7 @@ function render() {
   caseIds.slice(page*per, page*per+per).forEach(cid => {
     const c = CASES[cid];
     const d = el("details","case");
-    const hits = byCase[cid];
+    const hits = byCase[cid] || [], also = alsoIn[cid] || [];
     const actIds = [...new Set(hits.map(s=>SERIES[s].act_id))];
     if (!c) {
       d.innerHTML = `<summary><div><div class="ctitle">Results with no Condition Case</div>
@@ -354,12 +373,20 @@ function render() {
         <div class="ctitle">Condition Case <code>${esc(c.case_id)}</code></div>
         <div class="csub">${esc(bits)||'<span class="dim">no summary conditions</span>'}
           <span class="dim">· ${esc(c.paper_id)}</span></div></div>
-      <div class="cnt">${actIds.length} acts<br>${hits.length}/${c.series_ids.length} series</div></summary>
+      <div class="cnt">${actIds.length} acts<br>${hits.length}/${c.series_ids.length} series${
+        also.length?`<br><span class="warn">+${also.length} traversing</span>`:""}</div></summary>
       <div class="cbody">
         ${condTable(cid)}
         ${realizationBlock(c)}
         <h3>Measurement acts with matching results</h3>
-        ${actIds.map(a=>actCard(a,hits)).join("")}
+        ${actIds.length?actIds.map(a=>actCard(a,hits)).join("")
+          :'<p class="dim">no result series is primarily listed under this case</p>'}
+        ${also.length?`<h3>Also traversed by</h3><div class="note">${also.length} multi-case
+          result series traverse this case but are listed once under their primary case, so
+          one curve is not counted as several results.<br>${also.map(sid=>{const x=SERIES[sid];
+          return `<code>${esc(x.series_id)}</code> — Fig. ${esc(x.figure)}${esc(x.panel||"")}
+            <span class="dim">primary case ${esc(CASES[x.case_ids[0]]?CASES[x.case_ids[0]].case_id:x.case_ids[0])}</span>`;
+          }).join("<br>")}</div>`:""}
       </div>`;
     box.appendChild(d);
   });
@@ -413,6 +440,7 @@ function actCard(aid, matchedSeries) {
     ${other.length?`<details class="pv"><summary>${other.length} other result series in this act</summary>
       ${other.map(serRow).join("")}</details>`:""}</div>`;
 }
+const unitOf = u => u ? `[${esc(u)}]` : '<span class="warn">unit unresolved</span>';
 function serRow(sid) {
   const s = SERIES[sid], on = tray.indexOf(sid)>=0;
   const nb = s.normalization_basis;
@@ -423,10 +451,16 @@ function serRow(sid) {
         <span class="tag ${s.data_source==="simulated"?"sim":"exp"}">${esc(s.data_source)}</span>
         ${s.is_profile?'<span class="tag">profile</span>':'<span class="tag">scalar</span>'}
         ${s.y_resolution==="PARTIALLY_RESOLVED"?'<span class="tag warn">partially resolved</span>':""}
-        ${s.n_cases>1?`<span class="tag warn">${s.n_cases} condition cases</span>`:""}</div>
-      <div class="smeta">y ${esc(s.y.y_quantity)} [${esc(s.y.y_unit)}]${
+        ${s.n_cases>1?`<span class="tag warn">spans ${s.n_cases} condition cases</span>`:""}</div>
+      ${s.n_cases>1?`<details class="pv"><summary>Spans ${s.n_cases} Condition Cases</summary>
+        <div class="smeta">${s.case_ids.map(c=>`<code>${esc(CASES[c]?CASES[c].case_id:c)}</code>`).join("<br>")}
+        </div><div class="dim" style="font-size:10.5px">One curve traversing several nominal
+        condition cases; listed once. Point-to-case mapping is unresolved.</div></details>`:""}
+      <div class="smeta">y ${s.y.y_quantity?esc(s.y.y_quantity):'<span class="warn">quantity unresolved</span>'}
+        ${unitOf(s.y.y_unit)}${
         nb?(nb==="unresolved"?' <span class="warn">basis unresolved</span>':", "+esc(nb)):""}
-        · x ${esc(s.x.x_quantity)} [${esc(s.x.x_unit)}] · ${esc(s.n_points)} pts</div>
+        · x ${s.x.x_quantity?esc(s.x.x_quantity):'<span class="warn">quantity unresolved</span>'}
+        ${unitOf(s.x.x_unit)} · ${esc(s.n_points)} pts</div>
       <details class="pv"><summary>Provenance</summary><div class="smeta">
         paper <code>${esc(s.paper_id)}</code><br>series <code>${esc(s.series_id)}</code><br>
         act <code>${esc(s.act_id)}</code><br>
@@ -434,7 +468,7 @@ function serRow(sid) {
         ${s.n_cases>1?'point-to-case mapping: <span class="warn">unresolved</span><br>':""}
         raw x label: ${esc(s.x.x_label)} [${esc(s.x.x_raw_unit)}]<br>
         raw y label: ${esc(s.y.y_label)} [${esc(s.y.y_raw_unit)}]<br>
-        canonical x [${esc(s.x.x_unit)}] · canonical y [${esc(s.y.y_unit)}]<br>
+        canonical x ${unitOf(s.x.x_unit)} · canonical y ${unitOf(s.y.y_unit)}<br>
         semantic resolution: ${esc(s.y_resolution)}</div></details>
     </div>
     <button class="addbtn" data-add="${esc(sid)}" ${on?"disabled":""}>${on?"in tray":"Add"}</button>
@@ -443,7 +477,7 @@ function serRow(sid) {
 document.addEventListener("click", e => {
   const add = e.target.dataset && e.target.dataset.add;
   if (add && tray.indexOf(add)<0 && tray.length<MAXSEL) {
-    tray.push(add); TX="native"; TY="native"; render();
+    tray.push(add); TX=null; TY=null; render();
   }
 });
 
@@ -464,25 +498,46 @@ function drawTray() {
        <span class="x" style="cursor:pointer;color:var(--bad);font-weight:700"
          data-rm="${esc(sid)}">×</span>`);
     r.querySelector("[data-rm]").onclick = () => {
-      tray.splice(tray.indexOf(sid),1); TX="native"; TY="native"; render(); };
+      tray.splice(tray.indexOf(sid),1); TX=null; TY=null; render(); };
     t.appendChild(r);
   });
   const b = el("button","","Clear tray"); b.id="clear-tray";
-  b.onclick = ()=>{ tray.length=0; TX="native"; TY="native"; render(); };
+  b.onclick = ()=>{ tray.length=0; TX=null; TY=null; render(); };
   t.appendChild(b);
 }
 
 // ---------------------------------------------------------------- comparison
-function commonReps(axis) {
-  // a target is offered only when EVERY selected series can materialise it
+// Every selected pair must be authorised for a shared physical axis. "native" is a
+// per-series label, not a shared target: a film thickness in nm and a refractive index
+// both have one, and intersecting on the label drew them on one axis.
+function physicalOverlayAllowed() {
+  if (tray.length < 2) return true;
+  for (let i=0;i<tray.length;i++) for (let j=i+1;j<tray.length;j++) {
+    const p = pairOf(tray[i],tray[j]);
+    if (!p) return false;
+    if (shapeOnly ? !(p.physical_overlay_allowed || p.shape_only_eligible)
+                  : !p.physical_overlay_allowed) return false;
+  }
+  return true;
+}
+// target_id is the scientific signature: axis | quantity | normalization | dimension |
+// unit. A target is common only when every selected series can materialise THAT
+// signature, and only when the frozen verdict permits a shared axis at all.
+function commonTargets(axis) {
   const key = axis==="x" ? "x_representations" : "y_representations";
+  if (!physicalOverlayAllowed()) return [];
   let common = null;
   tray.forEach(sid => {
     const reps = SERIES[sid][key] || {};
-    const ok = new Set(Object.keys(reps).filter(k => reps[k].available && reps[k].values));
-    common = common===null ? ok : new Set([...common].filter(k=>ok.has(k)));
+    const ok = new Set(Object.values(reps)
+      .filter(r => r.available && r.values).map(r => r.target_id));
+    common = common===null ? ok : new Set([...common].filter(t=>ok.has(t)));
   });
-  return [...(common||[])].sort((a,b)=> a==="native"?-1 : b==="native"?1 : a.localeCompare(b));
+  return [...(common||[])].sort();
+}
+function repByTarget(sid, axis, tid) {
+  const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
+  return Object.values(reps).find(r => r.target_id === tid && r.available && r.values) || null;
 }
 function drawCompare() {
   const box = $("#cmp");
@@ -513,7 +568,10 @@ function drawCompare() {
       <div class="dim" style="font-size:10.5px">Shape-only does not assert quantitative
       equivalence or a shared normalization basis.</div>`;
   }
-  const xs = commonReps("x"), ys = commonReps("y");
+  const xs = commonTargets("x"), ys = commonTargets("y");
+  // never keep a target the current selection cannot all reach
+  if (!TX || xs.indexOf(TX)<0) TX = xs[0] || null;
+  if (!TY || ys.indexOf(TY)<0) TY = ys[0] || null;
   h += `<h2>Representation</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
     <div class="repbox"><b style="font-size:11px">X representation</b>
       ${repOpts("x",xs)}</div>
@@ -528,26 +586,32 @@ function drawCompare() {
   box.querySelectorAll("input[name=ry]").forEach(r=>r.onchange=e=>{TY=e.target.value; drawCompare();});
   drawPlot(); drawConds(); drawWhy();
 }
-function repOpts(axis, keys) {
+function repOpts(axis, common) {
   const cur = axis==="x"?TX:TY;
-  const all = new Set();
-  tray.forEach(sid => Object.keys(SERIES[sid][axis==="x"?"x_representations":"y_representations"]||{})
-    .forEach(k=>all.add(k)));
-  return [...all].sort((a,b)=>a==="native"?-1:b==="native"?1:a.localeCompare(b)).map(k=>{
-    const ok = keys.indexOf(k)>=0;
-    const info = SERIES[tray[0]][axis==="x"?"x_representations":"y_representations"][k];
-    const lab = info ? info.label : k;
-    const why = ok ? "" : (info && info.unavailable_reason)
-      ? ` <span class="dim">— ${esc(info.unavailable_reason)}</span>`
-      : ' <span class="dim">— not reachable by all selected series</span>';
-    return `<label><input type="radio" name="r${axis}" value="${esc(k)}"
-      ${cur===k?"checked":""} ${ok?"":"disabled"}>${esc(lab)}${why}</label>`;
+  const seen = new Map();
+  tray.forEach(sid => {
+    const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"]||{};
+    Object.values(reps).forEach(r => { if(!seen.has(r.target_id)) seen.set(r.target_id,r); });
+  });
+  if (!seen.size) return '<div class="dim">no representation</div>';
+  const allowed = physicalOverlayAllowed();
+  const rows = [...seen.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([tid,r])=>{
+    const ok = common.indexOf(tid)>=0;
+    const why = (ok || !allowed) ? ""     // the forbidding reason is stated once, below
+      : (r.unavailable_reason ? ` <span class="dim">— ${esc(r.unavailable_reason)}</span>`
+         : ' <span class="dim">— not reachable by every selected series</span>');
+    return `<label><input type="radio" name="r${axis}" value="${esc(tid)}"
+      ${cur===tid?"checked":""} ${ok?"":"disabled"}>${esc(r.display_label||r.label)}${why}</label>`;
   }).join("");
+  return rows + (allowed ? "" :
+    '<div class="warn" style="font-size:10.5px;margin-top:5px">Every option is disabled: '
+    + 'the frozen pair verdicts do not authorise a shared physical axis for this selection.'
+    + '</div>');
 }
 function repFor(sid, axis) {
-  const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
   const want = axis==="x"?TX:TY;
-  return reps[want] && reps[want].available && reps[want].values ? reps[want] : null;
+  if (!want || !physicalOverlayAllowed()) return null;
+  return repByTarget(sid, axis, want);
 }
 function drawPlot() {
   const box = $("#plot"); if (!box) return;
@@ -559,8 +623,15 @@ function drawPlot() {
     data.push({sid, x:xr.values, y:yr.values, xr, yr});
   });
   const skipped = tray.length - data.length;
-  if (!data.length) { box.innerHTML = '<div class="note bad">No selected series can '
-    + 'materialise the chosen representation.</div>'; return; }
+  if (!data.length) { box.innerHTML = physicalOverlayAllowed()
+    ? '<div class="note bad">No selected series can materialise a shared semantic target, '
+      + 'so there is no axis they can honestly share.</div>'
+    : '<div class="note bad">Overlay disabled: the frozen pair verdicts do not authorise a '
+      + 'shared physical axis for this selection. Comparable quantity, normalization and '
+      + 'unit dimension are all required.</div>'; return; }
+  // the label may already carry its unit; the axis states it exactly once
+  const axLab = d => { const l = d.display_label || d.label || d.quantity_id || "";
+    return (d.unit && l.indexOf("["+d.unit+"]") < 0) ? `${l} [${d.unit}]` : l; };
   const W=560,H=300,P=48;
   const xs=data.flatMap(d=>d.x), ys=data.flatMap(d=>d.y);
   const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
@@ -577,12 +648,13 @@ function drawPlot() {
     g+=`<polyline fill="none" stroke="${c}" stroke-width="1.5" data-series="${esc(d.sid)}" points="${
       d.x.map((v,k)=>sx(v)+","+sy(d.y[k])).join(" ")}"/>`;
     d.x.forEach((v,k)=>{ g+=`<circle cx="${sx(v)}" cy="${sy(d.y[k])}" r="2" fill="${c}"><title>${
-      esc(SERIES[d.sid].paper_id)} Fig.${esc(SERIES[d.sid].figure)} — x=${v.toPrecision(4)} ${
-      esc(d.xr.unit)}, y=${d.y[k].toPrecision(4)} ${esc(d.yr.unit)}</title></circle>`;});});
+      esc(SERIES[d.sid].paper_id)} Fig.${esc(SERIES[d.sid].figure)} — ${esc(d.xr.quantity_id)}=${
+      v.toPrecision(4)} ${esc(d.xr.unit)}, ${esc(d.yr.quantity_id)}=${d.y[k].toPrecision(4)} ${
+      esc(d.yr.unit)}</title></circle>`;});});
   g+=`<text x="${W/2}" y="${H-6}" font-size="10" text-anchor="middle" fill="currentColor" id="xlab">${
-    esc(data[0].xr.label)}</text>`;
+    esc(axLab(data[0].xr))}</text>`;
   g+=`<text x="12" y="${H/2}" font-size="10" text-anchor="middle" fill="currentColor"
-    transform="rotate(-90 12 ${H/2})" id="ylab">${esc(data[0].yr.label)}</text></svg>`;
+    transform="rotate(-90 12 ${H/2})" id="ylab">${esc(axLab(data[0].yr))}</text></svg>`;
   const leg = data.map((d,i)=>{ const s=SERIES[d.sid];
     return `<div><span class="sw" style="background:${cols[i%cols.length]}"></span>
       ${esc(s.paper_id)} · Fig. ${esc(s.figure)}${esc(s.panel||"")}${

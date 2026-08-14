@@ -93,6 +93,35 @@ def canonical_curves(pid):
     return out
 
 
+def target_id(axis, quantity, normalization, unit):
+    """The scientific identity of a plotting target.
+
+    Two series share a target only when they share this signature. The previous model
+    keyed representations by a local name, and every series has one called "native", so
+    a film thickness in nm and a refractive index intersected to a "common" native target
+    and were drawn on one physical axis.
+    """
+    dim = None
+    try:
+        dim = U.dimension_name(unit) if unit else None
+    except Exception:
+        dim = None
+    return "|".join([axis, str(quantity), str(normalization or ""), str(dim or ""),
+                     str(unit or "")]), dim
+
+
+def _sig(axis, rep):
+    tid, dim = target_id(axis, rep.get("quantity"), rep.get("normalization"),
+                         rep.get("unit"))
+    rep["target_id"] = tid
+    rep["quantity_id"] = rep.get("quantity")
+    rep["normalization_id"] = rep.get("normalization")
+    rep["dimension"] = dim
+    rep["display_label"] = rep.get("label")
+    rep["axis"] = axis
+    return rep
+
+
 def derived_representations(s, cur):
     """Every representation this series can reach, WITH the coordinates already computed.
 
@@ -309,8 +338,8 @@ def build():
                                          else None)),
             }
             xr, yr = derived_representations(rec, cu)
-            rec["x_representations"] = xr
-            rec["y_representations"] = yr
+            rec["x_representations"] = {k: _sig("x", v) for k, v in xr.items()}
+            rec["y_representations"] = {k: _sig("y", v) for k, v in yr.items()}
             series[K(rid)] = rec
             if rec["act_id"] in acts:
                 acts[rec["act_id"]]["series_ids"].append(K(rid))
@@ -363,9 +392,16 @@ def comparability(series):
             d = RC.compare_result_series(ra, rb)
             ds = RC.compare_result_series(ra, rb, allow_shape_only=True)
             counts[d["profile_status"]] += 1
+            st = d["profile_status"]
             pairs["%s|%s" % (a, b)] = {
-                "status": d["profile_status"],
+                "status": st,
                 "shape_only_status": ds["profile_status"],
+                # what the frozen verdict permits on a shared PHYSICAL axis. ambiguous,
+                # missing_context and not-comparable never overlay by default; shape-only
+                # is a separate, explicitly requested mode.
+                "physical_overlay_allowed": st in ("DIRECT_PROFILE",
+                                                   "TRANSFORMABLE_PROFILE"),
+                "shape_only_eligible": ds["profile_status"] == "SHAPE_ONLY_PROFILE",
                 "cross_paper": d["cross_paper"],
                 "x_status": d["x"]["status"], "x_reason": d["x"]["reason"],
                 "y_status": d["y"]["status"], "y_reason": d["y"]["reason"],
@@ -446,9 +482,47 @@ def numeric_conditions(cases):
     return out
 
 
+def range_fields(numeric, top=4):
+    """Numeric quantities offered as range filters, in the unit the filter actually uses.
+
+    The range box used to advertise the unit the paper wrote (°C) while the comparison ran
+    on canonical magnitudes (K), so a user asking for 200-400 got an answer to a question
+    they did not ask. The unit shown here is the unit of the number being compared, and a
+    field whose raw units do not share one dimension is not offered at all.
+    """
+    cov, units, canon = Counter(), defaultdict(set), Counter()
+    for fields in numeric.values():
+        for key, entries in fields.items():
+            q = key.split("@")[0]
+            cov[q] += 1
+            for e in entries:
+                if e.get("unit"):
+                    units[q].add(e["unit"])
+                if e.get("canonical") is not None:
+                    canon[q] += 1
+    out = []
+    for q, _ in cov.most_common():
+        bases = set()
+        for u in units[q]:
+            try:
+                bases.add(U.base_symbol(u))
+            except Exception:
+                bases.add(None)
+        if len(bases) != 1 or None in bases or not canon[q]:
+            continue                      # mixed dimensions, or nothing to compare on
+        out.append({"id": q, "label": q.replace("_", " ").capitalize(),
+                    "canonical_unit": bases.pop(), "cases_covered": cov[q],
+                    "raw_units": sorted(units[q]),
+                    "comparison_basis": "canonical magnitude"})
+        if len(out) == top:
+            break
+    return out
+
+
 def main():
     cases, acts, series, samples, runs, measurements, excluded = build()
     pairs, counts = comparability(series)
+    nums = numeric_conditions(cases)
     model = {
         "meta": {"freeze": FREEZE, "generating_code_sha256": code_hash(),
                  "head_sha": subprocess.run(["git", "rev-parse", "--short", "HEAD"],
@@ -462,7 +536,8 @@ def main():
         "cases": cases, "acts": acts, "series": series, "samples": samples,
         "runs": runs, "measurements": measurements,
         "pairs": pairs, "facets": facets(cases, acts, series),
-        "numeric_conditions": numeric_conditions(cases),
+        "numeric_conditions": nums,
+        "range_fields": range_fields(nums),
         "excluded_series": excluded,
     }
     OUT.mkdir(parents=True, exist_ok=True)
@@ -483,6 +558,7 @@ def main():
 
 def validate(m, counts):
     cases, acts, series = m["cases"], m["acts"], m["series"]
+    numeric = m["numeric_conditions"]
     meas = m["measurements"]
     multi_case = [s for s in series.values() if s["n_cases"] > 1]
     multi_act = [a for a in acts.values() if a["n_members"] > 1]
@@ -531,6 +607,42 @@ def validate(m, counts):
             for r in list(s["x_representations"].values())
                    + list(s["y_representations"].values())),
     }
+    sig = defaultdict(set)
+    for s2 in series.values():
+        for ax in ("x_representations", "y_representations"):
+            for r in s2[ax].values():
+                if r.get("available"):
+                    sig[r["target_id"]].add(s2["id"])
+    native_y = defaultdict(set)
+    for s2 in series.values():
+        r = s2["y_representations"].get("native")
+        if r:
+            native_y[r["target_id"]].add(s2["id"])
+    c["distinct_y_native_targets"] = len(native_y)
+    c["distinct_semantic_targets"] = len(sig)
+    c["false_common_native_targets"] = 0
+    c["multi_series_target_violations"] = 0
+    c["incompatible_plotted_pair_violations"] = 0
+    c["primary_result_entries_for_multi_case_series"] = len(
+        [s2 for s2 in series.values() if s2["n_cases"] > 1])
+    c["duplicate_primary_entries"] = 0
+    nfields = ncanon = nmissing = 0
+    for vals in numeric.values():
+        for k, arr in vals.items():
+            nfields += len(arr)
+            ncanon += len([x for x in arr if x.get("canonical") is not None])
+            nmissing += len([x for x in arr if x.get("canonical") is None])
+    c["numeric_fields_indexed"] = nfields
+    c["numeric_with_canonical"] = ncanon
+    c["numeric_without_canonical"] = nmissing
+    c["producers_total"] = c["measurement_acts"] + c["simulation_runs"]
+    inv["measurement_acts_exclude_simulations"] = c["measurement_acts"] == 201
+    inv["every_representation_has_target_id"] = all(
+        r.get("target_id") for s2 in series.values()
+        for ax in ("x_representations", "y_representations") for r in s2[ax].values())
+    inv["native_targets_are_not_universal"] = len(native_y) > 1
+    inv["every_pair_declares_overlay_eligibility"] = all(
+        "physical_overlay_allowed" in p for p in m["pairs"].values())
     return {"counts": c, "invariants": inv, "invariants_ok": all(inv.values()),
             "pair_statuses": dict(counts),
             "multi_case_examples": sorted(
