@@ -152,7 +152,7 @@ def main():
 
     guard = strip_comments(WB / "_workbench_v2_template.html")
     ok("C: the stripper keeps the code it is auditing",
-       "function rangeOk" in guard and "function render" in guard
+       "function caseMatchesFilters" in guard and "function render" in guard
        and "commonTargets" in guard, len(guard))
     # phrases that exist ONLY in comments -- "no primary Condition Case" is rendered
     # text, so it is not evidence either way
@@ -383,8 +383,10 @@ def hardening_tests(M, V, hp):
     ok("N5: the sweep entry states its span", "spans ${s.all_case_ids.length} cases" in js)
 
     print("=== N6. range filtering compares canonical magnitudes ===")
-    ok("N6: rangeOk reads the canonical value", "v.canonical" in js)
-    ok("N6: rangeOk no longer reads the raw value", "const n = v.raw;" not in js)
+    ok("N6: the numeric band reads the canonical value", "v.canonical" in js)
+    ok("N6: it never reads the raw value", "const n = v.raw;" not in js)
+    ok("N6: numeric bands are evaluated by the same-case predicate",
+       "function caseMatchesFilters" in js and "inBand(numericValues(cid, r.field_id)" in js)
     rf = M["range_fields"]
     ok("N6: range fields are declared by the model, not hardcoded",
        len(rf) > 0 and "const RANGES = M.range_fields" in js, len(rf))
@@ -595,6 +597,82 @@ def final_hardening_tests(M, V, hp):
     ok("N11: a real sweep with a varying temperature exists to test against",
        varying is not None, varying)
 
+    print("=== N14. the filtering algorithm is generic ===")
+    # Every identifier the regressions rely on is searched for in production code. A
+    # filter that needs to know a DOI, a case id or a material name is not an algorithm.
+    prod = {"builder": strip_comments(WB / "build_workbench_model.py"),
+            "template": strip_comments(WB / "_workbench_v2_template.html"),
+            "generated HTML": strip_comments(
+                WB / "psed_scientific_comparison_workbench.html")}
+    ident = {
+        "DOI": sorted({x["paper_id"] for x in M["cases"].values()}),
+        "Condition Case id": sorted({x["case_id"] for x in M["cases"].values()}),
+        "ResultSeries id": sorted({x["series_id"] for x in M["series"].values()})[:40],
+        "material": sorted({x["material"] for x in M["cases"].values() if x["material"]}),
+        "geometry": sorted({x["geometry"] for x in M["cases"].values() if x["geometry"]}),
+        "species": sorted({f["species_or_role"] for f in M["range_fields"]
+                           if f["species_or_role"]}),
+    }
+    # the model IS the corpus, so only code is audited -- the template before the model
+    # is injected, and the generated page minus its embedded model
+    def code_only(name, body):
+        if name != "generated HTML":
+            return body
+        i = body.find('<script id="model"')
+        j = body.find("</script>", i)
+        return body[:i] + body[j:]
+    for kind, values in ident.items():
+        hits = []
+        for name, body in prod.items():
+            code = code_only(name, body)
+            hits += ["%s: %s" % (name, v) for v in values if v and str(v) in code]
+        ok("N14: no %-18s appears in production filtering code" % kind, not hits, hits[:4])
+    # scope-driven, not name-driven: the filter engine must not branch on a facet id
+    engine = prod["template"]
+    engine = engine[engine.index("const CASE_SCOPE"):engine.index("function comparableToTray")]
+    named = [f["id"] for f in M["facet_defs"] if '"%s"' % f["id"] in engine
+             or "'%s'" % f["id"] in engine]
+    ok("N14: the filter engine names no individual facet", not named, named)
+    ok("N14: it iterates on declared scope instead",
+       engine.count("scope") >= 3 and "FDEF" in engine)
+    for n in ("n_cases === 2", "n_cases === 10", "length === 10", "=== 22"):
+        ok("N14: no branch on a corpus-specific cardinality (%s)" % n,
+           n not in engine, n)
+
+    print("=== N13. case-scoped constraints conjoin on one Condition Case ===")
+    tpl2 = strip_comments(WB / "_workbench_v2_template.html")
+    ok("N13: facet scope is model metadata, not hardcoded in the page",
+       "const FDEF = M.facet_defs" in tpl2 and all(f.get("scope") for f in M["facet_defs"]))
+    ok("N13: the page iterates on scope, never on a facet name",
+       'f.scope !== CASE_SCOPE' in tpl2 and 'f.scope === CASE_SCOPE' in tpl2)
+    ok("N13: there is one case-scoped authority", tpl2.count("function caseMatchesFilters") == 1)
+    ok("N13: series eligibility is defined from it, not from a second rule",
+       "if (caseFiltered && !matchingCases(s, skipFacet, skipRange).length) continue;" in tpl2)
+    ok("N13: the old series-level case check is gone",
+       "function facetsOk" not in tpl2 and "function nonCaseFacetsOk" in tpl2)
+    ok("N13: an empty case-filter state is asked about explicitly",
+       "function hasActiveCaseFilters" in tpl2)
+    ok("N13: option counts require the candidate on the same case",
+       "{facet: fid, value: v}" in tpl2)
+    ok("N13: the build gates on the conjunction metric",
+       V["invariants"]["no_cross_case_constraint_false_positives"] is True)
+    ok("N13: and on every facet declaring a scope",
+       V["invariants"]["every_facet_declares_a_scope"] is True)
+    ok("N13: cross_case_constraint_false_positive_violations = 0",
+       C["cross_case_constraint_false_positive_violations"] == 0,
+       C["cross_case_constraint_false_positive_violations"])
+    # The corpus cannot exhibit the defect, and that must be visible rather than read as
+    # proof: every multi-case sweep here is categorically homogeneous.
+    ok("N13: the corpus universe for this metric is reported, not hidden",
+       "cross_case_constraint_universe" in C, sorted(C)[:3])
+    ok("N13: this corpus has no sweep with varying case facets, so the metric is vacuous",
+       C["multi_case_series_with_varying_case_facets"] == 0
+       and C["cross_case_constraint_universe"] == 0,
+       (C["multi_case_series_with_varying_case_facets"],
+        C["cross_case_constraint_universe"]))
+    ok("N13: which is why the behavioural proof is a controlled fixture",
+       "case_scope_dom" in (W / "tests" / "test_workbench_v2.py").read_text())
+
     print("=== N12. matching cases are distinguished from traversed cases ===")
     ok("N12: the page computes which cases match", "function matchingCases" in js)
     ok("N12: from the case itself, not from the series that reached it",
@@ -765,6 +843,7 @@ def dom_tests(hp):
 
         hardening_dom(pg, errors)
         final_hardening_dom(pg, errors)
+        case_scope_dom(pg, errors)
         b.close()
 
 
@@ -1176,6 +1255,273 @@ def final_hardening_dom(pg, errors):
     reset()
     ok("Q: no console errors during the final-hardening interactions",
        not errors, errors[:2])
+
+
+
+def case_scope_dom(pg, errors):
+    """Case-scoped constraints must all land on ONE Condition Case.
+
+    The corpus cannot demonstrate the failure: all 22 of its multi-case sweeps are
+    categorically homogeneous, so no real sweep has a case carrying one selected value
+    and a different case carrying another. The contradiction is therefore built as a
+    CONTROLLED FIXTURE injected into the live page, which drives the real production
+    predicate. Every corpus number asserted here is measured on real data; every
+    fixture number is labelled as such.
+    """
+    print("=== R. case-scoped filters conjoin on one Condition Case ===")
+
+    def reset():
+        pg.evaluate("""() => {
+            tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+            RANGES.forEach(r => range[r.id] = {min:"",max:""});
+            profileOnly = false; onlyComparable = ""; page = 0; render();
+        }""")
+
+    # --- CONTROLLED FIXTURE: categorical on one case, numeric on the other ----------
+    reset()
+    fx = pg.evaluate("""() => {
+        // Two cases under one ResultSeries, deliberately contradictory: the geometry the
+        // user asks for lives on the cold case, the temperature on the other one.
+        const geo = FDEF.find(f => f.scope === "Condition Case" && f.id === "geometry");
+        const rng = RANGES.find(r => r.field_id === "deposition_temperature");
+        if (!geo || !rng) return null;
+        const A = "__fx_case_A__", B = "__fx_case_B__", S = "__fx_series__";
+        const G1 = "__fx_geom_1__", G2 = "__fx_geom_2__";
+        FACETS.geometry[G1] = {cases: [A], series: [S]};
+        FACETS.geometry[G2] = {cases: [B], series: [S]};
+        NUM[A] = {"deposition_temperature": [{raw:400, unit:"K", canonical:400,
+                   quantity:"deposition_temperature", species:null}]};
+        NUM[B] = {"deposition_temperature": [{raw:550, unit:"K", canonical:550,
+                   quantity:"deposition_temperature", species:null}]};
+        SERIES[S] = {id:S, series_id:S, all_case_ids:[A,B], n_cases:2,
+                     placement:"MULTI_CASE_SWEEP", placement_case_id:null,
+                     is_profile:false, act_id:null, paper_id:"__fixture__"};
+        const probe = (g, lo) => {
+            active.geometry.clear(); if (g) active.geometry.add(g);
+            range[rng.id] = {min: lo === null ? "" : String(lo), max:""};
+            const matched = seriesMatching();
+            const mc = matchingCases(SERIES[S]);
+            return {matched: matched.indexOf(S) >= 0, mc: mc.length, cases: mc};
+        };
+        const out = {
+            // the false positive: geometry from case A, temperature from case B
+            contradiction: probe(G1, 500),
+            // satisfiable: both constraints land on case B
+            satisfiable: probe(G2, 500),
+            // each constraint alone still works
+            geom_only: probe(G1, null),
+            temp_only: probe(null, 500),
+            A, B, S};
+        active.geometry.clear(); range[rng.id] = {min:"",max:""};
+        delete FACETS.geometry[G1]; delete FACETS.geometry[G2];
+        delete NUM[A]; delete NUM[B]; delete SERIES[S];
+        page = 0; render();
+        return out;
+    }""")
+    if not fx:
+        ok("R: FIXTURE geometry facet and temperature range exist to drive", False, fx)
+    else:
+        ok("R: FIXTURE contradictory geometry+temperature excludes the series",
+           fx["contradiction"]["matched"] is False, fx["contradiction"])
+        ok("R: FIXTURE and reports zero matching cases",
+           fx["contradiction"]["mc"] == 0, fx["contradiction"])
+        ok("R: FIXTURE the satisfiable combination includes it",
+           fx["satisfiable"]["matched"] is True, fx["satisfiable"])
+        ok("R: FIXTURE via exactly the one case that carries both",
+           fx["satisfiable"]["mc"] == 1 and fx["satisfiable"]["cases"] == [fx["B"]],
+           fx["satisfiable"])
+        ok("R: FIXTURE each constraint alone still matches",
+           fx["geom_only"]["matched"] and fx["temp_only"]["matched"],
+           (fx["geom_only"], fx["temp_only"]))
+
+    # --- CONTROLLED FIXTURE: two categorical facets on different cases --------------
+    reset()
+    fx2 = pg.evaluate("""() => {
+        const A = "__fx2_A__", B = "__fx2_B__", S = "__fx2_S__";
+        const M1 = "__fx2_mat_1__", M2 = "__fx2_mat_2__";
+        const G1 = "__fx2_geo_1__", G2 = "__fx2_geo_2__";
+        FACETS.material[M1] = {cases:[A], series:[S]};
+        FACETS.material[M2] = {cases:[B], series:[S]};
+        FACETS.geometry[G1] = {cases:[A], series:[S]};
+        FACETS.geometry[G2] = {cases:[B], series:[S]};
+        SERIES[S] = {id:S, series_id:S, all_case_ids:[A,B], n_cases:2,
+                     placement:"MULTI_CASE_SWEEP", placement_case_id:null,
+                     is_profile:false, act_id:null, paper_id:"__fixture__"};
+        const probe = (mats, geos) => {
+            active.material.clear(); mats.forEach(m => active.material.add(m));
+            active.geometry.clear(); geos.forEach(g => active.geometry.add(g));
+            return {matched: seriesMatching().indexOf(S) >= 0,
+                    cases: matchingCases(SERIES[S])};
+        };
+        const out = {
+            cross: probe([M1], [G2]),        // material on A, geometry on B
+            same:  probe([M1], [G1]),        // both on A
+            or_within: probe([M1, M2], [G2]) // OR within material, AND across facets
+        };
+        active.material.clear(); active.geometry.clear();
+        delete FACETS.material[M1]; delete FACETS.material[M2];
+        delete FACETS.geometry[G1]; delete FACETS.geometry[G2];
+        delete SERIES[S]; page = 0; render();
+        return {...out, A, B};
+    }""")
+    ok("R: FIXTURE material on one case + geometry on another is rejected",
+       fx2["cross"]["matched"] is False and fx2["cross"]["cases"] == [], fx2["cross"])
+    ok("R: FIXTURE both on the same case is accepted",
+       fx2["same"]["matched"] is True and fx2["same"]["cases"] == [fx2["A"]], fx2["same"])
+    ok("R: FIXTURE OR within a facet survives (either material, geometry of case B)",
+       fx2["or_within"]["matched"] is True
+       and fx2["or_within"]["cases"] == [fx2["B"]], fx2["or_within"])
+
+    # --- REAL CORPUS: the 10-case temperature sweep --------------------------------
+    reset()
+    real = pg.evaluate("""() => {
+        const id = M.sweep_series_ids.slice()
+                    .sort((a,b)=>SERIES[b].n_cases-SERIES[a].n_cases)[0];
+        const r = RANGES.find(x => x.field_id === "deposition_temperature");
+        range[r.id] = {min:"500", max:""}; page = 0; render();
+        const s = SERIES[id], mc = matchingCases(s);
+        const matched = seriesMatching().indexOf(id) >= 0;
+        const card = document.querySelector(`[data-sweep="${CSS.escape(id)}"]`);
+        const txt = card ? card.innerText : "";
+        range[r.id] = {min:"",max:""}; page = 0; render();
+        return {all: s.all_case_ids.length, matching: mc.length, matched,
+                shows_match: /4 match filters/.test(txt),
+                shows_trav: /6 more traversed/.test(txt)};
+    }""")
+    ok("R: REAL the 10-case sweep matches on a strict subset of its span",
+       real["all"] == 10 and real["matching"] == 4, real)
+    ok("R: REAL it is eligible because that subset is non-empty", real["matched"], real)
+    ok("R: REAL the card reports 4 matching and 6 traversed", real["shows_match"]
+       and real["shows_trav"], real)
+
+    # --- the invariant: no matched series may have zero matching cases -------------
+    reset()
+    inv = pg.evaluate("""() => {
+        // exhaustive over every case-scoped facet option and every range field, one at
+        // a time and in pairs with the temperature band, on the real corpus
+        const caseFacets = FDEF.filter(f => f.scope === "Condition Case");
+        const temp = RANGES.find(r => r.field_id === "deposition_temperature");
+        let checks = 0, violations = 0, leaks = 0;
+        const audit = () => {
+            const matched = seriesMatching();
+            checks++;
+            matched.forEach(sid => {
+                if (!hasActiveCaseFilters()) return;
+                if (!matchingCases(SERIES[sid]).length) violations++;
+            });
+            // A facet count is leave-one-out: it lifts that facet's own selections and
+            // keeps every other constraint. The audit must do the same, or it compares
+            // two different questions.
+            caseFacets.forEach(f => {
+                const base = new Set(seriesMatching(f.id));
+                facetOptions(f.id).forEach(o => {
+                    const elig = new Set();
+                    base.forEach(sid => matchingCases(
+                        SERIES[sid], f.id, undefined,
+                        {facet: f.id, value: o.v}).forEach(c => elig.add(c)));
+                    // the count must be exactly the eligible cases -- never a case that
+                    // is merely traversed by a candidate sweep
+                    if (o.cases !== elig.size) leaks++;
+                });
+            });
+        };
+        let options = 0;
+        for (const f of caseFacets) {
+            for (const v of Object.keys(FACETS[f.id] || {})) {
+                options++;
+                active[f.id].clear(); active[f.id].add(v);
+                range[temp.id] = {min:"", max:""}; audit();
+                range[temp.id] = {min:"500", max:""}; audit();
+                active[f.id].clear();
+            }
+        }
+        range[temp.id] = {min:"",max:""};
+        Object.keys(active).forEach(k => active[k].clear());
+        page = 0; render();
+        return {checks, violations, leaks, options};
+    }""")
+    ok("R: REAL every case-facet option was checked, bare and with a range",
+       inv["checks"] == inv["options"] * 2 and inv["options"] > 0, inv)
+    ok("R: REAL matching_series_with_zero_matching_cases_under_case_filters = 0",
+       inv["violations"] == 0, inv)
+    ok("R: REAL facet_case_count_leakage_violations = 0", inv["leaks"] == 0, inv)
+
+    # --- NO_CASE series ------------------------------------------------------------
+    reset()
+    nc = pg.evaluate("""() => {
+        const id = M.no_case_series_ids[0];
+        const before = seriesMatching().indexOf(id) >= 0;
+        const f = FDEF.find(x => x.scope === "Condition Case" && Object.keys(FACETS[x.id]||{}).length);
+        active[f.id].add(Object.keys(FACETS[f.id])[0]); page = 0; render();
+        const after = seriesMatching().indexOf(id) >= 0;
+        const section = document.body.innerText.indexOf("Results with no Condition Case") >= 0;
+        active[f.id].clear(); page = 0; render();
+        const back = document.body.innerText.indexOf("Results with no Condition Case") >= 0;
+        return {before, after, section, back, n: M.no_case_series_ids.length};
+    }""")
+    ok("R: REAL 121 result series carry no Condition Case", nc["n"] == 121, nc)
+    ok("R: REAL they are visible when no case filter is active", nc["before"], nc)
+    ok("R: REAL a case filter excludes them rather than passing them through",
+       nc["after"] is False and nc["section"] is False, nc)
+    ok("R: REAL and clearing the filter brings the section back", nc["back"], nc)
+
+    # --- single-case series use their one case ------------------------------------
+    reset()
+    one = pg.evaluate("""() => {
+        const id = Object.keys(SERIES).find(k => SERIES[k].placement === "CASE_LOCAL");
+        const cid = SERIES[id].all_case_ids[0];
+        const f = FDEF.find(x => x.scope === "Condition Case");
+        const good = Object.keys(FACETS[f.id]).find(v => FACETS[f.id][v].cases.indexOf(cid) >= 0);
+        const bad = Object.keys(FACETS[f.id]).find(v => FACETS[f.id][v].cases.indexOf(cid) < 0);
+        active[f.id].add(good);
+        const hit = seriesMatching().indexOf(id) >= 0;
+        active[f.id].clear(); active[f.id].add(bad);
+        const miss = seriesMatching().indexOf(id) >= 0;
+        active[f.id].clear(); page = 0; render();
+        return {hit, miss};
+    }""")
+    ok("R: REAL a single-case series matches through its own case", one["hit"], one)
+    ok("R: REAL and not through anything else", one["miss"] is False, one)
+
+    # --- scopes stay separate ------------------------------------------------------
+    reset()
+    scopes = pg.evaluate("""() => {
+        // technique is MeasurementAct scope and quantity is ResultSeries scope; selecting
+        // both must still describe one act -> series path, not two unrelated results
+        const id = Object.keys(SERIES).find(k => SERIES[k].act_id && ACTS[SERIES[k].act_id]
+                        && ACTS[SERIES[k].act_id].technique && SERIES[k].y.y_quantity);
+        const t = ACTS[SERIES[id].act_id].technique;
+        const q = SERIES[id].y.y_quantity;
+        const tech = Array.isArray(t) ? t[0] : t;
+        active.technique.add(tech); active.quantity.add(q); page = 0; render();
+        const hits = seriesMatching();
+        const ok = hits.every(x => {
+            const a = ACTS[SERIES[x].act_id];
+            const tt = a && (Array.isArray(a.technique) ? a.technique : [a.technique]);
+            return tt && tt.indexOf(tech) >= 0 && SERIES[x].y.y_quantity === q;
+        });
+        active.technique.clear(); active.quantity.clear(); page = 0; render();
+        return {n: hits.length, same_path: ok};
+    }""")
+    ok("R: REAL technique + quantity still describe the same act -> series path",
+       scopes["same_path"] and scopes["n"] > 0, scopes)
+
+    # --- tray survives ------------------------------------------------------------
+    reset()
+    tray_ok = pg.evaluate("""() => {
+        const id = M.sweep_series_ids[0];
+        tray.length = 0; tray.push(id); render();
+        const f = FDEF.find(x => x.scope === "Condition Case" && Object.keys(FACETS[x.id]||{}).length);
+        active[f.id].add(Object.keys(FACETS[f.id])[0]); page = 0; render();
+        const kept = tray.indexOf(id) >= 0;
+        const marked = document.querySelector('#tray').innerText;
+        active[f.id].clear(); tray.length = 0; page = 0; render();
+        return {kept, marked: /outside filter/.test(marked) || kept};
+    }""")
+    ok("R: REAL the tray survives a case-scoped filter change", tray_ok["kept"], tray_ok)
+
+    reset()
+    ok("R: no console errors during case-scope interactions", not errors, errors[:2])
 
 
 if __name__ == "__main__":

@@ -133,18 +133,9 @@ const el = (t,c,h) => { const n=document.createElement(t); if(c)n.className=c;
   if(h!==undefined)n.innerHTML=h; return n; };
 
 // ---------------------------------------------------------------- state
-const FDEF = [
-  {id:"material",label:"Deposited material",scope:"Condition Case"},
-  {id:"precursor",label:"Precursor",scope:"Condition Case"},
-  {id:"coreactant",label:"Co-reactant",scope:"Condition Case"},
-  {id:"geometry",label:"Geometry",scope:"Condition Case"},
-  {id:"paper",label:"Paper",scope:"Condition Case"},
-  {id:"technique",label:"Measurement technique",scope:"MeasurementAct"},
-  {id:"quantity",label:"Result quantity",scope:"ResultSeries"},
-  {id:"coordinate",label:"Result coordinate",scope:"ResultSeries"},
-  {id:"normalization",label:"Normalization basis",scope:"ResultSeries"},
-  {id:"data_source",label:"Result type",scope:"ResultSeries"},
-];
+// facet declarations, including each facet's SCOPE, come from the model: the filtering
+// algorithm iterates on scope and never on a facet name
+const FDEF = M.facet_defs;
 // declared by the model, in the unit the comparison actually runs in
 const RANGES = M.range_fields;
 const sel = new Set(FDEF.map(f=>f.id)); // placeholder, replaced below
@@ -158,21 +149,63 @@ const MAXSEL = 8;
 // ---------------------------------------------------------------- facet engine
 // Options for a facet are computed against every OTHER active facet, so a selection
 // never collapses its own list and can be widened without clearing.
-function seriesMatching(skipFacet, skipRange) {
-  const out = [];
-  for (const sid in SERIES) {
-    const s = SERIES[sid];
-    if (profileOnly && !s.is_profile) continue;
-    if (!facetsOk(s, skipFacet)) continue;
-    if (!rangeOk(s, skipRange)) continue;
-    if (onlyComparable && tray.length && !comparableToTray(sid)) continue;
-    out.push(sid);
-  }
-  return out;
+// Filters are evaluated in their declared scope, and the scopes do not mix. The rule
+// that matters: every ACTIVE Condition Case-scoped constraint must be satisfied by ONE
+// SAME Condition Case. Evaluating them independently let a sweep pass because case A
+// carried the geometry while case B carried the temperature -- a combination no single
+// experiment ever had.
+const CASE_SCOPE = "Condition Case";
+
+function caseHasOption(cid, fid, v) {
+  const e = (FACETS[fid] || {})[v];
+  return !!(e && e.cases.indexOf(cid) >= 0);
 }
-function facetsOk(s, skip) {
+function activeRanges(skip) {
+  return RANGES.filter(r => r.id !== skip &&
+    (range[r.id].min !== "" || range[r.id].max !== ""));
+}
+// Is any case-scoped constraint active at all? Asked explicitly, because "no case
+// filters" must not silently become "must have a Condition Case": a result with no
+// process context is not excluded by a filter nobody set.
+function hasActiveCaseFilters(skipFacet, skipRange) {
   for (const f of FDEF) {
-    if (f.id === skip) continue;
+    if (f.scope !== CASE_SCOPE || f.id === skipFacet) continue;
+    if (active[f.id].size) return true;
+  }
+  return activeRanges(skipRange).length > 0;
+}
+// The single authority for case-scoped filtering, evaluated on ONE Condition Case.
+// `candidate` lets a facet option be tested on this same case while that facet's own
+// active selections are set aside, which is what a leave-one-out option count means.
+function caseMatchesFilters(cid, skipFacet, skipRange, candidate) {
+  for (const f of FDEF) {
+    if (f.scope !== CASE_SCOPE) continue;
+    if (candidate && f.id === candidate.facet) {
+      if (!caseHasOption(cid, f.id, candidate.value)) return false;
+      continue;                       // the candidate stands in for the selection
+    }
+    if (f.id === skipFacet) continue;
+    const a = active[f.id];
+    if (!a.size) continue;
+    let hit = false;                  // OR within a facet
+    for (const v of a) { if (caseHasOption(cid, f.id, v)) { hit = true; break; } }
+    if (!hit) return false;           // AND across facets, on this same case
+  }
+  for (const r of activeRanges(skipRange)) {
+    if (!inBand(numericValues(cid, r.field_id), range[r.id])) return false;
+  }
+  return true;
+}
+function matchingCases(s, skipFacet, skipRange, candidate) {
+  return (s.all_case_ids || [])
+    .filter(cid => caseMatchesFilters(cid, skipFacet, skipRange, candidate));
+}
+// ResultSeries- and MeasurementAct-scoped facets are properties of the series and of the
+// act that produced it, so the precomputed series index is the right authority for them:
+// a technique and a quantity selected together still describe one act -> series path.
+function nonCaseFacetsOk(s, skip) {
+  for (const f of FDEF) {
+    if (f.scope === CASE_SCOPE || f.id === skip) continue;
     const a = active[f.id];
     if (!a.size) continue;
     const opts = FACETS[f.id] || {};
@@ -181,6 +214,21 @@ function facetsOk(s, skip) {
     if (!hit) return false;
   }
   return true;
+}
+function seriesMatching(skipFacet, skipRange) {
+  const caseFiltered = hasActiveCaseFilters(skipFacet, skipRange);
+  const out = [];
+  for (const sid in SERIES) {
+    const s = SERIES[sid];
+    if (profileOnly && !s.is_profile) continue;
+    if (!nonCaseFacetsOk(s, skipFacet)) continue;
+    // one definition of case eligibility, shared with the sweep card's own count, so
+    // the two cannot disagree
+    if (caseFiltered && !matchingCases(s, skipFacet, skipRange).length) continue;
+    if (onlyComparable && tray.length && !comparableToTray(sid)) continue;
+    out.push(sid);
+  }
+  return out;
 }
 // A range field addresses ONE condition key. `pulse_time` and `pulse_time@TMA` are two
 // quantities; the old lookup took the first key that started with the field name, so a
@@ -202,46 +250,46 @@ function inBand(entries, q) {
     return true;
   });
 }
-function activeRanges(skip) {
-  return RANGES.filter(r => r.id !== skip &&
-    (range[r.id].min !== "" || range[r.id].max !== ""));
-}
-// Does this Condition Case itself satisfy the case-scoped filters? A sweep may match
-// because ONE of the cases it traverses does; that does not make the others matches.
-function caseMatchesFilters(cid, skipFacet, skipRange) {
-  for (const f of FDEF) {
-    if (f.scope !== "Condition Case" || f.id === skipFacet) continue;
-    const a = active[f.id];
-    if (!a.size) continue;
-    const opts = FACETS[f.id] || {};
-    let hit = false;
-    for (const v of a) { const e = opts[v]; if (e && e.cases.indexOf(cid) >= 0) { hit = true; break; } }
-    if (!hit) return false;
-  }
-  for (const r of activeRanges(skipRange)) {
-    if (!inBand(numericValues(cid, r.field_id), range[r.id])) return false;
-  }
-  return true;
-}
-function matchingCases(s, skipFacet, skipRange) {
-  return (s.all_case_ids || []).filter(cid => caseMatchesFilters(cid, skipFacet, skipRange));
-}
-function rangeOk(s, skip) {
-  const rs = activeRanges(skip);
-  if (!rs.length) return true;
-  // a result inherits process context through the Condition Cases it traverses
-  return (s.all_case_ids || []).some(cid => rs.every(r =>
-    inBand(numericValues(cid, r.field_id), range[r.id])));
-}
+// An option count is a number of ELIGIBLE Condition Cases: cases that would satisfy this
+// option together with every other active case-scoped constraint. Counting every case a
+// candidate sweep traverses overstated it, because a sweep reaches cases the filters
+// exclude.
 function facetOptions(fid) {
-  const base = new Set(seriesMatching(fid));
+  const def = FDEF.find(f => f.id === fid) || {};
+  const caseScoped = def.scope === CASE_SCOPE;
   const opts = FACETS[fid] || {};
+  const caseFiltered = hasActiveCaseFilters(caseScoped ? fid : undefined);
+  const candidates = new Set();
+  for (const sid in SERIES) {
+    const s = SERIES[sid];
+    if (profileOnly && !s.is_profile) continue;
+    if (!nonCaseFacetsOk(s, fid)) continue;
+    if (onlyComparable && tray.length && !comparableToTray(sid)) continue;
+    candidates.add(sid);
+  }
   const out = [];
   for (const v in opts) {
-    const ser = opts[v].series.filter(x => base.has(x));
-    if (!ser.length) continue;
-    const cs = new Set(); ser.forEach(x => (SERIES[x].all_case_ids||[]).forEach(c=>cs.add(c)));
-    out.push({v, cases: cs.size, series: ser.length});
+    const cases = new Set(), ser = new Set();
+    opts[v].series.forEach(sid => {
+      if (!candidates.has(sid)) return;
+      const s = SERIES[sid];
+      if (caseScoped) {
+        const mc = matchingCases(s, fid, undefined, {facet: fid, value: v});
+        if (!mc.length) return;
+        ser.add(sid); mc.forEach(c => cases.add(c));
+      } else {
+        if (caseFiltered) {
+          const mc = matchingCases(s);
+          if (!mc.length) return;
+          mc.forEach(c => cases.add(c));
+        } else {
+          (s.all_case_ids || []).forEach(c => cases.add(c));
+        }
+        ser.add(sid);
+      }
+    });
+    if (!ser.size) continue;
+    out.push({v, cases: cases.size, series: ser.size});   // both deduplicated
   }
   return out.sort((a,b)=> b.cases-a.cases || a.v.localeCompare(b.v));
 }
@@ -325,13 +373,16 @@ function openFacet(fid, anchor) {
   closePop();
   const opts = facetOptions(fid);
   const pop = el("div","pop");
-  pop.innerHTML = `<input type="text" placeholder="search…">`;
+  pop.innerHTML = `<input type="text" placeholder="search…">
+    <div class="dim" style="font-size:9.5px;padding:0 6px 4px">counts are eligible
+    Condition Cases · matching ResultSeries</div>`;
   const list = el("div",""); pop.appendChild(list);
   const paint = q => {
     const show = opts.filter(o => !q || o.v.toLowerCase().indexOf(q)>=0);
     list.innerHTML = show.length ? show.map(o=>`<div class="opt" data-v="${esc(o.v)}">
       <span>${active[fid].has(o.v)?"✓ ":""}${esc(o.v)}</span>
-      <span class="n">${o.cases}c / ${o.series}s</span></div>`).join("")
+      <span class="n" title="${o.cases} eligible Condition Cases · ${o.series} matching ResultSeries"
+        >${o.cases}c · ${o.series}s</span></div>`).join("")
       : '<div class="dim" style="padding:5px">no compatible values</div>';
     list.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{
       const v=o.dataset.v;
