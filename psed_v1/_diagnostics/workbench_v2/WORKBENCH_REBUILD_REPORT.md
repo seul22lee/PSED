@@ -484,3 +484,119 @@ The filter engine contains no DOI, Condition Case id, ResultSeries id, material,
 or species literal, no branch on a facet name, and no branch on a corpus cardinality; its
 only `sort` orders options for display. Asserted by test, over the builder, the template
 and the generated HTML.
+
+---
+
+# Condition display semantics and condition-table colour linkage
+
+## Root cause of the `unknown` pulse/purge values
+
+Not missing data, and not a failure to parse the sequence. The comparison table lists one
+row per **recorded condition key**, and `pulse_time` is a different quantity from
+`precursor_pulse_time@TMA`: one is silent about which chemical was pulsed, the other is
+not. The bare row exists as soon as *any* selected column records it, and a column whose
+case recorded the times only against a reactant role then had nothing to put in that row —
+so it rendered a flat `unknown` beside a `pulse_purge_sequence` that visibly contained the
+numbers.
+
+Corpus-wide this is **29** (bare quantity, case) pairs, spread across papers. Of the 182
+Condition Cases: 32 record only bare step times, 12 only qualified ones, 47 both.
+
+Of the five possibilities the brief asked to separate, this is **"present but not
+surfaced"** — present *as different quantities*, which is why surfacing it as the bare
+value would have been wrong.
+
+## Sequence audit — real corpus
+
+Sequence-shaped conditions are found by **value shape**, not by quantity name: a value that
+is a delimiter-separated list of numbers. A single number is excluded however it is
+spelled, so `1e-7` is one pressure and not a two-step recipe.
+
+| classification | count |
+|---|---|
+| `EXPLICIT_FIELDS_ALREADY_PRESENT` | **11** |
+| `GENERAL_DERIVATION_SAFE` | **0** |
+| `DERIVATION_AMBIGUOUS` | **0** |
+| `NOT_A_PULSE_PURGE_TIME_ENCODING` | 2 |
+| `INSUFFICIENT_CONTEXT` | 0 |
+| total sequence-shaped conditions | 13 |
+
+All 11 pulse/purge sequences are four numeric terms with no unit, and **every one of them
+already has all four explicit role- and species-qualified fields recorded** — e.g. a
+`0.2-4.0-0.1-4.0` case also carries precursor pulse 0.2 s, precursor purge 4.0 s,
+coreactant pulse 0.1 s, coreactant purge 4.0 s. The five distinct sequences vary in both
+pulse and purge terms, so this is not one repeated boilerplate string.
+
+## Derivation contract: **do not derive**
+
+Three independent reasons, in order of weight:
+
+1. **It would add nothing.** Every sequence occurrence in this corpus is
+   `EXPLICIT_FIELDS_ALREADY_PRESENT`. There is no case where the sequence is the only
+   record of a step time, so no case where derivation could recover information.
+2. **It would collapse a distinction the frozen condition layer maintains.** A derived
+   bare `pulse_time` is a species-*unattributed* claim. The record deliberately separates
+   `pulse_time` from `precursor_pulse_time@TMA`, and the range facets already label the
+   unqualified variant *(species unattributed)*. Writing the sequence into the bare row
+   would manufacture exactly the ambiguity the earlier repair removed.
+3. **The ordering is unverifiable from the string.** The sequence carries no unit, no step
+   labels, no role labels and no species binding. That
+   `[t1,t2,t3,t4] = [precursor pulse, precursor purge, coreactant pulse, coreactant purge]`
+   holds here is something the *explicit fields* establish — the string cannot establish
+   it about itself. Precisely where derivation would be needed (fields absent) is where
+   nothing could confirm the order.
+
+The safe use of the string is **corroboration, not derivation**. The builder checks each
+sequence against the explicit fields it duplicates, as a multiset (position would assume
+the ordering that is not written down):
+
+```
+sequence_corroborates_explicit_fields   11
+sequence_contradicts_explicit_fields     0     <- a build gate
+```
+
+**Values that became derived: 0. Unknowns that stayed unknown: all of them** — but they no
+longer read as absent information.
+
+## What the table shows now
+
+Three states, distinguishable without a legend lookup:
+
+- **explicit** — the recorded value, as recorded;
+- **varies** — a sweep whose linked cases disagree, with the range or set;
+- **not recorded unqualified** — the bare quantity is silent, *and* the qualified
+  quantities that are recorded are offered beside it in an expander, each under its own
+  key, with the sentence *"A qualified quantity is not a value for the unqualified one; it
+  is a different quantity."*
+- **unknown** — nothing recorded, qualified or otherwise.
+
+The qualified siblings of a bare quantity are found structurally — `<role>_<quantity>`, or
+the same quantity carrying a species — using the suffix relation the ontology already uses
+for role-prefixed composites. No role vocabulary is consulted, so a role this corpus has
+never seen behaves identically; the case's `chemistry` block is deliberately not used
+because it is empty on 8 of the 11 sequence-bearing cases even where the qualified
+conditions exist.
+
+A footnote states plainly that nothing in the table is derived.
+
+One further defect the review surfaced: a condition row recorded with no value rendered as
+`null cycle`, which reads as a magnitude. Valueless rows (**40** in the corpus) are now
+suppressed rather than printed.
+
+## Colour linkage
+
+Colour was assigned by position in the **drawn** set, so a selected series the current
+representation could not materialise shifted every colour after it and the legend stopped
+agreeing with the tray. Colour is now a function of the selection —
+`seriesColor(sid) = COLORS[tray.indexOf(sid)]` — and one `chip(sid)` helper is used in the
+plot, the legend, the tray rows and each condition-table column header. The four agree by
+construction rather than by convention, including when a tray series falls outside the
+active filter, when the tray is reordered, and when several compared series come from the
+same paper and figure family, where the text labels alone are ambiguous.
+
+## Generalizability
+
+No DOI, Condition Case, figure, sequence-literal, material or species branch in production
+code; the parser is shape-based and lives only in the builder audit — the page never splits
+a condition value at all. Asserted by test over the builder, the template and the generated
+HTML.
