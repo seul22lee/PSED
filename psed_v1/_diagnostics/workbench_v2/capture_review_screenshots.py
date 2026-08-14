@@ -461,6 +461,23 @@ def main(outdir):
             document.querySelector('#workspace').scrollTop = 0;
         }""")
         shot("31_unresolved_units_no_false_overlay")
+
+        # two branches of one sweep whose Condition Cases are disjoint
+        reset()
+        pg.evaluate("""() => {
+            const res = Object.keys(PCL).filter(k =>
+                PCL[k].status === "POINT_CASE_RESOLVED");
+            for (const a of res) for (const b of res) {
+                if (a === b) continue;
+                const ca = new Set(SERIES[a].all_case_ids);
+                if (SERIES[b].all_case_ids.some(c => ca.has(c))) continue;
+                if (!sweepAxisOf(a) || sweepAxisOf(a) !== sweepAxisOf(b)) continue;
+                tray.length = 0; tray.push(a, b); mode = "case"; render();
+                document.querySelector('#workspace').scrollTop = 0;
+                return;
+            }
+        }""")
+        shot("32_cross_case_sweep_branches")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))

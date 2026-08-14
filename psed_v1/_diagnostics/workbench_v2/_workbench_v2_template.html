@@ -1014,6 +1014,49 @@ function caseRowOrder(caseIds) {
                   || label(a).localeCompare(label(b))
                   || String(a).localeCompare(String(b));
 }
+// The sweep coordinate a resolved row sits at, in the frozen comparison semantics: the
+// quantity identity the link matched on, its species/role, its dimension, and the
+// canonical magnitude. Rows align only when all four agree -- never because two numbers
+// happen to be equal.
+function sweepKey(r) {
+  const l = r.link || {};
+  if (l.canonical_value === null || l.canonical_value === undefined) return null;
+  return {axis: [l.matched_quantity, l.matched_species_or_role || "",
+                 l.canonical_dimension || ""].join("|"),
+          value: l.canonical_value};
+}
+function sweepAxisOf(sid) {
+  const keys = caseDataRows(sid).map(sweepKey).filter(Boolean);
+  const ax = [...new Set(keys.map(k => k.axis))];
+  return ax.length === 1 ? ax[0] : null;   // one series, one sweep axis, or none
+}
+// Conditions that are constant inside each series' own cases but differ between series:
+// what distinguishes the branches. No quantity is named.
+function branchConditions(sids) {
+  const perSeries = {};
+  sids.forEach(sid => {
+    const cids = [...new Set(caseDataRows(sid).map(r => r.case_id))];
+    const vals = {};
+    cids.forEach(cid => ((CASES[cid]||{conditions:[]}).conditions).forEach(x => {
+      if (x.value === null || x.value === undefined || x.value === "") return;
+      const k = x.quantity + (x.species ? "@" + x.species : "");
+      (vals[k] = vals[k] || new Set()).add(`${x.value}${x.unit?" "+x.unit:""}`);
+    }));
+    perSeries[sid] = vals;
+  });
+  const keys = new Set();
+  sids.forEach(sid => Object.keys(perSeries[sid]).forEach(k => keys.add(k)));
+  const out = [];
+  [...keys].sort().forEach(k => {
+    const per = sids.map(sid => {
+      const v = perSeries[sid][k];
+      return (v && v.size === 1) ? [...v][0] : null;   // constant within the branch
+    });
+    if (per.some(v => v === null)) return;
+    if (new Set(per).size > 1) out.push({k, per});     // and differing between branches
+  });
+  return out;
+}
 function drawCaseData() {
   const box = $("#casedata"); if (!box) return;
   if (!tray.length) { box.innerHTML = '<div class="note">Select result series.</div>'; return; }
@@ -1055,6 +1098,85 @@ function drawCaseData() {
       h += "</tbody></table>";
     }
   }
+  // --- every resolved observation from every selected series, joined by nothing ------
+  if (resolved.length > 1) {
+    const branch = branchConditions(resolved);
+    const all = [];
+    resolved.forEach(sid => caseDataRows(sid).forEach(r => all.push(r)));
+    h += `<h3>All selected case data <span class="dim" style="font-weight:400">·
+      ${all.length} evidence-backed observations · union, not a join</span></h3>`;
+    h += `<table data-union="1"><thead><tr><th>Series</th><th>Condition Case</th>
+      ${branch.map(b=>`<th><code>${esc(b.k)}</code></th>`).join("")}
+      <th class="unit">sweep x</th><th class="unit">observed result</th></tr></thead><tbody>`;
+    all.slice().sort((a,b)=>{
+      const ia = resolved.indexOf(a.sid), ib = resolved.indexOf(b.sid);
+      return ia - ib || (a.x||0) - (b.x||0);
+    }).forEach(r => {
+      const s2 = SERIES[r.sid];
+      h += `<tr data-sid="${esc(r.sid)}" data-pt="${r.point_index}">
+        <td>${chip(r.sid)} <span class="dim">Fig.${esc(s2.figure)}${esc(s2.panel||"")}</span></td>
+        <td><code>${esc(CASES[r.case_id]?CASES[r.case_id].case_id:r.case_id)}</code></td>
+        ${branch.map(b=>`<td>${esc(b.per[resolved.indexOf(r.sid)]||"")}</td>`).join("")}
+        <td>${esc(fmtNum(r.x))} <span class="dim">${esc(r.x_unit||"")}</span></td>
+        <td>${fmtResult(r)}</td></tr>`;
+    });
+    h += "</tbody></table>";
+
+    // --- aligned by sweep coordinate: same x, still different Condition Cases --------
+    const axes = resolved.map(sweepAxisOf);
+    const oneAxis = axes.every(a => a && a === axes[0]) ? axes[0] : null;
+    if (!oneAxis) {
+      h += `<div class="note">Aligned by sweep coordinate is unavailable: the selected
+        series do not share one sweep axis identity (quantity, species/role and dimension
+        must all agree). The observations above remain individually valid.</div>`;
+    } else {
+      const byS = {}, dup = {};
+      resolved.forEach(sid => {
+        byS[sid] = {};
+        caseDataRows(sid).forEach(r => {
+          const k = sweepKey(r); if (!k) return;
+          const v = String(k.value);
+          // two observations at one coordinate: reported, never silently picked between
+          if (byS[sid][v]) { (dup[sid] = dup[sid] || new Set()).add(v); }
+          (byS[sid][v] = byS[sid][v] || []).push(r);
+        });
+      });
+      const coords = [...new Set(resolved.flatMap(sid => Object.keys(byS[sid])))]
+        .sort((a,b)=>parseFloat(a)-parseFloat(b));
+      h += `<h3>Aligned by sweep coordinate <span class="dim" style="font-weight:400">·
+        ${coords.length} coordinates · Condition Cases remain distinct</span></h3>
+        <div class="note">Rows align on the sweep coordinate only. The Condition Cases in
+        one row are different cases; nothing here asserts a shared case, specimen or run.
+        Missing observations are shown as \u2014 and never interpolated.</div>`;
+      h += `<table data-sweep-aligned="1"><thead><tr><th class="unit">sweep coordinate</th>
+        ${resolved.map(sid=>`<th class="unit">${chip(sid)}
+          ${esc(SERIES[sid].paper_id.slice(0,14))} Fig.${esc(SERIES[sid].figure)}${
+          esc(SERIES[sid].panel||"")}
+          <div class="dim" style="font-weight:400">${branch.map(b=>
+            esc(b.per[resolved.indexOf(sid)]||"")).join(" · ")}</div></th>`).join("")}
+        </tr></thead><tbody>`;
+      coords.forEach(v => {
+        h += `<tr data-coord="${esc(v)}"><td>${esc(fmtNum(parseFloat(v)))}</td>`;
+        resolved.forEach(sid => {
+          const rs = byS[sid][v] || [];
+          if (!rs.length) { h += '<td><span class="dim">—</span></td>'; return; }
+          if (rs.length > 1) {
+            h += `<td><span class="warn">${rs.length} observations at this coordinate</span>
+              <div class="smeta">${rs.map(r=>`<code>${esc(CASES[r.case_id]?
+                CASES[r.case_id].case_id:r.case_id)}</code> ${fmtResult(r)}`).join("<br>")}
+              </div></td>`;
+            return;
+          }
+          const r = rs[0];
+          h += `<td><code class="dim">${esc(CASES[r.case_id]?CASES[r.case_id].case_id
+            :r.case_id)}</code><br>${fmtResult(r)}</td>`;
+        });
+        h += "</tr>";
+      });
+      h += "</tbody></table>";
+    }
+  }
+
   tray.forEach(sid => {
     const s = SERIES[sid], rows = caseDataRows(sid), rec = PCL[sid] || {};
     h += `<h3>${chip(sid)} ${esc(s.paper_id)} · Fig. ${esc(s.figure)}${esc(s.panel||"")}

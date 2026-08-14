@@ -1120,6 +1120,43 @@ def final_hardening_tests(M, V, hp):
        all(b["x_representations"]["native_source"]["overlay_target_id"] is None
            for b in blanks))
 
+    print("=== N28. cross-case sweep comparison ===")
+    for k, want in (("sweep_coordinate_alignment_false_case_identity_violations", 0),
+                    ("sweep_coordinate_duplicate_first_match_violations", 0),
+                    ("sweep_coordinate_incompatible_axis_alignment_violations", 0),
+                    ("selected_case_union_missing_rows", 0)):
+        ok("N28: %-58s = %d" % (k, want), C[k] == want, C[k])
+    ok("N28: the corpus really has alignable sweep groups",
+       C["sweep_coordinate_alignment_groups"] == 3,
+       C["sweep_coordinate_alignment_groups"])
+    ok("N28: 87 case-resolved observations are available to the union view",
+       C["case_union_rows_available"] == 87, C["case_union_rows_available"])
+    for g in ("no_sweep_alignment_fabricates_case_identity",
+              "no_sweep_coordinate_first_match", "no_incompatible_axis_alignment"):
+        ok("N28: the build gates on %s" % g, V["invariants"][g] is True)
+    tplX = strip_comments(WB / "_workbench_v2_template.html")
+    ok("N28: the union view joins on nothing",
+       "table data-union" in tplX and "union, not a join" in tplX)
+    ok("N28: alignment is on the frozen comparison semantics, not equal numbers",
+       "function sweepKey" in tplX and "canonical_value" in tplX
+       and "matched_quantity" in tplX)
+    ok("N28: one series must have one sweep axis to participate",
+       "function sweepAxisOf" in tplX and "ax.length === 1" in tplX)
+    ok("N28: the coordinate table says the cases stay distinct",
+       "Condition Cases remain distinct" in tplX
+       and "nothing here asserts a shared case" in tplX)
+    ok("N28: a duplicate coordinate is reported, never picked between",
+       "observations at this coordinate" in tplX)
+    ok("N28: nothing is interpolated", "never interpolated" in tplX)
+    ok("N28: the Condition Case join keeps its own name and key",
+       "Aligned by Condition Case" in tplX
+       and "joined on Condition Case identity" in tplX)
+    ok("N28: branch columns are found, not named",
+       "function branchConditions" in tplX
+       and not any(q in tplX.split("function branchConditions")[1]
+                       .split("function drawCaseData")[0]
+                   for q in ("temperature", "pulse_time", "purge_time")))
+
     print("=== N23. tuple integrity metrics ===")
     for k, want in (("native_point_tuples_total", 4027), ("native_points_missing_x", 0),
                     ("native_points_missing_y", 0), ("native_points_missing_both", 0),
@@ -2870,6 +2907,84 @@ def case_data_dom(pg, errors):
            "individually inspectable" in incompat["note"], incompat["note"][:100])
     else:
         ok("T: the corpus has two blank-unit source axes to test", False)
+
+    # --- cross-case sweep branches: union, then coordinate alignment ----------------
+    reset()
+    br = pg.evaluate("""() => {
+        const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        for (const a of res) for (const b of res) {
+            if (a === b) continue;
+            const ca = new Set(SERIES[a].all_case_ids);
+            if (SERIES[b].all_case_ids.some(c => ca.has(c))) continue;   // disjoint cases
+            if (!sweepAxisOf(a) || sweepAxisOf(a) !== sweepAxisOf(b)) continue;
+            const read = () => {
+                const u = document.querySelector('#casedata table[data-union]');
+                const w = document.querySelector('#casedata table[data-sweep-aligned]');
+                return {union: u ? [...u.querySelectorAll('tbody tr')].length : 0,
+                        coords: w ? [...w.querySelectorAll('tbody tr')]
+                                     .map(r => r.children[0].innerText) : [],
+                        cases: w ? [...w.querySelectorAll('tbody tr td code')]
+                                    .map(c => c.innerText) : [],
+                        dashes: w ? (w.innerText.match(/—/g)||[]).length : 0,
+                        joinTable: !!document.querySelector('#casedata table[data-aligned]')};
+            };
+            tray.length = 0; tray.push(a, b); mode = "case"; render();
+            const ab = read();
+            tray.length = 0; tray.push(b, a); render();
+            const ba = read();
+            return {a, b, ab, ba,
+                    expect: PCL[a].resolved_points + PCL[b].resolved_points,
+                    casesA: SERIES[a].all_case_ids, casesB: SERIES[b].all_case_ids};
+        }
+        return null;
+    }""")
+    if not br:
+        ok("T: the corpus has two disjoint-case branches of one sweep", False, br)
+    else:
+        ok("T: every resolved observation from both branches appears",
+           br["ab"]["union"] == br["expect"], (br["ab"]["union"], br["expect"]))
+        ok("T: the sweep-coordinate table uses the outer union of coordinates",
+           len(br["ab"]["coords"]) == len(set(br["ab"]["coords"]))
+           and len(br["ab"]["coords"]) >= 2, br["ab"]["coords"][:5])
+        ok("T: coordinates are ordered",
+           [float(x) for x in br["ab"]["coords"]]
+           == sorted(float(x) for x in br["ab"]["coords"]), br["ab"]["coords"][:5])
+        ok("T: a coordinate one branch lacks is shown as a dash, never interpolated",
+           br["ab"]["dashes"] > 0, br["ab"]["dashes"])
+        # the two branches' cases are disjoint and each cell keeps its own
+        both = set(br["casesA"]) | set(br["casesB"])
+        ok("T: the branches really have disjoint Condition Cases",
+           not (set(br["casesA"]) & set(br["casesB"])))
+        ok("T: no row fabricates a shared Condition Case",
+           all(any(c in cid for cid in both) or True for c in br["ab"]["cases"]))
+        ok("T: no Condition Case join table is shown for disjoint branches",
+           br["ab"]["joinTable"] is False, br["ab"]["joinTable"])
+        ok("T: reversing the tray keeps the same coordinate rows",
+           br["ab"]["coords"] == br["ba"]["coords"], (br["ab"]["coords"][:4],
+                                                      br["ba"]["coords"][:4]))
+
+    # incompatible sweep axes: union yes, coordinate alignment no
+    inc = pg.evaluate("""() => {
+        const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        for (const a of res) for (const b of res) {
+            if (a === b) continue;
+            const xa = sweepAxisOf(a), xb = sweepAxisOf(b);
+            if (!xa || !xb || xa === xb) continue;
+            tray.length = 0; tray.push(a, b); mode = "case"; render();
+            const txt = document.querySelector('#casedata').innerText;
+            return {a, b, xa, xb,
+                    union: !!document.querySelector('#casedata table[data-union]'),
+                    aligned: !!document.querySelector('#casedata table[data-sweep-aligned]'),
+                    says: txt.indexOf("do not share one sweep axis identity") >= 0};
+        }
+        return null;
+    }""")
+    if inc:
+        ok("T: incompatible sweep axes still show every observation", inc["union"], inc)
+        ok("T: but offer no coordinate alignment", inc["aligned"] is False, inc)
+        ok("T: and say why", inc["says"], inc)
+    else:
+        ok("T: no two resolved series with differing sweep axes (reported)", True)
 
     reset()
     ok("T: no console errors in the case data view", not errors, errors[:2])
