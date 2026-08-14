@@ -294,6 +294,63 @@ def main(outdir):
             if (c) c.scrollIntoView({block:'start'});
         }""")
         shot("18_colour_chips_tray_legend_table")
+
+        # --- case-resolved data ----------------------------------------------------
+        reset()
+        pg.evaluate("""() => {
+            const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED");
+            tray.length = 0; tray.push(id); mode = "case"; render();
+            const t = document.querySelector('#casedata tr[data-sid]');
+            if (t) t.click();
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("19_case_data_resolved_sweep")
+
+        reset()
+        pg.evaluate("""() => {
+            const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+            for (const a of res) for (const b of res) {
+                if (a === b) continue;
+                const ca = new Set(SERIES[a].all_case_ids);
+                if (SERIES[b].all_case_ids.filter(c => ca.has(c)).length < 2) continue;
+                tray.length = 0; tray.push(a,b); mode = "case"; render();
+                document.querySelector('#workspace').scrollTop = 0;
+                return;
+            }
+        }""")
+        shot("20_case_data_two_series_aligned")
+
+        reset()
+        pg.evaluate("""() => {
+            const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+            for (const a of res) for (const b of res) {
+                if (a === b) continue;
+                const p = pairOf(a,b);
+                if (p && p.physical_overlay_allowed) continue;
+                tray.length = 0; tray.push(a,b); mode = "plot"; render();
+                return;
+            }
+        }""")
+        shot("21_overlay_blocked_plot_tab")
+        pg.evaluate("() => { mode = 'case'; render(); }")
+        shot("22_overlay_blocked_case_data_still_available")
+
+        reset()
+        pg.evaluate("""() => {
+            const id = Object.keys(PCL).find(k => PCL[k].status === "CASE_SET_ONLY"
+                                                && SERIES[k].n_cases > 1);
+            tray.length = 0; tray.push(id); mode = "case"; render();
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("23_case_set_only_refusal")
+
+        reset()
+        pg.evaluate("""() => {
+            const id = Object.keys(PCL).find(k => PCL[k].status === "NO_CASE_CONTEXT");
+            tray.length = 0; tray.push(id); mode = "case"; render();
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("24_no_case_context")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))
