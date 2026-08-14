@@ -208,12 +208,108 @@ def main():
                                                           "WebSocket")))
     ok("L: model placeholder was substituted", "/*__MODEL__*/" not in html)
 
+    hardening_tests(M, V, hp)
     dom_tests(hp)
 
     print("\n%d passed, %d failed" % (len(_pass), len(_fail)))
     if _fail:
         print("FAILED: %s" % _fail)
     return 1 if _fail else 0
+
+
+def hardening_tests(M, V, hp):
+    """The four defects an external review found in the first workbench.
+
+    Each is asserted on the artifact, not on an intention: a shared axis is only offered
+    when the two series mean the same physical quantity, one curve is one entry, a range
+    filter compares canonical magnitudes, and a simulated curve is not counted as a
+    measurement.
+    """
+    SER, ACTS, C = M["series"], M["acts"], V["counts"]
+    html = hp.read_text()
+
+    print("=== N1. every representation carries a scientific target identity ===")
+    reps = [(sid, ax, k, r) for sid, s in SER.items()
+            for ax in ("x_representations", "y_representations")
+            for k, r in (s.get(ax) or {}).items()]
+    ok("N1: representations exist", len(reps) > 0, len(reps))
+    ok("N1: every representation has a target_id",
+       all(r.get("target_id") for _, _, _, r in reps),
+       [(a, b) for a, b, c, r in reps if not r.get("target_id")][:3])
+    ok("N1: a target_id names axis, quantity, normalization, dimension and unit",
+       all(r["target_id"].count("|") == 4 for _, _, _, r in reps))
+    ok("N1: x and y targets can never collide",
+       all(r["target_id"].startswith(ax[0] + "|") for _, ax, _, r in reps))
+
+    print("=== N2. 'native' is a local label, not a shared target ===")
+    natives = {r["target_id"] for _, ax, k, r in reps
+               if k == "native" and ax == "y_representations"}
+    ok("N2: the corpus really does hold several distinct native Y targets",
+       len(natives) > 1, sorted(natives))
+    ok("N2: validation reports them", V["counts"]["distinct_y_native_targets"] > 1,
+       V["counts"]["distinct_y_native_targets"])
+    ok("N2: no target is falsely common across incompatible series",
+       C["false_common_native_targets"] == 0, C["false_common_native_targets"])
+    ok("N2: the invariant is declared", V["invariants"]["native_targets_are_not_universal"])
+
+    print("=== N3. the common-target calculation is semantic, not by key ===")
+    js = html
+    ok("N3: targets are intersected on target_id", "map(r => r.target_id)" in js)
+    ok("N3: the old key intersection is gone",
+       "Object.keys(reps).filter(k => reps[k].available" not in js)
+    ok("N3: a representation is selected by target, not by name",
+       "function repByTarget" in js and "r.target_id === tid" in js)
+
+    print("=== N4. a shared physical axis needs the frozen verdict ===")
+    ok("N4: every indexed pair declares overlay eligibility",
+       V["invariants"]["every_pair_declares_overlay_eligibility"])
+    bad = [k for k, p in M["pairs"].items()
+           if p["physical_overlay_allowed"]
+           and p["status"] not in ("DIRECT_PROFILE", "TRANSFORMABLE_PROFILE")]
+    ok("N4: overlay is allowed only for comparable verdicts", not bad, bad[:3])
+    ok("N4: the page consults it before offering an axis",
+       "function physicalOverlayAllowed" in js and "physical_overlay_allowed" in js)
+    ok("N4: shape-only overlay stays an explicit opt-in",
+       "shapeOnly ? !(p.physical_overlay_allowed || p.shape_only_eligible)" in js)
+
+    print("=== N5. one ResultSeries is one result entry ===")
+    ok("N5: multi-case series exist to be duplicated",
+       C["primary_result_entries_for_multi_case_series"] > 0)
+    ok("N5: each gets exactly one primary entry",
+       C["primary_result_entries_for_multi_case_series"] == C["multi_case_result_series"],
+       (C["primary_result_entries_for_multi_case_series"],
+        C["multi_case_result_series"]))
+    ok("N5: no series is listed twice", C["duplicate_primary_entries"] == 0)
+    ok("N5: the results column groups by primary case", "const byCase = {}, alsoIn = {}" in js)
+    ok("N5: other traversed cases cross-reference instead of repeating",
+       "Also traversed by" in js)
+    ok("N5: the multi-case span is expandable",
+       "Spans ${s.n_cases} Condition Cases" in js)
+
+    print("=== N6. range filtering compares canonical magnitudes ===")
+    ok("N6: rangeOk reads the canonical value", "v.canonical" in js)
+    ok("N6: rangeOk no longer reads the raw value", "const n = v.raw;" not in js)
+    rf = M["range_fields"]
+    ok("N6: range fields are declared by the model, not hardcoded",
+       len(rf) > 0 and "const RANGES = M.range_fields" in js, len(rf))
+    ok("N6: every range field states the unit it compares in",
+       all(f.get("canonical_unit") for f in rf))
+    conv = [f for f in rf if f["canonical_unit"] not in f["raw_units"]]
+    ok("N6: at least one field is reported in a different unit than it filters in",
+       bool(conv), [(f["id"], f["raw_units"], f["canonical_unit"]) for f in rf])
+    ok("N6: the numeric index is materially canonical",
+       C["numeric_with_canonical"] > 0.9 * C["numeric_fields_indexed"],
+       (C["numeric_with_canonical"], C["numeric_fields_indexed"]))
+
+    print("=== N7. simulated curves are not counted as measurements ===")
+    ok("N7: the corpus holds simulation runs", C["simulation_runs"] > 0)
+    ok("N7: acts and simulation runs are disjoint",
+       V["invariants"]["measurement_acts_exclude_simulations"])
+    ok("N7: the header counts them separately", "simulation runs" in js)
+    sim_acts = {a for a, x in ACTS.items() if x["kind"] == "SIMULATION_RUN"}
+    ok("N7: no simulation run is inside the measurement act count",
+       C["measurement_acts"] == len([a for a in ACTS if a not in sim_acts]),
+       (C["measurement_acts"], len(ACTS), len(sim_acts)))
 
 
 def dom_tests(hp):
@@ -279,7 +375,7 @@ def dom_tests(hp):
         pg.evaluate("""() => {
             const id = Object.keys(SERIES).find(k =>
                 SERIES[k].y_representations['norm:t_over_t_max']);
-            tray.length = 0; tray.push(id); TX='native'; TY='native'; render();
+            tray.length = 0; tray.push(id); TX=null; TY=null; render();
         }""")
         pg.wait_for_selector("#plot svg", timeout=10000)
         # Pixel coordinates cannot witness a LINEAR transform: y/max rescales the data and
@@ -294,15 +390,18 @@ def dom_tests(hp):
         svgtext = lambda sel: (pg.locator(sel).first.text_content()
                                if pg.locator(sel).count() else "")
         ylab_before = svgtext("#plot #ylab")
-        pg.evaluate("() => { TY='norm:t_over_t_max'; drawCompare(); }")
+        pg.evaluate("() => { TY = SERIES[tray[0]].y_representations['norm:t_over_t_max']"
+                    ".target_id; drawCompare(); }")
         pg.wait_for_selector("#plot svg", timeout=10000)
         after_vals = plotted()
         after = pg.eval_on_selector("#plot polyline", "e => e.getAttribute('points')")
         ylab_after = svgtext("#plot #ylab")
         ok("M: choosing a Y normalization changes the plotted y values",
            before_vals != after_vals, (before_vals[:1], after_vals[:1]))
-        ok("M: the tooltip reports the normalized value and its unit",
-           any(", y=" in v and v.rstrip().endswith("1") for v in after_vals), after_vals[:1])
+        # the tooltip must name the target quantity, not a generic "y"
+        ok("M: the tooltip reports the normalized quantity, value and unit",
+           all("normalized_thickness=" in v for v in after_vals)
+           and any(v.rstrip().endswith(" 1") for v in after_vals), after_vals[:1])
         ok("M: pixel geometry is unchanged because the transform is linear and the "
            "axis auto-ranges", before == after)
         ok("M: and changes the axis label", ylab_before != ylab_after,
@@ -334,11 +433,11 @@ def dom_tests(hp):
                 Object.keys(SERIES[k].x_representations).some(r => r.startsWith('proj:')));
             if (!id) return null;
             const key = Object.keys(SERIES[id].x_representations).find(r => r.startsWith('proj:'));
-            tray.length = 0; tray.push(id); TX='native'; TY='native'; render(); drawCompare();
+            tray.length = 0; tray.push(id); TX=null; TY=null; render(); drawCompare();
             const vals = () => [...document.querySelectorAll('#plot circle title')]
                 .slice(0,3).map(n => n.textContent);
             const a = vals();
-            TX = key; drawCompare();
+            TX = SERIES[id].x_representations[key].target_id; drawCompare();
             const b = vals();
             return {changed: JSON.stringify(a) !== JSON.stringify(b), key, before: a[0],
                     after: b[0], label: document.querySelector('#plot #xlab').textContent};
@@ -364,7 +463,169 @@ def dom_tests(hp):
         pg.evaluate("() => { tray.length=0; render(); }")
         ok("M: tray can be emptied", "0/8" in pg.inner_text("#tray"))
         ok("M: no console errors accumulated during interaction", not errors, errors[:2])
+
+        hardening_dom(pg, errors)
         b.close()
+
+
+def hardening_dom(pg, errors):
+    """Browser evidence for the four repairs. Model assertions are not a working page."""
+    print("=== O. browser evidence for the hardening ===")
+
+    # --- A: two series whose native Y means different physics cannot share an axis
+    sel = pg.evaluate("""() => {
+        const nat = k => (SERIES[k].y_representations||{}).native;
+        const ids = Object.keys(SERIES).filter(k => nat(k) && nat(k).values);
+        const a = ids[0]; if (!a) return null;
+        const b = ids.find(k => nat(k).target_id !== nat(a).target_id);
+        if (!b) return null;
+        tray.length = 0; tray.push(a, b); TX=null; TY=null; render();
+        return {a, b, ta: nat(a).target_id, tb: nat(b).target_id,
+                common: commonTargets('y').length,
+                enabled: [...document.querySelectorAll('input[name=ry]')]
+                           .filter(r => !r.disabled).length,
+                polylines: document.querySelectorAll('#plot polyline').length,
+                note: (document.querySelector('#plot .note')||{}).textContent || ''};
+    }""")
+    if not sel:
+        ok("O: corpus holds two differing native Y targets", False, "not found")
+    else:
+        ok("O: the two series really do mean different physics",
+           sel["ta"] != sel["tb"], (sel["ta"], sel["tb"]))
+        ok("O: no common Y target is offered for them", sel["common"] == 0, sel["common"])
+        ok("O: every Y option is disabled", sel["enabled"] == 0, sel["enabled"])
+        ok("O: nothing is drawn on a shared axis", sel["polylines"] == 0, sel["polylines"])
+        ok("O: the page says why rather than failing silently",
+           "shared" in sel["note"].lower() or "authorise" in sel["note"].lower(),
+           sel["note"][:90])
+
+    # --- A: and two series that DO share a target overlay, on one stated axis
+    good = pg.evaluate("""() => {
+        const nat = k => (SERIES[k].y_representations||{}).native;
+        for (const a of Object.keys(SERIES)) {
+            if (!nat(a) || !nat(a).values || !SERIES[a].is_profile) continue;
+            for (const b of Object.keys(SERIES)) {
+                if (b === a || !nat(b) || !nat(b).values || !SERIES[b].is_profile) continue;
+                const p = pairOf(a,b);
+                if (!p || !p.physical_overlay_allowed) continue;
+                if (nat(a).target_id !== nat(b).target_id) continue;
+                tray.length = 0; tray.push(a,b); TX=null; TY=null; render();
+                if (document.querySelectorAll('#plot polyline').length < 2) continue;
+                return {a, b, target: nat(a).target_id,
+                        polylines: document.querySelectorAll('#plot polyline').length,
+                        ylab: document.querySelector('#plot #ylab').textContent,
+                        unit: nat(a).unit,
+                        tips: [...document.querySelectorAll('#plot circle title')]
+                                .slice(0,2).map(n => n.textContent)};
+            }
+        }
+        return null;
+    }""")
+    if not good:
+        ok("O: a compatible overlay exists in the corpus", False, "none found")
+    else:
+        ok("O: two compatible series overlay together", good["polylines"] >= 2, good)
+        ok("O: on one axis labelled with the shared target",
+           good["unit"] in good["ylab"], (good["ylab"], good["unit"]))
+        ok("O: tooltips are stated in the target unit",
+           all(good["unit"] in t for t in good["tips"]), good["tips"][:1])
+
+    # --- B: one multi-case curve is one entry
+    multi = pg.evaluate("""() => {
+        tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+        RANGES.forEach(r => range[r.id] = {min:"",max:""});
+        const id = Object.keys(SERIES).sort((x,y)=>SERIES[y].n_cases-SERIES[x].n_cases)[0];
+        if (SERIES[id].n_cases < 2) return null;
+        // page to wherever its primary case is listed
+        const home = SERIES[id].case_ids[0];
+        for (page = 0; page < 40; page++) {
+            render();
+            if (document.querySelector(`[data-ser="${id}"]`)) break;
+        }
+        document.querySelectorAll('#results details.case').forEach(d => d.open = true);
+        const rows = document.querySelectorAll(`[data-ser="${id}"]`).length;
+        return {id, n: SERIES[id].n_cases, rows, home,
+                spans: document.body.innerHTML.indexOf('Spans ' + SERIES[id].n_cases
+                       + ' Condition Cases') >= 0,
+                xref: document.body.innerHTML.indexOf('Also traversed by') >= 0};
+    }""")
+    if not multi:
+        ok("O: a multi-case series exists", False, "none")
+    else:
+        ok("O: a %d-case curve is listed exactly once" % multi["n"],
+           multi["rows"] == 1, multi)
+        ok("O: its full case span is offered as an expandable list", multi["spans"], multi)
+        ok("O: the cases it traverses cross-reference it instead of repeating it",
+           multi["xref"], multi)
+
+    # --- C: the range filter compares canonical magnitudes
+    rf = pg.evaluate("""() => {
+        const f = RANGES.find(r => r.raw_units.length &&
+                                   r.raw_units.indexOf(r.canonical_unit) < 0);
+        if (!f) return null;
+        let raw = null, canon = null;
+        for (const cid in NUM) { const e = (NUM[cid][f.id]||[])[0];
+            if (e && e.canonical !== null) { raw = e.raw; canon = e.canonical; break; } }
+        return raw === null ? null : {id: f.id, raw, canon, unit: f.canonical_unit,
+                                      shown: document.querySelector(
+                                        `input[data-r="${f.id}"]`).closest('.facet').innerText};
+    }""")
+    if not rf:
+        ok("O: a unit-converting range field exists", False, "none")
+    else:
+        ok("O: the range box states the unit it compares in",
+           rf["unit"] in rf["shown"], rf["shown"][:70])
+        def band(lo, hi):
+            return pg.evaluate("""([id, lo, hi]) => {
+                range[id] = {min: String(lo), max: String(hi)}; page = 0; render();
+                const n = seriesMatching().length;
+                range[id] = {min:"", max:""}; page = 0; render();
+                return n;
+            }""", [rf["id"], lo, hi])
+        n_can = band(rf["canon"] - .5, rf["canon"] + .5)
+        n_raw = band(rf["raw"] - .5, rf["raw"] + .5)
+        ok("O: a canonical-valued band matches results", n_can > 0,
+           (rf["id"], rf["canon"], n_can))
+        ok("O: the same number read as the raw unit does not",
+           n_raw < n_can, (rf["raw"], n_raw, rf["canon"], n_can))
+
+    # --- D: simulations are counted as simulations
+    hdr = pg.evaluate("""() => {
+        tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+        RANGES.forEach(r => range[r.id] = {min:"",max:""}); page = 0; render();
+        const all = document.querySelector('#results h2').textContent;
+        const f = Object.keys(FACETS).find(k => FACETS[k]['simulated']);
+        let sim = null;
+        if (f) { active[f].add('simulated'); page = 0; render();
+                 sim = document.querySelector('#results h2').textContent;
+                 active[f].clear(); page = 0; render(); }
+        return {all, sim};
+    }""")
+    ok("O: the header counts acts and simulation runs separately",
+       "measurement acts" in hdr["all"] and "simulation runs" in hdr["all"], hdr["all"])
+    # The header numbers must be the producer-kind partition of the matched set, recomputed
+    # here rather than trusted. (Note: `data_source == "simulated"` is a series label and
+    # does NOT imply a SimulationRun producer -- a few simulated curves hang off Measurement
+    # records in this corpus, which is exactly why the count must follow the producer.)
+    part = pg.evaluate("""() => {
+        const f = Object.keys(FACETS).find(k => FACETS[k]['simulated']);
+        if (!f) return null;
+        active[f].add('simulated'); page = 0; render();
+        const m = new Set(), s = new Set();
+        seriesMatching().forEach(x => { const a = ACTS[SERIES[x].act_id];
+            (a && a.kind === 'SIMULATION_RUN' ? s : m).add(SERIES[x].act_id); });
+        const head = document.querySelector('#results h2').textContent;
+        active[f].clear(); page = 0; render();
+        return {head, acts: m.size, sims: s.size};
+    }""")
+    if part:
+        ok("O: the reported measurement-act count is the producer-kind partition",
+           ("%d measurement acts" % part["acts"]) in part["head"], part)
+        ok("O: and the simulation-run count is too",
+           ("%d simulation runs" % part["sims"]) in part["head"], part)
+        ok("O: filtering to simulated results does surface simulation runs",
+           part["sims"] > 0, part)
+    ok("O: no console errors during the hardening interactions", not errors, errors[:2])
 
 
 if __name__ == "__main__":
