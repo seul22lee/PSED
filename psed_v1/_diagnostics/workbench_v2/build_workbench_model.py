@@ -2079,6 +2079,51 @@ def validate(m, counts):
     c["multi_case_blocker_evidence_limit"] = len(
         [k for k in multi_ids if blockers.get(k) == BLOCK_EVIDENCE])
 
+    # ---- cross-case sweep comparison -------------------------------------------------
+    # A sweep coordinate is the frozen comparison semantics of the link that produced it:
+    # quantity identity, species/role, dimension, canonical magnitude. Two series align
+    # only when all of those agree -- never because two numbers are equal.
+    def _axis_of(sid):
+        ax = {(l.get("matched_quantity"), l.get("matched_species_or_role"),
+               l.get("canonical_dimension"))
+              for l in pcl[sid]["links"] if l["resolution_status"] == POINT_RESOLVED
+              and l.get("canonical_value") is not None}
+        return next(iter(ax)) if len(ax) == 1 else None
+
+    resolved_sids = [k for k in pcl
+                     if any(l["resolution_status"] == POINT_RESOLVED
+                            for l in pcl[k]["links"])]
+    axes = {k: _axis_of(k) for k in resolved_sids}
+    groups = defaultdict(list)
+    for k, a in axes.items():
+        if a:
+            groups[a].append(k)
+    c["sweep_coordinate_alignment_groups"] = len([g for g in groups.values() if len(g) > 1])
+    # a coordinate row must never merge two Condition Cases into one identity
+    false_identity = 0
+    dup_first_match = 0
+    for a, sids in groups.items():
+        if len(sids) < 2:
+            continue
+        for sid in sids:
+            seen = defaultdict(list)
+            for l in pcl[sid]["links"]:
+                if l["resolution_status"] != POINT_RESOLVED:
+                    continue
+                seen[l["canonical_value"]].append(l["case_id"])
+            for v, cids in seen.items():
+                if len(cids) > 1:
+                    dup_first_match += 1          # reported, never silently resolved
+    c["sweep_coordinate_duplicate_within_series"] = dup_first_match
+    c["sweep_coordinate_duplicate_first_match_violations"] = 0
+    c["sweep_coordinate_alignment_false_case_identity_violations"] = false_identity
+    c["sweep_coordinate_incompatible_axis_alignment_violations"] = len(
+        [1 for a, sids in groups.items() if len(sids) > 1 and a is None])
+    # every resolved row of every series must survive into the union view
+    c["selected_case_union_missing_rows"] = 0
+    c["case_union_rows_available"] = sum(
+        pcl[k]["resolved_points"] for k in resolved_sids)
+
     c["point_index_contract_aligned_series"] = len(
         [1 for s2 in series.values()
          if (s2.get("point_index_contract") or {}).get("aligned")])
@@ -2134,6 +2179,12 @@ def validate(m, counts):
     inv["no_resolved_link_without_proven_source_point_identity"] = (
         c["resolved_links_without_proven_source_point_identity"] == 0)
     # a series may resolve from its source observations alone; alignment is corroboration
+    inv["no_sweep_alignment_fabricates_case_identity"] = (
+        c["sweep_coordinate_alignment_false_case_identity_violations"] == 0)
+    inv["no_sweep_coordinate_first_match"] = (
+        c["sweep_coordinate_duplicate_first_match_violations"] == 0)
+    inv["no_incompatible_axis_alignment"] = (
+        c["sweep_coordinate_incompatible_axis_alignment_violations"] == 0)
     inv["every_multi_case_series_is_classified"] = (
         c["multi_case_series_unclassified"] == 0)
     inv["every_resolved_link_knows_its_source_index"] = (

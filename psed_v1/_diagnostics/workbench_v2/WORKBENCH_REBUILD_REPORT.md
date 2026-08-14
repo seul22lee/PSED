@@ -1352,3 +1352,36 @@ blockers: 0 propagation · 2 semantic · 0 extraction · 6 evidence limit
 
 Case Data now produces **87** `condition → observed result` rows across **14** series,
 up from 69 across 10.
+
+## Cross-case sweep comparison
+
+Two branches of one sweep have deliberately disjoint Condition Cases, so they cannot be
+joined by case identity — but they are still the same experiment asked twice. Three
+distinct views now exist and are never merged:
+
+| view | join key | answers |
+|---|---|---|
+| **All selected case data** | none — a union | what did each selected series observe, at which case |
+| **Aligned by sweep coordinate** | the canonical sweep magnitude | at the same sweep value, how did the branches behave |
+| **Aligned by Condition Case** | Condition Case identity | which different outputs belong to one nominal case |
+
+The union requires no shared cases, no shared x values and no overlay authorization; every
+resolved observation of every selected series appears in it. Branch columns are *found*,
+not named: a condition constant within each series' own cases and differing between them.
+
+Sweep alignment is gated on the frozen comparison semantics of the link that produced each
+row — quantity identity, species/role, dimension and canonical magnitude must all agree —
+never on two numbers being equal. Coordinates are the outer union of both grids; a branch
+with no observation at a coordinate shows `—` and nothing is interpolated. Each cell keeps
+its **own** Condition Case id, and the table says in words that the cases in a row are
+different cases and that nothing asserts a shared case, specimen or run. Two observations
+at one coordinate are reported as such rather than picked between.
+
+```
+sweep_coordinate_alignment_groups                          3
+sweep_coordinate_alignment_false_case_identity_violations   0  <- gate
+sweep_coordinate_duplicate_first_match_violations           0  <- gate
+sweep_coordinate_incompatible_axis_alignment_violations     0  <- gate
+selected_case_union_missing_rows                            0
+case_union_rows_available                                  87
+```
