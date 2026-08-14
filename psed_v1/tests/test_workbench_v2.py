@@ -710,7 +710,12 @@ def final_hardening_tests(M, V, hp):
     def cases_from(spec):
         return {k: {"conditions": v} for k, v in spec.items()}
     cond = lambda q, v, u, sp=None: {"quantity": q, "value": v, "unit": u, "species": sp}
-    R = wb.resolve_points_to_cases
+    # the resolver now takes points that carry their SOURCE index, so a fixture must say
+    # which point each value came from rather than relying on list position
+    def R(values, unit, quantity, species, case_ids, cases_map):
+        pts = [{"source_point_index": i, "value": v, "unit": unit,
+                "identity": "SOURCE_INDEX_VERIFIED"} for i, v in enumerate(values)]
+        return wb.resolve_points_to_cases(pts, unit, quantity, species, case_ids, cases_map)
 
     # group 1: unit conversion -- 500 ms and 0.5 s are one physical value
     cs = cases_from({"A": [cond("pulse_time", 0.5, "s")],
@@ -899,6 +904,109 @@ def final_hardening_tests(M, V, hp):
     ok("N21: FIXTURE no observation anywhere reports NO_NATIVE_RESULT",
        wb3.native_result_status(mkpts([(1, None), (2, None)])) == "NO_NATIVE_RESULT")
 
+    print("=== N24. point identity is the SOURCE index ===")
+    # the whole production path: source tuples -> canonical x -> resolver -> status
+    def run_resolver(pairs, cx, cases_spec, xq="pulse_time", xu="s", cu="s"):
+        sr = {"native_points": {"points": [{"x": a, "y": b} for a, b in pairs],
+                                "n_points": len(pairs),
+                                "x": {"values": [a for a, _ in pairs], "unit": xu},
+                                "y": {"values": [b for _, b in pairs], "unit": "u"}},
+              "x_canonical": {"values": cx, "unit": cu, "quantity": xq},
+              "y_canonical": {"values": [], "unit": None},
+              "x": {"x_quantity": xq, "x_species": None},
+              "all_case_ids": sorted(cases_spec)}
+        contract = wb3.point_index_contract(sr)
+        pts = wb3.source_x_points(sr, contract)
+        links = wb3.resolve_points_to_cases(pts, cu, xq, None, sorted(cases_spec),
+                                            {k: {"conditions": v}
+                                             for k, v in cases_spec.items()})
+        return sr, contract, pts, links
+
+    cond = lambda q, v, u: {"quantity": q, "value": v, "unit": u, "species": None}
+    spec = {"A": [cond("pulse_time", 1, "s")], "B": [cond("pulse_time", 2, "s")],
+            "C": [cond("pulse_time", 3, "s")]}
+
+    # complete vector: every point resolves and keeps its own index
+    sr, ct, pts, links = run_resolver([(1, 10), (2, 20), (3, 30)], [1, 2, 3], spec)
+    ok("N24: a complete vector aligns", ct["aligned"], ct)
+    ok("N24: every point resolves to its own case",
+       [(l["point_index"], l["case_id"]) for l in links]
+       == [(0, "A"), (1, "B"), (2, "C")], links)
+    ok("N24: and each carries a verified source index",
+       all(l["point_identity_status"] == "SOURCE_INDEX_VERIFIED" for l in links))
+    ok("N24: point_index is the source_point_index",
+       all(l["point_index"] == l["source_point_index"] for l in links))
+
+    # §9 the interior missing x: canonical x is compacted, identity is not provable
+    sr2, ct2, pts2, links2 = run_resolver([(1, 10), (None, 20), (3, 30)], [1, 3], spec)
+    ok("N24: FIXTURE an interior missing x breaks the canonical/source alignment",
+       ct2["aligned"] is False, ct2)
+    ok("N24: FIXTURE no point is reported resolved on an unproven index",
+       not [l for l in links2 if l["resolution_status"] == "RESOLVED"], links2)
+    ok("N24: FIXTURE each refusal names the reason",
+       all(l["resolution_status"] == "UNRESOLVED_POINT_INDEX_IDENTITY"
+           and l["evidence"] == "SOURCE_POINT_INDEX_NOT_PROVEN" for l in links2), links2)
+    ok("N24: FIXTURE and there is one link per SOURCE point, not per canonical value",
+       [l["source_point_index"] for l in links2] == [0, 1, 2], links2)
+    ok("N24: FIXTURE crucially, x=3 is never reported as point_index 1",
+       not [l for l in links2
+            if l["point_index"] == 1 and l.get("native_x_value") == 3], links2)
+    ok("N24: FIXTURE the series is not resolved",
+       wb3.series_resolution_status(["A", "B", "C"], links2) == "CASE_SET_ONLY")
+
+    # §11 a missing y does not affect point identity
+    sr3, ct3, pts3, links3 = run_resolver([(1, 10), (2, None), (3, 30)], [1, 2, 3], spec)
+    ok("N24: FIXTURE a missing y leaves the x-based resolution intact",
+       [(l["point_index"], l["case_id"]) for l in links3]
+       == [(0, "A"), (1, "B"), (2, "C")], links3)
+    ok("N24: FIXTURE including the point whose observation is absent",
+       wb3.native_point(sr3, 1)["y"] is None
+       and links3[1]["resolution_status"] == "RESOLVED")
+
+    # a canonical array that is simply shorter must not silently pair by position
+    sr4, ct4, pts4, links4 = run_resolver([(1, 1), (2, 2), (3, 3)], [1, 2], spec)
+    ok("N24: FIXTURE a short canonical array proves no identity",
+       ct4["aligned"] is False
+       and not [l for l in links4 if l["resolution_status"] == "RESOLVED"], links4)
+
+    print("=== N25. source-index metrics ===")
+    for k, want in (("point_case_points_total", 99),
+                    ("point_case_points_resolved", 69),
+                    ("point_case_points_ambiguous", 0),
+                    ("point_case_points_no_match", 30),
+                    ("point_case_source_points_total", 124),
+                    ("point_case_points_identity_unproven", 25),
+                    ("resolved_links_without_proven_source_point_identity", 0),
+                    ("resolved_series_with_unaligned_point_identity", 0),
+                    ("resolved_links_where_point_index_is_not_the_source_index", 0)):
+        ok("N25: %-56s = %d" % (k, want), C[k] == want, C[k])
+    ok("N25: aligned_case_table_first_observation_sort_dependencies = 0",
+       C["aligned_case_table_first_observation_sort_dependencies"] == 0,
+       C["aligned_case_table_first_observation_sort_dependencies"])
+    ok("N25: canonical_x_points_with_unproven_source_index is computed",
+       C["canonical_x_points_with_unproven_source_index"] == 2531,
+       C["canonical_x_points_with_unproven_source_index"])
+    for g in ("aligned_table_order_reads_no_single_series",
+              "no_resolved_link_without_proven_source_point_identity",
+              "no_resolved_series_with_unaligned_point_identity",
+              "point_index_is_always_the_source_point_index"):
+        ok("N25: the build gates on %s" % g, V["invariants"][g] is True)
+    ok("N25: every resolved link states a verified identity",
+       all(l["point_identity_status"] == "SOURCE_INDEX_VERIFIED"
+           for v in M["point_case_links"].values() for l in v["links"]
+           if l["resolution_status"] == "RESOLVED"))
+    ok("N25: RESOLVED with an unaligned contract is impossible",
+       not [1 for sid, v in M["point_case_links"].items() for l in v["links"]
+            if l["resolution_status"] == "RESOLVED"
+            and not M["series"][sid]["point_index_contract"]["aligned"]])
+    ok("N25: current corpus has no canonical-x source-index gap in a resolved series",
+       all(M["series"][sid]["point_index_contract"]["aligned"]
+           for sid, v in M["point_case_links"].items()
+           if v["status"] == "POINT_CASE_RESOLVED"))
+    ok("N25: links carry the audit trail",
+       all({"source_point_index", "point_identity_status", "native_x_value"}
+           <= set(l) for v in M["point_case_links"].values() for l in v["links"]))
+
     print("=== N23. tuple integrity metrics ===")
     for k, want in (("native_point_tuples_total", 4027), ("native_points_missing_x", 0),
                     ("native_points_missing_y", 0), ("native_points_missing_both", 0),
@@ -1035,6 +1143,19 @@ def final_hardening_tests(M, V, hp):
     ok("N22: the page reaches an observation only through the source tuple",
        "nativePoint(s, i)" in vp2 and "nativeY(s).values" not in vp2)
     ok("N22: and never indexes a compacted axis array", "nv[i]" not in vp2)
+    sx = vpraw[vpraw.index("def source_x_points"):vpraw.index("def resolve_points_to_cases")]
+    ok("N22: point identity is enumerated from the SOURCE tuples",
+       "for i, t in enumerate(tuples)" in sx and "enumerate(cx)" not in sx)
+    ok("N22: an unproven alignment yields no comparison value",
+       "IDENTITY_UNRESOLVED" in sx)
+    srt = prodN["template"]
+    srt = srt[srt.index("function caseRowOrder"):srt.index("function drawCaseData")]
+    ok("N22: the aligned sort no longer reads a first observation",
+       "Object.values(byCase" not in prodN["template"])
+    ok("N22: it orders by a case condition or by case identity",
+       "numericValues(cid, k)" in srt and "localeCompare" in srt)
+    for q in ("temperature", "pulse_time", "purge_time", "cycle_number"):
+        ok("N22: the sort names no quantity (%s)" % q, q not in srt, q)
 
     print("=== N14. the filtering algorithm is generic ===")
     # Every identifier the regressions rely on is searched for in production code. A
@@ -2485,6 +2606,83 @@ def case_data_dom(pg, errors):
     }""")
     ok("T: the drawer names the source point index", "source point index" in prov3,
        prov3[:120])
+
+    # --- FIXTURE: an interior missing canonical x must not mint a false point index ---
+    reset()
+    mx = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                       && SERIES[k].native_points.points.length >= 3);
+        const s = SERIES[id];
+        const keepN = JSON.parse(JSON.stringify(s.native_points));
+        const keepC = JSON.parse(JSON.stringify(s.x_canonical));
+        const keepP = JSON.parse(JSON.stringify(PCL[id]));
+        const keepK = JSON.parse(JSON.stringify(s.point_index_contract));
+        // drop one interior source x and compact canonical x, as a failing extraction would
+        const v = 1;
+        s.native_points.points[v].x = null;
+        s.native_points.x.values[v] = null;
+        s.x_canonical.values = s.x_canonical.values.filter((_, i) => i !== v);
+        s.point_index_contract = {aligned: false, reason: "fixture"};
+        PCL[id] = Object.assign({}, keepP, {links: keepP.links.map(l =>
+            Object.assign({}, l, {resolution_status: "UNRESOLVED_POINT_INDEX_IDENTITY",
+                                  point_identity_status: "SOURCE_INDEX_UNRESOLVED",
+                                  evidence: "SOURCE_POINT_INDEX_NOT_PROVEN",
+                                  case_id: null}))});
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const txt = document.querySelector('#casedata').innerText;
+        const rows = document.querySelectorAll('#casedata tr[data-sid]').length;
+        s.native_points = keepN; s.x_canonical = keepC;
+        s.point_index_contract = keepK; PCL[id] = keepP; render();
+        return {rows, unresolved: txt.indexOf("Point-to-case mapping unresolved") >= 0,
+                names_reason: txt.indexOf("SOURCE_POINT_INDEX_NOT_PROVEN") >= 0};
+    }""")
+    ok("T: FIXTURE an unproven source index yields no point rows", mx["rows"] == 0, mx)
+    ok("T: FIXTURE the page says the mapping is unresolved", mx["unresolved"], mx)
+    ok("T: FIXTURE and names the identity reason", mx["names_reason"], mx)
+
+    # --- aligned row order must not depend on tray order ---------------------------
+    reset()
+    ord_ = pg.evaluate("""() => {
+        const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        for (const a of res) for (const b of res) {
+            if (a === b) continue;
+            const ca = new Set(SERIES[a].all_case_ids);
+            if (SERIES[b].all_case_ids.filter(c => ca.has(c)).length < 2) continue;
+            // the ALIGNED table only: the per-series tables and provenance rows below
+            // it are a different question
+            const rows = () => {
+                const t = document.querySelector('#casedata table[data-aligned]');
+                return t ? [...t.querySelectorAll('tbody tr')]
+                    .map(r => r.children[0].innerText) : [];
+            };
+            // which SERIES occupies each column, and in which colour
+            const cols = () => {
+                const t = document.querySelector('#casedata table[data-aligned]');
+                if (!t) return [];
+                return [...t.querySelectorAll('thead th')].slice(1).map(h => {
+                    const sw = h.querySelector('.sw');
+                    return (sw ? sw.style.background : "") + "|" + h.innerText.trim();
+                });
+            };
+            tray.length = 0; tray.push(a, b); mode = "case"; render();
+            const ab = rows(), colAB = cols();
+            tray.length = 0; tray.push(b, a); render();
+            const ba = rows(), colBA = cols();
+            return {ab, ba, colAB, colBA,
+                    same: JSON.stringify(ab) === JSON.stringify(ba),
+                    // the columns are a property of the tray and reorder with it
+                    columns_follow_tray: colAB.length >= 2
+                        && JSON.stringify(colAB) !== JSON.stringify(colBA)};
+        }
+        return null;
+    }""")
+    if ord_:
+        ok("T: aligned row order is identical for A→B and B→A", ord_["same"],
+           (ord_["ab"][:4], ord_["ba"][:4]))
+        ok("T: while the result columns still follow tray order",
+           ord_["columns_follow_tray"], (ord_["colAB"], ord_["colBA"]))
+    else:
+        ok("T: no two resolved series share cases (reported)", True)
 
     reset()
     ok("T: no console errors in the case data view", not errors, errors[:2])

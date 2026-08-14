@@ -386,6 +386,52 @@ def main(outdir):
             document.querySelector('#workspace').scrollTop = 0;
         }""")
         shot("26_missing_observation_row_FIXTURE")
+
+        # aligned multi-output table, both tray orders: the ROW order must not move
+        for tag, flip in (("27_aligned_A_then_B", False), ("28_aligned_B_then_A", True)):
+            reset()
+            pg.evaluate("""(flip) => {
+                const res = Object.keys(PCL).filter(k =>
+                    PCL[k].status === "POINT_CASE_RESOLVED");
+                for (const a of res) for (const b of res) {
+                    if (a === b) continue;
+                    const ca = new Set(SERIES[a].all_case_ids);
+                    if (SERIES[b].all_case_ids.filter(c => ca.has(c)).length < 2) continue;
+                    tray.length = 0;
+                    if (flip) tray.push(b, a); else tray.push(a, b);
+                    mode = "case"; render();
+                    document.querySelector('#workspace').scrollTop = 0;
+                    return;
+                }
+            }""", flip)
+            shot(tag)
+
+        # a source point whose index cannot be proven: no rows, and it says why
+        reset()
+        pg.evaluate("""() => {
+            const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                           && SERIES[k].native_points.points.length >= 3);
+            const s = SERIES[id];
+            s.native_points.points[1].x = null;
+            s.native_points.x.values[1] = null;
+            s.x_canonical.values = s.x_canonical.values.filter((_, i) => i !== 1);
+            s.point_index_contract = {aligned: false,
+                reason: "source point 1 has no x, so its canonical counterpart cannot be identified"};
+            PCL[id] = Object.assign({}, PCL[id], {links: PCL[id].links.map(l =>
+                Object.assign({}, l, {resolution_status: "UNRESOLVED_POINT_INDEX_IDENTITY",
+                                      evidence: "SOURCE_POINT_INDEX_NOT_PROVEN",
+                                      case_id: null}))});
+            tray.length = 0; tray.push(id); mode = "case"; render();
+            const bn = document.createElement("div");
+            bn.textContent = "FIXTURE \u2014 not corpus. One source point's x is removed so "
+                + "canonical x no longer indexes the same points; no point may then be "
+                + "reported as resolved.";
+            bn.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99;"
+                + "padding:6px 12px;background:#8a6100;color:#fff;font:12px sans-serif";
+            document.body.appendChild(bn);
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("29_unproven_source_index_FIXTURE")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))

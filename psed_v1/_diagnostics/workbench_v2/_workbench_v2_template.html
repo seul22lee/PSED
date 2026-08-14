@@ -951,6 +951,37 @@ function unresolvedBlock(sid) {
     ${common.length?`<div class="dim" style="font-size:10.5px;margin-top:3px">Common:
       ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`:""}`;
 }
+// A comparator over Condition Case ids. Prefers a numeric condition every displayed case
+// carries exactly once, chosen by coverage and then by name so the choice is
+// deterministic; falls back to case identity. No quantity is named here.
+function caseRowOrder(caseIds) {
+  const cand = {};
+  caseIds.forEach(cid => {
+    const seen = {};
+    ((CASES[cid]||{conditions:[]}).conditions).forEach(x => {
+      const k = x.quantity + (x.species ? "@" + x.species : "");
+      const n = numericValues(cid, k);
+      if (!n || n.length !== 1) return;
+      const v = n[0].canonical;
+      if (v === null || v === undefined || !isFinite(v)) return;
+      if (seen[k] !== undefined) { seen[k] = null; return; }   // ambiguous on this case
+      seen[k] = v;
+    });
+    Object.keys(seen).forEach(k => {
+      if (seen[k] === null) return;
+      (cand[k] = cand[k] || {})[cid] = seen[k];
+    });
+  });
+  const usable = Object.keys(cand)
+    .filter(k => Object.keys(cand[k]).length === caseIds.length)
+    .sort((a,b) => a.localeCompare(b));
+  const key = usable[0];
+  const label = cid => (CASES[cid] ? CASES[cid].case_id : cid);
+  if (!key) return (a,b) => label(a).localeCompare(label(b)) || String(a).localeCompare(String(b));
+  return (a,b) => (cand[key][a] - cand[key][b])
+                  || label(a).localeCompare(label(b))
+                  || String(a).localeCompare(String(b));
+}
 function drawCaseData() {
   const box = $("#casedata"); if (!box) return;
   if (!tray.length) { box.innerHTML = '<div class="note">Select result series.</div>'; return; }
@@ -971,14 +1002,17 @@ function drawCaseData() {
         result · joined on Condition Case identity</span></h3>`;
       if (common.length) h += `<div class="dim" style="font-size:10.5px;margin-bottom:4px">
         Common: ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`;
-      h += `<table><thead><tr><th>Condition Case</th>
+      h += `<table data-aligned="1"><thead><tr><th>Condition Case</th>
         ${varying.map(v=>`<th><code>${esc(v.k)}</code></th>`).join("")}
         ${resolved.map(sid=>`<th class="unit">${chip(sid)} ${resultHeader(SERIES[sid])}
           <div class="dim" style="font-weight:400">Fig.${esc(SERIES[sid].figure)}${
           esc(SERIES[sid].panel||"")}</div></th>`).join("")}</tr></thead><tbody>`;
-      shared.sort((a,b)=>{
-        const ra = Object.values(byCase[a])[0], rb = Object.values(byCase[b])[0];
-        return (ra.x||0)-(rb.x||0); });
+      // Row order is presentation, and it must not depend on which selected series
+      // happens to come first for a case -- that made the ordering a property of the
+      // tray rather than of the data. The rows are joined by Condition Case, so they are
+      // ordered by the case: on a numeric condition the whole set shares, otherwise on
+      // the case identity itself, which is stable and asserts nothing.
+      shared.sort(caseRowOrder(shared));
       shared.forEach(cid => {
         h += `<tr><td><code>${esc(CASES[cid]?CASES[cid].case_id:cid)}</code></td>
           ${varying.map(v=>`<td>${esc(v.by[cid]||"")||'<span class="dim">unknown</span>'}</td>`).join("")}

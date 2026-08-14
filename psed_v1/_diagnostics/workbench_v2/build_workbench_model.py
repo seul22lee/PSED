@@ -827,6 +827,7 @@ def sequence_corroboration(cases, audit):
 POINT_RESOLVED = "RESOLVED"
 POINT_AMBIGUOUS = "UNRESOLVED_AMBIGUOUS"
 POINT_NO_MATCH = "UNRESOLVED_NO_MATCH"
+POINT_UNRESOLVED_IDENTITY = "UNRESOLVED_POINT_INDEX_IDENTITY"
 
 EV_EXACT = "EXACT_SEMANTIC_VALUE_MATCH"
 EV_CONVERTED = "UNIT_CONVERTED_EXACT_MATCH"
@@ -834,6 +835,13 @@ EV_AMBIGUOUS = "AMBIGUOUS_MULTIPLE_CASES"
 EV_NO_CONDITION = "NO_COMPATIBLE_CASE_CONDITION"
 EV_NO_VALUE = "NO_MATCHING_CASE_VALUE"
 EV_UNSUPPORTED = "UNSUPPORTED_X_SEMANTICS"
+EV_NO_SOURCE_X = "NO_SOURCE_X_VALUE"
+EV_NO_SOURCE_INDEX = "SOURCE_POINT_INDEX_NOT_PROVEN"
+
+#: How a point's identity as a SOURCE observation is known.
+IDENTITY_PRESERVED = "SOURCE_INDEX_PRESERVED"
+IDENTITY_VERIFIED = "SOURCE_INDEX_VERIFIED"
+IDENTITY_UNRESOLVED = "SOURCE_INDEX_UNRESOLVED"
 
 SERIES_POINT_CASE_RESOLVED = "POINT_CASE_RESOLVED"
 SERIES_PARTIALLY_RESOLVED = "PARTIALLY_RESOLVED"
@@ -862,21 +870,73 @@ def _canonical_magnitude(value, unit):
     return CQ.normalized_value({"value": value, "unit": unit})
 
 
-def resolve_points_to_cases(x_values, x_unit, x_quantity, x_species, case_ids, cases):
-    """One link per plotted point, or an explicit refusal.
+def source_x_points(s, contract):
+    """The x values to match on, each carrying the SOURCE index of the point it came from.
+
+    Canonical x is the comparison representation and stays so. What it must never be is a
+    source of point identity: enumerating it would mint an index out of a representation,
+    so if canonicalisation dropped a point every later canonical position would name an
+    earlier source point and a resolved link would attribute one observation's conditions
+    to another.
+
+    Identity therefore comes from the source tuple list, and the canonical array is only
+    read at an index the contract has proven to be that same point. Where the contract
+    does not hold, the points are returned with their identity unresolved and the resolver
+    refuses to call them resolved -- an unattributable point, not a guessed one.
+    """
+    np_ = s.get("native_points") or {}
+    tuples = np_.get("points") or []
+    cx = (s.get("x_canonical") or {}).get("values") or []
+    unit = (s.get("x_canonical") or {}).get("unit")
+    aligned = bool(contract.get("aligned"))
+    out = []
+    for i, t in enumerate(tuples):
+        if aligned and i < len(cx):
+            out.append({"source_point_index": i, "value": cx[i], "unit": unit,
+                        "identity": IDENTITY_VERIFIED,
+                        "canonical_x_value": cx[i], "native_x_value": t.get("x")})
+        else:
+            out.append({"source_point_index": i, "value": None, "unit": unit,
+                        "identity": IDENTITY_UNRESOLVED,
+                        "native_x_value": t.get("x")})
+    return out
+
+
+def resolve_points_to_cases(points, x_unit, x_quantity, x_species, case_ids, cases):
+    """One link per SOURCE point, or an explicit refusal.
 
     A point is resolved only when EXACTLY ONE associated Condition Case carries a
     condition of the same quantity identity whose canonical magnitude equals the point's.
     Two candidates is ambiguity, and ambiguity is reported, never broken by ordering.
+    A point whose source index is not established is never reported as resolved.
     """
     links = []
-    for i, xv in enumerate(x_values):
-        pm = _canonical_magnitude(xv, x_unit)
+    for pt in points:
+        i = pt["source_point_index"]
+        xv = pt.get("value")
+        unit = pt.get("unit", x_unit)
+        ident = pt.get("identity")
+        base_id = {"source_point_index": i, "point_identity_status": ident}
+        if ident == IDENTITY_UNRESOLVED or i is None:
+            links.append(dict(base_id, point_index=i, case_id=None,
+                              resolution_status=POINT_UNRESOLVED_IDENTITY,
+                              evidence=EV_NO_SOURCE_INDEX, point_x_value=xv,
+                              point_x_unit=unit))
+            continue
+        if xv is None:
+            # no x observation: this point cannot be matched by value, and shifting the
+            # ones after it to close the gap is exactly what must not happen
+            links.append(dict(base_id, point_index=i, case_id=None,
+                              resolution_status=POINT_NO_MATCH,
+                              evidence=EV_NO_SOURCE_X, point_x_value=None,
+                              point_x_unit=unit))
+            continue
+        pm = _canonical_magnitude(xv, unit)
         if not x_quantity or pm is None:
-            links.append({"point_index": i, "case_id": None,
-                          "resolution_status": POINT_NO_MATCH,
-                          "evidence": EV_UNSUPPORTED, "point_x_value": xv,
-                          "point_x_unit": x_unit})
+            links.append(dict(base_id, point_index=i, case_id=None,
+                              resolution_status=POINT_NO_MATCH,
+                              evidence=EV_UNSUPPORTED, point_x_value=xv,
+                              point_x_unit=unit))
             continue
         cands, saw_condition = [], False
         for cid in case_ids:
@@ -888,14 +948,15 @@ def resolve_points_to_cases(x_values, x_unit, x_quantity, x_species, case_ids, c
                 if cm is None or cm[0] != pm[0] or cm[1] != pm[1]:
                     continue
                 cands.append((cid, cond, cm))
-        base = {"point_index": i, "point_x_value": xv, "point_x_unit": x_unit,
+        base = {"point_index": i, "point_x_value": xv, "point_x_unit": unit,
+                "source_point_index": i, "point_identity_status": ident,
                 "matched_quantity": x_quantity, "matched_species_or_role": x_species,
                 "resolution_method": RESOLUTION_METHOD,
                 "evidence_source": "series canonical x value vs Condition Case condition, "
                                    "compared through the frozen condition semantics"}
         if len(cands) == 1:
             cid, cond, cm = cands[0]
-            converted = str(cond.get("unit") or "") != str(x_unit or "")
+            converted = str(cond.get("unit") or "") != str(unit or "")
             links.append(dict(base, case_id=cid, resolution_status=POINT_RESOLVED,
                               evidence=EV_CONVERTED if converted else EV_EXACT,
                               case_condition_value=cond.get("value"),
@@ -982,24 +1043,38 @@ def point_case_links(series, cases):
     out = {}
     for sid, s in series.items():
         xc = s.get("x_canonical") or {}
-        xs = xc.get("values") or []
-        links = resolve_points_to_cases(xs, xc.get("unit"), xc.get("quantity"),
+        contract = point_index_contract(s)
+        pts = source_x_points(s, contract)
+        links = resolve_points_to_cases(pts, xc.get("unit"), xc.get("quantity"),
                                         s["x"].get("x_species"), s["all_case_ids"], cases)
+        by_i = {p["source_point_index"]: p for p in pts}
+        for l in links:
+            j = l.get("source_point_index")
+            src = by_i.get(j) or {}
+            if "canonical_x_value" in src:
+                l["canonical_x_value"] = src["canonical_x_value"]
+            l["native_x_value"] = src.get("native_x_value")
         status = series_resolution_status(s["all_case_ids"], links)
         s["native_result_status"] = native_result_status(s)
-        s["point_index_contract"] = point_index_contract(s)
+        s["point_index_contract"] = contract
         out[sid] = {"series_id": s["series_id"], "status": status,
                     "native_result_status": s["native_result_status"],
                     "point_index_contract": s["point_index_contract"],
                     "derivation": DERIVED_STATUS,
-                    "n_points_available": len(xs), "n_points_recorded": s.get("n_points"),
+                    # points that can be matched by value, i.e. carrying an x
+                    "n_points_available": len([p for p in pts if p.get("value") is not None]),
+                    "n_source_points": len(pts),
+                    "n_points_recorded": s.get("n_points"),
                     "links": links,
                     "resolved_points": len([x for x in links
                                             if x["resolution_status"] == POINT_RESOLVED]),
                     "ambiguous_points": len([x for x in links
                                              if x["resolution_status"] == POINT_AMBIGUOUS]),
                     "unmatched_points": len([x for x in links
-                                             if x["resolution_status"] == POINT_NO_MATCH])}
+                                             if x["resolution_status"] == POINT_NO_MATCH]),
+                    "identity_unproven_points": len(
+                        [x for x in links
+                         if x["resolution_status"] == POINT_UNRESOLVED_IDENTITY])}
     return out
 
 
@@ -1521,10 +1596,38 @@ def validate(m, counts):
     c["point_case_series_unresolved"] = st.get(SERIES_CASE_SET_ONLY, 0)
     c["point_case_series_no_case_context"] = len(
         [k for k, v in pcl.items() if v["status"] == SERIES_NO_CASE_CONTEXT])
-    c["point_case_points_total"] = sum(len(pcl[k]["links"]) for k in multi_ids)
+    # points that could be matched at all, i.e. whose source identity is established --
+    # the population the resolver actually examines. Points whose identity is unproven are
+    # counted separately rather than being folded in and inflating the denominator.
+    c["point_case_points_total"] = sum(
+        len([l for l in pcl[k]["links"]
+             if l["resolution_status"] != POINT_UNRESOLVED_IDENTITY])
+        for k in multi_ids)
+    c["point_case_source_points_total"] = sum(len(pcl[k]["links"]) for k in multi_ids)
+    c["point_case_points_identity_unproven"] = sum(
+        len([l for l in pcl[k]["links"]
+             if l["resolution_status"] == POINT_UNRESOLVED_IDENTITY])
+        for k in multi_ids)
     c["point_case_points_resolved"] = sum(pcl[k]["resolved_points"] for k in multi_ids)
     c["point_case_points_ambiguous"] = sum(pcl[k]["ambiguous_points"] for k in multi_ids)
     c["point_case_points_no_match"] = sum(pcl[k]["unmatched_points"] for k in multi_ids)
+    # ---- source point identity gates -------------------------------------------------
+    c["canonical_x_points_with_unproven_source_index"] = sum(
+        len([l for l in v["links"]
+             if l["resolution_status"] == POINT_UNRESOLVED_IDENTITY])
+        for v in pcl.values())
+    c["resolved_links_without_proven_source_point_identity"] = len(
+        [1 for v in pcl.values() for l in v["links"]
+         if l["resolution_status"] == POINT_RESOLVED
+         and l.get("point_identity_status") != IDENTITY_VERIFIED])
+    c["resolved_series_with_unaligned_point_identity"] = len(
+        [1 for sid, v in pcl.items()
+         if v["status"] in (SERIES_POINT_CASE_RESOLVED, SERIES_PARTIALLY_RESOLVED)
+         and not (series[sid].get("point_index_contract") or {}).get("aligned")])
+    c["resolved_links_where_point_index_is_not_the_source_index"] = len(
+        [1 for v in pcl.values() for l in v["links"]
+         if l["resolution_status"] == POINT_RESOLVED
+         and l.get("point_index") != l.get("source_point_index")])
     c["multi_case_series_without_persisted_points"] = len(
         [k for k in multi_ids if not pcl[k]["n_points_available"]])
     # a resolved point must name exactly one case, and never one the series is not linked to
@@ -1620,6 +1723,12 @@ def validate(m, counts):
          if np_.get("points") is not None
          and (len((np_.get("x") or {}).get("values") or []) != len(np_["points"])
               or len((np_.get("y") or {}).get("values") or []) != len(np_["points"]))])
+    c["point_case_links_total"] = sum(len(v["links"]) for v in pcl.values())
+    # the aligned table's row order must not read any one selected series. The page's
+    # comparator is scanned for the pattern that made it do so.
+    tpl_src = (Path(__file__).parent / "_workbench_v2_template.html").read_text()
+    c["aligned_case_table_first_observation_sort_dependencies"] = (
+        tpl_src.count("Object.values(byCase"))
     c["resolved_links_with_missing_native_y"] = len(
         [1 for sid, v in pcl.items() for l in v["links"]
          if l["resolution_status"] == POINT_RESOLVED
@@ -1685,6 +1794,14 @@ def validate(m, counts):
     inv["every_sequence_occurrence_is_classified"] = all(
         r["status"] in (SEQ_EXPLICIT_PRESENT, SEQ_DERIVATION_SAFE, SEQ_AMBIGUOUS,
                         SEQ_NOT_TIMES, SEQ_NO_CONTEXT) for r in audit)
+    inv["aligned_table_order_reads_no_single_series"] = (
+        c["aligned_case_table_first_observation_sort_dependencies"] == 0)
+    inv["no_resolved_link_without_proven_source_point_identity"] = (
+        c["resolved_links_without_proven_source_point_identity"] == 0)
+    inv["no_resolved_series_with_unaligned_point_identity"] = (
+        c["resolved_series_with_unaligned_point_identity"] == 0)
+    inv["point_index_is_always_the_source_point_index"] = (
+        c["resolved_links_where_point_index_is_not_the_source_index"] == 0)
     inv["native_axis_arrays_are_one_entry_per_source_tuple"] = (
         c["native_axis_arrays_out_of_step_with_tuples"] == 0)
     inv["no_row_takes_another_points_native_y"] = (

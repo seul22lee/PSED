@@ -1085,3 +1085,105 @@ model layer and, injected into the live page, in the browser:
 plus interior gaps in a longer vector, and a live-page fixture blanking one observation in
 a native-only series: the blanked row reads *not persisted*, its neighbour keeps its own
 value, and no later row shifts.
+
+---
+
+# Point-case links bound to source point identity
+
+Two narrow generic defects, both latent on this corpus.
+
+## A. Canonical-x position was being minted into a point identity
+
+The resolver enumerated the canonical x array to produce `point_index`:
+
+```python
+"x_values": [a for a in xv if a is not None]     # compacted
+for i, xv in enumerate(x_values):                # i became the point identity
+```
+
+Canonical x is a *comparison representation*. If canonicalisation dropped a point, every
+later canonical position would name an earlier source point, and a resolved link would
+attribute one observation's conditions to another:
+
+```
+source 0 = [1, 10]   source 1 = [null, 20]   source 2 = [3, 30]
+canonical x = [1, 3]  →  enumeration calls the x=3 observation point_index 1
+```
+
+Identity now comes from the source tuple list, and the canonical array is read **only at
+an index the contract has proven to be that same point**. Where the contract does not
+hold, the points come back with `SOURCE_INDEX_UNRESOLVED` and the resolver refuses:
+`UNRESOLVED_POINT_INDEX_IDENTITY` / `SOURCE_POINT_INDEX_NOT_PROVEN`. The state
+`RESOLVED` + `aligned = false` is now impossible, and is a build gate.
+
+Every resolved link carries `source_point_index`, `point_identity_status`,
+`canonical_x_value` and `native_x_value`, so the identity is auditable from the artifact.
+
+## B. Aligned row order depended on whichever series came first
+
+```javascript
+const ra = Object.values(byCase[a])[0], rb = Object.values(byCase[b])[0];
+return (ra.x||0) - (rb.x||0);
+```
+
+Row order was a property of the tray, not of the data. The rows are joined by Condition
+Case, so they are now ordered *by the case*: on a numeric condition every displayed case
+carries exactly once — chosen by coverage then by name, so the choice is deterministic —
+falling back to Condition Case identity. No quantity is named. Reversing the tray leaves
+the row order identical while the result columns, which are a property of the selection,
+follow it.
+
+## Corpus audit — latent, current corpus unaffected
+
+```
+canonical-x arrays with a source-index gap        0 of 231
+resolved links lacking source-index proof         0
+aligned tables using first-observation sort       0 (after repair; 1 code path before)
+```
+
+**Latent generic defect; current corpus unaffected.** Every source point in this corpus
+carries an x, so canonical position and source index coincide everywhere they are used.
+
+## Current corpus is unchanged
+
+All **69** resolved links are identical to `a58ec77` — same Condition Case, same point
+index, same evidence, same matched values — and every series status is unchanged:
+
+```
+POINT_CASE_RESOLVED 10 · PARTIALLY_RESOLVED 0 · CASE_SET_ONLY 12
+points examined 99 · resolved 69 · ambiguous 0 · no-match 30
+case_data_native_results_available 69 · native_only 58
+```
+
+`point_case_points_total` still counts the points the resolver examines. The link list now
+additionally enumerates the points whose identity is unproven — **124** source points,
+of which **25** are identity-unproven — reported as `point_case_source_points_total` and
+`point_case_points_identity_unproven` rather than folded into the examined population.
+
+## Metrics
+
+```
+canonical_x_points_with_unproven_source_index              2531
+resolved_links_without_proven_source_point_identity           0   <- gate
+resolved_series_with_unaligned_point_identity                 0   <- gate
+resolved_links_where_point_index_is_not_the_source_index      0   <- gate
+aligned_case_table_first_observation_sort_dependencies        0   <- gate
+```
+
+## Fixtures
+
+Driven through the real production path — source tuples → canonical x → resolver → series
+status → Case Data:
+
+```
+[1,10] [null,20] [3,30], canonical x [1,3]
+  → contract not aligned
+  → three links, one per SOURCE point, all UNRESOLVED_POINT_INDEX_IDENTITY
+  → the x=3 observation is never reported as point_index 1
+[1,10] [2,null] [3,30]     → all three resolve; a missing y is not an identity problem
+[1,1] [2,2] [3,3], cx [1,2] → a short canonical array proves nothing, so nothing resolves
+```
+
+and in the browser: an injected unproven index yields no point rows, states
+*Point-to-case mapping unresolved* with `SOURCE_POINT_INDEX_NOT_PROVEN`, and lists the
+cases as context only.
