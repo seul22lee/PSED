@@ -1187,3 +1187,103 @@ status → Case Data:
 and in the browser: an injected unproven index yields no point rows, states
 *Point-to-case mapping unresolved* with `SOURCE_POINT_INDEX_NOT_PROVEN`, and lists the
 cases as context only.
+
+---
+
+# Native display decoupled from canonical overlay
+
+## Root cause
+
+`derived_representations()` opened with
+
+```python
+pts = cur["points"]          # zip of canonical x and canonical y
+if not pts:
+    return {}, {}            # no representations at all
+```
+
+so a failure to canonicalise *either* axis deleted the series' ability to be drawn at all,
+even though its persisted source `(x, y)` tuples were intact. The page then reported it as
+a comparability problem — *"no axis they can honestly share"* — for a curve that needed no
+shared axis, because only one series was selected.
+
+## Corpus audit
+
+| | |
+|---|---|
+| ResultSeries with complete native `(x, y)` tuples | **231** |
+| canonical X available | 101 |
+| canonical Y available | 70 |
+| **plottable before this repair** | **59** |
+| **native points but no representation emitted** | **172** |
+
+By reason: **119** both canonical axes missing, **42** canonical Y missing, **11**
+canonical X missing. All 172 had a resolved semantic X quantity; 27 had a blank source X
+unit. **Every one of the 172 is recoverable as a native source plot** — none was hidden
+because its points were absent.
+
+## Three capabilities, now separate
+
+| capability | requires |
+|---|---|
+| **native display** | complete source `(x, y)` tuples — nothing else |
+| **native-compatible overlay** | same quantity identity, normalization, and a unit that *resolves to a dimension* |
+| **canonical / transformed overlay** | unchanged; the frozen comparability layer |
+
+Every representation now declares `representation_kind`
+(`NATIVE_SOURCE` / `CANONICAL` / `TRANSFORMED`), `display_available`,
+`overlay_target_id` and `overlay_authorized` — four facts, not one boolean.
+
+A source representation earns an `overlay_target_id` **only when its unit resolves to a
+dimension through the frozen unit system**. Two curves whose unit strings are both blank
+are not thereby in the same units, and **225** source representations are consequently
+display-only: drawable alone, never a shared target. When a single series is selected the
+plot uses its `NATIVE_SOURCE` representation directly, consulting no comparability gate,
+because none applies.
+
+## Count semantics — the ontology already has the contract
+
+`ontology/core.yaml` declares
+
+```yaml
+cycle_number: {qudt_qk: "qk:Dimensionless", unit: "cycle",
+               note: "integer count of cycles; ..."}
+```
+
+and `units.parse("cycle")` resolves to dimension `cycle`. So a canonical count contract
+**already exists**. The gap is elsewhere: the canonical layer does not apply the
+ontology's declared unit when the source axis carries a blank unit string, so
+`x_canonical` stays empty for these sweeps. **No ontology was modified**, and closing that
+propagation gap would alter frozen canonical values — reported here as a canonical-layer
+gap for a separate decision. Native display does not wait on it.
+
+## Blank unit is not dimensionless
+
+`_overlay_target()` returns no target for `""`, `None`, whitespace, or any unparseable
+unit; the dimension comes from `U.dimension_name`, never from a blank-string test. The
+corpus has blank-unit source axes and none of them offers a shared target.
+
+## Metrics
+
+```
+series_with_native_points                                       231
+series_native_display_available                                 231
+series_native_points_but_no_display_representation                0
+series_plottable_before_repair                                   59
+series_canonical_x_missing_but_native_display_available          130
+series_canonical_y_missing_but_native_display_available          161
+native_source_representations_display_only                      225
+single_series_native_display_false_negative_violations             0  <- gate
+blank_unit_treated_as_dimensionless_without_ontology_violations    0  <- gate
+```
+
+Overlay safety is untouched: `false_common_native_targets` 0,
+`incompatible_plotted_pair_violations` 0, `multi_series_target_violations` 0, and the
+authorised overlay population is still exactly **819** pairs.
+
+## UI
+
+A displayable source curve no longer draws a red incompatibility warning. Where several
+selected series cannot share an axis the page says the shared overlay is unavailable and
+that the source curves remain individually inspectable, pointing at **Case data** for
+comparison by Condition Case.
