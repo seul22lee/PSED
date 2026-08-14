@@ -1287,3 +1287,68 @@ A displayable source curve no longer draws a red incompatibility warning. Where 
 selected series cannot share an axis the page says the shared overlay is unavailable and
 that the source curves remain individually inspectable, pointing at **Case data** for
 comparison by Condition Case.
+
+---
+
+# Multi-case sweep coverage: corpus-wide audit and generic repair
+
+## The audit settles the coordinate question
+
+**All 22 multi-case ResultSeries have persisted native `(x, y)` coordinates.** The six
+previously reported as having "no persisted points" have them; what they lack is a
+*canonical* x. That was a Workbench propagation defect, not an extraction gap:
+
+```
+multi_case_coordinates_present            22
+multi_case_coordinates_missing_upstream    0
+multi_case_blocker_extraction              0
+```
+
+## Repair 1 — resolve from the source observation
+
+The resolver read the canonical x array, so a curve whose x was never canonicalised
+reached it as though it had no points. It now reads the source tuples, with the source
+index still the identity authority and the canonical value carried alongside as
+corroboration where one exists.
+
+**No existing mapping changed**: 69 links identical, **0 reassigned, 0 lost, +18 added**
+across exactly the four purge-time sweeps whose canonical x was absent.
+
+## Repair 2 — axis binding, stated and deliberately not acted on
+
+`axis_binding()` records how a plotted axis relates to a case-scoped condition:
+
+| status | rule | count |
+|---|---|---|
+| `IDENTITY_MATCH` | the cases record the axis quantity itself | **16** |
+| `NO_COMPATIBLE_CASE_QUANTITY` | no case records it, qualified or not | **4** |
+| `UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT` | exactly one qualified sibling varies | **2** |
+| `AMBIGUOUS_QUALIFIED_BINDING` | more than one varies | 0 |
+
+Only an exact identity is acted on. Where a bare axis meets qualified conditions and one
+of them happens to be the only thing varying, that is **recorded as evidence and not
+used**: correlation between "this varies" and "this is what the figure swept" is not
+identity, and nothing persisted establishes the difference. The corpus does carry branch
+metadata (`source.series_axis`, e.g. `precursor/reactant` with series labels
+`HDMP(precursor)` / `O2(reactant)`) that could support such a binding, but for the two
+affected series the branch dimension is temperature, so it says nothing about which
+reagent was pulsed.
+
+## Coverage — 22/22 classified
+
+```
+BEFORE                          AFTER
+POINT_CASE_RESOLVED  10         CASE_DATA_RESOLVED              14
+PARTIALLY_RESOLVED    0         CASE_DATA_PARTIAL                0
+CASE_SET_ONLY        12         COORDINATES_MISSING_UPSTREAM     0
+                                AXIS_SEMANTIC_BINDING_UNRESOLVED 2
+                                AMBIGUOUS_CASE_MAPPING           0
+                                CASE_SET_ONLY_GENUINE            6
+                                unclassified                     0  <- build gate
+
+points: 124 available · 87 resolved · 0 ambiguous · 37 unmatched
+blockers: 0 propagation · 2 semantic · 0 extraction · 6 evidence limit
+```
+
+Case Data now produces **87** `condition → observed result` rows across **14** series,
+up from 69 across 10.

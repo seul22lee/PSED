@@ -945,6 +945,80 @@ def _canonical_magnitude(value, unit):
     return CQ.normalized_value({"value": value, "unit": unit})
 
 
+#: How a plotted x axis was related to a case-scoped condition quantity.
+AXIS_IDENTITY_MATCH = "IDENTITY_MATCH"
+AXIS_AMBIGUOUS_QUALIFIED = "AMBIGUOUS_QUALIFIED_BINDING"
+AXIS_UNIQUE_VARIATION_UNSUPPORTED = "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT"
+AXIS_NO_COMPATIBLE_QUANTITY = "NO_COMPATIBLE_CASE_QUANTITY"
+
+#: Coverage classes. Every multi-case ResultSeries lands in exactly one.
+COV_RESOLVED = "CASE_DATA_RESOLVED"
+COV_PARTIAL = "CASE_DATA_PARTIAL"
+COV_COORDS_MISSING = "COORDINATES_MISSING_UPSTREAM"
+COV_AXIS_UNRESOLVED = "AXIS_SEMANTIC_BINDING_UNRESOLVED"
+COV_AMBIGUOUS = "AMBIGUOUS_CASE_MAPPING"
+COV_CASE_SET_ONLY = "CASE_SET_ONLY_GENUINE"
+
+#: Why an unresolved series is unresolved.
+BLOCK_PROPAGATION = "WORKBENCH_PROPAGATION_DEFECT"
+BLOCK_SEMANTIC = "SEMANTIC_BINDING_DEFECT"
+BLOCK_EXTRACTION = "UPSTREAM_EXTRACTION_GAP"
+BLOCK_EVIDENCE = "GENUINE_EVIDENCE_LIMIT"
+
+
+def axis_binding(s, cases):
+    """How the plotted x axis relates to a case-scoped condition quantity.
+
+    The axis names a quantity; the cases may record that quantity bare, or qualified by a
+    reactant role or species, or not at all. Only an exact identity is used to match:
+    a bare axis does not name a reagent, and reading one in would be the assertion rather
+    than the record. Where a qualified sibling is the only thing that varies, that is
+    recorded as evidence and explicitly NOT acted on -- correlation between "this varies"
+    and "this is what the figure swept" is not identity, and nothing persisted here
+    establishes the difference.
+    """
+    xq = ((s.get("native_points") or {}).get("x") or {}).get("quantity")
+    ev = {"source_axis_quantity": xq, "bound_case_quantity": None,
+          "bound_species_or_role": None, "binding_method": None,
+          "binding_evidence": [], "binding_source": "case conditions of the associated "
+                                                    "Condition Cases"}
+    if not xq:
+        return dict(ev, axis_binding_status=AXIS_NO_COMPATIBLE_QUANTITY)
+    exact, qualified = [], []
+    varying = {}
+    for cid in s.get("all_case_ids") or []:
+        for c in (cases.get(cid) or {}).get("conditions") or []:
+            q, sp = c.get("quantity"), c.get("species")
+            key = q + ("@" + sp if sp else "")
+            if c.get("value") not in (None, ""):
+                varying.setdefault(key, set()).add(str(c["value"]))
+            if q == xq and not sp:
+                exact.append(key)
+            elif (q == xq and sp) or (str(q).endswith("_%s" % xq) and len(str(q)) > len(xq) + 1):
+                qualified.append(key)
+    varies = {k for k, v in varying.items() if len(v) > 1}
+    if exact:
+        return dict(ev, axis_binding_status=AXIS_IDENTITY_MATCH,
+                    bound_case_quantity=xq, binding_method="exact quantity identity",
+                    binding_evidence=["the associated cases record %r itself" % xq])
+    cand = sorted({k for k in qualified if k in varies})
+    if not qualified:
+        return dict(ev, axis_binding_status=AXIS_NO_COMPATIBLE_QUANTITY,
+                    binding_evidence=["no associated case records %r, qualified or not"
+                                      % xq])
+    if len(cand) > 1:
+        return dict(ev, axis_binding_status=AXIS_AMBIGUOUS_QUALIFIED,
+                    binding_evidence=["more than one qualified variant varies: %s"
+                                      % ", ".join(cand)])
+    # exactly one qualified sibling varies. Recorded, not acted on: a bare axis does not
+    # name a reagent, and no persisted evidence here says which one was swept.
+    return dict(ev, axis_binding_status=AXIS_UNIQUE_VARIATION_UNSUPPORTED,
+                binding_evidence=(["exactly one qualified variant varies: %s" % cand[0]]
+                                  if cand else
+                                  ["qualified variants exist but none varies: %s"
+                                   % ", ".join(sorted(set(qualified)))]))
+
+
 def source_x_points(s, contract):
     """The x values to match on, each carrying the SOURCE index of the point it came from.
 
@@ -961,19 +1035,26 @@ def source_x_points(s, contract):
     """
     np_ = s.get("native_points") or {}
     tuples = np_.get("points") or []
+    native_unit = (np_.get("x") or {}).get("unit")
     cx = (s.get("x_canonical") or {}).get("values") or []
-    unit = (s.get("x_canonical") or {}).get("unit")
+    cunit = (s.get("x_canonical") or {}).get("unit")
     aligned = bool(contract.get("aligned"))
     out = []
     for i, t in enumerate(tuples):
+        # The observation is the evidence. Where canonicalisation also produced a value at
+        # this proven index it is carried alongside, but a curve whose x was never
+        # canonicalised still has coordinates, and reading only the canonical array is why
+        # six recorded sweeps reached the resolver as if they had no points at all.
+        row = {"source_point_index": i, "native_x_value": t.get("x"),
+               "value": t.get("x"), "unit": native_unit,
+               "identity": IDENTITY_PRESERVED}
         if aligned and i < len(cx):
-            out.append({"source_point_index": i, "value": cx[i], "unit": unit,
-                        "identity": IDENTITY_VERIFIED,
-                        "canonical_x_value": cx[i], "native_x_value": t.get("x")})
-        else:
-            out.append({"source_point_index": i, "value": None, "unit": unit,
-                        "identity": IDENTITY_UNRESOLVED,
-                        "native_x_value": t.get("x")})
+            row["identity"] = IDENTITY_VERIFIED
+            row["canonical_x_value"] = cx[i]
+            row["canonical_x_unit"] = cunit
+        if t.get("x") is None:
+            row["value"] = None
+        out.append(row)
     return out
 
 
@@ -1132,6 +1213,7 @@ def point_case_links(series, cases):
         status = series_resolution_status(s["all_case_ids"], links)
         s["native_result_status"] = native_result_status(s)
         s["point_index_contract"] = contract
+        s["axis_binding"] = axis_binding(s, cases)
         out[sid] = {"series_id": s["series_id"], "status": status,
                     "native_result_status": s["native_result_status"],
                     "point_index_contract": s["point_index_contract"],
@@ -1214,6 +1296,7 @@ def main():
     sweeps, nocase = presentation(cases, acts, series)
     seq_audit = sequence_audit(cases)
     pclinks = point_case_links(series, cases)
+    classify_multi_case_coverage(series, pclinks)
     sequence_corroboration(cases, seq_audit)
     nums = numeric_conditions(cases)
     model = {
@@ -1249,6 +1332,9 @@ def main():
                     "resolution_method": RESOLUTION_METHOD,
                     "series": pclinks}, indent=2, sort_keys=True,
                    ensure_ascii=False) + "\n")
+    (OUT / "multi_case_sweep_coverage_audit.json").write_text(
+        json.dumps(multi_case_coverage_audit(model), indent=2, sort_keys=True,
+                   ensure_ascii=False, default=str) + "\n")
     (OUT / "point_case_resolution_audit.json").write_text(
         json.dumps(point_case_audit(model), indent=2, sort_keys=True,
                    ensure_ascii=False) + "\n")
@@ -1273,6 +1359,87 @@ def _case_data_cell_has_value(s, i):
         return True
     cy = (s.get("y_canonical") or {}).get("values") or []
     return i < len(cy) and cy[i] is not None
+
+
+def classify_multi_case_coverage(series, pcl):
+    """Exactly one coverage class per multi-case ResultSeries, with its blocker.
+
+    Every one of them gets a defensible outcome: resolved, partially resolved, or
+    unresolved for a stated reason -- coordinates that were never persisted, an axis whose
+    relation to a case condition is not established, a genuinely ambiguous mapping, or a
+    case set that is all the evidence supports.
+    """
+    for sid, s in series.items():
+        if s["n_cases"] < 2:
+            continue
+        v = pcl[sid]
+        ab = s.get("axis_binding") or {}
+        pts = [t for t in (s.get("native_points") or {}).get("points") or []
+               if t.get("x") is not None]
+        if v["status"] == SERIES_POINT_CASE_RESOLVED:
+            klass, blocker = COV_RESOLVED, None
+        elif v["status"] == SERIES_PARTIALLY_RESOLVED:
+            klass, blocker = COV_PARTIAL, BLOCK_EVIDENCE
+        elif not pts:
+            klass, blocker = COV_COORDS_MISSING, BLOCK_EXTRACTION
+        elif v["ambiguous_points"]:
+            klass, blocker = COV_AMBIGUOUS, BLOCK_EVIDENCE
+        elif ab.get("axis_binding_status") in (AXIS_AMBIGUOUS_QUALIFIED,
+                                               AXIS_UNIQUE_VARIATION_UNSUPPORTED):
+            klass, blocker = COV_AXIS_UNRESOLVED, BLOCK_SEMANTIC
+        else:
+            klass, blocker = COV_CASE_SET_ONLY, BLOCK_EVIDENCE
+        s["coverage_class"], s["coverage_blocker"] = klass, blocker
+
+
+def multi_case_coverage_audit(m):
+    """One record per multi-case ResultSeries: what evidence exists, and what it supports."""
+    cases, series, pcl = m["cases"], m["series"], m["point_case_links"]
+    rows = []
+    for sid, s in series.items():
+        if s["n_cases"] < 2:
+            continue
+        r = pcl[sid]
+        np_ = s.get("native_points") or {}
+        pts = np_.get("points") or []
+        vals = {}
+        for cid in s["all_case_ids"]:
+            for c in cases[cid]["conditions"]:
+                k = c["quantity"] + ("@" + c["species"] if c.get("species") else "")
+                if c.get("value") not in (None, ""):
+                    vals.setdefault(k, set()).add(str(c["value"]))
+        rows.append({
+            "series_id": s["series_id"], "paper_id": s["paper_id"],
+            "figure": s.get("figure"), "panel": s.get("panel"),
+            "series_label": s.get("series_label"),
+            "x_source_label": (np_.get("x") or {}).get("label"),
+            "x_source_unit": (np_.get("x") or {}).get("unit"),
+            "x_semantic_quantity": (np_.get("x") or {}).get("quantity"),
+            "y_source_label": (np_.get("y") or {}).get("label"),
+            "y_source_unit": (np_.get("y") or {}).get("unit"),
+            "y_semantic_quantity": (np_.get("y") or {}).get("quantity"),
+            "n_points_recorded": s.get("n_points"),
+            "n_native_point_tuples_available": len(pts),
+            "n_native_x_values": len([t for t in pts if t.get("x") is not None]),
+            "n_native_y_values": len([t for t in pts if t.get("y") is not None]),
+            "n_canonical_x_values": len((s.get("x_canonical") or {}).get("values") or []),
+            "all_case_ids": s["all_case_ids"], "n_cases": s["n_cases"],
+            "case_condition_quantities": sorted(vals),
+            "case_condition_quantities_varying": sorted(k for k, v in vals.items()
+                                                        if len(v) > 1),
+            "axis_binding": s.get("axis_binding"),
+            "point_case_status": r["status"],
+            "resolved_points": r["resolved_points"],
+            "ambiguous_points": r["ambiguous_points"],
+            "unmatched_points": r["unmatched_points"],
+            "coverage_class": s.get("coverage_class"),
+            "coverage_blocker": s.get("coverage_blocker"),
+        })
+    return {"derivation": DERIVED_STATUS,
+            "multi_case_result_series": len(rows),
+            "by_coverage_class": dict(Counter(x["coverage_class"] for x in rows)),
+            "by_blocker": dict(Counter(str(x["coverage_blocker"]) for x in rows)),
+            "series": sorted(rows, key=lambda x: (-x["n_cases"], x["series_id"]))}
 
 
 def point_case_audit(m):
@@ -1691,10 +1858,17 @@ def validate(m, counts):
         len([l for l in v["links"]
              if l["resolution_status"] == POINT_UNRESOLVED_IDENTITY])
         for v in pcl.values())
+    # A source index is authoritative because it IS the tuple's position; a canonical
+    # array corroborates it where one exists but is not required for it to be known.
     c["resolved_links_without_proven_source_point_identity"] = len(
         [1 for v in pcl.values() for l in v["links"]
          if l["resolution_status"] == POINT_RESOLVED
-         and l.get("point_identity_status") != IDENTITY_VERIFIED])
+         and l.get("point_identity_status") not in (IDENTITY_VERIFIED,
+                                                    IDENTITY_PRESERVED)])
+    c["resolved_links_with_canonically_corroborated_index"] = len(
+        [1 for v in pcl.values() for l in v["links"]
+         if l["resolution_status"] == POINT_RESOLVED
+         and l.get("point_identity_status") == IDENTITY_VERIFIED])
     c["resolved_series_with_unaligned_point_identity"] = len(
         [1 for sid, v in pcl.items()
          if v["status"] in (SERIES_POINT_CASE_RESOLVED, SERIES_PARTIALLY_RESOLVED)
@@ -1723,7 +1897,7 @@ def validate(m, counts):
             rows += 1
             i = l["point_index"]
             t = native_point(s2, i)
-            has_native = bool(aligned and t is not None and t.get("y") is not None)
+            has_native = bool(t is not None and t.get("y") is not None)
             has_canon = bool(aligned and i < len(cy))
             nat_ok += has_native
             nat_missing += (not has_native)
@@ -1864,6 +2038,47 @@ def validate(m, counts):
          if (s2.get("x_representations") or {}).get("native")
          and (s2.get("y_representations") or {}).get("native")])
 
+    # ---- corpus-wide multi-case sweep coverage ---------------------------------------
+    cov = {sid: series[sid].get("coverage_class") for sid in multi_ids}
+    blockers = {sid: series[sid].get("coverage_blocker") for sid in multi_ids}
+    cc = Counter(cov.values())
+    c["multi_case_series_total"] = len(multi_ids)
+    c["multi_case_case_data_fully_resolved"] = cc.get(COV_RESOLVED, 0)
+    c["multi_case_case_data_partially_resolved"] = cc.get(COV_PARTIAL, 0)
+    c["multi_case_coordinates_missing_upstream"] = cc.get(COV_COORDS_MISSING, 0)
+    c["multi_case_axis_binding_unresolved"] = cc.get(COV_AXIS_UNRESOLVED, 0)
+    c["multi_case_ambiguous_case_mapping"] = cc.get(COV_AMBIGUOUS, 0)
+    c["multi_case_case_set_only"] = cc.get(COV_CASE_SET_ONLY, 0)
+    c["multi_case_series_unclassified"] = len(
+        [k for k in multi_ids if cov.get(k) not in
+         (COV_RESOLVED, COV_PARTIAL, COV_COORDS_MISSING, COV_AXIS_UNRESOLVED,
+          COV_AMBIGUOUS, COV_CASE_SET_ONLY)])
+    c["multi_case_coordinates_present"] = len(
+        [k for k in multi_ids
+         if any(t.get("x") is not None
+                for t in (series[k].get("native_points") or {}).get("points") or [])])
+    ab_all = Counter((series[k].get("axis_binding") or {}).get("axis_binding_status")
+                     for k in multi_ids)
+    c["multi_case_axis_binding_identity"] = ab_all.get(AXIS_IDENTITY_MATCH, 0)
+    c["multi_case_axis_binding_ambiguous"] = ab_all.get(AXIS_AMBIGUOUS_QUALIFIED, 0)
+    c["multi_case_axis_binding_unique_variation_unsupported"] = ab_all.get(
+        AXIS_UNIQUE_VARIATION_UNSUPPORTED, 0)
+    c["multi_case_no_compatible_case_quantity"] = ab_all.get(AXIS_NO_COMPATIBLE_QUANTITY, 0)
+    c["multi_case_points_total_available"] = sum(
+        len([t for t in (series[k].get("native_points") or {}).get("points") or []
+             if t.get("x") is not None]) for k in multi_ids)
+    c["multi_case_points_resolved"] = sum(pcl[k]["resolved_points"] for k in multi_ids)
+    c["multi_case_points_ambiguous"] = sum(pcl[k]["ambiguous_points"] for k in multi_ids)
+    c["multi_case_points_unmatched"] = sum(pcl[k]["unmatched_points"] for k in multi_ids)
+    c["multi_case_blocker_propagation"] = len(
+        [k for k in multi_ids if blockers.get(k) == BLOCK_PROPAGATION])
+    c["multi_case_blocker_semantic"] = len(
+        [k for k in multi_ids if blockers.get(k) == BLOCK_SEMANTIC])
+    c["multi_case_blocker_extraction"] = len(
+        [k for k in multi_ids if blockers.get(k) == BLOCK_EXTRACTION])
+    c["multi_case_blocker_evidence_limit"] = len(
+        [k for k in multi_ids if blockers.get(k) == BLOCK_EVIDENCE])
+
     c["point_index_contract_aligned_series"] = len(
         [1 for s2 in series.values()
          if (s2.get("point_index_contract") or {}).get("aligned")])
@@ -1918,8 +2133,11 @@ def validate(m, counts):
         c["aligned_case_table_first_observation_sort_dependencies"] == 0)
     inv["no_resolved_link_without_proven_source_point_identity"] = (
         c["resolved_links_without_proven_source_point_identity"] == 0)
-    inv["no_resolved_series_with_unaligned_point_identity"] = (
-        c["resolved_series_with_unaligned_point_identity"] == 0)
+    # a series may resolve from its source observations alone; alignment is corroboration
+    inv["every_multi_case_series_is_classified"] = (
+        c["multi_case_series_unclassified"] == 0)
+    inv["every_resolved_link_knows_its_source_index"] = (
+        c["resolved_links_without_proven_source_point_identity"] == 0)
     inv["point_index_is_always_the_source_point_index"] = (
         c["resolved_links_where_point_index_is_not_the_source_index"] == 0)
     inv["every_series_with_native_points_can_be_displayed"] = (

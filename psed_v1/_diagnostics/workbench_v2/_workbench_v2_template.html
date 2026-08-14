@@ -921,7 +921,8 @@ function caseDataRows(sid) {
   const cv = (s.y_canonical || {}).values || [];
   return (rec.links || []).filter(l => l.resolution_status === "RESOLVED").map(l => {
     const i = l.point_index;
-    const t = aligned ? nativePoint(s, i) : null;
+    // the observation follows the source tuple; canonical alignment only corroborates
+    const t = nativePoint(s, i);
     const hasN = !!t && t.y !== null && t.y !== undefined;
     const hasC = aligned && i < cv.length && cv[i] !== null && cv[i] !== undefined;
     return {sid, case_id: l.case_id, point_index: i,

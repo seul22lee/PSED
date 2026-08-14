@@ -708,15 +708,16 @@ def final_hardening_tests(M, V, hp):
        all(v["derivation"] == "DERIVED_FOR_WORKBENCH" for v in PCL.values()))
     ok("N17: %d of 22 multi-case series fully resolve"
        % C["point_case_series_fully_resolved"],
-       C["point_case_series_fully_resolved"] == 10)
+       C["point_case_series_fully_resolved"] == 14)
     ok("N17: none partially resolves in this corpus",
        C["point_case_series_partially_resolved"] == 0)
-    ok("N17: 12 remain case-set-only", C["point_case_series_unresolved"] == 12)
-    ok("N17: 6 of those have no persisted coordinates at all",
-       C["multi_case_series_without_persisted_points"] == 6)
-    ok("N17: 69 of 99 points resolve, 0 ambiguously",
+    ok("N17: 8 remain unresolved", C["point_case_series_unresolved"] == 8,
+       C["point_case_series_unresolved"])
+    ok("N17: every multi-case series has persisted coordinates",
+       C["multi_case_series_without_persisted_points"] == 0)
+    ok("N17: 87 of 124 points resolve, 0 ambiguously",
        (C["point_case_points_resolved"], C["point_case_points_ambiguous"],
-        C["point_case_points_no_match"]) == (69, 0, 30),
+        C["point_case_points_no_match"]) == (87, 0, 37),
        (C["point_case_points_resolved"], C["point_case_points_ambiguous"],
         C["point_case_points_no_match"]))
     ok("N17: no link names a case outside the series' own set",
@@ -811,12 +812,12 @@ def final_hardening_tests(M, V, hp):
        C["series_native_y_only"])
     ok("N20: none is canonical-only", C["series_canonical_y_only"] == 0,
        C["series_canonical_y_only"])
-    ok("N20: all 69 resolved rows have an observed value",
-       C["case_data_native_results_available"] == 69
+    ok("N20: every resolved row has an observed value",
+       C["case_data_native_results_available"] == 87
        and C["case_data_native_results_missing"] == 0,
        (C["case_data_native_results_available"], C["case_data_native_results_missing"]))
-    ok("N20: 58 of them were suppressed by the canonical-only path",
-       C["case_data_rows_previously_suppressed_by_canonicalization"] == 58,
+    ok("N20: 76 of them were suppressed by the canonical-only path",
+       C["case_data_rows_previously_suppressed_by_canonicalization"] == 76,
        C["case_data_rows_previously_suppressed_by_canonicalization"])
     ok("N20: and none is suppressed now",
        C["case_data_rows_suppressed_by_canonicalization"] == 0)
@@ -833,7 +834,7 @@ def final_hardening_tests(M, V, hp):
        (C["point_case_series_fully_resolved"], C["point_case_series_partially_resolved"],
         C["point_case_series_unresolved"], C["point_case_points_resolved"],
         C["point_case_points_ambiguous"], C["point_case_points_no_match"])
-       == (10, 0, 12, 69, 0, 30))
+       == (14, 0, 8, 87, 0, 37))
     ok("N20: result availability is its own status, not PARTIALLY_RESOLVED",
        {x["native_result_status"] for x in M["series"].values()}
        <= {"NATIVE_AND_CANONICAL_AVAILABLE", "NATIVE_ONLY", "NO_NATIVE_RESULT"},
@@ -842,8 +843,8 @@ def final_hardening_tests(M, V, hp):
                     if v["status"] == "POINT_CASE_RESOLVED"]
     from collections import Counter as _Ctr
     byst = _Ctr(M["series"][k]["native_result_status"] for k in resolved_ids)
-    ok("N20: of the 10 resolved series, 8 are native-only and 2 also canonical",
-       byst.get("NATIVE_ONLY") == 8
+    ok("N20: of the 14 resolved series, 12 are native-only and 2 also canonical",
+       byst.get("NATIVE_ONLY") == 12
        and byst.get("NATIVE_AND_CANONICAL_AVAILABLE") == 2, dict(byst))
 
     print("=== N21. point tuple integrity ===")
@@ -853,8 +854,11 @@ def final_hardening_tests(M, V, hp):
     ok("N21: the index contract is checked, not assumed",
        all("aligned" in (x.get("point_index_contract") or {})
            for x in M["series"].values()))
-    ok("N21: every resolved series' arrays are proven to be one point vector",
-       all(M["series"][k]["point_index_contract"]["aligned"] for k in resolved_ids))
+    ok("N21: a resolved series does not require a canonical array to corroborate it",
+       len([k for k in resolved_ids
+            if not M["series"][k]["point_index_contract"]["aligned"]]) == 4,
+       len([k for k in resolved_ids
+            if not M["series"][k]["point_index_contract"]["aligned"]]))
     # fixtures build the SOURCE TUPLES, because that is the authority now
     def mkpts(pairs, cx=None, cy=None, xu="s", cu="s"):
         return {"native_points": {
@@ -962,18 +966,23 @@ def final_hardening_tests(M, V, hp):
     sr2, ct2, pts2, links2 = run_resolver([(1, 10), (None, 20), (3, 30)], [1, 3], spec)
     ok("N24: FIXTURE an interior missing x breaks the canonical/source alignment",
        ct2["aligned"] is False, ct2)
-    ok("N24: FIXTURE no point is reported resolved on an unproven index",
-       not [l for l in links2 if l["resolution_status"] == "RESOLVED"], links2)
-    ok("N24: FIXTURE each refusal names the reason",
-       all(l["resolution_status"] == "UNRESOLVED_POINT_INDEX_IDENTITY"
-           and l["evidence"] == "SOURCE_POINT_INDEX_NOT_PROVEN" for l in links2), links2)
-    ok("N24: FIXTURE and there is one link per SOURCE point, not per canonical value",
+    ok("N24: FIXTURE there is one link per SOURCE point, not per canonical value",
        [l["source_point_index"] for l in links2] == [0, 1, 2], links2)
+    # the points that DO carry an x resolve, at their own source indices
+    ok("N24: FIXTURE source point 0 resolves to its own case",
+       links2[0]["resolution_status"] == "RESOLVED" and links2[0]["case_id"] == "A"
+       and links2[0]["point_index"] == 0, links2[0])
+    ok("N24: FIXTURE source point 1 cannot be matched and says why",
+       links2[1]["resolution_status"] == "UNRESOLVED_NO_MATCH"
+       and links2[1]["evidence"] == "NO_SOURCE_X_VALUE", links2[1])
+    ok("N24: FIXTURE source point 2 resolves AS SOURCE INDEX 2, not 1",
+       links2[2]["resolution_status"] == "RESOLVED" and links2[2]["case_id"] == "C"
+       and links2[2]["point_index"] == 2, links2[2])
     ok("N24: FIXTURE crucially, x=3 is never reported as point_index 1",
        not [l for l in links2
             if l["point_index"] == 1 and l.get("native_x_value") == 3], links2)
-    ok("N24: FIXTURE the series is not resolved",
-       wb3.series_resolution_status(["A", "B", "C"], links2) == "CASE_SET_ONLY")
+    ok("N24: FIXTURE the series is partially resolved, not all-or-nothing",
+       wb3.series_resolution_status(["A", "B", "C"], links2) == "PARTIALLY_RESOLVED")
 
     # §11 a missing y does not affect point identity
     sr3, ct3, pts3, links3 = run_resolver([(1, 10), (2, None), (3, 30)], [1, 2, 3], spec)
@@ -986,44 +995,43 @@ def final_hardening_tests(M, V, hp):
 
     # a canonical array that is simply shorter must not silently pair by position
     sr4, ct4, pts4, links4 = run_resolver([(1, 1), (2, 2), (3, 3)], [1, 2], spec)
-    ok("N24: FIXTURE a short canonical array proves no identity",
-       ct4["aligned"] is False
-       and not [l for l in links4 if l["resolution_status"] == "RESOLVED"], links4)
+    ok("N24: FIXTURE a short canonical array corroborates nothing",
+       ct4["aligned"] is False, ct4)
+    ok("N24: FIXTURE but the source observations still carry their own indices",
+       [(l["point_index"], l.get("case_id")) for l in links4]
+       == [(0, "A"), (1, "B"), (2, "C")], links4)
+    ok("N24: FIXTURE and say so as preserved rather than corroborated",
+       all(l["point_identity_status"] == "SOURCE_INDEX_PRESERVED" for l in links4))
 
     print("=== N25. source-index metrics ===")
-    for k, want in (("point_case_points_total", 99),
-                    ("point_case_points_resolved", 69),
+    for k, want in (("point_case_points_total", 124),
+                    ("point_case_points_resolved", 87),
                     ("point_case_points_ambiguous", 0),
-                    ("point_case_points_no_match", 30),
+                    ("point_case_points_no_match", 37),
                     ("point_case_source_points_total", 124),
-                    ("point_case_points_identity_unproven", 25),
+                    ("point_case_points_identity_unproven", 0),
                     ("resolved_links_without_proven_source_point_identity", 0),
-                    ("resolved_series_with_unaligned_point_identity", 0),
                     ("resolved_links_where_point_index_is_not_the_source_index", 0)):
         ok("N25: %-56s = %d" % (k, want), C[k] == want, C[k])
     ok("N25: aligned_case_table_first_observation_sort_dependencies = 0",
        C["aligned_case_table_first_observation_sort_dependencies"] == 0,
        C["aligned_case_table_first_observation_sort_dependencies"])
-    ok("N25: canonical_x_points_with_unproven_source_index is computed",
-       C["canonical_x_points_with_unproven_source_index"] == 2531,
+    ok("N25: no point is left with an unproven source index",
+       C["canonical_x_points_with_unproven_source_index"] == 0,
        C["canonical_x_points_with_unproven_source_index"])
     for g in ("aligned_table_order_reads_no_single_series",
-              "no_resolved_link_without_proven_source_point_identity",
-              "no_resolved_series_with_unaligned_point_identity",
+              "every_resolved_link_knows_its_source_index",
               "point_index_is_always_the_source_point_index"):
         ok("N25: the build gates on %s" % g, V["invariants"][g] is True)
-    ok("N25: every resolved link states a verified identity",
-       all(l["point_identity_status"] == "SOURCE_INDEX_VERIFIED"
+    ok("N25: every resolved link knows its source index",
+       all(l["point_identity_status"] in ("SOURCE_INDEX_VERIFIED",
+                                          "SOURCE_INDEX_PRESERVED")
            for v in M["point_case_links"].values() for l in v["links"]
            if l["resolution_status"] == "RESOLVED"))
-    ok("N25: RESOLVED with an unaligned contract is impossible",
-       not [1 for sid, v in M["point_case_links"].items() for l in v["links"]
-            if l["resolution_status"] == "RESOLVED"
-            and not M["series"][sid]["point_index_contract"]["aligned"]])
-    ok("N25: current corpus has no canonical-x source-index gap in a resolved series",
-       all(M["series"][sid]["point_index_contract"]["aligned"]
-           for sid, v in M["point_case_links"].items()
-           if v["status"] == "POINT_CASE_RESOLVED"))
+    ok("N25: %d resolved links are also canonically corroborated"
+       % C["resolved_links_with_canonically_corroborated_index"],
+       C["resolved_links_with_canonically_corroborated_index"] == 69,
+       C["resolved_links_with_canonically_corroborated_index"])
     ok("N25: links carry the audit trail",
        all({"source_point_index", "point_identity_status", "native_x_value"}
            <= set(l) for v in M["point_case_links"].values() for l in v["links"]))
@@ -1251,8 +1259,10 @@ def final_hardening_tests(M, V, hp):
     sx = vpraw[vpraw.index("def source_x_points"):vpraw.index("def resolve_points_to_cases")]
     ok("N22: point identity is enumerated from the SOURCE tuples",
        "for i, t in enumerate(tuples)" in sx and "enumerate(cx)" not in sx)
-    ok("N22: an unproven alignment yields no comparison value",
-       "IDENTITY_UNRESOLVED" in sx)
+    ok("N22: the comparison value comes from the source tuple",
+       't.get("x")' in sx and "IDENTITY_PRESERVED" in sx)
+    ok("N22: canonical values only corroborate the index",
+       "IDENTITY_VERIFIED" in sx and "canonical_x_value" in sx)
     srt = prodN["template"]
     srt = srt[srt.index("function caseRowOrder"):srt.index("function drawCaseData")]
     ok("N22: the aligned sort no longer reads a first observation",
