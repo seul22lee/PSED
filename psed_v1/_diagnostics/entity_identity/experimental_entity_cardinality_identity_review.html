@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Entity Cardinality &amp; Identity Audit</title><style>
+:root{--bg:#fbfbfa;--fg:#1a1a18;--mut:#6b6b66;--line:#e0dfdb;--card:#fff;--soft:#f4f4f1;
+--bad:#b3261e;--good:#1e6b3a;--warn:#8a6100;--accent:#2f5d8a}
+@media (prefers-color-scheme:dark){:root{--bg:#16161a;--fg:#e9e9e6;--mut:#9a9a95;
+--line:#33333a;--card:#1e1e24;--soft:#232329;--bad:#ff8a80;--good:#7ddba3;--warn:#e8c06a;
+--accent:#8fb8e0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:34px 22px 70px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:32px 0 10px;
+padding-bottom:5px;border-bottom:1px solid var(--line)}
+.sub{color:var(--mut);font-size:13px;margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:10px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
+.card .n{font-size:20px;font-weight:600}
+.card .l{color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:640px}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+border-radius:6px;padding:11px 14px;margin:11px 0;font-size:13px}
+.bad{color:var(--bad);font-weight:600}.good{color:var(--good);font-weight:600}
+.warn{color:var(--warn)}.mut{color:var(--mut)}
+.pill{display:inline-block;padding:0 7px;border-radius:99px;font-size:10.5px;
+border:1px solid var(--line);color:var(--mut)}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;
+padding:9px 12px;margin-bottom:7px}
+summary{cursor:pointer;font-weight:600;font-size:13px}
+</style></head><body>
+<div class="wrap">
+<h1>Experimental entity cardinality &amp; identity audit</h1>
+<p class="sub">Read-only. Baseline <code>075182f</code> · code <code>61f0d0fa4f69</code> · HEAD
+<code>075182f</code> · scopes ACTIVE8, EXCLUDED_DEVELOPMENT, UNSEEN</p>
+
+<div class="cards"><div class='card'><div class='n'>182</div><div class='l'>case</div></div><div class='card'><div class='n'>247</div><div class='l'>meas</div></div><div class='card'><div class='n'>231</div><div class='l'>series</div></div><div class='card'><div class='n'>16</div><div class='l'>sample</div></div><div class='card'><div class='n'>1</div><div class='l'>run</div></div></div>
+
+<h2>What ExperimentalCase actually is</h2>
+<div class="note">One case carries up to <b>6 physical Samples</b> under a single nominal
+fingerprint, and the conditions are stored on the case rather than on each realization.
+So <code>ExperimentalCase</code> is a <b>nominal condition case</b> &mdash; option B &mdash;
+not a physical experiment, sample or deposition run. Labelling it &ldquo;Experiment&rdquo;
+in a UI asserts a physical identity the data does not carry.<br><br>
+The physical layer is nearly absent: <b>16 Samples</b> and <b>1 DepositionRun</b> across
+182 cases. Sample&rarr;Run is set on only a few samples, so a case that exposes a run is
+usually exposing the run of <em>one</em> of its samples.</div>
+
+<h2>Relation cardinality matrix (ACTIVE8)</h2>
+<div class="scroll"><table><thead><tr><th>relation</th><th>unique left</th>
+<th>unique right</th><th>0</th><th>1</th><th>2+</th><th>max</th><th>link incidences</th>
+</tr></thead><tbody><tr><td>Case -&gt; Sample</td><td>182</td><td>16</td><td>171</td><td>10</td><td class='warn'>1</td><td>6</td><td>16</td></tr><tr><td>Sample -&gt; Case</td><td>16</td><td>182</td><td>0</td><td>16</td><td class=''>0</td><td>1</td><td>16</td></tr><tr><td>Sample -&gt; Run</td><td>16</td><td>1</td><td>13</td><td>3</td><td class=''>0</td><td>1</td><td>3</td></tr><tr><td>Run -&gt; Sample</td><td>1</td><td>16</td><td>0</td><td>0</td><td class='warn'>1</td><td>3</td><td>3</td></tr><tr><td>Case -&gt; Measurement</td><td>182</td><td>247</td><td>3</td><td>157</td><td class='warn'>22</td><td>15</td><td>218</td></tr><tr><td>Measurement -&gt; Case</td><td>247</td><td>182</td><td>131</td><td>94</td><td class='warn'>22</td><td>10</td><td>218</td></tr><tr><td>Measurement -&gt; Sample</td><td>247</td><td>16</td><td>209</td><td>38</td><td class=''>0</td><td>1</td><td>38</td></tr><tr><td>Producer -&gt; ResultSeries</td><td>247</td><td>231</td><td>16</td><td>231</td><td class=''>0</td><td>1</td><td>231</td></tr><tr><td>ResultSeries -&gt; Producer</td><td>231</td><td>247</td><td>0</td><td>231</td><td class=''>0</td><td>1</td><td>231</td></tr><tr><td>ResultSeries -&gt; Case</td><td>231</td><td>182</td><td>121</td><td>88</td><td class='warn'>22</td><td>10</td><td>212</td></tr><tr><td>Case -&gt; ResultSeries</td><td>182</td><td>231</td><td>7</td><td>154</td><td class='warn'>21</td><td>15</td><td>212</td></tr></tbody></table></div>
+<div class="note">Entity counts and link incidences are different numbers. There are
+<b>247</b> unique Measurements but <b>218</b> Case&ndash;Measurement incidences, so summing
+measurements under case cards over-counts. The relation is N:M in both directions:
+<b>22</b> Measurements link to more than one Case (max <b>10</b>), and <b>131</b> link to
+none.</div>
+
+<h2>Measurement granularity</h2>
+<div class="note">Every producer has at most <b>one</b> ResultSeries. That is not simply a
+sparse corpus: the records carry <code>represents_same_measurement_as</code>, and applying
+it collapses <b>247</b> Measurement entities into <b>235</b> distinct observing acts. Six
+acts are each rendered as three separate Measurement entities &mdash; one per panel &mdash;
+with the same-act relation kept as a sideband instead of as shared identity. So the entity
+is currently <b>per extracted curve</b>, while the schema's own fields describe a
+<b>per observing act</b> intent. Classification: <code>MEASUREMENT_OVERMINTING</code> for
+those, <code>INTENDED_CARDINALITY</code> unproven for the rest.</div>
+
+<h2>Cases with three or more measurements</h2>
+<div class="scroll"><table><thead><tr><th>paper</th><th>case</th><th>samples</th>
+<th>runs</th><th>measurements</th><th>series</th><th>distinct acts</th><th>why</th>
+<th>classification</th></tr></thead><tbody><tr><td class='mono'>10.1039_d0cp03358h</td><td><code>CASE-10.103-002</code></td><td>6</td><td>1</td><td>15</td><td>15</td><td>15</td><td>MULTIPLE_PHYSICAL_SAMPLES, MULTIPLE_FIGURE_REPRESENTATIONS, RUN_LINK_PARTIAL</td><td>CONDITION_CASE_NOT_PHYSICAL_RUN</td></tr><tr><td class='mono'>10.1149_2.067203jes</td><td><code>CASE-10.114-002</code></td><td>0</td><td>0</td><td>4</td><td>3</td><td>4</td><td>MULTIPLE_MEASURANDS</td><td>EXPECTED_CARDINALITY</td></tr><tr><td class='mono'>10.1038_am.2016.182</td><td><code>CASE-10.103-016</code></td><td>0</td><td>0</td><td>3</td><td>3</td><td>3</td><td>MULTIPLE_MEASURANDS</td><td>EXPECTED_CARDINALITY</td></tr><tr><td class='mono'>10.1038_am.2016.182</td><td><code>CASE-10.103-021</code></td><td>0</td><td>0</td><td>3</td><td>3</td><td>3</td><td>MULTIPLE_MEASURANDS</td><td>EXPECTED_CARDINALITY</td></tr></tbody></table></div>
+
+<h2>Conflict inventory</h2>
+<div class="scroll"><table><thead><tr><th>classification</th><th>count</th></tr></thead>
+<tbody><tr><td><code>RESULT_SERIES_SPANS_MULTIPLE_CASES</code></td><td>22</td></tr><tr><td><code>MEASUREMENT_OVERMINTING</code></td><td>6</td></tr><tr><td><code>EXPECTED_CARDINALITY</code></td><td>3</td></tr><tr><td><code>CONDITION_CASE_NOT_PHYSICAL_RUN</code></td><td>1</td></tr><tr><td><code>INSUFFICIENT_EVIDENCE</code></td><td>1</td></tr></tbody></table></div>
+
+<h2>Workbench implications</h2>
+<div class="scroll"><table><thead><tr><th>question</th><th>answer</th><th>reason</th>
+</tr></thead><tbody><tr><td>can experimentalcase be labelled Experiment</td><td class='bad'>NO</td><td class='mut'>one case carries up to 6 physical Samples under a single nominal fingerprint, so it is a condition-defined case, not a physical experiment or run</td></tr><tr><td>can case measurement series be rendered as a tree</td><td class='bad'>NO</td><td class='mut'>22 Measurements link to more than one Case (max 10), so the relation is N:M and a tree must duplicate or drop nodes</td></tr><tr><td>can one resultseries be shown under one case only</td><td class='bad'>NO</td><td class='mut'>a series reaches its cases through its producer, and a producer with several cases gives the series several cases; picking the first silently hides the rest</td></tr><tr><td>can measurement be presented as a real observing act</td><td class='warn'>CONDITIONALLY</td><td class='mut'>247 Measurement entities reduce to 235 distinct acts once represents_same_measurement_as is applied; the remainder are one curve each, so the entity is per-curve, not per-act</td></tr><tr><td>can counts under case cards be treated as unique entity counts</td><td class='bad'>NO</td><td class='mut'>summing measurements under cases counts Case-Measurement incidences (218) rather than unique Measurements (247)</td></tr></tbody></table></div>
+
+<h2>Recorded UI defects (not evidence about the science)</h2>
+<div class="note">Kept separate from the entity findings, and not fixed here:
+the workbench's <code>caseOfSeries</code> returns <code>case_ids[0]</code>, silently
+collapsing an N:M relation; its parentage diagnostic reports
+<code>max_series_per_producer = 1</code> without saying that this reflects per-curve
+Measurement minting; and the Y representation control sets a target that the plot path
+does not materialize, so only x projections are actually applied.</div>
+</div></body></html>
