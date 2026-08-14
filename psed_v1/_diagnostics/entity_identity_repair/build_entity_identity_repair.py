@@ -7,11 +7,13 @@ carries them, and ResultSeries expose their complete case membership instead of 
 element. Nothing here rewrites persisted science: acts are a grouping over existing
 Measurement ids, and every source id keeps working.
 
-The fourth thing -- merging Sample entities that may be one physical specimen -- is NOT
-done, because the persisted records carry no traceable specimen identifier and the source
-text's only same-sample statements concern a different figure. Guessing from equal
-conditions is exactly the inference the identity rules forbid, so it is reported as
-extraction debt rather than performed.
+The fourth thing -- canonicalising Sample records that may be one physical specimen -- is
+implemented but recovers nothing in this corpus, and the reason matters. The papers DO
+carry traceable specimen codes: one main-text table footnote says in as many words that
+the original traceable sample codes live in the Supporting Information. No ESI document
+is present in the corpus, so the identifiers cannot be read from anything persisted. That
+is an ingestion gap, not an absence of source evidence, and the earlier report was wrong
+to describe it as the latter.
 
     python3 _diagnostics/entity_identity_repair/build_entity_identity_repair.py
 """
@@ -31,7 +33,7 @@ from pipeline.query import entity_identity as EI                       # noqa: E
 OUT = W / "_diagnostics" / "entity_identity_repair"
 PILOT = W / "_diagnostics" / "semantic_pilot_9papers"
 AUDIT = W / "_diagnostics" / "entity_identity"
-BASELINE = "762e9de"
+BASELINE = "59e801c"
 
 
 def code_hash():
@@ -46,12 +48,25 @@ def main():
     graph = {"cases": {}, "samples": {}, "runs": {}, "measurements": {},
              "measurement_acts": {}, "simulation_runs": {}, "result_series": {}}
     acts_all, sample_rows, run_rows, multi_case, hi_card = {}, [], {}, [], []
+    specimen_groups, specimen_unresolved = {}, []
     stats = Counter()
 
     for pid in papers:
         D = EI.load_paper(PILOT, pid)
         cases = D["experimental_cases"]
         samples = {s["sample_id"]: s for s in D["samples"] if s.get("sample_id")}
+        spec_groups, spec_unresolved = EI.canonical_specimens(list(samples.values()), pid)
+        specimens_of = {sid: g["canonical_specimen_id"]
+                        for g in spec_groups.values() for sid in g["sample_ids"]}
+        for g in spec_groups.values():
+            conflict = EI.specimen_run_conflicts(g, samples)
+            g["run_conflict"] = conflict or None
+            if conflict:
+                stats["specimen_run_contradictions"] += 1
+            specimen_groups[g["canonical_specimen_id"]] = g
+        specimen_unresolved.extend(spec_unresolved)
+        stats["specimens_resolved"] += len(spec_groups)
+        stats["specimens_unresolved"] += len(spec_unresolved)
         pcases = EI.producer_case_index(D["measurements"], D["simulation_runs"])
         acts, act_of = EI.measurement_acts(D["measurements"])
         key = lambda i: "%s::%s" % (pid, i)
@@ -102,21 +117,31 @@ def main():
                 "produced_by_run": s.get("produced_by_run"),
                 "run_status": "KNOWN" if s.get("produced_by_run") else "RUN_UNRESOLVED",
                 "case_ids": s.get("experimental_case_ids") or [],
-                "physical_specimen_id": None,
-                "physical_identity_status": "NO_TRACEABLE_SPECIMEN_ID_IN_RECORD",
+                "canonical_specimen_id": specimens_of.get(sid),
+                "traceable_specimen_id": EI.traceable_specimen_id(s),
+                "physical_identity_status": ("RESOLVED" if specimens_of.get(sid)
+                                             else EI.SPECIMEN_UNRESOLVED),
                 "source_references": s.get("source_references") or []}
             sample_rows.append(graph["samples"][sk])
             stats["samples"] += 1
             stats["samples_with_run"] += 1 if s.get("produced_by_run") else 0
 
         for r in D["deposition_runs"]:
-            rid = r.get("deposition_run_id") or r.get("id")
-            members = [s["sample_id"] for s in samples.values()
-                       if s.get("produced_by_run") == rid]
+            rid, members = EI.run_members(r, list(samples.values()))
+            if not rid:
+                stats["invalid_run_records"] += 1
+                run_rows["%s::INVALID" % pid] = {
+                    "run_id": None, "paper_id": pid, "status": EI.INVALID_RUN_RECORD,
+                    "reason": "no resolvable identifier in %s" % sorted(r),
+                    "explicit_sample_members": []}
+                continue
             downstream_m = [m["measurement_id"] for m in D["measurements"]
                             if m.get("performed_on") in members]
+            spec_members = sorted({specimens_of.get(m) for m in members
+                                   if specimens_of.get(m)})
             run_rows[key(rid)] = {
-                "run_id": rid, "paper_id": pid,
+                "run_id": rid, "paper_id": pid, "status": "RESOLVED",
+                "canonical_specimen_members": spec_members,
                 "evidence": (str(r.get("evidence") or ""))[:240],
                 "explicit_sample_members": members,
                 "n_samples": len(members),
@@ -210,13 +235,30 @@ def main():
         "series_per_act_distribution": dict(Counter(a["n_result_series"]
                                                     for a in acts_all.values()))})
     dump("sample_identity_inventory.json", {
-        "samples_before": stats["samples"], "canonical_physical_samples": stats["samples"],
-        "aliases_merged": 0, "samples_with_run": stats["samples_with_run"],
+        "source_sample_records": stats["samples"],
+        "records_with_traceable_physical_identifier":
+            len([s for s in sample_rows if s["traceable_specimen_id"]]),
+        "canonical_physical_specimens": len(specimen_groups),
+        "multi_alias_physical_specimens":
+            len([g for g in specimen_groups.values() if g["n_aliases"] > 1]),
+        "unresolved_source_sample_records": len(specimen_unresolved),
+        "samples_with_run": stats["samples_with_run"],
         "samples_without_run": stats["samples"] - stats["samples_with_run"],
-        "samples_with_traceable_specimen_id": 0,
-        "merge_policy": "no Sample was merged: the records carry no traceable specimen "
-                        "identifier, and equal conditions are not physical identity",
-        "classification": "PHYSICAL_IDENTITY_NOT_EXTRACTED",
+        "specimen_run_contradictions": stats["specimen_run_contradictions"],
+        "by_paper": {p: len([s for s in sample_rows if s["paper_id"] == p])
+                     for p in sorted({s["paper_id"] for s in sample_rows})},
+        "merge_policy": "a Sample is canonicalised only by a PERSISTENT SPECIMEN "
+                        "IDENTIFIER field; source_sample_code is a paper-local analysis "
+                        "label and never merges anything, and equal conditions never do",
+        "source_identity_status": (
+            "SOURCE_IDENTITY_EXISTS_BUT_DOCUMENT_NOT_INGESTED: this corpus' main-text "
+            "tables carry paper-local sample codes and explicitly refer the reader to the "
+            "Supporting Information for the original traceable codes; no ESI document is "
+            "present in the corpus, so the identifiers cannot be resolved from anything "
+            "currently persisted"),
+        "classification": "PHYSICAL_IDENTITY_EXTRACTION_GAP",
+        "canonical_specimens": specimen_groups,
+        "unresolved": specimen_unresolved,
         "samples": sample_rows})
     dump("deposition_run_linkage_inventory.json", {
         "runs": run_rows, "n_runs": stats["runs"],
@@ -224,6 +266,10 @@ def main():
         "case_run_link_semantics": EI.RUNS_OBSERVED_AMONG_CASE_REALIZATIONS,
         "overpropagated_links_before": "case-level run exposure implied every realization",
         "overpropagated_links_after": 0,
+        "invalid_run_records": stats["invalid_run_records"],
+        "null_run_keys": len([k for k in run_rows if k.endswith("::None")]),
+        "run_id_reader": "pipeline.query.entity_identity.persisted_run_id "
+                         "(run_id > deposition_run_id > id)",
         "cases_with_partial_run_coverage": stats["cases_with_partial_run_coverage"],
         "note": "every Case->Run link is now scoped to the sample that carries it"})
     dump("multi_case_result_series_inventory.json", {
@@ -416,12 +462,15 @@ longer implies that every realization was grown in one run. ResultSeries expose 
 complete case membership through <code>cases_for_result_series</code>, and a caller that
 wants one case must use <code>single_case_for_series</code>, which returns
 <code>MULTI_CASE</code> rather than an arbitrary member.<br><br>
-<b>Not repaired, deliberately.</b> No Sample was merged. The records carry no traceable
-specimen identifier, and the source's only same-sample statements concern a different
-figure, so merging rows 4/5/6 would mean inferring physical identity from equal
-conditions &mdash; the one inference the identity rules exist to forbid. Classified
-<code>PHYSICAL_IDENTITY_NOT_EXTRACTED</code>: an extraction gap, not an architecture
-defect.<br><br>
+<b>Implemented but recovering nothing here.</b> Sample canonicalisation now groups
+records by a <em>persistent specimen identifier</em>, and deliberately not by
+<code>source_sample_code</code>, which is a paper-local analysis label. It recovers zero
+groups in this corpus, and the reason is specific: the papers <em>do</em> carry traceable
+specimen codes &mdash; a main-text table footnote states that the original traceable sample
+codes are in the Supporting Information &mdash; but no ESI document is present in the
+corpus, so nothing persisted can resolve them. Classified
+<code>SOURCE_IDENTITY_EXISTS_BUT_DOCUMENT_NOT_INGESTED</code>. An earlier version of this
+report called the identifiers absent from the source; that was wrong.<br><br>
 <b>Nothing scientific moved.</b> Measurement ids, ResultSeries ids, points, canonical
 curves, case ids and fingerprints are untouched; an act is a grouping over existing ids,
 not a replacement for them.</div>
@@ -465,11 +514,30 @@ correctly leaves them alone.</div>
 <div class="scroll"><table><thead><tr><th>disposition</th><th>count</th></tr></thead>
 <tbody>%s</tbody></table></div>
 
+<h2>7b &middot; Traceable physical identity</h2>
+<div class="note">The chain a canonical specimen needs is
+<code>source label &rarr; traceable specimen id &rarr; canonical physical specimen</code>.
+The middle link is the one this corpus lacks. A sample record carries
+<code>source_sample_code</code> (1, 2, 3&hellip;), which is the paper's analysis label for a
+table row; several such rows may describe one piece of silicon, which is exactly why the
+resolver refuses to treat the code as an identity. It reads only fields that mean a
+persistent specimen &mdash; <code>traceable_sample_code</code>,
+<code>specimen_id</code>, <code>chip_id</code>, <code>wafer_id</code> and siblings &mdash;
+and none is populated, because the document that carries them was never ingested.<br><br>
+Equal conditions were never used, and must never be: two chips grown to the same recipe
+are two chips. Where aliases of one specimen ever disagree on an explicit run, the group
+is raised as <code>PHYSICAL_SAMPLE_RUN_CONTRADICTION</code> rather than resolved by
+picking one.</div>
+
 <h2>8 &middot; Remaining extraction debt</h2>
 <div class="note">Architecture is fixed; physical identity is largely not extracted.
 %d Samples across the corpus, %d with a known deposition run, 0 with a traceable specimen
-identifier. That is a bounded extraction campaign, not a modelling defect, and it is
-deliberately out of scope here.</div>
+identifier. The specimen gap is an <em>ingestion</em> task with a precise shape: acquire
+and parse the Supporting Information table that the main text already points at, and
+populate a persistent specimen field on the Sample record. The resolver is already in
+place and will consume it without further change. Separately, most condition cases have no
+linked Sample at all, and point-level sweep mapping is not persisted; those are different
+gaps and are not addressed here.</div>
 </div></body></html>""" % (
         CSS, e(p["baseline_sha"]), e(p["generating_code_sha256"]), e(p["head_sha"]),
         p["measurement_records"], p["measurement_acts"], p["multi_member_acts"],

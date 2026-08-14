@@ -30,7 +30,7 @@ font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-spa
 overflow-x:auto;line-height:1.5}
 </style></head><body><div class="wrap">
 <h1>Entity identity repair</h1>
-<p class="sub">Baseline <code>762e9de</code> · code <code>890960753ae5</code> · HEAD <code>762e9de</code></p>
+<p class="sub">Baseline <code>59e801c</code> · code <code>52eb4e8b02de</code> · HEAD <code>59e801c</code></p>
 
 <div class="cards">
 <div class="card"><div class="n">213</div><div class="l">Measurement records</div></div>
@@ -50,12 +50,15 @@ longer implies that every realization was grown in one run. ResultSeries expose 
 complete case membership through <code>cases_for_result_series</code>, and a caller that
 wants one case must use <code>single_case_for_series</code>, which returns
 <code>MULTI_CASE</code> rather than an arbitrary member.<br><br>
-<b>Not repaired, deliberately.</b> No Sample was merged. The records carry no traceable
-specimen identifier, and the source's only same-sample statements concern a different
-figure, so merging rows 4/5/6 would mean inferring physical identity from equal
-conditions &mdash; the one inference the identity rules exist to forbid. Classified
-<code>PHYSICAL_IDENTITY_NOT_EXTRACTED</code>: an extraction gap, not an architecture
-defect.<br><br>
+<b>Implemented but recovering nothing here.</b> Sample canonicalisation now groups
+records by a <em>persistent specimen identifier</em>, and deliberately not by
+<code>source_sample_code</code>, which is a paper-local analysis label. It recovers zero
+groups in this corpus, and the reason is specific: the papers <em>do</em> carry traceable
+specimen codes &mdash; a main-text table footnote states that the original traceable sample
+codes are in the Supporting Information &mdash; but no ESI document is present in the
+corpus, so nothing persisted can resolve them. Classified
+<code>SOURCE_IDENTITY_EXISTS_BUT_DOCUMENT_NOT_INGESTED</code>. An earlier version of this
+report called the identifiers absent from the source; that was wrong.<br><br>
 <b>Nothing scientific moved.</b> Measurement ids, ResultSeries ids, points, canonical
 curves, case ids and fingerprints are untouched; an act is a grouping over existing ids,
 not a replacement for them.</div>
@@ -107,9 +110,28 @@ correctly leaves them alone.</div>
 <div class="scroll"><table><thead><tr><th>disposition</th><th>count</th></tr></thead>
 <tbody><tr><td><code>EXPECTED_GRAPH_CARDINALITY</code></td><td>26</td></tr><tr><td><code>RESOLVED</code></td><td>6</td></tr><tr><td><code>DEFERRED_EXTRACTION_GAP</code></td><td>1</td></tr></tbody></table></div>
 
+<h2>7b &middot; Traceable physical identity</h2>
+<div class="note">The chain a canonical specimen needs is
+<code>source label &rarr; traceable specimen id &rarr; canonical physical specimen</code>.
+The middle link is the one this corpus lacks. A sample record carries
+<code>source_sample_code</code> (1, 2, 3&hellip;), which is the paper's analysis label for a
+table row; several such rows may describe one piece of silicon, which is exactly why the
+resolver refuses to treat the code as an identity. It reads only fields that mean a
+persistent specimen &mdash; <code>traceable_sample_code</code>,
+<code>specimen_id</code>, <code>chip_id</code>, <code>wafer_id</code> and siblings &mdash;
+and none is populated, because the document that carries them was never ingested.<br><br>
+Equal conditions were never used, and must never be: two chips grown to the same recipe
+are two chips. Where aliases of one specimen ever disagree on an explicit run, the group
+is raised as <code>PHYSICAL_SAMPLE_RUN_CONTRADICTION</code> rather than resolved by
+picking one.</div>
+
 <h2>8 &middot; Remaining extraction debt</h2>
 <div class="note">Architecture is fixed; physical identity is largely not extracted.
 16 Samples across the corpus, 3 with a known deposition run, 0 with a traceable specimen
-identifier. That is a bounded extraction campaign, not a modelling defect, and it is
-deliberately out of scope here.</div>
+identifier. The specimen gap is an <em>ingestion</em> task with a precise shape: acquire
+and parse the Supporting Information table that the main text already points at, and
+populate a persistent specimen field on the Sample record. The resolver is already in
+place and will consume it without further change. Separately, most condition cases have no
+linked Sample at all, and point-level sweep mapping is not persisted; those are different
+gaps and are not addressed here.</div>
 </div></body></html>
