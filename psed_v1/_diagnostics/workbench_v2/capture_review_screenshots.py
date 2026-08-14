@@ -27,24 +27,86 @@ def main(outdir):
         pg.wait_for_selector("#results .case", timeout=20000)
 
         shot = lambda n: pg.screenshot(path=str(out / ("%s.png" % n)))
+        reset = lambda: pg.evaluate("""() => {
+            tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+            RANGES.forEach(r => range[r.id] = {min:"",max:""});
+            profileOnly = false; page = 0; render();
+        }""")
         shot("01_initial")
 
-        # active facets + a canonical-unit range
+        # the species-qualified range facets: TMA and H2O must be distinguishable
+        pg.evaluate("""() => {
+            const box = document.querySelector('#facets');
+            const n = [...box.querySelectorAll('.facet')]
+                .find(x => /TMA/.test(x.innerText));
+            if (n) n.scrollIntoView({block:'center'});
+        }""")
+        shot("02_qualified_range_facets")
+
+        # active facets plus a canonical-unit range
         pg.locator('.fbtn[data-f="material"]').click()
         pg.locator(".pop .opt").first.click()
-        pg.locator('.fbtn[data-f="technique"]').click()
-        pg.locator(".pop .opt").first.click()
-        pg.locator('input[data-r="deposition_temperature"][data-b="min"]').fill("400")
+        pg.locator('input[data-r="deposition_temperature"][data-b="min"]').fill("500")
         pg.locator('input[data-r="deposition_temperature"][data-b="min"]').dispatch_event("change")
-        shot("02_active_facets")
+        shot("03_active_facets")
 
-        # an expanded condition case
-        pg.evaluate("() => { Object.keys(active).forEach(k=>active[k].clear());"
-                    " RANGES.forEach(r=>range[r.id]={min:'',max:''}); page=0; render(); }")
-        pg.locator("#results .case").first.click()
-        shot("03_case_expanded")
+        # a multi-case sweep under a filter only part of its span satisfies
+        pg.evaluate("""() => {
+            Object.keys(active).forEach(k => active[k].clear());
+            const id = M.sweep_series_ids.slice()
+                        .sort((a,b)=>SERIES[b].n_cases-SERIES[a].n_cases)[0];
+            const r = RANGES.find(x => x.field_id === "deposition_temperature");
+            range[r.id] = {min:"500", max:""}; page = 0; render();
+            document.querySelectorAll('#results details.case').forEach(d => d.open = true);
+            const c = document.querySelector(`[data-ser="${id}"]`);
+            if (c) c.closest('details.case').scrollIntoView({block:'start'});
+        }""")
+        shot("04_sweep_under_filter")
+
+        # the sweep section as a whole, then a single-case condition case
+        reset()
+        pg.evaluate("""() => {
+            document.querySelectorAll('#results details.case')[0].open = true;
+            window.scrollTo(0,0);
+        }""")
+        shot("05_sweep_section")
+        pg.evaluate("""() => {
+            page = 0; render();
+            const cards = [...document.querySelectorAll('#results details.case')]
+                .filter(d => /Condition Case/.test(
+                    (d.querySelector('.ctitle')||{}).textContent||""));
+            if (cards.length) { cards[0].open = true;
+                cards[0].scrollIntoView({block:'start'}); }
+        }""")
+        shot("06_single_case_section")
+
+        # per-case producer split, driven on a case given both kinds
+        pg.evaluate("""() => {
+            const cid = Object.keys(CASES).find(c => CASES[c].measurement_act_ids.length);
+            const sim = Object.keys(ACTS).find(a => ACTS[a].kind === "SIMULATION_RUN");
+            const ss = ACTS[sim].series_ids[0];
+            SERIES[ss].placement = "CASE_LOCAL"; SERIES[ss].placement_case_id = cid;
+            SERIES[ss].all_case_ids = [cid];
+            CASES[cid].simulation_run_ids = [sim];
+            CASES[cid].case_local_series_ids =
+                CASES[cid].case_local_series_ids.concat(ss);
+            let scope = null;
+            for (page = 0; page < 40 && !scope; page++) {
+                render();
+                document.querySelectorAll('#results details.case').forEach(d => {
+                    const t = d.querySelector('.ctitle');
+                    if (!scope && t && t.textContent.trim()
+                            === "Condition Case " + CASES[cid].case_id) {
+                        d.open = true; scope = d; }
+                });
+            }
+            if (scope) scope.scrollIntoView({block:'start'});
+        }""")
+        shot("07_per_case_producer_split")
 
         # a compatible two-series overlay
+        pg.goto(HTML.resolve().as_uri())
+        pg.wait_for_selector("#results .case", timeout=20000)
         pg.evaluate("""() => {
             const nat = k => (SERIES[k].y_representations||{}).native;
             for (const a of Object.keys(SERIES)) {
@@ -59,7 +121,7 @@ def main(outdir):
               }
             }
         }""")
-        shot("04_compatible_overlay")
+        shot("08_compatible_overlay")
 
         # an incompatible selection: the disabled state must explain itself
         pg.evaluate("""() => {
@@ -68,20 +130,17 @@ def main(outdir):
             const a = ids[0], b = ids.find(k => nat(k).target_id !== nat(a).target_id);
             tray.length=0; tray.push(a,b); TX=null; TY=null; render();
         }""")
-        shot("05_incompatible_disabled")
+        shot("09_incompatible_disabled")
 
-        # a multi-case sweep: one curve must read as one result
+        # a sweep in the tray: its conditions must read as varying, not as one case's
         pg.evaluate("""() => {
-            tray.length=0;
-            const id = Object.keys(SERIES).sort((x,y)=>SERIES[y].n_cases-SERIES[x].n_cases)[0];
-            for (page=0; page<40; page++) { render();
-                if (document.querySelector(`[data-ser="${id}"]`)) break; }
-            document.querySelectorAll('#results details.case').forEach(d=>d.open=true);
-            document.querySelectorAll('#results details.pv').forEach(d=>d.open=true);
-            const row = document.querySelector(`[data-ser="${id}"]`);
-            if (row) row.scrollIntoView({block:'center'});
+            const id = M.sweep_series_ids.slice()
+                        .sort((a,b)=>SERIES[b].n_cases-SERIES[a].n_cases)[0];
+            tray.length = 0; tray.push(id); TX=null; TY=null; render();
+            const c = document.querySelector('#conds');
+            if (c) c.scrollIntoView({block:'center'});
         }""")
-        shot("06_multi_case_expanded")
+        shot("10_sweep_condition_summary")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))

@@ -17,6 +17,7 @@ JavaScript are not evidence that a control works.
 Run:  python3 tests/test_workbench_v2.py
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -25,6 +26,31 @@ sys.path.insert(0, str(W))
 WB = W / "_diagnostics" / "workbench_v2"
 
 _pass, _fail = [], []
+
+
+def strip_comments(path):
+    """Source with comments removed and nothing else.
+
+    Python goes through tokenize. JavaScript/HTML gets block comments removed with
+    DOTALL and line comments removed WITHOUT it, because `//[^\n]*` is the whole point:
+    a line comment ends at the newline, and a pattern that does not say so deletes every
+    line after the first one it meets.
+    """
+    src = path.read_text()
+    if path.suffix == ".py":
+        import io
+        import tokenize
+        return "".join("" if t.type in (tokenize.COMMENT, tokenize.STRING) else t.string
+                       for t in tokenize.generate_tokens(io.StringIO(src).readline))
+    import re
+    src = re.sub(r"/\*.*?\*/", "", src, flags=re.S)       # block: dot must span lines
+    src = re.sub(r"//[^\n]*", "", src)                     # line: it must NOT
+    return src
+
+
+def _context(body, pat, span=60):
+    i = body.find(pat)
+    return "" if i < 0 else body[max(0, i - span):i + span].replace("\n", " ")
 
 
 def ok(name, cond, detail=""):
@@ -60,7 +86,7 @@ def main():
     multi = [s for s in SER.values() if s["n_cases"] > 1]
     ok("B: all 22 multi-case series present", len(multi) == 22, len(multi))
     ok("B: none was reduced to a single case",
-       all(len(s["case_ids"]) == s["n_cases"] and s["n_cases"] > 1 for s in multi))
+       all(len(s["all_case_ids"]) == s["n_cases"] and s["n_cases"] > 1 for s in multi))
     ok("B: single_case is null whenever there are several",
        all(s["single_case"] is None for s in multi))
     ok("B: and set only when there is exactly one",
@@ -69,24 +95,76 @@ def main():
        all(s["case_cardinality_status"] in ("SINGLE_CASE", "MULTI_CASE", "NO_CASE")
            for s in SER.values()))
     ok("B: every case id on a series resolves",
-       all(c in CASES for s in SER.values() for c in s["case_ids"]))
+       all(c in CASES for s in SER.values() for c in s["all_case_ids"]))
     ok("B: acts also keep multi-case membership",
        any(a["n_cases"] > 1 for a in ACTS.values()))
     ok("B: reverse edges exist (case -> series)",
-       all(any(s in CASES[c]["series_ids"] for c in SER[s]["case_ids"])
-           for s in list(SER)[:60] if SER[s]["case_ids"]))
+       all(any(s in CASES[c]["series_ids"] for c in SER[s]["all_case_ids"])
+           for s in list(SER)[:60] if SER[s]["all_case_ids"]))
 
     print("=== C. no first-case logic anywhere in the workbench code ===")
-    import io, re, tokenize
-    for f in (WB / "build_workbench_model.py", WB / "_workbench_v2_template.html"):
-        src = f.read_text()
-        if f.suffix == ".py":
-            body = "".join("" if t.type in (tokenize.COMMENT, tokenize.STRING) else t.string
-                           for t in tokenize.generate_tokens(io.StringIO(src).readline))
-        else:
-            body = re.sub(r"//.*|/\*.*?\*/", "", src, flags=re.S)
-        ok("C: %-32s has no case_ids[0]" % f.name, "case_ids[0]" not in body)
-        ok("C: %-32s has no next(iter(case" % f.name, "next(iter(case" not in body)
+    # The audit is only as good as its comment stripper. `//.*` with re.S is a
+    # single-line pattern given a multi-line dot: one `//` comment consumed the rest of
+    # the file, so the audit passed by having nothing left to look at.
+    for f in (WB / "build_workbench_model.py", WB / "_workbench_v2_template.html",
+              WB / "psed_scientific_comparison_workbench.html"):
+        body = strip_comments(f)
+        for pat in ("case_ids[0]", "case_ids.at(0)", "case_ids[ 0 ]",
+                    "next(iter(case", "all_case_ids[0]", "all_case_ids.at(0)"):
+            ok("C: %-38s has no %s" % (f.name, pat), pat not in body,
+               _context(body, pat))
+    # `cs[0]` is legitimate only where the code has just proved there is exactly one
+    # case. Rather than eyeball it, every zero-subscript of a case collection in the
+    # builder is required to sit inside an `if len(...) == 1` block.
+    import ast
+    tree = ast.parse((WB / "build_workbench_model.py").read_text())
+    guarded, unguarded = [], []
+
+    def zero_subscripts(node):
+        for n in ast.walk(node):
+            if not (isinstance(n, ast.Subscript) and isinstance(n.value, ast.Name)):
+                continue
+            sl = n.slice
+            sl = sl.value if isinstance(sl, getattr(ast, "Index", ())) else sl
+            if isinstance(sl, ast.Constant) and sl.value == 0:
+                yield n
+
+    def is_singleton_guard(test):
+        return (isinstance(test, ast.Compare) and len(test.ops) == 1
+                and isinstance(test.ops[0], ast.Eq)
+                and isinstance(test.left, ast.Call)
+                and getattr(test.left.func, "id", None) == "len"
+                and isinstance(test.comparators[0], ast.Constant)
+                and test.comparators[0].value == 1)
+
+    inside = set()
+    for n in ast.walk(tree):
+        if isinstance(n, ast.If) and is_singleton_guard(n.test):
+            for b in n.body:
+                inside.update(id(x) for x in zero_subscripts(b))
+    for n in zero_subscripts(tree):
+        name = "%s[0]" % n.value.id
+        if "case" in n.value.id or "cs" == n.value.id:
+            (guarded if id(n) in inside else unguarded).append(
+                "%s line %d" % (name, n.lineno))
+    ok("C: every case-collection [0] is singleton-guarded", not unguarded, unguarded)
+    ok("C: and the guarded ones are accounted for", len(guarded) == 2, guarded)
+
+    guard = strip_comments(WB / "_workbench_v2_template.html")
+    ok("C: the stripper keeps the code it is auditing",
+       "function rangeOk" in guard and "function render" in guard
+       and "commonTargets" in guard, len(guard))
+    # phrases that exist ONLY in comments -- "no primary Condition Case" is rendered
+    # text, so it is not evidence either way
+    ok("C: and it does remove comments",
+       "canonical, never raw" not in guard
+       and "invented a primacy" not in guard)
+    # a control: the broken pattern must demonstrably lose the file
+    import re as _re
+    raw = (WB / "_workbench_v2_template.html").read_text()
+    broken = _re.sub(r"//.*|/\*.*?\*/", "", raw, flags=_re.S)
+    ok("C: the previous stripper really did destroy the source",
+       len(broken) < len(guard) / 2, (len(broken), len(guard)))
 
     print("=== D. measurement acts, not per-curve measurements ===")
     mm = [a for a in ACTS.values() if a["n_members"] > 1]
@@ -184,7 +262,7 @@ def main():
            len(c2["realization"]["runs_observed"]) == 1,
            c2["realization"]["runs_observed"])
         acts2 = [a for a in ACTS.values() if k in a["case_ids"]]
-        ser2 = [s for s in SER.values() if k in s["case_ids"]]
+        ser2 = [s for s in SER.values() if k in s["all_case_ids"]]
         ok("J: 15 measurement acts", len(acts2) == 15, len(acts2))
         ok("J: 15 result series", len(ser2) == 15, len(ser2))
         ok("J: the 15 acts are distinct, not one act repeated",
@@ -209,6 +287,7 @@ def main():
     ok("L: model placeholder was substituted", "/*__MODEL__*/" not in html)
 
     hardening_tests(M, V, hp)
+    final_hardening_tests(M, V, hp)
     dom_tests(hp)
 
     print("\n%d passed, %d failed" % (len(_pass), len(_fail)))
@@ -272,19 +351,36 @@ def hardening_tests(M, V, hp):
     ok("N4: shape-only overlay stays an explicit opt-in",
        "shapeOnly ? !(p.physical_overlay_allowed || p.shape_only_eligible)" in js)
 
-    print("=== N5. one ResultSeries is one result entry ===")
+    print("=== N5. one ResultSeries is one result entry, owned by no case ===")
     ok("N5: multi-case series exist to be duplicated",
-       C["primary_result_entries_for_multi_case_series"] > 0)
-    ok("N5: each gets exactly one primary entry",
-       C["primary_result_entries_for_multi_case_series"] == C["multi_case_result_series"],
-       (C["primary_result_entries_for_multi_case_series"],
-        C["multi_case_result_series"]))
-    ok("N5: no series is listed twice", C["duplicate_primary_entries"] == 0)
-    ok("N5: the results column groups by primary case", "const byCase = {}, alsoIn = {}" in js)
-    ok("N5: other traversed cases cross-reference instead of repeating",
-       "Also traversed by" in js)
-    ok("N5: the multi-case span is expandable",
-       "Spans ${s.n_cases} Condition Cases" in js)
+       C["multi_case_result_series"] == 22, C["multi_case_result_series"])
+    ok("N5: each gets exactly one entry in the sweep section",
+       C["multi_case_primary_entries"] == C["multi_case_result_series"],
+       (C["multi_case_primary_entries"], C["multi_case_result_series"]))
+    ok("N5: no series is listed twice", C["duplicate_primary_entries"] == 0,
+       C["duplicate_primary_entries"])
+    ok("N5: no series is listed nowhere", C["result_series_without_primary_entry"] == 0,
+       C["result_series_without_primary_entry"])
+    ok("N5: every ResultSeries has exactly one entry",
+       C["primary_result_entries"] == C["result_series_searchable"] == 231,
+       (C["primary_result_entries"], C["result_series_searchable"]))
+    ok("N5: no multi-case series is anchored to a case",
+       C["multi_case_series_with_primary_case"] == 0,
+       C["multi_case_series_with_primary_case"])
+    ok("N5: the three populations partition the corpus",
+       C["case_local_series"] + C["sweep_series"] + C["no_case_series"] == 231,
+       (C["case_local_series"], C["sweep_series"], C["no_case_series"]))
+    ok("N5: the model decides placement, not the page",
+       all(x["placement"] in ("CASE_LOCAL", "MULTI_CASE_SWEEP", "NO_CASE")
+           for x in SER.values()))
+    ok("N5: only a single-case series carries a placement case",
+       all((x["placement_case_id"] is None) == (x["n_cases"] != 1)
+           for x in SER.values()))
+    ok("N5: the page renders a dedicated sweep section",
+       "Multi-case / sweep results" in js)
+    ok("N5: cases reference sweeps instead of repeating them",
+       "Related sweep results" in js and "Also traversed by" in js)
+    ok("N5: the sweep entry states its span", "spans ${s.all_case_ids.length} cases" in js)
 
     print("=== N6. range filtering compares canonical magnitudes ===")
     ok("N6: rangeOk reads the canonical value", "v.canonical" in js)
@@ -310,6 +406,209 @@ def hardening_tests(M, V, hp):
     ok("N7: no simulation run is inside the measurement act count",
        C["measurement_acts"] == len([a for a in ACTS if a not in sim_acts]),
        (C["measurement_acts"], len(ACTS), len(sim_acts)))
+
+
+def final_hardening_tests(M, V, hp):
+    """The five defects the original-code review found after the first hardening."""
+    SER, C, js = M["series"], V["counts"], hp.read_text()
+    NUM, RF = M["numeric_conditions"], M["range_fields"]
+
+    print("=== N8. a numeric range field keeps its species ===")
+    ok("N8: the corpus really does qualify the same quantity by species",
+       C["base_quantities_with_several_species"] > 0
+       and C["cases_with_multiple_species_for_same_base_quantity"] > 0,
+       (C["base_quantities_with_several_species"],
+        C["cases_with_multiple_species_for_same_base_quantity"]))
+    ok("N8: qualified range fields are offered", C["qualified_numeric_range_fields"] > 0,
+       C["qualified_numeric_range_fields"])
+    ok("N8: no offered field lost its qualifier",
+       C["qualified_range_fields_losing_qualifier"] == 0)
+    by_q = {}
+    for f in RF:
+        by_q.setdefault(f["quantity_id"], []).append(f)
+    split = {q: fs for q, fs in by_q.items() if len(fs) > 1}
+    ok("N8: at least one quantity is split into several species facets", bool(split),
+       {q: [f["field_id"] for f in fs] for q, fs in split.items()})
+    ok("N8: every field id encodes exactly its own species",
+       all(f["field_id"] == (f["quantity_id"] + "@" + f["species_or_role"]
+                             if f["species_or_role"] else f["quantity_id"]) for f in RF))
+    ok("N8: each field carries its species as data, not inside a string",
+       all("species_or_role" in f and "quantity_id" in f for f in RF))
+    ok("N8: no two offered fields share a display label",
+       len({f["display_label"] for f in RF}) == len(RF),
+       [f["display_label"] for f in RF])
+    ok("N8: an unqualified field beside qualified siblings says so",
+       all(f["species_or_role"] or "unattributed" in f["display_label"]
+           for f in RF if f.get("has_qualified_siblings")),
+       [f["display_label"] for f in RF if f.get("has_qualified_siblings")])
+    # the browser must address one key, never the first key that starts with the name
+    ok("N8: the page addresses the exact condition key",
+       "hasOwnProperty.call(vals, fieldId)" in js)
+    ok("N8: the prefix/first-match lookup is gone",
+       'k.indexOf(r.id+"@")===0' not in js and 'k.indexOf(r.id + "@") === 0' not in js)
+    ok("N8: no offered field can reach more than one key",
+       C["ambiguous_first_match_range_lookups"] == 0)
+    ok("N8: and the old prefix rule demonstrably could",
+       C["prefix_match_ambiguous_lookups_avoided"] > 0,
+       C["prefix_match_ambiguous_lookups_avoided"])
+    # the builder must not re-derive the species by splitting the key
+    body = strip_comments(WB / "build_workbench_model.py")
+    ok("N8: the builder never splits a condition key to get its quantity",
+       'split("@")' not in body, _context(body, 'split("@")'))
+    ok("N8: nor does the page", 'split("@")' not in strip_comments(
+        WB / "_workbench_v2_template.html"))
+    # role-prefixed composites survive intact
+    comp = [f for f in RF if f["quantity_id"].startswith(("precursor_", "coreactant_"))]
+    ok("N8: role-prefixed composite quantities are preserved whole", bool(comp),
+       [f["field_id"] for f in comp])
+    ok("N8: exactly the 10 qualified fields this corpus supports are offered",
+       C["qualified_numeric_range_fields"] == 10, C["qualified_numeric_range_fields"])
+    for want in ("precursor_pulse_time@TMA", "coreactant_pulse_time@H2O",
+                 "pulse_time@H2O", "pulse_time@TMA"):
+        ok("N8: %-30s is its own facet" % want,
+           want in {f["field_id"] for f in RF})
+    ok("N8: the ambiguity it prevents is real, not hypothetical",
+       C["cases_with_multiple_species_for_same_base_quantity"] == 42
+       and C["base_quantities_with_several_species"] == 3,
+       (C["cases_with_multiple_species_for_same_base_quantity"],
+        C["base_quantities_with_several_species"]))
+    ok("N8: the model stores species as a field, so nothing has to parse it back out",
+       all("species" in e and "quantity" in e
+           for fields in NUM.values() for arr in fields.values() for e in arr))
+
+    print("=== N9. per-case producers are partitioned by entity kind ===")
+    cases = M["cases"]
+    ok("N9: every case carries both producer lists",
+       all("measurement_act_ids" in c and "simulation_run_ids" in c
+           for c in cases.values()))
+    acts = M["acts"]
+    ok("N9: no SimulationRun appears in a case's measurement list",
+       all(acts[a]["kind"] == "MEASUREMENT"
+           for c in cases.values() for a in c["measurement_act_ids"]))
+    ok("N9: no MeasurementAct appears in a case's simulation list",
+       all(acts[a]["kind"] == "SIMULATION_RUN"
+           for c in cases.values() for a in c["simulation_run_ids"]))
+    ok("N9: the page has separate headings", "<h3>Measurements</h3>" in js
+       and "<h3>Simulations</h3>" in js)
+    ok("N9: the old conflating heading is gone",
+       "Measurement acts with matching results" not in js)
+    ok("N9: producer kind comes from the act, never from the series label",
+       'a.kind==="SIMULATION_RUN"' in js or 'a && a.kind === "SIMULATION_RUN"' in js)
+    # the corpus fact this rests on, reported rather than assumed
+    simseries = [x for x in SER.values() if acts[x["act_id"]]["kind"] == "SIMULATION_RUN"]
+    ok("N9: this corpus links no SimulationRun to a Condition Case (reported, not hidden)",
+       C["cases_with_both_producer_kinds"] == 0
+       and all(x["n_cases"] == 0 for x in simseries), len(simseries))
+    xps = [a for a in acts.values() if a["kind"] == "MEASUREMENT"
+           and any(SER[x]["data_source"] == "simulated" for x in a["series_ids"])]
+    ok("N9: the six MeasurementActs producing 'simulated' series are left alone",
+       len(xps) == 6, len(xps))
+    ok("N9: and simulated-labelled series still exist under MeasurementActs", bool(xps))
+
+    print("=== N10. validation metrics are calculated, not asserted ===")
+    src = strip_comments(WB / "build_workbench_model.py")
+    for metric in ("false_common_native_targets", "incompatible_plotted_pair_violations",
+                   "multi_series_target_violations", "duplicate_primary_entries",
+                   "multi_case_series_with_primary_case",
+                   "qualified_range_fields_losing_qualifier",
+                   "ambiguous_first_match_range_lookups"):
+        ok('N10: %-42s is not a literal' % metric,
+           ('c["%s"] = 0' % metric) not in src and ("'%s'] = 0" % metric) not in src,
+           _context(src, metric))
+        ok('N10: %-42s = 0' % metric, C[metric] == 0, C[metric])
+    ok("N10: the pair sweep actually inspected pairs",
+       C["pairs_offered_a_physical_overlay"] > 0, C["pairs_offered_a_physical_overlay"])
+    ok("N10: the 3+ series check inspected real sets",
+       C["multi_series_target_sets_checked"] > 100,
+       C["multi_series_target_sets_checked"])
+    ok("N10: the key-based rule would have produced false commons (the check has teeth)",
+       C["key_based_false_common_targets"] > 0, C["key_based_false_common_targets"])
+    for gate in ("no_false_common_targets", "no_incompatible_plotted_pairs",
+                 "no_multi_series_target_violations", "no_duplicate_primary_entries",
+                 "every_series_has_one_primary_entry",
+                 "no_multi_case_series_has_a_primary_case",
+                 "no_range_field_loses_its_qualifier", "no_ambiguous_range_lookups"):
+        ok("N10: %-44s is a build gate" % gate, V["invariants"][gate] is True,
+           V["invariants"].get(gate))
+    # The gate is proven by breaking it. A string saying the build returns non-zero is
+    # not evidence that a violation would be caught.
+    import copy
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "wbbuild", WB / "build_workbench_model.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    ok("N10: the real model passes its own gate",
+       mod.validate(M, {})["invariants_ok"] is True)
+    hurt = copy.deepcopy(M)
+    sweep = hurt["sweep_series_ids"][0]
+    hurt["series"][sweep]["placement_case_id"] = hurt["series"][sweep]["all_case_ids"][0]
+    b1 = mod.validate(hurt, {})
+    ok("N10: anchoring one sweep to a case is counted",
+       b1["counts"]["multi_case_series_with_primary_case"] == 1,
+       b1["counts"]["multi_case_series_with_primary_case"])
+    ok("N10: and that fails the build", b1["invariants_ok"] is False
+       and b1["invariants"]["no_multi_case_series_has_a_primary_case"] is False)
+    hurt2 = copy.deepcopy(M)
+    cid = next(c for c, v in hurt2["cases"].items() if v["case_local_series_ids"])
+    hurt2["cases"][cid]["case_local_series_ids"] *= 2
+    b2 = mod.validate(hurt2, {})
+    ok("N10: a duplicated result entry is counted",
+       b2["counts"]["duplicate_primary_entries"] > 0,
+       b2["counts"]["duplicate_primary_entries"])
+    ok("N10: and that fails the build", b2["invariants_ok"] is False
+       and b2["invariants"]["no_duplicate_primary_entries"] is False)
+    hurt3 = copy.deepcopy(M)
+    fld = next(x for x in hurt3["range_fields"] if x["species_or_role"])
+    fld["field_id"] = fld["quantity_id"]           # exactly the stripping defect
+    b3 = mod.validate(hurt3, {})
+    ok("N10: a range field that loses its species is counted",
+       b3["counts"]["qualified_range_fields_losing_qualifier"] == 1,
+       b3["counts"]["qualified_range_fields_losing_qualifier"])
+    ok("N10: and that fails the build", b3["invariants_ok"] is False
+       and b3["invariants"]["no_range_field_loses_its_qualifier"] is False)
+    ok("N10: the exhaustive sweeps really are exhaustive",
+       C["pairs_offered_a_physical_overlay"] == 819
+       and C["multi_series_target_sets_checked"] == 25622
+       and C["key_based_false_common_targets"] == 1784,
+       (C["pairs_offered_a_physical_overlay"],
+        C["multi_series_target_sets_checked"],
+        C["key_based_false_common_targets"]))
+
+    print("=== N11. a sweep's conditions are summarised, never taken from one case ===")
+    ok("N11: the page has a deterministic across-cases summariser",
+       "function condAcross" in js)
+    ok("N11: it reports variation instead of a value", '"varies"' in js)
+    ok("N11: the condition table uses it", "condAcross(c.cases, q)" in js)
+    varying = None
+    for x in SER.values():
+        if x["n_cases"] < 2:
+            continue
+        vals = set()
+        for cid in x["all_case_ids"]:
+            for cond in M["cases"][cid]["conditions"]:
+                if cond["quantity"] == "deposition_temperature":
+                    vals.add(str(cond["value"]))
+        if len(vals) > 1:
+            varying = (x["id"], sorted(vals))
+            break
+    ok("N11: a real sweep with a varying temperature exists to test against",
+       varying is not None, varying)
+
+    print("=== N12. matching cases are distinguished from traversed cases ===")
+    ok("N12: the page computes which cases match", "function matchingCases" in js)
+    ok("N12: from the case itself, not from the series that reached it",
+       "function caseMatchesFilters" in js)
+    ok("N12: a case reached only by a sweep is labelled", "traversed only" in js)
+    ok("N12: point-to-case mapping stays unresolved",
+       "Point-to-case mapping is" in js)
+    ok("N12: no series carries an owning case unless it has exactly one",
+       all((x["placement_case_id"] is None) == (x["n_cases"] != 1)
+           for x in SER.values()))
+    ok("N12: the three populations partition the corpus",
+       C["case_local_series"] + C["sweep_series"] + C["no_case_series"]
+       == C["result_series_searchable"] == 231,
+       (C["case_local_series"], C["sweep_series"], C["no_case_series"]))
 
 
 def dom_tests(hp):
@@ -454,7 +753,7 @@ def dom_tests(hp):
         mres = pg.evaluate("""() => {
             const id = Object.keys(SERIES).find(k => SERIES[k].n_cases > 1);
             tray.length = 0; tray.push(id); render();
-            return {n: SERIES[id].n_cases, cases: SERIES[id].case_ids.length};
+            return {n: SERIES[id].n_cases, cases: SERIES[id].all_case_ids.length};
         }""")
         ok("M: a multi-case series keeps every case in the model",
            mres["n"] == mres["cases"] and mres["n"] > 1, mres)
@@ -465,6 +764,7 @@ def dom_tests(hp):
         ok("M: no console errors accumulated during interaction", not errors, errors[:2])
 
         hardening_dom(pg, errors)
+        final_hardening_dom(pg, errors)
         b.close()
 
 
@@ -530,33 +830,43 @@ def hardening_dom(pg, errors):
         ok("O: tooltips are stated in the target unit",
            all(good["unit"] in t for t in good["tips"]), good["tips"][:1])
 
-    # --- B: one multi-case curve is one entry
+    # --- B: one multi-case curve is one entry, found through the sweep section
     multi = pg.evaluate("""() => {
         tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
         RANGES.forEach(r => range[r.id] = {min:"",max:""});
-        const id = Object.keys(SERIES).sort((x,y)=>SERIES[y].n_cases-SERIES[x].n_cases)[0];
-        if (SERIES[id].n_cases < 2) return null;
-        // page to wherever its primary case is listed
-        const home = SERIES[id].case_ids[0];
-        for (page = 0; page < 40; page++) {
-            render();
-            if (document.querySelector(`[data-ser="${id}"]`)) break;
-        }
+        page = 0; render();
+        // located by its own id in the dedicated sweep section -- never by paging to
+        // "its" case, which is the very primacy this repair removed
+        const id = M.sweep_series_ids.slice()
+                    .sort((x,y)=>SERIES[y].n_cases-SERIES[x].n_cases)[0];
+        if (!id) return null;
         document.querySelectorAll('#results details.case').forEach(d => d.open = true);
         const rows = document.querySelectorAll(`[data-ser="${id}"]`).length;
-        return {id, n: SERIES[id].n_cases, rows, home,
-                spans: document.body.innerHTML.indexOf('Spans ' + SERIES[id].n_cases
-                       + ' Condition Cases') >= 0,
-                xref: document.body.innerHTML.indexOf('Also traversed by') >= 0};
+        const html = document.body.innerHTML;
+        return {id, n: SERIES[id].n_cases, rows,
+                placement: SERIES[id].placement,
+                anchored: SERIES[id].placement_case_id,
+                listed_cases: (html.match(new RegExp(
+                    SERIES[id].all_case_ids.map(c=>CASES[c].case_id)
+                      .filter((v,i,a)=>a.indexOf(v)===i)[0], "g"))||[]).length,
+                spans: html.indexOf('spans ' + SERIES[id].n_cases + ' cases') >= 0,
+                sweep_section: html.indexOf('Multi-case / sweep results') >= 0,
+                xref: html.indexOf('Related sweep results') >= 0,
+                no_primary: !/primary case|home case/i.test(html)};
     }""")
     if not multi:
         ok("O: a multi-case series exists", False, "none")
     else:
         ok("O: a %d-case curve is listed exactly once" % multi["n"],
            multi["rows"] == 1, multi)
-        ok("O: its full case span is offered as an expandable list", multi["spans"], multi)
+        ok("O: it lives in the dedicated sweep section", multi["sweep_section"], multi)
+        ok("O: the model gives it no owning case",
+           multi["placement"] == "MULTI_CASE_SWEEP" and multi["anchored"] is None, multi)
+        ok("O: its entry states the span", multi["spans"], multi)
         ok("O: the cases it traverses cross-reference it instead of repeating it",
            multi["xref"], multi)
+        ok("O: no 'primary case' or 'home case' label appears anywhere",
+           multi["no_primary"], multi)
 
     # --- C: the range filter compares canonical magnitudes
     rf = pg.evaluate("""() => {
@@ -626,6 +936,246 @@ def hardening_dom(pg, errors):
         ok("O: filtering to simulated results does surface simulation runs",
            part["sims"] > 0, part)
     ok("O: no console errors during the hardening interactions", not errors, errors[:2])
+
+
+
+
+def final_hardening_dom(pg, errors):
+    """Browser evidence for the final repairs, driven on the real page."""
+    print("=== Q. browser evidence for the final hardening ===")
+
+    def reset():
+        pg.evaluate("""() => {
+            tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+            RANGES.forEach(r => range[r.id] = {min:"",max:""});
+            profileOnly = false; page = 0; render();
+        }""")
+
+    # --- species-qualified ranges on the REAL corpus -------------------------------
+    reset()
+    real = pg.evaluate("""() => {
+        const tma = RANGES.find(r => r.field_id === "precursor_pulse_time@TMA");
+        const h2o = RANGES.find(r => r.field_id === "coreactant_pulse_time@H2O");
+        if (!tma || !h2o) return null;
+        const labels = [...document.querySelectorAll('#facets .facet')]
+            .map(n => n.innerText).filter(t => /pulse time/i.test(t));
+        return {tma: tma.display_label, h2o: h2o.display_label,
+                distinct: tma.display_label !== h2o.display_label,
+                shown: labels.join(" | "),
+                generic: labels.filter(t => /^Pulse time\s*\[/.test(t.trim())).length};
+    }""")
+    if not real:
+        ok("Q: the corpus offers qualified pulse-time facets", False, "absent")
+    else:
+        ok("Q: TMA and H2O pulse time are separate, differently labelled facets",
+           real["distinct"], (real["tma"], real["h2o"]))
+        ok("Q: the sidebar shows them both to the user",
+           "TMA" in real["shown"] and "H2O" in real["shown"], real["shown"][:160])
+        ok("Q: no bare ambiguous 'Pulse time' box is offered", real["generic"] == 0,
+           real["shown"][:160])
+
+    # --- and on a controlled fixture where the two species differ -------------------
+    fixture = pg.evaluate("""() => {
+        // a case carrying deliberately different values for the two species, plus a
+        // second one written in ms, so unit conversion and species must both hold
+        const cid = "__fixture_case__", cid2 = "__fixture_case_ms__";
+        NUM[cid]  = {"pulse_time@TMA": [{raw:0.1, unit:"s",  canonical:0.1,
+                                         quantity:"pulse_time", species:"TMA"}],
+                     "pulse_time@H2O": [{raw:2,   unit:"s",  canonical:2,
+                                         quantity:"pulse_time", species:"H2O"}]};
+        NUM[cid2] = {"pulse_time@TMA": [{raw:500, unit:"ms", canonical:0.5,
+                                         quantity:"pulse_time", species:"TMA"}],
+                     "pulse_time@H2O": [{raw:2,   unit:"s",  canonical:2,
+                                         quantity:"pulse_time", species:"H2O"}]};
+        const band = (fid, lo, hi, c) => {
+            const r = RANGES.find(x => x.field_id === fid);
+            if (!r) return null;
+            const keep = range[r.id];
+            range[r.id] = {min:String(lo), max:String(hi)};
+            const hit = caseMatchesFilters(c);
+            range[r.id] = keep;
+            return hit;
+        };
+        const out = {
+            tma_narrow_on_tma: band("pulse_time@TMA", 0.05, 0.2, cid),
+            h2o_narrow_on_h2o: band("pulse_time@H2O", 0.05, 0.2, cid),
+            tma_wide_on_tma:   band("pulse_time@TMA", 1.5, 2.5, cid),
+            h2o_wide_on_h2o:   band("pulse_time@H2O", 1.5, 2.5, cid),
+            ms_tma_half:       band("pulse_time@TMA", 0.45, 0.55, cid2),
+            ms_h2o_half:       band("pulse_time@H2O", 0.45, 0.55, cid2),
+            ms_tma_two:        band("pulse_time@TMA", 1.5, 2.5, cid2),
+        };
+        delete NUM[cid]; delete NUM[cid2];
+        return out;
+    }""")
+    if fixture is None or fixture.get("tma_narrow_on_tma") is None:
+        ok("Q: a qualified pulse-time facet exists to drive", False, fixture)
+    else:
+        ok("Q: TMA 0.05-0.2 s matches the case whose TMA pulse is 0.1 s",
+           fixture["tma_narrow_on_tma"] is True, fixture)
+        ok("Q: H2O 0.05-0.2 s does NOT, because its H2O pulse is 2 s",
+           fixture["h2o_narrow_on_h2o"] is False, fixture)
+        ok("Q: H2O 1.5-2.5 s matches", fixture["h2o_wide_on_h2o"] is True, fixture)
+        ok("Q: TMA 1.5-2.5 s does not", fixture["tma_wide_on_tma"] is False, fixture)
+        ok("Q: 500 ms is found by a TMA band around 0.5 s (canonical, not raw)",
+           fixture["ms_tma_half"] is True, fixture)
+        ok("Q: and that band does not reach the H2O value",
+           fixture["ms_h2o_half"] is False, fixture)
+        ok("Q: nor does a TMA band around 2 s pick up the H2O 2 s value",
+           fixture["ms_tma_two"] is False, fixture)
+
+    # --- a sweep under a filter that only part of its span satisfies ---------------
+    reset()
+    sweep = pg.evaluate("""() => {
+        const id = M.sweep_series_ids.slice()
+                    .sort((a,b)=>SERIES[b].n_cases-SERIES[a].n_cases)[0];
+        const r = RANGES.find(x => x.field_id === "deposition_temperature");
+        if (!id || !r) return null;
+        range[r.id] = {min:"500", max:""};            // K: only the hotter half matches
+        page = 0; render();
+        document.querySelectorAll('#results details.case').forEach(d => d.open = true);
+        const s = SERIES[id], mc = matchingCases(s);
+        const card = document.querySelector(`[data-ser="${id}"]`);
+        const scope = card ? card.closest('details.case') : null;
+        const txt = scope ? scope.innerText : "";
+        const rows = document.querySelectorAll(`[data-ser="${id}"]`).length;
+        const shownMatch = (txt.match(/matches/g)||[]).length;
+        const shownTrav  = (txt.match(/traversed only/g)||[]).length;
+        range[r.id] = {min:"", max:""}; page = 0; render();
+        return {id, all: s.all_case_ids.length, matching: mc.length, rows,
+                shownMatch, shownTrav, anchored: s.placement_case_id,
+                header: document.querySelector('#results h2').textContent,
+                names_a_primary: /primary case|home case/i.test(txt)};
+    }""")
+    if not sweep:
+        ok("Q: a sweep and a temperature range exist to drive", False, sweep)
+    else:
+        ok("Q: only part of the sweep's span satisfies the filter",
+           0 < sweep["matching"] < sweep["all"], sweep)
+        ok("Q: the sweep is still one entry", sweep["rows"] == 1, sweep)
+        ok("Q: every traversed case is listed", sweep["shownMatch"]
+           + sweep["shownTrav"] == sweep["all"], sweep)
+        ok("Q: matching cases are marked as matching",
+           sweep["shownMatch"] == sweep["matching"], sweep)
+        ok("Q: non-matching cases are marked traversed only, not presented as matches",
+           sweep["shownTrav"] == sweep["all"] - sweep["matching"], sweep)
+        ok("Q: and no case owns the sweep",
+           sweep["anchored"] is None and not sweep["names_a_primary"], sweep)
+
+    # --- a sweep's conditions are summarised, not taken from one case ---------------
+    reset()
+    summary = pg.evaluate("""() => {
+        const id = M.sweep_series_ids.slice()
+                    .sort((a,b)=>SERIES[b].n_cases-SERIES[a].n_cases)[0];
+        tray.length = 0; tray.push(id); render();
+        const s = SERIES[id];
+        const first = (CASES[s.all_case_ids[0]].conditions
+                       .find(c => c.quantity === "deposition_temperature")||{});
+        const cell = condAcross(s.all_case_ids, "deposition_temperature");
+        const txt = document.querySelector('#conds').innerText;
+        return {kind: cell.kind, text: cell.text, n: cell.values.length,
+                first: `${first.value} ${first.unit||""}`.trim(),
+                shows_varies: /varies/.test(txt),
+                shows_only_first: txt.indexOf(`${first.value} ${first.unit||""}`.trim()) >= 0
+                                  && !/varies/.test(txt)};
+    }""")
+    if not summary:
+        ok("Q: a sweep can be put in the tray", False, summary)
+    else:
+        ok("Q: a condition differing across the span is reported as varying",
+           summary["kind"] == "varies" and summary["n"] > 1, summary)
+        ok("Q: the comparison table says so", summary["shows_varies"], summary)
+        ok("Q: it does not report the first case's value as the sweep's",
+           not summary["shows_only_first"], summary)
+
+    # --- producer partition: no real case mixes the two kinds, so drive a fixture ---
+    reset()
+    mixed = pg.evaluate("""() => {
+        // This corpus links no SimulationRun to a Condition Case, so the partition is
+        // exercised by adding one to a real case's producer lists and re-rendering the
+        // real code path. Nothing is asserted about the corpus by doing so.
+        const cid = Object.keys(CASES).find(c => CASES[c].measurement_act_ids.length);
+        const sim = Object.keys(ACTS).find(a => ACTS[a].kind === "SIMULATION_RUN");
+        if (!cid || !sim) return null;
+        const simSeries = ACTS[sim].series_ids[0];
+        const keepPlace = SERIES[simSeries].placement;
+        const keepCase = SERIES[simSeries].placement_case_id;
+        const keepCases = SERIES[simSeries].all_case_ids;
+        SERIES[simSeries].placement = "CASE_LOCAL";
+        SERIES[simSeries].placement_case_id = cid;
+        SERIES[simSeries].all_case_ids = [cid];
+        CASES[cid].simulation_run_ids = [sim];
+        CASES[cid].case_local_series_ids = CASES[cid].case_local_series_ids.concat(simSeries);
+        let scope = null;
+        for (page = 0; page < 40 && !scope; page++) {
+            render();
+            document.querySelectorAll('#results details.case').forEach(d => {
+                d.open = true;
+                // sweep cards are details.case too and list case ids in their table,
+                // so the condition case is identified by its own title
+                const t = d.querySelector('.ctitle');
+                if (!scope && t && t.textContent.trim()
+                        === "Condition Case " + CASES[cid].case_id) scope = d;
+            });
+        }
+        const txt = scope ? scope.innerText : "";
+        const html = scope ? scope.innerHTML : "";
+        const iMeas = html.indexOf("<h3>Measurements</h3>");
+        const iSim = html.indexOf("<h3>Simulations</h3>");
+        const iCard = html.indexOf(sim);
+        const out = {
+            has_meas_heading: iMeas >= 0, has_sim_heading: iSim >= 0,
+            sim_after_sim_heading: iCard > iSim && iSim > 0,
+            sim_not_under_measurements: !(iCard > iMeas && iCard < iSim),
+            counts: (txt.match(/\d+ measurement acts?/)||[""])[0]
+                    + " / " + (txt.match(/\d+ simulation runs?/)||[""])[0],
+            old_heading: html.indexOf("Measurement acts with matching results") >= 0};
+        // put the model back exactly as it was
+        CASES[cid].simulation_run_ids = [];
+        CASES[cid].case_local_series_ids =
+            CASES[cid].case_local_series_ids.filter(x => x !== simSeries);
+        SERIES[simSeries].placement = keepPlace;
+        SERIES[simSeries].placement_case_id = keepCase;
+        SERIES[simSeries].all_case_ids = keepCases;
+        page = 0; render();
+        return out;
+    }""")
+    if not mixed:
+        ok("Q: a case and a simulation run exist to combine", False, mixed)
+    else:
+        ok("Q: a case holding both kinds renders a Measurements heading",
+           mixed["has_meas_heading"], mixed)
+        ok("Q: and a separate Simulations heading", mixed["has_sim_heading"], mixed)
+        ok("Q: the SimulationRun card sits under Simulations",
+           mixed["sim_after_sim_heading"], mixed)
+        ok("Q: and never under Measurements", mixed["sim_not_under_measurements"], mixed)
+        ok("Q: the two counts are reported separately",
+           "measurement act" in mixed["counts"] and "simulation run" in mixed["counts"],
+           mixed["counts"])
+        ok("Q: the old conflating heading is gone", not mixed["old_heading"], mixed)
+
+    # --- tray persistence for a multi-case series ----------------------------------
+    reset()
+    persist = pg.evaluate("""() => {
+        const id = M.sweep_series_ids[0];
+        tray.length = 0; tray.push(id); render();
+        const before = document.querySelector('#tray').innerText;
+        const f = Object.keys(FACETS)[0];
+        active[f].add(Object.keys(FACETS[f])[0]); page = 0; render();
+        const after = document.querySelector('#tray').innerText;
+        active[f].clear(); page = 0; render();
+        return {kept: after.indexOf(SERIES[id].paper_id.slice(0,22)) >= 0,
+                spans: /spans \d+ condition cases/i.test(before),
+                names_case: /primary case|home case/i.test(before)};
+    }""")
+    ok("Q: a multi-case series stays in the tray across a filter change",
+       persist["kept"], persist)
+    ok("Q: its tray card states the span", persist["spans"], persist)
+    ok("Q: and never names an owning case", not persist["names_case"], persist)
+
+    reset()
+    ok("Q: no console errors during the final-hardening interactions",
+       not errors, errors[:2])
 
 
 if __name__ == "__main__":

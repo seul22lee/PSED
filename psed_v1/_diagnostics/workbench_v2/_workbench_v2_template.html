@@ -182,29 +182,56 @@ function facetsOk(s, skip) {
   }
   return true;
 }
-function rangeOk(s, skip) {
-  for (const r of RANGES) {
-    if (r.id === skip) continue;
-    const q = range[r.id];
-    if (!q.min && !q.max) continue;
-    // a result inherits process context through its Condition Cases
-    const ok = (s.case_ids||[]).some(cid => {
-      const vals = (NUM[cid]||{});
-      const key = Object.keys(vals).find(k => k === r.id || k.indexOf(r.id+"@")===0);
-      if (!key) return false;
-      return vals[key].some(v => {
-        // canonical, never raw: 500 ms and 0.5 s must land in the same place, and two
-        // raw numbers in different units are not comparable magnitudes
-        const n = (v.canonical !== null && v.canonical !== undefined) ? v.canonical : null;
-        if (n === null || !isFinite(n)) return false;
-        if (q.min !== "" && n < parseFloat(q.min)) return false;
-        if (q.max !== "" && n > parseFloat(q.max)) return false;
-        return true;
-      });
-    });
-    if (!ok) return false;
+// A range field addresses ONE condition key. `pulse_time` and `pulse_time@TMA` are two
+// quantities; the old lookup took the first key that started with the field name, so a
+// TMA box could silently filter on the H2O value depending on key order.
+function numericValues(cid, fieldId) {
+  const vals = NUM[cid];
+  return (vals && Object.prototype.hasOwnProperty.call(vals, fieldId))
+    ? vals[fieldId] : null;
+}
+function inBand(entries, q) {
+  if (!entries) return false;
+  return entries.some(v => {
+    // canonical, never raw: 500 ms and 0.5 s must land in the same place, and two
+    // raw numbers in different units are not comparable magnitudes
+    const n = (v.canonical !== null && v.canonical !== undefined) ? v.canonical : null;
+    if (n === null || !isFinite(n)) return false;
+    if (q.min !== "" && n < parseFloat(q.min)) return false;
+    if (q.max !== "" && n > parseFloat(q.max)) return false;
+    return true;
+  });
+}
+function activeRanges(skip) {
+  return RANGES.filter(r => r.id !== skip &&
+    (range[r.id].min !== "" || range[r.id].max !== ""));
+}
+// Does this Condition Case itself satisfy the case-scoped filters? A sweep may match
+// because ONE of the cases it traverses does; that does not make the others matches.
+function caseMatchesFilters(cid, skipFacet, skipRange) {
+  for (const f of FDEF) {
+    if (f.scope !== "Condition Case" || f.id === skipFacet) continue;
+    const a = active[f.id];
+    if (!a.size) continue;
+    const opts = FACETS[f.id] || {};
+    let hit = false;
+    for (const v of a) { const e = opts[v]; if (e && e.cases.indexOf(cid) >= 0) { hit = true; break; } }
+    if (!hit) return false;
+  }
+  for (const r of activeRanges(skipRange)) {
+    if (!inBand(numericValues(cid, r.field_id), range[r.id])) return false;
   }
   return true;
+}
+function matchingCases(s, skipFacet, skipRange) {
+  return (s.all_case_ids || []).filter(cid => caseMatchesFilters(cid, skipFacet, skipRange));
+}
+function rangeOk(s, skip) {
+  const rs = activeRanges(skip);
+  if (!rs.length) return true;
+  // a result inherits process context through the Condition Cases it traverses
+  return (s.all_case_ids || []).some(cid => rs.every(r =>
+    inBand(numericValues(cid, r.field_id), range[r.id])));
 }
 function facetOptions(fid) {
   const base = new Set(seriesMatching(fid));
@@ -213,7 +240,7 @@ function facetOptions(fid) {
   for (const v in opts) {
     const ser = opts[v].series.filter(x => base.has(x));
     if (!ser.length) continue;
-    const cs = new Set(); ser.forEach(x => (SERIES[x].case_ids||[]).forEach(c=>cs.add(c)));
+    const cs = new Set(); ser.forEach(x => (SERIES[x].all_case_ids||[]).forEach(c=>cs.add(c)));
     out.push({v, cases: cs.size, series: ser.length});
   }
   return out.sort((a,b)=> b.cases-a.cases || a.v.localeCompare(b.v));
@@ -255,7 +282,7 @@ function drawFacets() {
   });
   RANGES.forEach(r => {
     const d = el("div","facet",
-      `<div style="font-size:11px;color:var(--mut)">${esc(r.label)}
+      `<div style="font-size:11px;color:var(--mut)">${esc(r.display_label)}
          <span class="dim">[${esc(r.canonical_unit)}]</span></div>
        <div class="dim" style="font-size:9.5px">canonical magnitude${
          r.raw_units.length?" · reported as "+r.raw_units.map(esc).join(", "):""}</div>
@@ -322,71 +349,68 @@ function openFacet(fid, anchor) {
 function render() {
   drawFacets();
   const matched = new Set(seriesMatching());
-  // A sweep ResultSeries belongs to every case it traverses, but it is ONE curve. Listing
-  // it under each case made one series read as several results. It is listed once, under
-  // its lowest-id case, and every other case it spans carries a cross-reference instead.
-  const byCase = {}, alsoIn = {};
+  // Three populations, because they are three different scientific situations. A
+  // single-case result belongs inside its case. A multi-case sweep belongs to no case in
+  // particular -- listing it under each case made one curve read as ten results, and
+  // anchoring it to the lowest case id invented a primacy the data does not carry. A
+  // series with no case link has no process context at all.
+  const caseLocal = {}, sweeps = [], nocase = [];
   matched.forEach(sid => {
-    const cs = SERIES[sid].case_ids;
-    const home = cs.length ? cs[0] : "__nocase__";
-    (byCase[home] = byCase[home] || []).push(sid);
-    cs.slice(1).forEach(c => (alsoIn[c] = alsoIn[c] || []).push(sid));
+    const s = SERIES[sid];
+    if (s.placement === "CASE_LOCAL") {
+      (caseLocal[s.placement_case_id] = caseLocal[s.placement_case_id] || []).push(sid);
+    } else if (s.placement === "MULTI_CASE_SWEEP") { sweeps.push(sid); }
+    else { nocase.push(sid); }
   });
-  const caseIds = [...new Set([...Object.keys(byCase), ...Object.keys(alsoIn)])].sort();
+  const caseIds = Object.keys(caseLocal).sort();
   const acts = new Set(), sims = new Set();
   matched.forEach(s=>{ const a=ACTS[SERIES[s].act_id];
     if (a && a.kind==="SIMULATION_RUN") sims.add(SERIES[s].act_id); else acts.add(SERIES[s].act_id); });
 
   const box = $("#results"); box.innerHTML = "";
   box.appendChild(el("h2","",
-    // cases that only cross-reference a traversing sweep are NOT cases with a matching
-    // result, and counting them together overstated the answer to a condition filter
-    `Matching results &nbsp;<span class="dim">${Object.keys(byCase).length} condition cases`
-    + `${caseIds.length - Object.keys(byCase).length
-        ? " · " + (caseIds.length - Object.keys(byCase).length) + " more traversed by a matching series"
-        : ""} · ${acts.size} measurement acts · ${sims.size} simulation runs · `
-    + `${matched.size} result series</span>`));
+    `Matching results &nbsp;<span class="dim">${caseIds.length} condition cases · `
+    + `${sweeps.length} multi-case sweeps · ${acts.size} measurement acts · `
+    + `${sims.size} simulation runs · ${matched.size} result series</span>`));
   if (!matched.size) {
     box.appendChild(el("div","empty",
       "No ResultSeries match the active semantic constraints.<br>"
       + "<span class='dim'>Selected comparison series are kept.</span>"));
     drawTray(); drawCompare(); return;
   }
+
+  // --- condition cases holding their own results
+  if (caseIds.length) {
+    box.appendChild(el("h3","",`Matching condition cases
+      <span class="dim" style="font-weight:400">· case-local result series</span>`));
+  }
   const per = 20, pages = Math.max(1, Math.ceil(caseIds.length/per));
   page = Math.min(page, pages-1);
   caseIds.slice(page*per, page*per+per).forEach(cid => {
     const c = CASES[cid];
     const d = el("details","case");
-    const hits = byCase[cid] || [], also = alsoIn[cid] || [];
-    const actIds = [...new Set(hits.map(s=>SERIES[s].act_id))];
-    if (!c) {
-      d.innerHTML = `<summary><div><div class="ctitle">Results with no Condition Case</div>
-        <div class="csub">${hits.length} result series whose producer carries no case link</div></div>
-        <div class="cnt">${hits.length} series</div></summary>
-        <div class="cbody">${actIds.map(a=>actCard(a,hits)).join("")}</div>`;
-      box.appendChild(d); return;
-    }
-    const bits = [c.material, (c.chemistry.precursor||[]).join("+"),
-      (c.chemistry.coreactant||[]).join("+"), condOf(cid,"deposition_temperature"),
-      c.geometry].filter(Boolean).join(" · ");
+    d.dataset.case = cid;
+    const hits = caseLocal[cid] || [];
+    const mine = new Set(hits.map(s=>SERIES[s].act_id));
+    const macts = c.measurement_act_ids.filter(a=>mine.has(a));
+    const sruns = c.simulation_run_ids.filter(a=>mine.has(a));
+    const trav = (c.traversed_by_series_ids||[]).filter(s=>matched.has(s));
     d.innerHTML = `<summary><div>
         <div class="ctitle">Condition Case <code>${esc(c.case_id)}</code></div>
-        <div class="csub">${esc(bits)||'<span class="dim">no summary conditions</span>'}
+        <div class="csub">${esc(condSummaryLine(cid))||'<span class="dim">no summary conditions</span>'}
           <span class="dim">· ${esc(c.paper_id)}</span></div></div>
-      <div class="cnt">${actIds.length} acts<br>${hits.length}/${c.series_ids.length} series${
-        also.length?`<br><span class="warn">+${also.length} traversing</span>`:""}</div></summary>
+      <div class="cnt">${plural(macts.length,"measurement act")}${
+        sruns.length?"<br>"+plural(sruns.length,"simulation run"):""}
+        <br>${hits.length}/${c.series_ids.length} series</div></summary>
       <div class="cbody">
         ${condTable(cid)}
         ${realizationBlock(c)}
-        <h3>Measurement acts with matching results</h3>
-        ${actIds.length?actIds.map(a=>actCard(a,hits)).join("")
-          :'<p class="dim">no result series is primarily listed under this case</p>'}
-        ${also.length?`<h3>Also traversed by</h3><div class="note">${also.length} multi-case
-          result series traverse this case but are listed once under their primary case, so
-          one curve is not counted as several results.<br>${also.map(sid=>{const x=SERIES[sid];
-          return `<code>${esc(x.series_id)}</code> — Fig. ${esc(x.figure)}${esc(x.panel||"")}
-            <span class="dim">primary case ${esc(CASES[x.case_ids[0]]?CASES[x.case_ids[0]].case_id:x.case_ids[0])}</span>`;
-          }).join("<br>")}</div>`:""}
+        ${macts.length?`<h3>Measurements</h3>${macts.map(a=>actCard(a,hits)).join("")}`:""}
+        ${sruns.length?`<h3>Simulations</h3>${sruns.map(a=>actCard(a,hits)).join("")}`:""}
+        ${trav.length?`<h3>Related sweep results</h3><div class="note">Also traversed by
+          ${trav.length} multi-case ResultSeries, listed once in the sweep section above:
+          <br>${trav.map(sid=>`<code>${esc(SERIES[sid].series_id)}</code>`).join("<br>")}
+          </div>`:""}
       </div>`;
     box.appendChild(d);
   });
@@ -397,7 +421,66 @@ function render() {
     box.appendChild(p);
     $("#pp").onclick=()=>{page--;render();}; $("#pn").onclick=()=>{page++;render();};
   }
+
+  // --- multi-case / sweep results: one entry each, no owning case
+  if (sweeps.length) {
+    box.appendChild(el("h3","",`Multi-case / sweep results
+      <span class="dim" style="font-weight:400">· one entry per ResultSeries · no primary
+      Condition Case</span>`));
+    sweeps.sort((a,b)=>SERIES[b].n_cases-SERIES[a].n_cases).forEach(sid => {
+      const s = SERIES[sid];
+      const mc = matchingCases(s), extra = s.all_case_ids.length - mc.length;
+      const d = el("details","case");
+      d.dataset.sweep = sid;
+      d.innerHTML = `<summary><div>
+          <div class="ctitle">Sweep result <code>${esc(s.series_id)}</code></div>
+          <div class="csub">${esc(ACTS[s.act_id]?ACTS[s.act_id].technique||"":"")}
+            <span class="dim">· ${esc(s.paper_id)}</span></div></div>
+        <div class="cnt">spans ${s.all_case_ids.length} cases<br>
+          <span class="${mc.length?"good":"dim"}">${mc.length} match filters</span>
+          ${extra?`<br><span class="warn">${extra} more traversed</span>`:""}</div></summary>
+        <div class="cbody">
+          ${serRow(sid)}
+          <h3>Condition cases</h3>
+          <table><thead><tr><th>condition case</th><th>satisfies active filters</th>
+            </tr></thead><tbody>${s.all_case_ids.map(cid=>{
+              const hit = mc.indexOf(cid)>=0;
+              return `<tr><td><code>${esc(CASES[cid]?CASES[cid].case_id:cid)}</code>
+                <span class="dim">${esc(condSummaryLine(cid))}</span></td>
+                <td class="${hit?"good":"dim"}">${hit?"matches":"traversed only"}</td></tr>`;
+            }).join("")}</tbody></table>
+          <div class="dim" style="font-size:10.5px;margin-top:3px">Point-to-case mapping is
+          unresolved: which points belong to which case is not persisted, so no case is
+          presented as owning this result.</div>
+        </div>`;
+      box.appendChild(d);
+    });
+  }
+
+  // --- results whose producer carries no case link
+  if (nocase.length) {
+    const d = el("details","case");
+    const actIds = [...new Set(nocase.map(s=>SERIES[s].act_id))];
+    const macts = actIds.filter(a=>ACTS[a] && ACTS[a].kind!=="SIMULATION_RUN");
+    const sruns = actIds.filter(a=>ACTS[a] && ACTS[a].kind==="SIMULATION_RUN");
+    d.innerHTML = `<summary><div><div class="ctitle">Results with no Condition Case</div>
+      <div class="csub">${nocase.length} result series whose producer carries no case link</div></div>
+      <div class="cnt">${plural(macts.length,"measurement act")}${
+        sruns.length?"<br>"+plural(sruns.length,"simulation run"):""}</div></summary>
+      <div class="cbody">
+        ${macts.length?`<h3>Measurements</h3>${macts.map(a=>actCard(a,nocase)).join("")}`:""}
+        ${sruns.length?`<h3>Simulations</h3>${sruns.map(a=>actCard(a,nocase)).join("")}`:""}
+      </div>`;
+    box.appendChild(d);
+  }
   drawTray(); drawCompare();
+}
+const plural = (n, word) => `${n} ${word}${n===1?"":"s"}`;
+function condSummaryLine(cid) {
+  const c = CASES[cid]; if (!c) return "";
+  return [c.material, (c.chemistry.precursor||[]).join("+"),
+    (c.chemistry.coreactant||[]).join("+"), condOf(cid,"deposition_temperature"),
+    c.geometry].filter(Boolean).join(" · ");
 }
 function condOf(cid,q){ const c=CASES[cid]; if(!c) return null;
   const x=c.conditions.find(v=>v.quantity===q); return x?`${x.value} ${x.unit||""}`.trim():null; }
@@ -453,7 +536,7 @@ function serRow(sid) {
         ${s.y_resolution==="PARTIALLY_RESOLVED"?'<span class="tag warn">partially resolved</span>':""}
         ${s.n_cases>1?`<span class="tag warn">spans ${s.n_cases} condition cases</span>`:""}</div>
       ${s.n_cases>1?`<details class="pv"><summary>Spans ${s.n_cases} Condition Cases</summary>
-        <div class="smeta">${s.case_ids.map(c=>`<code>${esc(CASES[c]?CASES[c].case_id:c)}</code>`).join("<br>")}
+        <div class="smeta">${s.all_case_ids.map(c=>`<code>${esc(CASES[c]?CASES[c].case_id:c)}</code>`).join("<br>")}
         </div><div class="dim" style="font-size:10.5px">One curve traversing several nominal
         condition cases; listed once. Point-to-case mapping is unresolved.</div></details>`:""}
       <div class="smeta">y ${s.y.y_quantity?esc(s.y.y_quantity):'<span class="warn">quantity unresolved</span>'}
@@ -464,7 +547,7 @@ function serRow(sid) {
       <details class="pv"><summary>Provenance</summary><div class="smeta">
         paper <code>${esc(s.paper_id)}</code><br>series <code>${esc(s.series_id)}</code><br>
         act <code>${esc(s.act_id)}</code><br>
-        condition cases: ${s.case_ids.length?s.case_ids.map(c=>`<code>${esc(CASES[c]?CASES[c].case_id:c)}</code>`).join(", "):'<span class="dim">none</span>'}<br>
+        condition cases: ${s.all_case_ids.length?s.all_case_ids.map(c=>`<code>${esc(CASES[c]?CASES[c].case_id:c)}</code>`).join(", "):'<span class="dim">none</span>'}<br>
         ${s.n_cases>1?'point-to-case mapping: <span class="warn">unresolved</span><br>':""}
         raw x label: ${esc(s.x.x_label)} [${esc(s.x.x_raw_unit)}]<br>
         raw y label: ${esc(s.y.y_label)} [${esc(s.y.y_raw_unit)}]<br>
@@ -494,6 +577,7 @@ function drawTray() {
     const r = el("div","trow"+(out?" out":""),
       `<span class="grow"><b>${esc(s.paper_id.slice(0,22))}</b> Fig.${esc(s.figure)}${esc(s.panel||"")}
        <span class="dim">${esc(s.y.y_quantity)}</span></span>
+       ${s.n_cases>1?`<span class="tag warn">spans ${s.n_cases} condition cases</span>`:""}
        ${out?'<span class="tag warn">outside filter</span>':""}
        <span class="x" style="cursor:pointer;color:var(--bad);font-weight:700"
          data-rm="${esc(sid)}">×</span>`);
@@ -669,9 +753,26 @@ function drawPlot() {
               x.parameters?" — "+esc(JSON.stringify(x.parameters).slice(0,120)):""}`).join("<br>")
              : "native representation, no transform")+"</div>";}).join("")}</details>`;
 }
+// A sweep traverses several nominal condition cases. Reporting one of their temperatures
+// as though it characterised the whole curve is the same first-case error in another
+// place, so a condition that differs across the linked cases is reported as varying.
+function condAcross(caseIds, q) {
+  const seen = [];
+  caseIds.forEach(cid => (CASES[cid]||{conditions:[]}).conditions.forEach(x => {
+    if (x.quantity+(x.species?"@"+x.species:"") !== q) return;
+    const t = `${x.value}${x.unit?" "+x.unit:""}`;
+    if (seen.indexOf(t) < 0) seen.push(t);
+  }));
+  if (!seen.length) return {kind:"unknown", text:"", values:[]};
+  if (seen.length === 1) return {kind:"common", text:seen[0], values:seen};
+  const sorted = seen.slice().sort();
+  return {kind:"varies", values:sorted,
+          text: sorted.length<=3 ? sorted.join(", ")
+                : `${sorted[0]} … ${sorted[sorted.length-1]} (${sorted.length} values)`};
+}
 function drawConds() {
   const box = $("#conds"); if (!box) return;
-  const cols = tray.map(sid=>({sid, cases:SERIES[sid].case_ids}));
+  const cols = tray.map(sid=>({sid, cases:SERIES[sid].all_case_ids}));
   const qs = new Set();
   cols.forEach(c=>c.cases.forEach(cid=>(CASES[cid]||{conditions:[]}).conditions
     .forEach(x=>qs.add(x.quantity+(x.species?"@"+x.species:"")))));
@@ -684,15 +785,14 @@ function drawConds() {
   h+=`<tr><td><b>material</b></td>`+cols.map(c=>`<td>${
     esc([...new Set(c.cases.map(x=>(CASES[x]||{}).material).filter(Boolean))].join(", "))||'<span class="dim">unknown</span>'}</td>`).join("")+"</tr>";
   [...qs].sort().forEach(q=>{
-    const vals = cols.map(c=>{
-      const out=[];
-      c.cases.forEach(cid=>(CASES[cid]||{conditions:[]}).conditions.forEach(x=>{
-        if (x.quantity+(x.species?"@"+x.species:"")===q) out.push(`${x.value}${x.unit?" "+x.unit:""}`);}));
-      return out.length?[...new Set(out)].join("; "):null;});
-    const known=vals.filter(v=>v!==null);
-    const same=known.length===cols.length && new Set(known).size===1;
+    const vals = cols.map(c=>condAcross(c.cases, q));
+    const known=vals.filter(v=>v.kind!=="unknown");
+    const same=known.length===cols.length && new Set(known.map(v=>v.text)).size===1
+               && known.every(v=>v.kind==="common");
     h+=`<tr><td><code>${esc(q)}</code></td>`+vals.map(v=>
-      `<td class="${same?"":"diff"}">${v===null?'<span class="dim">unknown</span>':esc(v)}</td>`).join("")+"</tr>";
+      `<td class="${same?"":"diff"}">${v.kind==="unknown"?'<span class="dim">unknown</span>'
+        : v.kind==="varies"?`<span class="warn">varies</span> <span class="dim">${esc(v.text)}</span>`
+        : esc(v.text)}</td>`).join("")+"</tr>";
   });
   box.innerHTML = h+"</tbody></table>"
     + '<div class="note">Values are nominal Condition Case conditions. Representation '
