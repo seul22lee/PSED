@@ -1,0 +1,67 @@
+{
+  "acquisition_attempts": [
+    {
+      "result": "404 text/html",
+      "url": "https://www.rsc.org/suppdata/d0/cp/d0cp03358h/d0cp03358h1.pdf"
+    },
+    {
+      "result": "404 text/html",
+      "url": "https://www.rsc.org/suppdata/d0/cp/d0cp03358h/d0cp03358h2.pdf"
+    },
+    {
+      "result": "404 text/html",
+      "url": "https://www.rsc.org/suppdata/cp/d0/d0cp03358h/d0cp03358h1.pdf"
+    },
+    {
+      "result": "302 -> id.rsc.org/authorize (SSO wall)",
+      "url": "https://doi.org/10.1039/d0cp03358h"
+    },
+    {
+      "result": "200 but SSO submit form, not content",
+      "url": "https://pubs.rsc.org/en/content/articlelanding/2020/cp/d0cp03358h"
+    },
+    {
+      "result": "200 text/html (SSO), not a PDF",
+      "url": "https://pubs.rsc.org/en/content/articlepdf/2020/cp/d0cp03358h"
+    },
+    {
+      "result": "200; lists only the main article d0cp03358h.pdf, no ESI referenced",
+      "url": "https://research.aalto.fi/en/publications/939bbcb0-d634-4749-b8bd-6b250448ded9"
+    },
+    {
+      "result": "403 text/html",
+      "url": "https://research.aalto.fi/files/52773645/d0cp03358h.pdf"
+    }
+  ],
+  "baseline_sha": "fadd925",
+  "conclusion": "every publisher route terminates at an RSC single-sign-on wall and no repository copy of the supplementary document was reachable. The article itself is open access; the supplement was not obtainable from this environment.",
+  "head_sha": "fadd925",
+  "main_text_reference": {
+    "location": "papers/10.1039_d0cp03358h/extracted/document.md, Table 1 footnote b",
+    "meaning": "the identifiers exist in the source record but live in a document that is not part of the corpus",
+    "quote": "Original traceable sample codes in ESI, Table S3."
+  },
+  "next_action_required": "obtain the ESI PDF through an authenticated or institutional route, place it under the paper directory with a SUPPLEMENTARY document role, add SI ingestion to the extraction pipeline, and map the table's persistent-identifier column to traceable_sample_code",
+  "not_done_deliberately": "the externally known mapping (4/5/6 -> V0004 and siblings) was NOT written into any artifact. Copying it from review notes would put an unprovenanced physical-identity assertion into the knowledge graph, which is the failure mode this whole track exists to prevent.",
+  "objective": "acquire the Electronic Supplementary Information containing the traceable sample-code table (Table S3) referenced by the main text",
+  "open_access_status": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "source": "unpaywall"
+  },
+  "paper_doi": "10.1039/d0cp03358h",
+  "paper_id": "10.1039_d0cp03358h",
+  "repository_convention": {
+    "main_document": "papers/<paper_id>/paper.pdf",
+    "note": "no SI/ESI role exists anywhere in the ingestion pipeline; adding one is part of the ingestion work and is not attempted while the document is unavailable",
+    "pdfs_tracked_in_git": true,
+    "supplementary_support_in_pipeline": false
+  },
+  "resolver_readiness": {
+    "consumes_field": "traceable_sample_code (and specimen_id/chip_id/wafer_id siblings)",
+    "fixture_proving_it": "tests/test_entity_identity_repair.py section L",
+    "generic_resolver": "pipeline.query.entity_identity.canonical_specimens",
+    "state": "implemented and unit-tested at fadd925; will materialise groups with no further change once the field is populated"
+  },
+  "status": "ESI_ACQUISITION_BLOCKED"
+}
