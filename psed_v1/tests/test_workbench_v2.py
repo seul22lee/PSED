@@ -776,6 +776,92 @@ def final_hardening_tests(M, V, hp):
     ok("N18: points are matched by value, not by position",
        r[0]["case_id"] == "B" and r[1]["case_id"] == "A", r)
 
+    print("=== N20. native observations survive canonicalisation failure ===")
+    ok("N20: every ResultSeries carries a native observation",
+       C["series_with_native_y"] == 231, C["series_with_native_y"])
+    ok("N20: only %d of them have a canonical y" % C["series_with_canonical_y"],
+       C["series_with_canonical_y"] == 70, C["series_with_canonical_y"])
+    ok("N20: 161 are native-only", C["series_native_y_only"] == 161,
+       C["series_native_y_only"])
+    ok("N20: none is canonical-only", C["series_canonical_y_only"] == 0,
+       C["series_canonical_y_only"])
+    ok("N20: all 69 resolved rows have an observed value",
+       C["case_data_native_results_available"] == 69
+       and C["case_data_native_results_missing"] == 0,
+       (C["case_data_native_results_available"], C["case_data_native_results_missing"]))
+    ok("N20: 58 of them were suppressed by the canonical-only path",
+       C["case_data_rows_previously_suppressed_by_canonicalization"] == 58,
+       C["case_data_rows_previously_suppressed_by_canonicalization"])
+    ok("N20: and none is suppressed now",
+       C["case_data_rows_suppressed_by_canonicalization"] == 0)
+    ok("N20: the strong invariant is a build gate",
+       V["invariants"]["no_resolved_link_hides_an_available_native_result"] is True
+       and C["resolved_link_with_available_native_y_but_empty_result"] == 0)
+    ok("N20: native and canonical are distinct model fields",
+       all(("native_points" in x and "y_canonical" in x) for x in M["series"].values()))
+    ok("N20: native keeps the source label and unit, not a canonical one",
+       all(((x["native_points"].get("y") or {}).get("unit") is not None)
+           or not (x["native_points"].get("y") or {}).get("values")
+           for x in M["series"].values()))
+    ok("N20: point-case metrics are unchanged by this repair",
+       (C["point_case_series_fully_resolved"], C["point_case_series_partially_resolved"],
+        C["point_case_series_unresolved"], C["point_case_points_resolved"],
+        C["point_case_points_ambiguous"], C["point_case_points_no_match"])
+       == (10, 0, 12, 69, 0, 30))
+    ok("N20: result availability is its own status, not PARTIALLY_RESOLVED",
+       {x["native_result_status"] for x in M["series"].values()}
+       <= {"NATIVE_AND_CANONICAL_AVAILABLE", "NATIVE_ONLY", "NO_NATIVE_RESULT"},
+       sorted({x["native_result_status"] for x in M["series"].values()}))
+    resolved_ids = [k for k, v in M["point_case_links"].items()
+                    if v["status"] == "POINT_CASE_RESOLVED"]
+    from collections import Counter as _Ctr
+    byst = _Ctr(M["series"][k]["native_result_status"] for k in resolved_ids)
+    ok("N20: of the 10 resolved series, 8 are native-only and 2 also canonical",
+       byst.get("NATIVE_ONLY") == 8
+       and byst.get("NATIVE_AND_CANONICAL_AVAILABLE") == 2, dict(byst))
+
+    print("=== N21. point tuple integrity ===")
+    import importlib.util as _iu
+    _sp2 = _iu.spec_from_file_location("wbb3", WB / "build_workbench_model.py")
+    wb3 = _iu.module_from_spec(_sp2); _sp2.loader.exec_module(wb3)
+    ok("N21: the index contract is checked, not assumed",
+       all("aligned" in (x.get("point_index_contract") or {})
+           for x in M["series"].values()))
+    ok("N21: every resolved series' arrays are proven to be one point vector",
+       all(M["series"][k]["point_index_contract"]["aligned"] for k in resolved_ids))
+    # fixture: native y deliberately non-monotonic -- sorting rows must not remap y
+    mk = lambda nx, ny, cx, cy=None: {
+        "native_points": {"x": {"values": nx, "unit": "s", "label": "x (s)"},
+                          "y": {"values": ny, "unit": "u", "label": "y (u)"}},
+        "x_canonical": {"values": cx, "unit": "s"},
+        "y_canonical": {"values": cy or [], "unit": "cu"}}
+    fx = mk([3, 1, 2], [8, 3, 7], [3, 1, 2])
+    ok("N21: FIXTURE an unsorted point vector is still aligned",
+       wb3.point_index_contract(fx)["aligned"], wb3.point_index_contract(fx))
+    ok("N21: FIXTURE index 0 keeps y=8, index 1 keeps y=3",
+       fx["native_points"]["y"]["values"][0] == 8
+       and fx["native_points"]["y"]["values"][1] == 3)
+    bad = mk([1, 2, 3], [1, 2, 3], [1, 2])
+    ok("N21: FIXTURE differing point counts are not aligned",
+       wb3.point_index_contract(bad)["aligned"] is False
+       and "count" in wb3.point_index_contract(bad)["reason"], wb3.point_index_contract(bad))
+    bad2 = mk([1, 2, 3], [1, 2, 3], [1, 2, 99])
+    ok("N21: FIXTURE a canonical x that is a different number is not aligned",
+       wb3.point_index_contract(bad2)["aligned"] is False, wb3.point_index_contract(bad2))
+    conv = {"native_points": {"x": {"values": [58.0], "unit": "nm", "label": ""},
+                              "y": {"values": [1], "unit": "u", "label": ""}},
+            "x_canonical": {"values": [0.058], "unit": "µm"},
+            "y_canonical": {"values": [], "unit": None}}
+    ok("N21: FIXTURE the same number in two units is one encoding",
+       wb3.point_index_contract(conv)["aligned"], wb3.point_index_contract(conv))
+    ok("N21: FIXTURE native-only reports NATIVE_ONLY",
+       wb3.native_result_status(mk([1], [1.2], [1])) == "NATIVE_ONLY")
+    ok("N21: FIXTURE native plus canonical reports both",
+       wb3.native_result_status(mk([1], [1.5], [1], [0.15]))
+       == "NATIVE_AND_CANONICAL_AVAILABLE")
+    ok("N21: FIXTURE no native observation reports NO_NATIVE_RESULT",
+       wb3.native_result_status(mk([1], [], [1])) == "NO_NATIVE_RESULT")
+
     print("=== N19. the resolver is generic ===")
     prodR = {"builder": strip_comments(WB / "build_workbench_model.py"),
              "template": strip_comments(WB / "_workbench_v2_template.html")}
@@ -807,6 +893,69 @@ def final_hardening_tests(M, V, hp):
     ok("N19: the case-data view is not gated on overlay authorization",
        "physicalOverlayAllowed" not in
        prodR["template"].split("function drawCaseData")[1].split("function drawConds")[0])
+
+    print("=== N22. the native value path is generic ===")
+    prodN = {"builder": strip_comments(WB / "build_workbench_model.py"),
+             "template": strip_comments(WB / "_workbench_v2_template.html"),
+             "generated HTML": strip_comments(
+                 WB / "psed_scientific_comparison_workbench.html")}
+    def code_only_n(name, body):
+        if name != "generated HTML":
+            return body
+        i = body.find('<script id="model"')
+        j = body.find("</script>", i)
+        return body[:i] + body[j:]
+    idsN = {"DOI": sorted({x["paper_id"] for x in M["cases"].values()}),
+            "Condition Case id": sorted({x["case_id"] for x in M["cases"].values()}),
+            "ResultSeries id": sorted({x["series_id"] for x in M["series"].values()})[:40],
+            "native y unit": sorted({(x["native_points"].get("y") or {}).get("unit")
+                                     for x in M["series"].values()
+                                     if (x["native_points"].get("y") or {}).get("unit")}),
+            "native y label": sorted({(x["native_points"].get("y") or {}).get("label")
+                                      for x in M["series"].values()
+                                      if (x["native_points"].get("y") or {}).get("label")})[:30]}
+    for kind, vals in idsN.items():
+        # substring scanning is meaningless for one- and two-character tokens: "Pa" is
+        # inside "Pair" and "%" is inside every format string. Those are matched on a
+        # word boundary instead, which is what "the code names this unit" would look like.
+        hits = []
+        for nm, body in prodN.items():
+            code = code_only_n(nm, body)
+            for v in vals:
+                if not v:
+                    continue
+                t = str(v)
+                if len(t) <= 2:
+                    continue          # see the structural assertion below
+                found = (re.search(r"(?<![\w·/])%s(?![\w·/])" % re.escape(t), code)
+                         if len(t) <= 3 else (t in code))
+                if found:
+                    hits.append("%s: %s" % (nm, t))
+        ok("N22: no %-18s in the value path" % kind, not hits, hits[:3])
+    # A one- or two-character unit cannot be distinguished from ordinary code by text
+    # scanning ("s" is a variable name everywhere), so the guarantee is made structurally
+    # instead: every unit the value path shows is read from the model, never written down.
+    tplV = prodN["template"]
+    vpath = tplV.split("function caseDataRows")[1].split("function drawConds")[0]
+    ok("N22: the result cell takes its unit from the data",
+       "r.y_native_unit" in vpath and "r.y_canonical_unit" in vpath)
+    ok("N22: the header takes its label and unit from the data",
+       "ny.unit" in vpath and "ny.label" in vpath)
+    ok("N22: no unit literal is written in the value path",
+       not re.search(r'["\'](nm|Å|µm|K|°C|Pa|nm/cycle|Å/cycle)["\']', vpath))
+    ok("N22: the builder copies the source unit rather than naming one",
+       '(raw.get("x") or {}).get("unit")' in
+       (WB / "build_workbench_model.py").read_text())
+    for q in ("growth_per_cycle", "resistivity", "film_thickness", "deposition_temperature"):
+        ok("N22: the value path never names %s" % q,
+           q not in prodN["template"].split("function caseDataRows")[1]
+                     .split("function drawConds")[0], q)
+    # structural slice needs real source: the tokenize stripper drops the space in "def f"
+    vpraw = (WB / "build_workbench_model.py").read_text()
+    vp = vpraw[vpraw.index("def point_index_contract"):vpraw.index("def point_case_links")]
+    for bad in ("sorted(", "reversed(", ".sort("):
+        ok("N22: the native value path never reorders coordinates (%s)" % bad,
+           bad not in vp, bad)
 
     print("=== N14. the filtering algorithm is generic ===")
     # Every identifier the regressions rely on is searched for in production code. A
@@ -2078,6 +2227,109 @@ def case_data_dom(pg, errors):
     }""")
     ok("T: the tray and its case data survive a filter change",
        keep["kept"] and keep["after"] == keep["before"], keep)
+
+    # --- native observations reach the table ---------------------------------------
+    reset()
+    nat = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                       && SERIES[k].native_result_status === "NATIVE_ONLY");
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const box = document.querySelector('#casedata');
+        const rows = [...box.querySelectorAll('tr[data-sid]')];
+        const cells = rows.map(r => r.children[r.children.length-1].innerText);
+        const ny = SERIES[id].native_points.y;
+        return {id, unit: ny.unit, label: ny.label,
+                header: [...box.querySelectorAll('thead th')].pop().innerText,
+                cells, n: rows.length,
+                empty: cells.filter(c => /not persisted|unresolved/.test(c)).length,
+                withUnit: cells.filter(c => c.indexOf(ny.unit) >= 0).length,
+                status_line: box.innerText.indexOf("canonical representation unresolved") >= 0,
+                // every displayed value must be one of the persisted native values
+                allNative: cells.every(c => ny.values.some(v =>
+                    c.indexOf(String(v)) >= 0))};
+    }""")
+    ok("T: a native-only series shows a value in every resolved row",
+       nat["empty"] == 0 and nat["n"] > 0, nat)
+    ok("T: every value is a persisted native observation", nat["allNative"], nat["cells"][:3])
+    ok("T: shown in the source unit", nat["withUnit"] == nat["n"], nat)
+    ok("T: the header names the source label", nat["label"].split(" ")[0].lower()
+       in nat["header"].lower(), nat["header"])
+    # unit symbols are case-sensitive: an uppercased header turns µ into M
+    ok("T: the header is not uppercased, so the unit prefix survives",
+       nat["unit"] in nat["header"], (nat["header"], nat["unit"]))
+    ok("T: and the canonical gap is still stated", nat["status_line"], nat)
+
+    both = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                       && SERIES[k].native_result_status === "NATIVE_AND_CANONICAL_AVAILABLE");
+        if (!id) return null;
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const cell = document.querySelector('#casedata tr[data-sid]');
+        const last = cell.children[cell.children.length-1].innerText;
+        return {id, last, nat: SERIES[id].native_points.y.unit,
+                can: SERIES[id].y_canonical.unit};
+    }""")
+    if both:
+        ok("T: a native+canonical series shows both, native first",
+           both["nat"] in both["last"]
+           and both["last"].index("canonical") > both["last"].index(both["nat"]),
+           both["last"])
+    else:
+        ok("T: no native+canonical resolved series exists (reported)", True)
+
+    # sorting must move whole rows, never remap y
+    order = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const ny = SERIES[id].native_points.y.values;
+        const rows = [...document.querySelectorAll('#casedata tr[data-sid]')];
+        return rows.map(r => ({i: parseInt(r.dataset.pt, 10),
+                               txt: r.children[r.children.length-1].innerText,
+                               want: String(ny[parseInt(r.dataset.pt, 10)])}));
+    }""")
+    ok("T: after sorting, each row still carries its own point's value",
+       all(r["want"] in r["txt"] for r in order), order[:2])
+
+    # the aligned table keeps each column's own native unit
+    aligned = pg.evaluate("""() => {
+        const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        for (const a of res) for (const b of res) {
+            if (a === b) continue;
+            const ca = new Set(SERIES[a].all_case_ids);
+            if (SERIES[b].all_case_ids.filter(c => ca.has(c)).length < 2) continue;
+            if (SERIES[a].native_points.y.unit === SERIES[b].native_points.y.unit) continue;
+            tray.length = 0; tray.push(a,b); mode = "case"; render();
+            const box = document.querySelector('#casedata');
+            const head = [...box.querySelectorAll('thead th')].map(t=>t.innerText).join(" ");
+            const body = box.innerText;
+            return {ua: SERIES[a].native_points.y.unit, ub: SERIES[b].native_points.y.unit,
+                    head, both: body.indexOf(SERIES[a].native_points.y.unit) >= 0
+                              && body.indexOf(SERIES[b].native_points.y.unit) >= 0,
+                    dash: (body.match(/not persisted/g)||[]).length};
+        }
+        return null;
+    }""")
+    if aligned:
+        ok("T: the aligned table keeps each output in its own native unit",
+           aligned["both"] and aligned["ua"] != aligned["ub"], aligned)
+        ok("T: and no column falls back to 'not persisted'", aligned["dash"] == 0, aligned)
+    else:
+        ok("T: no two resolved series with differing native units share cases (reported)",
+           True)
+
+    prov2 = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                       && SERIES[k].native_result_status === "NATIVE_ONLY");
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const tr = document.querySelector('#casedata tr[data-sid]');
+        tr.click();
+        const d = document.querySelector(`#casedata tr.prov[data-for="${
+            CSS.escape(tr.dataset.sid + "|" + tr.dataset.pt)}"]`);
+        return d.innerText;
+    }""")
+    for want in ("observation", "derived relation", "canonical representation unresolved",
+                 "point index"):
+        ok("T: the drawer separates %s" % want, want in prov2, prov2[:140])
 
     reset()
     ok("T: no console errors in the case data view", not errors, errors[:2])

@@ -61,6 +61,26 @@ def code_hash():
     return h.hexdigest()[:12]
 
 
+#: Relative agreement required when checking that two ENCODINGS of one extracted number
+#: match -- 58.0 nm against 0.058 um. This is a floating-point representation check, not
+#: a physical tolerance: it is never used to decide that two distinct observations are
+#: the same value.
+_ENCODING_REL_TOL = 1e-9
+
+
+def _same_encoded_number(av, au, bv, bu):
+    na = CQ.normalized_value({"value": av, "unit": au})
+    nb = CQ.normalized_value({"value": bv, "unit": bu})
+    if na is None or nb is None:
+        return False
+    # a bare number and an explicitly dimensionless one are the same encoding
+    da = na[0] or "dimensionless"
+    db = nb[0] or "dimensionless"
+    if da != db and {da, db} != {"dimensionless", "1"}:
+        return False
+    return abs(na[1] - nb[1]) <= _ENCODING_REL_TOL * max(abs(na[1]), abs(nb[1]), 1.0)
+
+
 def canonical_curves(pid):
     p = PILOT / "papers" / pid / "resolved" / "canonical_curves.json"
     if not p.exists():
@@ -91,6 +111,23 @@ def canonical_curves(pid):
             # coordinates, and which design point each one came from is decided by x
             "x_values": [a for a in xv if a is not None],
             "y_values": [b for b in yv if b is not None],
+            # The source observation, as extracted: (x, y) tuples in the units the figure
+            # was drawn in. Canonicalisation can fail for the y axis while the observed
+            # number is perfectly well recorded, so the two are kept apart and the native
+            # one is never derived from the canonical one.
+            "native": {
+                "x": {"quantity": (raw.get("x") or {}).get("quantity"),
+                      "label": (raw.get("x") or {}).get("label"),
+                      "unit": (raw.get("x") or {}).get("unit"),
+                      "values": [p[0] for p in (raw.get("points") or [])
+                                 if len(p) > 1 and p[0] is not None]},
+                "y": {"quantity": (raw.get("y") or {}).get("quantity"),
+                      "label": (raw.get("y") or {}).get("label"),
+                      "unit": (raw.get("y") or {}).get("unit"),
+                      "values": [p[1] for p in (raw.get("points") or [])
+                                 if len(p) > 1 and p[1] is not None]},
+                "n_points": len(raw.get("points") or []),
+                "source": c.get("source") or {}},
             "projections": c.get("projections") or {},
             "transformations": c.get("transformations") or [],
             "y_resolution": "FULLY_RESOLVED" if cy.get("quantity") else "PARTIALLY_RESOLVED",
@@ -331,6 +368,7 @@ def build():
                 "y_canonical": {"values": cu.get("y_values") or [],
                                 "unit": cu.get("y_unit"),
                                 "quantity": cu.get("y_quantity")},
+                "native_points": cu.get("native") or {},
                 # named all_case_ids because there is no other kind: a sweep belongs to
                 # every case it traverses and none of them is primary
                 "all_case_ids": cs, "n_cases": len(cs),
@@ -859,6 +897,50 @@ def series_resolution_status(case_ids, links):
     return SERIES_CASE_SET_ONLY
 
 
+#: Whether an OBSERVED result value exists for a series, which is a different question
+#: from whether the point->case relation resolved and a different one again from whether
+#: the y axis was canonicalised.
+RESULT_NATIVE_AND_CANONICAL = "NATIVE_AND_CANONICAL_AVAILABLE"
+RESULT_NATIVE_ONLY = "NATIVE_ONLY"
+RESULT_NONE = "NO_NATIVE_RESULT"
+
+
+def native_result_status(s):
+    ny = ((s.get("native_points") or {}).get("y") or {}).get("values") or []
+    cy = (s.get("y_canonical") or {}).get("values") or []
+    if not ny:
+        return RESULT_NONE
+    return RESULT_NATIVE_AND_CANONICAL if cy else RESULT_NATIVE_ONLY
+
+
+def point_index_contract(s):
+    """Do the native tuples and the canonical x array index the same extracted points?
+
+    The point->case link indexes the canonical x array, and the observed value lives in
+    the native tuple. Reading one with the other's index is only defensible if they are
+    the same point vector, so that is checked rather than assumed: equal length, and each
+    canonical x the same extracted number as its native x.
+    """
+    nat = (s.get("native_points") or {}).get("x") or {}
+    nx, nu = nat.get("values") or [], nat.get("unit")
+    cx = (s.get("x_canonical") or {}).get("values") or []
+    cu = (s.get("x_canonical") or {}).get("unit")
+    if not nx or not cx:
+        return {"aligned": False, "reason": "one side has no coordinates",
+                "n_native": len(nx), "n_canonical": len(cx)}
+    if len(nx) != len(cx):
+        return {"aligned": False, "reason": "different point counts",
+                "n_native": len(nx), "n_canonical": len(cx)}
+    for a, b in zip(nx, cx):
+        if not _same_encoded_number(a, nu, b, cu):
+            return {"aligned": False, "reason": "a canonical x is not the same extracted "
+                                                "number as its native x",
+                    "n_native": len(nx), "n_canonical": len(cx)}
+    return {"aligned": True, "reason": "same length and elementwise the same extracted "
+                                       "numbers", "n_native": len(nx),
+            "n_canonical": len(cx)}
+
+
 def point_case_links(series, cases):
     """The derived point->case relation for every ResultSeries. Workbench-derived only:
     nothing here is written back to the scientific record."""
@@ -869,7 +951,11 @@ def point_case_links(series, cases):
         links = resolve_points_to_cases(xs, xc.get("unit"), xc.get("quantity"),
                                         s["x"].get("x_species"), s["all_case_ids"], cases)
         status = series_resolution_status(s["all_case_ids"], links)
+        s["native_result_status"] = native_result_status(s)
+        s["point_index_contract"] = point_index_contract(s)
         out[sid] = {"series_id": s["series_id"], "status": status,
+                    "native_result_status": s["native_result_status"],
+                    "point_index_contract": s["point_index_contract"],
                     "derivation": DERIVED_STATUS,
                     "n_points_available": len(xs), "n_points_recorded": s.get("n_points"),
                     "links": links,
@@ -992,6 +1078,16 @@ def main():
     print("invariants ok: %s" % val["invariants_ok"])
     print("wrote %s" % (OUT / "psed_scientific_comparison_workbench.html").relative_to(W))
     return 0 if val["invariants_ok"] else 1
+
+
+def _case_data_cell_has_value(s, i):
+    """What the page will put in the result cell: the native observation comes first, and
+    a missing canonical form never removes it."""
+    ny = ((s.get("native_points") or {}).get("y") or {}).get("values") or []
+    if i < len(ny) and ny[i] is not None:
+        return True
+    cy = (s.get("y_canonical") or {}).get("values") or []
+    return i < len(cy) and cy[i] is not None
 
 
 def point_case_audit(m):
@@ -1402,6 +1498,62 @@ def validate(m, counts):
            and x["case_id"] not in series[k]["all_case_ids"]]
     c["point_case_links_outside_series_case_set"] = len(bad)
 
+    # ---- observed result availability, independent of canonicalisation ---------------
+    rows = nat_ok = nat_missing = can_ok = nat_only = suppressed = 0
+    for sid, v in pcl.items():
+        s2 = series[sid]
+        ny = ((s2.get("native_points") or {}).get("y") or {}).get("values") or []
+        cy = (s2.get("y_canonical") or {}).get("values") or []
+        aligned = (s2.get("point_index_contract") or {}).get("aligned")
+        for l in v["links"]:
+            if l["resolution_status"] != POINT_RESOLVED:
+                continue
+            rows += 1
+            i = l["point_index"]
+            has_native = bool(aligned and i < len(ny))
+            has_canon = bool(aligned and i < len(cy))
+            nat_ok += has_native
+            nat_missing += (not has_native)
+            can_ok += has_canon
+            nat_only += (has_native and not has_canon)
+            # the defect this repair removes: a native observation exists at this point
+            # and the row would have shown nothing because the y axis lacks a canonical form
+            if has_native and not has_canon:
+                suppressed += 1
+    c["case_data_resolved_points"] = rows
+    c["case_data_native_results_available"] = nat_ok
+    c["case_data_native_results_missing"] = nat_missing
+    c["case_data_canonical_results_available"] = can_ok
+    c["case_data_native_only_results"] = nat_only
+    c["case_data_rows_previously_suppressed_by_canonicalization"] = suppressed
+    # after the repair the value path reads the native array, so a resolved link whose
+    # native value exists can never render empty
+    c["resolved_link_with_available_native_y_but_empty_result"] = len(
+        [1 for sid, v in pcl.items() for l in v["links"]
+         if l["resolution_status"] == POINT_RESOLVED
+         and (series[sid].get("point_index_contract") or {}).get("aligned")
+         and l["point_index"] < len(((series[sid].get("native_points") or {})
+                                     .get("y") or {}).get("values") or [])
+         and not _case_data_cell_has_value(series[sid], l["point_index"])])
+    c["case_data_rows_suppressed_by_canonicalization"] = c[
+        "resolved_link_with_available_native_y_but_empty_result"]
+    c["series_with_native_y"] = len(
+        [1 for s2 in series.values()
+         if ((s2.get("native_points") or {}).get("y") or {}).get("values")])
+    c["series_with_canonical_y"] = len(
+        [1 for s2 in series.values() if (s2.get("y_canonical") or {}).get("values")])
+    c["series_native_y_only"] = len(
+        [1 for s2 in series.values()
+         if ((s2.get("native_points") or {}).get("y") or {}).get("values")
+         and not (s2.get("y_canonical") or {}).get("values")])
+    c["series_canonical_y_only"] = len(
+        [1 for s2 in series.values()
+         if (s2.get("y_canonical") or {}).get("values")
+         and not ((s2.get("native_points") or {}).get("y") or {}).get("values")])
+    c["point_index_contract_aligned_series"] = len(
+        [1 for s2 in series.values()
+         if (s2.get("point_index_contract") or {}).get("aligned")])
+
     c["physical_specimens_resolved"] = len(
         {x["physical_specimen"] for x in m["samples"].values()
          if x.get("physical_specimen")})
@@ -1440,6 +1592,8 @@ def validate(m, counts):
     inv["every_sequence_occurrence_is_classified"] = all(
         r["status"] in (SEQ_EXPLICIT_PRESENT, SEQ_DERIVATION_SAFE, SEQ_AMBIGUOUS,
                         SEQ_NOT_TIMES, SEQ_NO_CONTEXT) for r in audit)
+    inv["no_resolved_link_hides_an_available_native_result"] = (
+        c["resolved_link_with_available_native_y_but_empty_result"] == 0)
     inv["no_point_links_outside_the_series_case_set"] = (
         c["point_case_links_outside_series_case_set"] == 0)
     inv["resolved_points_name_exactly_one_case"] = all(

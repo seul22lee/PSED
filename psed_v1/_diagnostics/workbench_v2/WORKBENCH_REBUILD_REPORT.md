@@ -706,3 +706,103 @@ Two things the corpus does not support, reported rather than filled in: **no unc
 values exist anywhere in the digitized points**, so no error bars are shown; and for 6 of
 the 10 resolved series the y axis was never canonicalised, so the result cell reads
 *result unresolved* while the mapping itself stands.
+
+---
+
+# Native observations in case data
+
+## Root cause
+
+The Case Data value path read the canonical y array only:
+
+```
+y: yOK ? y_canonical.values[point_index] : null      // yOK required canonical y
+→ canonical y absent  →  "result unresolved"
+```
+
+The observation itself was never consulted. So a resolved point whose measured value was
+perfectly well recorded rendered as unresolved, because a *representation* of it was
+missing. Three independent things had been collapsed into one: whether the point maps to a
+Condition Case, whether an observed value exists, and whether the y axis was canonicalised.
+
+**58 of the 69 resolved rows were suppressed this way.**
+
+## Native coordinate authority
+
+`resolved/canonical_curves.json` → `raw`:
+
+```
+raw.points   [[80, 0.22], [100, 0.29], …]   the extracted (x, y) tuples
+raw.x        label "Growth temperature (°C)", unit "°C"
+raw.y        label "Growth per cycle (Å/cycle)", unit "Å/cycle"
+```
+
+This is the persisted source observation, in the units the figure was drawn in. It is
+emitted as `native_points`, kept strictly separate from `y_canonical`; neither is derived
+from the other and neither field changes meaning with resolution state.
+
+## Corpus audit
+
+| all 231 ResultSeries | |
+|---|---|
+| native Y available | **231** |
+| canonical Y available | 70 |
+| native-only | **161** |
+| canonical-only | **0** |
+| neither | 0 |
+
+Canonical-only is zero, as it should be: canonicalisation originates from an observation.
+
+| of the 10 `POINT_CASE_RESOLVED` | |
+|---|---|
+| native result available | **10** |
+| canonical available | 2 |
+| native-only | **8** |
+| native missing | **0** |
+
+The previous report said 6 native-only; **the true figure is 8**, verified from source.
+
+## Value rule
+
+1. the native/source observed value — the evidence, and the default;
+2. the canonical value beside it when one exists;
+3. *"observed result value not persisted"* only when no observation exists at all.
+
+Canonicalisation failure never suppresses an observation. `POINT_CASE_RESOLVED` keeps its
+narrow meaning — the point→case relation resolved — and result availability is its own
+status: `NATIVE_AND_CANONICAL_AVAILABLE` / `NATIVE_ONLY` / `NO_NATIVE_RESULT`, shown per
+series as *"Point → case: 7/7 resolved · Observed result: observed values available;
+canonical representation unresolved"*.
+
+## Point tuple integrity
+
+The link's `point_index` addresses the canonical x array; the observation lives in the
+native tuple. That they are the same point vector is **checked, not assumed**
+(`point_index_contract`): equal length, and each canonical x the same extracted number as
+its native x — compared with a documented `1e-9` relative agreement that verifies two
+*encodings of one number* (58.0 nm against 0.058 µm) and is never used to match distinct
+observations. A series that fails the check yields no case-data values rather than
+mismatched ones. Row sorting moves whole `(case, point_index, x, y)` tuples; nothing is
+reindexed.
+
+## Computed metrics
+
+```
+case_data_resolved_points                                69
+case_data_native_results_available                       69
+case_data_native_results_missing                          0
+case_data_canonical_results_available                    11
+case_data_native_only_results                            58
+case_data_rows_previously_suppressed_by_canonicalization 58
+case_data_rows_suppressed_by_canonicalization             0
+resolved_link_with_available_native_y_but_empty_result    0   <- build gate
+```
+
+## Visual review
+
+One real defect found by looking: the table header's `text-transform: uppercase` rendered
+**µΩ·cm as MΩ·CM** — micro reading as mega, a millionfold misstatement produced purely by
+CSS. Unit-bearing headers no longer uppercase, and a test pins it.
+
+A resistivity sweep that read *result unresolved* on all seven rows now reads
+172, 147, 70, 30, 17, 19, 11 µΩ·cm.
