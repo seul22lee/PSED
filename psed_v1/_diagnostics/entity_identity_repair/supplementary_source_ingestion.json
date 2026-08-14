@@ -1,48 +1,70 @@
 {
-  "acquisition_attempts": [
-    {
-      "result": "404 text/html",
-      "url": "https://www.rsc.org/suppdata/d0/cp/d0cp03358h/d0cp03358h1.pdf"
-    },
-    {
-      "result": "404 text/html",
-      "url": "https://www.rsc.org/suppdata/d0/cp/d0cp03358h/d0cp03358h2.pdf"
-    },
-    {
-      "result": "404 text/html",
-      "url": "https://www.rsc.org/suppdata/cp/d0/d0cp03358h/d0cp03358h1.pdf"
-    },
-    {
-      "result": "302 -> id.rsc.org/authorize (SSO wall)",
-      "url": "https://doi.org/10.1039/d0cp03358h"
-    },
-    {
-      "result": "200 but SSO submit form, not content",
-      "url": "https://pubs.rsc.org/en/content/articlelanding/2020/cp/d0cp03358h"
-    },
-    {
-      "result": "200 text/html (SSO), not a PDF",
-      "url": "https://pubs.rsc.org/en/content/articlepdf/2020/cp/d0cp03358h"
-    },
-    {
-      "result": "200; lists only the main article d0cp03358h.pdf, no ESI referenced",
-      "url": "https://research.aalto.fi/en/publications/939bbcb0-d634-4749-b8bd-6b250448ded9"
-    },
-    {
-      "result": "403 text/html",
-      "url": "https://research.aalto.fi/files/52773645/d0cp03358h.pdf"
-    }
-  ],
   "baseline_sha": "fadd925",
-  "conclusion": "every publisher route terminates at an RSC single-sign-on wall and no repository copy of the supplementary document was reachable. The article itself is open access; the supplement was not obtainable from this environment.",
-  "head_sha": "fadd925",
+  "chemrxiv_author_route": {
+    "attempts": [
+      {
+        "result": "302 -> chemrxiv.org/doi/full/...v4, then 403 Cloudflare interstitial",
+        "url": "https://doi.org/10.26434/chemrxiv.12366623"
+      },
+      {
+        "result": "403 Cloudflare interstitial (HTML, not JSON)",
+        "url": "https://chemrxiv.org/engage/chemrxiv/public-api/v1/items/doi/10.26434/chemrxiv.12366623"
+      },
+      {
+        "result": "403 Cloudflare interstitial",
+        "url": "https://chemrxiv.org/engage/chemrxiv/public-api/v1/items?term=..."
+      },
+      {
+        "result": "403 Cloudflare interstitial; 6462-byte HTML, not a PDF",
+        "url": "chemrxiv api-gateway asset PDF (the Unpaywall-advertised location)"
+      },
+      {
+        "result": "connection failed (000)",
+        "url": "https://chemrxiv.blob.core.windows.net/assets/orp/resource/item/<id>/original/"
+      },
+      {
+        "result": "200 but empty array; this item is not figshare-hosted",
+        "url": "https://api.figshare.com/v2/articles?doi=10.26434/chemrxiv.12366623"
+      },
+      {
+        "result": "403 application/xml",
+        "url": "s3-eu-west-1 itempdf asset path"
+      },
+      {
+        "result": "403; also main article only, no SI",
+        "url": "https://research.aalto.fi/files/52773645/d0cp03358h.pdf (with Referer)"
+      },
+      {
+        "result": "403",
+        "url": "europepmc fulltextRepo"
+      },
+      {
+        "result": "200; best OA location is the RSC SSO-walled PDF already known to be blocked",
+        "url": "https://api.openalex.org/works/doi:10.1039/d0cp03358h"
+      }
+    ],
+    "blocker": "Cloudflare bot protection on chemrxiv.org returns a 'Just a moment...' interstitial to every route including the API gateway asset URL that Unpaywall advertises. This is an access-control barrier in this execution environment, not a licensing or availability problem: the item is open access and the exact asset URL is now known.",
+    "chemrxiv_doi": "10.26434/chemrxiv.12366623",
+    "chemrxiv_item_id": "60c750df9abda255eff8dae7",
+    "open_access": {
+      "advertised_pdf": "https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/60c750df9abda255eff8dae7/original/saturation-profile-based-conformality-analysis-for-atomic-layer-deposition-aluminum-oxide-in-lateral-high-aspect-ratio-channels.pdf",
+      "is_oa": true,
+      "source": "unpaywall"
+    },
+    "resolved_version": "10.26434/chemrxiv.12366623.v4",
+    "status": "CHEMRXIV_SOURCE_ACQUISITION_BLOCKED",
+    "useful_for_retry": {
+      "note": "an environment able to pass the Cloudflare challenge (a browser, or a host whose egress is not challenged) should be able to fetch the advertised asset URL directly; the item id and version are recorded above so no re-discovery is needed"
+    }
+  },
+  "head_sha": "9fd8638",
   "main_text_reference": {
     "location": "papers/10.1039_d0cp03358h/extracted/document.md, Table 1 footnote b",
     "meaning": "the identifiers exist in the source record but live in a document that is not part of the corpus",
     "quote": "Original traceable sample codes in ESI, Table S3."
   },
   "next_action_required": "obtain the ESI PDF through an authenticated or institutional route, place it under the paper directory with a SUPPLEMENTARY document role, add SI ingestion to the extraction pipeline, and map the table's persistent-identifier column to traceable_sample_code",
-  "not_done_deliberately": "the externally known mapping (4/5/6 -> V0004 and siblings) was NOT written into any artifact. Copying it from review notes would put an unprovenanced physical-identity assertion into the knowledge graph, which is the failure mode this whole track exists to prevent.",
+  "not_done_deliberately": "neither the RSC nor the ChemRxiv document was obtained, so no traceable specimen identifier was materialised. The mapping known from review notes (4/5/6 and siblings) was NOT written into any artifact: copying it would place an unprovenanced physical-identity assertion into the knowledge graph, which is the failure this track exists to prevent.",
   "objective": "acquire the Electronic Supplementary Information containing the traceable sample-code table (Table S3) referenced by the main text",
   "open_access_status": {
     "is_oa": true,
@@ -51,6 +73,7 @@
   },
   "paper_doi": "10.1039/d0cp03358h",
   "paper_id": "10.1039_d0cp03358h",
+  "pipeline_gap_still_open": "no MAIN_ARTICLE / SUPPLEMENTARY_INFORMATION document role exists in the ingestion pipeline; that work was not started because there is no document to ingest",
   "repository_convention": {
     "main_document": "papers/<paper_id>/paper.pdf",
     "note": "no SI/ESI role exists anywhere in the ingestion pipeline; adding one is part of the ingestion work and is not attempted while the document is unavailable",
@@ -63,5 +86,43 @@
     "generic_resolver": "pipeline.query.entity_identity.canonical_specimens",
     "state": "implemented and unit-tested at fadd925; will materialise groups with no further change once the field is populated"
   },
-  "status": "ESI_ACQUISITION_BLOCKED"
+  "rsc_publisher_route": {
+    "attempts": [
+      {
+        "result": "404 text/html",
+        "url": "https://www.rsc.org/suppdata/d0/cp/d0cp03358h/d0cp03358h1.pdf"
+      },
+      {
+        "result": "404 text/html",
+        "url": "https://www.rsc.org/suppdata/d0/cp/d0cp03358h/d0cp03358h2.pdf"
+      },
+      {
+        "result": "404 text/html",
+        "url": "https://www.rsc.org/suppdata/cp/d0/d0cp03358h/d0cp03358h1.pdf"
+      },
+      {
+        "result": "302 -> id.rsc.org/authorize (SSO wall)",
+        "url": "https://doi.org/10.1039/d0cp03358h"
+      },
+      {
+        "result": "200 but SSO submit form, not content",
+        "url": "https://pubs.rsc.org/en/content/articlelanding/2020/cp/d0cp03358h"
+      },
+      {
+        "result": "200 text/html (SSO), not a PDF",
+        "url": "https://pubs.rsc.org/en/content/articlepdf/2020/cp/d0cp03358h"
+      },
+      {
+        "result": "200; lists only the main article d0cp03358h.pdf, no ESI referenced",
+        "url": "https://research.aalto.fi/en/publications/939bbcb0-d634-4749-b8bd-6b250448ded9"
+      },
+      {
+        "result": "403 text/html",
+        "url": "https://research.aalto.fi/files/52773645/d0cp03358h.pdf"
+      }
+    ],
+    "conclusion": "every publisher route terminates at an RSC single-sign-on wall and no repository copy of the supplementary document was reachable. The article itself is open access; the supplement was not obtainable from this environment.",
+    "status": "BLOCKED"
+  },
+  "status": "CHEMRXIV_SOURCE_ACQUISITION_BLOCKED"
 }
