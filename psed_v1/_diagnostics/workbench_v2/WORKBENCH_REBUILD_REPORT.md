@@ -200,3 +200,175 @@ Three defects were found by looking that no assertion had caught:
 Project suite: unchanged. The four pre-existing failures in `tests/canonical_layer` were
 confirmed identical at the baseline commit via a read-only worktree — they are extraction
 debt, not drift from this change.
+
+---
+
+# Final hardening: graph and range semantics
+
+A second original-code review found five narrower defects. Four were places where the
+first repair had fixed the visible symptom and left the mechanism, and the fifth was a
+set of validation metrics that were not validating anything.
+
+## A. Numeric range facets threw the species away
+
+The model already carried qualified condition keys — `pulse_time@TMA`, `pulse_time@H2O`,
+`precursor_pulse_time@TMA` — and `range_fields()` reduced each to `key.split("@")[0]`.
+The browser then found its field with `k === r.id || k.indexOf(r.id + "@") === 0`, so one
+box labelled "Pulse time" addressed *whichever qualified key the object happened to yield
+first*. This is precisely the ambiguity the frozen condition-comparability layer exists to
+prevent, reintroduced one layer above it.
+
+It is not hypothetical here. **42 Condition Cases carry more than one species for the same
+base quantity**, and 3 base quantities are split by species (`pulse_time`, `purge_time`,
+`exposure_time`).
+
+A range field is now the exact condition key and carries its own identity:
+
+```
+field_id          precursor_pulse_time@TMA
+quantity_id       precursor_pulse_time
+species_or_role   TMA
+display_label     TMA precursor pulse time
+canonical_unit    s
+```
+
+19 fields are offered, **10 of them species-qualified**. A quantity enters on coverage and
+brings every qualified sibling with it, because offering an H2O pulse time without its TMA
+counterpart is its own kind of misleading. An unqualified field standing beside qualified
+siblings is labelled *(species unattributed)* rather than posing as all of them. The
+browser addresses `vals[field_id]` through `hasOwnProperty` — no prefix, no first match —
+and nothing in the builder or the page splits a condition key on `@` any more.
+
+## B. Multi-case ResultSeries were still anchored to a case
+
+The first repair stopped duplicating a sweep under all ten of its cases by choosing the
+lowest case id as a "home". That trades one wrong claim for another: **no Condition Case
+is primary** for a curve that traverses several, and nothing in the data says otherwise.
+
+Placement is now decided in the model, and there are three populations, because these are
+three different scientific situations:
+
+| placement | series | where it appears |
+|---|---|---|
+| `CASE_LOCAL` | 88 | inside its one Condition Case |
+| `MULTI_CASE_SWEEP` | 22 | the dedicated sweep section, owned by no case |
+| `NO_CASE` | 121 | results whose producer carries no case link |
+
+`placement_case_id` is non-null **only** when `n_cases == 1`. A traversed case shows a
+*Related sweep results* cross-reference, never a card.
+
+`case_ids` on a ResultSeries was renamed **`all_case_ids`**, because the name is half the
+defence: there is no other kind of case list, and a field called `case_ids` invites
+`[0]`.
+
+## C. Matching cases are distinguished from traversed cases
+
+A sweep may match a filter because *one* of its cases satisfies it. The page now computes
+`matchingCases()` per series from the cases themselves, and shows both:
+
+> Sweep result `RS::10.1039_d0ra09876k::F3::a::0::f1p0` — spans 10 cases,
+> **4 match filters**, 6 more traversed
+
+with every case listed and labelled `matches` or `traversed only`. Under *Deposition
+temperature ≥ 500 K*, cases 001–006 (373–498 K) read *traversed only* and cases 007–010
+(523–598 K) read *matches*. Point-to-case mapping remains unresolved and is stated as such;
+nothing infers which points came from which case.
+
+The comparison table gained the same discipline. A condition that differs across a sweep's
+span is reported as **varies**, with the compact set or range — `deposition_temperature:
+varies 100 °C … 325 °C (10 values)` — rather than one case's value standing in for the
+whole curve.
+
+## D. Per-case producer counts conflated the two kinds
+
+Global counts were already split; per-case headings still said "N acts" and *Measurement
+acts with matching results*. Each case now partitions its producers by **entity kind**
+(never by the series' `data_source` label) into **Measurements** and **Simulations**
+sections, each shown only when non-empty.
+
+One corpus fact this rests on, reported rather than assumed: **no Condition Case in this
+corpus is linked to a SimulationRun** — all 34 simulation-produced series carry no case
+link. The partition is therefore exercised by injecting a SimulationRun into a real case's
+producer lists in the live page and re-rendering the real code path; the screenshot
+carries a banner saying so. No corpus claim is made by it.
+
+The six XPS MeasurementActs in `10.1039_d0ra09876k` whose series are *labelled* simulated
+remain MeasurementActs. That is a provenance question about the extraction, not a
+workbench one, and conflating the two would bury it.
+
+## E. Validation metrics were literal zeros
+
+`false_common_native_targets = 0` and its neighbours were assignments. A metric that
+cannot be non-zero measures nothing. Each is now derived by replaying the page's own
+decision rule in Python and checking the invariant it is supposed to guarantee:
+
+| metric | how it is computed | value |
+|---|---|---|
+| `false_common_native_targets` | every series pair the UI would offer a target to, checked for identical `(quantity, normalization, dimension, unit, axis)` | **0** |
+| `key_based_false_common_targets` | the same sweep under the *pre-repair* key intersection | **1784** |
+| `incompatible_plotted_pair_violations` | pairs offered an overlay whose frozen verdict is not `DIRECT_PROFILE`/`TRANSFORMABLE_PROFILE` | **0** |
+| `multi_series_target_violations` | every trio within every target's member set — 25 622 sets, not one example | **0** |
+| `duplicate_primary_entries` | the UI grouping rebuilt in Python, series counted | **0** |
+| `multi_case_series_with_primary_case` | multi-case series carrying a `placement_case_id` | **0** |
+| `qualified_range_fields_losing_qualifier` | fields whose id does not encode the species their entries carry | **0** |
+| `ambiguous_first_match_range_lookups` | (field, case) pairs a lookup could resolve two ways | **0** |
+| `prefix_match_ambiguous_lookups_avoided` | the same under the *pre-repair* prefix rule | **42** |
+
+The two counterfactuals matter: 1784 and 42 are what the old algorithms would have
+produced on this corpus, which is the evidence that the zeros are results rather than
+tautologies.
+
+Every one of these is a **build gate**, not a report. `main()` exits non-zero when any
+invariant fails — and the test proves that by breaking the model three ways (anchoring a
+sweep to a case, duplicating an entry, stripping a species) and asserting each is counted
+and each fails the build.
+
+## The static audit was broken
+
+The no-first-case test stripped JavaScript comments with `re.sub(r"//.*|/\*.*?\*/", "",
+src, flags=re.S)`. Under `re.S` the `//.*` branch matches across newlines, so the first
+line comment consumed the rest of the file and the audit passed by having nothing left to
+inspect. Block comments now use DOTALL and line comments explicitly do not
+(`//[^\n]*`), the audit runs over the builder, the template **and the generated HTML**,
+and a control asserts that the old pattern demonstrably destroys the source.
+
+The remaining `cs[0]` occurrences are classified by an AST pass rather than by eye: both
+sit inside `if len(cs) == 1`, which is a genuine singleton, and any unguarded zero
+subscript of a case collection fails the test. **Scientific first-case occurrences: 0.**
+The browser tests no longer navigate by `all_case_ids[0]` either; they locate a sweep by
+its own id in `sweep_series_ids` and by `data-sweep` / `data-case` attributes.
+
+## Tests
+
+`tests/test_workbench_v2.py`: **280 assertions**, up from 149.
+
+- **N8–N12** (static): species-qualified field identity and the corpus facts behind it;
+  no qualifier stripping anywhere; placement semantics and the sweep population; per-case
+  producer partition including the six preserved XPS acts; computed metrics with the
+  build gate proven by breaking it; matching-vs-traversed semantics.
+- **Q** (Chromium): TMA and H2O pulse-time facets shown separately and no bare ambiguous
+  box; a controlled fixture proving 0.1 s / 2 s and 500 ms / 2 s filter independently by
+  species and canonically by unit; a sweep under a partial filter showing 4 matches and
+  6 traversed-only with no owner; the sweep condition summary reading *varies*; a
+  fixture case rendering separate Measurements and Simulations headings with the
+  SimulationRun card under the latter; tray persistence for a multi-case series.
+
+## Visual review
+
+Nine states captured at 2× and inspected. Three defects were found by looking:
+
+1. the facet UI rendered `label` instead of `display_label`, so the ambiguous bare
+   **Pulse time** box was still on screen even though the model had split it;
+2. the sweep section rendered before the condition cases, burying 71 cases behind 22
+   sweep cards — reordered to cases first;
+3. `1 measurement acts` / `0 simulation runs` — pluralisation fixed, and a zero
+   simulation count is now omitted rather than printed on all 71 cards.
+
+## Scientific drift
+
+Compared field-by-field against `25f725b`: ExperimentalCase ids, `case_id` values, nominal
+conditions, MeasurementAct ids/kinds/members, ResultSeries ids, case membership, native x
+and y points, every representation's `target_id` and values, every pair verdict and
+overlay eligibility, samples, runs and measurements — all **UNCHANGED**. The four
+`tests/canonical_layer` failures were confirmed identical at `25f725b`:
+**PRE_EXISTING / UNCHANGED / NOT WORKBENCH DRIFT**.

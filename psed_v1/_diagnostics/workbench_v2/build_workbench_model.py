@@ -320,7 +320,9 @@ def build():
                 "figure": src.get("figure"), "panel": src.get("panel"),
                 "series_label": src.get("series"),
                 "n_points": r.get("n_points"),
-                "case_ids": cs, "n_cases": len(cs),
+                # named all_case_ids because there is no other kind: a sweep belongs to
+                # every case it traverses and none of them is primary
+                "all_case_ids": cs, "n_cases": len(cs),
                 "single_case": K(one) if one else None,
                 "case_cardinality_status": status,
                 "is_profile": (not unresolved_y and cu["x_quantity"] in PROFILE_X
@@ -424,7 +426,7 @@ def facets(cases, acts, series):
             e["series"].add(sid)
 
     for s in series.values():
-        for cid in (s["case_ids"] or [None]):
+        for cid in (s["all_case_ids"] or [None]):
             add("quantity", s["y"]["y_quantity"], cid, s["id"])
             add("coordinate", s["x"]["x_quantity"], cid, s["id"])
             add("data_source", s["data_source"], cid, s["id"])
@@ -459,8 +461,20 @@ def _num(v):
     return None
 
 
+def condition_field_id(quantity, species):
+    """The identity of a numeric condition. A TMA pulse and an H2O pulse are two
+    quantities, not one quantity written twice, and the frozen condition layer already
+    says so -- this only has to avoid throwing the qualifier away again."""
+    return "%s@%s" % (quantity, species) if species else str(quantity)
+
+
 def numeric_conditions(cases):
-    """Canonical numeric condition values, so a range filter compares physics not text."""
+    """Canonical numeric condition values, so a range filter compares physics not text.
+
+    Each entry carries its quantity and species as fields. Downstream code must read
+    those, never re-derive them by splitting the key: `key.split("@")[0]` is how a TMA
+    pulse time and an H2O pulse time became one ambiguous facet.
+    """
     out = {}
     for cid, c in cases.items():
         vals = {}
@@ -468,7 +482,7 @@ def numeric_conditions(cases):
             n = _num(x.get("value"))
             if n is None:
                 continue
-            key = x["quantity"] + ("@" + x["species"] if x.get("species") else "")
+            sp = x.get("species")
             norm = None
             try:
                 if x.get("unit"):
@@ -476,52 +490,150 @@ def numeric_conditions(cases):
                     norm = float(n) * fu.factor + fu.offset
             except Exception:
                 norm = None
-            vals.setdefault(key, []).append({"raw": n, "unit": x.get("unit"),
-                                             "canonical": norm})
+            vals.setdefault(condition_field_id(x["quantity"], sp), []).append(
+                {"raw": n, "unit": x.get("unit"), "canonical": norm,
+                 "quantity": x["quantity"], "species": sp})
         out[cid] = vals
     return out
 
 
-def range_fields(numeric, top=4):
-    """Numeric quantities offered as range filters, in the unit the filter actually uses.
+#: A numeric field is offered as a range filter once this many Condition Cases carry it.
+#: Every qualified sibling of an offered quantity is then offered too -- showing an H2O
+#: pulse time without its TMA counterpart is its own kind of misleading.
+_RANGE_MIN_CASES = 10
 
-    The range box used to advertise the unit the paper wrote (°C) while the comparison ran
-    on canonical magnitudes (K), so a user asking for 200-400 got an answer to a question
-    they did not ask. The unit shown here is the unit of the number being compared, and a
-    field whose raw units do not share one dimension is not offered at all.
+
+def _label(quantity, species):
+    """'pulse_time', 'TMA' -> 'TMA pulse time'. The species leads because that is what
+    distinguishes it from its siblings."""
+    words = str(quantity).replace("_", " ")
+    if species:
+        return "%s %s" % (species, words)
+    return words[:1].upper() + words[1:]
+
+
+def range_fields(numeric):
+    """Numeric quantities offered as range filters, in the unit the filter runs in.
+
+    Two separate lies were possible here. The range box used to advertise the unit the
+    paper wrote (°C) while comparing canonical magnitudes (K). And the field identity was
+    the quantity alone, so one "Pulse time" box silently addressed whichever of
+    pulse_time@TMA / pulse_time@H2O the browser happened to find first. A field is now
+    the exact condition key, and it carries its species so no consumer has to parse it
+    back out of a string.
     """
-    cov, units, canon = Counter(), defaultdict(set), Counter()
+    cov, units, canon, meta = Counter(), defaultdict(set), Counter(), {}
     for fields in numeric.values():
-        for key, entries in fields.items():
-            q = key.split("@")[0]
-            cov[q] += 1
+        for fid, entries in fields.items():
+            cov[fid] += 1
             for e in entries:
+                meta.setdefault(fid, (e.get("quantity"), e.get("species")))
                 if e.get("unit"):
-                    units[q].add(e["unit"])
+                    units[fid].add(e["unit"])
                 if e.get("canonical") is not None:
-                    canon[q] += 1
-    out = []
-    for q, _ in cov.most_common():
+                    canon[fid] += 1
+
+    # a quantity is in scope on coverage; its qualified siblings come with it
+    quantities = {meta[f][0] for f in cov if cov[f] >= _RANGE_MIN_CASES and f in meta}
+    scope = [f for f in cov if f in meta and (cov[f] >= _RANGE_MIN_CASES
+                                              or meta[f][0] in quantities)]
+
+    out, dropped = [], []
+    for fid in sorted(scope, key=lambda f: (-cov[f], f)):
+        quantity, species = meta[fid]
         bases = set()
-        for u in units[q]:
+        for u in units[fid]:
             try:
                 bases.add(U.base_symbol(u))
             except Exception:
                 bases.add(None)
-        if len(bases) != 1 or None in bases or not canon[q]:
-            continue                      # mixed dimensions, or nothing to compare on
-        out.append({"id": q, "label": q.replace("_", " ").capitalize(),
-                    "canonical_unit": bases.pop(), "cases_covered": cov[q],
-                    "raw_units": sorted(units[q]),
+        if len(bases) != 1 or None in bases or not canon[fid]:
+            dropped.append({"field_id": fid, "reason": "no single canonical dimension"})
+            continue
+        out.append({"id": fid, "field_id": fid, "quantity_id": quantity,
+                    "species_or_role": species,
+                    "label": _label(quantity, species),
+                    "display_label": _label(quantity, species),
+                    "canonical_unit": bases.pop(), "cases_covered": cov[fid],
+                    "raw_units": sorted(units[fid]),
                     "comparison_basis": "canonical magnitude"})
-        if len(out) == top:
-            break
+
+    # an unqualified field sitting beside qualified siblings is not "all of them"
+    by_quantity = defaultdict(list)
+    for f in out:
+        by_quantity[f["quantity_id"]].append(f)
+    for q, fs in by_quantity.items():
+        if len(fs) > 1:
+            for f in fs:
+                f["has_qualified_siblings"] = True
+                if not f["species_or_role"]:
+                    f["display_label"] += " (species unattributed)"
+        else:
+            fs[0]["has_qualified_siblings"] = False
+    if dropped:
+        print("range fields not offered: %s" % dropped)
     return out
+
+
+def presentation(cases, acts, series):
+    """Where each ResultSeries belongs in the results UI, decided once, in Python.
+
+    A single-case series belongs inside its case. A multi-case series belongs to the
+    sweep section and to NO case: it traverses several nominal condition cases and none
+    of them is primary. The previous page picked the lowest case id as a "home", which
+    invented a scientific primacy the data does not carry.
+
+    Each case also gets its producers partitioned by entity kind, because a SimulationRun
+    under a heading that says "measurement acts" is a false claim about how the numbers
+    were obtained.
+    """
+    for cid, c in cases.items():
+        c["case_local_series_ids"] = []
+        c["traversed_by_series_ids"] = []
+        c["measurement_act_ids"] = []
+        c["simulation_run_ids"] = []
+    sweeps, nocase = [], []
+    for sid, s in series.items():
+        cs = s["all_case_ids"]
+        if len(cs) == 1:
+            s["placement"] = "CASE_LOCAL"
+            s["placement_case_id"] = cs[0]
+            cases[cs[0]]["case_local_series_ids"].append(sid)
+        elif cs:
+            # no placement_case_id: there is no case this series belongs to more than
+            # the others, and offering one field for it would invite exactly that claim
+            s["placement"] = "MULTI_CASE_SWEEP"
+            s["placement_case_id"] = None
+            sweeps.append(sid)
+            for x in cs:
+                cases[x]["traversed_by_series_ids"].append(sid)
+        else:
+            # a series whose producer carries no case link is not a sweep; it is a result
+            # whose process context was never extracted, which is a different statement
+            s["placement"] = "NO_CASE"
+            s["placement_case_id"] = None
+            nocase.append(sid)
+    for cid, c in cases.items():
+        seen = []
+        for sid in c["case_local_series_ids"]:
+            aid = series[sid]["act_id"]
+            if aid in seen:
+                continue
+            seen.append(aid)
+            a = acts.get(aid)
+            key = ("simulation_run_ids" if a and a["kind"] == "SIMULATION_RUN"
+                   else "measurement_act_ids")
+            c[key].append(aid)
+        for k in ("case_local_series_ids", "traversed_by_series_ids",
+                  "measurement_act_ids", "simulation_run_ids"):
+            c[k] = sorted(c[k])
+    return sorted(sweeps), sorted(nocase)
 
 
 def main():
     cases, acts, series, samples, runs, measurements, excluded = build()
     pairs, counts = comparability(series)
+    sweeps, nocase = presentation(cases, acts, series)
     nums = numeric_conditions(cases)
     model = {
         "meta": {"freeze": FREEZE, "generating_code_sha256": code_hash(),
@@ -538,6 +650,8 @@ def main():
         "pairs": pairs, "facets": facets(cases, acts, series),
         "numeric_conditions": nums,
         "range_fields": range_fields(nums),
+        "sweep_series_ids": sweeps,
+        "no_case_series_ids": nocase,
         "excluded_series": excluded,
     }
     OUT.mkdir(parents=True, exist_ok=True)
@@ -595,7 +709,7 @@ def validate(m, counts):
         "every_act_case_resolves": all(x in cases for a in acts.values()
                                        for x in a["case_ids"]),
         "every_series_case_resolves": all(x in cases for s in series.values()
-                                          for x in s["case_ids"]),
+                                          for x in s["all_case_ids"]),
         "derived_values_present": all(
             r.get("values") is not None
             for s in series.values() for r in s["y_representations"].values()
@@ -607,6 +721,10 @@ def validate(m, counts):
             for r in list(s["x_representations"].values())
                    + list(s["y_representations"].values())),
     }
+    # ---- semantic overlay metrics, computed by replaying the page's own decisions ----
+    # Each of these was a literal 0 in the previous build, which measures nothing. They
+    # are now derived by mirroring the UI rule in Python and checking the invariant it is
+    # supposed to guarantee, exhaustively, over the whole corpus.
     sig = defaultdict(set)
     for s2 in series.values():
         for ax in ("x_representations", "y_representations"):
@@ -620,12 +738,131 @@ def validate(m, counts):
             native_y[r["target_id"]].add(s2["id"])
     c["distinct_y_native_targets"] = len(native_y)
     c["distinct_semantic_targets"] = len(sig)
-    c["false_common_native_targets"] = 0
-    c["multi_series_target_violations"] = 0
-    c["incompatible_plotted_pair_violations"] = 0
-    c["primary_result_entries_for_multi_case_series"] = len(
-        [s2 for s2 in series.values() if s2["n_cases"] > 1])
-    c["duplicate_primary_entries"] = 0
+
+    pairs = m["pairs"]
+
+    def pair_of(a, b):
+        return pairs.get("%s|%s" % (a, b)) or pairs.get("%s|%s" % (b, a))
+
+    def overlay_allowed(group):
+        """The page's gate: every pair in the selection must be authorised."""
+        for i in range(len(group)):
+            for j in range(i + 1, len(group)):
+                p = pair_of(group[i], group[j])
+                if not p or not p.get("physical_overlay_allowed"):
+                    return False
+        return True
+
+    def reps_by_target(sid, axis):
+        return {r["target_id"]: r
+                for r in series[sid][axis + "_representations"].values()
+                if r.get("available") and r.get("values")}
+
+    def offered_targets(group, axis):
+        """Exactly what commonTargets() offers for this selection."""
+        if not overlay_allowed(group):
+            return set()
+        common = None
+        for sid in group:
+            t = set(reps_by_target(sid, axis))
+            common = t if common is None else (common & t)
+        return common or set()
+
+    def semantics_agree(group, axis, tid):
+        """Every participant must mean the same thing by this target, not merely
+        possess a key that spells it the same way."""
+        seen = set()
+        for sid in group:
+            r = reps_by_target(sid, axis).get(tid)
+            if r is None:
+                return False
+            seen.add((r.get("quantity_id"), r.get("normalization_id"),
+                      r.get("dimension"), r.get("unit"), r.get("axis")))
+        return len(seen) == 1
+
+    OVERLAY_OK = ("DIRECT_PROFILE", "TRANSFORMABLE_PROFILE")
+    sids = sorted(series)
+    false_common = incompat = 0
+    key_based_false_common = 0        # what the pre-repair rule would have produced
+    pairs_offered_overlay = 0
+    for i in range(len(sids)):
+        for j in range(i + 1, len(sids)):
+            g = [sids[i], sids[j]]
+            offers = {ax: offered_targets(g, ax) for ax in ("x", "y")}
+            n_off = len(offers["x"]) + len(offers["y"])
+            if n_off:
+                pairs_offered_overlay += 1
+                p = pair_of(*g)
+                if not p or p["status"] not in OVERLAY_OK:
+                    incompat += 1
+                for ax in ("x", "y"):
+                    for tid in offers[ax]:
+                        if not semantics_agree(g, ax, tid):
+                            false_common += 1
+            # counterfactual: intersecting representation KEYS, as the page used to
+            for ax in ("x", "y"):
+                ka = {k for k, r in series[g[0]][ax + "_representations"].items()
+                      if r.get("available") and r.get("values")}
+                kb = {k for k, r in series[g[1]][ax + "_representations"].items()
+                      if r.get("available") and r.get("values")}
+                for k in (ka & kb):
+                    ta = series[g[0]][ax + "_representations"][k]["target_id"]
+                    tb = series[g[1]][ax + "_representations"][k]["target_id"]
+                    p = pair_of(*g)
+                    if ta != tb or not p or not p.get("physical_overlay_allowed"):
+                        key_based_false_common += 1
+    c["false_common_native_targets"] = false_common
+    c["key_based_false_common_targets"] = key_based_false_common
+    c["incompatible_plotted_pair_violations"] = incompat
+    c["pairs_offered_a_physical_overlay"] = pairs_offered_overlay
+
+    # 3+ series: exhaustive over every trio the model could put on one target, not a
+    # single hand-picked example
+    trio_violations = trios = 0
+    for ax in ("x", "y"):
+        per_target = defaultdict(list)
+        for sid in sids:
+            for tid in reps_by_target(sid, ax):
+                per_target[tid].append(sid)
+        for tid, members in per_target.items():
+            members = sorted(members)
+            for i in range(len(members)):
+                for j in range(i + 1, len(members)):
+                    for k in range(j + 1, len(members)):
+                        g = [members[i], members[j], members[k]]
+                        if tid not in offered_targets(g, ax):
+                            continue
+                        trios += 1
+                        p_ok = all(
+                            (pair_of(g[a], g[b]) or {}).get("status") in OVERLAY_OK
+                            for a in range(3) for b in range(a + 1, 3))
+                        if not semantics_agree(g, ax, tid) or not p_ok:
+                            trio_violations += 1
+    c["multi_series_target_sets_checked"] = trios
+    c["multi_series_target_violations"] = trio_violations
+
+    # ---- result presentation: one entry per series, no invented primary case ---------
+    entries = Counter()
+    for cid, cc in cases.items():
+        for sid in cc["case_local_series_ids"]:
+            entries[sid] += 1
+    for sid in m["sweep_series_ids"] + m["no_case_series_ids"]:
+        entries[sid] += 1
+    c["primary_result_entries"] = sum(entries.values())
+    c["multi_case_result_series"] = len(multi_case)
+    c["multi_case_primary_entries"] = len(
+        [s2 for s2 in multi_case if entries[s2["id"]] == 1])
+    c["duplicate_primary_entries"] = len([x for x, n in entries.items() if n > 1])
+    c["result_series_without_primary_entry"] = len(
+        [x for x in series if entries[x] == 0])
+    c["multi_case_series_with_primary_case"] = len(
+        [s2 for s2 in multi_case if s2.get("placement_case_id") is not None])
+    c["case_local_series"] = sum(len(cc["case_local_series_ids"])
+                                 for cc in cases.values())
+    c["sweep_series"] = len(m["sweep_series_ids"])
+    c["no_case_series"] = len(m["no_case_series_ids"])
+
+    # ---- numeric facet identity ------------------------------------------------------
     nfields = ncanon = nmissing = 0
     for vals in numeric.values():
         for k, arr in vals.items():
@@ -635,7 +872,65 @@ def validate(m, counts):
     c["numeric_fields_indexed"] = nfields
     c["numeric_with_canonical"] = ncanon
     c["numeric_without_canonical"] = nmissing
+
+    rfields = m["range_fields"]
+    c["numeric_range_fields"] = len(rfields)
+    c["qualified_numeric_range_fields"] = len(
+        [f for f in rfields if f.get("species_or_role")])
+    # a field loses its qualifier if its id does not encode the species its own entries
+    # carry -- i.e. if something stripped it on the way through
+    losing = 0
+    for f in rfields:
+        want = condition_field_id(f["quantity_id"], f.get("species_or_role"))
+        if f["field_id"] != want:
+            losing += 1
+            continue
+        for fields in numeric.values():
+            for e in fields.get(f["field_id"], []):
+                if (e.get("species") or None) != (f.get("species_or_role") or None):
+                    losing += 1
+                    break
+    c["qualified_range_fields_losing_qualifier"] = losing
+
+    per_base = defaultdict(set)
+    multi_species_cases = 0
+    for cid, fields in numeric.items():
+        by_q = defaultdict(set)
+        for fid, entries_ in fields.items():
+            for e in entries_:
+                by_q[e.get("quantity")].add(e.get("species"))
+                per_base[e.get("quantity")].add(e.get("species"))
+        if any(len(v) > 1 for v in by_q.values()):
+            multi_species_cases += 1
+    c["cases_with_multiple_species_for_same_base_quantity"] = multi_species_cases
+    c["base_quantities_with_several_species"] = len(
+        [q for q, sp in per_base.items() if len(sp) > 1])
+
+    # exact addressing: a field must inspect exactly the key it names, and a lookup that
+    # could reach more than one key is ambiguous. The counterfactual shows the teeth.
+    ambiguous = prefix_ambiguous = 0
+    for f in rfields:
+        fid = f["field_id"]
+        for cid, fields in numeric.items():
+            if len([k for k in fields if k == fid]) > 1:
+                ambiguous += 1
+            hits = [k for k in fields if k == fid or k.startswith(fid + "@")]
+            if len(hits) > 1:
+                prefix_ambiguous += 1
+    c["ambiguous_first_match_range_lookups"] = ambiguous
+    c["prefix_match_ambiguous_lookups_avoided"] = prefix_ambiguous
+
+    c["physical_specimens_resolved"] = len(
+        {x["physical_specimen"] for x in m["samples"].values()
+         if x.get("physical_specimen")})
     c["producers_total"] = c["measurement_acts"] + c["simulation_runs"]
+    c["cases_with_both_producer_kinds"] = len(
+        [cc for cc in cases.values()
+         if cc["measurement_act_ids"] and cc["simulation_run_ids"]])
+    c["per_case_producer_partition_total"] = sum(
+        len(cc["measurement_act_ids"]) + len(cc["simulation_run_ids"])
+        for cc in cases.values())
+
     inv["measurement_acts_exclude_simulations"] = c["measurement_acts"] == 201
     inv["every_representation_has_target_id"] = all(
         r.get("target_id") for s2 in series.values()
@@ -643,10 +938,25 @@ def validate(m, counts):
     inv["native_targets_are_not_universal"] = len(native_y) > 1
     inv["every_pair_declares_overlay_eligibility"] = all(
         "physical_overlay_allowed" in p for p in m["pairs"].values())
+    # these are the gates: a nonzero computed violation must fail the build, not be filed
+    inv["no_false_common_targets"] = false_common == 0
+    inv["no_incompatible_plotted_pairs"] = incompat == 0
+    inv["no_multi_series_target_violations"] = trio_violations == 0
+    inv["no_duplicate_primary_entries"] = c["duplicate_primary_entries"] == 0
+    inv["every_series_has_one_primary_entry"] = (
+        c["result_series_without_primary_entry"] == 0
+        and c["primary_result_entries"] == len(series))
+    inv["no_multi_case_series_has_a_primary_case"] = (
+        c["multi_case_series_with_primary_case"] == 0)
+    inv["multi_case_series_all_have_a_sweep_entry"] = (
+        c["multi_case_primary_entries"] == c["multi_case_result_series"])
+    inv["no_range_field_loses_its_qualifier"] = losing == 0
+    inv["no_ambiguous_range_lookups"] = ambiguous == 0
+    inv["key_based_intersection_would_have_been_wrong"] = key_based_false_common > 0
     return {"counts": c, "invariants": inv, "invariants_ok": all(inv.values()),
             "pair_statuses": dict(counts),
             "multi_case_examples": sorted(
-                [{"series": s["id"], "n_cases": s["n_cases"], "cases": s["case_ids"]}
+                [{"series": s["id"], "n_cases": s["n_cases"], "cases": s["all_case_ids"]}
                  for s in multi_case], key=lambda x: -x["n_cases"])[:25],
             "multi_member_acts": [{"act": a["id"], "members": a["member_measurement_ids"],
                                    "series": a["series_ids"],
