@@ -600,3 +600,109 @@ No DOI, Condition Case, figure, sequence-literal, material or species branch in 
 code; the parser is shape-based and lives only in the builder audit — the page never splits
 a condition value at all. Asserted by test over the builder, the template and the generated
 HTML.
+
+---
+
+# Case-resolved data tables
+
+A sweep figure is often the experiment table drawn as a line: each point was measured at
+one design point. Where the record supports recovering which, that is now shown as data —
+and where it does not, the refusal is shown instead.
+
+## Corpus audit (read-only, before implementation)
+
+| | |
+|---|---|
+| multi-case ResultSeries | 22 |
+| `POINT_CASE_RESOLVED` | **10** |
+| `PARTIALLY_RESOLVED` | 0 |
+| `CASE_SET_ONLY` | **12** |
+| points examined | 99 |
+| points resolved | **69** |
+| points ambiguous | **0** |
+| points without a matching case condition | 30 |
+| multi-case series with no persisted coordinates at all | **6** |
+
+The 12 unresolved break down into three distinct, honest causes:
+
+- **6** have no persisted digitized coordinates. Their `n_points` is recorded but no
+  canonical x array exists, so there are no points to attribute.
+- **3** (`NO_COMPATIBLE_CASE_CONDITION`) span cases that record no condition of the
+  series' x quantity at all.
+- **3** (`NO_MATCHING_CASE_VALUE`) span cases that *do* record the bare x quantity, but at
+  a constant value that no point equals; the values that would match belong to a
+  species-qualified quantity, which is a different quantity. Reading the bare axis as that
+  one would be the assertion, not the record.
+
+Two generic sweep classes resolve: **temperature → result** (7 series, °C recorded against
+a K axis, matched after canonical conversion) and **pulse time → result** (3 series,
+same-unit exact match).
+
+## Resolution algorithm
+
+A point resolves only when **exactly one** associated Condition Case carries a condition of
+the **same quantity identity** whose **canonical magnitude equals** the point's.
+
+- *Identity* includes species/role: a TMA pulse and an H2O pulse are different quantities
+  however equal their numbers, and a bare axis matches neither (MISSING is not SAME).
+- *Equality* goes through the frozen `condition_query.normalized_value` contract — the same
+  one the condition comparator uses — which reduces to (dimension, SI-referenced
+  magnitude) and compares exactly. **No tolerance was invented**; none was needed, because
+  every real match is exact after conversion.
+- *Uniqueness* is a gate: 0 candidates → `UNRESOLVED_NO_MATCH`, >1 → `UNRESOLVED_AMBIGUOUS`.
+  A tie is never broken.
+
+Nothing uses ordering, list length, figure order or legend text. The resolver names no
+quantity: it reads the series' own x quantity and searches the associated cases for that
+identity, so temperature, pulse, purge, cycle count or pressure sweeps all work the same
+way when the evidence supports them.
+
+Negative controls prove it: five points against five cases with no matching semantics stay
+`CASE_SET_ONLY`; two cases at the same value are `UNRESOLVED_AMBIGUOUS`; and points given
+in descending order resolve to the right cases by value, not position.
+
+## The three states, in the UI
+
+The comparison workspace gained a mode switch — **[ Plot ] [ Case data ]** — with the
+series condition comparison remaining below both. The two tables answer different
+questions: *what conditions produced this observed value* versus *how do these series
+differ in overall context*.
+
+- **`POINT_CASE_RESOLVED`** — one row per point: Condition Case, the sweep quantity, the
+  conditions that *vary* across the displayed cases, and the result. Conditions common to
+  every displayed case are stated once above the table instead of repeated down it. Rows
+  sort by sweep value; sorting is presentation only and never how a point found its case.
+- **`CASE_SET_ONLY`** — *"Point-to-case mapping unresolved"*, the digitized point count,
+  the evidence class, and the associated cases as **context only**, explicitly marked as
+  implying no linkage. No point rows are fabricated.
+- **`NO_CASE_CONTEXT`** — says so, and the plot remains available.
+
+Clicking a row opens a provenance drawer: ResultSeries, point index, MeasurementAct, source
+figure, the x value against the case condition it matched, the canonical magnitude and
+dimension, mapping status, evidence class, method, and the statement that the link is
+derived for the workbench and is not part of the scientific record.
+
+Where several selected series resolve onto the same Condition Cases, an **aligned view**
+joins them — on **Condition Case identity**, never on an equal x value, a shared figure or
+a row index — with one result column per series, so distinct MeasurementActs stay distinct
+while their outcomes line up by design point.
+
+## Overlay independence
+
+The case table is deliberately **not** gated on `physical_overlay_allowed` or
+`commonTargets()`. Two series with different precursors whose pair verdict is
+`NOT_INDEXED` — no shared physical axis, overlay unavailable — still produce complete
+case-resolved tables. Comparison by design point and comparison by shared axis are
+different modes, and only one of them needs the axes to agree.
+
+## Derived, not persisted
+
+Everything here is workbench-derived and marked `DERIVED_FOR_WORKBENCH`:
+`point_case_links.json` and `point_case_resolution_audit.json` are written beside the
+model, and the relation is embedded in `workbench_model.json` under `point_case_links`.
+No scientific record was modified.
+
+Two things the corpus does not support, reported rather than filled in: **no uncertainty
+values exist anywhere in the digitized points**, so no error bars are shown; and for 6 of
+the 10 resolved series the y axis was never canonicalised, so the result cell reads
+*result unresolved* while the mapping itself stands.

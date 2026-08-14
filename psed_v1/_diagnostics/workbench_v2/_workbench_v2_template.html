@@ -143,7 +143,7 @@ const active = {}; FDEF.forEach(f => active[f.id] = new Set());
 const range = {}; RANGES.forEach(r => range[r.id] = {min:"",max:""});
 const tray = [];                       // selected ResultSeries ids, persistent
 let profileOnly = false, onlyComparable = "", shapeOnly = false;
-let TX = null, TY = null, page = 0, openPop = null;
+let TX = null, TY = null, page = 0, openPop = null, mode = "plot";
 const MAXSEL = 8;
 
 // ---------------------------------------------------------------- facet engine
@@ -703,23 +703,36 @@ function drawCompare() {
       <div class="dim" style="font-size:10.5px">Shape-only does not assert quantitative
       equivalence or a shared normalization basis.</div>`;
   }
-  const xs = commonTargets("x"), ys = commonTargets("y");
-  // never keep a target the current selection cannot all reach
-  if (!TX || xs.indexOf(TX)<0) TX = xs[0] || null;
-  if (!TY || ys.indexOf(TY)<0) TY = ys[0] || null;
-  h += `<h2>Representation</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-    <div class="repbox"><b style="font-size:11px">X representation</b>
-      ${repOpts("x",xs)}</div>
-    <div class="repbox"><b style="font-size:11px">Y representation</b>
-      ${repOpts("y",ys)}</div></div>`;
-  h += '<h2>Overlay</h2><div id="plot"></div>';
-  h += '<h2>Condition comparison</h2><div id="conds"></div>';
+  // Case data is a comparison mode in its own right: it answers "what conditions
+  // produced this observed value", which does not require the two series to share a
+  // physical axis. It is deliberately NOT gated on overlay authorization.
+  h += `<h2>Comparison mode</h2><div style="margin-bottom:6px">
+    <button id="tab-plot" class="${mode==="plot"?"pri":""}">Plot</button>
+    <button id="tab-case" class="${mode==="case"?"pri":""}">Case data</button></div>`;
+  if (mode === "case") {
+    h += '<div id="casedata"></div>';
+  } else {
+    const xs = commonTargets("x"), ys = commonTargets("y");
+    // never keep a target the current selection cannot all reach
+    if (!TX || xs.indexOf(TX)<0) TX = xs[0] || null;
+    if (!TY || ys.indexOf(TY)<0) TY = ys[0] || null;
+    h += `<h2>Representation</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="repbox"><b style="font-size:11px">X representation</b>
+        ${repOpts("x",xs)}</div>
+      <div class="repbox"><b style="font-size:11px">Y representation</b>
+        ${repOpts("y",ys)}</div></div>`;
+    h += '<h2>Overlay</h2><div id="plot"></div>';
+  }
+  h += '<h2>Series condition comparison</h2><div id="conds"></div>';
   h += '<h2>Why comparable?</h2><div id="why"></div>';
   box.innerHTML = h;
+  $("#tab-plot").onclick = () => { mode = "plot"; drawCompare(); };
+  $("#tab-case").onclick = () => { mode = "case"; drawCompare(); };
   if ($("#so")) $("#so").onchange = e => { shapeOnly=e.target.checked; drawCompare(); };
   box.querySelectorAll("input[name=rx]").forEach(r=>r.onchange=e=>{TX=e.target.value; drawCompare();});
   box.querySelectorAll("input[name=ry]").forEach(r=>r.onchange=e=>{TY=e.target.value; drawCompare();});
-  drawPlot(); drawConds(); drawWhy();
+  if (mode === "case") drawCaseData(); else drawPlot();
+  drawConds(); drawWhy();
 }
 function repOpts(axis, common) {
   const cur = axis==="x"?TX:TY;
@@ -851,6 +864,164 @@ function qualifiedSiblings(caseIds, quantity) {
     out.push({key, text, kind: roleQualified ? "role" : "species"});
   }));
   return out.sort((a,b)=>a.key.localeCompare(b.key));
+}
+// ---------------------------------------------------------------- case-resolved data
+// A sweep figure is often the experiment table drawn as a line: each point was measured
+// at one design point. Where the record supports recovering which, that is shown as data.
+// Where it does not, the refusal is shown instead -- never a plausible row.
+const PCL = M.point_case_links || {};
+function caseDataRows(sid) {
+  const s = SERIES[sid], rec = PCL[sid] || {};
+  const yv = (s.y_canonical || {}).values || [], xv = (s.x_canonical || {}).values || [];
+  const yOK = yv.length === xv.length && yv.length > 0;
+  return (rec.links || []).filter(l => l.resolution_status === "RESOLVED").map(l => ({
+    sid, case_id: l.case_id, point_index: l.point_index,
+    x: l.point_x_value, x_unit: l.point_x_unit,
+    y: yOK ? yv[l.point_index] : null, y_unit: (s.y_canonical || {}).unit,
+    link: l}));
+}
+// Columns are chosen from what actually distinguishes the displayed cases: a condition
+// that is the same everywhere is stated once above the table instead of repeated down it.
+function splitConditions(caseIds) {
+  const vals = {};
+  caseIds.forEach(cid => ((CASES[cid]||{conditions:[]}).conditions).forEach(x => {
+    if (x.value === null || x.value === undefined || x.value === "") return;
+    const k = x.quantity + (x.species ? "@" + x.species : "");
+    (vals[k] = vals[k] || {})[cid] = `${x.value}${x.unit ? " " + x.unit : ""}`;
+  }));
+  const varying = [], common = [];
+  Object.keys(vals).sort().forEach(k => {
+    const seen = new Set(caseIds.map(c => vals[k][c]));
+    if (seen.size === 1 && !seen.has(undefined) && caseIds.length > 1) {
+      common.push({k, v: [...seen][0]});
+    } else if (seen.size > 1) { varying.push({k, by: vals[k]}); }
+  });
+  return {varying, common};
+}
+function unresolvedBlock(sid) {
+  const s = SERIES[sid], rec = PCL[sid] || {};
+  if (rec.status === "NO_CASE_CONTEXT")
+    return `<div class="note">No Condition Case context is currently linked to this
+      ResultSeries. Its digitized values remain inspectable in the plot.</div>`;
+  const ev = [...new Set((rec.links||[]).map(l => l.evidence))];
+  const {varying, common} = splitConditions(s.all_case_ids);
+  return `<div class="note"><b>Point-to-case mapping unresolved.</b>
+      ${rec.n_points_available
+        ? `${rec.n_points_available} digitized point${rec.n_points_available===1?"":"s"};
+           no point could be uniquely attributed to one of the
+           ${s.all_case_ids.length} associated Condition Cases.`
+        : `No digitized coordinates are persisted for this series
+           (${esc(String(s.n_points))} points are recorded as extracted).`}
+      ${ev.length?`<br><span class="dim">${ev.map(esc).join(", ")}</span>`:""}
+      <br><span class="dim">The associated cases are listed below as context only; no
+      point-case linkage is implied.</span></div>
+    <table><thead><tr><th>Condition Case</th>${
+      varying.map(v=>`<th><code>${esc(v.k)}</code></th>`).join("")}</tr></thead><tbody>
+    ${s.all_case_ids.map(cid=>`<tr><td><code>${esc(CASES[cid]?CASES[cid].case_id:cid)}</code></td>
+      ${varying.map(v=>`<td>${esc(v.by[cid]||"")||'<span class="dim">unknown</span>'}</td>`).join("")}
+      </tr>`).join("")}</tbody></table>
+    ${common.length?`<div class="dim" style="font-size:10.5px;margin-top:3px">Common:
+      ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`:""}`;
+}
+function drawCaseData() {
+  const box = $("#casedata"); if (!box) return;
+  if (!tray.length) { box.innerHTML = '<div class="note">Select result series.</div>'; return; }
+  let h = "";
+  const resolved = tray.filter(sid => (caseDataRows(sid) || []).length);
+  // Several series resolving onto the SAME Condition Cases can be read side by side.
+  // The join key is the Condition Case id -- never an equal x value, a shared figure or a
+  // row index, which would assert an identity the graph does not record.
+  if (resolved.length > 1) {
+    const byCase = {};
+    resolved.forEach(sid => caseDataRows(sid).forEach(r =>
+      ((byCase[r.case_id] = byCase[r.case_id] || {})[sid] = r)));
+    const shared = Object.keys(byCase).filter(c => Object.keys(byCase[c]).length > 1);
+    if (shared.length) {
+      const {varying, common} = splitConditions(shared);
+      h += `<h3>Aligned by Condition Case <span class="dim" style="font-weight:400">·
+        ${shared.length} case${shared.length===1?"":"s"} reached by more than one selected
+        result · joined on Condition Case identity</span></h3>`;
+      if (common.length) h += `<div class="dim" style="font-size:10.5px;margin-bottom:4px">
+        Common: ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`;
+      h += `<table><thead><tr><th>Condition Case</th>
+        ${varying.map(v=>`<th><code>${esc(v.k)}</code></th>`).join("")}
+        ${resolved.map(sid=>`<th>${chip(sid)} ${esc(SERIES[sid].y.y_quantity||"result")}
+          <div class="dim" style="font-weight:400">Fig.${esc(SERIES[sid].figure)}${
+          esc(SERIES[sid].panel||"")}</div></th>`).join("")}</tr></thead><tbody>`;
+      shared.sort((a,b)=>{
+        const ra = Object.values(byCase[a])[0], rb = Object.values(byCase[b])[0];
+        return (ra.x||0)-(rb.x||0); });
+      shared.forEach(cid => {
+        h += `<tr><td><code>${esc(CASES[cid]?CASES[cid].case_id:cid)}</code></td>
+          ${varying.map(v=>`<td>${esc(v.by[cid]||"")||'<span class="dim">unknown</span>'}</td>`).join("")}
+          ${resolved.map(sid=>{ const r = byCase[cid][sid];
+            return `<td>${r ? fmtResult(r) : '<span class="dim">—</span>'}</td>`;}).join("")}
+          </tr>`;
+      });
+      h += "</tbody></table>";
+    }
+  }
+  tray.forEach(sid => {
+    const s = SERIES[sid], rows = caseDataRows(sid), rec = PCL[sid] || {};
+    h += `<h3>${chip(sid)} ${esc(s.paper_id)} · Fig. ${esc(s.figure)}${esc(s.panel||"")}
+      ${s.series_label?" · "+esc(s.series_label):""}
+      <span class="dim" style="font-weight:400">· ${esc(rec.status||"")}</span></h3>`;
+    if (!rows.length) { h += unresolvedBlock(sid); return; }
+    const cids = rows.map(r=>r.case_id);
+    const {varying, common} = splitConditions(cids);
+    if (common.length) h += `<div class="dim" style="font-size:10.5px;margin-bottom:4px">
+      Common: ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`;
+    if (rec.status === "PARTIALLY_RESOLVED")
+      h += `<div class="note warn">${rec.resolved_points} of
+        ${rec.links.length} points resolved; ${rec.ambiguous_points} ambiguous,
+        ${rec.unmatched_points} without a matching case condition.</div>`;
+    const xq = (s.x_canonical||{}).quantity, xu = (s.x_canonical||{}).unit;
+    h += `<table><thead><tr><th>Condition Case</th>
+      <th><code>${esc(xq)}</code>${xu?` <span class="dim">[${esc(xu)}]</span>`:""}</th>
+      ${varying.filter(v=>v.k!==xq).map(v=>`<th><code>${esc(v.k)}</code></th>`).join("")}
+      <th>${esc(s.y.y_quantity||"result")}${
+        s.normalization_basis&&s.normalization_basis!=="unresolved"
+          ? ` <span class="dim">(${esc(s.normalization_basis)})</span>`:""}</th>
+      </tr></thead><tbody>`;
+    // ascending sweep order: presentation only, and never how a point found its case
+    rows.slice().sort((a,b)=>a.x-b.x).forEach(r => {
+      h += `<tr data-sid="${esc(sid)}" data-pt="${r.point_index}">
+        <td><code>${esc(CASES[r.case_id]?CASES[r.case_id].case_id:r.case_id)}</code></td>
+        <td>${esc(fmtNum(r.x))}</td>
+        ${varying.filter(v=>v.k!==xq).map(v=>
+          `<td>${esc(v.by[r.case_id]||"")||'<span class="dim">unknown</span>'}</td>`).join("")}
+        <td>${fmtResult(r)}</td></tr>
+        <tr class="prov" data-for="${esc(sid)}|${r.point_index}" style="display:none">
+        <td colspan="${3+varying.filter(v=>v.k!==xq).length}"><div class="smeta">
+          ResultSeries <code>${esc(s.series_id)}</code><br>
+          point index ${r.point_index} · MeasurementAct <code>${esc(s.act_id)}</code><br>
+          source Fig. ${esc(s.figure)}${esc(s.panel||"")}<br>
+          x ${esc(String(r.link.point_x_value))} ${esc(r.link.point_x_unit||"")} ↔ case
+          condition ${esc(String(r.link.case_condition_value))}
+          ${esc(r.link.case_condition_unit||"")}
+          (canonical ${esc(fmtNum(r.link.canonical_value))} ${esc(r.link.canonical_dimension||"")})<br>
+          mapping ${esc(r.link.resolution_status)} · ${esc(r.link.evidence)}<br>
+          method ${esc(r.link.resolution_method)}<br>
+          <span class="dim">${esc(r.link.evidence_source)}</span><br>
+          <span class="dim">derived for the workbench; not part of the scientific record</span>
+        </div></td></tr>`;
+    });
+    h += "</tbody></table>";
+  });
+  box.innerHTML = h;
+  box.querySelectorAll("tr[data-sid]").forEach(tr => tr.onclick = () => {
+    const k = tr.dataset.sid + "|" + tr.dataset.pt;
+    const d = box.querySelector(`tr.prov[data-for="${CSS.escape(k)}"]`);
+    if (d) d.style.display = d.style.display === "none" ? "" : "none";
+  });
+}
+const fmtNum = v => (v === null || v === undefined) ? "" :
+  (Math.abs(v) >= 1000 || (v !== 0 && Math.abs(v) < 0.001) ? v.toPrecision(4)
+   : String(Math.round(v * 1e6) / 1e6));
+function fmtResult(r) {
+  if (r.y === null || r.y === undefined)
+    return '<span class="warn">result unresolved</span>';
+  return `${esc(fmtNum(r.y))}${r.y_unit?` <span class="dim">${esc(r.y_unit)}</span>`:""}`;
 }
 function drawConds() {
   const box = $("#conds"); if (!box) return;

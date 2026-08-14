@@ -678,6 +678,136 @@ def final_hardening_tests(M, V, hp):
     ok("N16: the condition table header carries it",
        "<th>${chip(c.sid)}" in tplS)
 
+    print("=== N17. point -> Condition Case resolution ===")
+    import importlib.util as _i
+    _s = _i.spec_from_file_location("wbb2", WB / "build_workbench_model.py")
+    wb = _i.module_from_spec(_s); _s.loader.exec_module(wb)
+    PCL = M["point_case_links"]
+    ok("N17: the derived relation is labelled as derived",
+       all(v["derivation"] == "DERIVED_FOR_WORKBENCH" for v in PCL.values()))
+    ok("N17: %d of 22 multi-case series fully resolve"
+       % C["point_case_series_fully_resolved"],
+       C["point_case_series_fully_resolved"] == 10)
+    ok("N17: none partially resolves in this corpus",
+       C["point_case_series_partially_resolved"] == 0)
+    ok("N17: 12 remain case-set-only", C["point_case_series_unresolved"] == 12)
+    ok("N17: 6 of those have no persisted coordinates at all",
+       C["multi_case_series_without_persisted_points"] == 6)
+    ok("N17: 69 of 99 points resolve, 0 ambiguously",
+       (C["point_case_points_resolved"], C["point_case_points_ambiguous"],
+        C["point_case_points_no_match"]) == (69, 0, 30),
+       (C["point_case_points_resolved"], C["point_case_points_ambiguous"],
+        C["point_case_points_no_match"]))
+    ok("N17: no link names a case outside the series' own set",
+       V["invariants"]["no_point_links_outside_the_series_case_set"] is True)
+    ok("N17: every resolved point names exactly one case",
+       V["invariants"]["resolved_points_name_exactly_one_case"] is True)
+    ok("N17: the audit artifact exists",
+       (WB / "point_case_resolution_audit.json").exists())
+    ok("N17: and the derived link artifact", (WB / "point_case_links.json").exists())
+
+    print("=== N18. resolution fixtures ===")
+    def cases_from(spec):
+        return {k: {"conditions": v} for k, v in spec.items()}
+    cond = lambda q, v, u, sp=None: {"quantity": q, "value": v, "unit": u, "species": sp}
+    R = wb.resolve_points_to_cases
+
+    # group 1: unit conversion -- 500 ms and 0.5 s are one physical value
+    cs = cases_from({"A": [cond("pulse_time", 0.5, "s")],
+                     "B": [cond("pulse_time", 2.0, "s")]})
+    r = R([500], "ms", "pulse_time", None, ["A", "B"], cs)
+    ok("N18: 500 ms resolves to a 0.5 s case",
+       r[0]["resolution_status"] == "RESOLVED" and r[0]["case_id"] == "A"
+       and r[0]["evidence"] == "UNIT_CONVERTED_EXACT_MATCH", r[0])
+
+    # group 2: species is part of the identity
+    cs = cases_from({"A": [cond("pulse_time", 0.5, "s", "__TMA__"),
+                           cond("pulse_time", 0.5, "s", "__H2O__")]})
+    r = R([0.5], "s", "pulse_time", "__TMA__", ["A"], cs)
+    ok("N18: a TMA axis matches only the TMA condition",
+       r[0]["resolution_status"] == "RESOLVED"
+       and r[0]["matched_species_or_role"] == "__TMA__", r[0])
+    r = R([0.5], "s", "pulse_time", None, ["A"], cs)
+    ok("N18: a bare axis does not silently take a qualified condition",
+       r[0]["resolution_status"] == "UNRESOLVED_NO_MATCH"
+       and r[0]["evidence"] == "NO_COMPATIBLE_CASE_CONDITION", r[0])
+
+    # group 3: duplicate values are ambiguous, never broken by order
+    cs = cases_from({"A": [cond("pulse_time", 3, "s")], "B": [cond("pulse_time", 3, "s")]})
+    r = R([3], "s", "pulse_time", None, ["A", "B"], cs)
+    ok("N18: two cases with the same value are ambiguous",
+       r[0]["resolution_status"] == "UNRESOLVED_AMBIGUOUS"
+       and r[0]["candidate_case_ids"] == ["A", "B"], r[0])
+
+    # group 4: same length, no semantic evidence -- must NOT resolve
+    cs = cases_from({("C%d" % i): [cond("deposition_temperature", 100 + i, "°C")]
+                     for i in range(5)})
+    r = R([1, 2, 3, 4, 5], "s", "pulse_time", None, ["C%d" % i for i in range(5)], cs)
+    ok("N18: five points and five cases do not resolve without matching semantics",
+       all(x["resolution_status"] == "UNRESOLVED_NO_MATCH" for x in r)
+       and all(x["evidence"] == "NO_COMPATIBLE_CASE_CONDITION" for x in r), r[0])
+    ok("N18: and the series status is CASE_SET_ONLY, not resolved",
+       wb.series_resolution_status(["C%d" % i for i in range(5)], r) == "CASE_SET_ONLY")
+
+    # group 5: branch context -- the same x in two branches picks each branch's own case
+    cs = cases_from({"A200": [cond("deposition_temperature", 200, "°C"),
+                              cond("pulse_time", 3, "s")],
+                     "A300": [cond("deposition_temperature", 300, "°C"),
+                              cond("pulse_time", 3, "s")]})
+    rA = R([3], "s", "pulse_time", None, ["A200"], cs)
+    rB = R([3], "s", "pulse_time", None, ["A300"], cs)
+    ok("N18: branch A resolves to its own case", rA[0]["case_id"] == "A200")
+    ok("N18: branch B resolves to its own case", rB[0]["case_id"] == "A300")
+    ok("N18: and both together are ambiguous rather than ordered",
+       R([3], "s", "pulse_time", None, ["A200", "A300"], cs)[0]["resolution_status"]
+       == "UNRESOLVED_AMBIGUOUS")
+
+    # partial resolution is reported as partial
+    cs = cases_from({"A": [cond("pulse_time", 1, "s")], "B": [cond("pulse_time", 2, "s")]})
+    r = R([1, 2, 99], "s", "pulse_time", None, ["A", "B"], cs)
+    ok("N18: a series with one unmatched point is PARTIALLY_RESOLVED",
+       wb.series_resolution_status(["A", "B"], r) == "PARTIALLY_RESOLVED", r[2])
+    ok("N18: no case context at all is its own state",
+       wb.series_resolution_status([], []) == "NO_CASE_CONTEXT")
+
+    # ordering must never be the evidence
+    cs = cases_from({"A": [cond("pulse_time", 7, "s")], "B": [cond("pulse_time", 8, "s")]})
+    r = R([8, 7], "s", "pulse_time", None, ["A", "B"], cs)
+    ok("N18: points are matched by value, not by position",
+       r[0]["case_id"] == "B" and r[1]["case_id"] == "A", r)
+
+    print("=== N19. the resolver is generic ===")
+    prodR = {"builder": strip_comments(WB / "build_workbench_model.py"),
+             "template": strip_comments(WB / "_workbench_v2_template.html")}
+    idsR = {"DOI": sorted({x["paper_id"] for x in M["cases"].values()}),
+            "Condition Case id": sorted({x["case_id"] for x in M["cases"].values()}),
+            "ResultSeries id": sorted({x["series_id"] for x in M["series"].values()})[:40],
+            "material": sorted({x["material"] for x in M["cases"].values() if x["material"]}),
+            "species": sorted({f["species_or_role"] for f in M["range_fields"]
+                               if f["species_or_role"]})}
+    for kind, vals in idsR.items():
+        hits = ["%s: %s" % (nm, v) for nm, body in prodR.items()
+                for v in vals if v and str(v) in body]
+        ok("N19: no %-18s in resolver production code" % kind, not hits, hits[:3])
+    # structural slice needs real source: the tokenize stripper drops the space in "def f"
+    raw = (WB / "build_workbench_model.py").read_text()
+    res = raw[raw.index("def resolve_points_to_cases"):
+              raw.index("def series_resolution_status")]
+    for q in ("deposition_temperature", "pulse_time", "purge_time", "cycle_number",
+              "growth_per_cycle", "film_thickness"):
+        ok("N19: the resolver never names the quantity %s" % q, q not in res)
+    for bad in ("zip(", "sorted(case_ids)", "case_ids[0]", "enumerate(case_ids)"):
+        ok("N19: no ordering-based pairing (%s)" % bad, bad not in res, bad)
+    ok("N19: it reads the series' own x quantity instead",
+       "x_quantity" in res and "_same_quantity_identity" in res)
+    ok("N19: equality goes through the frozen condition contract",
+       "CQ.normalized_value" in strip_comments(WB / "build_workbench_model.py"))
+    ok("N19: and no tolerance is invented",
+       "tol" not in res and "isclose" not in res and "abs(" not in res)
+    ok("N19: the case-data view is not gated on overlay authorization",
+       "physicalOverlayAllowed" not in
+       prodR["template"].split("function drawCaseData")[1].split("function drawConds")[0])
+
     print("=== N14. the filtering algorithm is generic ===")
     # Every identifier the regressions rely on is searched for in production code. A
     # filter that needs to know a DOI, a case id or a material name is not an algorithm.
@@ -926,6 +1056,7 @@ def dom_tests(hp):
         final_hardening_dom(pg, errors)
         case_scope_dom(pg, errors)
         condition_display_dom(pg, errors)
+        case_data_dom(pg, errors)
         b.close()
 
 
@@ -1810,6 +1941,146 @@ def _rgb(hexcolor):
     if len(h) == 3:
         h = "".join(c * 2 for c in h)
     return "rgb(%d, %d, %d)" % (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+
+
+def case_data_dom(pg, errors):
+    """The Case data view on the real page."""
+    print("=== T. case-resolved data view ===")
+
+    def reset():
+        pg.evaluate("""() => {
+            tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+            RANGES.forEach(r => range[r.id] = {min:"",max:""});
+            profileOnly = false; mode = "plot"; page = 0; render();
+        }""")
+
+    reset()
+    one = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const box = document.querySelector('#casedata');
+        const rows = [...box.querySelectorAll('tr[data-sid]')];
+        const xs = rows.map(r => parseFloat(r.children[1].innerText));
+        return {id, n: rows.length, resolved: PCL[id].resolved_points,
+                sorted: xs.every((v,i)=> i===0 || v >= xs[i-1]),
+                cases: new Set(rows.map(r=>r.children[0].innerText)).size,
+                head: [...box.querySelectorAll('thead th')].map(t=>t.innerText),
+                chip: !!box.querySelector('.sw'),
+                chipColor: box.querySelector('.sw') ? box.querySelector('.sw').style.background : null,
+                expected: seriesColor(id)};
+    }""")
+    ok("T: a resolved sweep renders one row per resolved point",
+       one["n"] == one["resolved"] and one["n"] > 0, one)
+    ok("T: each row names a distinct Condition Case", one["cases"] == one["n"], one)
+    ok("T: rows are sorted by the sweep value", one["sorted"], one)
+    ok("T: the sweep quantity and the result are columns",
+       len(one["head"]) >= 3, one["head"])
+    ok("T: the series chip carries its plot colour",
+       one["chip"] and one["chipColor"] == _rgb(one["expected"]), one)
+
+    prov = pg.evaluate("""() => {
+        const box = document.querySelector('#casedata');
+        const tr = box.querySelector('tr[data-sid]');
+        const key = tr.dataset.sid + "|" + tr.dataset.pt;
+        const d = box.querySelector(`tr.prov[data-for="${CSS.escape(key)}"]`);
+        const before = d.style.display;
+        tr.click();
+        return {before, after: d.style.display, text: d.innerText};
+    }""")
+    ok("T: a row expands a provenance drawer",
+       prov["before"] == "none" and prov["after"] != "none", prov["after"])
+    for want in ("point index", "MeasurementAct", "canonical", "EXACT",
+                 "not part of the scientific record"):
+        ok("T: the drawer states %s" % want, want in prov["text"], prov["text"][:120])
+
+    # overlay-blocked selections must still show case data
+    reset()
+    blocked = pg.evaluate("""() => {
+        const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        for (const a of res) for (const b of res) {
+            if (a === b) continue;
+            const p = pairOf(a,b);
+            if (p && p.physical_overlay_allowed) continue;
+            tray.length = 0; tray.push(a,b); mode = "plot"; render();
+            const plotNote = (document.querySelector('#plot .note')||{}).textContent || "";
+            const overlayBlocked = !physicalOverlayAllowed()
+                                   || document.querySelectorAll('#plot polyline').length === 0;
+            mode = "case"; render();
+            const rows = document.querySelectorAll('#casedata tr[data-sid]').length;
+            return {overlayBlocked, rows, plotNote: plotNote.slice(0,80)};
+        }
+        return null;
+    }""")
+    if blocked:
+        ok("T: an overlay-blocked pair still yields case data",
+           blocked["overlayBlocked"] and blocked["rows"] > 0, blocked)
+    else:
+        ok("T: no overlay-blocked resolved pair exists (reported)", True)
+
+    # multi-series join is on Condition Case identity
+    reset()
+    joined = pg.evaluate("""() => {
+        const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        for (const a of res) for (const b of res) {
+            if (a === b) continue;
+            const ca = new Set(SERIES[a].all_case_ids), shared =
+                SERIES[b].all_case_ids.filter(c => ca.has(c));
+            if (shared.length < 2) continue;
+            tray.length = 0; tray.push(a,b); mode = "case"; render();
+            const txt = document.querySelector('#casedata').innerText;
+            return {a, b, shared: shared.length,
+                    aligned: txt.indexOf("Aligned by Condition Case") >= 0,
+                    joins_on_case: txt.indexOf("joined on Condition Case identity") >= 0};
+        }
+        return null;
+    }""")
+    if joined:
+        ok("T: two series over shared cases align on Condition Case",
+           joined["aligned"] and joined["joins_on_case"], joined)
+    else:
+        ok("T: no two resolved series share cases in this corpus (reported)", True)
+
+    # the refusals
+    reset()
+    refuse = pg.evaluate("""() => {
+        const cso = Object.keys(PCL).find(k => PCL[k].status === "CASE_SET_ONLY"
+                                            && SERIES[k].n_cases > 1);
+        const noc = Object.keys(PCL).find(k => PCL[k].status === "NO_CASE_CONTEXT");
+        tray.length = 0; tray.push(cso); mode = "case"; render();
+        const a = document.querySelector('#casedata').innerText;
+        tray.length = 0; tray.push(noc); render();
+        const b = document.querySelector('#casedata').innerText;
+        return {cso_text: a, noc_text: b,
+                cso_rows: 0, cso_has_point_rows:
+                  document.querySelectorAll('#casedata tr[data-sid]').length};
+    }""")
+    ok("T: a case-set-only series says the mapping is unresolved",
+       "Point-to-case mapping unresolved" in refuse["cso_text"], refuse["cso_text"][:90])
+    ok("T: and lists its cases as context only",
+       "no point-case linkage is implied" in refuse["cso_text"])
+    ok("T: a no-case series says so",
+       "No Condition Case context" in refuse["noc_text"], refuse["noc_text"][:90])
+    ok("T: neither fabricates point rows", refuse["cso_has_point_rows"] == 0, refuse)
+
+    # tray persistence across a filter change, in case mode
+    reset()
+    keep = pg.evaluate("""() => {
+        const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED");
+        tray.length = 0; tray.push(id); mode = "case"; render();
+        const before = document.querySelectorAll('#casedata tr[data-sid]').length;
+        const f = FDEF.find(x => x.scope === "Condition Case"
+                              && Object.keys(FACETS[x.id]||{}).length);
+        active[f.id].add(Object.keys(FACETS[f.id])[0]); page = 0; render();
+        const after = document.querySelectorAll('#casedata tr[data-sid]').length;
+        active[f.id].clear(); page = 0; render();
+        return {before, after, kept: tray.indexOf(id) >= 0};
+    }""")
+    ok("T: the tray and its case data survive a filter change",
+       keep["kept"] and keep["after"] == keep["before"], keep)
+
+    reset()
+    ok("T: no console errors in the case data view", not errors, errors[:2])
 
 
 if __name__ == "__main__":

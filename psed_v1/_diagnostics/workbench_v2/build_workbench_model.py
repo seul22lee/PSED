@@ -24,6 +24,7 @@ from pathlib import Path
 W = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(W))
 
+from pipeline.query import condition_query as CQ                       # noqa: E402
 from pipeline.query import entity_identity as EI                       # noqa: E402
 from pipeline.query import result_comparability as RC                  # noqa: E402
 from pipeline.canonical import units as U                              # noqa: E402
@@ -86,6 +87,10 @@ def canonical_curves(pid):
             # with a canonical unit silently rescales by whatever conversion the canonical
             # layer already applied -- 1000x for mm -> um, and entirely plausible-looking.
             "points": [[a, b] for a, b in zip(xv, yv) if a is not None and b is not None],
+            # kept separately: a curve whose y was never canonicalised still has x
+            # coordinates, and which design point each one came from is decided by x
+            "x_values": [a for a in xv if a is not None],
+            "y_values": [b for b in yv if b is not None],
             "projections": c.get("projections") or {},
             "transformations": c.get("transformations") or [],
             "y_resolution": "FULLY_RESOLVED" if cy.get("quantity") else "PARTIALLY_RESOLVED",
@@ -320,6 +325,12 @@ def build():
                 "figure": src.get("figure"), "panel": src.get("panel"),
                 "series_label": src.get("series"),
                 "n_points": r.get("n_points"),
+                "x_canonical": {"values": cu.get("x_values") or [],
+                                "unit": cu.get("x_unit"),
+                                "quantity": cu.get("x_quantity")},
+                "y_canonical": {"values": cu.get("y_values") or [],
+                                "unit": cu.get("y_unit"),
+                                "quantity": cu.get("y_quantity")},
                 # named all_case_ids because there is no other kind: a sweep belongs to
                 # every case it traverses and none of them is primary
                 "all_case_ids": cs, "n_cases": len(cs),
@@ -742,6 +753,135 @@ def sequence_corroboration(cases, audit):
     return agree, disagree
 
 
+# --- point -> Condition Case resolution -------------------------------------------
+# A sweep figure often IS the experiment table: each point was measured at one design
+# point. Recovering which is worth doing, and worth refusing to guess at. The only
+# evidence used is the one the record actually carries -- the series' own x quantity and
+# the cases' own conditions -- compared through the frozen condition semantics. Nothing
+# is inferred from ordering, from list lengths, or from a figure legend.
+POINT_RESOLVED = "RESOLVED"
+POINT_AMBIGUOUS = "UNRESOLVED_AMBIGUOUS"
+POINT_NO_MATCH = "UNRESOLVED_NO_MATCH"
+
+EV_EXACT = "EXACT_SEMANTIC_VALUE_MATCH"
+EV_CONVERTED = "UNIT_CONVERTED_EXACT_MATCH"
+EV_AMBIGUOUS = "AMBIGUOUS_MULTIPLE_CASES"
+EV_NO_CONDITION = "NO_COMPATIBLE_CASE_CONDITION"
+EV_NO_VALUE = "NO_MATCHING_CASE_VALUE"
+EV_UNSUPPORTED = "UNSUPPORTED_X_SEMANTICS"
+
+SERIES_POINT_CASE_RESOLVED = "POINT_CASE_RESOLVED"
+SERIES_PARTIALLY_RESOLVED = "PARTIALLY_RESOLVED"
+SERIES_CASE_SET_ONLY = "CASE_SET_ONLY"
+SERIES_NO_CASE_CONTEXT = "NO_CASE_CONTEXT"
+
+RESOLUTION_METHOD = "X_VALUE_MATCH_TO_CASE_CONDITION"
+DERIVED_STATUS = "DERIVED_FOR_WORKBENCH"
+
+
+def _same_quantity_identity(cond, quantity, species):
+    """Does a case condition denote the same quantity as the series axis?
+
+    Species is part of the identity where it is recorded: a TMA pulse and an H2O pulse
+    are different quantities however equal their numbers. MISSING is not SAME, so a bare
+    axis does not match a qualified condition and vice versa -- the axis simply does not
+    say which reagent it means, and reading one in would be the assertion, not the record.
+    """
+    if cond.get("quantity") != quantity:
+        return False
+    return (cond.get("species") or None) == (species or None)
+
+
+def _canonical_magnitude(value, unit):
+    """The frozen condition contract, asked about a plotted coordinate."""
+    return CQ.normalized_value({"value": value, "unit": unit})
+
+
+def resolve_points_to_cases(x_values, x_unit, x_quantity, x_species, case_ids, cases):
+    """One link per plotted point, or an explicit refusal.
+
+    A point is resolved only when EXACTLY ONE associated Condition Case carries a
+    condition of the same quantity identity whose canonical magnitude equals the point's.
+    Two candidates is ambiguity, and ambiguity is reported, never broken by ordering.
+    """
+    links = []
+    for i, xv in enumerate(x_values):
+        pm = _canonical_magnitude(xv, x_unit)
+        if not x_quantity or pm is None:
+            links.append({"point_index": i, "case_id": None,
+                          "resolution_status": POINT_NO_MATCH,
+                          "evidence": EV_UNSUPPORTED, "point_x_value": xv,
+                          "point_x_unit": x_unit})
+            continue
+        cands, saw_condition = [], False
+        for cid in case_ids:
+            for cond in (cases.get(cid) or {}).get("conditions") or []:
+                if not _same_quantity_identity(cond, x_quantity, x_species):
+                    continue
+                saw_condition = True
+                cm = CQ.normalized_value(cond)
+                if cm is None or cm[0] != pm[0] or cm[1] != pm[1]:
+                    continue
+                cands.append((cid, cond, cm))
+        base = {"point_index": i, "point_x_value": xv, "point_x_unit": x_unit,
+                "matched_quantity": x_quantity, "matched_species_or_role": x_species,
+                "resolution_method": RESOLUTION_METHOD,
+                "evidence_source": "series canonical x value vs Condition Case condition, "
+                                   "compared through the frozen condition semantics"}
+        if len(cands) == 1:
+            cid, cond, cm = cands[0]
+            converted = str(cond.get("unit") or "") != str(x_unit or "")
+            links.append(dict(base, case_id=cid, resolution_status=POINT_RESOLVED,
+                              evidence=EV_CONVERTED if converted else EV_EXACT,
+                              case_condition_value=cond.get("value"),
+                              case_condition_unit=cond.get("unit"),
+                              canonical_value=cm[1], canonical_dimension=cm[0]))
+        elif len(cands) > 1:
+            links.append(dict(base, case_id=None,
+                              resolution_status=POINT_AMBIGUOUS, evidence=EV_AMBIGUOUS,
+                              candidate_case_ids=sorted({c for c, _, _ in cands})))
+        else:
+            links.append(dict(base, case_id=None, resolution_status=POINT_NO_MATCH,
+                              evidence=EV_NO_VALUE if saw_condition else EV_NO_CONDITION))
+    return links
+
+
+def series_resolution_status(case_ids, links):
+    if not case_ids:
+        return SERIES_NO_CASE_CONTEXT
+    if not links:
+        return SERIES_CASE_SET_ONLY
+    n = len([x for x in links if x["resolution_status"] == POINT_RESOLVED])
+    if n == len(links) and n:
+        return SERIES_POINT_CASE_RESOLVED
+    if n:
+        return SERIES_PARTIALLY_RESOLVED
+    return SERIES_CASE_SET_ONLY
+
+
+def point_case_links(series, cases):
+    """The derived point->case relation for every ResultSeries. Workbench-derived only:
+    nothing here is written back to the scientific record."""
+    out = {}
+    for sid, s in series.items():
+        xc = s.get("x_canonical") or {}
+        xs = xc.get("values") or []
+        links = resolve_points_to_cases(xs, xc.get("unit"), xc.get("quantity"),
+                                        s["x"].get("x_species"), s["all_case_ids"], cases)
+        status = series_resolution_status(s["all_case_ids"], links)
+        out[sid] = {"series_id": s["series_id"], "status": status,
+                    "derivation": DERIVED_STATUS,
+                    "n_points_available": len(xs), "n_points_recorded": s.get("n_points"),
+                    "links": links,
+                    "resolved_points": len([x for x in links
+                                            if x["resolution_status"] == POINT_RESOLVED]),
+                    "ambiguous_points": len([x for x in links
+                                             if x["resolution_status"] == POINT_AMBIGUOUS]),
+                    "unmatched_points": len([x for x in links
+                                             if x["resolution_status"] == POINT_NO_MATCH])}
+    return out
+
+
 def presentation(cases, acts, series):
     """Where each ResultSeries belongs in the results UI, decided once, in Python.
 
@@ -802,6 +942,7 @@ def main():
     pairs, counts = comparability(series)
     sweeps, nocase = presentation(cases, acts, series)
     seq_audit = sequence_audit(cases)
+    pclinks = point_case_links(series, cases)
     sequence_corroboration(cases, seq_audit)
     nums = numeric_conditions(cases)
     model = {
@@ -822,12 +963,24 @@ def main():
         "range_fields": range_fields(nums),
         "sweep_series_ids": sweeps,
         "sequence_audit": seq_audit,
+        "point_case_links": pclinks,
         "no_case_series_ids": nocase,
         "excluded_series": excluded,
     }
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "workbench_model.json").write_text(
         json.dumps(model, sort_keys=True, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+    (OUT / "point_case_links.json").write_text(
+        json.dumps({"derivation": DERIVED_STATUS,
+                    "note": "workbench-derived point->Condition Case relation; not part "
+                            "of the scientific record",
+                    "resolution_method": RESOLUTION_METHOD,
+                    "series": pclinks}, indent=2, sort_keys=True,
+                   ensure_ascii=False) + "\n")
+    (OUT / "point_case_resolution_audit.json").write_text(
+        json.dumps(point_case_audit(model), indent=2, sort_keys=True,
+                   ensure_ascii=False) + "\n")
 
     val = validate(model, counts)
     (OUT / "workbench_validation.json").write_text(
@@ -839,6 +992,45 @@ def main():
     print("invariants ok: %s" % val["invariants_ok"])
     print("wrote %s" % (OUT / "psed_scientific_comparison_workbench.html").relative_to(W))
     return 0 if val["invariants_ok"] else 1
+
+
+def point_case_audit(m):
+    """A row per multi-case ResultSeries: what evidence exists, and what it supports."""
+    cases, series, pcl = m["cases"], m["series"], m["point_case_links"]
+    rows = []
+    for sid, s in series.items():
+        if s["n_cases"] < 2:
+            continue
+        r = pcl[sid]
+        varying = defaultdict(set)
+        for cid in s["all_case_ids"]:
+            for c in cases[cid]["conditions"]:
+                k = c["quantity"] + ("@" + c["species"] if c.get("species") else "")
+                if c.get("value") not in (None, ""):
+                    varying[k].add(str(c["value"]))
+        rows.append({
+            "series_id": s["series_id"], "paper_id": s["paper_id"],
+            "figure": s.get("figure"), "panel": s.get("panel"),
+            "x_quantity": s["x"].get("x_quantity"),
+            "x_unit": (s.get("x_canonical") or {}).get("unit"),
+            "n_points_recorded": s.get("n_points"),
+            "n_points_available": r["n_points_available"],
+            "n_cases": s["n_cases"], "all_case_ids": s["all_case_ids"],
+            "case_varying_quantities": sorted(k for k, v in varying.items() if len(v) > 1),
+            "candidate_sweep_quantity": s["x"].get("x_quantity"),
+            "resolution_status": r["status"],
+            "resolved_points": r["resolved_points"],
+            "ambiguous_points": r["ambiguous_points"],
+            "unmatched_points": r["unmatched_points"],
+            "evidence": sorted({x.get("evidence") for x in r["links"]}),
+            "reason": ("no digitized coordinates are persisted for this series"
+                       if not r["n_points_available"] else
+                       "; ".join(sorted({x.get("evidence") for x in r["links"]}))),
+        })
+    return {"derivation": DERIVED_STATUS,
+            "multi_case_result_series": len(rows),
+            "by_status": dict(Counter(x["resolution_status"] for x in rows)),
+            "series": sorted(rows, key=lambda x: (-x["n_cases"], x["series_id"]))}
 
 
 def validate(m, counts):
@@ -1189,6 +1381,27 @@ def validate(m, counts):
                 unresolved_with_siblings += 1
     c["bare_quantity_unresolved_with_qualified_siblings"] = unresolved_with_siblings
 
+    # ---- derived point -> Condition Case resolution ---------------------------------
+    pcl = m["point_case_links"]
+    multi_ids = [k for k, s2 in series.items() if s2["n_cases"] > 1]
+    st = Counter(pcl[k]["status"] for k in multi_ids)
+    c["point_case_series_fully_resolved"] = st.get(SERIES_POINT_CASE_RESOLVED, 0)
+    c["point_case_series_partially_resolved"] = st.get(SERIES_PARTIALLY_RESOLVED, 0)
+    c["point_case_series_unresolved"] = st.get(SERIES_CASE_SET_ONLY, 0)
+    c["point_case_series_no_case_context"] = len(
+        [k for k, v in pcl.items() if v["status"] == SERIES_NO_CASE_CONTEXT])
+    c["point_case_points_total"] = sum(len(pcl[k]["links"]) for k in multi_ids)
+    c["point_case_points_resolved"] = sum(pcl[k]["resolved_points"] for k in multi_ids)
+    c["point_case_points_ambiguous"] = sum(pcl[k]["ambiguous_points"] for k in multi_ids)
+    c["point_case_points_no_match"] = sum(pcl[k]["unmatched_points"] for k in multi_ids)
+    c["multi_case_series_without_persisted_points"] = len(
+        [k for k in multi_ids if not pcl[k]["n_points_available"]])
+    # a resolved point must name exactly one case, and never one the series is not linked to
+    bad = [k for k in pcl for x in pcl[k]["links"]
+           if x["resolution_status"] == POINT_RESOLVED
+           and x["case_id"] not in series[k]["all_case_ids"]]
+    c["point_case_links_outside_series_case_set"] = len(bad)
+
     c["physical_specimens_resolved"] = len(
         {x["physical_specimen"] for x in m["samples"].values()
          if x.get("physical_specimen")})
@@ -1227,6 +1440,11 @@ def validate(m, counts):
     inv["every_sequence_occurrence_is_classified"] = all(
         r["status"] in (SEQ_EXPLICIT_PRESENT, SEQ_DERIVATION_SAFE, SEQ_AMBIGUOUS,
                         SEQ_NOT_TIMES, SEQ_NO_CONTEXT) for r in audit)
+    inv["no_point_links_outside_the_series_case_set"] = (
+        c["point_case_links_outside_series_case_set"] == 0)
+    inv["resolved_points_name_exactly_one_case"] = all(
+        x["case_id"] for v in pcl.values() for x in v["links"]
+        if x["resolution_status"] == POINT_RESOLVED)
     inv["every_facet_declares_a_scope"] = all(
         f.get("scope") for f in m["facet_defs"])
     inv["key_based_intersection_would_have_been_wrong"] = key_based_false_common > 0
