@@ -250,6 +250,50 @@ def main(outdir):
             active[f.id].add(Object.keys(FACETS[f.id])[0]); page = 0; render();
         }""")
         shot("16_tray_survives_case_filter")
+
+        # --- condition display: colour chips and the qualified-only state ----------
+        reset()
+        pg.evaluate("""() => {
+            // the reported state: one column records the bare quantity, another records
+            // it only against a reactant role
+            const records = (cs, q) => cs.some(c => (CASES[c]||{conditions:[]}).conditions
+                .some(x => x.quantity === q && !x.species));
+            const q = "pulse_time";
+            let withBare = null, withQualified = null;
+            for (const sid in SERIES) {
+                const cs = SERIES[sid].all_case_ids || [];
+                if (!cs.length) continue;
+                if (!withBare && records(cs, q)) withBare = sid;
+                if (!withQualified && !records(cs, q) && qualifiedSiblings(cs, q).length)
+                    withQualified = sid;
+                if (withBare && withQualified) break;
+            }
+            tray.length = 0; tray.push(withBare, withQualified); render();
+            document.querySelectorAll('#conds details').forEach(d => d.open = true);
+            const c = document.querySelector('#conds');
+            if (c) c.scrollIntoView({block:'start'});
+        }""")
+        shot("17_condition_table_qualified_only_and_chips")
+
+        # three series: chips in tray, legend and table must agree
+        reset()
+        pg.evaluate("""() => {
+            const nat = k => (SERIES[k].y_representations||{}).native;
+            const ok = Object.keys(SERIES).filter(k => nat(k) && nat(k).values
+                                                    && SERIES[k].is_profile);
+            const pick = [];
+            for (const a of ok) {
+                if (!pick.length) { pick.push(a); continue; }
+                if (pick.every(b => { const p = pairOf(a,b);
+                    return p && p.physical_overlay_allowed
+                        && nat(a).target_id === nat(b).target_id; })) pick.push(a);
+                if (pick.length === 3) break;
+            }
+            tray.length = 0; pick.forEach(x => tray.push(x)); TX=null; TY=null; render();
+            const c = document.querySelector('#cmp');
+            if (c) c.scrollIntoView({block:'start'});
+        }""")
+        shot("18_colour_chips_tray_legend_table")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))

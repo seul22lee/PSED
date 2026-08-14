@@ -597,6 +597,87 @@ def final_hardening_tests(M, V, hp):
     ok("N11: a real sweep with a varying temperature exists to test against",
        varying is not None, varying)
 
+    print("=== N15. sequence-shaped conditions are audited, never mined ===")
+    A = M["sequence_audit"]
+    tplS = strip_comments(WB / "_workbench_v2_template.html")
+    srcS = strip_comments(WB / "build_workbench_model.py")
+    ok("N15: the corpus really contains sequence-shaped conditions",
+       C["sequence_shaped_conditions"] == 13, C["sequence_shaped_conditions"])
+    ok("N15: every occurrence is classified",
+       V["invariants"]["every_sequence_occurrence_is_classified"] is True)
+    ok("N15: every pulse/purge sequence already has its explicit qualified fields",
+       C["sequence_explicit_fields_already_present"] == 11,
+       C["sequence_explicit_fields_already_present"])
+    ok("N15: so none of them is a case for derivation",
+       C["sequence_general_derivation_safe"] == 0
+       and C["sequence_derivation_ambiguous"] == 0,
+       (C["sequence_general_derivation_safe"], C["sequence_derivation_ambiguous"]))
+    ok("N15: and every one corroborates the fields it duplicates",
+       C["sequence_corroborates_explicit_fields"] == 11
+       and C["sequence_contradicts_explicit_fields"] == 0,
+       (C["sequence_corroborates_explicit_fields"],
+        C["sequence_contradicts_explicit_fields"]))
+    ok("N15: the build gates on a sequence contradicting its fields",
+       V["invariants"]["no_sequence_contradicts_its_explicit_fields"] is True)
+    ok("N15: a non-numeric multi-term value is not read as a recipe",
+       C["sequence_not_a_pulse_purge_time_encoding"] == 2,
+       C["sequence_not_a_pulse_purge_time_encoding"])
+    # negative control: a single number that merely contains a hyphen
+    import importlib.util as _ilu
+    _sp = _ilu.spec_from_file_location("wbb", WB / "build_workbench_model.py")
+    wbb = _ilu.module_from_spec(_sp); _sp.loader.exec_module(wbb)
+    ok("N15: scientific notation is one number, not a two-step recipe",
+       wbb.sequence_terms("1e-7") is None)
+    ok("N15: a plain number is not a sequence", wbb.sequence_terms("4.0") is None)
+    ok("N15: a four-term recipe parses", wbb.sequence_terms("0.1-4.0-0.1-4.0")[1]
+       == [0.1, 4.0, 0.1, 4.0])
+    ok("N15: a non-numeric multi-term value parses as terms with no numbers",
+       wbb.sequence_terms("ALD SiO2 / Al2O3")[1] is None)
+    # roles are structural, not a fixed vocabulary
+    fake = {"conditions": [{"quantity": "__novel_role___pulse_time", "value": 1,
+                            "species": "__X__"},
+                           {"quantity": "pulse_time", "value": 9}],
+            "chemistry": {}}
+    ok("N15: a role never seen in this corpus is still recognised structurally",
+       [c["quantity"] for c in wbb.role_qualified_keys(fake, "pulse_time")]
+       == ["__novel_role___pulse_time"])
+    ok("N15: and the bare quantity is not mistaken for its own qualified variant",
+       wbb.qualifier_roles(fake, "pulse_time") == ["__novel_role__"])
+    # the page must not parse a recipe at all: parsing is the first step of deriving, and
+    # the audit that says derivation is unjustified lives in the builder
+    ok("N15: the page never splits a condition value into terms",
+       "split(" not in tplS.split("function drawConds")[1].split("function drawWhy")[0])
+    ok("N15: the sequence parser exists only in the builder audit",
+       "_SEQ_SPLIT" in srcS and "_SEQ_SPLIT" not in tplS)
+    ok("N15: the condition cell reads recorded values only, never arithmetic on them",
+       "x.value" in tplS and "parseFloat(x.value" not in tplS)
+    ok("N15: the unresolved state names the qualified quantities instead",
+       "not recorded unqualified" in tplS and "function qualifiedSiblings" in tplS)
+    ok("N15: which the corpus needs in %d places"
+       % C["bare_quantity_unresolved_with_qualified_siblings"],
+       C["bare_quantity_unresolved_with_qualified_siblings"] == 29,
+       C["bare_quantity_unresolved_with_qualified_siblings"])
+    ok("N15: the page states that nothing in the table is derived",
+       "Nothing" in tplS and "derived" in tplS)
+
+    ok("N15: a recorded row with no value is not shown as a magnitude",
+       "x.value === null || x.value === undefined" in tplS)
+    nullv = len([1 for cc in M["cases"].values() for x in cc["conditions"]
+                 if x.get("value") in (None, "")])
+    ok("N15: the corpus has %d valueless condition rows to suppress" % nullv,
+       nullv == 40, nullv)
+
+    print("=== N16. one colour per selected series, everywhere ===")
+    ok("N16: colour is a function of the selection", "function seriesColor" in tplS)
+    ok("N16: keyed on tray position, not on what happens to be plottable",
+       "const i = tray.indexOf(sid);" in tplS)
+    ok("N16: the old plot-order indexing is gone",
+       "cols[i%cols.length]" not in tplS and "const cols=[" not in tplS)
+    for where in ("chip(d.sid)", "chip(sid)", "chip(c.sid)"):
+        ok("N16: the same chip is used at %s" % where, where in tplS)
+    ok("N16: the condition table header carries it",
+       "<th>${chip(c.sid)}" in tplS)
+
     print("=== N14. the filtering algorithm is generic ===")
     # Every identifier the regressions rely on is searched for in production code. A
     # filter that needs to know a DOI, a case id or a material name is not an algorithm.
@@ -844,6 +925,7 @@ def dom_tests(hp):
         hardening_dom(pg, errors)
         final_hardening_dom(pg, errors)
         case_scope_dom(pg, errors)
+        condition_display_dom(pg, errors)
         b.close()
 
 
@@ -1522,6 +1604,212 @@ def case_scope_dom(pg, errors):
 
     reset()
     ok("R: no console errors during case-scope interactions", not errors, errors[:2])
+
+
+
+def condition_display_dom(pg, errors):
+    """The condition table on the real page: what it shows, and what it refuses to."""
+    print("=== S. condition display and colour linkage ===")
+
+    def reset():
+        pg.evaluate("""() => {
+            tray.length = 0; Object.keys(active).forEach(k => active[k].clear());
+            RANGES.forEach(r => range[r.id] = {min:"",max:""});
+            profileOnly = false; page = 0; render();
+        }""")
+
+    # --- REAL CORPUS: a sequence-bearing case, selected and inspected ---------------
+    reset()
+    real = pg.evaluate("""() => {
+        // find a selectable series whose case carries a sequence-shaped condition
+        const seqCases = new Set(M.sequence_audit
+            .filter(r => r.status === "EXPLICIT_FIELDS_ALREADY_PRESENT")
+            .map(r => r.case));
+        const id = Object.keys(SERIES).find(k =>
+            (SERIES[k].all_case_ids||[]).some(c => seqCases.has(c)));
+        if (!id) return null;
+        tray.length = 0; tray.push(id); render();
+        const txt = document.querySelector('#conds').innerText;
+        const rows = [...document.querySelectorAll('#conds tbody tr')].map(r => r.innerText);
+        const bare = rows.find(r => /^pulse_time\b/.test(r));
+        const qual = rows.filter(r => /pulse_time@|_pulse_time/.test(r));
+        return {id, has_sequence: /pulse_purge_sequence/.test(txt),
+                bare_row: bare || null,
+                bare_says_unqualified: !!bare && /not recorded unqualified/.test(bare),
+                bare_shows_a_number: !!bare && /\d/.test(bare.replace(/pulse_time/g,"")),
+                n_qualified_rows: qual.length,
+                nothing_derived: /Nothing here is derived/.test(txt)};
+    }""")
+    if not real:
+        ok("S: REAL a sequence-bearing series is selectable", False, real)
+    else:
+        ok("S: REAL the sequence itself is shown as a condition", real["has_sequence"], real)
+        ok("S: REAL the qualified pulse/purge quantities are shown as themselves",
+           real["n_qualified_rows"] >= 2, real)
+        ok("S: REAL the unqualified row is not filled in from the sequence",
+           real["bare_row"] is None or not real["bare_shows_a_number"], real)
+        ok("S: REAL the table states that nothing in it is derived",
+           real["nothing_derived"], real)
+
+    # --- REAL CORPUS: the reported symptom, reproduced -----------------------------
+    # The bare row only exists when SOME selected column records it. The reported
+    # "unknown" is that row, in a column whose case records the quantity only against a
+    # reactant role -- two different quantities meeting in one row.
+    reset()
+    sib = pg.evaluate("""() => {
+        const records = (cs, q) => cs.some(c => (CASES[c]||{conditions:[]}).conditions
+            .some(x => x.quantity === q && !x.species));
+        for (const q of ["pulse_time", "purge_time"]) {
+            let withBare = null, withQualified = null;
+            for (const sid in SERIES) {
+                const cs = SERIES[sid].all_case_ids || [];
+                if (!cs.length) continue;
+                if (!withBare && records(cs, q)) withBare = sid;
+                if (!withQualified && !records(cs, q) && qualifiedSiblings(cs, q).length)
+                    withQualified = sid;
+                if (withBare && withQualified) break;
+            }
+            if (!withBare || !withQualified) continue;
+            tray.length = 0; tray.push(withBare, withQualified); render();
+            const row = [...document.querySelectorAll('#conds tbody tr')].find(r => {
+                const c = r.querySelector('code');
+                return c && c.textContent === q; });
+            if (!row) continue;
+            row.querySelectorAll('details').forEach(d => d.open = true);
+            const cells = [...row.querySelectorAll('td')].slice(1).map(c => c.innerText);
+            return {q, withBare, withQualified, cells,
+                    sibs: qualifiedSiblings(SERIES[withQualified].all_case_ids, q)
+                          .map(x => x.key)};
+        }
+        return null;
+    }""")
+    if not sib:
+        ok("S: REAL the reported bare/qualified pairing exists in the corpus", False, sib)
+    else:
+        ok("S: REAL the column that records it shows the recorded magnitude",
+           any(any(ch.isdigit() for ch in c) and "not recorded unqualified" not in c
+               for c in sib["cells"]), sib)
+        ok("S: REAL the column that does not is no longer a bare 'unknown'",
+           any("not recorded unqualified" in c for c in sib["cells"]), sib)
+        ok("S: REAL it lists the qualified quantities that ARE recorded",
+           all(any(k in c for c in sib["cells"]) for k in sib["sibs"]), sib)
+        ok("S: REAL naming them as quantities, not as values of the bare one",
+           any("different quantity" in c for c in sib["cells"]), sib)
+
+    # --- FIXTURES: the four sequence groups, driven through the real audit ----------
+    fx = pg.evaluate("""() => {
+        // the page holds the builder's verdicts; these check the shapes the contract
+        // must distinguish, using values this corpus does not contain
+        const mk = (conds, chem) => ({conditions: conds, chemistry: chem || {}});
+        const q = (quantity, value, species) => ({quantity, value, species: species||null});
+        const sibs = (conds, quantity) => {
+            CASES["__fxc__"] = mk(conds);
+            const out = qualifiedSiblings(["__fxc__"], quantity);
+            delete CASES["__fxc__"];
+            return out;
+        };
+        return {
+            // group 2: explicit qualified values are present and are shown as themselves
+            explicit_wins: sibs([q("precursor_pulse_time", 0.2, "__P__"),
+                                 q("coreactant_pulse_time", 0.1, "__C__")], "pulse_time")
+                           .map(x => x.key),
+            // group 4: a novel role is handled the same way
+            novel_role: sibs([q("__newrole___pulse_time", 3, "__Z__")], "pulse_time")
+                        .map(x => x.key),
+            // species-qualified same quantity
+            species_only: sibs([q("pulse_time", 5, "__S__")], "pulse_time")
+                          .map(x => x.key),
+            // group 3: a bare quantity with nothing qualified stays empty
+            nothing: sibs([q("pulse_time", 5)], "pulse_time").length,
+            // the bare quantity must never be reported as its own sibling
+            not_self: sibs([q("pulse_time", 5), q("purge_time", 1)], "pulse_time").length
+        };
+    }""")
+    ok("S: FIXTURE explicit role-qualified values are surfaced as their own quantities",
+       fx["explicit_wins"] == ["coreactant_pulse_time@__C__",
+                               "precursor_pulse_time@__P__"], fx)
+    ok("S: FIXTURE a role this corpus has never seen behaves identically",
+       fx["novel_role"] == ["__newrole___pulse_time@__Z__"], fx)
+    ok("S: FIXTURE a species-qualified same-quantity counts as qualified",
+       fx["species_only"] == ["pulse_time@__S__"], fx)
+    ok("S: FIXTURE a bare quantity with no qualified variant offers nothing",
+       fx["nothing"] == 0, fx)
+    ok("S: FIXTURE and a bare quantity is never its own qualified sibling",
+       fx["not_self"] == 0, fx)
+
+    # --- FIXTURE group 5: colour chips ---------------------------------------------
+    reset()
+    chips = pg.evaluate("""() => {
+        const ids = Object.keys(SERIES).filter(k => SERIES[k].all_case_ids.length).slice(0,3);
+        tray.length = 0; ids.forEach(x => tray.push(x)); render();
+        const read = () => {
+            const th = [...document.querySelectorAll('#conds thead th')].slice(1);
+            return {header: th.map(h => { const sw = h.querySelector('.sw');
+                        return sw ? sw.style.background : null; }),
+                    expected: tray.map(seriesColor),
+                    legend: [...document.querySelectorAll('#plot .leg .sw')]
+                            .map(n => n.style.background),
+                    tray: [...document.querySelectorAll('#tray .trow .sw')]
+                          .map(n => n.style.background)};
+        };
+        const before = read();
+        // reorder the tray: the chips must follow the series, not the position
+        const moved = tray.shift(); tray.push(moved); render();
+        const after = read();
+        const colorOf = {};
+        tray.forEach(sid => colorOf[sid] = seriesColor(sid));
+        return {before, after, n: ids.length,
+                distinct: new Set(before.expected).size};
+    }""")
+    ok("S: FIXTURE three selected series get three distinct colours",
+       chips["distinct"] == 3, chips)
+    ok("S: FIXTURE every condition-table header carries a chip",
+       all(x for x in chips["before"]["header"]) and
+       len(chips["before"]["header"]) == chips["n"], chips["before"])
+    ok("S: FIXTURE header chips equal the assigned series colours",
+       chips["before"]["header"] == [_rgb(c) for c in chips["before"]["expected"]],
+       chips["before"])
+    ok("S: FIXTURE the tray shows the same colours",
+       chips["before"]["tray"] == chips["before"]["header"], chips["before"])
+    # after reordering, the columns reorder with the tray; what must hold is that each
+    # column still carries the colour its own series is drawn with
+    ok("S: FIXTURE after reordering, headers still match the assigned colours",
+       chips["after"]["header"] == [_rgb(c) for c in chips["after"]["expected"]],
+       chips["after"])
+    ok("S: FIXTURE and the tray agrees with the table after reordering",
+       chips["after"]["tray"] == chips["after"]["header"], chips["after"])
+    ok("S: FIXTURE the plot legend agrees with the table where a series is drawn",
+       all(c in chips["before"]["header"] for c in chips["before"]["legend"]),
+       chips["before"])
+
+    # --- a series in the tray but outside the filter keeps its colour --------------
+    outside = pg.evaluate("""() => {
+        const before = tray.map(seriesColor);
+        const f = FDEF.find(x => x.scope === "Condition Case"
+                              && Object.keys(FACETS[x.id]||{}).length);
+        active[f.id].add(Object.keys(FACETS[f.id])[0]); page = 0; render();
+        const after = tray.map(seriesColor);
+        const th = [...document.querySelectorAll('#conds thead th')].slice(1)
+                   .map(h => h.querySelector('.sw').style.background);
+        active[f.id].clear(); page = 0; render();
+        return {same: JSON.stringify(before) === JSON.stringify(after),
+                header: th, expected: after};
+    }""")
+    ok("S: a tray series outside the active filter keeps its colour",
+       outside["same"], outside)
+    ok("S: and its table column still matches",
+       outside["header"] == [_rgb(c) for c in outside["expected"]], outside)
+
+    reset()
+    ok("S: no console errors during condition-display interactions", not errors, errors[:2])
+
+
+def _rgb(hexcolor):
+    """Chromium reports style.background as rgb(); compare like with like."""
+    h = hexcolor.lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    return "rgb(%d, %d, %d)" % (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
 
 
 if __name__ == "__main__":

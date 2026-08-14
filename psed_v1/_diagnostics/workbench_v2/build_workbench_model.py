@@ -598,6 +598,150 @@ def range_fields(numeric):
     return out
 
 
+#: A condition value that is a delimiter-separated list of numbers -- a recipe written as
+#: one string. Detected by SHAPE, not by quantity name, so a differently-named sequence
+#: quantity in a future paper is audited the same way.
+_SEQ_SPLIT = __import__("re").compile(r"[-\u2013\u2014/,;|]")
+_SEQ_NUM = __import__("re").compile(r"^\s*\d*\.?\d+\s*$")
+
+#: what a sequence occurrence is worth, once its context is known
+SEQ_EXPLICIT_PRESENT = "EXPLICIT_FIELDS_ALREADY_PRESENT"
+SEQ_DERIVATION_SAFE = "GENERAL_DERIVATION_SAFE"
+SEQ_AMBIGUOUS = "DERIVATION_AMBIGUOUS"
+SEQ_NOT_TIMES = "NOT_A_PULSE_PURGE_TIME_ENCODING"
+SEQ_NO_CONTEXT = "INSUFFICIENT_CONTEXT"
+
+#: the two step kinds a pulse/purge recipe alternates between
+_STEP_KINDS = ("pulse_time", "purge_time")
+
+
+def sequence_terms(value):
+    """The numeric terms of a sequence-shaped condition value, or None.
+
+    A single number is not a sequence, however it is spelled: `1e-7` contains a hyphen
+    and splitting on it would invent a two-step recipe out of one pressure.
+    """
+    if not isinstance(value, str):
+        return None
+    if _num(value) is not None:
+        return None                   # one number, exponent hyphen and all
+    parts = [t for t in _SEQ_SPLIT.split(value) if t.strip()]
+    if len(parts) < 2:
+        return None
+    if not all(_SEQ_NUM.match(t) for t in parts):
+        return parts, None            # multi-term but not a sequence of numbers
+    return parts, [float(t) for t in parts]
+
+
+def role_qualified_keys(case, quantity):
+    """Every recorded condition that is a role- or species-qualified variant of one bare
+    quantity, found structurally from the recorded quantity ids.
+
+    `pulse_time` and `precursor_pulse_time@TMA` are different quantities: one is silent
+    about which chemical was pulsed and the other is not. This finds the second kind so a
+    reader of the first can be told the information exists, without either being restated
+    as the other.
+
+    The relation is the suffix one the ontology already uses for role-prefixed composites
+    (`<role>_<quantity>`), so no list of role names is needed and a role this corpus has
+    never seen is picked up the same way. A case's `chemistry` block is not consulted: it
+    is frequently empty even where the qualified conditions are recorded.
+    """
+    suffix = "_%s" % quantity
+    out = []
+    for c in case.get("conditions") or []:
+        q = str(c.get("quantity") or "")
+        if q.endswith(suffix) and len(q) > len(suffix):
+            out.append(c)
+        elif q == quantity and c.get("species"):
+            out.append(c)
+    return out
+
+
+def qualifier_roles(case, quantity):
+    """The role prefixes actually recorded for a quantity on this case."""
+    suffix = "_%s" % quantity
+    return sorted({str(c["quantity"])[:-len(suffix)]
+                   for c in role_qualified_keys(case, quantity)
+                   if str(c["quantity"]).endswith(suffix)})
+
+
+def classify_sequence(case, cond):
+    """What a sequence occurrence can and cannot be used for. Corpus evidence only."""
+    parsed = sequence_terms(cond.get("value"))
+    if parsed is None:
+        return SEQ_NOT_TIMES, {"reason": "value is not a multi-term sequence"}
+    parts, nums = parsed
+    if nums is None:
+        return SEQ_NOT_TIMES, {"reason": "sequence terms are not all numeric",
+                               "terms": parts}
+    # roles come from what the record actually qualifies, not from a fixed vocabulary
+    roles = sorted({r for k in _STEP_KINDS for r in qualifier_roles(case, k)})
+    explicit = {}
+    for kind in _STEP_KINDS:
+        for c in role_qualified_keys(case, kind):
+            explicit["%s|%s|%s" % (kind, c["quantity"], c.get("species"))] = c
+    need = len(roles) * len(_STEP_KINDS)
+    ev = {"terms": nums, "n_terms": len(nums), "roles": roles,
+          "explicit_qualified_fields": sorted(
+              "%s%s" % (c["quantity"], "@" + c["species"] if c.get("species") else "")
+              for c in explicit.values()),
+          "sequence_unit": cond.get("unit")}
+    if not roles:
+        return SEQ_NO_CONTEXT, dict(ev, reason="no chemistry roles on this case, so the "
+                                               "terms cannot be attributed to reactants")
+    if need and len(explicit) >= need:
+        # the terms add nothing; whether they AGREE is still worth reporting
+        return SEQ_EXPLICIT_PRESENT, dict(ev, reason="every step is already recorded as an "
+                                                    "explicit role/species-qualified field")
+    if len(nums) != need:
+        return SEQ_AMBIGUOUS, dict(ev, reason="term count does not match %d roles x %d "
+                                              "step kinds" % (len(roles), len(_STEP_KINDS)))
+    return SEQ_AMBIGUOUS, dict(ev, reason="term count fits, but the sequence carries no "
+                                          "unit, no role labels and no step labels, so "
+                                          "which term is which reactant is not recorded")
+
+
+def sequence_audit(cases):
+    """Every sequence-shaped condition in the corpus, classified."""
+    out = []
+    for cid, c in cases.items():
+        for cond in c.get("conditions") or []:
+            parsed = sequence_terms(cond.get("value"))
+            if parsed is None:
+                continue
+            status, ev = classify_sequence(c, cond)
+            out.append({"case": cid, "quantity": cond.get("quantity"),
+                        "value": cond.get("value"), "status": status, "evidence": ev})
+    return out
+
+
+def sequence_corroboration(cases, audit):
+    """Does a sequence AGREE with the explicit fields it duplicates?
+
+    This is the safe use of the string: verification, never derivation. Agreement is
+    reported as multiset equality, because the string does not record which term is which
+    step and matching by position would assume the very ordering that is not written down.
+    """
+    agree = disagree = 0
+    for row in audit:
+        if row["status"] != SEQ_EXPLICIT_PRESENT:
+            continue
+        c = cases[row["case"]]
+        vals = []
+        for kind in _STEP_KINDS:
+            for x in role_qualified_keys(c, kind):
+                n = _num(x.get("value"))
+                if n is not None:
+                    vals.append(n)
+        terms = row["evidence"]["terms"]
+        ok = sorted(vals) == sorted(terms)
+        row["corroborates_explicit_fields"] = ok
+        agree += 1 if ok else 0
+        disagree += 0 if ok else 1
+    return agree, disagree
+
+
 def presentation(cases, acts, series):
     """Where each ResultSeries belongs in the results UI, decided once, in Python.
 
@@ -657,6 +801,8 @@ def main():
     cases, acts, series, samples, runs, measurements, excluded = build()
     pairs, counts = comparability(series)
     sweeps, nocase = presentation(cases, acts, series)
+    seq_audit = sequence_audit(cases)
+    sequence_corroboration(cases, seq_audit)
     nums = numeric_conditions(cases)
     model = {
         "meta": {"freeze": FREEZE, "generating_code_sha256": code_hash(),
@@ -675,6 +821,7 @@ def main():
         "numeric_conditions": nums,
         "range_fields": range_fields(nums),
         "sweep_series_ids": sweeps,
+        "sequence_audit": seq_audit,
         "no_case_series_ids": nocase,
         "excluded_series": excluded,
     }
@@ -1020,6 +1167,28 @@ def validate(m, counts):
                 break
     c["multi_case_series_with_varying_case_facets"] = hetero
 
+    # ---- sequence-shaped conditions: audited, never mined ---------------------------
+    audit = m["sequence_audit"]
+    c["sequence_shaped_conditions"] = len(audit)
+    for st in (SEQ_EXPLICIT_PRESENT, SEQ_DERIVATION_SAFE, SEQ_AMBIGUOUS,
+               SEQ_NOT_TIMES, SEQ_NO_CONTEXT):
+        c["sequence_" + st.lower()] = len([r for r in audit if r["status"] == st])
+    c["sequence_corroborates_explicit_fields"] = len(
+        [r for r in audit if r.get("corroborates_explicit_fields") is True])
+    c["sequence_contradicts_explicit_fields"] = len(
+        [r for r in audit if r.get("corroborates_explicit_fields") is False])
+    # how often a bare quantity is silent while a qualified sibling is recorded -- the
+    # state the comparison table used to render as a flat "unknown"
+    unresolved_with_siblings = 0
+    for cid, cc in cases.items():
+        bare = {x["quantity"] for x in cc["conditions"] if not x.get("species")}
+        for kind in _STEP_KINDS:
+            if kind in bare:
+                continue
+            if role_qualified_keys(cc, kind):
+                unresolved_with_siblings += 1
+    c["bare_quantity_unresolved_with_qualified_siblings"] = unresolved_with_siblings
+
     c["physical_specimens_resolved"] = len(
         {x["physical_specimen"] for x in m["samples"].values()
          if x.get("physical_specimen")})
@@ -1053,6 +1222,11 @@ def validate(m, counts):
     inv["no_range_field_loses_its_qualifier"] = losing == 0
     inv["no_ambiguous_range_lookups"] = ambiguous == 0
     inv["no_cross_case_constraint_false_positives"] = new_admits == 0
+    inv["no_sequence_contradicts_its_explicit_fields"] = (
+        c["sequence_contradicts_explicit_fields"] == 0)
+    inv["every_sequence_occurrence_is_classified"] = all(
+        r["status"] in (SEQ_EXPLICIT_PRESENT, SEQ_DERIVATION_SAFE, SEQ_AMBIGUOUS,
+                        SEQ_NOT_TIMES, SEQ_NO_CONTEXT) for r in audit)
     inv["every_facet_declares_a_scope"] = all(
         f.get("scope") for f in m["facet_defs"])
     inv["key_based_intersection_would_have_been_wrong"] = key_based_false_common > 0
