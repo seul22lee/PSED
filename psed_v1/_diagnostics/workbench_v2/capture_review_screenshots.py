@@ -298,7 +298,8 @@ def main(outdir):
         # --- case-resolved data ----------------------------------------------------
         reset()
         pg.evaluate("""() => {
-            const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED");
+            const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                           && SERIES[k].native_result_status === "NATIVE_ONLY");
             tray.length = 0; tray.push(id); mode = "case"; render();
             const t = document.querySelector('#casedata tr[data-sid]');
             if (t) t.click();
@@ -351,6 +352,18 @@ def main(outdir):
             document.querySelector('#workspace').scrollTop = 0;
         }""")
         shot("24_no_case_context")
+
+        # a resolved series whose y axis DID canonicalise: both representations shown
+        reset()
+        pg.evaluate("""() => {
+            const id = Object.keys(PCL).find(k => PCL[k].status === "POINT_CASE_RESOLVED"
+                 && SERIES[k].native_result_status === "NATIVE_AND_CANONICAL_AVAILABLE");
+            tray.length = 0; tray.push(id); mode = "case"; render();
+            const t = document.querySelector('#casedata tr[data-sid]');
+            if (t) t.click();
+            document.querySelector('#workspace').scrollTop = 0;
+        }""")
+        shot("25_case_data_native_and_canonical")
         b.close()
     print("page errors: %s" % (errs or "none"))
     print("wrote %d screenshots to %s" % (len(list(out.glob("*.png"))), out))

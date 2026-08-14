@@ -82,6 +82,7 @@ table{border-collapse:collapse;width:100%;font-size:11.5px}
 th,td{text-align:left;padding:3px 7px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);
 font-weight:600}
+th.unit{text-transform:none;font-size:10.5px;letter-spacing:0}
 td.diff{background:rgba(168,39,31,.09)}
 code{font-family:var(--m);font-size:11px}
 .note{border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:4px;
@@ -870,15 +871,33 @@ function qualifiedSiblings(caseIds, quantity) {
 // at one design point. Where the record supports recovering which, that is shown as data.
 // Where it does not, the refusal is shown instead -- never a plausible row.
 const PCL = M.point_case_links || {};
+// The observed value is the evidence this table exists to show, and it is recorded in
+// the units the figure was drawn in. Whether the y axis also has a canonical form is a
+// separate question: a curve whose axis could not be canonicalised still reported a
+// number, and suppressing it answered "what was observed here" with silence.
+function nativeY(s) { return ((s.native_points || {}).y) || {}; }
+function nativeX(s) { return ((s.native_points || {}).x) || {}; }
 function caseDataRows(sid) {
   const s = SERIES[sid], rec = PCL[sid] || {};
-  const yv = (s.y_canonical || {}).values || [], xv = (s.x_canonical || {}).values || [];
-  const yOK = yv.length === xv.length && yv.length > 0;
-  return (rec.links || []).filter(l => l.resolution_status === "RESOLVED").map(l => ({
-    sid, case_id: l.case_id, point_index: l.point_index,
-    x: l.point_x_value, x_unit: l.point_x_unit,
-    y: yOK ? yv[l.point_index] : null, y_unit: (s.y_canonical || {}).unit,
-    link: l}));
+  const aligned = (s.point_index_contract || {}).aligned;
+  const nv = nativeY(s).values || [];
+  const cv = (s.y_canonical || {}).values || [];
+  return (rec.links || []).filter(l => l.resolution_status === "RESOLVED").map(l => {
+    const i = l.point_index;
+    // the index is only followed into an array proven to be the same point vector
+    const hasN = aligned && i < nv.length && nv[i] !== null && nv[i] !== undefined;
+    const hasC = aligned && i < cv.length && cv[i] !== null && cv[i] !== undefined;
+    return {sid, case_id: l.case_id, point_index: i,
+            x: l.point_x_value, x_unit: l.point_x_unit,
+            y_native: hasN ? nv[i] : null, y_native_unit: nativeY(s).unit,
+            y_native_label: nativeY(s).label,
+            y_canonical: hasC ? cv[i] : null,
+            y_canonical_unit: (s.y_canonical || {}).unit,
+            y_canonical_available: hasC,
+            result_status: s.native_result_status,
+            point_case_resolution_status: l.resolution_status,
+            link: l};
+  });
 }
 // Columns are chosen from what actually distinguishes the displayed cases: a condition
 // that is the same everywhere is stated once above the table instead of repeated down it.
@@ -945,7 +964,7 @@ function drawCaseData() {
         Common: ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`;
       h += `<table><thead><tr><th>Condition Case</th>
         ${varying.map(v=>`<th><code>${esc(v.k)}</code></th>`).join("")}
-        ${resolved.map(sid=>`<th>${chip(sid)} ${esc(SERIES[sid].y.y_quantity||"result")}
+        ${resolved.map(sid=>`<th class="unit">${chip(sid)} ${resultHeader(SERIES[sid])}
           <div class="dim" style="font-weight:400">Fig.${esc(SERIES[sid].figure)}${
           esc(SERIES[sid].panel||"")}</div></th>`).join("")}</tr></thead><tbody>`;
       shared.sort((a,b)=>{
@@ -969,6 +988,10 @@ function drawCaseData() {
     if (!rows.length) { h += unresolvedBlock(sid); return; }
     const cids = rows.map(r=>r.case_id);
     const {varying, common} = splitConditions(cids);
+    h += `<div class="dim" style="font-size:10.5px">Point → case:
+      ${rec.resolved_points}/${rec.links.length} resolved · Observed result:
+      <span class="${s.native_result_status==="NO_NATIVE_RESULT"?"warn":"good"}">${
+      esc(RESULT_NOTE[s.native_result_status]||s.native_result_status)}</span></div>`;
     if (common.length) h += `<div class="dim" style="font-size:10.5px;margin-bottom:4px">
       Common: ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`;
     if (rec.status === "PARTIALLY_RESOLVED")
@@ -977,11 +1000,9 @@ function drawCaseData() {
         ${rec.unmatched_points} without a matching case condition.</div>`;
     const xq = (s.x_canonical||{}).quantity, xu = (s.x_canonical||{}).unit;
     h += `<table><thead><tr><th>Condition Case</th>
-      <th><code>${esc(xq)}</code>${xu?` <span class="dim">[${esc(xu)}]</span>`:""}</th>
+      <th class="unit"><code>${esc(xq)}</code>${xu?` <span class="dim">[${esc(xu)}]</span>`:""}</th>
       ${varying.filter(v=>v.k!==xq).map(v=>`<th><code>${esc(v.k)}</code></th>`).join("")}
-      <th>${esc(s.y.y_quantity||"result")}${
-        s.normalization_basis&&s.normalization_basis!=="unresolved"
-          ? ` <span class="dim">(${esc(s.normalization_basis)})</span>`:""}</th>
+      <th class="unit">${resultHeader(s)}</th>
       </tr></thead><tbody>`;
     // ascending sweep order: presentation only, and never how a point found its case
     rows.slice().sort((a,b)=>a.x-b.x).forEach(r => {
@@ -996,6 +1017,14 @@ function drawCaseData() {
           ResultSeries <code>${esc(s.series_id)}</code><br>
           point index ${r.point_index} · MeasurementAct <code>${esc(s.act_id)}</code><br>
           source Fig. ${esc(s.figure)}${esc(s.panel||"")}<br>
+          <b>observation</b> ${esc(nativeY(s).label||"")}
+          ${esc(fmtNum(r.y_native))} ${esc(r.y_native_unit||"")}
+          ${r.y_canonical_available
+            ? `· canonical ${esc(fmtNum(r.y_canonical))} ${esc(r.y_canonical_unit||"")}`
+            : '· <span class="warn">canonical representation unresolved</span>'}<br>
+          native x ${esc(String((nativeX(s).values||[])[r.point_index]))}
+          ${esc(nativeX(s).unit||"")} · source ${esc((nativeY(s).quantity)||"")}<br>
+          <b>derived relation</b><br>
           x ${esc(String(r.link.point_x_value))} ${esc(r.link.point_x_unit||"")} ↔ case
           condition ${esc(String(r.link.case_condition_value))}
           ${esc(r.link.case_condition_unit||"")}
@@ -1018,11 +1047,37 @@ function drawCaseData() {
 const fmtNum = v => (v === null || v === undefined) ? "" :
   (Math.abs(v) >= 1000 || (v !== 0 && Math.abs(v) < 0.001) ? v.toPrecision(4)
    : String(Math.round(v * 1e6) / 1e6));
+// Native first, canonical beside it when it exists. "unresolved" is reserved for the
+// case where no observation was persisted at all -- not for a missing canonical form.
 function fmtResult(r) {
-  if (r.y === null || r.y === undefined)
-    return '<span class="warn">result unresolved</span>';
-  return `${esc(fmtNum(r.y))}${r.y_unit?` <span class="dim">${esc(r.y_unit)}</span>`:""}`;
+  if (r.y_native !== null && r.y_native !== undefined) {
+    const n = `${esc(fmtNum(r.y_native))}${r.y_native_unit
+      ? ` <span class="dim">${esc(r.y_native_unit)}</span>` : ""}`;
+    return r.y_canonical_available
+      ? `${n}<div class="dim" style="font-size:10px">canonical
+         ${esc(fmtNum(r.y_canonical))} ${esc(r.y_canonical_unit||"")}</div>` : n;
+  }
+  if (r.y_canonical !== null && r.y_canonical !== undefined)
+    return `${esc(fmtNum(r.y_canonical))}${r.y_canonical_unit
+      ? ` <span class="dim">${esc(r.y_canonical_unit)}</span>` : ""}`;
+  return '<span class="warn">observed result value not persisted</span>';
 }
+// The header names the observation as the source recorded it. Showing only a semantic
+// quantity would hide the unit the number is actually in.
+function resultHeader(s) {
+  const ny = nativeY(s);
+  const lab = ny.label || ny.quantity || s.y.y_quantity || "result";
+  // source labels usually already carry the unit; stating it twice is noise
+  const unit = (ny.unit && lab.indexOf(ny.unit) < 0)
+    ? ` <span class="dim">[${esc(ny.unit)}]</span>` : "";
+  const note = s.normalization_basis && s.normalization_basis !== "unresolved"
+    ? ` <span class="dim">(${esc(s.normalization_basis)})</span>` : "";
+  return `${esc(lab)}${unit}${note}`;
+}
+const RESULT_NOTE = {
+  NATIVE_AND_CANONICAL_AVAILABLE: "observed values available; canonical representation also resolved",
+  NATIVE_ONLY: "observed values available; canonical representation unresolved",
+  NO_NATIVE_RESULT: "no observed result value is persisted for this series"};
 function drawConds() {
   const box = $("#conds"); if (!box) return;
   const cols = tray.map(sid=>({sid, cases:SERIES[sid].all_case_ids}));
