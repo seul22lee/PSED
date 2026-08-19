@@ -247,7 +247,13 @@ def main():
                   "axis_role": q.get("axis_role", "output" if q.get("recipe_role") == "observable"
                                else "coordinate" if q.get("recipe_role") == "coordinate" else "condition"),
                   "source": "auto-proposed"}
-            quantity_kinds.append(qk); qk_ids.add(qk["id"]); qk_by_id[qk["id"]] = qk
+            if qk["id"] in qk_by_id:
+                # an approved extension SUPERSEDES the dictionary seed of the same
+                # id, in place -- one id, one QuantityKind, never a duplicate
+                qk_by_id[qk["id"]].clear()
+                qk_by_id[qk["id"]].update(qk)
+            else:
+                quantity_kinds.append(qk); qk_ids.add(qk["id"]); qk_by_id[qk["id"]] = qk
         for cat, members in (ext.get("categories") or {}).items():
             qr.setdefault("categories", {}).setdefault(cat, []).extend(members)
 
