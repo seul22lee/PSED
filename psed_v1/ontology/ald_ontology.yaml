@@ -3351,16 +3351,17 @@ quantity_kinds:
   axis_role: coordinate
 - id: wavelength
   iri: https://w3id.org/psed-ald/ontology#wavelength
-  domain: characterization
-  symbols:
-  - λ
+  domain: optical
+  symbols: []
   aliases:
   - wavelength
   qudt_quantitykind: null
-  unit: null
-  category: coordinate
-  recipe_role: coordinate
-  axis_role: coordinate
+  unit: nm
+  category: optical
+  family: spectral
+  recipe_role: observable
+  axis_role: output
+  source: auto-proposed
 - id: sputter_depth
   iri: https://w3id.org/psed-ald/ontology#sputter_depth
   domain: characterization
@@ -3900,19 +3901,6 @@ quantity_kinds:
   recipe_role: control_setting
   axis_role: condition
   source: auto-proposed
-- id: wavelength
-  iri: https://w3id.org/psed-ald/ontology#wavelength
-  domain: optical
-  symbols: []
-  aliases:
-  - wavelength
-  qudt_quantitykind: null
-  unit: nm
-  category: optical
-  family: spectral
-  recipe_role: observable
-  axis_role: output
-  source: auto-proposed
 - id: adsorption_equilibrium_constant
   iri: https://w3id.org/psed-ald/ontology#adsorption_equilibrium_constant
   domain: model_parameter
@@ -4248,6 +4236,15 @@ quantity_relations:
       members:
       - pulse_time
       - plasma_exposure_time
+    partial_pressure:
+      canonical: partial_pressure
+      members:
+      - co_reactant_partial_pressure
+      - precursor_partial_pressure
+    spectral:
+      canonical: wavelength
+      members:
+      - wavelength
   transforms:
   - from: film_thickness
     to: normalized_thickness
@@ -4903,6 +4900,7 @@ quantity_relations:
       canonical_unit: Pa.s
       dimension: exposure
       axis_role: condition
+      alias_of: exposure
     aspect_ratio:
       canonical_quantity: aspect_ratio
       canonical_unit: '1'
@@ -5208,6 +5206,13 @@ quantity_relations:
     - effective cycles = cycle_number - nucleation_delay when nucleation_delay is
       available
     confidence_policy: assumption_recorded
+    applicability:
+      policy: requires_any_evidence
+      evidence:
+      - nucleation_delay
+      note: steady linear growth is an assumption about the regime, not a numeric
+        operand; cycle count alone does not evidence it. A known nucleation_delay
+        is the declared supporting evidence.
   - id: gpc_from_thickness_and_cycles
     version: 1.0.0
     implementation_id: gpc_from_thickness
@@ -5230,6 +5235,13 @@ quantity_relations:
       or nucleation_delay is known'
     - effective cycles must be > 0
     confidence_policy: assumption_recorded
+    applicability:
+      policy: requires_any_evidence
+      evidence:
+      - nucleation_delay
+      note: steady linear growth is an assumption about the regime, not a numeric
+        operand; cycle count alone does not evidence it. A known nucleation_delay
+        is the declared supporting evidence.
   - id: denormalize_thickness_by_entrance
     version: 1.0.0
     implementation_id: denormalize_by_denominator
@@ -5387,6 +5399,10 @@ quantity_relations:
     assumptions:
     - Langmuir dose P*t; NOT independent evidence of either operand
     confidence_policy: assumption_recorded
+    applicability:
+      policy: operands_suffice
+      note: P*t is the definition of the exposure; stated operands suffice. The recorded
+        assumption marks non-independence, not inapplicability.
   - id: axis_semantic_resolution
     version: 1.0.0
     implementation_id: axis_semantics
@@ -5401,6 +5417,14 @@ quantity_relations:
     assumptions:
     - assignment of an axis to a comparison group from documentary evidence only
     confidence_policy: evidence_required
+  comparison_policy:
+    quantity_kind_direct_comparison: declared_axis_roles_only
+    basis: 'A QuantityKind not covered by any ComparisonGroup may serve as a direct
+      comparison target only when this ontology''s axis_role declaration lists it
+      (coordinate or output): that listing is the explicit statement that values of
+      this kind are comparable across sources on the canonical unit. Any other quantity
+      stays source-native until a ComparisonGroup or an axis_role entry authorizes
+      it.'
 individuals:
   materials:
   - id: Al2O3
@@ -7299,21 +7323,21 @@ models:
 _counts:
   classes: 226
   relations: 75
-  quantity_kinds: 181
+  quantity_kinds: 180
   quantity_kinds_enriched: 130
   quantity_specializations: 22
   quantity_equations: 13
-  quantity_families: 9
+  quantity_families: 11
   quantity_in_family: 46
   quantity_categories: 9
-  quantity_categorized: 131
+  quantity_categorized: 130
   quantity_transforms: 6
   transformation_rules: 25
   transformation_types: 10
   transformation_statuses: 9
   normalization_definitions: 11
   comparison_groups: 24
-  axis_coordinate: 19
+  axis_coordinate: 18
   axis_condition: 107
   axis_output: 55
   individuals: 201

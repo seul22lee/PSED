@@ -643,6 +643,12 @@ quantity_relations:
     exposure_time:                              # "duration of a reactant exposure"
       canonical: pulse_time                     # (enables penetration-vs-pulse_time comparison)
       members: [pulse_time, plasma_exposure_time]
+    partial_pressure:                           # "species partial pressure at the surface"
+      canonical: partial_pressure
+      members: [co_reactant_partial_pressure, precursor_partial_pressure]
+    spectral:                                   # "spectral coordinate of an optical measurement"
+      canonical: wavelength
+      members: [wavelength]
 
   # --- TRANSFORMS between family members: target = source (op) bridge.
   # `bridge` names the quantity the app must find in a record to align the two;
@@ -1056,6 +1062,7 @@ quantity_relations:
       canonical_unit: "Pa.s"
       dimension: exposure
       axis_role: condition
+      alias_of: exposure
     aspect_ratio:
       canonical_quantity: aspect_ratio
       canonical_unit: "1"
@@ -1286,6 +1293,11 @@ quantity_relations:
         - "steady linear growth over the cycle range"
         - "effective cycles = cycle_number - nucleation_delay when nucleation_delay is available"
       confidence_policy: assumption_recorded
+      applicability:
+        policy: requires_any_evidence
+        evidence: [nucleation_delay]
+        note: >-
+          steady linear growth is an assumption about the regime, not a numeric operand; cycle count alone does not evidence it. A known nucleation_delay is the declared supporting evidence.
 
     - id: gpc_from_thickness_and_cycles
       version: "1.0.0"
@@ -1303,6 +1315,11 @@ quantity_relations:
         - "steady linear growth: only applied when the growth regime is supported by evidence or nucleation_delay is known"
         - "effective cycles must be > 0"
       confidence_policy: assumption_recorded
+      applicability:
+        policy: requires_any_evidence
+        evidence: [nucleation_delay]
+        note: >-
+          steady linear growth is an assumption about the regime, not a numeric operand; cycle count alone does not evidence it. A known nucleation_delay is the declared supporting evidence.
 
     - id: denormalize_thickness_by_entrance
       version: "1.0.0"
@@ -1423,6 +1440,11 @@ quantity_relations:
       valid_domain: {min: 0.0, max: null}
       assumptions: ["Langmuir dose P*t; NOT independent evidence of either operand"]
       confidence_policy: assumption_recorded
+      applicability:
+        policy: operands_suffice
+        note: >-
+          P*t is the definition of the exposure; stated operands suffice. The
+          recorded assumption marks non-independence, not inapplicability.
 
     - id: axis_semantic_resolution
       version: "1.0.0"
@@ -1437,6 +1459,19 @@ quantity_relations:
       valid_domain: null
       assumptions: ["assignment of an axis to a comparison group from documentary evidence only"]
       confidence_policy: evidence_required
+
+  # --- direct QuantityKind comparison policy --------------------------------
+  # A QuantityKind not covered by any ComparisonGroup is a direct comparison
+  # target ONLY under this declaration; everything else stays source-native.
+  comparison_policy:
+    quantity_kind_direct_comparison: declared_axis_roles_only
+    basis: >-
+      A QuantityKind not covered by any ComparisonGroup may serve as a direct
+      comparison target only when this ontology's axis_role declaration lists
+      it (coordinate or output): that listing is the explicit statement that
+      values of this kind are comparable across sources on the canonical unit.
+      Any other quantity stays source-native until a ComparisonGroup or an
+      axis_role entry authorizes it.
 
 # =============================================================================
 # INDIVIDUALS  — canonical reference instances (seed ABox). These are the shared
