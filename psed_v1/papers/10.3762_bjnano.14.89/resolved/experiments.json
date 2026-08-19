@@ -333,16 +333,18 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
-     "purge_time": 2.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
-     "purge_time": 2.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -378,13 +380,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "caption",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 2.0,
-     "paper_id": "10.3762_bjnano.14.89",
-     "experiment_id": "10.3762_bjnano.14.89-F1a-0",
-     "figure": "Fig 1",
-     "panel": "a"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -400,13 +401,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "caption",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 2.0,
-     "paper_id": "10.3762_bjnano.14.89",
-     "experiment_id": "10.3762_bjnano.14.89-F1a-0",
-     "figure": "Fig 1",
-     "panel": "a"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -439,7 +439,7 @@
      "panel": "a"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "x_semantics": {
    "raw_label": "Evaporator temperature, \u00b0C",
@@ -476,7 +476,9 @@
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
   "n_observations": 6,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -902,6 +904,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -910,6 +913,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -1042,6 +1046,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -1051,6 +1056,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -1066,6 +1078,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -1075,6 +1088,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -1088,7 +1108,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -1506,6 +1528,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -1514,6 +1537,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -1646,6 +1670,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -1655,6 +1680,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -1670,6 +1702,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -1679,6 +1712,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -1692,7 +1732,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -2230,6 +2272,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -2238,6 +2281,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -2370,6 +2414,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -2379,6 +2424,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -2394,6 +2446,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -2403,6 +2456,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -2416,7 +2476,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -2906,6 +2968,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -2914,6 +2977,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -3046,6 +3110,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -3055,6 +3120,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -3070,6 +3142,7 @@
       "quantity": "pulse_time",
       "value": "5",
       "unit": "s",
+      "source_quantity": null,
       "raw_evidence": "exposure time of 5 s",
       "evidence_locator": "document.md near Fig 2",
       "assertion_status": "direct",
@@ -3079,6 +3152,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.3762_bjnano.14.89",
       "figure_index": "3",
       "figure_number": "2",
@@ -3092,7 +3172,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -3273,7 +3355,7 @@
    },
    "raw_quantity": "growth_per_cycle"
   },
-  "coordinate": "exposure_time",
+  "coordinate": "pulse_time",
   "coordinate_family": "exposure_time",
   "coordinate_unit": "s",
   "coordinate_unit_normalized": "s",
@@ -3384,6 +3466,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -3392,6 +3475,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -3480,10 +3564,10 @@
    "raw_quantity": "pulse_time",
    "raw_unit": "s",
    "unit_dimension": "time",
-   "canonical_quantity": "exposure_time",
+   "canonical_quantity": "pulse_time",
    "axis_role": "process_condition",
    "semantic_status": "resolved",
-   "evidence": "a DURATION in s/min; the integrated dose (pressure x time) is a different quantity with different units",
+   "evidence": "the duration of one reactant's valve pulse, which the ontology qualifies by reactant; the general exposure duration is a different quantity",
    "rejected_lexical_match": null
   },
   "y_semantics": {
@@ -3510,7 +3594,9 @@
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
   "n_observations": 5,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -3802,6 +3888,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -3810,6 +3897,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -3930,7 +4018,9 @@
   "n_observations": 7,
   "observations_are_experiments": false,
   "in_series": "10.3762_bjnano.14.89-S000",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -4222,6 +4312,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -4230,6 +4321,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -4350,7 +4442,9 @@
   "n_observations": 7,
   "observations_are_experiments": false,
   "in_series": "10.3762_bjnano.14.89-S000",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -4642,6 +4736,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -4650,6 +4745,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -4770,7 +4866,9 @@
   "n_observations": 7,
   "observations_are_experiments": false,
   "in_series": "10.3762_bjnano.14.89-S000",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -5062,6 +5160,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -5070,6 +5169,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -5190,7 +5290,9 @@
   "n_observations": 7,
   "observations_are_experiments": false,
   "in_series": "10.3762_bjnano.14.89-S000",
-  "case_index": 3
+  "case_index": 3,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -5482,6 +5584,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -5490,6 +5593,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -5610,7 +5714,9 @@
   "n_observations": 7,
   "observations_are_experiments": false,
   "in_series": "10.3762_bjnano.14.89-S000",
-  "case_index": 4
+  "case_index": 4,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -5902,6 +6008,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -5910,6 +6017,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -6030,7 +6138,9 @@
   "n_observations": 7,
   "observations_are_experiments": false,
   "in_series": "10.3762_bjnano.14.89-S000",
-  "case_index": 5
+  "case_index": 5,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -6322,6 +6432,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -6330,6 +6441,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -6450,7 +6562,9 @@
   "n_observations": 7,
   "observations_are_experiments": false,
   "in_series": "10.3762_bjnano.14.89-S000",
-  "case_index": 6
+  "case_index": 6,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -6932,6 +7046,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -6940,6 +7055,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -7058,7 +7174,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 31,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -7484,6 +7602,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -7492,6 +7611,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -7610,7 +7730,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 24,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -7988,6 +8110,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -7996,6 +8119,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -8114,7 +8238,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 18,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -8460,6 +8586,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -8468,6 +8595,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -8586,7 +8714,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 14,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -8908,6 +9038,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -8916,6 +9047,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -9034,7 +9166,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 11,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -9366,6 +9500,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -9374,6 +9509,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -9492,7 +9628,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 10,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -9888,6 +10026,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -9896,6 +10035,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -10014,7 +10154,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 20,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -10410,6 +10552,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -10418,6 +10561,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -10536,7 +10680,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 20,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -10852,6 +10998,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -10860,6 +11007,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -10978,7 +11126,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 10,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -11294,6 +11444,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -11302,6 +11453,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -11420,7 +11572,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 10,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -11794,6 +11948,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -11802,6 +11957,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -11918,7 +12074,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 15,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -12274,6 +12432,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -12282,6 +12441,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -12400,7 +12560,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 15,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -12825,6 +12987,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -12833,6 +12996,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -12950,7 +13114,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 24,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -13375,6 +13541,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -13383,6 +13550,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -13500,7 +13668,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 24,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -13903,6 +14073,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -13911,6 +14082,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -14026,7 +14198,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 19,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "SnO2",
@@ -14411,6 +14585,7 @@
      "label": "A",
      "role": "precursor",
      "species": "SnI4",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -14419,6 +14594,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 5,
      "purge_time": null,
      "partial_pressure": null
@@ -14536,6 +14712,8 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 19,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  }
 ]

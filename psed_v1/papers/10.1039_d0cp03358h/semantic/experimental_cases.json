@@ -1,0 +1,2878 @@
+[
+ {
+  "case_id": "CASE-10.103-001",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "1000",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives cycle_number = 1000",
+    "superseded": [
+     {
+      "value": "500",
+      "unit": "cycle",
+      "provenance_type": "methods_default",
+      "source": "methods",
+      "evidence": "500 ALD cycles",
+      "reason": "superseded by more specific inherited_from_sample evidence"
+     }
+    ]
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '11' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "keyword: lateral HAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig5b__exp01",
+   "M::10.1039_d0cp03358h__Fig9d__exp03"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::11"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::D"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-849",
+   "CAND-10.103-866",
+   "CAND-10.103-879"
+  ],
+  "source_figures": [
+   "5",
+   "9"
+  ],
+  "source_panels": [
+   "5b",
+   "9d"
+  ],
+  "n_members": 3,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-137",
+   "EV-10.103-216",
+   "EV-10.103-295"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=1000|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-002",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'different TMA pulse times (sample 12, 13, and 14 in Table 1 Series E) and vs.' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "corroborated_by": [
+     {
+      "quantity": "precursor_pulse_time",
+      "species": "TMA",
+      "value": "0.1",
+      "unit": "s",
+      "scope": "series",
+      "source": "series_label",
+      "provenance_type": "directly_stated",
+      "evidence": "0.1 s"
+     }
+    ]
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "4",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "4 s",
+    "locator": "series label '4 s' (axis 'purge_time')",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "keyword: lateral HAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig11a__exp01",
+   "M::10.1039_d0cp03358h__Fig11b__exp02",
+   "M::10.1039_d0cp03358h__Fig7a__exp01",
+   "M::10.1039_d0cp03358h__Fig7a__exp02",
+   "M::10.1039_d0cp03358h__Fig7a__exp03",
+   "M::10.1039_d0cp03358h__Fig8a__exp01",
+   "M::10.1039_d0cp03358h__Fig8a__exp02",
+   "M::10.1039_d0cp03358h__Fig8a__exp03",
+   "M::10.1039_d0cp03358h__Fig8a__exp04",
+   "M::10.1039_d0cp03358h__Fig8b__exp01",
+   "M::10.1039_d0cp03358h__Fig8b__exp02",
+   "M::10.1039_d0cp03358h__Fig8b__exp03",
+   "M::10.1039_d0cp03358h__Fig8b__exp04",
+   "M::10.1039_d0cp03358h__Fig9a__exp02",
+   "M::10.1039_d0cp03358h__Fig9d__exp02"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::2",
+   "S::10.1039_d0cp03358h::4",
+   "S::10.1039_d0cp03358h::5",
+   "S::10.1039_d0cp03358h::6",
+   "S::10.1039_d0cp03358h::8",
+   "S::10.1039_d0cp03358h::12"
+  ],
+  "deposition_run_ids": [
+   "RUN::10.1039_d0cp03358h::01"
+  ],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::A",
+   "SER::10.1039_d0cp03358h::B",
+   "SER::10.1039_d0cp03358h::C",
+   "SER::10.1039_d0cp03358h::D",
+   "SER::10.1039_d0cp03358h::E",
+   "SER::10.1039_d0cp03358h::F"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-850",
+   "CAND-10.103-851",
+   "CAND-10.103-852",
+   "CAND-10.103-853",
+   "CAND-10.103-854",
+   "CAND-10.103-855",
+   "CAND-10.103-856",
+   "CAND-10.103-857",
+   "CAND-10.103-858",
+   "CAND-10.103-859",
+   "CAND-10.103-860",
+   "CAND-10.103-862",
+   "CAND-10.103-865",
+   "CAND-10.103-867",
+   "CAND-10.103-871",
+   "CAND-10.103-874"
+  ],
+  "source_figures": [
+   "11",
+   "7",
+   "8",
+   "9"
+  ],
+  "source_panels": [
+   "11a",
+   "11b",
+   "7a",
+   "8a",
+   "8b",
+   "9a",
+   "9d"
+  ],
+  "n_members": 16,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-145",
+   "EV-10.103-149",
+   "EV-10.103-153",
+   "EV-10.103-156",
+   "EV-10.103-159",
+   "EV-10.103-162",
+   "EV-10.103-165",
+   "EV-10.103-168",
+   "EV-10.103-171",
+   "EV-10.103-174",
+   "EV-10.103-177",
+   "EV-10.103-183",
+   "EV-10.103-212",
+   "EV-10.103-272",
+   "EV-10.103-280",
+   "EV-10.103-290"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "folded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "0.1 s",
+    "locator": "series label '0.1 s' (axis 'pulse_time')",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "folded_into": {
+     "quantity": "precursor_pulse_time",
+     "species": "TMA",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   }
+  ],
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor=TMA|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|purge_time=4|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-003",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "100",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives feature_height = 100"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '7' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "LHAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig9a__exp01"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::7"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::C"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-861",
+   "CAND-10.103-876"
+  ],
+  "source_figures": [
+   "9"
+  ],
+  "source_panels": [
+   "9a"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-180",
+   "EV-10.103-292"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=100|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-004",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "2000",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives feature_height = 2000"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '9' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "LHAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig9a__exp03"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::9"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::C"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-863",
+   "CAND-10.103-877"
+  ],
+  "source_figures": [
+   "9"
+  ],
+  "source_panels": [
+   "9a"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-186",
+   "EV-10.103-293"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=2000|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-005",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "250",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives cycle_number = 250"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '10' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "LHAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig9d__exp01"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::10"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::D"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-864",
+   "CAND-10.103-878"
+  ],
+  "source_figures": [
+   "9"
+  ],
+  "source_panels": [
+   "9d"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-208",
+   "EV-10.103-294"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=250|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-006",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.2-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.2-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'different TMA pulse times (sample 12, 13, and 14 in Table 1 Series E) and vs.' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.2,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.2",
+    "source_recipe_string": "0.2-4.0-0.1-4.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "corroborated_by": [
+     {
+      "quantity": "precursor_pulse_time",
+      "species": "TMA",
+      "value": "0.2",
+      "unit": "s",
+      "scope": "series",
+      "source": "series_label",
+      "provenance_type": "directly_stated",
+      "evidence": "0.2 s"
+     }
+    ]
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.2-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.2-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.2-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig11a__exp02"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::13"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::E"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-868",
+   "CAND-10.103-880"
+  ],
+  "source_figures": [
+   "11"
+  ],
+  "source_panels": [
+   "11a"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-274",
+   "EV-10.103-296"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "folded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.2",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "0.2 s",
+    "locator": "series label '0.2 s' (axis 'pulse_time')",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "folded_into": {
+     "quantity": "precursor_pulse_time",
+     "species": "TMA",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   }
+  ],
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor=TMA|precursor_pulse_time@TMA=0.2|precursor_purge_time@TMA=4|pulse_purge_sequence=0.2-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-007",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.4-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.4-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v2a",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives pillar_layout = v2a"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'different TMA pulse times (sample 12, 13, and 14 in Table 1 Series E) and vs.' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.4,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.4",
+    "source_recipe_string": "0.4-4.0-0.1-4.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "corroborated_by": [
+     {
+      "quantity": "precursor_pulse_time",
+      "species": "TMA",
+      "value": "0.4",
+      "unit": "s",
+      "scope": "series",
+      "source": "series_label",
+      "provenance_type": "directly_stated",
+      "evidence": "0.4 s"
+     }
+    ]
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.4-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.4-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.4-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig11a__exp03"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::14"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::E"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-869",
+   "CAND-10.103-881"
+  ],
+  "source_figures": [
+   "11"
+  ],
+  "source_panels": [
+   "11a"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-276",
+   "EV-10.103-297"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "folded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.4",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "0.4 s",
+    "locator": "series label '0.4 s' (axis 'pulse_time')",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "folded_into": {
+     "quantity": "precursor_pulse_time",
+     "species": "TMA",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   }
+  ],
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v2a|precursor=TMA|precursor_pulse_time@TMA=0.4|precursor_purge_time@TMA=4|pulse_purge_sequence=0.4-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-008",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-1.0-0.1-1.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 1.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 1.0",
+    "source_recipe_string": "0.1-1.0-0.1-1.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-1.0-0.1-1.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 1.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 1.0",
+    "source_recipe_string": "0.1-1.0-0.1-1.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-1.0-0.1-1.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-1.0-0.1-1.0"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1 s",
+    "locator": "series label '1 s' (axis 'purge_time')",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "LHAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig11b__exp01"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::15"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::F"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-870",
+   "CAND-10.103-882"
+  ],
+  "source_figures": [
+   "11"
+  ],
+  "source_panels": [
+   "11b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-278",
+   "EV-10.103-298"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=1|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=1|pulse_purge_sequence=0.1-1.0-0.1-1.0|purge_time=1|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-009",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-10.0-0.1-10.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 10.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives coreactant_purge_time = 10.0",
+    "source_recipe_string": "0.1-10.0-0.1-10.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 300 °C",
+    "locator": "figure 11 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "150",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": "N2",
+    "evidence": "flow rate of 150 sccm",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1b",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives pillar_layout = v1b"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-10.0-0.1-10.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 10.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "inherited_from_sample",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives precursor_purge_time = 10.0",
+    "source_recipe_string": "0.1-10.0-0.1-10.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-10.0-0.1-10.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "inherited_from_sample",
+    "source": "sample_table",
+    "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-10.0-0.1-10.0"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "10",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "10 s",
+    "locator": "series label '10 s' (axis 'purge_time')",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "3",
+    "unit": "hPa",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "process pressure was ca. 3 hPa",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "LHAR",
+  "measurement_ids": [
+   "M::10.1039_d0cp03358h__Fig11b__exp03"
+  ],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::16"
+  ],
+  "deposition_run_ids": [],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::F"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-872",
+   "CAND-10.103-883"
+  ],
+  "source_figures": [
+   "11"
+  ],
+  "source_panels": [
+   "11b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "tabulated_specimen",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-282",
+   "EV-10.103-299"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=10|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=10|pulse_purge_sequence=0.1-10.0-0.1-10.0|purge_time=10|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-010",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": null,
+  "deposited_materials": [],
+  "specimen_context_materials": [],
+  "context_materials": [],
+  "material_roles": {},
+  "material_candidates": {},
+  "material_status": "UNRESOLVED",
+  "material_status_reason": "no material evidence at any scope for this result",
+  "material_evidence_scope": null,
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 1 of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 1 of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 1 of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 1 of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v1a",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 1 of the paper's specimen table gives pillar_layout = v1a"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 1 of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 1 of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 1 of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
+  "measurement_ids": [],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::1"
+  ],
+  "deposition_run_ids": [
+   "RUN::10.1039_d0cp03358h::01"
+  ],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::A"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-873"
+  ],
+  "source_figures": [],
+  "source_panels": [],
+  "n_members": 1,
+  "member_kinds": [
+   "tabulated_specimen"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-289"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "material UNRESOLVED: no material evidence at any scope for this result"
+  ],
+  "chemistry_basis": {
+   "precursors": "every resolved experiment of this paper agrees",
+   "process_type": "every resolved experiment of this paper agrees"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|feature_height=500|pillar_layout=v1a|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|material=?|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-011",
+  "paper_id": "10.1039_d0cp03358h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": null,
+  "deposited_materials": [],
+  "specimen_context_materials": [],
+  "context_materials": [],
+  "material_roles": {},
+  "material_candidates": {},
+  "material_status": "UNRESOLVED",
+  "material_status_reason": "no material evidence at any scope for this result",
+  "material_evidence_scope": null,
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 2,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 3 of the paper's specimen table gives coreactant_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "coreactant_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "H2O",
+    "component_index": 3,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 3 of the paper's specimen table gives coreactant_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 3 of the paper's specimen table gives cycle_number = 500"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "500",
+    "unit": "nm",
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 3 of the paper's specimen table gives feature_height = 500"
+   },
+   {
+    "quantity": "pillar_layout",
+    "value": "v2a",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 3 of the paper's specimen table gives pillar_layout = v2a"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": 0.1,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 0,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 3 of the paper's specimen table gives precursor_pulse_time = 0.1",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "precursor_purge_time",
+    "value": 4.0,
+    "unit": "s",
+    "species": "TMA",
+    "component_index": 1,
+    "role": "CASE_DEFINING",
+    "role_basis": "component of the source's composite recipe string",
+    "provenance_type": "derived_from_table_recipe",
+    "scope": "sample",
+    "source": "composite_recipe",
+    "evidence": "row 3 of the paper's specimen table gives precursor_purge_time = 4.0",
+    "source_recipe_string": "0.1-4.0-0.1-4.0"
+   },
+   {
+    "quantity": "pulse_purge_sequence",
+    "value": "0.1-4.0-0.1-4.0",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "column of the paper's own specimen table",
+    "provenance_type": "derived_from_table_recipe",
+    "source": "sample_table",
+    "evidence": "row 3 of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
+  "measurement_ids": [],
+  "sample_ids": [
+   "S::10.1039_d0cp03358h::3"
+  ],
+  "deposition_run_ids": [
+   "RUN::10.1039_d0cp03358h::01"
+  ],
+  "study_series_ids": [
+   "SER::10.1039_d0cp03358h::A"
+  ],
+  "candidate_ids": [
+   "CAND-10.103-875"
+  ],
+  "source_figures": [],
+  "source_panels": [],
+  "n_members": 1,
+  "member_kinds": [
+   "tabulated_specimen"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-291"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "material UNRESOLVED: no material evidence at any scope for this result"
+  ],
+  "chemistry_basis": {
+   "precursors": "every resolved experiment of this paper agrees",
+   "process_type": "every resolved experiment of this paper agrees"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|feature_height=500|pillar_layout=v2a|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|material=?|geometry=lateral_channel",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "geometry",
+   "named specimens"
+  ],
+  "identity_status": "DISTINGUISHED"
+ }
+]

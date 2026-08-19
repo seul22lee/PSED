@@ -297,16 +297,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TMA",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 5.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
-     "species": "O2_plasma",
+     "species": "O2",
+     "activation": "plasma",
      "dose_time": null,
-     "purge_time": 5.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -333,11 +335,12 @@
      "experiment_id": "10.1063_1.2338776-E001"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 5.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -346,11 +349,12 @@
      "experiment_id": "10.1063_1.2338776-E001"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 5.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -381,7 +385,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -421,6 +425,8 @@
   "n_observations": 1,
   "observations_are_experiments": false,
   "in_series": null,
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  }
 ]

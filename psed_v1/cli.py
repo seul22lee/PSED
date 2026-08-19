@@ -19,6 +19,8 @@ Stages, in pipeline order:
     pressure    text + tables  -> papers/<id>/extracted/pressure.json       (LLM)
     resolve     all the above  -> papers/<id>/{resolved/*,review.json}
     canonical   resolved       -> papers/<id>/canonical/curves.json
+    semantic    resolved+canonical -> papers/<id>/semantic/*.json  (no LLM)
+    workbench   semantic corpus -> papers/_corpus/workbench/       (no LLM)
     kg          canonical      -> papers/_corpus/knowledge_graph_onto.json
     ontology    ontology src   -> ontology/ald_ontology.{json,yaml}
     review      everything     -> reports/*.html
@@ -44,6 +46,8 @@ STAGES = {
     "pressure":  "pipeline.text.pressure",
     "resolve":   "pipeline.resolve.to_kb",
     "canonical": "pipeline.canonical.build_canonical",
+    "semantic":  "pipeline.semantic.build_semantic",
+    "workbench": "pipeline.workbench.build_workbench_model",
     "kg":        "pipeline.review.build_kg",
     "ontology":  "ontology.build_ontology",
 }

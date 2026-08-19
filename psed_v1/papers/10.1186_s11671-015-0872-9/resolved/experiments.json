@@ -978,16 +978,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TiCl4",
+     "activation": null,
      "dose_time": 0.25,
-     "purge_time": 1,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": 0.25,
-     "purge_time": 1,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -1026,11 +1028,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 1,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -1046,11 +1049,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 1,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -1088,7 +1092,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.786
+   "completeness": 0.643
   },
   "coordinate_raw_quantity": "diffraction_angle",
   "x_semantics": {
@@ -1143,6 +1147,7 @@
       "quantity": "working_pressure",
       "value": "-6",
       "unit": "Torr",
+      "source_quantity": null,
       "raw_evidence": "ber pressure were 2 kW, 80 sccm, and 4e -6 Torr, respectively. During the ALD process, single-crystalline TiO2 thin films were grown at 200\u00b0C and 230 mTorr usin",
       "evidence_locator": "methods section",
       "assertion_status": "direct",
@@ -1152,6 +1157,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1186_s11671-015-0872-9",
       "figure_index": null,
       "figure_number": null,
@@ -1167,6 +1179,7 @@
       "quantity": "working_pressure",
       "value": "230",
       "unit": "mTorr",
+      "source_quantity": null,
       "raw_evidence": "TiO2 thin films were grown at 200\u00b0C and 230 mTorr using TiCl4 and H2O as the precursor vapors. During the growth process, the TiCl4 and H2O were delivered to th",
       "evidence_locator": "methods section",
       "assertion_status": "direct",
@@ -1176,6 +1189,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1186_s11671-015-0872-9",
       "figure_index": null,
       "figure_number": null,
@@ -1191,6 +1211,7 @@
       "quantity": "working_pressure",
       "value": "-6",
       "unit": "Torr",
+      "source_quantity": null,
       "raw_evidence": "ber pressure were 2 kW, 80 sccm, and 4e -6 Torr, respectively. During the ALD process, single-crystalline TiO2 thin films were grown at 200\u00b0C and 230 mTorr usin",
       "evidence_locator": "methods section",
       "assertion_status": "direct",
@@ -1200,6 +1221,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1186_s11671-015-0872-9",
       "figure_index": null,
       "figure_number": null,
@@ -1215,6 +1243,7 @@
       "quantity": "working_pressure",
       "value": "230",
       "unit": "mTorr",
+      "source_quantity": null,
       "raw_evidence": "TiO2 thin films were grown at 200\u00b0C and 230 mTorr using TiCl4 and H2O as the precursor vapors. During the growth process, the TiCl4 and H2O were delivered to th",
       "evidence_locator": "methods section",
       "assertion_status": "direct",
@@ -1224,6 +1253,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1186_s11671-015-0872-9",
       "figure_index": null,
       "figure_number": null,
@@ -1237,6 +1273,8 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: porous/AAO/membrane"
  }
 ]

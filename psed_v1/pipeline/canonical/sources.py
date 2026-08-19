@@ -64,17 +64,24 @@ def rel(path):
 
 
 def papers():
-    """Corpus paper ids — the papers that exist on disk with an extraction.
+    """Every DECLARED paper id — included experimental papers first, then the
+    declared-excluded reviews.
 
-    This used to read reports/extraction_runs/extraction_manifest.json and call it
-    "the authoritative list". That file is the frozen log of a July extraction run:
-    its input_paths still point at the pre-refactor extracted/<doi>/ layout, and it
-    has no entry for a paper added since. Because every downstream stage resolves its
-    corpus through this function, a paper missing from that log was silently absent
-    from resolve, canonical, the KG and every report no matter how much data it
-    contributed -- cremers2019 has 93 source series and appeared nowhere. The live
-    corpus is the filesystem; the manifest stays where it is as run provenance.
+    Membership comes from papers/_corpus/corpus_manifest.json, never from
+    directory globbing: a folder on disk is not a corpus member until the
+    manifest lists it, and a listed paper that lost its folder surfaces as a
+    loud downstream error instead of silently vanishing. Reviews stay in this
+    ENUMERATION (their extractions feed the KG and reports — cremers2019 alone
+    carries 93 source series) while the manifest's `included` list is what
+    defines the experimental corpus for the semantic layer and the Workbench.
+    The filesystem is the fallback only for a corpus root that has no manifest
+    (a scratch corpus in a test).
     """
+    mf = P.corpus_manifest_path()
+    if mf.exists():
+        m = json.loads(mf.read_text())
+        return ([p["paper_id"] for p in m.get("included") or []]
+                + [p["paper_id"] for p in m.get("excluded") or []])
     return P.papers()
 
 

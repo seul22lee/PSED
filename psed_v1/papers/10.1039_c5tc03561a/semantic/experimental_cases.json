@@ -1,0 +1,3236 @@
+[
+ {
+  "case_id": "CASE-10.103-001",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-686"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-086"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-002",
+   "CASE-10.103-003"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-002, CASE-10.103-003; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-002",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-687"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-087"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-001",
+   "CASE-10.103-003"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-001, CASE-10.103-003; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-003",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-688"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-088"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-001",
+   "CASE-10.103-002"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-001, CASE-10.103-002; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-004",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=?",
+     "unit=s",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "Boosting time (s)",
+    "evidence": "branch 0 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F2b::pulse_time::10.1039_c5tc03561a__Fig2b"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-689"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-090"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|pulse_time=0|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-005",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 0.5,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=?",
+     "unit=s",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "Boosting time (s)",
+    "evidence": "branch 0.5 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F2b::pulse_time::10.1039_c5tc03561a__Fig2b"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-690"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-091"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|pulse_time=0.5|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-006",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 1.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=?",
+     "unit=s",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "Boosting time (s)",
+    "evidence": "branch 1 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F2b::pulse_time::10.1039_c5tc03561a__Fig2b"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-691"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-092"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|pulse_time=1|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-007",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 2.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=?",
+     "unit=s",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "Boosting time (s)",
+    "evidence": "branch 2 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F2b::pulse_time::10.1039_c5tc03561a__Fig2b"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-692"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-093"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|pulse_time=2|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-008",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "per cycle at a differential pressure of 1 mbar (pressure of precursor vapor and Ar boosting Fig. 2 (a) GPC plotted versus substrate temperature (b) GPC versus b",
+    "locator": "document.md near Fig 2",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": 3.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=?",
+     "unit=s",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "Boosting time (s)",
+    "evidence": "branch 3 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F2b::pulse_time::10.1039_c5tc03561a__Fig2b"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig2b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-693"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-094"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|generic_pressure=1|growth_per_cycle=0.45|pulse_time=3|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-009",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "step_context": "reactant_exposure",
+    "activation": null,
+    "plasma_type": null,
+    "follows": null,
+    "preceding_species": null,
+    "preceding_activation": null,
+    "step_evidence": [
+     "no role evidence in 'No. of Ba exposures/BaO cycle'",
+     "the figure caption names the step: 'H2O) pulse'"
+    ],
+    "step_basis": "printed panel sequence of figure 3",
+    "source_quantity": "exposure_dose",
+    "quantity": "exposure_dose",
+    "value": 1.0,
+    "unit": "",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_dose",
+     "step=?",
+     "unit=?",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "No. of Ba exposures/BaO cycle",
+    "evidence": "branch 1 of the exposure_dose design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F3a::exposure_dose::10.1039_c5tc03561a__Fig3a",
+    "species": "H2O"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig3a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-694"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-096"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|exposure_dose@H2O=1|flow_rate@Ar=10|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-010",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "step_context": "reactant_exposure",
+    "activation": null,
+    "plasma_type": null,
+    "follows": null,
+    "preceding_species": null,
+    "preceding_activation": null,
+    "step_evidence": [
+     "no role evidence in 'No. of Ba exposures/BaO cycle'",
+     "the figure caption names the step: 'H2O) pulse'"
+    ],
+    "step_basis": "printed panel sequence of figure 3",
+    "source_quantity": "exposure_dose",
+    "quantity": "exposure_dose",
+    "value": 2.0,
+    "unit": "",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_dose",
+     "step=?",
+     "unit=?",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "No. of Ba exposures/BaO cycle",
+    "evidence": "branch 2 of the exposure_dose design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F3a::exposure_dose::10.1039_c5tc03561a__Fig3a",
+    "species": "H2O"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig3a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-695"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-097"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|exposure_dose@H2O=2|flow_rate@Ar=10|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-011",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "step_context": "reactant_exposure",
+    "activation": null,
+    "plasma_type": null,
+    "follows": null,
+    "preceding_species": null,
+    "preceding_activation": null,
+    "step_evidence": [
+     "no role evidence in 'No. of Ba exposures/BaO cycle'",
+     "the figure caption names the step: 'H2O) pulse'"
+    ],
+    "step_basis": "printed panel sequence of figure 3",
+    "source_quantity": "exposure_dose",
+    "quantity": "exposure_dose",
+    "value": 3.0,
+    "unit": "",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_dose",
+     "step=?",
+     "unit=?",
+     "material=BaO"
+    ],
+    "process_step": null,
+    "design_material": "BaO",
+    "raw_axis_label": "No. of Ba exposures/BaO cycle",
+    "evidence": "branch 3 of the exposure_dose design plotted in this panel",
+    "design_id": "DES::10.1039_c5tc03561a::F3a::exposure_dose::10.1039_c5tc03561a__Fig3a",
+    "species": "H2O"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig3a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-696"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-098"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|exposure_dose@H2O=3|flow_rate@Ar=10|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-012",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "H2O",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'thickness variation as a function of number of oxidant (H2O) pulses. A steady state was attained after 5-10 H2O pulses. ' names 'H2O', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycles",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "100 cycles",
+    "locator": "figure caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "grown at 210 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig3b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-697"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-099"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant=H2O|cycle_number=100|deposition_temperature=210|flow_rate@Ar=10|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-013",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "2 cycles",
+    "locator": "document.md near Fig 7",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "panel",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited BTO grown on Si substrate at 210 °C",
+    "locator": "figure 7 caption, panel (a)",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "dose (0.1 s",
+    "locator": "document.md near Fig 7",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "60",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "purging step (60 s",
+    "locator": "document.md near Fig 7",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig7a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-705"
+  ],
+  "source_figures": [
+   "7"
+  ],
+  "source_panels": [
+   "7a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-110"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|growth_per_cycle=0.45|pulse_time=0.1|purge_time=60|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-014",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "210",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited BTO grown on Si substrate at 210 °C",
+    "locator": "document.md near Fig 8",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "10",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "Ar",
+    "evidence": "10 sccm of Ar",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "0.6",
+    "unit": "Torr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "chamber pressure of 0.6 Torr",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::10.1039_c5tc03561a__Fig8a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-706"
+  ],
+  "source_figures": [
+   "8"
+  ],
+  "source_panels": [
+   "8a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-115"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|deposition_temperature=210|flow_rate@Ar=10|growth_per_cycle=0.45|working_pressure=0.6|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-015",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "generic HAR conformality (single-feature default)",
+  "measurement_ids": [
+   "M::IMG::10.1039_c5tc03561a::F5"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-707"
+  ],
+  "source_figures": [
+   "5"
+  ],
+  "source_panels": [
+   "5"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "image_supported"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-117"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "no case-defining condition value is known for this case"
+  ],
+  "chemistry_basis": {
+   "process_type": "resolved experiments of this paper depositing BaO"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=2|growth_per_cycle=0.45|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-016",
+  "paper_id": "10.1039_c5tc03561a",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "BaO",
+  "deposited_materials": [
+   "BaO"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "BaO"
+  ],
+  "material_roles": {
+   "BaO": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "py-Ba"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "aspect_ratio",
+    "unit": null,
+    "span": " image of BaO film deposited on patterned Si substrate with aspect ratio B 1 : 2.5; the central cavity of the trenches are filled with amorphous carbon for struct",
+    "value": 1.0,
+    "value_kind": "scalar",
+    "role": "CASE_DEFINING",
+    "role_basis": "stated in the caption of an image-supported figure",
+    "provenance_type": "figure_local_direct",
+    "source": "figure_caption",
+    "evidence": " image of BaO film deposited on patterned Si substrate with aspect ratio B 1 : 2.5; the central cavity of the trenches are filled with amorphous carbon for struct"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "2",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "70 supercycles consisting of 4 BaO and 2 TiO2 cycles were deposited resulting in a stoichiometric composition of Ti/(Ba + Ti) = 0",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "growth_per_cycle",
+    "value": "0.45",
+    "unit": "Å/cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The overall achieved GPC of 0.45 Å per cycle is much lower than the monolayer thickness reported for BaO ( B 2",
+    "context_match": {
+     "material": "BaO",
+     "chemistry": [
+      "py-Ba",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "vertical_structure",
+  "geometries": [
+   "vertical_structure"
+  ],
+  "geometry_source": "figure/panel caption",
+  "geometry_evidence": "aspect ratio",
+  "measurement_ids": [
+   "M::IMG::10.1039_c5tc03561a::F6"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-708"
+  ],
+  "source_figures": [
+   "6"
+  ],
+  "source_panels": [
+   "6"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "image_supported"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-118"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_basis": {
+   "process_type": "resolved experiments of this paper depositing BaO"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "py-Ba",
+     "canonical_id": "py-Ba",
+     "identity_key": "py-Ba",
+     "preferred_label": "py-Ba",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "aspect_ratio=1|cycle_number=2|growth_per_cycle=0.45|material=BaO|geometry=vertical_structure",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ }
+]

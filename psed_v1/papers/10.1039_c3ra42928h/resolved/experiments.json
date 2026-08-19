@@ -280,8 +280,8 @@
   },
   "series_name": "phase: Anatase (101)",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -323,16 +323,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -364,11 +366,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -384,11 +387,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -419,7 +423,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "temperature",
   "x_semantics": {
@@ -457,7 +461,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 2,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  },
  {
   "material": "TiO2",
@@ -740,8 +746,8 @@
   },
   "series_name": "phase: Rutile (110)",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -783,16 +789,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -824,11 +832,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -844,11 +853,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -879,7 +889,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "temperature",
   "x_semantics": {
@@ -917,7 +927,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 2,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  },
  {
   "material": "TiO2",
@@ -1700,8 +1712,8 @@
   },
   "series_name": "series: XRD spectrum",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -1745,16 +1757,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -1786,11 +1800,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -1806,11 +1821,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -1841,7 +1857,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "diffraction_angle",
   "x_semantics": {
@@ -1879,7 +1895,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 60,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  },
  {
   "material": "TiO2",
@@ -2330,8 +2348,8 @@
   },
   "series_name": "series: as-deposited",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -2373,16 +2391,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -2414,11 +2434,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -2434,11 +2455,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -2469,7 +2491,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "x_semantics": {
    "raw_label": "Photon energy (eV)",
@@ -2506,7 +2528,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 23,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  },
  {
   "material": "TiO2",
@@ -2985,8 +3009,8 @@
   },
   "series_name": "series: after anneal",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -3028,16 +3052,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -3069,11 +3095,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -3089,11 +3116,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -3124,7 +3152,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "x_semantics": {
    "raw_label": "Photon energy (eV)",
@@ -3161,7 +3189,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 22,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  },
  {
   "material": "TiO2",
@@ -3856,8 +3886,8 @@
   },
   "series_name": "series: Control sample",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -3901,16 +3931,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -3942,11 +3974,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -3962,11 +3995,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -3997,7 +4031,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "diffraction_angle",
   "x_semantics": {
@@ -4035,7 +4069,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 49,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  },
  {
   "material": "TiO2",
@@ -4757,8 +4793,8 @@
   },
   "series_name": "gas species: Acetaldehyde",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -4802,16 +4838,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -4843,11 +4881,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -4863,11 +4902,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -4898,7 +4938,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "time",
   "x_semantics": {
@@ -4936,7 +4976,9 @@
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
   "n_observations": 56,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  },
  {
   "material": "TiO2",
@@ -5578,8 +5620,8 @@
   },
   "series_name": "gas species: CO2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "cnt",
+  "geometry_class": "nanostructure_array",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "material_element_match",
@@ -5623,16 +5665,18 @@
      "label": "A",
      "role": "precursor",
      "species": "TDMAT",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "O3",
+     "activation": null,
      "dose_time": 20,
-     "purge_time": 40,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -5664,11 +5708,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::A": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -5684,11 +5729,12 @@
      "card_field": "pulse_time_s"
     },
     "purge_time::B": {
-     "source": "paper",
-     "from": "methods_prose",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 40,
-     "paper_id": null,
-     "card_field": "purge_time_s"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -5719,7 +5765,7 @@
      "card_field": "temperature_C"
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "time",
   "x_semantics": {
@@ -5757,6 +5803,8 @@
   "classification": "continuous_trace",
   "classification_confidence": "corroborated",
   "n_observations": 46,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)"
  }
 ]

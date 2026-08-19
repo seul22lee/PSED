@@ -1,0 +1,1190 @@
+[
+ {
+  "case_id": "CASE-10.103-001",
+  "paper_id": "10.1039_c3ra42928h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "TiO2",
+  "deposited_materials": [
+   "TiO2"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "TiO2"
+  ],
+  "material_roles": {
+   "TiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "500",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited (c) and after annealing in air at 500 °C",
+    "locator": "figure 2 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "temperature",
+    "value": 420.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=TiO2"
+    ],
+    "process_step": "n/a",
+    "design_material": "TiO2",
+    "raw_axis_label": "Temperature (°C)",
+    "evidence": "branch 420 of the temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c3ra42928h::F2a::temperature::10.1039_c3ra42928h__Fig2a__exp01"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1(a) and (b) show optical and scanning electron microscopy (SEM) images of a MWCNTs sample a  er coating with 100 cycles of the TiO2 ALD process",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "20",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "O3",
+    "evidence": "The pulse (20 seconds) and pump time (40 seconds) were optimized to allow for a uniform coating of TiO2 along the entire length of the MWCNTs and to prevent the occurrence of chemical vapor deposition type reactions",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
+  "measurement_ids": [
+   "M::10.1039_c3ra42928h__Fig2a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-607"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-046"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TDMAT",
+     "canonical_id": "TDMAT",
+     "identity_key": "TDMAT",
+     "preferred_label": "TDMAT",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O3",
+     "canonical_id": "O3",
+     "identity_key": "O3",
+     "preferred_label": "O3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=100|deposition_temperature=500|pulse_time@O3=20|temperature/n/a=420|material=TiO2|geometry=nanostructure_array",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-002",
+  "paper_id": "10.1039_c3ra42928h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "TiO2",
+  "deposited_materials": [
+   "TiO2"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "TiO2"
+  ],
+  "material_roles": {
+   "TiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "500",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited (c) and after annealing in air at 500 °C",
+    "locator": "figure 2 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "temperature",
+    "value": 850.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=TiO2"
+    ],
+    "process_step": "n/a",
+    "design_material": "TiO2",
+    "raw_axis_label": "Temperature (°C)",
+    "evidence": "branch 850 of the temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c3ra42928h::F2a::temperature::10.1039_c3ra42928h__Fig2a__exp01"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1(a) and (b) show optical and scanning electron microscopy (SEM) images of a MWCNTs sample a  er coating with 100 cycles of the TiO2 ALD process",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "20",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "O3",
+    "evidence": "The pulse (20 seconds) and pump time (40 seconds) were optimized to allow for a uniform coating of TiO2 along the entire length of the MWCNTs and to prevent the occurrence of chemical vapor deposition type reactions",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
+  "measurement_ids": [
+   "M::10.1039_c3ra42928h__Fig2a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-608"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-047"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TDMAT",
+     "canonical_id": "TDMAT",
+     "identity_key": "TDMAT",
+     "preferred_label": "TDMAT",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O3",
+     "canonical_id": "O3",
+     "identity_key": "O3",
+     "preferred_label": "O3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=100|deposition_temperature=500|pulse_time@O3=20|temperature/n/a=850|material=TiO2|geometry=nanostructure_array",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-004"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-004; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-003",
+  "paper_id": "10.1039_c3ra42928h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "TiO2",
+  "deposited_materials": [
+   "TiO2"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "TiO2"
+  ],
+  "material_roles": {
+   "TiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "500",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited (c) and after annealing in air at 500 °C",
+    "locator": "figure 2 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "temperature",
+    "value": 750.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=TiO2"
+    ],
+    "process_step": "n/a",
+    "design_material": "TiO2",
+    "raw_axis_label": "Temperature (°C)",
+    "evidence": "branch 750 of the temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c3ra42928h::F2a::temperature::10.1039_c3ra42928h__Fig2a__exp02"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1(a) and (b) show optical and scanning electron microscopy (SEM) images of a MWCNTs sample a  er coating with 100 cycles of the TiO2 ALD process",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "20",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "O3",
+    "evidence": "The pulse (20 seconds) and pump time (40 seconds) were optimized to allow for a uniform coating of TiO2 along the entire length of the MWCNTs and to prevent the occurrence of chemical vapor deposition type reactions",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
+  "measurement_ids": [
+   "M::10.1039_c3ra42928h__Fig2a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-609"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-049"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TDMAT",
+     "canonical_id": "TDMAT",
+     "identity_key": "TDMAT",
+     "preferred_label": "TDMAT",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O3",
+     "canonical_id": "O3",
+     "identity_key": "O3",
+     "preferred_label": "O3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=100|deposition_temperature=500|pulse_time@O3=20|temperature/n/a=750|material=TiO2|geometry=nanostructure_array",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-004",
+  "paper_id": "10.1039_c3ra42928h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "TiO2",
+  "deposited_materials": [
+   "TiO2"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "TiO2"
+  ],
+  "material_roles": {
+   "TiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "500",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited (c) and after annealing in air at 500 °C",
+    "locator": "figure 2 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "temperature",
+    "value": 850.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=TiO2"
+    ],
+    "process_step": "n/a",
+    "design_material": "TiO2",
+    "raw_axis_label": "Temperature (°C)",
+    "evidence": "branch 850 of the temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c3ra42928h::F2a::temperature::10.1039_c3ra42928h__Fig2a__exp02"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1(a) and (b) show optical and scanning electron microscopy (SEM) images of a MWCNTs sample a  er coating with 100 cycles of the TiO2 ALD process",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "20",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "O3",
+    "evidence": "The pulse (20 seconds) and pump time (40 seconds) were optimized to allow for a uniform coating of TiO2 along the entire length of the MWCNTs and to prevent the occurrence of chemical vapor deposition type reactions",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
+  "measurement_ids": [
+   "M::10.1039_c3ra42928h__Fig2a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-610"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-050"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TDMAT",
+     "canonical_id": "TDMAT",
+     "identity_key": "TDMAT",
+     "preferred_label": "TDMAT",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O3",
+     "canonical_id": "O3",
+     "identity_key": "O3",
+     "preferred_label": "O3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=100|deposition_temperature=500|pulse_time@O3=20|temperature/n/a=850|material=TiO2|geometry=nanostructure_array",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-002"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-002; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-005",
+  "paper_id": "10.1039_c3ra42928h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "TiO2",
+  "deposited_materials": [
+   "TiO2"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "TiO2"
+  ],
+  "material_roles": {
+   "TiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "500",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited (c) and after annealing in air at 500 °C",
+    "locator": "figure 2 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1(a) and (b) show optical and scanning electron microscopy (SEM) images of a MWCNTs sample a  er coating with 100 cycles of the TiO2 ALD process",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "20",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "O3",
+    "evidence": "The pulse (20 seconds) and pump time (40 seconds) were optimized to allow for a uniform coating of TiO2 along the entire length of the MWCNTs and to prevent the occurrence of chemical vapor deposition type reactions",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
+  "measurement_ids": [
+   "M::10.1039_c3ra42928h__Fig2b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-611"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-051"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TDMAT",
+     "canonical_id": "TDMAT",
+     "identity_key": "TDMAT",
+     "preferred_label": "TDMAT",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O3",
+     "canonical_id": "O3",
+     "identity_key": "O3",
+     "preferred_label": "O3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=100|deposition_temperature=500|pulse_time@O3=20|material=TiO2|geometry=nanostructure_array",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-006",
+   "CASE-10.103-007"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-006, CASE-10.103-007; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-006",
+  "paper_id": "10.1039_c3ra42928h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "TiO2",
+  "deposited_materials": [
+   "TiO2"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "TiO2"
+  ],
+  "material_roles": {
+   "TiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "500",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited (c) and after annealing in air at 500 °C",
+    "locator": "figure 2 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1(a) and (b) show optical and scanning electron microscopy (SEM) images of a MWCNTs sample a  er coating with 100 cycles of the TiO2 ALD process",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "20",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "O3",
+    "evidence": "The pulse (20 seconds) and pump time (40 seconds) were optimized to allow for a uniform coating of TiO2 along the entire length of the MWCNTs and to prevent the occurrence of chemical vapor deposition type reactions",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
+  "measurement_ids": [
+   "M::10.1039_c3ra42928h__Fig2c"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-612"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2c"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-052"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TDMAT",
+     "canonical_id": "TDMAT",
+     "identity_key": "TDMAT",
+     "preferred_label": "TDMAT",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O3",
+     "canonical_id": "O3",
+     "identity_key": "O3",
+     "preferred_label": "O3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=100|deposition_temperature=500|pulse_time@O3=20|material=TiO2|geometry=nanostructure_array",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-005",
+   "CASE-10.103-007"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-005, CASE-10.103-007; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-007",
+  "paper_id": "10.1039_c3ra42928h",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "TiO2",
+  "deposited_materials": [
+   "TiO2"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "TiO2"
+  ],
+  "material_roles": {
+   "TiO2": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "TDMAT"
+  ],
+  "coreactants": [
+   "O3"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "500",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited (c) and after annealing in air at 500 °C",
+    "locator": "figure 2 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "100",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "1(a) and (b) show optical and scanning electron microscopy (SEM) images of a MWCNTs sample a  er coating with 100 cycles of the TiO2 ALD process",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "20",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "O3",
+    "evidence": "The pulse (20 seconds) and pump time (40 seconds) were optimized to allow for a uniform coating of TiO2 along the entire length of the MWCNTs and to prevent the occurrence of chemical vapor deposition type reactions",
+    "context_match": {
+     "material": "TiO2",
+     "chemistry": [
+      "TDMAT",
+      "O3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
+  "measurement_ids": [
+   "M::10.1039_c3ra42928h__Fig2d"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-613"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-053"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TDMAT",
+     "canonical_id": "TDMAT",
+     "identity_key": "TDMAT",
+     "preferred_label": "TDMAT",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O3",
+     "canonical_id": "O3",
+     "identity_key": "O3",
+     "preferred_label": "O3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=100|deposition_temperature=500|pulse_time@O3=20|material=TiO2|geometry=nanostructure_array",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-005",
+   "CASE-10.103-006"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-005, CASE-10.103-006; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ }
+]
