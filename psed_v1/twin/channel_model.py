@@ -149,7 +149,8 @@ class channelModel:
 
     # ---- M1: build from the knowledge base ----
     @classmethod
-    def from_kb(cls, material, process=None, species=None, carrier=None, verbose=False):
+    def from_kb(cls, material, process=None, species=None, carrier=None,
+                verbose=False, corpus=None):
         """Construct a twin whose parameters come from the KB (kb_bridge), falling
         back to the hardcoded defaults for anything the KB doesn't have.
         `species` = {"A":"TMA", ...} grounds A (the precursor). The B collision
@@ -161,7 +162,7 @@ class channelModel:
         sp = dict(species or {})
         if carrier:
             sp["B"] = carrier                       # collision partner B = background gas
-        resolved, prov = params_for(material, process, sp or None)
+        resolved, prov = params_for(material, process, sp or None, corpus=corpus)
         for attr, val in resolved.items():
             setattr(m, attr, val)
         m.kb_provenance = prov

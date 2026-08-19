@@ -50,6 +50,7 @@ PARAM_MAP = [
     ("MB", "molecular_mass", "B", "gmol2kg"),
     ("H",  "feature_height", None, "nm2m"),
     ("W",  "feature_width", None, "nm2m"),
+    ("T",  "deposition_temperature", None, "C2K"),
     ("T",  "temperature", None, "C2K"),
     ("pA", "reactant_A_partial_pressure", None, "id"),
     ("pB", "reactant_B_partial_pressure", None, "id"),
@@ -63,11 +64,13 @@ MATERIAL_MAP = [
 ]
 
 
-def params_for(material, process=None, species=None):
+def params_for(material, process=None, species=None, corpus=None):
     """Return (resolved {attr: value}, provenance {attr: {...}}).
     `species` = {"A": "TMA", "B": "H2O"} resolves species-intrinsic properties
-    (diameter, mass, central atoms) from the ontology precursor individuals."""
-    kp = kb_service.kb_params(material, process)
+    (diameter, mass, central atoms) from the ontology precursor individuals.
+    `corpus` injects the record set literature values aggregate over (the
+    production semantic corpus for M2/M3; legacy resolved records otherwise)."""
+    kp = kb_service.kb_params(material, process, corpus=corpus)
     resolved, prov = {}, {}
     if species:                                             # tier 0: species property
         for attr, lab, prop, conv in SPECIES_MAP:

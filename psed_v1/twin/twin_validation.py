@@ -41,19 +41,26 @@ _CORPUS = _SC = None
 
 
 def _ctx():                              # corpus + similarity scale, for imputation
+    """Imputation donors come from the PRODUCTION semantic corpus (declared
+    41-paper manifest, canonical chemistry) -- never the legacy resolved load."""
     global _CORPUS, _SC
     if _CORPUS is None:
-        _CORPUS = ks._load()
+        from twin import semantic_evidence as SE
+        _CORPUS = SE.case_records()
         _SC = sim.logscale(_CORPUS)
     return _CORPUS, _SC
 
 
 def _cond(exp, q, r=None):
-    for c in exp.get("controlled") or []:
-        if c.get("quantity") == q and (r is None or c.get("of_reactant") == r):
-            v = c.get("value")
-            if isinstance(v, (int, float)):
-                return float(v)
+    """First numeric value for quantity `q` (a name or a precedence tuple of
+    names -- semantic records say deposition_temperature where the legacy layer
+    said temperature) in reactant slot `r`."""
+    for qq in ((q,) if isinstance(q, str) else q):
+        for c in exp.get("controlled") or []:
+            if c.get("quantity") == qq and (r is None or c.get("of_reactant") == r):
+                v = c.get("value")
+                if isinstance(v, (int, float)):
+                    return float(v)
     return None
 
 
@@ -66,7 +73,8 @@ def _input(exp, q, r=None, impute=True):
         return v, "extracted"
     if impute:
         corpus, SC = _ctx()
-        est = ks.impute(exp, q, r, corpus=corpus, SC=SC)
+        est = ks.impute(exp, q if isinstance(q, str) else q[0], r,
+                        corpus=corpus, SC=SC)
         if est:
             return est["value"], "imputed"
     return None, "default"
@@ -97,8 +105,9 @@ def _onto_status(name):
 def _cands(exp, q, r=None):
     """Every numeric controlled candidate for (quantity, reactant) with its source/unit."""
     out = []
+    qs = (q,) if isinstance(q, str) else tuple(q)
     for cc in exp.get("controlled") or []:
-        if cc.get("quantity") == q and (r is None or cc.get("of_reactant") == r):
+        if cc.get("quantity") in qs and (r is None or cc.get("of_reactant") == r):
             v = cc.get("value")
             if isinstance(v, (int, float)) and not isinstance(v, bool):
                 out.append({"value": float(v), "unit": cc.get("unit"), "of_reactant": cc.get("of_reactant"),
@@ -159,7 +168,8 @@ def build_twin(exp):
     mat = exp.get("material")
     prec = next((r.get("species") for r in exp.get("reactants") or [] if r.get("role") == "precursor"), None)
     carrier = (exp.get("carrier_gas") or {}).get("species") or "N2"
-    m = channelModel.from_kb(mat, species={"A": prec} if prec else None, carrier=carrier)
+    m = channelModel.from_kb(mat, species={"A": prec} if prec else None,
+                             carrier=carrier, corpus=_ctx()[0])
     notes, prov, trace = [], {}, []
     from twin import pressure_compat as _pc
 
@@ -188,10 +198,10 @@ def build_twin(exp):
         assumption=("KB estimate (imputed)" if prov["dose"] == "imputed" else "model default t_p" if prov["dose"] == "default" else "")))
 
     # ---- temperature T — extracted > imputed > default; conversion °C → K
-    T, prov["T"] = _input(exp, "temperature")
+    T, prov["T"] = _input(exp, ("deposition_temperature", "temperature"))
     if T is not None:
         m.T = T + 273.15
-    cT = _cands(exp, "temperature")
+    cT = _cands(exp, ("deposition_temperature", "temperature"))
     T_out = ("conflicting_evidence" if len({round(x["value"], 6) for x in cT}) > 1 else
              "resolved_with_conversion" if prov["T"] == "extracted" else
              "resolved_by_imputation" if prov["T"] == "imputed" else "resolved_by_default")
@@ -413,13 +423,25 @@ def _member(exp, crit):
             and bool(exp.get("points")) and len(exp["points"]) >= o["min_points"])
 
 
+_FUNNEL = _EXCLUSIONS = None
+
+
 def _targets(criteria=DEFAULT_CRITERIA):
-    """Candidate ensemble for the criteria — membership by observable/scope only, never by
-    outcome or commensurability. Reproduces the legacy run() filter exactly."""
-    E = []
-    for f in sorted(P.glob_resolved("experiments.json")):
-        E += json.load(open(f))
-    return [e for e in E if _member(e, criteria)]
+    """Candidate ensemble from the PRODUCTION semantic corpus.
+
+    Membership is by representation reachability under the Workbench's own
+    identity/comparability authority (semantic_evidence.profile_candidates):
+    measured ResultSeries whose x reaches the spatial-coordinate target and
+    whose y reaches a thickness-family observable, one representation per
+    MeasurementAct, with a resolved single Condition Case. The legacy
+    granularity/measurand fields on resolved Experiment records are not
+    consulted. Model-domain (geometry/thermal) stays a separate,
+    reported commensurability gate."""
+    global _FUNNEL, _EXCLUSIONS
+    from twin import semantic_evidence as SE
+    cands, _FUNNEL, _EXCLUSIONS = SE.profile_candidates()
+    o = criteria["observable"]
+    return [c for c in cands if len(c.get("points") or []) >= o["min_points"]]
 
 
 def _coverage(targets, criteria=DEFAULT_CRITERIA):
@@ -440,9 +462,17 @@ def _coverage(targets, criteria=DEFAULT_CRITERIA):
 
 def _frame(question, criteria, targets, is_default):
     cov = _coverage(targets, criteria)
+    from twin import semantic_evidence as SE
+    from collections import Counter as _Counter
+    excl = _EXCLUSIONS or []
     return {"research_question": question, "is_default": bool(is_default),
             "comparability_criteria": criteria, "coverage": cov,
-            "untested_regions": cov["untested_regions"]}
+            "untested_regions": cov["untested_regions"],
+            # what the twin was and was not validated against, stage by stage
+            "candidate_funnel": dict(_FUNNEL or {}),
+            "exclusions_by_stage": dict(_Counter(e["stage"] for e in excl)),
+            "exclusions": excl,
+            "corpus": SE.corpus_meta()}
 
 
 # ---- R2: refuse-first commensurability + provenance --------------------------
@@ -477,13 +507,15 @@ def _obs_provenance(exp):
     truth. Reads the record's own provenance + per-value extraction metadata. The corpus
     carries no measurement uncertainty and no calibration flag, so both stay unresolved."""
     p = exp.get("provenance") or {}
-    statuses = set()
-    for c in exp.get("controlled") or []:
-        st = (((c.get("origin") or {}).get("card_provenance") or {}).get("status"))
-        if st:
-            statuses.add(st)
-    return {"doi": p.get("doi"), "figure": p.get("figure"), "extractor": p.get("extractor"),
-            "extraction_status": sorted(statuses) or ["unspecified"],
+    classes = sorted({c.get("condition_class") for c in exp.get("controlled") or []
+                      if c.get("condition_class")})
+    return {"doi": p.get("doi"), "figure": p.get("figure"), "panel": p.get("panel"),
+            "series_label": p.get("series_label"),
+            "result_series": p.get("series_id") or exp.get("series_id"),
+            "measurement_act": p.get("measurement_act") or exp.get("act_id"),
+            "experimental_case": p.get("case_id") or exp.get("case_id"),
+            "extractor": p.get("extractor"),
+            "condition_evidence_classes": classes or ["unspecified"],
             "calibration_status": "unresolved",          # no calibration flag in the corpus
             "measurement_uncertainty": "unresolved"}     # no measurement σ in the corpus
 
@@ -1796,6 +1828,36 @@ def render_brief(analysis, out_path=None):
           f"<div class=note><b>Diagnosability: {esc(diag['verdict'])}.</b> {esc(diag['basis'])}. "
           f"Because of this, no unique cause is attributed and no anomaly is over-claimed.</div>")
 
+    # ---- 1b corpus + candidate funnel: what the twin was (not) validated against ----
+    corpus = f.get("corpus") or {}
+    funnel = f.get("candidate_funnel") or {}
+    exclc = f.get("exclusions_by_stage") or {}
+    stage_label = {
+        "semantic_result_series": "semantic ResultSeries (declared corpus)",
+        "measured_series": "experimental (measured) series",
+        "profile_compatible": "profile-compatible representation (ontology targets, ≥6 points)",
+        "one_per_measurement_act": "one representation per MeasurementAct",
+        "resolved_single_case": "resolved single Condition Case"}
+    frows = "".join(
+        f"<tr><td>{esc(stage_label.get(k, k))}</td><td class=m>{v}</td>"
+        f"<td class=m>{exclc.get(k, '')}</td></tr>"
+        for k, v in funnel.items())
+    frows += (f"<tr><td>actually evaluated (admissible comparisons)</td>"
+              f"<td class=m>{len(adm)}</td><td class=m></td></tr>")
+    s1 += (
+        f"<div class=note style='margin-top:12px'><b>Evidence source.</b> All validation "
+        f"candidates come from the <b>production semantic corpus</b>: "
+        f"{corpus.get('included_papers', '?')} papers declared by "
+        f"<span class=m>{esc(str(corpus.get('manifest')))}</span>; excluded reviews "
+        f"({esc(', '.join(corpus.get('excluded_reviews') or []))}) are never read. "
+        f"Candidate identity and representation reachability are the Workbench "
+        f"authority (build {esc(str(corpus.get('workbench_head_sha')))}, code "
+        f"{esc(str(corpus.get('workbench_code_sha')))}); observations are source "
+        f"ResultSeries points on canonical ontology representations, and conditions "
+        f"come from each series' linked ExperimentalCase.</div>"
+        f"<table><tr><th>candidate funnel</th><th>count</th><th>excluded here</th></tr>"
+        f"{frows}</table>")
+
     # ---- run-level Model Input Provenance Summary (defaults/unresolved made prominent) ----
     ips = analysis.get("input_provenance_summary", {})
     bp = ips.get("by_provenance", {})
@@ -2074,6 +2136,11 @@ researcher interpretation. Model: <span class=mono>{esc(MODEL_ID)}</span>.</div>
 </div>"""
     out = Path(out_path) if out_path else HERE / "m3_validation.html"
     out.write_text(body)
+    if out_path is None:
+        import shutil
+        dst = HERE.parent / "reports" / "04_twin_mpc__m3_validation.html"
+        shutil.copyfile(out, dst)
+        print(f"copied -> {dst}")
     return out
 
 

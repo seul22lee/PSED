@@ -21,6 +21,10 @@ Stages, in pipeline order:
     canonical   resolved       -> papers/<id>/canonical/curves.json
     semantic    resolved+canonical -> papers/<id>/semantic/*.json  (no LLM)
     workbench   semantic corpus -> papers/_corpus/workbench/       (no LLM)
+    m2          semantic corpus -> twin/m2_report.html + reports/04_twin_mpc__m2_report.html
+    m3          semantic corpus -> twin/m3_validation.html + reports/04_twin_mpc__m3_validation.html
+                (m2/m3 run the twin against the production semantic corpus; `review`
+                 never reruns them -- regenerate explicitly with these stages)
     kg          canonical      -> papers/_corpus/knowledge_graph_onto.json
     ontology    ontology src   -> ontology/ald_ontology.{json,yaml}
     review      everything     -> reports/*.html
@@ -50,6 +54,8 @@ STAGES = {
     "workbench": "pipeline.workbench.build_workbench_model",
     "kg":        "pipeline.review.build_kg",
     "ontology":  "ontology.build_ontology",
+    "m2":        "twin.m2_design",
+    "m3":        "twin.twin_validation",
 }
 #: stages that are several modules run in order
 GROUPS = {
