@@ -1825,6 +1825,54 @@ def build(pid):
         for c in chem:
             if not any(x["quantity"] == c["quantity"] for x in cd):
                 cd.append(c)
+        # A condition the panel's OWN caption clause states binds to this panel's
+        # results directly -- "The substrate temperature was 200 C" in clause (b) is a
+        # statement about panel (b), and recovering it only through another linked
+        # figure inverted the evidence chain. Two guards keep this scoped:
+        #   * only the panel's own clause is read, never the preamble or a sibling
+        #     clause, so a statement made for panel B cannot leak into panel A;
+        #   * only a quantity the clause states exactly ONCE binds -- a clause that
+        #     enumerates several values ("50, 200 and 250 C") is describing its sweep,
+        #     and which value belongs to which curve is the series label's job.
+        # A quantity already stated by a more specific source is never restated.
+        if clause:
+            # Only the prose rules bind here: they type a value by its GOVERNING
+            # PHRASE ("The substrate temperature was 200 C" -> deposition_temperature),
+            # which is the evidence that the number is a condition of THIS deposition.
+            # A unit-typed bare number ("at 400 C") says only that some temperature is
+            # 400 -- an anneal, a bake, a measurement stage all print the same way --
+            # and binding it as a case condition would assert what the clause never
+            # said. Untyped numbers stay unbound.
+            _clause_conds = C.conditions_from_prose(
+                clause, "panel", "caption",
+                "caption clause of panel %s%s" % (printed, panel or ""))
+            _by_q = defaultdict(list)
+            for c in _clause_conds:
+                _by_q[c.get("quantity")].append(c)
+            # a clause that ENUMERATES several values for a quantity is describing its
+            # sweep, and which value belongs to which curve is the series label's job --
+            # binding any single value of the enumeration to every curve of the panel
+            # would assert a condition the source distributed across them
+            _enumerated = {q for q, _vals, _sp in enumerated_settings(clause)}
+            for q, cs in sorted(_by_q.items()):
+                if len(cs) != 1 or not q or q in _enumerated:
+                    continue
+                c = cs[0]
+                if any(x.get("quantity") == q for x in cd):
+                    continue
+                cd.append({"quantity": q, "value": c.get("value"),
+                           "unit": c.get("unit"), "value_kind": "scalar",
+                           "role": R.CASE_DEFINING,
+                           "role_basis": "stated by this panel's own caption clause",
+                           "provenance_type": "panel_caption_direct",
+                           "source": "figure_caption", "scope": "panel",
+                           "assertion_status": c.get("assertion_status") or "direct",
+                           "species": c.get("species"),
+                           "step_context": c.get("step_context"),
+                           "activation": c.get("activation"),
+                           "evidence": c.get("raw_evidence"),
+                           "locator": "caption clause of panel %s%s"
+                                      % (printed, panel or "")})
         meas = {
             "measurement_id": mid, "paper_id": pid,
             "technique": _src_tech or axis_tech,
@@ -2999,7 +3047,28 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
             candidates_mat[mat] = (R.primary_role(paper_mat_roles.get(mat) or [])
                                    or R.DEPOSITED)
     asserted = sorted(roles)
-    deposited = sorted(m for m, r in roles.items() if r == R.DEPOSITED)
+    # The case's DEPOSITION TARGET is decided by evidence SPECIFICITY, not by union.
+    # `mats` holds each member's own resolved target material — the measurand's film,
+    # the process a text case describes. A member whose scope names SEVERAL deposited
+    # layers (a stack micrograph, a multilayer caption) describes its SPECIMEN'S
+    # composition; that is context about what the specimen is, and a specimen can
+    # realise many depositions. Specimen-wide composition therefore never overrides a
+    # more specific target: the target materials decide `deposited`, and every other
+    # deposited-role material stays on the case as specimen context with its role and
+    # provenance intact. Only where NO member resolves a target of its own does the
+    # scope-level deposited set speak alone — the case a source documents purely as a
+    # multi-material structure genuinely is one.
+    scope_deposited = sorted(m for m, r in roles.items() if r == R.DEPOSITED)
+    deposited = mats if mats else scope_deposited
+    specimen_context = [
+        {"material": m, "role": roles[m],
+         "basis": ("named with role %s by a linked scope; not this case's deposition "
+                   "target, which %s establishes more specifically"
+                   % (roles[m], "the result/measurement evidence"
+                      if mats else "nothing")),
+         "evidence": [dict(rec) for rec in (scope_named.get(m) or [])][:4]}
+        for m in sorted(roles)
+        if mats and m not in mats]
     material_status = ("ASSERTED" if asserted else
                        "CANDIDATE_ONLY" if candidates_mat else "UNRESOLVED")
     material_status_reason = {
@@ -3012,8 +3081,12 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
     warn = []
     if not asserted:
         warn.append("material %s: %s" % (material_status, material_status_reason))
-    if len(deposited) > 1:
-        warn.append("several deposited materials linked into one case: %s" % deposited)
+    if len(mats) > 1:
+        warn.append("members of this case target different deposited materials: %s"
+                    % mats)
+    elif not mats and len(deposited) > 1:
+        warn.append("no member resolves a single target material; the source documents "
+                    "this case as a multi-material structure: %s" % deposited)
     if len(geos) > 1:
         warn.append("several geometries: %s" % geos)
     if not conds:
@@ -3029,6 +3102,10 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
         "paper_id": pid, "label": label, "synthesis_label": synth,
         "deposited_material": _merged_material,
         "deposited_materials": deposited,
+        # the linked specimen's OTHER deposited layers -- what the specimen is made of,
+        # as distinct from what this case deposits. Kept with roles and evidence so a
+        # multilayer stays queryable as structure without corrupting the case target.
+        "specimen_context_materials": specimen_context,
         "context_materials": asserted, "material_roles": roles,
         "material_candidates": candidates_mat,
         "material_status": material_status,
@@ -3285,24 +3362,49 @@ def discover_links(P, candidates, sample_by_code, out, note,
                                                   b["source_figure"], b["source_panel"]))})
 
     # -- 2. explicit same-thing statement citing another figure -------------------
+    # Evidence scope follows the STATEMENT's own position. A same-sample sentence in
+    # one panel's caption clause speaks about that panel's results and links only that
+    # panel's candidates; a statement in the caption preamble or the body text near the
+    # figure is figure-wide and links every panel. Letting a panel clause act
+    # figure-wide is how one panel's specimen identity leaked onto siblings that merely
+    # share the printed caption.
+    #
+    # The citation is read at the same precision the source wrote it: "Fig. 2b" cites
+    # PANEL b of figure 2 and links only that panel's candidates; "Fig. 2" cites the
+    # whole figure.
+    _CITE = re.compile(r"\bFig(?:ure)?s?\.?\s*(\d+)\s*([a-h])?\b", re.I)
     for (printed, panel), group in by_scope.items():
         if not printed:
             continue
-        text = " ".join([P.printed_caption(printed), P.body_near(printed)])
-        sames = [e for e in PE.linkage_evidence(text) if e["kind"] == "explicit_same"]
-        if not sames:
-            continue
-        for e in sames:
-            cited = set(re.findall(r"\bFig(?:ure)?\.?\s*(\d+)", e["span"], re.I)) - {printed}
-            for cf in cited:
-                for a in group:
-                    for b in [c for c in candidates if c["source_figure"] == cf]:
-                        links.append({"a": a["candidate_id"], "b": b["candidate_id"],
-                                      "strength": PC.EXPLICIT,
-                                      "reason": "explicit %r citing figure %s" % (e["label"], cf),
-                                      "evidence": note("explicit_same_statement",
-                                                       "fig %s -> fig %s" % (printed, cf),
-                                                       e["span"], matched=e["matched"])})
+        clauses = PE.panel_clauses(P.printed_caption(printed)) or {}
+        own_clause = clauses.get(panel or "", "") if panel else ""
+        figure_wide = " ".join([clauses.get("", "") or
+                                ("" if clauses else P.printed_caption(printed)),
+                                P.body_near(printed)])
+        scoped = ([(own_clause, "panel %s%s caption clause" % (printed, panel))]
+                  if own_clause else []) + [(figure_wide, "figure-wide text")]
+        for text, where in scoped:
+            for e in [x for x in PE.linkage_evidence(text)
+                      if x["kind"] == "explicit_same"]:
+                for cf, cp in {(mm.group(1), (mm.group(2) or "").lower())
+                               for mm in _CITE.finditer(e["span"])}:
+                    if cf == printed and (not cp or cp == (panel or "").lower()):
+                        continue                      # a self-citation links nothing new
+                    targets = [c for c in candidates
+                               if c["source_figure"] == cf
+                               and (not cp or (c["source_panel"] or "").lower() == cp)]
+                    for a in group:
+                        for b in targets:
+                            links.append({
+                                "a": a["candidate_id"], "b": b["candidate_id"],
+                                "strength": PC.EXPLICIT,
+                                "reason": "explicit %r in %s citing figure %s%s"
+                                          % (e["label"], where, cf, cp),
+                                "evidence": note("explicit_same_statement",
+                                                 "fig %s%s -> fig %s%s"
+                                                 % (printed, panel or "", cf, cp),
+                                                 e["span"], matched=e["matched"],
+                                                 statement_scope=where)})
 
     # -- 4. an author series whose ONLY varying tabulated column is an instrument
     #       setting: its specimens share the nominal deposition case by the paper's own
@@ -3348,9 +3450,14 @@ def discover_links(P, candidates, sample_by_code, out, note,
                 if aval not in {PC._fmt(v) for v in values}:
                     continue
                 for b in candidates:
-                    # a different SCOPE, not merely a different figure: 2a, 2b and 2c are
-                    # three panels of one printed figure and are exactly the cross-result
-                    # link this rule exists to find
+                    # a different PANEL of the SAME printed figure: 2a, 2b and 2c are
+                    # exactly the cross-result link this rule exists to find. The
+                    # enumeration is the caption describing what ITS OWN figure shows,
+                    # so it licenses nothing beyond that figure -- reaching further
+                    # turned every shared setting value into a corpus-wide chain and
+                    # fused unrelated experiments that merely reused a temperature.
+                    if b["source_figure"] != printed:
+                        continue
                     if (b["source_figure"], b["source_panel"]) == (printed, panel):
                         continue
                     if b["candidate_id"] == a["candidate_id"]:
@@ -3371,12 +3478,17 @@ def discover_links(P, candidates, sample_by_code, out, note,
     return links
 
 
-#: "grown at the temperatures of 100 and 300 C" / "at 100, 200 and 300 C"
+#: "grown at the temperatures of 100 and 300 C" / "at 100, 200 and 300 C" -- and the
+#: per-value-unit form a caption prefers: "temperatures of 50 C, 200 C and 250 C".
+#: Each enumerated value may carry the unit itself, or the list may state it once at
+#: the end; both are one enumeration of one quantity.
+_ENUM_UNIT = r"°?\s?C\b|s\b|cycles?\b|nm\b|Torr\b|Pa\b|mbar\b|K\b"
 _ENUM = re.compile(
     r"\b(?:at|of|to|using|with)\s+(?:the\s+)?(?:temperatures?|pulse times?|purge times?|"
     r"cycles?|exposure times?)?\s*(?:of\s+)?"
-    r"((?:\d+(?:\.\d+)?)(?:\s*(?:,|and)\s*\d+(?:\.\d+)?)+)\s*"
-    r"(°?\s?C|s\b|cycles?\b|nm\b|Torr\b|Pa\b|mbar\b)", re.I)
+    r"((?:\d+(?:\.\d+)?(?:\s*(?:%(u)s))?)(?:\s*(?:,|and)\s*"
+    r"\d+(?:\.\d+)?(?:\s*(?:%(u)s))?)+)" % {"u": _ENUM_UNIT}, re.I)
+_ENUM_UNIT_RX = re.compile(_ENUM_UNIT, re.I)
 _UNIT_Q = [(re.compile(r"^°?\s?C$", re.I), "deposition_temperature"),
            (re.compile(r"^s$", re.I), None),
            (re.compile(r"^cycles?$", re.I), "cycle_number"),
@@ -3389,11 +3501,17 @@ _CTX_Q = [(re.compile(r"temperature", re.I), "deposition_temperature"),
 
 
 def enumerated_settings(text):
-    """(quantity, [values], span) for each explicit enumeration of settings in a caption."""
+    """(quantity, [values], span) for each explicit enumeration of settings in a caption.
+
+    Unicode degree variants are folded first, so "50 ◦ C, 200 ◦ C and 250 ◦ C" reads the
+    same as "50, 200 and 250 °C". The unit may sit on each value or once at the end.
+    """
     out = []
-    for m in _ENUM.finditer(text or ""):
+    text = C.fold_math(text or "")
+    for m in _ENUM.finditer(text):
         vals = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", m.group(1))]
-        unit = (m.group(2) or "").strip()
+        um = _ENUM_UNIT_RX.search(m.group(1)) or _ENUM_UNIT_RX.match(text[m.end():m.end() + 10].lstrip())
+        unit = (um.group(0) if um else "").strip()
         q = None
         for rx, qq in _UNIT_Q:
             if rx.match(unit) and qq:

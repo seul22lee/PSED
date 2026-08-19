@@ -136,5 +136,40 @@
   "pre_existing_failures_reproduced_on_clean_baseline": [
     "tests/canonical_layer/{test_extraction_coverage,test_granularity_and_axes,test_provenance,test_stage0_regression}: identical assertion messages at origin/figure-provenance-repair",
     "pilot test 'jes: a stated interval is carried as an interval': the range rows were already absent in the pre-repair working tree; cycle_number is untouched by this repair"
-  ]
+  ],
+  "specimen_identity_repair": {
+    "generic_rules": [
+      "same_sample is specimen identity, never case identity: a merge between candidates whose own resolved single deposition-target materials differ chemically is BLOCKED, however strong the specimen link; a candidate with no single target (multi-material scope evidence) blocks nothing",
+      "case deposition target is resolved by evidence specificity, never by union: members' own target materials decide `deposited_material`; a linked scope's other deposited layers (stack micrograph, multilayer caption) become specimen_context_materials with role and provenance, and only a case documented purely as a multi-material structure keeps a multi-material target",
+      "evidence scope follows the statement's position: a same-statement in one panel's caption clause links only that panel's candidates; preamble/body statements are figure-wide; figure citations are read at the source's own precision (Fig. 2b targets panel b)",
+      "a panel clause's prose-typed single-value conditions bind to that panel's candidates directly (panel_caption_direct, rank 52); enumerating clauses bind nothing (the sweep's values belong to the series labels); unit-generic numbers bind nothing",
+      "caption enumerations license within-figure links only: the caption describes what its own figure shows",
+      "quantity-local numeric parsing: a hint phrase that carries its own number (scalar or range) is read from the matched span; tail/head searches never cross a sentence boundary; ranges, approximations and head-positioned values are supported"
+    ],
+    "corpus_effects": {
+      "case_identity_changes": 0,
+      "cases": 182,
+      "result_series": 231,
+      "changed_records": [
+        {
+          "case": "10.1149_2.067203jes CASE-10.114-002",
+          "change": "deposited_material None -> SiO2; Al2O3 -> specimen context (DEPOSITED role kept); cycle_number 200 (parser defect) -> range 10..40; deposition_temperature corroborated by the panel-b clause",
+          "class": "expected repair"
+        },
+        {
+          "case": "10.1039_d0ra01602k CASE-10.103-020",
+          "change": "cycle_number 300 -> range 100..300; source: 'various thicknesses (100-300 cycles)'",
+          "class": "expected repair (rule generalised to a second paper unprompted)"
+        },
+        {
+          "case": "10.1149_2.067203jes CASE-10.114-065/066",
+          "change": "Al2O3 STACK_COMPONENT / SUBSTRATE surfaced as specimen context",
+          "class": "newly exposed incompleteness, now represented"
+        }
+      ],
+      "possible_regressions": 0,
+      "counterfactual_meter": "key_based_false_common_targets 57697 -> 57613: bridge representations built on the fabricated cycle_number=200 scalar are now correctly absent"
+    },
+    "diagnostic_query": "deposited material = SiO2 + result quantity = film_thickness returns the 50, 200 and 250 C nominal cases; the 200 C case holds Fig 2a SE, Fig 2b SE and Fig 2b TEM with the Fig 3 micrograph as linked context and Al2O3 as specimen material"
+  }
 }

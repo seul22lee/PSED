@@ -590,6 +590,9 @@ def build():
                                 "provenance_type": x.get("provenance_type")}
                                for x in (c.get("case_defining_conditions") or [])],
                 "chemistry": _chem(c),
+                # the linked specimen's OTHER deposited layers: composition of the
+                # structure the case's film sits in, never the case's own target
+                "specimen_context_materials": c.get("specimen_context_materials") or [],
                 # the reactor gases are process facts the recipe chemistry never carries;
                 # the two roles stay separate because one gas often fills both and many
                 # processes fill them with different gases
@@ -864,6 +867,11 @@ def case_facts(c):
                 provenance="gas_role", evidence=rec.get("evidence"))
     add("material", c.get("material"), FACT_KNOWN_CONTEXT, "case",
         "deposited material of this case", provenance="case_material")
+    for sc in c.get("specimen_context_materials") or []:
+        add("specimen_material", sc.get("material"), FACT_KNOWN_CONTEXT,
+            "specimen/structure",
+            sc.get("basis") or "material of the linked specimen's structure",
+            provenance="specimen_context")
     add("geometry", c.get("geometry"), FACT_KNOWN_CONTEXT, "case",
         "geometry of this case", provenance="case_geometry")
     return facts
