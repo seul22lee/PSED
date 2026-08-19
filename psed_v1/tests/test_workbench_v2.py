@@ -650,7 +650,7 @@ def final_hardening_tests(M, V, hp):
     # adding a source representation to every series gives the pre-repair key rule one
     # more universal key to be wrong about, so the counterfactual grows
     ok("N10: the counterfactual grows with the new universal key",
-       C["key_based_false_common_targets"] == 57697,
+       C["key_based_false_common_targets"] == 57613,
        C["key_based_false_common_targets"])
 
     print("=== N11. a sweep's conditions are summarised, never taken from one case ===")

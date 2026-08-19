@@ -417,6 +417,125 @@ def main():
            for c in CASES.values()
            for fid, arr in (c.get("resolved_facts") or {}).items()))
 
+    print("=== H. specimen identity is not Condition Case identity ===")
+    import pilot_cases as PCA
+    import pilot_ranges as PRG
+    import pilot_semantics as PSEM
+    from pilot_supplements import DEPOSITION_HINTS
+
+    def cand(cid, mat, conds, fig="1", pan="a"):
+        return {"candidate_id": cid, "deposited_material": mat,
+                "case_conditions": conds, "source_figure": fig, "source_panel": pan}
+    T = lambda v: {"quantity": "deposition_temperature", "value": v, "unit": "°C"}
+    same = [{"a": "A", "b": "B", "strength": PCA.EXPLICIT,
+             "evidence": "the same sample"}]
+    # same_sample alone never merges different deposition targets
+    groups, dec = PCA.resolve_cases(
+        [cand("A", "SiO2", [T("200")]), cand("B", "Al2O3", [T("200")], pan="b")], same)
+    ok("H: same-sample link between different target materials is BLOCKED",
+       ["A"] in groups and ["B"] in groups
+       and any(d["action"] == "BLOCKED"
+               and d["reason"] == "different deposition target materials"
+               for d in dec), dec)
+    # ... which is exactly one specimen linked to TWO Condition Cases
+    ok("H: one specimen may realise several Condition Cases", len(groups) == 2, groups)
+    # a member with no target of its own (multilayer image) blocks nothing
+    groups2, dec2 = PCA.resolve_cases(
+        [cand("A", "SiO2", [T("200")]), cand("B", None, [T("200")], fig="2")], same)
+    ok("H: multi-material scope evidence (no single target) does not block the merge",
+       sorted(map(sorted, groups2)) == [["A", "B"]], (groups2, dec2))
+    # material identity is chemical, not spelling
+    groups3, _ = PCA.resolve_cases(
+        [cand("A", "SiO2", [T("200")]), cand("B", "SiO 2", [T("200")], pan="b")], same)
+    ok("H: material identity is compared chemically, not by spelling",
+       sorted(map(sorted, groups3)) == [["A", "B"]], groups3)
+
+    print("=== H2. target material vs specimen composition ===")
+    # corpus-wide: no case whose members resolve a single target material is
+    # multi-material merely because a linked scope names more layers
+    viol = []
+    for cid, c in CASES.items():
+        ctx = c.get("specimen_context_materials") or []
+        if ctx and not c.get("material"):
+            viol.append(cid)
+    ok("H2: specimen context never leaves the case target unresolved", not viol,
+       viol[:3])
+    ok("H2: specimen context is separated from the target, with role and basis",
+       all(x.get("material") and x.get("role") and x.get("basis")
+           for c in CASES.values() for x in c.get("specimen_context_materials") or []))
+    ok("H2: a specimen-context material never enters the material facet",
+       all(c["id"] not in set((M["facets"].get("material") or {}).get(x["material"])
+                              or [])
+           for c in CASES.values() for x in c.get("specimen_context_materials") or []
+           if x["material"] != c.get("material")))
+    ok("H2: specimen composition is queryable as specimen_material facts",
+       all(any(e.get("provenance_type") == "specimen_context"
+               for e in (c.get("resolved_facts") or {}).get("specimen_material") or [])
+           for c in CASES.values() if c.get("specimen_context_materials")))
+
+    print("=== H3. quantity-local numeric parsing ===")
+    got = {c["quantity"]: c for c in PRG.quantities_from_text(
+        "layers deposited using 10-40 cycles each. The substrate temperature was "
+        "200 \u00b0 C.", DEPOSITION_HINTS)}
+    ok("H3: the cycle expression reads ITS OWN range, never a later number",
+       got.get("cycle_number", {}).get("value_kind") == "range"
+       and got["cycle_number"]["value_lower"] == 10.0
+       and got["cycle_number"]["value_upper"] == 40.0, got.get("cycle_number"))
+    ok("H3: the temperature is parsed independently",
+       got.get("deposition_temperature", {}).get("value") == 200.0,
+       got.get("deposition_temperature"))
+    ok("H3: scalar, approximate and head-positioned forms survive",
+       PRG.quantities_from_text("coated by 830 cycles", DEPOSITION_HINTS)[0]["value"]
+       == 830.0
+       and PRG.quantities_from_text("an aspect ratio of ~30",
+                                    DEPOSITION_HINTS)[0]["value"] == 30.0)
+    ok("H3: a number beyond a sentence boundary is never consumed",
+       not [c for c in PRG.quantities_from_text(
+            "films were deposited by ALD cycles. The pressure was 3 Torr at 250 "
+            "\u00b0 C.", [(PSEM.re.compile(r"\bcycles\b"), "cycle_number", "cycle")])
+            if c["quantity"] == "cycle_number"])
+
+    print("=== H4. panel-scope discipline ===")
+    ok("H4: an enumerating clause binds no single value to its panel",
+       PSEM.enumerated_settings(
+           "Substrate temperatures of 50 \u25e6 C, 200 \u25e6 C and 250 \u25e6 C.")
+       and PSEM.enumerated_settings("at 100 and 300 C"))
+    # The binding is proven two ways. Mechanically: a prose-typed single-value clause
+    # yields the specifically-typed condition (never the unit-generic reading).
+    _pc = PSEM.C.conditions_from_prose(
+        "Thickness extracted from the image, measured on the same films. The "
+        "substrate temperature was 175 \u00b0C.", "panel", "caption", "t")
+    ok("H4: a panel clause's own statement binds with its governing-phrase type",
+       [(x["quantity"], x["value"]) for x in _pc]
+       == [("deposition_temperature", "175")], _pc)
+    # And in the persisted record: a merge licensed by a panel-clause statement is
+    # corroborated by agreeing conditions the clause itself supplied -- the evidence
+    # chain runs panel clause -> panel candidates -> merge, never through a leak.
+    import glob as _glob
+    clause_merges = [r for f in _glob.glob(str(
+        W / "_diagnostics" / "semantic_pilot_9papers" / "papers" / "*" / "semantic"
+        / "links.json"))
+        for r in json.loads(Path(f).read_text())
+        if r.get("action") == "MERGED" and "caption clause" in str(r.get("reason"))]
+    ok("H4: panel-clause statements license merges in the corpus", clause_merges,
+       len(clause_merges))
+    ok("H4: every such merge is corroborated by an agreeing condition, none clashes",
+       all((r["detail"].get("agree") and not r["detail"].get("clash"))
+           for r in clause_merges),
+       [(r["a"], r["b"], r["detail"]) for r in clause_merges][:1])
+    # any panel-bound condition that survives case assembly names its own panel
+    pcd = [(cid, x) for cid, c in CASES.items() for x in c["conditions"]
+           if x.get("provenance_type") == "panel_caption_direct"]
+    ok("H4: surviving panel-clause conditions carry their panel locator",
+       all(("caption clause of panel" in str(x.get("locator") or ""))
+           for _, x in pcd), (len(pcd), pcd[:1]))
+    # no ResultSeries or points lost, no case identities invented or destroyed
+    ok("H4: 231 ResultSeries and 182 Condition Cases, none lost or invented",
+       len(SER) == 231 and len(CASES) == 182, (len(SER), len(CASES)))
+    ok("H4: every series keeps its native points",
+       all((s.get("native_points") or {}).get("points") or s["n_points"] in (0, None)
+           for s in SER.values()))
+
     print("\n%d passed, %d failed" % (len(_pass), len(_fail)))
     if _fail:
         print("FAILED: %s" % _fail)

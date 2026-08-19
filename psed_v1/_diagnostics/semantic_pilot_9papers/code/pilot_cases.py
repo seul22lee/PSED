@@ -173,6 +173,9 @@ PROVENANCE_RANK = {
     "derived_from_table_recipe": 58,
     "inherited_from_sample": 55,
     "directly_stated": 50,
+    #: a panel's own caption clause speaks about exactly that panel's results --
+    #: more specific than a figure-wide statement, less than a specimen-table row
+    "panel_caption_direct": 52,
     "figure_local_direct": 50,
     "directly_stated_range": 50,
     "derived_from_design_branch": 48,
@@ -250,6 +253,23 @@ def _cond_key(conds):
     return d
 
 
+def _material_key(m):
+    """A material token reduced to its chemical identity for comparison.
+
+    Canonical identity where the chemistry layer resolves it, a normalised spelling
+    otherwise -- so "SiO2" and "SiO 2" are one material and a resolver upgrade
+    tightens rather than changes this comparison.
+    """
+    try:
+        from pipeline.canonical import chemical_identity as _CI
+        k = _CI.identity_key(str(m), None)
+        if k:
+            return k
+    except Exception:
+        pass
+    return re.sub(r"[\s_\-]+", "", str(m or "")).lower()
+
+
 def _unit_key(u):
     """A unit reduced to what it MEANS, so spelling cannot fake a contradiction.
 
@@ -314,6 +334,26 @@ def resolve_cases(candidates, links):
     for lk in sorted(links, key=lambda l: (l["strength"] != EXPLICIT, l["a"], l["b"])):
         a, b = lk["a"], lk["b"]
         if a not in by_id or b not in by_id:
+            continue
+        # The deposition TARGET material is case-defining. Two candidates whose own
+        # resolved single target materials positively differ are two different
+        # deposition contexts however strong the specimen link between them: a physical
+        # specimen can realise several depositions (a multilayer, a stack, sequential
+        # stages), so "same sample" is specimen identity and never case identity. A
+        # candidate with no target of its own, or with multi-material scope evidence
+        # only, blocks nothing -- missing is not different.
+        ma = by_id[a].get("deposited_material")
+        mb = by_id[b].get("deposited_material")
+        if ma and mb and _material_key(ma) != _material_key(mb):
+            decisions.append({"a": a, "b": b, "action": "BLOCKED",
+                              "strength": lk["strength"],
+                              "reason": "different deposition target materials",
+                              "detail": {"a_material": ma, "b_material": mb,
+                                         "note": ("specimen identity does not imply "
+                                                  "case identity; the two results "
+                                                  "target different deposited "
+                                                  "materials")},
+                              "link_evidence": lk.get("evidence")})
             continue
         ka = _cond_key(by_id[a]["case_conditions"])
         kb = _cond_key(by_id[b]["case_conditions"])

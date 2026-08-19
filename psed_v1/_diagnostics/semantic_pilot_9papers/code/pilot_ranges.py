@@ -197,17 +197,33 @@ def quantities_from_text(text, hints):
                 add(quantity, unit, value=_f(v), span=sent)
 
     # ---- the direct "keyword … value" form ----------------------------------------
+    # Value resolution is QUANTITY-LOCAL, in a strict order of proximity:
+    #   1. inside the matched phrase itself — a hint like "10-40 cycles" carries its own
+    #      number (scalar or range), and that number IS the value. Scanning past it is
+    #      how "deposited using 10-40 cycles each. The substrate temperature was 200 °C"
+    #      once produced cycle_number = 200: the parser skipped the range it had already
+    #      matched and consumed the next sentence's unrelated number.
+    #   2. the tail after the keyword, WITHIN the same sentence — "an aspect ratio
+    #      of ~30" states the keyword first and its value after, but a sentence boundary
+    #      ends the statement, and a number beyond it belongs to a different assertion.
+    #   3. the head immediately before the keyword ("830 cycles"), same sentence.
+    _numrx = r"(?<![\w])(?<!\.\d)(?<!\d\.)(%s)(?![\w])(?!\.\d)" % _NUM
+
+    def _sentence_bounded(seg, from_end=False):
+        """Trim a segment at the nearest sentence boundary."""
+        parts = re.split(r"(?<=[.;])\s+", seg)
+        return parts[-1] if from_end else parts[0]
+
     for rx, quantity, unit in hints:
         if quantity in claimed:
             continue
         for m in rx.finditer(t):
-            tail = t[m.end():m.end() + 60]
-            lead = re.match(r"[^0-9]{0,25}", tail)
-            near = tail[:(lead.end() if lead else 0) + 40]
-            iv = parse_interval(near)
-            ap = approx_value(near)
-            num = re.search(r"(?<![\w])(?<!\.\d)(?<!\d\.)(%s)(?![\w])(?!\.\d)" % _NUM, near)
             span = t[max(0, m.start() - 60):m.end() + 90]
+            matched = m.group(0)
+            # 1. the value the matched phrase itself carries
+            iv = parse_interval(matched)
+            ap = approx_value(matched)
+            num = re.search(_numrx, matched)
             if iv:
                 add(quantity, unit, interval=iv, span=span)
             elif ap and ap["value"] is not None:
@@ -215,11 +231,26 @@ def quantities_from_text(text, hints):
             elif num:
                 add(quantity, unit, value=_f(num.group(1)), span=span)
             else:
-                # the value may sit immediately BEFORE the keyword ("830 cycles")
-                head = t[max(0, m.start() - 40):m.end()]
-                hm = re.search(r"(?<![\w])(?<!\.\d)(?<!\d\.)(%s)(?![\w])(?!\.\d)\s*\S{0,12}$" % _NUM, head)
-                if hm:
-                    add(quantity, unit, value=_f(hm.group(1)), span=span)
+                # 2. the tail, never across a sentence boundary
+                tail = _sentence_bounded(t[m.end():m.end() + 60])
+                lead = re.match(r"[^0-9]{0,25}", tail)
+                near = tail[:(lead.end() if lead else 0) + 40]
+                iv = parse_interval(near)
+                ap = approx_value(near)
+                num = re.search(_numrx, near)
+                if iv:
+                    add(quantity, unit, interval=iv, span=span)
+                elif ap and ap["value"] is not None:
+                    add(quantity, unit, value=ap["value"], approx=True, span=span)
+                elif num:
+                    add(quantity, unit, value=_f(num.group(1)), span=span)
+                else:
+                    # 3. the value may sit immediately BEFORE the keyword ("830 cycles")
+                    head = _sentence_bounded(t[max(0, m.start() - 40):m.end()],
+                                             from_end=True)
+                    hm = re.search(_numrx + r"\s*\S{0,12}$", head)
+                    if hm:
+                        add(quantity, unit, value=_f(hm.group(1)), span=span)
             if quantity in claimed:
                 break
     return out
