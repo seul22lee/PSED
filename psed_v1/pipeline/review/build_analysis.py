@@ -16,6 +16,24 @@ from statistics import mean, pstdev
 
 # resolve(): without it every path here is relative to the caller's cwd, so the
 # script only ran from inside its own directory and failed from the repo root.
+
+#: Every page built from the RESOLVED Experiment layer carries this notice: that layer
+#: is the M2 feeder (legacy granularity), not the production semantic corpus.
+LEGACY_BANNER = (
+    '<div style="background:#7a4a00;color:#ffe9c7;padding:9px 14px;font:13px '
+    'system-ui;border-bottom:2px solid #b97800">LEGACY LAYER &mdash; this page '
+    'reads the resolved <b>Experiment</b> records (M2 feeder granularity), not the '
+    'production semantic corpus. The declared 41-paper corpus '
+    '(ExperimentalCases / MeasurementActs / ResultSeries) is summarised in '
+    '<a href="04_semantic__corpus_summary.html" style="color:#ffd27a">'
+    '04_semantic__corpus_summary.html</a>. M2 migration to the semantic layer is '
+    'pending.</div>')
+
+
+def _with_banner(html):
+    return html.replace("<body>", "<body>" + LEGACY_BANNER, 1) \
+        if "<body>" in html else LEGACY_BANNER + html
+
 ROOT = Path(__file__).resolve().parent
 ONTO = json.loads((P.ONTOLOGY_JSON).read_text())
 
@@ -133,8 +151,8 @@ def main():
             "recipe_roles": {q["id"]: q.get("recipe_role") for q in ONTO["quantity_kinds"]},
             "papers": sorted({e["pid"] for e in exps})}
     html = TEMPLATE.replace("/*DATA*/", json.dumps(data))
-    (ROOT / "analysis_dashboard.html").write_text(html)
-    print(f"wrote analysis_dashboard.html  ({len(html)//1024} KB)  "
+    (P.REPORTS / "02_extraction__analysis_dashboard.html").write_text(_with_banner(html))
+    print(f"wrote reports/02_extraction__analysis_dashboard.html  ({len(html)//1024} KB)  "
           f"{len(exps)} experiments, {len(materials)} materials, {len(quantities)} quantities")
 
 

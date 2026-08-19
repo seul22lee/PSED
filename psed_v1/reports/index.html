@@ -1,0 +1,43 @@
+<!doctype html><meta charset="utf-8"><title>PSED reports</title><style>
+body{margin:0;background:#f4f6f8;color:#14161a;font:14px/1.6 -apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:26px 22px}h1{font-size:22px;margin:0 0 4px}
+h2{font-size:14px;margin:20px 0 6px}ul{margin:4px 0;padding-left:18px}li{margin:6px 0}
+.sm{font-size:11.5px;color:#565c66}a{color:#2a5fd6}</style><div class=wrap>
+<div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8b919b;font-weight:600">PSED</div>
+<h1>Reports</h1>
+<div class=sm>Regenerate the current set with <code>python3 cli.py review</code>.
+Production data authority: papers/_corpus/ (corpus_manifest, semantic_invariants,
+workbench). Pages labelled LEGACY read the resolved Experiment layer; HISTORICAL
+pages are provenance snapshots.</div>
+<h2>Production semantic corpus (current)</h2><ul>
+<li><span style='color:#0a7a3d;font-size:10px;font-weight:700'>CURRENT</span> <a href='04_semantic__corpus_summary.html'>Semantic corpus summary</a><br><span class=sm>41 included papers · ExperimentalCases / MeasurementActs / ResultSeries / points · invariants · declared gaps</span></li>
+<li><span style='color:#0a7a3d;font-size:10px;font-weight:700'>CURRENT</span> <a href='04_semantic__scientific_comparison_workbench.html'>Scientific comparison Workbench</a><br><span class=sm>the production Workbench (copy of papers/_corpus/workbench/, refreshed by `cli.py review`)</span></li>
+</ul>
+<h2>Corpus &amp; pipeline status (current)</h2><ul>
+<li><span style='color:#0a7a3d;font-size:10px;font-weight:700'>CURRENT</span> <a href='03_corpus__corpus_status.html'>Corpus status</a><br><span class=sm>per-paper pipeline stages over the declared 44 (41 included + 3 reviews), plus ontology coverage gaps</span></li>
+<li><span style='color:#0a7a3d;font-size:10px;font-weight:700'>CURRENT</span> <a href='03_corpus__corpus_dashboard.html'>Corpus dashboard</a><br><span class=sm>historical acquisition funnel (labelled) + current extraction state + production-corpus rows</span></li>
+</ul>
+<h2>Ontology (current)</h2><ul>
+<li><span style='color:#0a7a3d;font-size:10px;font-weight:700'>CURRENT</span> <a href='01_ontology__ontology_viewer.html'>Ontology viewer</a><br><span class=sm>interactive class/quantity/relations browser</span></li>
+<li><span style='color:#0a7a3d;font-size:10px;font-weight:700'>CURRENT</span> <a href='01_ontology__ontology.html'>Ontology page</a><br><span class=sm>compiled ontology rendering</span></li>
+</ul>
+<h2>Resolved Experiment layer (legacy granularity — M2 feeder)</h2><ul>
+<li><span style='color:#b97800;font-size:10px;font-weight:700'>LEGACY LAYER</span> <a href='02_extraction__experiment_dashboard.html'>Experiment dashboard</a><br><span class=sm>ontology-conformance of the resolved Experiment records; NOT the semantic corpus (banner on page)</span></li>
+<li><span style='color:#b97800;font-size:10px;font-weight:700'>LEGACY LAYER</span> <a href='02_extraction__analysis_dashboard.html'>Analysis dashboard</a><br><span class=sm>recipe-oriented analysis over the resolved layer</span></li>
+<li><span style='color:#b97800;font-size:10px;font-weight:700'>LEGACY LAYER</span> <a href='02_extraction__recipes.html'>Recipes</a><br><span class=sm>per-experiment recipes with probabilistic gap-filling</span></li>
+<li><span style='color:#b97800;font-size:10px;font-weight:700'>LEGACY LAYER</span> <a href='02_extraction__m2_recipes.html'>M2 recipes</a><br><span class=sm>recipe completeness + Argonne-JSON emission; M2 migration to the semantic layer pending</span></li>
+</ul>
+<h2>Milestone deliverables (twin / MPC / orchestration)</h2><ul>
+<li><span style='color:#2a5fd6;font-size:10px;font-weight:700'>MILESTONE</span> <a href='04_twin_mpc__m1_report.html'>M1 report</a><br><span class=sm></span></li>
+<li><span style='color:#2a5fd6;font-size:10px;font-weight:700'>MILESTONE</span> <a href='04_twin_mpc__m2_report.html'>M2 report</a><br><span class=sm></span></li>
+<li><span style='color:#2a5fd6;font-size:10px;font-weight:700'>MILESTONE</span> <a href='04_twin_mpc__m3_validation.html'>M3 validation</a><br><span class=sm></span></li>
+<li><span style='color:#2a5fd6;font-size:10px;font-weight:700'>MILESTONE</span> <a href='04_twin_mpc__m4_benchmark.html'>M4 benchmark</a><br><span class=sm></span></li>
+<li><span style='color:#2a5fd6;font-size:10px;font-weight:700'>MILESTONE</span> <a href='04_twin_mpc__ylilammi_gallery.html'>Ylilammi gallery</a><br><span class=sm></span></li>
+<li><span style='color:#2a5fd6;font-size:10px;font-weight:700'>MILESTONE</span> <a href='05_orchestration__m5_orchestration.html'>M5 orchestration</a><br><span class=sm></span></li>
+<li><span style='color:#2a5fd6;font-size:10px;font-weight:700'>MILESTONE</span> <a href='05_orchestration__eval__m5_design.html'>M5 design eval</a><br><span class=sm></span></li>
+</ul>
+<h2>Historical snapshots (kept for provenance, not current truth)</h2><ul>
+<li><span style='color:#8b919b;font-size:10px;font-weight:700'>HISTORICAL</span> <a href='02_extraction__phase_ab_summary.html'>Phase A+B summary</a><br><span class=sm>July extraction-phase snapshot; no maintained generator</span></li>
+<li><span style='color:#8b919b;font-size:10px;font-weight:700'>HISTORICAL</span> <a href='02_extraction__kg_viewer.html'>KG viewer (snapshot)</a><br><span class=sm>knowledge-graph view of an earlier resolved layer; regenerate via `cli.py kg`</span></li>
+<li><span style='color:#8b919b;font-size:10px;font-weight:700'>HISTORICAL</span> <a href='FIGURE_PROVENANCE_REPAIR_REPORT.md'>Figure-provenance repair report</a><br><span class=sm>the repair campaign record</span></li>
+</ul></div>

@@ -14,7 +14,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = P.REPO
-REF = ROOT / "refsets"
+REF = ROOT / "corpus" / "references" / "refsets"
 PDFS = P.PDF_INBOX
 EXTRACTED = P.PAPERS                 # papers/<id>/extracted/
 KB = P.PAPERS          # papers/<doi>/{resolved,canonical}/
@@ -34,9 +34,12 @@ def load():
     tier = Counter(r.get("tier", "") for r in triage)
 
     pdfs = sorted(p.stem for p in PDFS.glob("*.pdf"))
-    # extraction state per paper dir
+    # the DECLARED corpus (papers/_corpus/corpus_manifest.json), never a glob
+    mf = json.loads(P.corpus_manifest_path().read_text())
+    included = [x["paper_id"] for x in mf["included"]]
+    excluded = {x["paper_id"]: x.get("reason", "excluded") for x in mf["excluded"]}
     papers = []
-    for d in sorted(P.extracted_dir(x) for x in P.papers()):
+    for d in sorted(P.extracted_dir(x) for x in included + sorted(excluded)):
         sd = d.parent.name
         sc = {}
         if (d / "scout.json").exists():
@@ -89,6 +92,7 @@ def load():
                 ncanon = 0
         papers.append({
             "doi": sd,
+            "corpus": ("review (excluded)" if sd in excluded else "included"),
             "docling": (d / "document.md").exists(),
             "scouted": bool(sc) and "_parse_error" not in sc,
             "study": (sc.get("study_type") if sc else None),
@@ -122,12 +126,44 @@ def load():
         {"label": "Docling-parsed", "n": n_extracted, "note": "document.md + structure.json"},
         {"label": "Scouted (abstract/figs)", "n": n_scouted, "note": "role-separated process card"},
         {"label": "Figure-extracted", "n": n_records, "note": "vision digitized data points"},
-        {"label": "In knowledge base", "n": n_kb,
+        {"label": "In knowledge base (resolved Experiment layer)", "n": n_kb,
          "note": (f"{total_exp} experiments = {total_profiles} spatial profiles "
                   f"+ {total_in_series} sweep points in {total_series} series "
-                  f"+ {total_other} single/correlation/unresolved")},
+                  f"+ {total_other} single/correlation/unresolved -- M2 feeder "
+                  "granularity, NOT the semantic corpus")},
         {"label": "Comparison-ready curves", "n": total_canonical,
          "note": "at least one axis in a canonical comparison group"},
+    ]
+    # ---- the PRODUCTION SEMANTIC CORPUS: a different population from the
+    # acquisition funnel above, declared in the manifest and summarised from the
+    # committed production artifacts, never recomputed here
+    sem = {"cases": 0, "meas": 0, "series": 0, "points": 0}
+    for pid in included:
+        sd2 = P.semantic_dir(pid)
+        if not (sd2 / "result_series.json").exists():
+            continue
+        sem["cases"] += len(json.loads((sd2 / "experimental_cases.json").read_text()))
+        sem["meas"] += len(json.loads((sd2 / "measurements.json").read_text()))
+        rs = json.loads((sd2 / "result_series.json").read_text())
+        sem["series"] += len(rs)
+        sem["points"] += sum(r.get("n_points") or 0 for r in rs)
+    wbv = P.PAPERS / "_corpus" / "workbench" / "workbench_validation.json"
+    wb = json.loads(wbv.read_text())["counts"] if wbv.exists() else {}
+    wbm = P.PAPERS / "_corpus" / "workbench" / "workbench_model.json"
+    wb_papers = (len({x.get("paper_id")
+                      for x in json.loads(wbm.read_text())["series"].values()})
+                 if wbm.exists() else 0)
+    funnel += [
+        {"label": "Declared corpus (manifest)", "n": len(included) + len(excluded),
+         "note": f"{len(included)} included · {len(excluded)} reviews excluded: "
+                 + ", ".join(sorted(excluded))},
+        {"label": "Production semantic corpus", "n": len(included),
+         "note": (f"{sem['cases']} ExperimentalCases · {sem['meas']} Measurements · "
+                  f"{sem['series']} ResultSeries · {sem['points']} points")},
+        {"label": "Workbench", "n": wb.get("result_series_persisted", 0),
+         "note": (f"ResultSeries across {wb_papers} papers · "
+                  f"{wb.get('indexed_pairs', 0)} indexed pairs · "
+                  f"{wb.get('profile_series', 0)} profile series")},
     ]
     return {
         "funnel": funnel,
@@ -144,7 +180,7 @@ def load():
 def main():
     data = load()
     html = TEMPLATE.replace("/*DATA*/", json.dumps(data))
-    out = ROOT / "corpus_dashboard.html"
+    out = P.REPORTS / "03_corpus__corpus_dashboard.html"
     out.write_text(html)
     f = data["funnel"]
     print(f"wrote {out.relative_to(ROOT.parent)}  ({len(html)//1024} KB)")

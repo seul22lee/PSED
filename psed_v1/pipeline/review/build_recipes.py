@@ -24,6 +24,24 @@ from pipeline.resolve import kb_service as ks
 from pipeline.resolve import recipe as recipe_mod
 from pipeline.canonical import similarity as sim
 
+
+#: Every page built from the RESOLVED Experiment layer carries this notice: that layer
+#: is the M2 feeder (legacy granularity), not the production semantic corpus.
+LEGACY_BANNER = (
+    '<div style="background:#7a4a00;color:#ffe9c7;padding:9px 14px;font:13px '
+    'system-ui;border-bottom:2px solid #b97800">LEGACY LAYER &mdash; this page '
+    'reads the resolved <b>Experiment</b> records (M2 feeder granularity), not the '
+    'production semantic corpus. The declared 41-paper corpus '
+    '(ExperimentalCases / MeasurementActs / ResultSeries) is summarised in '
+    '<a href="04_semantic__corpus_summary.html" style="color:#ffd27a">'
+    '04_semantic__corpus_summary.html</a>. M2 migration to the semantic layer is '
+    'pending.</div>')
+
+
+def _with_banner(html):
+    return html.replace("<body>", "<body>" + LEGACY_BANNER, 1) \
+        if "<body>" in html else LEGACY_BANNER + html
+
 ROOT = Path(__file__).parent
 # a small set of model defaults the twin would supply when the KB is silent
 MODEL_DEFAULTS = {"T": 573.0, "t_p": 0.1, "pA": 100.0, "pB": 300.0, "ncycles": None}
@@ -364,7 +382,7 @@ function flt(){{var q=document.getElementById('q').value.toLowerCase();
    var t=g.nextElementSibling, vis=t.querySelectorAll('tbody tr:not([style*="none"])').length;
    g.style.display=t.style.display=vis?'':'none';}});}}
 </script>"""
-    (ROOT / "recipes.html").write_text(html)
+    (P.REPORTS / "02_extraction__recipes.html").write_text(_with_banner(html))
     return html
 
 
@@ -378,7 +396,7 @@ if __name__ == "__main__":
               if isinstance(m, dict) and m.get("source") == "kb")
     nmodel = sum(1 for r in rows for m in (r.get("param_sources") or {}).values()
                  if isinstance(m, dict) and m.get("source") == "model")
-    print(f"wrote output/recipes.json + recipes.html  ({n} recipes)")
+    print(f"wrote papers/_corpus/recipes.json + reports/02_extraction__recipes.html  ({n} recipes)")
     print(f"  completeness  extracted {ae:.2f}  ->  filled {af:.2f}")
     print(f"  gap-fills: {nkb} from KB medians, {nmodel} from model defaults")
     a = field_accounting(rows)
