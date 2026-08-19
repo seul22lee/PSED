@@ -34,7 +34,12 @@ _ONTO = json.loads((Path(__file__).resolve().parents[2] / "ontology"
 QR = _ONTO["quantity_relations"]
 GROUPS = QR["comparison_groups"]
 NORMALIZATIONS = {n["id"]: n for n in QR["normalization_definitions"]}
-TRANSFORMS = QR["transforms"]
+# The informal `transforms` list is SUPERSEDED by the formal TransformationRule
+# registry; this view renders the formal rules in the legacy shape so this layer and
+# every consumer read ONE authority. A transform present only in the legacy list is
+# an ontology gap, not a capability.
+from pipeline.canonical import comparison_targets as _CT
+TRANSFORMS = _CT.informal_transform_view()
 TTYPES = {t["id"]: t for t in QR["transformation_types"]}
 
 # --- axis / profile statuses. The ontology's own transformation_statuses vocabulary is
@@ -69,8 +74,10 @@ _NORM_CLUES = (
     (re.compile(_SEP + r"(?:planar|blanket|flat|witness)", re.I), "t_over_t_planar"),
 )
 
-#: quantities whose value is dimensionless BECAUSE it was normalized
-_NORMALIZED_QUANTITIES = {"normalized_thickness", "dimensionless_distance"}
+#: quantities whose value is a ratio BY DEFINITION -- they appear only in normalized
+#: ComparisonGroups, so a value without a resolved basis has no comparison identity.
+#: The membership is the ontology's, not this module's.
+_NORMALIZED_QUANTITIES = frozenset(_CT._RATIO_ONLY_QUANTITIES)
 
 
 def group_of(quantity):
@@ -196,13 +203,34 @@ def resolve_context(parameter, case=None, series=None, paper_records=None,
             "confidence": None}
 
 
-def transform_for(a_quantity, b_quantity):
-    """The declared ontology transform between two quantities, either direction."""
-    for t in TRANSFORMS:
-        if t.get("from") == a_quantity and t.get("to") == b_quantity:
-            return t, "forward"
-        if t.get("to") == a_quantity and t.get("from") == b_quantity:
-            return t, "reverse"
+def transform_for(a_quantity, b_quantity, a_normalization=None,
+                  b_normalization=None):
+    """The declared ontology transform between two quantities, either direction.
+
+    Several formal rules can relate one quantity pair -- one per normalization basis
+    (x/H, x/L, ...). The declared basis of the ratio side selects among them; with no
+    basis stated and several candidates, the relation is genuinely ambiguous and None
+    is the honest answer, because picking one would assert a denominator nobody
+    named.
+    """
+    stated = {n for n in (a_normalization, b_normalization) if n}
+
+    def pick(cands):
+        if len(cands) <= 1:
+            return cands[0] if cands else None
+        hits = [t for t in cands if t.get("normalization")
+                and t["normalization"] in stated]
+        return hits[0] if len(hits) == 1 else None
+
+    fwd = pick([t for t in TRANSFORMS
+                if t.get("from") == a_quantity and t.get("to") == b_quantity])
+    if fwd:
+        return fwd, "forward"
+    rev = pick([t for t in TRANSFORMS
+                if t.get("to") == a_quantity and t.get("from") == b_quantity
+                and t.get("invertible", True)])
+    if rev:
+        return rev, "reverse"
     return None, None
 
 
@@ -277,7 +305,9 @@ def compare_axis(a, b, a_case=None, b_case=None, a_series=None, b_series=None):
                                                 "comparison_group": pj.get("comparison_group")}
                 return out
 
-    t, direction = transform_for(a["quantity"], b["quantity"])
+    t, direction = transform_for(a["quantity"], b["quantity"],
+                                 a.get("normalization_definition"),
+                                 b.get("normalization_definition"))
     if not t:
         out.update(status=NOT_COMPARABLE,
                    reason="no declared ontology relation between %s and %s"
@@ -373,6 +403,19 @@ def compare_result_series(a, b, a_case=None, b_case=None, allow_shape_only=False
     }
 
 
+def _normalized_target(normalization):
+    """(quantity, unit) a normalization produces -- read off its ComparisonGroup.
+
+    The normalization definition names its group and the group names its canonical
+    quantity and unit; no quantity is ever hard-coded here.
+    """
+    nd = NORMALIZATIONS.get(normalization) or {}
+    g = _CT.GROUPS.get(nd.get("comparison_group")) or {}
+    # a normalization without a declared group is an ontology gap: the produced
+    # quantity is then unknown, and None says so -- nothing is guessed
+    return g.get("canonical_quantity"), g.get("canonical_unit") or "1"
+
+
 def transform_series(series, target_unit=None, normalization=None, context=None):
     """Derive a transformed copy. The source series is never modified.
 
@@ -425,9 +468,10 @@ def transform_series(series, target_unit=None, normalization=None, context=None)
         "source_x_quantity": series.get("x_quantity"), "source_x_unit": series.get("x_unit"),
         "source_y_quantity": series.get("y_quantity"), "source_y_unit": series.get("y_unit"),
         "target_x_unit": target_unit or series.get("x_unit"),
-        "target_y_quantity": ("normalized_thickness" if normalization
+        "target_y_quantity": (_normalized_target(normalization)[0] if normalization
                               else series.get("y_quantity")),
-        "target_y_unit": "1" if normalization else series.get("y_unit"),
+        "target_y_unit": (_normalized_target(normalization)[1] if normalization
+                          else series.get("y_unit")),
         "normalization_definition": normalization,
         "transformations": steps,
         "points": [[x, y] for x, y in zip(xs, ys)],

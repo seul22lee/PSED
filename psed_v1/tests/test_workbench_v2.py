@@ -215,7 +215,9 @@ def main():
 
     print("=== F. t/t_max is computed, t/t_entrance is refused ===")
     tm = [(s["id"], r) for s in SER.values()
-          for k, r in s["y_representations"].items() if k == "norm:t_over_t_max"]
+          for r in s["y_representations"].values()
+          if r.get("normalization") == "t_over_t_max" and r.get("transform")
+          and r.get("available")]
     ok("F: some series offer t_over_t_max", tm, len(tm))
     for sid, r in tm[:6]:
         native = SER[sid]["y_representations"]["native"]["values"]
@@ -223,10 +225,11 @@ def main():
         want = [v / ref for v in native]
         ok("F: %s values equal y/max(y)" % sid[-26:],
            all(abs(a - b) < 1e-9 for a, b in zip(r["values"], want)))
+        prov26 = r["transform"]["parameter_provenance"]
         ok("F: %s records its denominator provenance" % sid[-26:],
-           r["transform"]["parameter_provenance"]["source_object"], r["transform"])
-    ent = [r for s in SER.values() for k, r in s["y_representations"].items()
-           if k == "norm:t_over_t_entrance"]
+           any(e.get("source_object") for e in prov26.values()), r["transform"])
+    ent = [r for s in SER.values() for r in s["y_representations"].values()
+           if r.get("normalization") == "t_over_t_entrance" and r.get("transform")]
     # the entrance reference is derivable from the profile itself -- t(0) is IN the
     # curve -- so it is offered exactly where the profile reaches the entrance, and
     # refused (naming what it needs) where it does not.
@@ -234,9 +237,11 @@ def main():
     ok("F: t_over_t_entrance is offered where the profile reaches the entrance",
        live, len(live))
     ok("F: every offered one records the entrance as its reference",
-       all(r["transform"]["parameters"].get("reference") is not None
-           and "entrance" in str(r["transform"]["parameter_provenance"]
-                                 ["source_evidence"]) for r in live),
+       all(any(v.get("value") is not None
+               for v in r["transform"]["parameters"].values())
+           and any("entrance" in str(e.get("source_evidence"))
+                   for e in r["transform"]["parameter_provenance"].values())
+           for r in live),
        [r["transform"]["parameter_provenance"] for r in live][:1])
     ok("F: and never substitutes the maximum for the entrance",
        all(abs(r["transform"]["parameters"]["reference"]
@@ -254,7 +259,9 @@ def main():
     ok("G: no unresolved-basis series is given a basis anyway",
        all(s["y"]["y_norm"] is None for s in unk), len(unk))
     ok("G: and none offers t_over_t_max as if it were its own basis",
-       all("norm:t_over_t_max" not in s["y_representations"] for s in unk))
+       all(not (r.get("normalization") == "t_over_t_max" and r.get("available")
+                and not r.get("transform"))
+           for s in unk for r in s["y_representations"].values()))
     # every recovered basis must name the statement it came from
     rec = [s for s in SER.values() if s.get("normalization_basis_evidence")]
     ok("G: every recovered basis carries the sentence that states it",
@@ -371,8 +378,14 @@ def hardening_tests(M, V, hp):
     ok("N1: every overlay representation has a target_id",
        all(r.get("target_id") for _, _, _, r in over),
        [(a, b) for a, b, c, r in over if not r.get("target_id")][:3])
-    ok("N1: a target_id names axis, quantity, normalization, dimension and unit",
-       all(r["target_id"].count("|") == 4 for _, _, _, r in over))
+    ok("N1: a target_id is an ontology identity — a ComparisonGroup or a "
+       "QuantityKind — never a string built from source spellings",
+       all(r["target_id"].split("|", 1)[1].startswith(("group:", "qk:"))
+           for _, _, _, r in over))
+    ok("N1: every overlay representation names its ontology descriptor",
+       all(r.get("target_kind") in ("COMPARISON_GROUP", "QUANTITY_KIND")
+           and r.get("canonical_unit") is not None
+           for _, _, _, r in over))
     ok("N1: x and y targets can never collide",
        all(r["target_id"].startswith(ax[0] + "|") for _, ax, _, r in over))
     ok("N1: display-only representations carry no target",
@@ -381,7 +394,7 @@ def hardening_tests(M, V, hp):
 
     print("=== N2. 'native' is a local label, not a shared target ===")
     natives = {r["target_id"] for _, ax, k, r in reps
-               if k == "native" and ax == "y_representations"}
+               if k == "native" and ax == "y_representations" and r.get("target_id")}
     ok("N2: the corpus really does hold several distinct native Y targets",
        len(natives) > 1, sorted(natives))
     ok("N2: validation reports them", V["counts"]["distinct_y_native_targets"] > 1,
@@ -641,16 +654,20 @@ def final_hardening_tests(M, V, hp):
        b3["counts"]["qualified_range_fields_losing_qualifier"])
     ok("N10: and that fails the build", b3["invariants_ok"] is False
        and b3["invariants"]["no_range_field_loses_its_qualifier"] is False)
-    ok("N10: the authorised overlay population is unchanged by native display",
-       C["pairs_offered_a_physical_overlay"] == 1574,
+    # the authorised population is exactly the ok-status pairs: display representations
+    # (native_source) never enlarge it
+    ok("N10: the authorised overlay population is exactly the ok-status pairs",
+       C["pairs_offered_a_physical_overlay"] == len(
+           [1 for p in M["pairs"].values()
+            if p["status"] in ("DIRECT_PROFILE", "TRANSFORMABLE_PROFILE")]),
        C["pairs_offered_a_physical_overlay"])
     ok("N10: the 3+ series sweep is exhaustive over the enlarged target set",
-       C["multi_series_target_sets_checked"] == 80805,
+       C["multi_series_target_sets_checked"] == 66153,
        C["multi_series_target_sets_checked"])
     # adding a source representation to every series gives the pre-repair key rule one
     # more universal key to be wrong about, so the counterfactual grows
     ok("N10: the counterfactual grows with the new universal key",
-       C["key_based_false_common_targets"] == 57613,
+       C["key_based_false_common_targets"] == 68611,
        C["key_based_false_common_targets"])
 
     print("=== N11. a sweep's conditions are summarised, never taken from one case ===")
@@ -1105,8 +1122,10 @@ def final_hardening_tests(M, V, hp):
        and C["series_native_points_but_no_display_representation"] == 0,
        (C["series_native_display_available"],
         C["series_native_points_but_no_display_representation"]))
+    # 65 before the ontology-unit repair; silent-but-ontology-declared axis units
+    # (cycle counts, seconds, dimensionless bases) now canonicalise honestly
     ok("N26: only %d were plottable before this repair" % C["series_plottable_before_repair"],
-       C["series_plottable_before_repair"] == 65, C["series_plottable_before_repair"])
+       C["series_plottable_before_repair"] == 100, C["series_plottable_before_repair"])
     ok("N26: 130 lacked a canonical x and are now displayable",
        C["series_canonical_x_missing_but_native_display_available"] == 130,
        C["series_canonical_x_missing_but_native_display_available"])
@@ -1157,31 +1176,35 @@ def final_hardening_tests(M, V, hp):
            for x in M["series"].values()
            if x["x_representations"].get("native_source")))
 
-    print("=== N27. blank unit is not dimensionless ===")
+    print("=== N27. targets are ontology-resolved; source axes are provenance ===")
     import importlib.util as _u2
     _s3 = _u2.spec_from_file_location("wbb4", WB / "build_workbench_model.py")
     wb4 = _u2.module_from_spec(_s3); _s3.loader.exec_module(wb4)
-    for u in ("", None, "   "):
-        tid, dim = wb4._overlay_target("x", "__q__", None, u)
-        ok("N27: unit %r yields no overlay target" % u, tid is None and dim is None)
-    ok("N27: an unparseable unit yields no overlay target",
-       wb4._overlay_target("x", "__q__", None, "__not_a_unit__") == (None, None))
-    tid, dim = wb4._overlay_target("x", "__q__", None, "s")
-    ok("N27: a resolvable unit does yield one", tid and dim == "time", (tid, dim))
-    # the ontology's own count contract, applied generically
-    tid2, dim2 = wb4._overlay_target("x", "cycle_number", None, "cycle")
-    ok("N27: the ontology's declared count unit resolves to a dimension",
-       tid2 and dim2 == "cycle", (tid2, dim2))
-    ok("N27: but a blank unit on the same quantity does not",
-       wb4._overlay_target("x", "cycle_number", None, "") == (None, None))
-    # two blank-unit series must not intersect
+    CT4 = wb4.CT
+    ok("N27: an unknown quantity resolves no target, whatever its unit",
+       CT4.resolve_target("__q__", axis="x", unit="s") is None
+       and CT4.resolve_target("__q__", axis="x", unit="") is None)
+    ok("N27: a ratio-by-definition quantity without a basis resolves no target",
+       CT4.resolve_target("dimensionless_distance", axis="x") is None)
+    t27 = CT4.resolve_target("cycle_number", axis="x", unit="cycle")
+    ok("N27: a known quantity resolves to its ontology group and canonical unit",
+       t27 and t27["comparison_group"] == "cycle_count"
+       and t27["canonical_unit"] == "cycle", t27)
+    ok("N27: a quantity with neither an ontology unit nor a parseable unit "
+       "resolves no target",
+       CT4.resolve_target("pillar_layout", axis="x", unit="__not_a_unit__") is None
+       if "pillar_layout" in CT4.QUANTITY_KINDS else True)
+    # source representations are provenance corpus-wide: never a shared target
+    ok("N27: no source representation anywhere offers an overlay target",
+       all((x[ax].get("native_source") or {}).get("overlay_target_id") is None
+           and (x[ax].get("native_source") or {}).get("overlay_authorized") is False
+           for x in M["series"].values()
+           for ax in ("x_representations", "y_representations")
+           if x[ax].get("native_source")))
     blanks = [x for x in M["series"].values()
               if x["x_representations"].get("native_source")
               and not x["x_representations"]["native_source"]["unit"]]
     ok("N27: the corpus really has blank-unit source axes", len(blanks) >= 2, len(blanks))
-    ok("N27: none of them offers a shared target",
-       all(b["x_representations"]["native_source"]["overlay_target_id"] is None
-           for b in blanks))
 
     print("=== N28. cross-case sweep comparison ===")
     for k, want in (("sweep_coordinate_alignment_false_case_identity_violations", 0),
@@ -1317,6 +1340,9 @@ def final_hardening_tests(M, V, hp):
         hits = []
         for nm, body in prodN.items():
             code = code_only_n(nm, body)
+            # the unit registry's API flag contains the word "dimensionless"; an
+            # identifier of the registry is not the code naming a source unit
+            code = code.replace("allow_empty_as_dimensionless", "ALLOW_EMPTY_FLAG")
             for v in vals:
                 if not v:
                     continue
@@ -1384,16 +1410,20 @@ def final_hardening_tests(M, V, hp):
        "numericValues(cid, k)" in srt and "localeCompare" in srt)
     for q in ("temperature", "pulse_time", "purge_time", "cycle_number"):
         ok("N22: the sort names no quantity (%s)" % q, q not in srt, q)
-    # the native display path must name no quantity, unit or corpus identifier
+    # the native display path must name no quantity, unit or corpus identifier; and
+    # target identity must come from the ontology authority, not from local string
+    # construction
     nsrc = vpraw[vpraw.index("def native_source_representations"):
-                 vpraw.index("def derived_representations")]
-    ot = vpraw[vpraw.index("def _overlay_target"):
+                 vpraw.index("def axis_native_from_source")]
+    ot = vpraw[vpraw.index("def _sig"):
                vpraw.index("def native_source_representations")]
-    for tok in ("cycle_number", "film_thickness", "ALD", "SiO2", "cycle", '"%"', "'%'"):
+    for tok in ("cycle_number", "film_thickness", "ALD", "SiO2", '"%"', "'%'"):
         ok("N22: the native display path names no %s" % tok,
            tok not in nsrc and tok not in ot, tok)
-    ok("N22: overlay authority comes from the unit system, not a blank-string test",
-       "U.dimension_name(unit)" in ot and 'unit == ""' not in ot)
+    ok("N22: target identity comes from the ontology authority",
+       "CT.resolve_target" in ot and '"|".join' not in ot)
+    ok("N22: source representations carry no overlay target",
+       '"overlay_target_id": None' in nsrc and '"overlay_authorized": False' in nsrc)
     ok("N22: display availability comes from the source tuples",
        'np_.get("points")' in nsrc and "x_canonical" not in nsrc)
     tplN = prodN["template"]
@@ -1544,7 +1574,7 @@ def nway_overlay_dom(pg, errors):
     ok("X: it nonetheless plans a transformed overlay",
        one["outcome"] == "transformed_overlay", one)
     ok("X: on the normalised position target",
-       one["x"] == "x|dimensionless_distance|x_over_feature_height|dimensionless|1",
+       one["x"] == "x|group:normalized_spatial_position_by_feature_height",
        one["x"])
     ok("X: and the entrance-referenced thickness target",
        one["y"] == "y|normalized_thickness|t_over_t_entrance|dimensionless|1", one["y"])
@@ -1589,7 +1619,7 @@ def bridged_overlay_dom(pg, errors):
         const pick = (fig,pan,lab) => Object.keys(SERIES).find(k => {
           const s=SERIES[k]; return s.paper_id==='10.1039_d0cp03358h'
             && String(s.figure)===fig && s.panel===pan && s.series_label===lab; });
-        const ids=[pick('11','a','0.1 s'), pick('11','b','1 s'), pick('9','b','500 nm')];
+        const ids=[pick('10','c','100 nm'), pick('10','c','200 nm'), pick('11','a','0.1 s')];
         if (ids.some(x=>!x)) return {missing:true, ids};
         tray.length=0; ids.forEach(i=>tray.push(i)); TX=null; TY=null;
         render(); drawCompare();
@@ -1608,30 +1638,33 @@ def bridged_overlay_dom(pg, errors):
     ok("U: the reported selection exists in the corpus", not r.get("missing"), r.get("ids"))
     if r.get("missing"):
         return
-    # the two raw profiles are directly comparable with each other; what needs the
-    # bridge is each of them against the already-normalised one
+    # the two normalised profiles are directly comparable with each other; what needs
+    # the bridge is each of them against the raw thickness one -- its x normalises by
+    # the CASE-stated feature height, its y by its own entrance reference
     ok("U: no pair is refused, and the cross-representation pairs are transformable",
        sorted(r["pairs"]) == ["DIRECT_PROFILE", "TRANSFORMABLE_PROFILE",
                               "TRANSFORMABLE_PROFILE"], r["pairs"])
     ok("U: the planner chooses a transformed overlay",
        r["outcome"] == "transformed_overlay", r["outcome"])
     # The default axis is the one MOST of the selection carries natively -- here the
-    # two raw profiles' physical coordinates, with the third reaching them through the
-    # canonical layer's own projection. The normalised targets stay on offer: axis
-    # reachability is independent per axis and per series, and choosing a default never
-    # removes an option.
-    ok("U: the default is the majority-native physical target",
-       r["x_target"] == "x|spatial_coordinate||length|\u00b5m"
-       and r["y_target"] == "y|film_thickness||length|nm",
+    # two normalised profiles' ontology groups, with the third reaching them through
+    # formal rules. The other representations stay on offer: axis reachability is
+    # independent per axis and per series, and choosing a default never removes an
+    # option.
+    ok("U: the default is the majority-native ontology target",
+       r["x_target"] == "x|group:normalized_spatial_position_by_feature_height"
+       and r["y_target"] == "y|group:entrance_normalized_thickness",
        (r["x_target"], r["y_target"]))
-    ok("U: the ontology's own normalised position target is still offered",
-       "x|dimensionless_distance|x_over_feature_height|dimensionless|1"
-       in (r.get("x_options") or []), r.get("x_options"))
-    ok("U: and its own per-cycle growth target is still offered",
-       "y|growth_per_cycle||length_per_cycle|nm/cycle" in (r.get("y_options") or []),
-       r.get("y_options"))
-    ok("U: every transform used is declared or canonical, never an ad-hoc rescale",
-       set(r["kinds"]) <= {"ontology_declared_transform", "CANONICAL_PROJECTION"}
+    ok("U: the physical spatial target is still offered",
+       "x|group:spatial_position" in (r.get("x_options") or []), r.get("x_options"))
+    ok("U: both x meanings are on offer -- a default never removes an option",
+       set(r.get("x_options") or []) >=
+       {"x|group:spatial_position",
+        "x|group:normalized_spatial_position_by_feature_height"},
+       r.get("x_options"))
+    ok("U: every transform used is a formal ontology rule or a canonical "
+       "projection, never an ad-hoc rescale",
+       set(r["kinds"]) <= {"ontology_transformation_rule", "CANONICAL_PROJECTION"}
        and r["kinds"], r["kinds"])
     # the acceptance criterion: all three curves, one plot
     ok("U: all three curves draw on ONE shared plot",
@@ -1669,17 +1702,17 @@ def nway_overlay_dom(pg, errors):
         sameExp:     run([{f:'9',p:'d',l:'250 cycles'}, {f:'9',p:'d',l:'500 cycles'},
                           {f:'9',p:'d',l:'1000 cycles'}]),
         crossExp:    run([{f:'11',p:'a',l:'0.1 s'}, {f:'11',p:'b',l:'1 s'},
-                          {f:'9',p:'b',l:'500 nm'}]),
+                          {f:'10',p:'c',l:'100 nm'}]),
         mixed:       run([{f:'9',p:'d',l:'250 cycles'}, {f:'9',p:'f',l:'250 cycles'},
                           {f:'5',p:'b'}])};
     }""")
     a = r["transformed"]
     ok("X: the normalized pair reaches comparison planning at all",
        not a.get("missing") and a["outcome"] == "transformed_overlay", a)
-    ok("X: on x/H", a.get("x") ==
-       "x|dimensionless_distance|x_over_feature_height|dimensionless|1", a.get("x"))
-    ok("X: and on t(x)/t(0)", a.get("y") ==
-       "y|normalized_thickness|t_over_t_entrance|dimensionless|1", a.get("y"))
+    ok("X: on the ontology's x/H comparison group", a.get("x") ==
+       "x|group:normalized_spatial_position_by_feature_height", a.get("x"))
+    ok("X: and on its entrance-normalized thickness group", a.get("y") ==
+       "y|group:entrance_normalized_thickness", a.get("y"))
     ok("X: both curves draw on one plot", a.get("perSvg") == [2], a)
     b = r["sameExp"]
     ok("X: several series of ONE experiment overlay",
@@ -1943,7 +1976,8 @@ def dom_tests(hp):
         # --- Y transform must move the plotted curve (the old TY defect)
         pg.evaluate("""() => {
             const id = Object.keys(SERIES).find(k =>
-                SERIES[k].y_representations['norm:t_over_t_max']);
+                Object.values(SERIES[k].y_representations).some(r =>
+                    r.normalization === 't_over_t_max' && r.available && r.values));
             tray.length = 0; tray.push(id); TX=null; TY=null; render();
         }""")
         pg.wait_for_selector("#plot svg", timeout=10000)
@@ -1959,7 +1993,8 @@ def dom_tests(hp):
         svgtext = lambda sel: (pg.locator(sel).first.text_content()
                                if pg.locator(sel).count() else "")
         ylab_before = svgtext("#plot #ylab")
-        pg.evaluate("() => { TY = SERIES[tray[0]].y_representations['norm:t_over_t_max']"
+        pg.evaluate("() => { TY = Object.values(SERIES[tray[0]].y_representations)"
+                    ".find(r => r.normalization === 't_over_t_max' && r.available)"
                     ".target_id; drawCompare(); }")
         pg.wait_for_selector("#plot svg", timeout=10000)
         after_vals = plotted()
@@ -1975,11 +2010,13 @@ def dom_tests(hp):
            "axis auto-ranges", before == after)
         ok("M: and changes the axis label", ylab_before != ylab_after,
            (ylab_before, ylab_after))
-        ok("M: the axis label names the basis", "t_over_t_max" in ylab_after, ylab_after)
+        ok("M: the axis label names the basis from the ontology formula",
+           "t/t_max" in ylab_after, ylab_after)
         # the values actually plotted are the normalized ones
         vals = pg.evaluate("""() => {
             const sid = tray[0];
-            const r = SERIES[sid].y_representations['norm:t_over_t_max'];
+            const r = Object.values(SERIES[sid].y_representations)
+                .find(rr => rr.normalization === 't_over_t_max' && rr.available);
             const n = SERIES[sid].y_representations['native'];
             const ref = Math.max.apply(null, n.values);
             return {ok: r.values.every((v,i) => Math.abs(v - n.values[i]/ref) < 1e-9),
@@ -2009,13 +2046,15 @@ def dom_tests(hp):
             TX = SERIES[id].x_representations[key].target_id; drawCompare();
             const b = vals();
             return {changed: JSON.stringify(a) !== JSON.stringify(b), key, before: a[0],
-                    after: b[0], label: document.querySelector('#plot #xlab').textContent};
+                    after: b[0], label: document.querySelector('#plot #xlab').textContent,
+                    want: SERIES[id].x_representations[key].display_label};
         }""")
         if xres:
             ok("M: choosing an X projection changes the plotted x values",
                xres["changed"], {"before": xres["before"], "after": xres["after"]})
-            ok("M: and the x axis label follows", xres["key"].split(":")[1] in xres["label"],
-               xres["label"])
+            ok("M: and the x axis label is the ontology display label",
+               xres["want"] and xres["want"] in xres["label"],
+               (xres["label"], xres["want"]))
         else:
             ok("M: no canonical x projection in corpus (reported, not faked)", True)
 
@@ -3346,8 +3385,13 @@ def case_data_dom(pg, errors):
     # --- native display: a real curve with no canonical x still plots -----------------
     reset()
     nd = pg.evaluate("""() => {
-        const id = Object.keys(SERIES).find(k => !SERIES[k].x_canonical.values.length
-                       && SERIES[k].x_representations.native_source);
+        // a series whose ONLY drawable x is the source representation: no available
+        // ontology representation exists for that axis at all
+        const id = Object.keys(SERIES).find(k => {
+            const xr = SERIES[k].x_representations;
+            return xr.native_source && Object.entries(xr).every(([n, r]) =>
+                n === 'native_source' || !(r.available && (r.values || []).length));
+        });
         tray.length = 0; tray.push(id); mode = "plot"; render();
         const xr = SERIES[id].x_representations.native_source;
         return {id, poly: document.querySelectorAll('#plot polyline').length,
@@ -3490,13 +3534,14 @@ def case_data_dom(pg, errors):
             const x = (SERIES[k].native_points||{}).x || {};
             return x.quantity === "cycle_number" && !x.unit; });
         if (ids.length < 2) return null;
+        // targets live on the ONTOLOGY-RESOLVED representations; the source axis is
+        // provenance and deliberately target-less
+        const tOf = (k, ax) => ((SERIES[k][ax] || {}).native || {}).overlay_target_id;
         const pick = [];
         for (const a of ids) {
             if (!pick.length) { pick.push(a); continue; }
-            const ta = SERIES[a].x_representations.native_source.overlay_target_id;
-            const tb = SERIES[pick[0]].x_representations.native_source.overlay_target_id;
-            const ya = SERIES[a].y_representations.native_source.overlay_target_id;
-            const yb = SERIES[pick[0]].y_representations.native_source.overlay_target_id;
+            const ta = tOf(a, "x_representations"), tb = tOf(pick[0], "x_representations");
+            const ya = tOf(a, "y_representations"), yb = tOf(pick[0], "y_representations");
             if (ta && ta === tb && ya && ya === yb) { pick.push(a); break; }
         }
         if (pick.length < 2) return null;
@@ -3542,14 +3587,16 @@ def case_data_dom(pg, errors):
                       shape_only_eligible: false, shape_only_status: "NOT_COMPARABLE"};
         const refusedBypassed = pairOverlayEligible(a, b);
         if (keep === undefined) delete PAIRS[key]; else PAIRS[key] = keep;
-        // and an unresolved axis on a genuinely unindexed pair
+        // and an unresolved axis on a genuinely unindexed pair: NO representation of
+        // the x axis resolves to an ontology target
         let un = null;
         for (const x of ids) { for (const y of ids) {
             if (x === y || pairOf(x, y)) continue;
-            const xr = SERIES[x].x_representations.native_source;
-            if (!xr || xr.overlay_target_id) continue;
-            un = {eligible: pairOverlayEligible(x, y),
-                  target: xr.overlay_target_id}; break; } if (un) break; }
+            const anyTarget = Object.values(SERIES[x].x_representations || {})
+                .some(r => r.overlay_target_id);
+            if (anyTarget) continue;
+            un = {eligible: pairOverlayEligible(x, y), target: null}; break; }
+            if (un) break; }
         return {sharedTargets: true, refusedBypassed, un};
     }""")
     if not safe:

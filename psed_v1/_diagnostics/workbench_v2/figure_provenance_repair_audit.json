@@ -171,5 +171,74 @@
       "counterfactual_meter": "key_based_false_common_targets 57697 -> 57613: bridge representations built on the fabricated cycle_number=200 scalar are now correctly absent"
     },
     "diagnostic_query": "deposited material = SiO2 + result quantity = film_thickness returns the 50, 200 and 250 C nominal cases; the 200 C case holds Fig 2a SE, Fig 2b SE and Fig 2b TEM with the Fig 3 micrograph as linked context and Al2O3 as specimen material"
+  },
+  "ontology_target_identity_repair": {
+    "scope": "mandate 4: ontology as the single authority for representation identity and reachability; plus five architecture guarantees (declared-alias-only group collapse, multi-hop rule-graph traversal, policy-gated QuantityKind targets, rule applicability enforcement, member-scoped progression removal)",
+    "architecture": [
+      "pipeline/canonical/comparison_targets.py is the ONE authority: axis meaning -> ComparisonGroup / policy-authorized QuantityKind -> canonical unit spelling -> deterministic ontology display label",
+      "workbench-local string target_id(axis|quantity|normalization|dimension|unit) removed; every target id is x|group:<id> or a policy-authorized x|qk:<quantity>|... identity",
+      "unit alias spellings (um/µm/μm; '-'/'1'/'dimensionless'; deg/°) fold through the unit registry to ONE canonical spelling; the source spelling is provenance (source_unit_spelling); a value conversion is an explicit formal-rule route (unit_conversion_route), never a silent identity",
+      "native_source representations are display/provenance only and never carry an overlay target; overlay identity lives on ontology-resolved representations",
+      "the informal ontology `transforms` list is superseded: result_comparability.TRANSFORMS is a derived view of the formal transformation_rules registry",
+      "ontology_rule_representations traverses the WHOLE TransformationRule graph breadth-first per axis (cycle-safe, shortest route wins, complete ordered route with per-hop parameters and provenance); one-hop expansion is gone",
+      "ComparisonGroups collapse ONLY through the ontology's declared alias_of relation (dose alias_of exposure is now DECLARED); multiple undeclared same-identity groups are refused as ambiguous, never lexicographically merged",
+      "QuantityKinds without a ComparisonGroup are direct targets only under the ontology's comparison_policy (declared_axis_roles_only); everything else stays source-native",
+      "a rule's confidence_policy is enforced: assumption_recorded rules apply only under their declared applicability evidence (e.g. gpc<->thickness needs nucleation_delay, never cycle count alone); the refusal names the missing evidence",
+      "pair verdicts and overlay authorization read ONE reachability in BOTH directions: unreachable ok-level claims are demoted to missing_context with the gap named",
+      "progression-condition removal is member/provenance scoped: only assertions stated by the traversing member, or interval-valued sweep statements, move to progression context; a sibling's fixed scalar is never deleted"
+    ],
+    "corpus_effects": {
+      "pairs": {
+        "head": {
+          "total": 1722,
+          "DIRECT_PROFILE": 834,
+          "TRANSFORMABLE_PROFILE": 740,
+          "missing_context": 148
+        },
+        "now": {
+          "total": 2485,
+          "DIRECT_PROFILE": 939,
+          "TRANSFORMABLE_PROFILE": 528,
+          "missing_context": 1018
+        },
+        "lost": 0,
+        "new": {
+          "total": 763,
+          "DIRECT_PROFILE": 105,
+          "TRANSFORMABLE_PROFILE": 330,
+          "missing_context": 328,
+          "classification": "expected repair: 108 axis natives resurrected by ontology-declared units for silent axes (cycle counts, seconds, declared dimensionless bases); every new ok-status pair structurally verified: shared ontology target on both axes, identical semantics descriptor, resolved formal-rule routes with provenance; 435 verified, 0 violations"
+        },
+        "existing_demoted": {
+          "TRANSFORMABLE_PROFILE->missing_context": 542,
+          "classification": "expected repair (rule applicability + one-authority demotion): 380 pairs bridged gpc<->thickness from cycle count alone -- the steady-growth assumption is unevidenced, missing now names [cycle_number, nucleation_delay]; 162 pairs claimed a transform whose route is not materialised -- missing names [growth_per_cycle, nucleation_delay, reference_thickness]. No pair record was deleted; all remain visible as potentially comparable with the named gap"
+        },
+        "verified_invariant": "ok-status pairs == pairs offering a physical overlay == 1467"
+      },
+      "targets": {
+        "head": "38 distinct string-built target ids over 617 representation stampings",
+        "now": "15 distinct ontology targets over 427 stampings: 10 ComparisonGroups + 5 policy-authorized QuantityKinds (diffraction_angle, sputter_depth, time, wavelength, refractive_index)",
+        "label_conflicts": 0
+      },
+      "rule_representations": {
+        "built": 100,
+        "declared_unavailable_or_refused": 461,
+        "multi_hop_available_in_corpus": 0,
+        "note": "the engine traverses multi-hop routes generically (pinned by synthetic regression M2); this corpus' 2-hop chains all pass through the assumption-gated cycle rules, so none materialises without nucleation evidence"
+      },
+      "cases": {
+        "total": 182,
+        "identity_changes": 0,
+        "condition_changes": 4,
+        "classification": "expected repair: 2 cases (Pt growth curves) move the traversing member's own '200 cycles' statement into progression context; 1 case moves an interval sweep statement (10-40 cycles) likewise; 1 case's fingerprint now renders its stated interval (cycle_number=100..300) instead of None"
+      }
+    },
+    "newly_exposed_ontology_gaps": [
+      "purge_time, temperature (as an axis kind), vapor_pressure, partial_pressure have no ComparisonGroup and no axis_role authorization: their axes stay source-native until the ontology declares them",
+      "gpc<->thickness conversion requires declared evidence (nucleation_delay) that no corpus case currently states: 542 pairs honestly conditional",
+      "the legacy-only film_thickness->areal_density transform has no formal rule: an ontology gap, not a capability",
+      "normalizations without groups and assumption rules without applicability blocks are refused loudly (none currently exist)"
+    ],
+    "pre_existing_failures_unchanged": "Failures outside this change set's surface, reproduced on the clean HEAD tree or in suites untouched by it: 6 canonical_layer unittest failures; 2 integration test_standalone failures; regression twin-validation count (27 vs 26); 2 regression ontology-relationships page-freshness failures; 1 regression m2_design KB-pulse-time crediting failure. The targeted suites for this change (semantic repairs 130, workbench DOM 726, result comparability 94, ontology consistency 62, condition comparability 110, workbench model 82, geometry/count axis 52, plus 10 further script suites) all pass at 0 failures."
   }
 }

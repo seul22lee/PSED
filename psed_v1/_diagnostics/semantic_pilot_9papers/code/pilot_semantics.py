@@ -1106,7 +1106,7 @@ def fold_timing_generalizations(case):
         if len(owners) != 1:
             continue
         owner = owners[0]
-        same_value = (PC._fmt(c.get("value")) == PC._fmt(owner.get("value"))
+        same_value = (PC.value_token(c) == PC.value_token(owner)
                       and PC._unit_key(c.get("unit")) == PC._unit_key(owner.get("unit")))
         if not same_value:
             note = sorted({PC._fmt(c.get("value")), PC._fmt(owner.get("value"))})
@@ -2080,6 +2080,11 @@ def build(pid):
             candidates.append(_cand(pid, eid, printed, panel, cd, mid, rs_ids, ent,
                                     "whole_curve", note("case_scope", eid, basis),
                                     _scope_ctx))
+            if x_role == D.PROCESS_PROGRESSION:
+                # this curve's x axis TRAVERSES the quantity: any fixed assertion of it
+                # that reaches the merged case through linked context describes one
+                # member's own interval, never a defining condition of the whole case
+                candidates[-1]["progression_coordinate"] = ent.get("coordinate")
             if _prog_stage:
                 candidates[-1]["progression_stage"] = _prog_stage["value"]
                 candidates[-1]["progression_quantity"] = _prog_stage["quantity"]
@@ -2320,7 +2325,7 @@ def build(pid):
         # already resolves the step; dropping it here made the two indistinguishable.
         key = (tuple(sorted((x["quantity"], str(x.get("species") or ""),
                              str(x.get("process_step") or ""),
-                             PC._fmt(x.get("value")))
+                             str(PC.value_token(x)))
                             for x in c.get("case_defining_conditions") or [])),
                c.get("deposited_material"), c.get("geometry"),
                tuple(sorted(c.get("study_series_ids") or [])),
@@ -2991,14 +2996,48 @@ def species_repair(c, precursors, coreactants, note=None, cid=None):
     return c
 
 
+def progression_local(cond, member, progression_q):
+    """Is this assertion PROVEN local to a member's progression, so it moves to
+    progression context instead of fixing the case?
+
+    Member/provenance scoped: only two proofs exist. The stating member itself
+    traverses the quantity (its own axis sweeps it, so its statement describes
+    its sweep), or the stated value is an interval -- an interval is a
+    description of a sweep, never a fixed setting. A scalar stated by a member
+    that does NOT traverse the quantity is that member's own fixed assertion and
+    stays a candidate case condition, even when a sibling member sweeps the same
+    quantity."""
+    q = cond.get("quantity")
+    if q not in progression_q:
+        return False
+    return (member.get("progression_coordinate") == q
+            or cond.get("value_kind") == "range")
+
+
 def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, note):
     """One ExperimentalCase from its merged candidates."""
     _prec = (P.scout.get("precursors") or []) if getattr(P, "scout", None) else []
     _core = (P.scout.get("coreactants") or []) if getattr(P, "scout", None) else []
     conds = {}
+    # Quantities a member's own x axis TRAVERSES are progression coordinates of that
+    # observation, not fixed settings of the nominal case: a stack caption's
+    # "10-40 cycles" and a growth curve's cycle axis describe local intervals, and
+    # promoting either to a case-defining condition would assert one fixed value for
+    # an experiment the case's own members sweep. They are preserved as
+    # progression context, with the member that stated them.
+    progression_q = {m.get("progression_coordinate") for m in members
+                     if m.get("progression_coordinate")}
+    progression_ctx = []
     for m in members:
         for c in m["case_conditions"]:
             c = species_repair(c, _prec, _core)
+            if progression_local(c, m, progression_q):
+                progression_ctx.append(dict(
+                    c, scope_note=("local to the stating member; this case's own "
+                                   "members traverse %r as a progression coordinate"
+                                   % c.get("quantity")),
+                    stated_by=m.get("candidate_id")))
+                continue
             k = (c["quantity"], c.get("species") or "")
             # A repaired interval outranks a scalar carrying the same key: it is the
             # value the source actually states. Directly-stated scalars outrank inherited
@@ -3128,6 +3167,9 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
                         or (getattr(_cand, "process_card", None) or {}).get(
                             "coreactants") or []),
         "case_defining_conditions": [conds[k] for k in sorted(conds)],
+        # member-local sweep/progression intervals, preserved with their member and
+        # never part of the case's nominal identity
+        "progression_context_conditions": progression_ctx,
         # a merged case has one geometry when its members agree; where they disagree it
         # genuinely has none, which is a statement about the members and not a gap
         "geometry": geos[0] if len(geos) == 1 else None,

@@ -6499,7 +6499,8 @@
         "canonical_quantity": "exposure",
         "canonical_unit": "Pa.s",
         "dimension": "exposure",
-        "axis_role": "condition"
+        "axis_role": "condition",
+        "alias_of": "exposure"
       },
       "aspect_ratio": {
         "canonical_quantity": "aspect_ratio",
@@ -6873,7 +6874,14 @@
           "steady linear growth over the cycle range",
           "effective cycles = cycle_number - nucleation_delay when nucleation_delay is available"
         ],
-        "confidence_policy": "assumption_recorded"
+        "confidence_policy": "assumption_recorded",
+        "applicability": {
+          "policy": "requires_any_evidence",
+          "evidence": [
+            "nucleation_delay"
+          ],
+          "note": "steady linear growth is an assumption about the regime, not a numeric operand; cycle count alone does not evidence it. A known nucleation_delay is the declared supporting evidence."
+        }
       },
       {
         "id": "gpc_from_thickness_and_cycles",
@@ -6901,7 +6909,14 @@
           "steady linear growth: only applied when the growth regime is supported by evidence or nucleation_delay is known",
           "effective cycles must be > 0"
         ],
-        "confidence_policy": "assumption_recorded"
+        "confidence_policy": "assumption_recorded",
+        "applicability": {
+          "policy": "requires_any_evidence",
+          "evidence": [
+            "nucleation_delay"
+          ],
+          "note": "steady linear growth is an assumption about the regime, not a numeric operand; cycle count alone does not evidence it. A known nucleation_delay is the declared supporting evidence."
+        }
       },
       {
         "id": "denormalize_thickness_by_entrance",
@@ -7103,7 +7118,11 @@
         "assumptions": [
           "Langmuir dose P*t; NOT independent evidence of either operand"
         ],
-        "confidence_policy": "assumption_recorded"
+        "confidence_policy": "assumption_recorded",
+        "applicability": {
+          "policy": "operands_suffice",
+          "note": "P*t is the definition of the exposure; stated operands suffice. The recorded assumption marks non-independence, not inapplicability."
+        }
       },
       {
         "id": "axis_semantic_resolution",
@@ -7122,7 +7141,11 @@
         ],
         "confidence_policy": "evidence_required"
       }
-    ]
+    ],
+    "comparison_policy": {
+      "quantity_kind_direct_comparison": "declared_axis_roles_only",
+      "basis": "A QuantityKind not covered by any ComparisonGroup may serve as a direct comparison target only when this ontology's axis_role declaration lists it (coordinate or output): that listing is the explicit statement that values of this kind are comparable across sources on the canonical unit. Any other quantity stays source-native until a ComparisonGroup or an axis_role entry authorizes it."
+    }
   },
   "individuals": {
     "materials": [
