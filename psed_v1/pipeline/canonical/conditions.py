@@ -78,6 +78,11 @@ _DEG_ARTIFACT = re.compile(r"(?<=\d)\s*[18]\s*C(?=\b|of|at|,|\.)")
 # docling also splits decimals across spaces ("0 . 5", "1 . 12") and glues the next
 # word to the unit ("325 °Cof substrate temperature"). Both break number parsing.
 _SPLIT_DECIMAL = re.compile(r"(\d)\s+\.\s+(\d)")
+# ... and renders the micro sign as a bare 'l' ("0.5 l m" is 0.5 µm). Anchored to a
+# preceding number so prose letters can never be rewritten.
+_MU_ARTIFACT = re.compile(r"(?<=\d)\s*l\s?(m|s|g|L|mol|bar)\b")
+# ... and the degree glyph as the ligature "/C14" ("300 /C14 C" is 300 °C)
+_DEG_LIGATURE = re.compile(r"(?<=\d)\s*/C14\s*C\b")
 _GLUED_WORD = re.compile(r"\b(C|s|nm|mbar|Torr|sccm)(of|at|in|and|with|for)\b")
 # "10 /C0 7" is the superscript form of 10^-7. Rewriting it as "10e-7" parses as
 # 1e-6 -- a factor of ten too high, which corrupted 62 base-pressure assertions.
@@ -95,6 +100,8 @@ def normalize_docling(t):
     t = _EXP_MANTISSA.sub(lambda m: "%se-%s" % (m.group(1), m.group(2)), t)
     t = _EXP_POWER10.sub(lambda m: "1e-%s" % m.group(1), t)
     t = _DEG_ARTIFACT.sub(" °C", t)
+    t = _MU_ARTIFACT.sub(lambda m: " µ%s" % m.group(1), t)
+    t = _DEG_LIGATURE.sub(" °C", t)
     t = _GLUED_WORD.sub(lambda m: "%s %s" % (m.group(1), m.group(2)), t)
     t = _MINUS_ARTIFACT.sub("-", t)
     return t
@@ -477,6 +484,12 @@ PROSE_RULES = [
     # later, different one.
     (r"(?:grown|deposited|performed|carried out)\s+(?:(?:(?!\bat\b)[^.;]){0,120}?\s)?at\s*"
      r"(?:ca\.?|about|~)?\s*(NUM)\s*(TUNIT_T)", "deposition_temperature", None),
+    # gapped coordination elides the verb of the SECOND chemistry's clause --
+    # "Al2O3 was grown from TMA and H2O at 300 C and TiO2 from TiCl4 and H2O at
+    # 110 C" -- so a deposition-chemistry clause ("from <reagents> at <T>") types
+    # its temperature with or without its own verb
+    (r"\bfrom\s+(?:(?!\bat\b)[^.;]){0,80}?\bat\s*(?:ca\.?|about|~)?\s*(NUM)\s*(TUNIT_T)",
+     "deposition_temperature", None),
     (r"hot[- ]?wire\s+temperature[^.;,]{0,40}?(?:was|of|at|=|~)?\s*(NUM)\s*(TUNIT_T)",
      "hot_wire_temperature", None),
     (r"(NUM)\s*(TUNIT_T)\s+of\s+(?:the\s+)?hot[- ]?wire", "hot_wire_temperature", None),
@@ -495,12 +508,24 @@ PROSE_RULES = [
      "pulse_time", None),
     (r"(NUM)\s*(TUNIT)[- ]?(?:long\s+)?(?:exposure|pulse)\s+to\s+"
      r"([A-Za-z][A-Za-z0-9]{0,6})", "pulse_time", 3),
-    (r"(?:channel|feature|trench|cavity)\s+height[^.;,]{0,30}?(NUM)\s*(LUNIT)",
+    # a qualifier may sit between the structure word and the dimension word
+    # ("channel GAP height", "trench TOP width"); two words bound the reach
+    (r"(?:channel|feature|trench|cavity)\s+(?:\w+\s+){0,2}?height[^.;,]{0,30}?(NUM)\s*(LUNIT)",
      "feature_height", None),
-    (r"(?:channel|feature|structure)\s+length[^.;,]{0,30}?(NUM)\s*(LUNIT)",
+    (r"(?:channel|feature|structure)\s+(?:\w+\s+){0,2}?length[^.;,]{0,30}?(NUM)\s*(LUNIT)",
      "feature_length", None),
-    (r"(?:channel|feature|trench)\s+width[^.;,]{0,30}?(NUM)\s*(LUNIT)",
+    (r"(?:channel|feature|trench)\s+(?:\w+\s+){0,2}?width[^.;,]{0,30}?(NUM)\s*(LUNIT)",
      "feature_width", None),
+    # the reversed statement order: "the length L of the channel was 1 mm"
+    (r"\bheight(?:\s+[A-Za-z])?\s+of\s+the\s+(?:channel|feature|trench|cavity)"
+     r"[^.;,]{0,30}?(NUM)\s*(LUNIT)", "feature_height", None),
+    (r"\blength(?:\s+[A-Za-z])?\s+of\s+the\s+(?:channel|feature|structure)"
+     r"[^.;,]{0,30}?(NUM)\s*(LUNIT)", "feature_length", None),
+    (r"\bwidth(?:\s+[A-Za-z])?\s+of\s+the\s+(?:channel|feature|trench)"
+     r"[^.;,]{0,30}?(NUM)\s*(LUNIT)", "feature_width", None),
+    # a stated aspect ratio is a geometry condition; dimensionless
+    (r"aspect\s+ratio[^.;,]{0,15}?(?:of|=|:|~)?\s*(NUM)()",
+     "aspect_ratio", None),
     (r"(?:growth per cycle|GPC)[^.;,]{0,30}?(NUM)\s*(GUNIT)", "growth_per_cycle", None),
     # symbol forms used when a paper defines its geometry inline: "(d = 0.5 um, L = 5000 um)"
     (r"\bd\s*=\s*(NUM)\s*(LUNIT)", "feature_height", None),
@@ -607,6 +632,64 @@ def _in_chemical_formula(text, m, num, unit):
     return (before.isalpha() or before in ")]}") or after.isdigit()
 
 
+
+# --------------------------------------------- coordinated timing statements
+# The standard methods idiom states BOTH step durations in one clause:
+#     "the AlMe3 pulse and purge times were 0.1 and 4.0 s, respectively"
+#     "0.1 and 4.0 s H2O pulse and purge steps"
+# Single-value phrase rules cannot read it: the first number carries no unit of
+# its own, and the decimal point blocks their gap classes. The values distribute
+# over the kind words IN ORDER ("purge and pulse" reverses them) -- ordinary
+# English coordination, no quantity or paper named. Only the words pulse/purge
+# participate: dose/exposure wordings keep their own timing semantics and are
+# never rewritten into this pair.
+_COORD_KIND = {"pulse": "pulse_time", "purge": "purge_time"}
+_COORD_TIMING = [
+    # phrase first: [species] pulse and purge times were|of A and B <unit>
+    re.compile(r"(?:(?P<sp>[A-Za-z][A-Za-z0-9()]{1,12})\s+)?"
+               r"(?P<k1>pulse|purge)\s+and\s+(?P<k2>pulse|purge)\s+"
+               r"(?:times?|lengths?|durations?)\s*(?:were|are|of|was|:|=)?\s*"
+               r"(?:also\s+)?(?P<v1>NUM)\s+and\s+(?P<v2>NUM)\s*(?P<u>TUNIT)\b",
+               re.I),
+    # values first: A and B <unit> [species] pulse and purge steps
+    re.compile(r"(?P<v1>NUM)\s+and\s+(?P<v2>NUM)\s*(?P<u>TUNIT)\s+"
+               r"(?:(?P<sp>[A-Za-z][A-Za-z0-9()]{1,12})\s+)?"
+               r"(?P<k1>pulse|purge)\s+and\s+(?P<k2>pulse|purge)\s+"
+               r"(?:steps?|times?|sequences?)\b", re.I),
+]
+_COORD_TIMING = [re.compile(rx.pattern.replace("NUM", NUM).replace("TUNIT", TUNIT),
+                            re.I) for rx in _COORD_TIMING]
+
+
+def _coordinated_timing(text, scope, source_kind, locator, **prov):
+    """Assertions from coordinated pulse/purge statements, plus their spans."""
+    out, spans = [], []
+    for rx in _COORD_TIMING:
+        for m in rx.finditer(text):
+            k1, k2 = m.group("k1").lower(), m.group("k2").lower()
+            if k1 == k2:
+                continue                     # "pulse and pulse" states no pair
+            sp = m.group("sp")
+            if sp and not (_REACTANT_OF.fullmatch(sp) or _species_in(sp)
+                           or re.fullmatch(r"[A-Z][A-Za-z0-9()]{1,11}", sp)):
+                sp = None                    # an article or verb is not a species
+            if sp and sp.lower() in ("the", "and", "with", "were", "reactant",
+                                     "both", "each", "for", "its", "their"):
+                sp = None
+            ev = " ".join(m.group(0).split())[:160]
+            for kind, val in ((k1, m.group("v1")), (k2, m.group("v2"))):
+                out.append(assertion(
+                    _COORD_KIND[kind], val, m.group("u"), ev, locator, scope,
+                    _status(text[max(0, m.start() - 70):m.end() + 30]), source_kind,
+                    evidence_kind=("model_input" if MODEL_CONTEXT.search(
+                        text[max(0, m.start() - 160):m.end() + 160])
+                        else "experimental_condition"),
+                    species=sp, species_basis=("phrase" if sp else None),
+                    confidence=0.85, **prov))
+            spans.append((m.start(), m.end()))
+    return out, spans
+
+
 def conditions_from_prose(text, scope, source_kind, locator, **prov):
     """Every condition a governing phrase types, from methods/body prose.
 
@@ -615,8 +698,13 @@ def conditions_from_prose(text, scope, source_kind, locator, **prov):
     it is exactly the guessing this pipeline must not do."""
     text = fold_math(text or "")
     out, seen = [], {}
+    coord, coord_spans = _coordinated_timing(text, scope, source_kind, locator, **prov)
+    out.extend(coord)
     for rx, q, sp_idx in _PROSE:
         for m in rx.finditer(text):
+            if any(a0 <= m.start() < b0 or a0 < m.end() <= b0
+                   for a0, b0 in coord_spans):
+                continue      # this clause was read as a coordinated pair already
             g = m.groups()
             num = next((x for x in g if x and re.fullmatch(NUM, x.strip())), None)
             if num is None:
@@ -649,6 +737,11 @@ def conditions_from_prose(text, scope, source_kind, locator, **prov):
                                text[m.start(): m.end() + 45], re.I)
                 if cm:
                     species = cm.group(1)
+            if species is None and q == "deposition_temperature":
+                # a chemistry clause types its own temperature ("from TiCl4 and
+                # H2O at 110 C"); the reagent it names is what later
+                # distinguishes same-scope values of two recipes
+                species = _species_in(m.group(0))
             if species is None and q in ("pulse_time", "flow_rate"):
                 # the match first; then a SHORT backward window, because a gas is
                 # named just before its flow ("Nitrogen ... flow rate of 150 sccm").
@@ -812,6 +905,12 @@ def reference_scoped_assertions(document, paper_id=None):
 
 
 # ------------------------------------------------------------------- binding
+def _chem_key(label):
+    """Chemical identity of a reagent spelling, via the ontology alias table."""
+    from pipeline.canonical import chemical_identity as _CI
+    return _CI.identity_key(str(label or ""))
+
+
 def bind(assertions, entity, figure_varied_quantities=()):
     """Which assertions actually cover this entity, narrowest scope first.
 
@@ -943,6 +1042,29 @@ def bind(assertions, entity, figure_varied_quantities=()):
             if len({(str(a["value"]), str(a["unit"])) for a in strong}) == 1:
                 at_scope = strong
                 vals = {(str(a["value"]), str(a["unit"])) for a in at_scope}
+        if len(vals) > 1:
+            # The source often disambiguates same-scope values ITSELF by naming
+            # each value's chemistry in its clause ("Al2O3 ... at 300 C and TiO2
+            # from TiCl4 ... at 110 C"). When the entity's own reagents are known
+            # (metal-paired to its material at the call site), a candidate whose
+            # species is a DECLARED reagent of a different chemistry is that
+            # recipe's value, not this one's, and is set aside before any
+            # conflict is declared. A species outside the declared reagent lists
+            # disambiguates nothing and discards nothing.
+            declared = {_chem_key(x) for x in (entity.get("paper_reagents") or [])}
+            mine = {_chem_key(x) for x in (entity.get("entity_reagents") or [])}
+            if declared and mine:
+                own = [a for a in at_scope
+                       if not ((a.get("species") or a.get("of_reactant"))
+                               and _chem_key(a.get("species") or a.get("of_reactant"))
+                               in declared - mine)]
+                if own and len({(str(a["value"]), str(a["unit"])) for a in own}) == 1:
+                    for a in own:
+                        a["chemistry_scope_basis"] = (
+                            "same-scope alternatives named reagents of a different "
+                            "chemistry of this paper and were set aside")
+                    at_scope = own
+                    vals = {(str(a["value"]), str(a["unit"])) for a in at_scope}
         if len(vals) > 1:
             ambiguous.append({
                 "quantity": q[0] if isinstance(q, tuple) else q,

@@ -322,12 +322,20 @@ def material_roles(text, materials):
 #: geometry_class vocabulary. A scope that says nothing yields nothing — the paper-level
 #: default is then used, and the fact that it IS a default is recorded.
 _GEOMETRY_SCOPE = [
-    (re.compile(r"\b(?:high[- ]aspect[- ]ratio|HAR)\b|\baspect ratio\b|\btrench(?:es)?\b|"
-                r"\bvia(?:s)?\b|\bdeep hole", re.I), "vertical_structure"),
-    (re.compile(r"\blateral(?:ly)? (?:high[- ]aspect|channel)|\bLHAR\b|\bPillarHall\b",
-                re.I), "lateral_channel"),
+    # Most specific first. A lateral-channel scope routinely also says "high aspect
+    # ratio", so the lateral wording must be tested before the vertical one -- and a
+    # bare "aspect ratio" is the name of a QUANTITY every structured geometry has,
+    # never evidence for one class, so it appears in no pattern at all.
+    (re.compile(r"\blateral(?:ly)? (?:high[- ]aspect|channel)|\bLHAR\b|\bPillarHall\b"
+                r"|\bchannel gap\b", re.I), "lateral_channel"),
     (re.compile(r"\bporous\b|\bmesoporous\b|\bnanoporous\b|\bAAO\b|\bmembrane\b|"
                 r"\bpowder\b|\bparticles?\b", re.I), "porous_material"),
+    # 'via' only in its interconnect sense -- the bare singular is the English
+    # preposition (same demonstrated false-positive class as the paper-level
+    # classifier's repair)
+    (re.compile(r"\b(?:high[- ]aspect[- ]ratio|HAR)\b|\btrench(?:es)?\b|"
+                r"\bvias\b|\bvia hole|\bvia structure|through[- ]silicon|"
+                r"\bdeep hole", re.I), "vertical_structure"),
     (re.compile(r"\bplanar\b|\bblanket\b|\bflat (?:wafer|substrate)\b|"
                 r"\bSi\(100\)\b|\bsilicon wafer\b", re.I), "planar"),
 ]

@@ -1000,6 +1000,19 @@ def resolve_source_entities(sd, exps, pid):
         ent_assertions += _reference_assertions(sd)
         for a in ent_assertions:
             a["source_entity"] = ekey
+        # this entity's chemistry, for same-scope disambiguation inside bind():
+        # its material's leading metal pairs it with the paper's reagents -- the
+        # same rule used everywhere for channel selection
+        _mat = str(e.get("material") or e.get("material_raw") or "")
+        _mm = re.match(r"^([A-Z][a-z]?)", _mat)
+        _sc = json.loads((P.extracted_dir(sd) / "scout.json").read_text()) \
+            if (P.extracted_dir(sd) / "scout.json").exists() else {}
+        _paper_reag = (_sc.get("precursors") or []) + (_sc.get("coreactants") or [])
+        _mine_reag = ([r for r in (_sc.get("precursors") or [])
+                       if _mm and _mm.group(1) in str(r)]
+                      + (_sc.get("coreactants") or []))
+        ctx["paper_reagents"] = _paper_reag
+        ctx["entity_reagents"] = _mine_reag if _mm else []
         bound, ambiguous, _ = ccond.bind(ent_assertions, ctx,
                                          _figure_varied(sd, ctx["fig_docling_index"]))
         assertions.extend(ent_assertions)
