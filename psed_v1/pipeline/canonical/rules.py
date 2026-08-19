@@ -271,6 +271,7 @@ class Rule(object):
         self.valid_domain = decl.get("valid_domain")
         self.assumptions = list(decl.get("assumptions") or [])
         self.confidence_policy = decl.get("confidence_policy")
+        self.applicability = decl.get("applicability") or {}
         self.dimension = decl.get("dimension")
         self.normalization_definition = decl.get("normalization_definition")
 

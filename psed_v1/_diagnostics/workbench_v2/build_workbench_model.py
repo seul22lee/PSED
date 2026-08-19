@@ -28,7 +28,9 @@ from pipeline.query import condition_query as CQ                       # noqa: E
 from pipeline.query import entity_identity as EI                       # noqa: E402
 from pipeline.query import result_comparability as RC                  # noqa: E402
 from pipeline.canonical import axis_semantics as AX                    # noqa: E402
+from pipeline.canonical import comparison_targets as CT                # noqa: E402
 from pipeline.canonical import process_steps as PS                     # noqa: E402
+from pipeline.canonical import rules as RULES                          # noqa: E402
 from pipeline.canonical import units as U                              # noqa: E402
 
 OUT = W / "_diagnostics" / "workbench_v2"
@@ -36,23 +38,13 @@ PILOT = W / "_diagnostics" / "semantic_pilot_9papers"
 FREEZE = {"entity_identity": "fadd925", "result_comparability": "849c377",
           "condition_comparability": "600320a", "ontology_readiness": "14bff7b"}
 
-PROFILE_X = {"spatial_coordinate", "dimensionless_distance", "penetration_depth",
-             "aspect_ratio"}
-PROFILE_Y = {"film_thickness", "normalized_thickness", "growth_per_cycle",
-             "surface_coverage", "step_coverage"}
+# Which quantities constitute a conformality profile is an ontology declaration --
+# the axis_role of its ComparisonGroups -- not a workbench list.
+PROFILE_X = frozenset(g["canonical_quantity"] for g in CT.GROUPS.values()
+                      if g.get("axis_role") == "coordinate")
+PROFILE_Y = frozenset(g["canonical_quantity"] for g in CT.GROUPS.values()
+                      if g.get("axis_role") == "output")
 
-COND_GROUPS = [
-    ("Chemistry", ("precursor", "coreactant", "carrier_gas")),
-    ("Process", ("deposition_temperature", "temperature", "working_pressure",
-                 "base_pressure", "total_pressure", "partial_pressure",
-                 "carrier_gas_partial_pressure", "cycle_number", "flow_rate")),
-    ("Recipe", ("pulse_time", "purge_time", "exposure_time", "exposure",
-                "precursor_pulse_time", "precursor_purge_time",
-                "coreactant_pulse_time", "coreactant_purge_time")),
-    ("Geometry", ("feature_height", "feature_width", "feature_length", "feature_depth",
-                  "aspect_ratio", "pillar_layout", "deposited_layer_thickness",
-                  "deposited_structure")),
-]
 
 
 def code_hash():
@@ -190,48 +182,94 @@ def native_point(s, i):
     return pts[i] if 0 <= i < len(pts) else None
 
 
-def target_id(axis, quantity, normalization, unit):
-    """The scientific identity of a plotting target.
+def _align_to_canonical_unit(rep, tgt):
+    """Bring a representation's values into the target's canonical unit.
 
-    Two series share a target only when they share this signature. The previous model
-    keyed representations by a local name, and every series has one called "native", so
-    a film thickness in nm and a refractive index intersected to a "common" native target
-    and were drawn on one physical axis.
+    Alias spellings (µm/um/μm, "1"/"-"/"") are one unit and change nothing. A TRUE
+    conversion (nm -> µm, °C -> K) runs through the formal ontology unit-conversion
+    rule for that dimension and is recorded as an explicit route step. A unit that
+    will not convert leaves the representation without a target rather than on a
+    silently mislabelled axis.
     """
-    dim = None
+    ru, cu = rep.get("unit"), tgt.get("canonical_unit")
+    if cu is None:
+        return True
+    if CT.same_unit(ru, cu):
+        # one unit, two spellings: the canonical spelling is the identity, the source
+        # spelling is provenance. Values are untouched -- aliases share the factor.
+        if str(ru) != str(cu):
+            rep["source_unit_spelling"] = ru
+            rep["unit"] = cu
+        return True
+    if ru in (None, "", " "):
+        # the standing contract of ontology_axis_unit: an axis that printed no unit is
+        # not thereby unitless -- where the quantity resolved and the ontology declares
+        # its unit, that IS the unit the canonical numbers are in
+        rep["unit"] = cu
+        rep["unit_basis"] = ("ontology-declared unit for %r; the source printed none"
+                             % rep.get("quantity"))
+        return True
+    rule = RULES.unit_conversion_rule_for(ru, allow_empty_as_dimensionless=True)
+    if rule is None:
+        return False
     try:
-        dim = U.dimension_name(unit) if unit else None
+        rep["values"] = rule.apply(rep.get("values") or [], from_unit=ru, to_unit=cu,
+                                   allow_empty_as_dimensionless=True)
     except Exception:
-        dim = None
-    return "|".join([axis, str(quantity), str(normalization or ""), str(dim or ""),
-                     str(unit or "")]), dim
+        return False
+    rep["unit_conversion_route"] = {
+        "rule_id": rule.id, "rule_version": rule.version,
+        "from_unit": ru, "to_unit": cu,
+        "provenance": "formal ontology unit-conversion rule"}
+    rep["source_unit_spelling"] = ru
+    rep["unit"] = cu
+    return True
 
 
 def _sig(axis, rep):
-    tid, dim = target_id(axis, rep.get("quantity"), rep.get("normalization"),
-                         rep.get("unit"))
-    if rep.get("representation_kind") == REP_NATIVE_SOURCE:
-        # a source representation is a shared target only when its unit named a
-        # dimension; otherwise it is display-only and must never intersect with another
-        # series' equally unresolved axis
-        tid, dim = rep.get("overlay_target_id"), rep.get("dimension")
-    elif (rep.get("quantity") in RC._NORMALIZED_QUANTITIES
-            and not rep.get("normalization")):
-        # a ratio whose basis nobody recorded is displayable but has no SHARED identity:
-        # two normalized axes with unknown denominators would otherwise spell the same
-        # target and overlay as if they were on one scale, which is exactly the claim
-        # neither source made
-        tid = None
+    """Stamp a representation with its ONTOLOGY-resolved comparison target.
+
+    Identity comes from `comparison_targets.resolve_target` -- the ComparisonGroup
+    where the ontology declares one, the QuantityKind identity otherwise, and None
+    when the meaning is not established (unknown quantity, a ratio with no resolved
+    basis, an unconvertible unit). A source-native representation is provenance and
+    display, never a target: nothing about a printed label makes two axes the same
+    quantity.
+    """
     rep.setdefault("representation_kind", REP_CANONICAL if rep.get("transform") is None
                    else REP_TRANSFORMED)
     rep.setdefault("display_available", bool(rep.get("values")))
-    rep.setdefault("overlay_target_id", tid)
-    rep.setdefault("overlay_authorized", tid is not None)
-    rep["target_id"] = tid
+    tgt = None
+    if rep.get("representation_kind") != REP_NATIVE_SOURCE:
+        tgt = CT.resolve_target(rep.get("quantity"), rep.get("normalization"),
+                                axis=axis, unit=rep.get("unit"))
+        if tgt is not None and rep.get("values") is not None:
+            if not _align_to_canonical_unit(rep, tgt):
+                tgt = None
+    if tgt is not None:
+        rep["target_id"] = tgt["target_id"]
+        rep["target_kind"] = tgt["target_kind"]
+        rep["comparison_group"] = tgt["comparison_group"]
+        rep["group_aliases"] = tgt["group_aliases"]
+        rep["canonical_unit"] = tgt["canonical_unit"]
+        rep["dimension"] = tgt["dimension"]
+        rep["display_label"] = tgt["display_label"]
+        rep["overlay_target_id"] = tgt["target_id"]
+        rep["overlay_authorized"] = True
+    else:
+        rep["target_id"] = None
+        rep["target_kind"] = None
+        rep["comparison_group"] = None
+        rep["overlay_target_id"] = None
+        rep["overlay_authorized"] = False
+        try:
+            rep.setdefault("dimension", U.dimension_name(rep.get("unit"))
+                           if rep.get("unit") else None)
+        except Exception:
+            rep.setdefault("dimension", None)
+        rep.setdefault("display_label", rep.get("label"))
     rep["quantity_id"] = rep.get("quantity")
     rep["normalization_id"] = rep.get("normalization")
-    rep["dimension"] = dim
-    rep.setdefault("display_label", rep.get("label"))
     rep["axis"] = axis
     return rep
 
@@ -244,31 +282,16 @@ REP_CANONICAL = "CANONICAL"
 REP_TRANSFORMED = "TRANSFORMED"
 
 
-def _overlay_target(axis, quantity, normalization, unit):
-    """A shared-axis identity, or None when the unit does not resolve to a dimension.
-
-    Two curves whose unit strings are both blank are not thereby in the same units; they
-    are two curves whose units are unknown. A representation that cannot name its
-    dimension can still be drawn on its own, and can never be a shared target.
-    """
-    if not unit:
-        return None, None
-    try:
-        dim = U.dimension_name(unit)
-    except Exception:
-        return None, None
-    tid, _ = target_id(axis, quantity, normalization, unit)
-    return tid, dim
-
-
 def native_source_representations(s):
-    """The source curve, drawn from the persisted tuples.
+    """The source curve, drawn from the persisted tuples. PROVENANCE, not a target.
 
     Only complete (x, y) tuples are plotted, filtered as whole pairs so a point never
-    contributes its x to one place and its y to another. This is display capability and
-    nothing else: canonicalisation, comparability and overlay authority are separate
-    questions asked elsewhere, and a failure in any of them has no bearing on whether a
-    single recorded curve can be shown.
+    contributes its x to one place and its y to another. This is display capability
+    and the record of how the source expressed the axis -- label, unit spelling,
+    quantity word. It is NEVER a comparison target: sharing an axis is a claim about
+    resolved scientific meaning, and a printed label establishes none. The ontology-
+    resolved representations carry the targets; where none resolves, this stays the
+    honest, display-only remainder.
     """
     np_ = s.get("native_points") or {}
     pairs = [(t.get("x"), t.get("y")) for t in (np_.get("points") or [])
@@ -282,18 +305,17 @@ def native_source_representations(s):
         # resolved and the ontology declares its unit, that is the unit the numbers are
         # in. Asked of the canonical layer so the answer is the ontology's, not a guess.
         unit, unit_basis = AX.ontology_axis_unit(meta.get("quantity"), meta.get("unit"))
-        tid, dim = _overlay_target(axis, meta.get("quantity"), None, unit)
         label = meta.get("label") or meta.get("quantity") or axis
         out[axis] = {"native_source": {
             "id": "native_source", "representation_kind": REP_NATIVE_SOURCE,
             "quantity": meta.get("quantity"), "unit": unit,
             "label": label, "display_label": label,
             "source_label": meta.get("label"), "source_unit": meta.get("unit"),
-            "unit_basis": unit_basis, "unit_resolved": bool(tid),
+            "unit_basis": unit_basis,
             "values": vals, "transform": None,
             "available": True, "display_available": True,
-            "overlay_target_id": tid, "overlay_authorized": bool(tid),
-            "dimension": dim, "axis": axis,
+            "overlay_target_id": None, "overlay_authorized": False,
+            "axis": axis,
             "n_source_points": len(np_.get("points") or []),
             "n_plotted_points": len(pairs)}}
     return out["x"], out["y"]
@@ -311,20 +333,26 @@ def axis_native_from_source(s, reps, axis, cur):
     q, unit = cur.get("%s_quantity" % axis), cur.get("%s_unit" % axis)
     if not q or "native" in reps:
         return
-    if not unit:
-        # a normalized axis is a pure ratio: once its basis is known the ontology supplies
-        # the unit the canonical layer never assigned, and the source numbers are already
-        # expressed in it. Without a basis the axis stays unresolved -- a ratio to an
-        # unknown reference has no canonical form and must not acquire one here.
-        if not cur.get("%s_norm" % axis):
-            return
-        unit = AX.ontology_axis_unit(q)[0]
-        if not unit:
-            return
     src = (s.get("native_points") or {}).get(axis) or {}
     vals, su = src.get("values"), src.get("unit")
     if not vals:
         return
+    if not unit:
+        # A normalized axis is a pure ratio: once its basis is known the ontology
+        # supplies the unit the canonical layer never assigned. Without a basis a ratio
+        # stays unresolved -- a ratio to an unknown reference has no canonical form.
+        # For any OTHER quantity the standing ontology_axis_unit contract applies: the
+        # source unit wins, and where the source printed none the ontology's declared
+        # unit for the resolved quantity is the unit the numbers are in.
+        if q in RC._NORMALIZED_QUANTITIES and not cur.get("%s_norm" % axis):
+            return
+        unit = AX.ontology_axis_unit(q, su)[0]
+        if not unit:
+            return
+    if not su:
+        # a silent source axis inherits the same resolved unit (the values are the
+        # same numbers); recorded on the representation's own basis field
+        su = unit
     try:
         fu, tu = U.parse(su), U.parse(unit)
         if U.dimension_name(su) != U.dimension_name(unit) or not tu.factor:
@@ -345,42 +373,6 @@ def axis_native_from_source(s, reps, axis, cur):
             "the canonical layer resolved this axis but emitted no paired coordinates "
             "because the other axis was unresolved; the source values were converted "
             "from %s into %s" % (su, unit))}
-
-
-#: The coordinate at which a channel/trench profile enters the feature. A saturation
-#: profile is measured from the opening inward, so the entrance is the origin of the
-#: axial coordinate -- not the first sample, which may sit outside the feature.
-ENTRANCE_COORDINATE = 0.0
-
-
-def entrance_reference(xs, ys):
-    """(value, evidence) for the profile's own value at the feature entrance.
-
-    The entrance reference is the observation at x = 0, and only that. Where the profile
-    samples the entrance exactly, that sample is used; where it brackets the entrance, the
-    value is interpolated between the two adjacent observations, which introduces no
-    assumption the two samples do not already carry. A profile that never reaches the
-    entrance is NOT extrapolated to it, and the maximum, the first point and the largest
-    value are never substituted -- each of those is a different physical statement, and
-    silently using one is how "normalized to the entrance" becomes a claim nobody made.
-    """
-    pairs = sorted(((x, y) for x, y in zip(xs, ys) if x is not None and y is not None),
-                   key=lambda p: p[0])
-    if len(pairs) < 2:
-        return None, None
-    for x, y in pairs:
-        if x == ENTRANCE_COORDINATE:
-            return y, "the profile samples the feature entrance (x = 0) directly"
-    lo = [p for p in pairs if p[0] < ENTRANCE_COORDINATE]
-    hi = [p for p in pairs if p[0] > ENTRANCE_COORDINATE]
-    if not lo or not hi:
-        return None, None                 # entrance not bracketed: no extrapolation
-    (x0, y0), (x1, y1) = lo[-1], hi[0]
-    if x1 == x0:
-        return None, None
-    y = y0 + (y1 - y0) * (ENTRANCE_COORDINATE - x0) / (x1 - x0)
-    return y, ("the entrance is bracketed by observations at x = %g and x = %g; the "
-               "reference is interpolated between them" % (x0, x1))
 
 
 def derived_representations(s, cur):
@@ -459,74 +451,6 @@ def derived_representations(s, cur):
                               "provenance": "computed by the canonical layer and read back",
                               "parameters": _proj_params(cur, pj)}}
 
-    if not (yr.get("native") or {}).get("values"):
-        return xr, yr
-    # t/t_max is the one normalization whose denominator is derivable from the series
-    # itself; t_entrance and t_planar need a reference this corpus does not carry, so
-    # they are described as unavailable rather than quietly approximated by the maximum.
-    # The derivations run off the y axis' OWN materialised values; the entrance one also
-    # needs the x coordinate of each y, so it asks for aligned arrays and refuses
-    # anything else.
-    if cur["y_quantity"] == "film_thickness":
-        ypairs = ([[a, b] for a, b in zip(xs, ys)]
-                  if xs and len(xs) == len(ys) else [[None, b] for b in ys])
-        ctx = RC.resolve_context("t_max", series={"points": ypairs,
-                                                  "y_unit": cur["y_unit"],
-                                                  "result_series_id": s["series_id"]})
-        if ctx.get("found") and ctx.get("value"):
-            ref = ctx["value"]
-            yr["norm:t_over_t_max"] = {
-                "id": "norm:t_over_t_max", "quantity": "normalized_thickness", "unit": "1",
-                "label": "normalized_thickness [1], t_over_t_max",
-                "values": [v / ref for v in ys], "available": True,
-                "normalization": "t_over_t_max",
-                "transform": {"kind": "reference_value_normalization",
-                              "rule_id": "t_over_t_max",
-                              "definition": RC.NORMALIZATIONS["t_over_t_max"].get(
-                                  "semantic_label"),
-                              "parameters": {"reference": ref, "unit": ctx.get("unit")},
-                              "parameter_provenance": ctx}}
-        # the entrance reference is derivable from the profile itself, exactly as t_max is
-        ref, ref_ev = (entrance_reference(xs, ys)
-                       if xs and len(xs) == len(ys) else (None, None))
-        if ref:
-            yr["norm:t_over_t_entrance"] = {
-                "id": "norm:t_over_t_entrance", "quantity": "normalized_thickness",
-                "unit": "1", "label": "normalized_thickness [1], t_over_t_entrance",
-                "values": [v / ref for v in ys], "available": True,
-                "normalization": "t_over_t_entrance",
-                "transform": {"kind": "reference_value_normalization",
-                              "rule_id": "t_over_t_entrance",
-                              "definition": RC.NORMALIZATIONS["t_over_t_entrance"].get(
-                                  "semantic_label"),
-                              "parameters": {"reference": ref, "unit": cur["y_unit"]},
-                              "parameter_provenance": {
-                                  "parameter": "t_entrance", "value": ref,
-                                  "unit": cur["y_unit"], "found": True,
-                                  "source_object": "ResultSeries %s" % s["series_id"],
-                                  "source_evidence": ref_ev,
-                                  "provenance_type": "derived_from_series_points",
-                                  "confidence": "self_referential"}}}
-        for nid in ("t_over_t_entrance", "t_over_t_planar"):
-            if "norm:%s" % nid in yr:
-                continue
-            nd = RC.NORMALIZATIONS[nid]
-            yr["norm:%s" % nid] = {
-                "id": "norm:%s" % nid, "quantity": "normalized_thickness", "unit": "1",
-                "label": nd.get("semantic_label"), "values": None, "available": False,
-                "normalization": nid,
-                # A refused transform is still a DECLARED transform: naming the rule and
-                # the bridge it lacks is what lets a comparison say "potentially
-                # comparable, missing the reference" instead of silently offering nothing.
-                "transform": {"kind": "reference_value_normalization", "rule_id": nid,
-                              "definition": nd.get("semantic_label"),
-                              "required_bridge": nd.get("denominator"),
-                              "parameters": None, "resolved": False},
-                "missing_bridge": nd.get("denominator"),
-                "unavailable_reason":
-                    "%s needs its own reference (%s, %s), which is not resolved for this "
-                    "series" % (nid, nd.get("denominator"),
-                                nd.get("semantic_label"))}
     return xr, yr
 
 
@@ -593,6 +517,10 @@ def build():
                 # the linked specimen's OTHER deposited layers: composition of the
                 # structure the case's film sits in, never the case's own target
                 "specimen_context_materials": c.get("specimen_context_materials") or [],
+                # member-local sweep/progression intervals: context of one member's own
+                # observation, never a fixed nominal condition of the case
+                "progression_context_conditions":
+                    c.get("progression_context_conditions") or [],
                 # the reactor gases are process facts the recipe chemistry never carries;
                 # the two roles stay separate because one gas often fills both and many
                 # processes fill them with different gases
@@ -982,133 +910,287 @@ def bridge_case(s, cases):
     return {"case_id": case.get("case_id"), "case_defining_conditions": conds}
 
 
-def _bridged_values(values, unit, bridge_value, bridge_unit, target_unit, op="divide"):
-    """`values (op) bridge`, carried through SI and expressed in the target's own unit.
+def _rule_applicable(rule, case):
+    """Enforce a rule's OWN applicability policy; (ok, record_or_reason).
 
-    The arithmetic happens in SI because the two operands are routinely printed in
-    different units of the same dimension -- a profile in µm divided by a 500 nm feature
-    height is 0.5 µm, not 500. An affine unit (anything with an offset) is refused rather
-    than operated on: a ratio of two temperatures in °C is not a ratio of temperatures.
-    `op` is the operation actually APPLIED here -- "divide" or "multiply" -- so a
-    declared transform can be traversed in either direction by its caller.
+    A formal rule is not operational merely because its numeric context exists.
+    The ontology's confidence_policy vocabulary is the gate:
+
+      certain              self-evident (unit algebra, self-contained references)
+      evidence_required    every context parameter must carry documentary or
+                           self-referential provenance -- which is the only kind
+                           `_rule_context` ever supplies, and the provenance is
+                           recorded on the representation
+      assumption_recorded  the rule declares a scientific assumption no operand
+                           can prove; its ontology `applicability` block says what
+                           evidences it. `operands_suffice` marks definitional
+                           identities; `requires_any_evidence` names case facts,
+                           one of which must be stated. No block, no application.
     """
-    if op not in ("divide", "multiply"):
-        return None
-    try:
-        fu, bu, tu = U.parse(unit), U.parse(bridge_unit), U.parse(target_unit)
-    except Exception:
-        return None
-    if fu.offset or bu.offset or tu.offset:
-        return None
-    b = float(bridge_value) * bu.factor
-    if not b or not tu.factor:
-        return None
-    if op == "divide":
-        return [None if v is None else (v * fu.factor) / b / tu.factor for v in values]
-    return [None if v is None else (v * fu.factor) * b / tu.factor for v in values]
+    if rule.confidence_policy != "assumption_recorded":
+        return True, None
+    ap = rule.applicability
+    pol = ap.get("policy")
+    if pol == "operands_suffice":
+        return True, {"policy": pol, "note": ap.get("note")}
+    if pol == "requires_any_evidence":
+        for k in ap.get("evidence") or []:
+            got = RC.resolve_context(k, case=case) if case else {}
+            if got.get("found") and got.get("value") is not None:
+                return True, {"policy": pol, "evidence_quantity": k, "evidence": got}
+        return False, ("assumption unevidenced: rule %s requires any of [%s] to be "
+                       "stated for this case, and none is"
+                       % (rule.id, ", ".join(ap.get("evidence") or [])))
+    return False, ("assumption unevidenced: rule %s records assumptions %r but the "
+                   "ontology declares no applicability policy for them -- an "
+                   "ontology gap, not a licence" % (rule.id, rule.assumptions))
 
 
-def bridged_representations(series, cases):
-    """Materialise each declared transform whose bridge the series' own Case supplies.
+def _rule_context(rule, series_rec, case, axis, own_values=None, own_unit=None):
+    """Resolve a formal rule's declared context, with provenance, or report the gap.
 
-    A declared transform with no bridge value is a curve that cannot be drawn, and that is
-    what `missing_context` reports. The bridge is often not missing at all -- it is a
-    CONDITION of the experiment, sitting on the Condition Case the series is bound to.
-    Reading it there turns the refusal into a real second representation of the same
-    observation, on the target the ontology names for it.
+    Resolution order, all ontology-declared and property-independent:
+      1. nothing -- the rule is self-contained (its implementation derives everything
+         from the curve itself);
+      2. the profile's own reference, where the rule's NormalizationDefinition
+         declares a `reference_location` this profile can realise (entrance,
+         profile maximum) -- derived from the curve's own coordinates, recorded as
+         self-referential evidence;
+      3. the series' own Condition Case, through the frozen context resolver --
+         a feature height, a cycle count, stated as a condition of THIS experiment.
 
-    Each series is divided by ITS OWN case's value: two trench profiles normalised this
-    way are each divided by their own feature height, never by one another's. Nothing is
-    invented -- an ambiguous case, an unstated condition or a unit that will not resolve
-    all leave the representation unbuilt.
-
-    A declared transform is traversed in BOTH directions. `spatial -> dimensionless,
-    divide by feature_height` also says how a dimensionless axis becomes physical again:
-    multiply by the same bridge. The reverse of a normalisation is only taken when the
-    curve's own declared basis IS the normalisation this bridge denominates -- an x/L
-    axis is never multiplied by a feature height -- and an unstated basis reverses
-    nothing.
+    Returns (ctx, provenance, missing): ctx maps each context quantity to
+    {"value", "unit"} exactly as the rule executor expects.
     """
-    made, refused = 0, 0
+    ctx, prov, missing = {}, {}, []
+    if rule.self_contained or not rule.required_context:
+        return ctx, prov, missing
+    nd = rule.normalization or {}
+    ref_loc = nd.get("reference_location")
+    xs = ((series_rec.get("x_representations") or {}).get("native") or {}).get("values")
+    own = (own_values if own_values is not None else
+           (((series_rec.get("%s_representations" % axis) or {}).get("native")
+             or {}).get("values") or []))
+    for q in rule.required_context:
+        got = RC.resolve_context(q, case=case)
+        if got.get("found") and got.get("value") is not None:
+            ctx[q] = {"value": got["value"], "unit": got.get("unit")}
+            prov[q] = got
+            continue
+        if ref_loc and xs and len(xs) == len(own):
+            ref, ev = CT.profile_reference(ref_loc, xs, own)
+            if ref is not None:
+                unit = (own_unit if own_values is not None else
+                        ((series_rec.get("%s_representations" % axis) or {})
+                         .get("native") or {}).get("unit"))
+                ctx[q] = {"value": ref, "unit": unit}
+                prov[q] = {"parameter": q, "value": ref, "unit": unit, "found": True,
+                           "source_object": "ResultSeries %s"
+                                            % series_rec.get("series_id"),
+                           "source_evidence": ev,
+                           "reference_location": ref_loc,
+                           "provenance_type": "derived_from_series_points",
+                           "confidence": "self_referential"}
+                continue
+        missing.append(q)
+    return ctx, prov, missing
+
+
+def _rule_hop(rule, direction, ctx_prov, applicability=None):
+    """One traversed edge of the rule graph, fully attributed."""
+    return {
+        "rule_id": rule.id, "rule_version": rule.version,
+        "rule_type": rule.type, "direction": direction,
+        "implementation": rule.implementation_id,
+        "normalization_definition": rule.normalization_definition,
+        "assumptions": rule.assumptions,
+        "confidence_policy": rule.confidence_policy,
+        "applicability": applicability,
+        "parameters": {k: {"value": v["value"], "unit": v.get("unit")}
+                       for k, v in (ctx_prov.get("ctx") or {}).items()},
+        "parameter_provenance": (ctx_prov.get("prov") or {}) if not rule.self_contained
+            else {"self_contained": {
+                "source_object": "this ResultSeries' own values",
+                "source_evidence": "; ".join(rule.assumptions)
+                                   or "self-contained ontology rule",
+                "provenance_type": "derived_from_series_points",
+                "confidence": rule.confidence_policy}},
+    }
+
+
+def _rule_rep(axis, rule, direction, values, unit, ctx_prov, case, rep_id, route):
+    """One representation produced by an ordered route of formal ontology rules.
+
+    `route` is the COMPLETE ordered list of hops from the native representation to
+    this target; the top-level transform fields describe the terminal hop, so a
+    one-hop route reads exactly as before.
+    """
+    q, norm = CT.rule_target(rule, direction)
+    terminal = route[-1]
+    return {
+        "id": rep_id,
+        "quantity": q, "unit": unit, "normalization": norm,
+        "label": CT.display_label(q, norm, unit),
+        "values": values, "available": True,
+        "transform": dict(terminal,
+                          kind="ontology_transformation_rule",
+                          route=route, hops=len(route), resolved=True),
+        "bridge_source": ({"quantity": rule.required_context[0],
+                           "case_id": (case or {}).get("case_id"),
+                           **{k: (ctx_prov.get("prov") or {}).get(
+                               rule.required_context[0], {}).get(k)
+                              for k in ("value", "unit", "source_object",
+                                        "confidence")}}
+                          if rule.required_context and case else None),
+    }
+
+
+def ontology_rule_representations(series, cases):
+    """Materialise every representation the FORMAL ontology rule registry reaches.
+
+    This is the whole representation engine: for each axis' ontology-resolved native
+    representation, ask the TransformationRule registry which quantities are reachable
+    forward (rules whose source is this quantity, basis-matched for ratios) and
+    backward (invertible rules that produce it, again basis-matched), resolve each
+    rule's declared context, and execute the rule's own implementation. Nothing here
+    knows any quantity by name: film thickness, spatial position, temperature,
+    intensity and any future quantity flow through the same six lines of reachability.
+
+    A rule whose context cannot be resolved leaves a DECLARED-unavailable entry, so a
+    comparison can say "potentially comparable, missing <context>" instead of
+    silently offering nothing.
+    """
+    made = refused = 0
     for s in series.values():
         case = bridge_case(s, cases)
-        if not case:
-            continue
         for axis in ("x", "y"):
             reps = s["%s_representations" % axis]
             native = reps.get("native")
             if not native or not native.get("values"):
                 continue
-            for tr in RC.TRANSFORMS:
-                if not tr.get("bridge") or tr.get("op") not in ("divide", "multiply"):
-                    continue
-                # the declared normalisation whose denominator this bridge is, if unique
-                nids = [n for n, d in RC.NORMALIZATIONS.items()
-                        if d.get("denominator") == tr["bridge"]]
-                uniq_norm = nids[0] if len(nids) == 1 else None
-                if tr.get("from") == native.get("quantity"):
-                    direction, target, apply_op = "forward", tr["to"], tr["op"]
-                    # applying a normalisation labels the result with it
-                    norm = uniq_norm if tr["op"] == "divide" else None
-                elif tr.get("to") == native.get("quantity"):
-                    # Reversing a divide into a DIMENSIONLESS ratio requires the curve to
-                    # DECLARE the basis the bridge denominates -- an x/L axis is never
-                    # multiplied by a feature height. A dimensioned per-unit quantity
-                    # (nm/cycle) states its own denominator kind and reverses on the
-                    # declared rule alone.
-                    if (tr["op"] == "divide"
-                            and native.get("quantity") in RC._NORMALIZED_QUANTITIES):
-                        if not uniq_norm or native.get("normalization") != uniq_norm:
-                            continue
-                    direction, target = "reverse", tr["from"]
-                    apply_op = "multiply" if tr["op"] == "divide" else "divide"
-                    norm = None
-                else:
-                    continue
-                rid = "bridge:%s" % target
-                if rid in reps:
-                    continue
-                ctx = RC.resolve_context(tr["bridge"], case=case)
-                if not ctx.get("found") or ctx.get("value") is None:
-                    continue
-                unit, unit_basis = AX.ontology_axis_unit(target)
-                vals = _bridged_values(native["values"], native.get("unit"),
-                                       ctx["value"], ctx.get("unit"), unit,
-                                       op=apply_op)
-                if vals is None or not unit:
-                    refused += 1
-                    continue
-                reps[rid] = _sig(axis, {
-                    "id": rid, "quantity": target, "unit": unit,
-                    "label": "%s [%s]" % (target, unit),
-                    "values": vals, "available": True, "normalization": norm,
-                    "transform": {
-                        "kind": "ontology_declared_transform",
-                        "rule": "%s -> %s" % (tr["from"], tr["to"]),
-                        "direction": direction,
-                        "op": tr["op"], "applied_op": apply_op,
-                        "bridge": tr["bridge"],
-                        "validity": tr.get("validity"),
-                        "target_unit_basis": unit_basis,
-                        "parameters": {"bridge_quantity": tr["bridge"],
-                                       "bridge_value": ctx["value"],
-                                       "bridge_unit": ctx.get("unit")},
-                        "parameter_provenance": ctx, "resolved": True},
-                    # the Case that supplied the bridge, named on the representation
-                    # itself, so a curve drawn this way can be traced to its condition
-                    "bridge_source": {"quantity": tr["bridge"], "value": ctx["value"],
-                                      "unit": ctx.get("unit"),
-                                      "case_id": case.get("case_id"),
-                                      "source_object": ctx.get("source_object"),
-                                      "confidence": ctx.get("confidence")}})
-                made += 1
+            have_targets = {r.get("target_id") for r in reps.values()
+                            if r.get("target_id")}
+            # breadth-first over the WHOLE rule graph: a node is an ontology
+            # meaning (quantity, normalization); an edge is one formal rule in one
+            # direction. First (= shortest) route to a meaning wins; the visited
+            # set is cycle prevention. Routes keep flowing through meanings whose
+            # target something else already covers -- only the duplicate
+            # publication is skipped, never the onward reachability.
+            start = (native.get("quantity"), native.get("normalization") or None)
+            visited = {start}
+            frontier = [(start[0], start[1], native["values"],
+                         native.get("unit"), [], [])]
+            while frontier:
+                q, norm, vals0, unit0, route, idparts = frontier.pop(0)
+                plans = sorted(
+                    [(r, "forward") for r in CT.rules_from(q, norm)]
+                    + [(r, "reverse") for r in CT.invertible_rules_to(q, norm)],
+                    key=lambda p: (p[0].id, p[1]))
+                for rule, direction in plans:
+                    tq, tnorm = CT.rule_target(rule, direction)
+                    node = (tq, tnorm or None)
+                    if node in visited:
+                        continue
+                    tgt = CT.resolve_target(tq, tnorm, axis=axis,
+                                            unit=(rule.output_unit
+                                                  if direction == "forward" else None)
+                                            or CT.canonical_unit_for(tq))
+                    if tgt is None:
+                        continue
+                    visited.add(node)
+                    rid = "rule:%s%s" % (rule.id,
+                                         "" if direction == "forward" else ":inverse")
+                    rep_id = "+".join(idparts + [rid])
+                    ok_ap, ap_rec = _rule_applicable(rule, case)
+                    if not ok_ap:
+                        if tgt["target_id"] not in have_targets:
+                            # what is missing is the DECLARED evidence, and the
+                            # gap report names it like any other bridge
+                            evk = (rule.applicability.get("evidence") or [None])[0]
+                            reps[rep_id] = _sig(axis, {
+                                "id": rep_id, "quantity": tq,
+                                "unit": tgt["canonical_unit"],
+                                "normalization": tnorm,
+                                "label": tgt["display_label"], "values": None,
+                                "available": False,
+                                "transform": {
+                                    "kind": "ontology_transformation_rule",
+                                    "rule_id": rule.id, "rule_type": rule.type,
+                                    "direction": direction, "route": route,
+                                    "required_bridge": evk,
+                                    "parameters": None, "resolved": False},
+                                "missing_bridge": evk,
+                                "unavailable_reason": ap_rec})
+                            refused += 1
+                        continue
+                    ctx, prov, missing = _rule_context(rule, s, case, axis,
+                                                       own_values=vals0,
+                                                       own_unit=unit0)
+                    if missing:
+                        if tgt["target_id"] not in have_targets:
+                            reps[rep_id] = _sig(axis, {
+                                "id": rep_id, "quantity": tq,
+                                "unit": tgt["canonical_unit"],
+                                "normalization": tnorm,
+                                "label": tgt["display_label"], "values": None,
+                                "available": False,
+                                "transform": {
+                                    "kind": "ontology_transformation_rule",
+                                    "rule_id": rule.id, "rule_type": rule.type,
+                                    "direction": direction, "route": route,
+                                    "required_bridge": missing[0],
+                                    "parameters": None, "resolved": False},
+                                "missing_bridge": missing[0],
+                                "unavailable_reason": (
+                                    "ontology rule %s needs %s, which is not "
+                                    "resolved for this series"
+                                    % (rule.id, ", ".join(missing)))})
+                            refused += 1
+                        continue
+                    try:
+                        if direction == "forward":
+                            vals = rule.apply(vals0, ctx=ctx, from_unit=unit0,
+                                              allow_empty_as_dimensionless=True)
+                            out_unit = rule.output_unit
+                        else:
+                            # the inverse lands on the rule's SOURCE side; produce
+                            # it directly in that target's canonical unit so no
+                            # spurious conversion step is minted afterwards
+                            vals = rule.invert(vals0, ctx=ctx,
+                                               from_unit=tgt["canonical_unit"],
+                                               to_unit=unit0,
+                                               allow_empty_as_dimensionless=True)
+                            out_unit = tgt["canonical_unit"]
+                    except Exception:
+                        refused += 1
+                        continue
+                    hop = _rule_hop(rule, direction,
+                                    {"ctx": ctx, "prov": prov}, ap_rec)
+                    full_route = route + [hop]
+                    if tgt["target_id"] not in have_targets:
+                        rep = _rule_rep(axis, rule, direction, vals, out_unit,
+                                        {"ctx": ctx, "prov": prov}, case,
+                                        rep_id, full_route)
+                        srep = _sig(axis, rep)
+                        if srep.get("target_id"):
+                            reps[rep_id] = srep
+                            have_targets.add(srep["target_id"])
+                            made += 1
+                        else:
+                            refused += 1
+                    frontier.append((tq, tnorm, vals, out_unit,
+                                     full_route, idparts + [rid]))
     return made, refused
 
 
 def _rep_semantics_key(r):
-    """What a representation MEANS, for cross-series target agreement."""
-    return (r.get("quantity_id") or r.get("quantity"), r.get("normalization_id"),
-            r.get("dimension"), r.get("unit"), r.get("axis"))
+    """What a representation MEANS: its ontology-resolved target descriptor.
+
+    ComparisonGroup identity (or the QuantityKind fallback), the normalization
+    definition, the canonical unit and the axis. Source spellings play no part."""
+    return (r.get("target_kind"), r.get("comparison_group"),
+            r.get("quantity_id") or r.get("quantity"), r.get("normalization_id"),
+            r.get("canonical_unit"), r.get("axis"))
 
 
 def _overlay_route(r):
@@ -1144,6 +1226,26 @@ def pair_axis_reachability(sa, sb, axis):
             continue
         out.append({"target_id": t, "a_route": _overlay_route(ta[t]),
                     "b_route": _overlay_route(tb[t])})
+    return out
+
+
+def _unevidenced_assumptions(sa, sb, axis):
+    """Evidence the ontology declares would license a refused rule, per side.
+
+    A rule gated by its applicability policy is not missing its numeric operand --
+    it is missing the declared EVIDENCE for its assumption. The gap report names
+    that evidence, so 'missing' says what would actually unlock the comparison."""
+    out = set()
+    for s in (sa, sb):
+        for r in s["%s_representations" % axis].values():
+            tr = r.get("transform") or {}
+            if r.get("available") or not tr:
+                continue
+            reason = r.get("unavailable_reason")
+            if isinstance(reason, str) and reason.startswith("assumption unevidenced"):
+                rule = RULES.REGISTRY.get(tr.get("rule_id"))
+                for k in ((rule.applicability.get("evidence") if rule else None) or []):
+                    out.add(k)
     return out
 
 
@@ -1211,8 +1313,9 @@ def comparability(series, cases=None):
         for b in ids[i + 1:]:
             ra, rb = rt[a], rt[b]
             sa, sb = series[a], series[b]
-            if ra["y_comparison_group"] != rb["y_comparison_group"] and not \
-                    RC.transform_for(ra["y_quantity"], rb["y_quantity"])[0]:
+            if ra["y_comparison_group"] != rb["y_comparison_group"] \
+                    and ra["y_quantity"] != rb["y_quantity"] \
+                    and not CT.rule_between(ra["y_quantity"], rb["y_quantity"])[0]:
                 continue
             d = RC.compare_result_series(ra, rb)
             ds = RC.compare_result_series(ra, rb, allow_shape_only=True)
@@ -1249,10 +1352,14 @@ def comparability(series, cases=None):
             reach = {ax: pair_axis_reachability(sa, sb, ax) for ax in ("x", "y")}
             reachable = bool(reach["x"]) and bool(reach["y"])
             # an axis that reaches a shared materialised target is not missing anything:
-            # only the axes with no route contribute to the gap report
+            # only the axes with no route contribute to the gap report; a rule
+            # refused for an unevidenced assumption contributes the evidence the
+            # ontology declares would license it
             missing = sorted(
                 set(q for ax in ("x", "y") if not reach[ax]
-                    for q in d[ax]["missing_context"]))
+                    for q in d[ax]["missing_context"])
+                | set(k for ax in ("x", "y") if not reach[ax]
+                      for k in _unevidenced_assumptions(sa, sb, ax)))
 
             if st == RC.MISSING_CONTEXT and reachable:
                 # The bridge the frozen layer could not find HAS been found: each side
@@ -1293,6 +1400,27 @@ def comparability(series, cases=None):
                                              or pp.get("confidence")})
                             prov.append({"quantity": q, "sources": srcs})
                 missing = []
+            elif st == "TRANSFORMABLE_PROFILE" and not reachable:
+                # One authority, both directions: the frozen layer believes a
+                # declared transform bridges these series, but no shared target is
+                # actually materialised -- the route is refused (an unevidenced
+                # assumption, an unresolved parameter). A pair may not claim
+                # transformable while the overlay it promises is refused, so the
+                # verdict is demoted to the honest conditional, and `missing`
+                # names what would actually unlock it.
+                st = RC.MISSING_CONTEXT
+                for ax in ("x", "y"):
+                    if not reach[ax]:
+                        gap = sorted(_unevidenced_assumptions(sa, sb, ax)
+                                     | _unmaterialized_bridges(sa, sb, ax))
+                        reason = ("the declared transform's route is not "
+                                  "materialised for this pair; missing: %s"
+                                  % (", ".join(gap) or "a refused route"))
+                        if ax == "x":
+                            x_status, x_reason = RC.MISSING_CONTEXT, reason
+                        else:
+                            y_status, y_reason = RC.MISSING_CONTEXT, reason
+                        missing = sorted(set(missing) | set(gap))
             elif st in OK_LEVEL:
                 # what remains missing is only what NO materialised route supplies
                 still = set()
@@ -1551,7 +1679,7 @@ SEQ_NOT_TIMES = "NOT_A_PULSE_PURGE_TIME_ENCODING"
 SEQ_NO_CONTEXT = "INSUFFICIENT_CONTEXT"
 
 #: the two step kinds a pulse/purge recipe alternates between
-_STEP_KINDS = ("pulse_time", "purge_time")
+_STEP_KINDS = (PS.PULSE_TIME, PS.PURGE_TIME)
 
 
 def sequence_terms(value):
@@ -2171,9 +2299,9 @@ def presentation(cases, acts, series):
 
 def main():
     cases, acts, series, samples, runs, measurements, excluded = build()
-    n_bridged, n_bridge_refused = bridged_representations(series, cases)
-    print("bridged representations   %d built, %d refused on units" % (n_bridged,
-                                                                       n_bridge_refused))
+    n_rule, n_rule_refused = ontology_rule_representations(series, cases)
+    print("ontology-rule representations   %d built, %d declared-unavailable/refused"
+          % (n_rule, n_rule_refused))
     n_alt = same_measurement_alternates(series, acts)
     print("same-measurement alternate links  %d" % n_alt)
     for c in cases.values():
@@ -2467,15 +2595,14 @@ def validate(m, counts):
         return common or set()
 
     def semantics_agree(group, axis, tid):
-        """Every participant must mean the same thing by this target, not merely
-        possess a key that spells it the same way."""
+        """Every participant must mean the same thing by this target -- the ONE
+        ontology descriptor, exactly as pair reachability reads it."""
         seen = set()
         for sid in group:
             r = reps_by_target(sid, axis).get(tid)
             if r is None:
                 return False
-            seen.add((r.get("quantity_id"), r.get("normalization_id"),
-                      r.get("dimension"), r.get("unit"), r.get("axis")))
+            seen.add(_rep_semantics_key(r))
         return len(seen) == 1
 
     OVERLAY_OK = ("DIRECT_PROFILE", "TRANSFORMABLE_PROFILE")
@@ -2593,20 +2720,18 @@ def validate(m, counts):
         xn = s2["x_representations"].get("native")
         if not xn or not xn.get("values"):
             continue
-        declared = [t for t in RC.TRANSFORMS
-                    if t.get("to") == xn.get("quantity")
-                    and t.get("op") == "divide"
-                    and any(n for n, dd in RC.NORMALIZATIONS.items()
-                            if dd.get("denominator") == t.get("bridge")
-                            and n == xn.get("normalization"))]
+        declared = [r for r in CT.invertible_rules_to(xn.get("quantity"),
+                                                       xn.get("normalization"))
+                    if r.required_context]
         has_physical = any(r.get("available") and r.get("transform")
                            for r in s2["x_representations"].values())
         if declared and not has_physical:
             # only a genuine bridge gap excuses the absence; an unambiguous single-case
             # bridge that resolved should have materialised
             bc = bridge_case(s2, cases)
-            if bc and any(RC.resolve_context(t["bridge"], case=bc).get("found")
-                          for t in declared):
+            if bc and any(RC.resolve_context(r.required_context[0],
+                                             case=bc).get("found")
+                          for r in declared):
                 starved += 1
     c["x_transforms_lost_to_unresolved_y"] = starved
     inv["axis_reachability_is_independent"] = starved == 0

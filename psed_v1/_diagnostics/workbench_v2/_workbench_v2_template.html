@@ -851,31 +851,56 @@ function drawCompare() {
   if (mode === "case") drawCaseData(); else drawPlot();
   drawConds(); drawWhy();
 }
+// the ontology display label of a target, from any representation that carries it
+function targetLabel(tid) {
+  for (const sid of Object.keys(SERIES)) {
+    for (const key of ["x_representations","y_representations"]) {
+      for (const r of Object.values(SERIES[sid][key]||{}))
+        if (r.target_id === tid && (r.display_label || r.label))
+          return r.display_label || r.label;
+    }
+  }
+  return tid;
+}
 function repOpts(axis, common) {
+  // The PRIMARY choices are exactly the ontology comparison targets every selected
+  // series reaches -- one radio per resolved scientific representation, labelled from
+  // ontology metadata, never from a source string or an implementation id. Targets
+  // only some series reach are real information but not choices: they live in a
+  // collapsed diagnostic section with their concrete reachability.
   const cur = axis==="x"?TX:TY;
-  const seen = new Map();
-  let displayOnly = 0;
+  const seen = new Map(), reach = new Map();
   tray.forEach(sid => {
     const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"]||{};
+    const mine = new Set();
     Object.values(reps).forEach(r => {
-      // a display-only source representation is not an overlay option; it has no target
-      if (r.overlay_authorized === false || !r.target_id) { displayOnly++; return; }
+      if (r.overlay_authorized === false || !r.target_id || !r.available || !r.values)
+        return;
       if(!seen.has(r.target_id)) seen.set(r.target_id,r);
+      mine.add(r.target_id);
     });
+    mine.forEach(t => reach.set(t, (reach.get(t)||0)+1));
   });
-  if (!seen.size) return '<div class="dim">no shared representation'
-    + (displayOnly ? ' \u2014 the selected source axes have no resolved unit, so they '
-       + 'can be viewed individually but not overlaid' : '') + '</div>';
+  if (!seen.size) return '<div class="dim">no ontology-resolved representation \u2014 '
+    + 'the selected source axes can be viewed individually but not overlaid</div>';
   const allowed = !groupAbsolutelyRefused(tray);
-  const rows = [...seen.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([tid,r])=>{
-    const ok = common.indexOf(tid)>=0;
-    const why = (ok || !allowed) ? ""     // the forbidding reason is stated once, below
-      : (r.unavailable_reason ? ` <span class="dim">— ${esc(r.unavailable_reason)}</span>`
-         : ' <span class="dim">— not reachable by every selected series</span>');
-    return `<label><input type="radio" name="r${axis}" value="${esc(tid)}"
-      ${cur===tid?"checked":""} ${ok?"":"disabled"}>${esc(r.display_label||r.label)}${why}</label>`;
-  }).join("");
-  return rows + (allowed ? "" :
+  const label = t => { const r = seen.get(t); return r.display_label || r.label; };
+  const primary = common.slice().sort((a,b)=>label(a).localeCompare(label(b)))
+    .map(tid => `<label><input type="radio" name="r${axis}" value="${esc(tid)}"
+      ${cur===tid?"checked":""} ${allowed?"":"disabled"}>${esc(label(tid))}</label>`)
+    .join("");
+  const partial = [...seen.keys()].filter(t => common.indexOf(t) < 0)
+    .sort((a,b)=>label(a).localeCompare(label(b)));
+  const secondary = partial.length ? `<details class="pv">
+      <summary class="dim" style="font-size:10.5px;cursor:pointer">Other ontology
+      representations available for some selected series (${partial.length})</summary>
+      <div class="smeta">${partial.map(t =>
+        `${esc(label(t))} <span class="dim">\u2014 reachable by ${reach.get(t)||0} of
+         ${tray.length} selected</span>`).join("<br>")}</div></details>` : "";
+  return (primary || '<div class="dim">no shared ontology representation for this '
+          + 'selection</div>')
+    + secondary
+    + (allowed ? "" :
     '<div class="warn" style="font-size:10.5px;margin-top:5px">Every option is disabled: '
     + 'a frozen verdict refuses a shared physical axis for this selection.'
     + '</div>');
@@ -1064,7 +1089,7 @@ function drawGroupPlots(box, groups) {
       if (data.length > 1) {
         cell.innerHTML = `<div class="dim" style="font-size:10.5px;margin-bottom:3px">
           Overlay group ${i + 1} — ${data.length} curves on
-          <code>${esc(g.x)}</code> × <code>${esc(g.y)}</code></div>` + plotSvg(data)
+          ${esc(targetLabel(g.x))} × ${esc(targetLabel(g.y))}</div>` + plotSvg(data)
           + `<div class="leg">${data.map(d => `<div>${chip(d.sid)} ${
               esc(SERIES[d.sid].paper_id)} · Fig. ${esc(SERIES[d.sid].figure)}${
               esc(SERIES[d.sid].panel || "")}</div>`).join("")}</div>`;
@@ -1731,9 +1756,15 @@ function drawWhy() {
     const sameAct = (a.same_measurement_series||[]).some(m=>m.series_id===tray[j]);
     let routes = "";
     ["x","y"].forEach(ax => (ov[ax]||[]).slice(0,1).forEach(t => {
-      routes += `<br>${ax}: shared target <code>${esc(t.target_id)}</code>
+      const srcOf = (s2) => {
+        const ns = (s2[ax==="x"?"x_representations":"y_representations"]||{}).native_source;
+        return ns ? `${ns.source_label||ns.label||"?"}${ns.source_unit?` [${ns.source_unit}]`:""}` : "?";
+      };
+      routes += `<br>${ax}: shared ontology target <b>${esc(targetLabel(t.target_id))}</b>
         <br><span class="dim">· this pair reaches it — A: ${esc(routeText(t.a_route))};
-        B: ${esc(routeText(t.b_route))}</span>`;
+        B: ${esc(routeText(t.b_route))}</span>
+        <br><span class="dim">· as the sources wrote it — A: ${esc(srcOf(a))};
+        B: ${esc(srcOf(b))}</span>`;
     }));
     h+=`<div class="note"><b>${esc(a.paper_id)} Fig.${esc(a.figure)}${esc(a.panel||"")}</b> ↔
       <b>${esc(b.paper_id)} Fig.${esc(b.figure)}${esc(b.panel||"")}</b> →

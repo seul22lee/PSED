@@ -219,7 +219,7 @@ def resolve_conditions(conds):
             win, lose = dict(c), cur
         else:
             win, lose = cur, c
-        same = (_fmt(win.get("value")) == _fmt(lose.get("value"))
+        same = (value_token(win) == value_token(lose)
                 and _unit_key(win.get("unit")) == _unit_key(lose.get("unit")))
         if not same and provenance_rank(win) > provenance_rank(lose):
             hist = list(win.get("superseded") or [])
@@ -246,11 +246,39 @@ def _cond_key(conds):
     settings of different reactants, not one condition."""
     d = {}
     for c in resolve_conditions(conds):
-        if c.get("value") is None or not c.get("quantity"):
+        tok = value_token(c)
+        if tok is None or not c.get("quantity"):
             continue
-        d[(c["quantity"], c.get("species") or "")] = (_fmt(c["value"]),
-                                                      _unit_key(c.get("unit")))
+        d[(c["quantity"], c.get("species") or "")] = (tok, _unit_key(c.get("unit")))
     return d
+
+
+def value_token(cond):
+    """The comparable token of a condition's VALUE, whatever its structure.
+
+    A condition is not always a scalar: sources state ranges ("10-40 cycles"),
+    bounds ("<2 Torr"), lists and categorical settings. Each structure gets a
+    deterministic token so identity, dedup and fingerprints can carry it -- a range
+    must never fingerprint as nothing merely because the scalar slot is null.
+
+        scalar        "0.4"
+        range         "10..40"
+        bound         "<2"
+        list/set      "a|b|c"   (order-independent)
+        categorical   the text itself
+    """
+    vk = cond.get("value_kind")
+    lo, hi = cond.get("value_lower"), cond.get("value_upper")
+    if vk == "range" or (lo is not None and hi is not None
+                         and cond.get("value") is None):
+        return "%s..%s" % (_fmt(lo), _fmt(hi))
+    if vk == "bound" and cond.get("bound_value") is not None:
+        return "%s%s" % (cond.get("bound_comparator") or "<",
+                         _fmt(cond.get("bound_value")))
+    v = cond.get("value")
+    if isinstance(v, (list, tuple, set, frozenset)):
+        return "|".join(sorted(_fmt(x) for x in v))
+    return _fmt(v) if v is not None else None
 
 
 def _material_key(m):

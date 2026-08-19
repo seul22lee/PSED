@@ -88,14 +88,19 @@ def main():
     silent = [s for s in count_series
               if not (s["native_points"]["x"] or {}).get("unit")]
     ok("C: some of them print no unit on the axis", bool(silent), len(silent))
+    # overlay identity lives on the CANONICAL representation; the source
+    # representation is provenance/display and never carries a target
     ok("C: every one of those still resolves an overlay target",
-       all(s["x_representations"]["native_source"]["overlay_target_id"] for s in silent),
+       all((s["x_representations"].get("native") or {}).get("target_id")
+           for s in silent),
        [s["series_id"] for s in silent
-        if not s["x_representations"]["native_source"]["overlay_target_id"]][:2])
+        if not (s["x_representations"].get("native") or {}).get("target_id")][:2])
     ok("C: on the ontology's count unit",
-       all(s["x_representations"]["native_source"]["unit"] == "cycle" for s in silent))
-    ok("C: and the target names the count dimension",
-       all("cycle" in s["x_representations"]["native_source"]["overlay_target_id"]
+       all(s["x_representations"]["native"]["unit"] == "cycle" for s in silent))
+    ok("C: and the target names the ontology count group",
+       all("cycle" in s["x_representations"]["native"]["target_id"] for s in silent))
+    ok("C: while the source representation stays display-only",
+       all(not s["x_representations"]["native_source"].get("overlay_target_id")
            for s in silent))
 
     print("=== D. the two reported cases share both axes ===")
@@ -112,10 +117,10 @@ def main():
     ok("D: both cases are present", len(sids) == 2, len(sids))
     if len(sids) == 2:
         a, b = (M["series"][x] for x in sids)
-        xa = a["x_representations"]["native_source"]["overlay_target_id"]
-        xb = b["x_representations"]["native_source"]["overlay_target_id"]
-        ya = a["y_representations"]["native_source"]["overlay_target_id"]
-        yb = b["y_representations"]["native_source"]["overlay_target_id"]
+        xa = (a["x_representations"].get("native") or {}).get("target_id")
+        xb = (b["x_representations"].get("native") or {}).get("target_id")
+        ya = (a["y_representations"].get("native") or {}).get("target_id")
+        yb = (b["y_representations"].get("native") or {}).get("target_id")
         ok("D: they share one x target", xa and xa == xb, (xa, xb))
         ok("D: and one y target", ya and ya == yb, (ya, yb))
         # the differing precursor is a property of the series, never an overlay veto

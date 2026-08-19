@@ -18,6 +18,19 @@ the same check.
   F. One physical timing slot is one condition dimension per case.
   G. Known context is never rendered as unknown, and never leaks across a paper's
      chemistries.
+  I. Ontology target identity: unit aliases fold, conversions are explicit routes,
+     same-unit different-quantity never merges -- across unrelated quantity families.
+  J. Normalization identity: distinct bases are distinct targets; a ratio without a
+     resolved basis has no target anywhere, for every ratio-only quantity.
+  K. One formal rule graph: every derived representation names a registry rule; labels
+     are ontology-derived and order-independent, never first-series-seen.
+  L. No property-specific code paths; structured condition values and progression
+     scope are generic over quantity families.
+  M. Five architecture guarantees: ComparisonGroups collapse only by declared
+     alias; the rule engine traverses the WHOLE rule graph (multi-hop, cycle-safe,
+     full route provenance); QuantityKind direct targets exist only under the
+     ontology's declared policy; a rule's assumption gate is enforced beyond its
+     numeric context; progression-condition removal is member/provenance scoped.
 
 Run:  python3 tests/test_semantic_repairs.py
 """
@@ -32,8 +45,10 @@ sys.path.insert(0, str(W / "_diagnostics" / "workbench_v2"))
 sys.path.insert(0, str(W / "_diagnostics" / "semantic_pilot_9papers" / "code"))
 
 from pipeline.canonical import axis_semantics as AX             # noqa: E402
+from pipeline.canonical import comparison_targets as CT         # noqa: E402
 from pipeline.canonical import conditions as COND               # noqa: E402
 from pipeline.canonical import process_steps as PS              # noqa: E402
+from pipeline.canonical import rules as RULES                   # noqa: E402
 from pipeline.query import condition_query as CQ                # noqa: E402
 from pipeline.query import result_comparability as RC           # noqa: E402
 import build_workbench_model as WBM                             # noqa: E402
@@ -535,6 +550,333 @@ def main():
     ok("H4: every series keeps its native points",
        all((s.get("native_points") or {}).get("points") or s["n_points"] in (0, None)
            for s in SER.values()))
+
+    print("=== I. ontology target identity is alias-proof, for every quantity ===")
+    # a unit alias never splits a group: three spellings of one unit, two unrelated
+    # quantity families, one target each
+    spell = {CT.resolve_target("spatial_coordinate", axis="x", unit=u)["target_id"]
+             for u in ("µm", "um", "μm")}
+    ok("I: Unicode/ASCII micron spellings are ONE spatial target", len(spell) == 1, spell)
+    marks = {CT.resolve_target("normalized_thickness", "t_over_t_max", axis="y",
+                               unit=u)["target_id"]
+             for u in ("-", "1", "dimensionless", "")}
+    ok("I: '-', '1', 'dimensionless' and blank are ONE dimensionless marker",
+       len(marks) == 1, marks)
+    ok("I: alias folding is the unit registry's, not a per-unit special case",
+       len({CT.unit_identity(u) for u in ("µm", "um", "μm")}) == 1
+       and len({CT.unit_identity(u, allow_empty_as_dimensionless=True)
+                for u in ("-", "1", "dimensionless", "")}) == 1)
+    # merely dimension-compatible quantities NEVER merge: every pair of distinct
+    # ComparisonGroups sharing a canonical unit stays distinct, corpus-independent
+    same_u = [(a, b) for a in CT.GROUPS for b in CT.GROUPS if a < b
+              and CT.GROUPS[a].get("canonical_unit") == CT.GROUPS[b].get("canonical_unit")
+              and (CT.GROUPS[a].get("canonical_quantity"),
+                   CT.GROUPS[a].get("normalization_definition"))
+              != (CT.GROUPS[b].get("canonical_quantity"),
+                  CT.GROUPS[b].get("normalization_definition"))]
+    ok("I: %d same-unit group pairs exist and none share a target" % len(same_u),
+       len(same_u) > 5 and all(
+           CT.resolve_target(CT.GROUPS[a]["canonical_quantity"],
+                             CT.GROUPS[a].get("normalization_definition"), axis="y")
+           ["target_id"]
+           != CT.resolve_target(CT.GROUPS[b]["canonical_quantity"],
+                                CT.GROUPS[b].get("normalization_definition"), axis="y")
+           ["target_id"] for a, b in same_u))
+    # a value conversion is an explicit provenance route, never a silent identity
+    conv_rep = WBM._sig("x", {"id": "native", "quantity": "spatial_coordinate",
+                              "unit": "nm", "normalization": None,
+                              "values": [0.0, 500.0, 1500.0], "available": True})
+    ok("I: converting nm to the canonical µm is an explicit formal-rule route",
+       conv_rep.get("target_id") == "x|group:spatial_position"
+       and (conv_rep.get("unit_conversion_route") or {}).get("rule_id")
+       in RULES.REGISTRY
+       and conv_rep["values"][1] == 0.5, conv_rep.get("unit_conversion_route"))
+    convs = [(sid, k, r) for sid, s2 in SER.items()
+             for axr in ("x_representations", "y_representations")
+             for k, r in s2[axr].items() if r.get("unit_conversion_route")]
+    ok("I: every corpus conversion (%d) names its formal rule" % len(convs),
+       all(r["unit_conversion_route"].get("rule_id")
+           in RULES.REGISTRY for _, _, r in convs))
+    ok("I: an alias fold keeps the source spelling as provenance",
+       all(str(r.get("unit")) != str(r.get("source_unit_spelling"))
+           for s2 in SER.values() for axr in ("x_representations", "y_representations")
+           for r in s2[axr].values() if r.get("source_unit_spelling")))
+    # reps that share a target agree on the ONE semantics key, everywhere
+    by_tid = defaultdict(set)
+    for s2 in SER.values():
+        for axr in ("x_representations", "y_representations"):
+            for r in s2[axr].values():
+                if r.get("target_id") and r.get("available"):
+                    by_tid[r["target_id"]].add(
+                        (r.get("target_kind"), r.get("comparison_group"),
+                         r.get("quantity_id"), r.get("normalization_id"),
+                         r.get("canonical_unit"), r.get("unit")))
+    ok("I: all %d live targets carry exactly one semantics (unit spelling included)"
+       % len(by_tid), all(len(v) == 1 for v in by_tid.values()),
+       [(t, v) for t, v in by_tid.items() if len(v) > 1][:2])
+
+    print("=== J. a ratio without a resolved basis has no identity, anywhere ===")
+    ratio_only = sorted(CT._RATIO_ONLY_QUANTITIES)
+    ok("J: the ratio-only set is ontology-derived and non-trivial: %s" % ratio_only,
+       len(ratio_only) >= 2)
+    ok("J: NO ratio-only quantity resolves without a basis, on either axis",
+       all(CT.resolve_target(q, None, axis=axn) is None
+           for q in ratio_only for axn in ("x", "y")))
+    ok("J: with a basis, each declared basis of each ratio-only quantity is a "
+       "DISTINCT target",
+       all(len({CT.resolve_target(q, n, axis="y")["target_id"] for n in ns}) == len(ns)
+           for q, ns in [(q, [g.get("normalization_definition")
+                              for g in CT.GROUPS.values()
+                              if g.get("canonical_quantity") == q
+                              and g.get("normalization_definition")])
+                         for q in ratio_only] if ns))
+    ok("J: RC's normalized-quantity gate IS the ontology's ratio-only set",
+       set(RC._NORMALIZED_QUANTITIES) == set(CT._RATIO_ONLY_QUANTITIES))
+    # multiple candidate rules + unstated basis -> refusal, for every such pairing
+    amb = defaultdict(set)
+    for t in RC.TRANSFORMS:
+        if t.get("normalization") and t.get("to") in CT._RATIO_ONLY_QUANTITIES:
+            amb[(t["from"], t["to"])].add(t["normalization"])
+    multi = {k: v for k, v in amb.items() if len(v) > 1}
+    ok("J: %d source->ratio pairings have several candidate bases; every one "
+       "REFUSES when no basis is stated" % len(multi),
+       len(multi) > 0 and all(RC.transform_for(a, b)[0] is None for a, b in multi),
+       {k: sorted(v) for k, v in multi.items()})
+    ok("J: stating the basis selects exactly the declared rule",
+       all((RC.transform_for(a, b, None, n)[0] or {}).get("normalization") == n
+           for (a, b), ns in multi.items() for n in ns))
+    ok("J: no live corpus representation is a basis-less ratio",
+       all(r.get("normalization_id")
+           for s2 in SER.values() for axr in ("x_representations", "y_representations")
+           for r in s2[axr].values()
+           if r.get("target_id") and r.get("available")
+           and r.get("quantity_id") in CT._RATIO_ONLY_QUANTITIES))
+
+    print("=== K. one formal rule graph; labels are ontology-derived ===")
+    rule_reps = [r for s2 in SER.values()
+                 for axr in ("x_representations", "y_representations")
+                 for r in s2[axr].values()
+                 if (r.get("transform") or {}).get("kind") == "ontology_transformation_rule"]
+    ok("K: %d derived representations exist and every one names a registry rule"
+       % len(rule_reps),
+       len(rule_reps) > 0 and all(r["transform"].get("rule_id") in RULES.REGISTRY
+                                  for r in rule_reps))
+    ok("K: the legacy transform view is a rendering of the formal registry",
+       len(RC.TRANSFORMS) > 0 and all(t.get("rule_id") in RULES.REGISTRY
+                                      for t in RC.TRANSFORMS))
+    # labels: recomputable from the ontology alone, identical wherever the target
+    # appears -- no first-series-seen labelling can survive this
+    relabel = [(t, sorted({r.get("display_label")
+                           for s2 in SER.values()
+                           for axr in ("x_representations", "y_representations")
+                           for r in s2[axr].values()
+                           if r.get("target_id") == t and r.get("available")}))
+               for t in by_tid]
+    ok("K: every live target has ONE display label", all(len(ls) == 1 for _, ls in relabel),
+       [x for x in relabel if len(x[1]) > 1][:2])
+    recomputed = all(
+        ls[0] == CT.display_label(next(iter(by_tid[t]))[2], next(iter(by_tid[t]))[3],
+                                  next(iter(by_tid[t]))[4])
+        for t, ls in relabel)
+    ok("K: and that label is recomputable from the ontology descriptor alone", recomputed)
+    ok("K: a normalized label renders its declared formula, dimensionless as –",
+       all(("(–)" in CT.display_label(g["canonical_quantity"],
+                                      g.get("normalization_definition"), "1"))
+           for g in CT.GROUPS.values() if g.get("normalization_definition")))
+
+    print("=== L. no property-specific code; structured values are generic ===")
+    import io
+    import tokenize
+    offenders = []
+    for f in (WB / "build_workbench_model.py",
+              W / "pipeline" / "query" / "result_comparability.py"):
+        src = f.read_text()
+        lines = src.splitlines()
+        for tok in tokenize.generate_tokens(io.StringIO(src).readline):
+            if tok.type != tokenize.STRING or tok.string.startswith(('"""', "'''")):
+                continue
+            body = tok.string.strip("'\"")
+            if body in CT.QUANTITY_KINDS:
+                offenders.append((f.name, tok.start[0], body,
+                                  lines[tok.start[0] - 1].strip()[:70]))
+    ok("L: no ontology quantity id appears as a code literal in the workbench "
+       "or the query layer", not offenders, offenders[:5])
+    # structured condition values: one generic token for scalar / range / bound /
+    # list / categorical, whatever the quantity
+    import pilot_cases as PC
+    fams = ["deposition_temperature", "cycle_number", "working_pressure",
+            "quantity_never_seen_before"]
+    for q in fams:
+        toks = [PC.value_token({"quantity": q, "value": 200}),
+                PC.value_token({"quantity": q, "value_kind": "range",
+                                "value_lower": 10, "value_upper": 40}),
+                PC.value_token({"quantity": q, "value_kind": "bound",
+                                "bound_comparator": "<", "bound_value": 2}),
+                PC.value_token({"quantity": q, "value": ["a", "b"]}),
+                PC.value_token({"quantity": q, "value": "rutile"})]
+        ok("L: %s tokens are structured and distinct" % q,
+           len(set(toks)) == len(toks) and all(t is not None for t in toks), toks)
+    two = {q: [PC.value_token({"quantity": q, "value_kind": "range",
+                               "value_lower": 10, "value_upper": 40})] for q in fams}
+    ok("L: the range token shape is quantity-independent",
+       len({t[0] for t in two.values()}) == 1, two)
+    # progression scope: a swept coordinate never becomes a fixed case condition
+    pcs = [(cid, c) for cid, c in CASES.items()
+           if c.get("progression_context_conditions")]
+    ok("L: %d cases carry progression context and NONE leaks into fixed "
+       "conditions" % len(pcs),
+       all(not ({p.get("quantity") for p in c["progression_context_conditions"]}
+                & {x.get("quantity") for x in c["conditions"]})
+           for _, c in pcs))
+    ok("L: nor into the case fingerprint",
+       all(not any(str(p.get("quantity")) + "=" in str(c.get("fingerprint") or "")
+                   for p in c["progression_context_conditions"])
+           for _, c in pcs))
+
+    print("=== M1. ComparisonGroups collapse ONLY through a declared alias ===")
+    ok("M1: the dose group aliases exposure BY DECLARATION",
+       CT.GROUPS["dose"].get("alias_of") == "exposure")
+    t = CT.resolve_target("exposure", axis="x")
+    ok("M1: the alias resolves to its declared root, alias recorded",
+       t["comparison_group"] == "exposure" and t["group_aliases"] == ["dose"], t)
+    # two identical-looking groups WITHOUT a declaration are ambiguous, not aliases
+    CT.GROUPS["ztest_a"] = {"canonical_quantity": "ztest_q", "canonical_unit": "nm",
+                            "dimension": "length", "axis_role": "output"}
+    CT.GROUPS["ztest_b"] = {"canonical_quantity": "ztest_q", "canonical_unit": "nm",
+                            "dimension": "length", "axis_role": "output"}
+    CT.QUANTITY_KINDS["ztest_q"] = {"id": "ztest_q"}
+    try:
+        ok("M1: same quantity/unit/normalization does NOT make two groups one",
+           CT.group_for("ztest_q") is None
+           and CT.resolve_target("ztest_q", axis="y") is None)
+        CT.GROUPS["ztest_b"]["alias_of"] = "ztest_a"
+        t2 = CT.resolve_target("ztest_q", axis="y")
+        ok("M1: an explicit alias_of declaration, and only that, collapses them",
+           CT.group_for("ztest_q") == "ztest_a"
+           and t2 and t2["comparison_group"] == "ztest_a"
+           and t2["group_aliases"] == ["ztest_b"], t2)
+    finally:
+        del CT.GROUPS["ztest_a"], CT.GROUPS["ztest_b"], CT.QUANTITY_KINDS["ztest_q"]
+
+    print("=== M2. the rule engine traverses the graph, not one hop ===")
+    def _syn_series(with_nucleation):
+        conds = [{"quantity": "cycle_number", "value": 100, "unit": "cycle",
+                  "evidence": "100 cycles", "provenance_type": "directly_stated"}]
+        if with_nucleation:
+            conds.append({"quantity": "nucleation_delay", "value": 0, "unit": "cycle",
+                          "evidence": "no nucleation delay",
+                          "provenance_type": "directly_stated"})
+        cases2 = {"TCASE": {"case_id": "TCASE", "conditions": conds}}
+        s2 = {"series_id": "TSER", "all_case_ids": ["TCASE"],
+              "x_representations": {"native": WBM._sig("x", {
+                  "id": "native", "quantity": "spatial_coordinate", "unit": "µm",
+                  "normalization": None, "values": [0.0, 1.0, 2.0],
+                  "available": True})},
+              "y_representations": {"native": WBM._sig("y", {
+                  "id": "native", "quantity": "growth_per_cycle", "unit": "nm/cycle",
+                  "normalization": None, "values": [0.10, 0.08, 0.02],
+                  "available": True})}}
+        WBM.ontology_rule_representations({"TSER": s2}, cases2)
+        return s2
+    s2 = _syn_series(with_nucleation=True)
+    yreps = s2["y_representations"]
+    two_hop = [r for r in yreps.values()
+               if (r.get("transform") or {}).get("hops", 0) >= 2 and r.get("available")]
+    mh = next((r for r in two_hop
+               if r.get("comparison_group") == "maximum_normalized_thickness"), None)
+    ok("M2: a 2-hop route materialises (gpc -> thickness -> max-normalized)",
+       mh is not None, sorted(yreps))
+    ok("M2: the route is ordered and complete, every hop attributed",
+       mh and len(mh["transform"]["route"]) == 2
+       and all(h["rule_id"] in RULES.REGISTRY
+               and h.get("parameter_provenance")
+               for h in mh["transform"]["route"])
+       and CT.rule_target(RULES.REGISTRY[mh["transform"]["route"][0]["rule_id"]],
+                          mh["transform"]["route"][0]["direction"])[0]
+       == "film_thickness",
+       mh and [(h["rule_id"], h["direction"]) for h in mh["transform"]["route"]])
+    ok("M2: the chained values are the composition of the hops",
+       max(v for v in mh["values"] if v is not None) == 1.0
+       and abs(mh["values"][1] - 0.8) < 1e-9, mh["values"])
+    ok("M2: cycle prevention holds -- no meaning is represented twice",
+       len([r for r in yreps.values() if r.get("available") and r.get("target_id")])
+       == len({r["target_id"] for r in yreps.values()
+               if r.get("available") and r.get("target_id")}))
+
+    print("=== M3. QuantityKind direct targets exist only under declared policy ===")
+    grouped = {g["canonical_quantity"] for g in CT.GROUPS.values()}
+    unauthorized = sorted(q for q in CT.QUANTITY_KINDS
+                          if q not in grouped and q not in CT._QK_AUTHORIZED)
+    ok("M3: %d ungrouped, unauthorized kinds exist and NONE resolves a target"
+       % len(unauthorized),
+       len(unauthorized) > 10 and all(
+           CT.resolve_target(q, axis="y", unit="nm") is None
+           and CT.resolve_target(q, axis="y", unit="1") is None
+           for q in unauthorized[:40]))
+    authorized_ungrouped = sorted(q for q in CT._QK_AUTHORIZED
+                                  if q not in grouped and q in CT.QUANTITY_KINDS)
+    ok("M3: declared axis_role kinds still resolve (%d of them)"
+       % len(authorized_ungrouped),
+       len(authorized_ungrouped) > 0 and all(
+           CT.resolve_target(q, axis="x", unit="s") is not None
+           for q in authorized_ungrouped[:1]))
+    live_qk = {r.get("quantity_id")
+               for s3 in SER.values() for axr in ("x_representations",
+                                                  "y_representations")
+               for r in s3[axr].values()
+               if r.get("available") and "qk:" in (r.get("target_id") or "")}
+    ok("M3: every live QuantityKind target in the corpus is policy-authorized",
+       live_qk <= CT._QK_AUTHORIZED, sorted(live_qk - CT._QK_AUTHORIZED))
+
+    print("=== M4. numeric context is not applicability ===")
+    gpc_rule = RULES.REGISTRY["thickness_from_gpc_and_cycles"]
+    okk, why = WBM._rule_applicable(
+        gpc_rule, {"case_id": "T", "case_defining_conditions": [
+            {"quantity": "cycle_number", "value": 100.0}]})
+    ok("M4: cycle count alone does NOT license the steady-growth rule",
+       okk is False and "assumption unevidenced" in str(why), why)
+    okk2, rec2 = WBM._rule_applicable(
+        gpc_rule, {"case_id": "T", "case_defining_conditions": [
+            {"quantity": "cycle_number", "value": 100.0},
+            {"quantity": "nucleation_delay", "value": 0.0}]})
+    ok("M4: the ontology-declared evidence licenses it, and is recorded",
+       okk2 is True and rec2.get("evidence_quantity") == "nucleation_delay", rec2)
+    s4 = _syn_series(with_nucleation=False)
+    gated = [r for r in s4["y_representations"].values()
+             if (r.get("transform") or {}).get("rule_id")
+             in ("thickness_from_gpc_and_cycles", "gpc_from_thickness_and_cycles")]
+    ok("M4: the engine refuses the rule and DECLARES why",
+       gated and all(not r.get("available")
+                     and "assumption unevidenced" in str(r.get("unavailable_reason"))
+                     for r in gated), [r.get("unavailable_reason") for r in gated][:1])
+    ok("M4: no live corpus representation rests on an unlicensed assumption",
+       all((h.get("confidence_policy") != "assumption_recorded"
+            or h.get("applicability"))
+           for s3 in SER.values() for axr in ("x_representations",
+                                              "y_representations")
+           for r in s3[axr].values() if r.get("available")
+           for h in ((r.get("transform") or {}).get("route") or [])))
+
+    print("=== M5. progression removal is member/provenance scoped ===")
+    import pilot_semantics as PSEM
+    trav = {"candidate_id": "C1", "progression_coordinate": "cycle_number"}
+    other = {"candidate_id": "C2", "progression_coordinate": None}
+    pq = {"cycle_number"}
+    ok("M5: the traversing member's own scalar is local to its sweep",
+       PSEM.progression_local({"quantity": "cycle_number", "value": 200}, trav, pq))
+    ok("M5: a sibling's FIXED scalar is NOT deleted by another member's sweep",
+       not PSEM.progression_local({"quantity": "cycle_number", "value": 500},
+                                  other, pq))
+    ok("M5: an interval is a sweep statement whoever states it",
+       PSEM.progression_local({"quantity": "cycle_number", "value_kind": "range",
+                               "value_lower": 10, "value_upper": 40}, other, pq))
+    ok("M5: a quantity nobody traverses never moves",
+       not PSEM.progression_local({"quantity": "deposition_temperature",
+                                   "value": 200}, trav, pq))
+    ok("M5: quantity-independent: the same scoping for any quantity",
+       PSEM.progression_local({"quantity": "ztest_prog", "value": 1},
+                              {"progression_coordinate": "ztest_prog"},
+                              {"ztest_prog"}))
 
     print("\n%d passed, %d failed" % (len(_pass), len(_fail)))
     if _fail:

@@ -32,10 +32,11 @@ def ok(name, cond, detail=""):
                          "" if cond else "   -> %r" % (detail,)))
 
 
-def S(pid, xq, xu, yq, yu, xl=None, yl=None, pts=None, sid="S", ds="measured"):
+def S(pid, xq, xu, yq, yu, xl=None, yl=None, pts=None, sid="S", ds="measured",
+      xn=None, yn=None):
     return {"paper_id": pid, "result_series_id": sid, "data_source": ds,
-            "x_quantity": xq, "x_unit": xu, "x_label": xl,
-            "y_quantity": yq, "y_unit": yu, "y_label": yl,
+            "x_quantity": xq, "x_unit": xu, "x_label": xl, "x_normalization": xn,
+            "y_quantity": yq, "y_unit": yu, "y_label": yl, "y_normalization": yn,
             "points": pts or [[0, 1.0], [1, 2.0], [2, 3.0]]}
 
 
@@ -93,13 +94,25 @@ def main():
 
     print("=== D. semantic vs operational transformability ===")
     x = RC.axis_representation("spatial_coordinate", "um", "x")
-    xn = RC.axis_representation("dimensionless_distance", "1", "x/H")
+    # the dimensionless side DECLARES its basis: the ontology has several normalized
+    # spatial positions (x/H, x/L, x/d, ...) and only the declared basis selects the
+    # rule -- an unresolved basis must select nothing rather than guess a denominator
+    xn = RC.axis_representation("dimensionless_distance", "1", "x/H",
+                                normalization_definition="x_over_feature_height")
+    xu = RC.axis_representation("dimensionless_distance", "1", "x/?")
     d = RC.compare_axis(x, xn)
     ok("D: the ontology declares x <-> x/H", d["semantically_transformable"], d)
     ok("D: without H it is missing_context, not a guess",
        d["status"] == RC.MISSING_CONTEXT and not d["operationally_transformable_now"], d)
     ok("D: and it names exactly what is missing",
        d["missing_context"] == ["feature_height"], d["missing_context"])
+    du = RC.compare_axis(x, xu)
+    ok("D: an UNRESOLVED basis selects no rule among several declared candidates — "
+       "the denominator is never guessed",
+       not du["semantically_transformable"]
+       and du["status"] in (RC.NOT_COMPARABLE, RC.AMBIGUOUS), du["status"])
+    ok("D: the formal registry is the transform authority",
+       all(t.get("rule_id") for t in RC.TRANSFORMS), RC.TRANSFORMS[:1])
     case = {"case_id": "C1", "case_defining_conditions": [
         {"quantity": "feature_height", "value": 50, "unit": "um",
          "evidence": "stated in the methods", "provenance_type": "methods_default"}]}
@@ -140,8 +153,11 @@ def main():
     ok("F: a unit difference still yields a transformable profile",
        r2["profile_status"] == RC.TRANSFORMABLE_PROFILE
        and r2["x"]["status"] == RC.UNIT_CONVERTIBLE, r2["profile_status"])
+    # the basis is DECLARED (x/H resolved to its definition): the transform is known
+    # and only its parameter is missing -- the situation this pin distinguishes from
+    # an unresolved basis, which selects no rule at all
     b3 = S("B", "dimensionless_distance", "1", "film_thickness", "nm", xl="x/H",
-           sid="B3")
+           sid="B3", xn="x_over_feature_height")
     ok("F: an axis needing an unavailable parameter blocks the profile",
        RC.compare_result_series(a, b3)["profile_status"] == RC.MISSING_CONTEXT)
     b4 = S("B", "spatial_coordinate", "um", "normalized_thickness", "1",
@@ -362,7 +378,8 @@ def main():
        != RC.SHAPE_ONLY_PROFILE)
 
     print("=== Q. ambiguity and missing context stay distinct ===")
-    xh = S("A", "dimensionless_distance", "1", "film_thickness", "nm", xl="x/H", sid="A9")
+    xh = S("A", "dimensionless_distance", "1", "film_thickness", "nm", xl="x/H",
+           sid="A9", xn="x_over_feature_height")
     xa = S("B", "spatial_coordinate", "um", "film_thickness", "nm", sid="B9")
     ok("Q: a known transform with no parameter is missing_context",
        RC.compare_result_series(xh, xa)["profile_status"] == RC.MISSING_CONTEXT)
