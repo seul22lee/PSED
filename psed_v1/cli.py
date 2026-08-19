@@ -55,7 +55,8 @@ STAGES = {
 GROUPS = {
     "review": ["pipeline.review.build_dashboard", "pipeline.review.build_analysis",
                "pipeline.review.build_recipes", "pipeline.review.viz_recipes",
-               "pipeline.review.corpus_status", "pipeline.review.corpus_dashboard"],
+               "pipeline.review.corpus_status", "pipeline.review.corpus_dashboard",
+               "pipeline.review.semantic_summary", "pipeline.review.build_index"],
 }
 
 

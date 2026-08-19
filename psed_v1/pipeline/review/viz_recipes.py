@@ -13,6 +13,24 @@ import matplotlib.pyplot as plt
 from pipeline.resolve import recipe as recipe_mod
 
 BLUE, GREEN, GREY = "#2a78d6", "#1baf7a", "#8b919b"
+
+#: Every page built from the RESOLVED Experiment layer carries this notice: that layer
+#: is the M2 feeder (legacy granularity), not the production semantic corpus.
+LEGACY_BANNER = (
+    '<div style="background:#7a4a00;color:#ffe9c7;padding:9px 14px;font:13px '
+    'system-ui;border-bottom:2px solid #b97800">LEGACY LAYER &mdash; this page '
+    'reads the resolved <b>Experiment</b> records (M2 feeder granularity), not the '
+    'production semantic corpus. The declared 41-paper corpus '
+    '(ExperimentalCases / MeasurementActs / ResultSeries) is summarised in '
+    '<a href="04_semantic__corpus_summary.html" style="color:#ffd27a">'
+    '04_semantic__corpus_summary.html</a>. M2 migration to the semantic layer is '
+    'pending.</div>')
+
+
+def _with_banner(html):
+    return html.replace("<body>", "<body>" + LEGACY_BANNER, 1) \
+        if "<body>" in html else LEGACY_BANNER + html
+
 ROOT = Path(__file__).parent
 
 
@@ -84,8 +102,8 @@ kept separate from <b>structure</b> (sample H/W). {len(R)} analysis-ready experi
 (here Al₂O₃ → A=TMA, B=water; species linkage is fix #2):</div>
 <p><code>{argo}</code></p></div>
 </div>"""
-    out = ROOT / "m2_recipes.html"
-    out.write_text(html)
+    out = P.REPORTS / "02_extraction__m2_recipes.html"
+    out.write_text(_with_banner(html))
     print("wrote", out, "|", len(R), "recipes, mean completeness",
           round(sum(comp) / len(comp), 2))
 
