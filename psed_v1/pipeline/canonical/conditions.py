@@ -21,16 +21,38 @@ Pressure contract (spec):
 from __future__ import annotations
 
 import re
+from pipeline.canonical import process_steps as PS
 from collections import defaultdict
 
 from .schema import SCOPE_ORDER, Status
 
 # --------------------------------------------------------------- unicode folding
-def fold_math(t):
-    """Mathematical Alphanumeric Symbols -> ASCII. Without this, `p_A = 325 mTorr`
-    is literally `\U0001D45D \U0001D434 = 325 mTorr` and no ASCII pattern matches."""
+#: Degree-sign shapes a PDF extractor emits instead of U+00B0. "250 \u25e6 C" is what a
+#: caption reading "250 °C" becomes, and every temperature in a paper typeset that way was
+#: invisible to the unit patterns -- a whole figure's process context lost to one glyph.
+_DEGREE_LIKE = ("\u25e6", "\u00ba", "\u02da", "\u2218", "\u00b0")
+
+
+def normalise_degrees(t):
+    """Fold degree-sign variants, and close the gap a PDF leaves before the scale letter."""
     if not t:
         return t
+    for ch in _DEGREE_LIKE:
+        if ch != "\u00b0":
+            t = t.replace(ch, "\u00b0")
+    # "250 ° C" and "250 °  C" are one token; the space is a typesetting artefact
+    return re.sub(r"\u00b0\s+([CFK])\b", "\u00b0\\1", t)
+
+
+def fold_math(t):
+    """Mathematical Alphanumeric Symbols -> ASCII. Without this, `p_A = 325 mTorr`
+    is literally `\U0001D45D \U0001D434 = 325 mTorr` and no ASCII pattern matches.
+
+    Degree shapes are folded here too, so every caller of fold_math gets them.
+    """
+    if not t:
+        return t
+    t = normalise_degrees(t)
     out = []
     for ch in t:
         c = ord(ch)
@@ -188,17 +210,32 @@ def _norm_unit(unit):
 def assertion(quantity, value, unit, raw, locator, scope, status="direct",
               source_kind="text", evidence_kind="experimental_condition",
               species=None, species_basis=None, reactant_role=None, of_reactant=None,
+              step_context=None, activation=None, plasma_type=None, follows=None,
+              preceding_species=None, preceding_activation=None, step_evidence=None,
               paper_id=None, figure_index=None, figure_number=None, panel=None,
               series_selector=None, reference_work=None, confidence=0.8,
-              ambiguity=None):
+              ambiguity=None, source_quantity=None):
     return {
         "quantity": quantity, "value": value, "unit": _norm_unit(unit),
+        # the source's own word for the quantity, kept when a resolved ALD step
+        # specialised the recorded name (pulse_time -> precursor_pulse_time)
+        "source_quantity": source_quantity,
         "raw_evidence": raw, "evidence_locator": locator,
         "assertion_status": status,            # direct|approximate|estimated|assumed|fitted|derived
         "source_kind": source_kind,            # caption|legend|body|methods|table|series_label|model
         "evidence_kind": evidence_kind,        # experimental_condition|model_input|literature_condition
         "species": species, "species_basis": species_basis,
         "reactant_role": reactant_role, "of_reactant": of_reactant,
+        # WHERE in the ALD cycle this timing belongs. `pulse_time = 2 s` is not an
+        # experimental condition until the half-cycle is named, and the two purges of one
+        # cycle are only distinguishable through this field.
+        "step_context": step_context,
+        "activation": activation,               # a property of an EXPOSURE, never a species
+        "plasma_type": plasma_type,
+        "follows": follows,                     # for a purge: the step it comes after
+        "preceding_species": preceding_species,
+        "preceding_activation": preceding_activation,
+        "step_evidence": step_evidence,
         "paper_id": paper_id,
         "figure_index": figure_index, "figure_number": figure_number,
         "panel": panel, "series_selector": series_selector,
@@ -283,10 +320,16 @@ AXIS_QUANTITY = [
     (re.compile(r"substrate\s+temperatur", re.I), "deposition_temperature"),
     (re.compile(r"pulse", re.I), "pulse_time"),
     (re.compile(r"purge", re.I), "purge_time"),
+    # "dose" resolves to NEITHER the pulse nor the exposure family: the literature uses
+    # it for both physical durations, so a dose-worded axis keeps the unresolved dose
+    # kind. Folding it into "exposure" (the old behaviour) or into "pulse" would both
+    # invent an equivalence the source never stated.
+    (re.compile(r"dos(?:e|ing)", re.I), "dose_time"),
+    (re.compile(r"plasma", re.I), "exposure"),
     (re.compile(r"temperatur", re.I), "deposition_temperature"),
     (re.compile(r"pressure", re.I), "generic_pressure"),
     (re.compile(r"cycle", re.I), "cycle_number"),
-    (re.compile(r"exposure|dose", re.I), "exposure"),
+    (re.compile(r"exposure|soak|dwell", re.I), "exposure"),
     (re.compile(r"flow", re.I), "flow_rate"),
     (re.compile(r"height|opening", re.I), "feature_height"),
     (re.compile(r"width", re.I), "feature_width"),
@@ -331,14 +374,40 @@ def from_series_label(label, series_axis, **prov):
         q, basis = quantity_for(series_axis, m.group("unit"), m.group("sym"))
         if not q:
             continue
-        sp = axis_species if q in ("pulse_time", "purge_time", "flow_rate",
-                                   "exposure", "partial_pressure") else None
-        role, react = (("precursor", "A") if sp and q in ("pulse_time", "exposure")
+        sp = axis_species if q in ("pulse_time", "dose_time", "purge_time",
+                                   "flow_rate", "exposure",
+                                   "partial_pressure") else None
+        # the half-cycle this timing belongs to, from the axis wording and any species the
+        # axis already names. A species never decides the position on its own.
+        step = PS.describe_step(series_axis or label, species=sp) \
+            if q in ("pulse_time", "dose_time", "purge_time", "exposure") else {}
+        role, react = (("precursor", "A")
+                       if sp and q in ("pulse_time", "dose_time", "exposure")
                        else (None, None))
-        out.append(assertion(q, m.group("num"), m.group("unit").replace(" ", ""),
+        if step.get("step_context") in PS.EXPOSURE_STEPS:
+            role = ("precursor" if step["step_context"] == PS.PRECURSOR_EXPOSURE
+                    else "coreactant")
+            react = "A" if role == "precursor" else "B"
+        # The resolved step SPECIALISES the quantity without changing its family: a
+        # pulse time whose step is the precursor exposure is a precursor_pulse_time.
+        # It is never renamed into an exposure time -- delivery duration and contact
+        # duration are different measurements, and the axis said which one it plots.
+        q_out = q
+        if (step.get("step_context") and PS.timing_side(q)
+                and PS.timing_side(q) == PS.step_side(step["step_context"])):
+            q_out = PS.specialize_timing_quantity(q, step["step_context"])
+        out.append(assertion(q_out, m.group("num"), m.group("unit").replace(" ", ""),
                              " ".join(m.group(0).split()),
                              "series label %r (axis %r)" % (label, series_axis),
                              "series", "direct", "series_label",
+                             source_quantity=(q if q_out != q else None),
+                             step_context=step.get("step_context"),
+                             activation=step.get("activation"),
+                             plasma_type=step.get("plasma_type"),
+                             follows=step.get("follows"),
+                             preceding_species=step.get("preceding_species"),
+                             preceding_activation=step.get("preceding_activation"),
+                             step_evidence=step.get("evidence"),
                              species=sp, species_basis=("series_axis" if sp else None),
                              reactant_role=role, of_reactant=react,
                              series_selector=label, confidence=0.9, **prov))
@@ -400,8 +469,14 @@ PROSE_RULES = [
     (r"base\s+pressure[^.;,]{0,30}?(NUM)\s*(PUNIT)", "base_pressure", None),
     (r"(?:substrate|deposition|growth|sample)\s+temperature[^.;,]{0,40}?"
      r"(?:was|of|at|=|~|ca\.?)?\s*(NUM)\s*(TUNIT_T)", "deposition_temperature", None),
-    (r"(?:grown|deposited|performed|carried out)\s+at\s*(?:ca\.?|about|~)?\s*"
-     r"(NUM)\s*(TUNIT_T)", "deposition_temperature", None),
+    # A process statement often names its chemistry between the verb and the value --
+    # "carried out using HDMP and O2 ... , respectively, at 300 C". Requiring the value to
+    # follow the verb immediately lost every such sentence. A bounded clause is allowed in
+    # between; it may not cross a sentence boundary, and the quantifier is lazy so the
+    # FIRST stated temperature wins and the pattern can never reach past one value to a
+    # later, different one.
+    (r"(?:grown|deposited|performed|carried out)\s+(?:(?:(?!\bat\b)[^.;]){0,120}?\s)?at\s*"
+     r"(?:ca\.?|about|~)?\s*(NUM)\s*(TUNIT_T)", "deposition_temperature", None),
     (r"hot[- ]?wire\s+temperature[^.;,]{0,40}?(?:was|of|at|=|~)?\s*(NUM)\s*(TUNIT_T)",
      "hot_wire_temperature", None),
     (r"(NUM)\s*(TUNIT_T)\s+of\s+(?:the\s+)?hot[- ]?wire", "hot_wire_temperature", None),
@@ -889,3 +964,183 @@ def bind(assertions, entity, figure_varied_quantities=()):
         bound.append(winner)
     unbound = [a for a in assertions if a not in applicable]
     return bound, ambiguous, unbound
+
+#: A written range whose hyphen was read as a minus sign. "10-120 ms" arriving as -120 is
+#: the observed shape; the give-away is that the magnitude equals the upper bound of a
+#: range still visible in the record's own evidence.
+_RANGE_IN_TEXT = re.compile(r"(\d+(?:\.\d+)?)\s*[-\u2010-\u2015]\s*(\d+(?:\.\d+)?)")
+
+#: Quantities that cannot be negative in any unit. Sign is not a matter of convention for
+#: a duration, a count or a pressure -- a negative one describes nothing.
+_STRICTLY_POSITIVE = ("time", "cycle", "pressure", "thickness", "height", "width",
+                      "depth", "rate", "flow", "dose", "exposure", "purge", "number")
+
+
+def strictly_positive_quantity(quantity):
+    q = str(quantity or "").lower()
+    return any(w in q for w in _STRICTLY_POSITIVE)
+
+
+def sanitize_magnitude(quantity, value, evidence=None):
+    """(value, range, reason) for a persisted scalar that cannot physically be negative.
+
+    Two outcomes, and the difference matters. Where the record's own evidence still shows
+    the range the number came from -- "ultrashort doses (10-120 ms)" reaching the record
+    as -120 -- the scalar is REPAIRED into the range it always was, because the source did
+    state both bounds. Where there is no such evidence the value is simply refused: a
+    negative duration is not a weaker measurement of a real one, and passing it downstream
+    lets every comparison inherit the sign error.
+    """
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return value, None, None
+    if v >= 0 or not strictly_positive_quantity(quantity):
+        return value, None, None
+    m = _RANGE_IN_TEXT.search(str(evidence or ""))
+    if m and abs(float(m.group(2)) - abs(v)) < 1e-9:
+        lo, hi = float(m.group(1)), float(m.group(2))
+        return None, [lo, hi], (
+            "%r was persisted as %g; the evidence states the range %g-%g, so the hyphen "
+            "of a written range had been read as a minus sign" % (quantity, v, lo, hi))
+    return None, None, (
+        "%r cannot be negative; %g is refused rather than propagated" % (quantity, v))
+
+# ------------------------------------------------------------------ gas roles in prose
+#: A gas can appear in a process in roles that are not reagent roles at all. "N2 was used
+#: as the carrier gas and purging gas" is explicit structured information sitting in
+#: prose: without it the same N2 is either invisible or, worse, mistaken for a reactant.
+#: The two roles are kept apart -- a carrier gas transports the precursor, a purge gas
+#: sweeps the chamber, and one species often does both but they are different statements.
+CARRIER_GAS = "carrier_gas"
+PURGE_GAS = "purge_gas"
+
+#: A gas formula, captured only where the sentence gives it a ROLE. The token is matched
+#: CASE-SENSITIVELY: a formula starts with a capital, and matching case-insensitively
+#: turned ordinary words ("as", "and", "the") into species.
+#: Excluded IN THE PATTERN, not after matching: a sentence-initial "A" would otherwise
+#: consume the match and hide the real formula later in the same clause.
+_GAS_STOP = (r"(?!(?:A|An|The|As|Is|Was|Were|In|On|At|By|Of|To|And|Or|It|This|That|"
+             r"Both|All|One|Two)\b)")
+_GAS_TOKEN = _GAS_STOP + r"([A-Z][a-z]?[0-9]?|argon|nitrogen|helium|Argon|Nitrogen|Helium)"
+
+_CARRIER = r"[Cc]arrier\s+gas"
+_PURGE = r"[Pp]urg\w*\s+gas"
+
+_GAS_ROLE_PATTERNS = (
+    (re.compile(_GAS_TOKEN + r"(?:[^.;]{0,45}?\bas\b[^.;]{0,25}?|\s+)" + _CARRIER), CARRIER_GAS),
+    (re.compile(_CARRIER + r"[^.;]{0,25}?\b(?:was|is)\b\s*" + _GAS_TOKEN), CARRIER_GAS),
+    (re.compile(_GAS_TOKEN + r"(?:[^.;]{0,45}?\bas\b[^.;]{0,25}?|\s+)" + _PURGE), PURGE_GAS),
+    (re.compile(_PURGE + r"[^.;]{0,25}?\b(?:was|is)\b\s*" + _GAS_TOKEN), PURGE_GAS),
+    (re.compile(r"purged\s+with\s+" + _GAS_TOKEN), PURGE_GAS),
+)
+
+#: Capitalised words that are not gases (sentence starts, common nouns).
+_NOT_A_GAS = frozenset("A An The As Is Was Were In On At By Of To And Or It This That "
+                       "He_ Both All One Two".split())
+
+
+def gas_roles_from_text(text):
+    """[{role, species, evidence}] for gas roles a passage states EXPLICITLY.
+
+    Only a sentence that gives the gas a role is read. A gas mentioned without one -- a
+    chamber backfilled with something, a formula in a table header -- yields nothing,
+    because "present" and "used as the carrier" are different claims. A species may hold
+    both roles, and each is reported separately with the sentence that states it.
+    """
+    out, seen = [], set()
+    for sentence in re.split(r"(?<=[.;])\s+", str(text or "")):
+        # a sentence can carry the species once and both roles ("carrier gas and purging
+        # gas"), so every pattern is tried against the whole sentence
+        for rx, role in _GAS_ROLE_PATTERNS:
+            for m in rx.finditer(sentence):
+                sp = (m.group(1) or "").strip()
+                if not sp or sp in _NOT_A_GAS or len(sp) > 12:
+                    continue
+                sp = {"argon": "Ar", "nitrogen": "N2", "helium": "He"}.get(sp.lower(), sp)
+                if (role, sp) in seen:
+                    continue
+                seen.add((role, sp))
+                out.append({"role": role, "species": sp,
+                            "evidence": sentence.strip()[:240]})
+    return out
+
+# ---------------------------------------------------- evidence-consistency guards
+#: Words identifying the ROLE a role-qualified quantity claims. A quantity that names a
+#: role must have that role in its own evidence, or it is a number that landed on the
+#: wrong physical quantity.
+_ROLE_QUALIFIED = {
+    "carrier_gas_partial_pressure": r"carrier",
+    "carrier_gas_flow": r"carrier",
+    "purge_gas_flow": r"purg",
+}
+
+#: A comparator immediately before the magnitude makes the statement a BOUND.
+_BOUND_BEFORE = re.compile(
+    r"(<|>|\u2264|\u2265|&lt;|&gt;|less\s+than|greater\s+than|up\s+to|at\s+least|"
+    r"below|above|under|over|approximately|about|~|\u223c)\s*$", re.I)
+
+
+def species_is_a_unit(species):
+    """Is this 'species' actually a unit token the parser mistook for a chemical?"""
+    s = str(species or "").strip()
+    if not s:
+        return False
+    try:
+        from pipeline.canonical import units as _U
+        _U.parse(s)
+        return True
+    except Exception:
+        return False
+
+
+def bound_in_evidence(value, evidence):
+    """The comparator qualifying this magnitude in its own evidence, or None.
+
+    "<2 Torr" is an upper bound on a pressure, not a pressure. Persisting it as an
+    equality states something the source never claimed, and every comparison downstream
+    then treats a limit as a setting.
+    """
+    ev, val = str(evidence or ""), str(value or "").strip()
+    if not ev or not val:
+        return None
+    i = ev.find(val)
+    while i > 0:
+        m = _BOUND_BEFORE.search(ev[:i])
+        if m:
+            return m.group(1)
+        i = ev.find(val, i + 1)
+    return None
+
+
+def role_unsupported_by_evidence(quantity, evidence):
+    """True when a role-qualified quantity's own role is absent from its evidence."""
+    pat = _ROLE_QUALIFIED.get(str(quantity or ""))
+    if not pat:
+        return False
+    return not re.search(pat, str(evidence or ""), re.I)
+
+def value_supported_by_evidence(value, evidence):
+    """Does the evidence actually contain the magnitude it is offered as evidence for?
+
+    An extractor keeps a window around what it matched, so a numeric condition whose own
+    window does not contain its number was not read from that sentence at all. The pairing
+    is broken, and a value nobody can check against its own quotation is worse than an
+    absent one -- it looks sourced. Non-numeric values (a reagent name, a process type)
+    are not checked here, and an assertion carrying no evidence at all is left alone
+    rather than judged.
+    """
+    ev = str(evidence or "")
+    if not ev.strip():
+        return True
+    try:
+        v = float(str(value).strip())
+    except (TypeError, ValueError):
+        return True
+    for m in re.finditer(r"-?\d+(?:\.\d+)?(?:\s*[eE]\s*[-+]?\d+)?", ev.replace(",", "")):
+        try:
+            if abs(float(m.group(0)) - v) < 1e-9:
+                return True
+        except ValueError:
+            continue
+    return False

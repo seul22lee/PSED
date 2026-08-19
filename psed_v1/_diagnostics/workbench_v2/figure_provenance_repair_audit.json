@@ -1,0 +1,140 @@
+{
+  "scope": "figure-provenance repair: semantic + canonical + workbench layers",
+  "generic_rules_implemented": [
+    "axis representation reachability computed per axis, never gated on the sibling axis or on a complete canonical (x,y) pair array",
+    "declared bridge transforms traversed in both directions; dimensionless ratios reverse only under their declared basis",
+    "SAME_MEASUREMENT_REPRESENTATION relation distinct from DERIVED_TRANSFORM; independently digitized, never point-inverted",
+    "document-defined named normalizations bound generically (definition sentence + caption use); unresolved without document evidence",
+    "one authority: pair verdicts, overlay authorization, missing-context and Why-comparable all read representation reachability",
+    "role-aware timing specialization: source family preserved (pulse stays pulse, exposure stays exposure); role prefix only from step/species evidence",
+    "dose commits to NEITHER family: dose-worded timings keep their own unresolved kind (dose_time); no automatic dose->pulse or dose->exposure",
+    "point-to-case timing identity: families must match where both are resolved; a cycle-side identification is accepted only when a family is genuinely unresolved AND the case states exactly one timing kind for that side/step/species; every resolved link records its identity basis",
+    "one physical timing slot = one Condition Case dimension; generic records fold into qualified ones only under value agreement; conflicts stay visible",
+    "resolved case facts separate case-defining conditions from known context, scoped per case; chemistry never leaks across a paper's processes",
+    "extraction-vs-label family disagreements surfaced verbatim on the series (axis_family_discrepancies), never silently renamed"
+  ],
+  "corpus_effects": {
+    "cases": {
+      "pilot_papers": 8,
+      "condition_cases": 182,
+      "identity_changes": 0,
+      "condition_spelling_changes": 64,
+      "change_accounting": "64/64 expected repair: corrupted spelling replaced by source-faithful name at the same physical slot with the same species and value; 0 newly exposed incompleteness; 0 possible regressions",
+      "duplicated_timing_slot_dimensions": {
+        "pre": 3,
+        "post": 0
+      }
+    },
+    "series": {
+      "persisted": 231,
+      "searchable": 231,
+      "excluded": 0,
+      "lost": 0,
+      "native_points_total": 4027
+    },
+    "pairs": {
+      "statuses": {
+        "DIRECT_PROFILE": 834,
+        "TRANSFORMABLE_PROFILE": 740,
+        "missing_context": 148
+      },
+      "transition": "602 pairs missing_context -> TRANSFORMABLE_PROFILE; no pair downgraded",
+      "overlay_vs_comparability_contradictions": {
+        "pre": {
+          "missing_context_but_reachable": 482,
+          "overlay_uses_bridge_pair_calls_missing": 758
+        },
+        "post": 0
+      }
+    },
+    "point_case_resolution": {
+      "points_resolved": 114,
+      "points_unmatched": 10,
+      "sweeps_fully_resolved": "20 of 22 (pre-repair 18)",
+      "identity_bases_on_resolved_links": {
+        "exact quantity identity": 57,
+        "timing family identity": 35,
+        "cycle-side identity: the timing family is unresolved on one side and the case states exactly one timing kind for this side of the cycle": 22
+      }
+    }
+  },
+  "baseline_discrepancy_182_vs_183": "The workbench invariant counts 182 Condition Cases: the 8 papers in pilot_papers.json. The interim audit snapshot counted 183 because it globbed the papers DIRECTORY, which additionally contains a cremers2019 folder (1 case) that is not in the pilot configuration. A counting-script artifact, not a case identity change; no repair altered case identity.",
+  "reproducibility": "Validated in a clean git worktree at origin/figure-provenance-repair (c8389a6) plus the intended change set: pilot and workbench regenerated from scratch produce a workbench_model.json byte-identical outside the meta provenance block, with identical counts and all invariants passing. meta records head_sha, generating_code_sha256 and the frozen-layer ids, which is what detects a stale build.",
+  "remaining_unresolved": {
+    "missing_context_pairs": {
+      "count": 148,
+      "by_missing_bridge": {
+        "feature_height": 4,
+        "reference_thickness": 24,
+        "cycle_number": 110,
+        "cycle_number|feature_height": 10
+      },
+      "classification": "genuine evidence limits and safeguard refusals: the bridge is not stated for the result, or a side is a multi-case sweep with no unambiguous bridge case"
+    },
+    "unmatched_points": {
+      "count": 10,
+      "classification": "species gate: the axis names no reagent while each case's condition is species-qualified; MISSING is not SAME. Honest refusal."
+    },
+    "axis_label_family_discrepancies": {
+      "count": 6,
+      "instances": [
+        {
+          "series": "10.1038_am.2016.182 F1a",
+          "axis": "x",
+          "label": "Exposure time (s)",
+          "label_family": "exposure_time",
+          "note": "the printed axis label names the exposure_time family but the extracted quantity is of the pulse_time family; the printed label is the primary record",
+          "recorded_quantity": "pulse_time"
+        },
+        {
+          "series": "10.1038_am.2016.182 F1a",
+          "axis": "x",
+          "label": "Exposure time (s)",
+          "label_family": "exposure_time",
+          "note": "the printed axis label names the exposure_time family but the extracted quantity is of the pulse_time family; the printed label is the primary record",
+          "recorded_quantity": "pulse_time"
+        },
+        {
+          "series": "10.1149_2.067203jes F4a",
+          "axis": "x",
+          "label": "Dose time (ms)",
+          "label_family": "dose_time",
+          "note": "the printed axis label names the dose_time family but the extracted quantity is of the pulse_time family; the printed label is the primary record",
+          "recorded_quantity": "pulse_time"
+        },
+        {
+          "series": "10.1149_2.067203jes F4c",
+          "axis": "x",
+          "label": "Plasma time (s)",
+          "label_family": "exposure_time",
+          "note": "the printed axis label names the exposure_time family but the extracted quantity is of the pulse_time family; the printed label is the primary record",
+          "recorded_quantity": "pulse_time"
+        },
+        {
+          "series": "10.1149_2.067203jes F4e",
+          "axis": "x",
+          "label": "Dose time (ms)",
+          "label_family": "dose_time",
+          "note": "the printed axis label names the dose_time family but the extracted quantity is of the pulse_time family; the printed label is the primary record",
+          "recorded_quantity": "pulse_time"
+        },
+        {
+          "series": "10.1149_2.067203jes F4g",
+          "axis": "x",
+          "label": "Plasma time (s)",
+          "label_family": "exposure_time",
+          "note": "the printed axis label names the exposure_time family but the extracted quantity is of the pulse_time family; the printed label is the primary record",
+          "recorded_quantity": "pulse_time"
+        }
+      ],
+      "classification": "DEMONSTRATED extraction-layer naming defect: quantities assigned against the printed label's own wording. Surfaced verbatim; binding does not depend on the family choice."
+    }
+  },
+  "audited_adjacent_sites_left_unchanged": [
+    "pipeline/canonical/sources.py _LABEL_UNITS maps a bare time-united series label to pulse_time when assembling canonical transform context. Pre-existing; feeds only the frozen resolved/ snapshot, which this repair does not regenerate; flagged as upstream incompleteness for the next canonical rebuild rather than changed blind here."
+  ],
+  "pre_existing_failures_reproduced_on_clean_baseline": [
+    "tests/canonical_layer/{test_extraction_coverage,test_granularity_and_axes,test_provenance,test_stage0_regression}: identical assertion messages at origin/figure-provenance-repair",
+    "pilot test 'jes: a stated interval is carried as an interval': the range rows were already absent in the pre-repair working tree; cycle_number is untouched by this repair"
+  ]
+}

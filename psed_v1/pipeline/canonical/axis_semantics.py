@@ -20,6 +20,7 @@ Evidence priority (spec §2.2):
 Anything unresolved stays unresolved with a structured reason.
 """
 from __future__ import annotations
+import re as _re
 
 import re
 
@@ -474,3 +475,228 @@ def resolve_granularity(x_semantics, n_points):
                                "measured outputs rather than sweeping an input"
                                % x_semantics.get("quantity"))
     return "unresolved", "x axis role could not be determined"
+
+
+# --- ontology-declared axis units --------------------------------------------------
+#: A figure axis often prints no unit because the quantity carries it: "Number of ALD
+#: cycles" needs no "(cycle)" beside it for a reader to know what the numbers count. The
+#: ontology already declares that unit, so an axis whose quantity resolved is not
+#: unitless -- it is a quantity whose unit was not reprinted.
+def ontology_axis_unit(quantity, source_unit=None):
+    """(unit, basis). The source unit wins; the ontology fills a silent axis.
+
+    Returns (None, reason) when neither the source nor the ontology establishes a unit --
+    an axis that genuinely has no resolved unit, which must stay unresolved rather than
+    being treated as dimensionless.
+    """
+    if source_unit not in (None, "", " "):
+        return source_unit, "unit printed on the source axis"
+    if not quantity:
+        return None, "no semantic quantity resolved for this axis"
+    from ontology import vocab as _v
+    u = _v.quantity_unit(quantity)
+    if u in (None, "", " "):
+        return None, ("ontology declares no unit for %r, and the source axis printed none"
+                      % quantity)
+    return u, ("ontology-declared unit for %r; the source axis printed none" % quantity)
+
+# --------------------------------------------------------- normalization from evidence
+#: Words that carry no discriminating meaning in a normalization label.
+_NORM_STOPWORDS = frozenset(
+    "a an the of to on at by and or per its it is was were for from in into with local "
+    "value values thickness position axial growth cycle coverage profile reference "
+    "adjacent number amount".split())
+
+#: A sentence only states a normalization when it SAYS so. "normalized", "scaled to",
+#: "relative to" and "divided by" are the statements; the bare word "dimensionless" is not.
+_NORM_STATEMENT = _re.compile(
+    r"normali[sz]ed|scaled\s+to|relative\s+to|divided\s+by|expressed\s+as\s+a\s+"
+    r"fraction\s+of", _re.I)
+
+
+def _norm_keywords(defn):
+    """Discriminating words of one normalization, taken from the ontology's own label."""
+    text = " ".join(str(defn.get(k) or "") for k in ("semantic_label", "denominator", "id"))
+    words = {w for w in _re.findall(r"[a-z_]{3,}", text.lower()) if w not in _NORM_STOPWORDS}
+    return {w for word in words for w in (word.split("_") if "_" in word else [word])
+            if len(w) >= 4 and w not in _NORM_STOPWORDS}
+
+
+#: How a source names the axis a normalization statement is about. A whole document
+#: mentions every reference somewhere, so a statement only counts when it says WHICH axis
+#: it describes -- otherwise one paper's mention of a planar witness would resolve another
+#: figure's entrance normalization.
+_AXIS_WORDS = {
+    "y": _re.compile(r"vertical axis|y[- ]axis|ordinate", _re.I),
+    "x": _re.compile(r"horizontal axis|x[- ]axis|abscissa", _re.I),
+}
+
+_SENTENCE = _re.compile(r"(?<=[.;])\s+")
+
+
+def normalization_from_statement(text, normalizations, quantity=None, axis=None):
+    """(normalization_id, evidence) that a source statement EXPLICITLY identifies.
+
+    The reference an axis was divided by is a physical claim, so it is only ever read from
+    a sentence that states it. Two conditions must both hold: the passage has to make a
+    normalization STATEMENT at all, and it has to name a reference that belongs to exactly
+    ONE declared normalization. The bare word "normalized" identifies nothing -- a
+    normalized thickness may be referenced to the entrance, to the maximum or to a planar
+    witness, and those are three different curves -- so a statement that does not
+    discriminate leaves the basis unresolved, which is the honest answer.
+
+    Keywords come from the ontology's own labels, so adding a normalization there extends
+    this without touching any code here.
+    """
+    passage = str(text or "")
+    if not passage:
+        return None, None
+    axis_rx = _AXIS_WORDS.get(axis)
+    # a long passage is read sentence by sentence: the claim has to be made in ONE
+    # statement, not assembled from words scattered across a document
+    sentences = [s for s in _SENTENCE.split(passage) if _NORM_STATEMENT.search(s)]
+    if axis_rx is not None and len(sentences) > 1:
+        sentences = [s for s in sentences if axis_rx.search(s)]
+    if not sentences:
+        return None, None
+    candidates = dict(normalizations or {})
+    kw = {n: _norm_keywords(d) for n, d in candidates.items()}
+    # a word shared by several normalizations cannot discriminate between them
+    shared = {w for a in kw for b in kw if a != b for w in (kw[a] & kw[b])}
+    found = {}
+    for s in sentences:
+        low = s.lower()
+        hit = {n: sorted(w for w in words - shared
+                         if _re.search(r"\b%s" % _re.escape(w), low))
+               for n, words in kw.items()}
+        hit = {n: w for n, w in hit.items() if w}
+        if len(hit) == 1:
+            nid, words = next(iter(hit.items()))
+            found.setdefault(nid, (words, s))
+    if len(found) != 1:
+        return None, None
+    nid, (words, sentence) = next(iter(found.items()))
+    return nid, ("the source states the normalization and names its reference (%s): %r"
+                 % (", ".join(words), sentence.strip()[:260]))
+
+
+# ------------------------------------------------- document-defined named normalizations
+#: Constructions a document uses to BIND A NAME to a definition. Generic by design: the
+#: name is whatever short phrase the construction captures, so "Type 1", "scheme A" or
+#: "relative intensity" in an unseen paper all bind the same way, and no name from any
+#: particular paper appears here.
+#: a DEFINITION may use any inflection ("normalizing the thickness to ..."), unlike the
+#: direct-statement path, which reads assertions about a drawn axis
+_NORM_DEF_STATEMENT = _re.compile(
+    r"normali[sz]|scaled\s+to|relative\s+to|divided\s+by|expressed\s+as\s+a\s+"
+    r"fraction\s+of", _re.I)
+
+_NAMED_DEF_PATTERNS = [
+    # "... normalized to the entrance value, referred to as Type 1 (profiles)"
+    _re.compile(r"(?:referred\s+to\s+as|denoted(?:\s+(?:as|by))?|termed|called|"
+                r"labell?ed|named|designated(?:\s+as)?)\s+[\"'“‘]?"
+                r"(?P<name>[A-Za-z][\w\-]*(?:\s+[\w\-]+){0,4})",
+                _re.I),
+    # '"Type 1" (is) defined as thickness normalized to ...'
+    _re.compile(r"[\"'“‘](?P<name>[A-Za-z][\w\- ]{1,30})[\"'”’]\s*"
+                r"(?:is|are)?\s*(?:defined\s+as|denotes?|refers?\s+to|"
+                r"corresponds?\s+to|means)", _re.I),
+    # "Type 1 profiles are obtained by normalizing to ..." (sentence-initial name)
+    _re.compile(r"^\s*(?P<name>[A-Z][\w\-]*(?:\s+[\w\-]+){0,3}?)\s+"
+                r"(?:profiles?|curves?|data|representations?|normali[sz]ations?)?\s*"
+                r"(?:is|are)\s+(?:defined\s+as|obtained\s+by|computed\s+(?:as|by)|"
+                r"calculated\s+(?:as|by))", _re.I),
+]
+
+
+def _name_is_identifying(name, candidates):
+    """A captured name must ADD identity beyond the normalization vocabulary itself.
+
+    "normalized thickness" is not a name -- every candidate's own definition contains
+    those words, and binding on them would make any caption match any definition. At
+    least one token of the name has to be foreign to every candidate's keyword set and to
+    the generic normalization words.
+    """
+    generic = set(_NORM_STOPWORDS) | {"normalized", "normalised", "scaled", "relative",
+                                      "profile", "profiles", "curve", "curves", "data"}
+    for words in (_norm_keywords(d) for d in (candidates or {}).values()):
+        generic |= words
+    toks = [t.lower() for t in _re.findall(r"[\w\-]+", str(name or "")) if t]
+    return bool(toks) and any(t not in generic for t in toks)
+
+
+def named_normalization_definitions(text, normalizations, axis=None):
+    """{name: {"id": nid, "evidence": defining sentence}} the document itself defines.
+
+    A definition needs three things IN ONE SENTENCE: a normalization statement, a
+    reference that discriminates exactly one declared normalization, and a naming
+    construction that binds a phrase to it. A paper that defines several named
+    representations yields several entries -- which is precisely the situation where
+    `normalization_from_statement` must refuse (two discriminating sentences, no way to
+    pick), and where a caption's USE of one name resolves the ambiguity.
+
+    A name that two definitions claim is dropped: it identifies nothing.
+    """
+    passage = str(text or "")
+    if not passage:
+        return {}
+    candidates = dict(normalizations or {})
+    if not candidates:
+        return {}
+    kw = {n: _norm_keywords(d) for n, d in candidates.items()}
+    shared = {w for a in kw for b in kw if a != b for w in (kw[a] & kw[b])}
+    defs, claimed = {}, {}
+    for sentence in _SENTENCE.split(passage):
+        if not _NORM_DEF_STATEMENT.search(sentence):
+            continue
+        low = sentence.lower()
+        hit = {n: sorted(w for w in words - shared
+                         if _re.search(r"\b%s" % _re.escape(w), low))
+               for n, words in kw.items()}
+        hit = {n: w for n, w in hit.items() if w}
+        if len(hit) != 1:
+            continue
+        nid = next(iter(hit))
+        for rx in _NAMED_DEF_PATTERNS:
+            for m in rx.finditer(sentence):
+                name = " ".join(str(m.group("name") or "").split()).strip(" .,;:")
+                # a leading article is not part of a name
+                name = _re.sub(r"^(?:the|a|an)\s+", "", name, flags=_re.I)
+                if not name or not _name_is_identifying(name, candidates):
+                    continue
+                key = name.lower()
+                if key in claimed and claimed[key] != nid:
+                    defs.pop(key, None)      # two definitions claim one name: not a name
+                    claimed[key] = None
+                    continue
+                if claimed.get(key) is None and key in claimed:
+                    continue
+                claimed[key] = nid
+                defs[key] = {"id": nid, "name": name,
+                             "evidence": sentence.strip()[:260]}
+    return defs
+
+
+def normalization_from_named_use(text, named_defs):
+    """(normalization_id, evidence) when a passage USES a document-defined name.
+
+    Only for an axis already known to be a ratio: the caller has established that the
+    curve is normalized and only the basis is open, so the name alone -- "Type 1
+    profiles" in a caption -- is the binding, exactly as the document set it up. A
+    passage that uses two different defined names identifies nothing and stays
+    unresolved.
+    """
+    passage = str(text or "")
+    if not passage or not named_defs:
+        return None, None
+    low = passage.lower()
+    used = {}
+    for key, d in named_defs.items():
+        if d and _re.search(r"\b%s\b" % _re.escape(key), low):
+            used[d["id"]] = d
+    # a longer name containing a shorter one is the more specific statement
+    if len(used) != 1:
+        return None, None
+    d = next(iter(used.values()))
+    return d["id"], ("the caption uses the representation the document defines as %r; "
+                     "definition: %r" % (d["name"], d["evidence"]))

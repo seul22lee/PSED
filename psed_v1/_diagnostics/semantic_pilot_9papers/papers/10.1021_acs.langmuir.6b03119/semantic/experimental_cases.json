@@ -28,7 +28,7 @@
   ],
   "case_defining_conditions": [
    {
-    "quantity": "exposure_time",
+    "quantity": "precursor_exposure_time",
     "value": 0.5,
     "unit": "s",
     "role": "CASE_DEFINING",
@@ -36,45 +36,83 @@
     "provenance_type": "figure_local_direct",
     "source": "between_curve_legend",
     "scope": "series",
-    "evidence": "this curve is labelled '0.5s' where the figure distinguishes its curves by 'exposure time'"
+    "evidence": "this curve is labelled '0.5s' where the figure distinguishes its curves by 'exposure time'",
+    "step_context": "precursor_exposure",
+    "source_quantity": "exposure_time",
+    "species": "TMA",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'"
    },
    {
-    "quantity": "pulse_time",
-    "value": "10",
-    "unit": "s",
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
     "species": null,
-    "evidence": "exposure time (5 and 10 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "evidence": "The ALD process consisted of 200 cycles at a deposition temperature of 200 ° C, with TMA and H2O as precursors in alternating pulses",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    },
    {
-    "quantity": "pulse_time",
-    "value": "0.5",
-    "unit": "s",
+    "quantity": "flow_rate",
+    "value": "50",
+    "unit": "sccm",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
-    "species": "TMA",
-    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "species": null,
+    "evidence": "Trimethylaluminum (TMA, STREM, 98% purity) and deionized water have been evaporated and delivered by bubbling 50 sccm argon carrier gas through stainless steel bubblers at 16 and 35 ° C bubbler temperatures, respectively",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "50",
+    "unit": "Pa",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The precursor TMA was injected into the deposition chamber together with Ar carrier gas, and the total pressure value was known to be 50 Pa",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
-  "geometry": "planar",
+  "geometry": "nanostructure_array",
   "geometries": [
-   "planar"
+   "nanostructure_array"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
   "measurement_ids": [
    "M::10.1021_acs.langmuir.6b03119__Fig3a__exp01"
   ],
@@ -96,11 +134,117 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.102-002"
+   "EV-10.102-058"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "exposure_time=0.5|pulse_time=10|pulse_time@TMA=0.5|material=Al2O3|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "Ar",
+  "superseded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "10",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure time (5 and 10 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 0.5,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 0.5,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   }
+  ],
+  "nominal_fingerprint": "cycle_number=200|flow_rate=50|precursor_exposure_time@TMA=0.5|working_pressure=50|material=Al2O3|geometry=nanostructure_array",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -137,7 +281,7 @@
   ],
   "case_defining_conditions": [
    {
-    "quantity": "exposure_time",
+    "quantity": "precursor_exposure_time",
     "value": 2.0,
     "unit": "s",
     "role": "CASE_DEFINING",
@@ -145,45 +289,83 @@
     "provenance_type": "figure_local_direct",
     "source": "between_curve_legend",
     "scope": "series",
-    "evidence": "this curve is labelled '2s' where the figure distinguishes its curves by 'exposure time'"
+    "evidence": "this curve is labelled '2s' where the figure distinguishes its curves by 'exposure time'",
+    "step_context": "precursor_exposure",
+    "source_quantity": "exposure_time",
+    "species": "TMA",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'"
    },
    {
-    "quantity": "pulse_time",
-    "value": "10",
-    "unit": "s",
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
     "species": null,
-    "evidence": "exposure time (5 and 10 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "evidence": "The ALD process consisted of 200 cycles at a deposition temperature of 200 ° C, with TMA and H2O as precursors in alternating pulses",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    },
    {
-    "quantity": "pulse_time",
-    "value": "0.5",
-    "unit": "s",
+    "quantity": "flow_rate",
+    "value": "50",
+    "unit": "sccm",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
-    "species": "TMA",
-    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "species": null,
+    "evidence": "Trimethylaluminum (TMA, STREM, 98% purity) and deionized water have been evaporated and delivered by bubbling 50 sccm argon carrier gas through stainless steel bubblers at 16 and 35 ° C bubbler temperatures, respectively",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "50",
+    "unit": "Pa",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The precursor TMA was injected into the deposition chamber together with Ar carrier gas, and the total pressure value was known to be 50 Pa",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
-  "geometry": "planar",
+  "geometry": "nanostructure_array",
   "geometries": [
-   "planar"
+   "nanostructure_array"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
   "measurement_ids": [
    "M::10.1021_acs.langmuir.6b03119__Fig3a__exp02"
   ],
@@ -205,11 +387,117 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.102-003"
+   "EV-10.102-059"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "exposure_time=2|pulse_time=10|pulse_time@TMA=0.5|material=Al2O3|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "Ar",
+  "superseded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "10",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure time (5 and 10 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 2.0,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 2.0,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   }
+  ],
+  "nominal_fingerprint": "cycle_number=200|flow_rate=50|precursor_exposure_time@TMA=2|working_pressure=50|material=Al2O3|geometry=nanostructure_array",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -246,7 +534,7 @@
   ],
   "case_defining_conditions": [
    {
-    "quantity": "exposure_time",
+    "quantity": "precursor_exposure_time",
     "value": 5.0,
     "unit": "s",
     "role": "CASE_DEFINING",
@@ -254,45 +542,83 @@
     "provenance_type": "figure_local_direct",
     "source": "between_curve_legend",
     "scope": "series",
-    "evidence": "this curve is labelled '5s' where the figure distinguishes its curves by 'exposure time'"
+    "evidence": "this curve is labelled '5s' where the figure distinguishes its curves by 'exposure time'",
+    "step_context": "precursor_exposure",
+    "source_quantity": "exposure_time",
+    "species": "TMA",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'"
    },
    {
-    "quantity": "pulse_time",
-    "value": "10",
-    "unit": "s",
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
     "species": null,
-    "evidence": "exposure time (5 and 10 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "evidence": "The ALD process consisted of 200 cycles at a deposition temperature of 200 ° C, with TMA and H2O as precursors in alternating pulses",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    },
    {
-    "quantity": "pulse_time",
-    "value": "0.5",
-    "unit": "s",
+    "quantity": "flow_rate",
+    "value": "50",
+    "unit": "sccm",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
-    "species": "TMA",
-    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "species": null,
+    "evidence": "Trimethylaluminum (TMA, STREM, 98% purity) and deionized water have been evaporated and delivered by bubbling 50 sccm argon carrier gas through stainless steel bubblers at 16 and 35 ° C bubbler temperatures, respectively",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "50",
+    "unit": "Pa",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The precursor TMA was injected into the deposition chamber together with Ar carrier gas, and the total pressure value was known to be 50 Pa",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
-  "geometry": "planar",
+  "geometry": "nanostructure_array",
   "geometries": [
-   "planar"
+   "nanostructure_array"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
   "measurement_ids": [
    "M::10.1021_acs.langmuir.6b03119__Fig3a__exp03"
   ],
@@ -314,11 +640,117 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.102-004"
+   "EV-10.102-060"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "exposure_time=5|pulse_time=10|pulse_time@TMA=0.5|material=Al2O3|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "Ar",
+  "superseded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "10",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure time (5 and 10 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 5.0,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 5.0,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   }
+  ],
+  "nominal_fingerprint": "cycle_number=200|flow_rate=50|precursor_exposure_time@TMA=5|working_pressure=50|material=Al2O3|geometry=nanostructure_array",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -355,7 +787,7 @@
   ],
   "case_defining_conditions": [
    {
-    "quantity": "exposure_time",
+    "quantity": "precursor_exposure_time",
     "value": 10.0,
     "unit": "s",
     "role": "CASE_DEFINING",
@@ -363,45 +795,83 @@
     "provenance_type": "figure_local_direct",
     "source": "between_curve_legend",
     "scope": "series",
-    "evidence": "this curve is labelled '10s' where the figure distinguishes its curves by 'exposure time'"
+    "evidence": "this curve is labelled '10s' where the figure distinguishes its curves by 'exposure time'",
+    "step_context": "precursor_exposure",
+    "source_quantity": "exposure_time",
+    "species": "TMA",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'"
    },
    {
-    "quantity": "pulse_time",
-    "value": "10",
-    "unit": "s",
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
     "species": null,
-    "evidence": "exposure time (5 and 10 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "evidence": "The ALD process consisted of 200 cycles at a deposition temperature of 200 ° C, with TMA and H2O as precursors in alternating pulses",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    },
    {
-    "quantity": "pulse_time",
-    "value": "0.5",
-    "unit": "s",
+    "quantity": "flow_rate",
+    "value": "50",
+    "unit": "sccm",
     "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
+    "role_basis": "process control stated for this material and chemistry",
     "provenance_type": "directly_stated",
     "source": "body",
-    "scope": "figure",
+    "scope": "experiment_context",
     "assertion_status": "direct",
-    "species": "TMA",
-    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
-    "locator": "document.md near Fig 3",
-    "value_kind": "scalar"
+    "species": null,
+    "evidence": "Trimethylaluminum (TMA, STREM, 98% purity) and deionized water have been evaporated and delivered by bubbling 50 sccm argon carrier gas through stainless steel bubblers at 16 and 35 ° C bubbler temperatures, respectively",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "50",
+    "unit": "Pa",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The precursor TMA was injected into the deposition chamber together with Ar carrier gas, and the total pressure value was known to be 50 Pa",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
-  "geometry": "planar",
+  "geometry": "nanostructure_array",
   "geometries": [
-   "planar"
+   "nanostructure_array"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
   "measurement_ids": [
    "M::10.1021_acs.langmuir.6b03119__Fig3a__exp04"
   ],
@@ -423,11 +893,117 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.102-005"
+   "EV-10.102-061"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "exposure_time=10|pulse_time=10|pulse_time@TMA=0.5|material=Al2O3|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "Ar",
+  "superseded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "10",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure time (5 and 10 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 10.0,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   },
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "exposure times at the tube bottom parts: (b) 0.5 s",
+    "locator": "document.md near Fig 3",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma exposure times'",
+    "superseded_by": [
+     {
+      "quantity": "precursor_exposure_time",
+      "value": 10.0,
+      "unit": "s",
+      "scope": "series",
+      "provenance_type": "figure_local_direct"
+     }
+    ],
+    "superseded_reason": "this case states exposure_side at series scope; the figure-scope assertion describes the container that holds every branch of that sweep, so it cannot also be this branch's fixed value"
+   }
+  ],
+  "nominal_fingerprint": "cycle_number=200|flow_rate=50|precursor_exposure_time@TMA=10|working_pressure=50|material=Al2O3|geometry=nanostructure_array",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -487,14 +1063,77 @@
     "evidence": "exposure times (5 and 10 s",
     "locator": "methods section",
     "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The ALD process consisted of 200 cycles at a deposition temperature of 200 ° C, with TMA and H2O as precursors in alternating pulses",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "50",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "Trimethylaluminum (TMA, STREM, 98% purity) and deionized water have been evaporated and delivered by bubbling 50 sccm argon carrier gas through stainless steel bubblers at 16 and 35 ° C bubbler temperatures, respectively",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "50",
+    "unit": "Pa",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The precursor TMA was injected into the deposition chamber together with Ar carrier gas, and the total pressure value was known to be 50 Pa",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
-  "geometry": "planar",
+  "geometry": "nanostructure_array",
   "geometries": [
-   "planar"
+   "nanostructure_array"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
   "measurement_ids": [
    "M::10.1021_acs.langmuir.6b03119__Fig4c__exp01"
   ],
@@ -516,13 +1155,59 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.102-015"
+   "EV-10.102-071"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "coreactant=H2O|pulse_time=10|material=Al2O3|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "Ar",
+  "nominal_fingerprint": "coreactant=H2O|cycle_number=200|flow_rate=50|pulse_time=10|working_pressure=50|material=Al2O3|geometry=nanostructure_array",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -586,14 +1271,77 @@
     "evidence": "exposure times (5 and 10 s",
     "locator": "methods section",
     "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The ALD process consisted of 200 cycles at a deposition temperature of 200 ° C, with TMA and H2O as precursors in alternating pulses",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "50",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "Trimethylaluminum (TMA, STREM, 98% purity) and deionized water have been evaporated and delivered by bubbling 50 sccm argon carrier gas through stainless steel bubblers at 16 and 35 ° C bubbler temperatures, respectively",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "50",
+    "unit": "Pa",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The precursor TMA was injected into the deposition chamber together with Ar carrier gas, and the total pressure value was known to be 50 Pa",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
-  "geometry": "planar",
+  "geometry": "nanostructure_array",
   "geometries": [
-   "planar"
+   "nanostructure_array"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
   "measurement_ids": [
    "M::10.1021_acs.langmuir.6b03119__Fig4c__exp02"
   ],
@@ -615,13 +1363,59 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.102-017"
+   "EV-10.102-073"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "coreactant=H2O|pulse_time=10|material=Al2O3|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "Ar",
+  "nominal_fingerprint": "coreactant=H2O|cycle_number=200|flow_rate=50|pulse_time=10|working_pressure=50|material=Al2O3|geometry=nanostructure_array",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -653,14 +1447,84 @@
   "material_status_reason": null,
   "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
-  "process_type": null,
-  "precursors": [],
-  "coreactants": [],
-  "case_defining_conditions": [],
-  "geometry": null,
-  "geometries": [],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The ALD process consisted of 200 cycles at a deposition temperature of 200 ° C, with TMA and H2O as precursors in alternating pulses",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "50",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "Trimethylaluminum (TMA, STREM, 98% purity) and deionized water have been evaporated and delivered by bubbling 50 sccm argon carrier gas through stainless steel bubblers at 16 and 35 ° C bubbler temperatures, respectively",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   },
+   {
+    "quantity": "working_pressure",
+    "value": "50",
+    "unit": "Pa",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "The precursor TMA was injected into the deposition chamber together with Ar carrier gas, and the total pressure value was known to be 50 Pa",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "H2O"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "geometry": "nanostructure_array",
+  "geometries": [
+   "nanostructure_array"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: nanostructure (named structure, no numeric geometry quantity extracted)",
   "measurement_ids": [
    "M::IMG::10.1021_acs.langmuir.6b03119::F2"
   ],
@@ -682,15 +1546,67 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.102-024"
+   "EV-10.102-080"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "no case-defining condition value is known for this case"
   ],
-  "nominal_fingerprint": "material=Al2O3|geometry=?",
+  "chemistry_basis": {
+   "precursors": "resolved experiments of this paper depositing Al2O3",
+   "process_type": "resolved experiments of this paper depositing Al2O3"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as carrier and purging gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "Ar",
+  "nominal_fingerprint": "cycle_number=200|flow_rate=50|working_pressure=50|material=Al2O3|geometry=nanostructure_array",
   "identity_distinguished_by": [
-   "deposited material"
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
   ],
   "identity_status": "DISTINGUISHED"
  }

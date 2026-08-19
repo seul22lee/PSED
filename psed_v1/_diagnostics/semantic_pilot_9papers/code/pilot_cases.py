@@ -21,6 +21,7 @@ import re
 from collections import defaultdict
 
 import pilot_design as D
+from pipeline.canonical import conditions as CC
 import pilot_roles as R
 
 EXPLICIT = "EXPLICIT"
@@ -44,7 +45,7 @@ def _fmt(v):
 
 
 # ------------------------------------------------------------------ sweep expansion
-def sweep_cases(entity, scope_text="", methods_text="", material=None):
+def sweep_cases(entity, scope_text="", methods_text="", material=None, step=None):
     """One case candidate per DESIGN BRANCH of a plotted sweep.
 
     The resolver used to gate this on `experimental_case_status == independent_process_sweep`
@@ -59,7 +60,7 @@ def sweep_cases(entity, scope_text="", methods_text="", material=None):
     Returns (candidates, role, basis, note, design).
     """
     design, branches, role, basis = D.design_from_sweep(entity, scope_text, methods_text,
-                                                        material=material)
+                                                        material=material, step=step)
     if design is None:
         return [], role, basis, ("axis role %s: no design branches" % role), None
     n = entity.get("experimental_case_count") or 0
@@ -110,6 +111,40 @@ def entity_conditions(entity):
     case_defining, measurement, other = [], [], []
     for b in entity.get("bound_conditions") or []:
         q = b.get("quantity")
+        # Impossible magnitudes are refused at the FIRST deterministic read of the
+        # persisted conditions, so no case-minting path can carry one: a written range
+        # whose hyphen was read as a minus sign is restored to the range its own evidence
+        # still shows, and a negative duration with no such evidence is dropped rather
+        # than propagated. Quantities whose semantics permit a negative value are untouched.
+        _v, _rng, _why = CC.sanitize_magnitude(q, b.get("value"), b.get("raw_evidence"))
+        if _why:
+            b = dict(b, value=_v, sanitized_reason=_why)
+            if _rng:
+                b.update(value_kind="range", value_lower=_rng[0], value_upper=_rng[1])
+            # a refused magnitude is never a deleted ASSERTION: the record stays, carrying
+            # its evidence and the reason its value was withheld, so the loss is visible
+            # rather than silent
+        # A magnitude qualified by a comparator in its own evidence is a BOUND, not a
+        # setting: "<2 Torr" states a limit the process stayed under, and recording it as
+        # an equality asserts a value the source never gave.
+        _bound = CC.bound_in_evidence(b.get("value"), b.get("raw_evidence"))
+        if _bound:
+            b = dict(b, value_kind="bound", bound_comparator=_bound,
+                     bound_value=b.get("value"), value=None,
+                     bound_reason="the source states this magnitude as a bound (%r), not "
+                                  "as a fixed value" % _bound)
+            continue
+        # A role-qualified quantity whose role its own evidence never mentions is a number
+        # that landed on the wrong physical quantity.
+        if CC.role_unsupported_by_evidence(q, b.get("raw_evidence")):
+            continue
+        # ... and a numeric condition whose own evidence does not contain its number was
+        # not read from that sentence, so the pairing cannot be checked and is refused.
+        if not CC.value_supported_by_evidence(b.get("value"), b.get("raw_evidence")):
+            continue
+        # a unit token captured as a chemical is not a species qualification
+        if CC.species_is_a_unit(b.get("species") or b.get("of_reactant")):
+            b = dict(b, species=None, of_reactant=None)
         role, basis = R.condition_role(q, None, b.get("evidence_kind"), None)
         rec = {"quantity": q, "value": b.get("value"), "unit": b.get("unit"),
                "role": role, "role_basis": basis,

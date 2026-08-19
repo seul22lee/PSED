@@ -121,20 +121,30 @@ def classify_deterministic(sd):
     md = (P.extracted_dir(sd) / "document.md").read_text()
     txt = (_title(md) + " \n " + ex.abstract_of(md)).lower()
     q = _paper_quants(sd)
+    # A numeric geometry quantity CORROBORATES a structure; it does not license one.
+    # Requiring it meant a paper titled "... TiO2 Nanotube Layers" fell through to the
+    # planar default because no aspect ratio happened to be extracted -- the strongest
+    # evidence in the paper discarded for want of a weaker one.
     conf = bool(q & GEOM_Q)
     def kw(pat): return re.search(pat, txt) is not None
     if kw(r"porous|anodic alumin|\baao\b|mesoporous|\bsofc\b|membrane|\bmof\b|\bpowder|opal|aerogel|nanoporous"):
         st = "aao" if kw(r"\baao\b|anodic alumin") else ("mesoporous_powder" if kw(r"powder") else "mesoporous_film")
         return "porous_material", st, "keyword: porous/AAO/membrane"
-    if conf and kw(r"nanowire|nanorod|nanotube|\bcnt\b|carbon nanotube|nanopillar"):
+    if kw(r"nanowire|nanorod|nanotube|\bcnt\b|carbon nanotube|nanopillar"):
         st = "cnt" if kw(r"nanotube|\bcnt\b") else ("nanowire" if kw(r"nanowire") else "nanorod")
-        return "nanostructure_array", st, "keyword: nanostructure + conformality"
+        return ("nanostructure_array", st,
+                "keyword: nanostructure" + (" + conformality quantities"
+                                            if conf else " (named structure, no numeric "
+                                                         "geometry quantity extracted)"))
     if kw(r"lateral high|\blhar\b|pillarhall|lateral (high[- ])?aspect|lateral channel|lateral trench|macroscopic lateral"):
         return "lateral_channel", "pillarhall_lhar", "keyword: lateral HAR"
     if "channel_filling_fraction" in q or "feature_length" in q:
         return "lateral_channel", "lhar_channel", "quantity signature: feature_length / channel_filling"
-    if conf and kw(r"\btrench|\bvia\b|through[- ]silicon|3d nand|finfet|deep hole|nanolaminate.*trench"):
-        return "vertical_structure", "trench", "keyword: trench/via + conformality"
+    if kw(r"\btrench|\bvia\b|through[- ]silicon|3d nand|finfet|deep hole|nanolaminate.*trench"):
+        return ("vertical_structure", "trench",
+                "keyword: trench/via" + (" + conformality quantities" if conf
+                                         else " (named structure, no numeric geometry "
+                                              "quantity extracted)"))
     if conf and (q & {"aspect_ratio", "feature_height", "penetration_depth", "normalized_thickness"}):
         return "vertical_structure", "trench", "generic HAR conformality (single-feature default)"
     return "planar", "planar_wafer", "no 3D test structure found"
@@ -246,9 +256,28 @@ def kb_dirs():
     return sorted(f.parent.parent.name for f in P.glob_resolved("experiments.json"))
 
 
+#: An experiment's own geometry evidence outranks the paper's. A paper that deposits on
+#: nanotubes AND on a planar reference is one paper with two geometries, and overwriting
+#: the local value with the paper-level one erased exactly the distinction the corpus
+#: exists to record.
+LOCAL_GEOMETRY_SOURCES = ("experiment", "figure/panel caption", "local evidence")
+
+
+def _has_local_geometry(e):
+    """Does this experiment carry geometry evidence of its own?"""
+    if e.get("geometry_source") in LOCAL_GEOMETRY_SOURCES:
+        return True
+    return bool(e.get("geometry_evidence"))
+
+
 def tag_experiments(only=None):
-    """Write geometry + geometry_class into every KB experiment (deterministic)."""
-    n = 0
+    """Write the paper's geometry into KB experiments that have none of their own.
+
+    Paper-level classification is a FALLBACK. An experiment that already carries local
+    geometry evidence keeps it, and every tagged experiment records which of the two it
+    got so the distinction survives into the semantic layer.
+    """
+    n = kept = 0
     for sd in (only or kb_dirs()):
         gf = P.extracted_dir(sd) / "geometry.json"
         g = json.loads(gf.read_text()) if gf.exists() else {}
@@ -260,16 +289,120 @@ def tag_experiments(only=None):
             continue
         exps = json.loads(f.read_text())
         for e in exps:
+            if _has_local_geometry(e):
+                kept += 1
+                continue
             e["geometry_class"] = gc
             e["structure"] = st or e.get("structure")
+            e["geometry_source"] = "paper-level deterministic classification"
+            e["geometry_evidence"] = g.get("evidence")
+            n += 1
         f.write_text(json.dumps(exps, indent=1))
-        n += len(exps)
-    print(f"[geometry] tagged {n} experiments across {len(only or kb_dirs())} papers")
+    print(f"[geometry] tagged {n} experiments from the paper-level classification, "
+          f"kept {kept} with their own evidence, across "
+          f"{len(only or kb_dirs())} papers")
+
+
+def refresh_entities(only=None):
+    """Propagate geometry into resolved entities WITHOUT re-running the resolver.
+
+    Geometry is a deterministic function of the extracted classification and whatever
+    local evidence an experiment or scope already carries, so it does not need the
+    LLM-dependent resolve stage to reach the KB. That stage remains the authority for
+    everything else; this refreshes exactly one responsibility and records where each
+    value came from.
+
+    Local evidence always wins: an experiment that names its own structure keeps it, and
+    the paper-level classification only fills the silence.
+    """
+    n = kept = papers = 0
+    for sd in (only or kb_dirs()):
+        gf = P.extracted_dir(sd) / "geometry.json"
+        if not gf.exists():
+            continue
+        g = json.loads(gf.read_text())
+        gc, st, why = (g.get("geometry_class"), g.get("structure"),
+                       g.get("evidence") or "paper-level deterministic classification")
+        papers += 1
+        # an experiment's own value is local evidence for the entity that carries it
+        ef = P.resolved_json(sd, "experiments")
+        local = {}
+        if ef.exists():
+            for e in json.loads(ef.read_text()):
+                eid = e.get("experiment_id") or e.get("id") or e.get("exp_id")
+                if not eid or e.get("geometry_class") in (None, ""):
+                    continue
+                # carry the experiment's value AND the source it actually came from.
+                # An experiment tagged from the paper-level classification is still
+                # paper-level evidence; calling it local here would promote a fallback
+                # into an observation nobody made.
+                local[eid] = (e.get("geometry_class"), e.get("structure"),
+                              e.get("geometry_evidence"),
+                              e.get("geometry_source")
+                              or ("experiment-local evidence" if _has_local_geometry(e)
+                                  else "paper-level deterministic classification"))
+        nf = P.resolved_json(sd, "entities")
+        if not nf.exists():
+            continue
+        doc = json.loads(nf.read_text())
+        ents = doc if isinstance(doc, list) else doc.get("entities") or []
+        for e in ents:
+            eid = e.get("experiment_id") or e.get("id") or e.get("entity_id")
+            if eid in local:
+                lgc, lst, lev, lsrc = local[eid]
+                e["geometry_class"], e["structure"] = lgc, lst or e.get("structure")
+                e["geometry_source"] = lsrc
+                e["geometry_evidence"] = lev
+                if lsrc == "paper-level deterministic classification":
+                    n += 1
+                else:
+                    kept += 1
+                continue
+            if _has_local_geometry(e):
+                kept += 1
+                continue
+            e["geometry_class"] = gc
+            e["structure"] = st or e.get("structure")
+            e["geometry_source"] = "paper-level deterministic classification"
+            e["geometry_evidence"] = why
+            n += 1
+        nf.write_text(json.dumps(doc, indent=1))
+    print(f"[geometry] refreshed {n} entities from the paper-level classification, "
+          f"kept {kept} with local evidence, across {papers} papers")
 
 
 def main(argv):
+    # a maintained way to regenerate an alternate corpus with the same command
+    kept, skip_next = [], False
+    for i, a in enumerate(argv):
+        if skip_next:
+            skip_next = False
+            continue
+        if a == "--corpus-root" and i + 1 < len(argv):
+            P.set_corpus_root(argv[i + 1])
+            skip_next = True            # the value is not a paper
+        elif a.startswith("--corpus-root="):
+            P.set_corpus_root(a.split("=", 1)[1])
+        else:
+            kept.append(a)
+    argv = kept
     if "--tag-only" in argv:
         tag_experiments()
+        return
+    if "--refresh-entities" in argv:
+        # deterministic geometry end to end: classify, tag, then propagate into the
+        # resolved layer. No LLM and no resolver, because geometry does not need either.
+        sds = [a for a in argv if not a.startswith("--")] or kb_dirs()
+        for sd in sds:
+            if not (P.extracted_dir(sd) / "document.md").exists():
+                print(f"  [skip] {sd} (no document.md)"); continue
+            gc, st, why = classify_deterministic(sd)
+            g = {"geometry_class": gc, "structure": st, "method": "deterministic",
+                 "evidence": why}
+            (P.extracted_dir(sd) / "geometry.json").write_text(json.dumps(g, indent=1))
+            print(f"  {sd:28} -> {gc:18} struct={st:16} | {why}")
+        tag_experiments(sds)
+        refresh_entities(sds)
         return
     if "--quantities" in argv:
         # numeric geometry + model parameters (LLM). Optional explicit paper list, so a

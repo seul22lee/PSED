@@ -323,11 +323,25 @@ def anchors():
 
     # ---- 2.067203jes -------------------------------------------------------
     cases = sem(JES, "experimental_cases")
-    # PDF: "ultrashort doses (10-120 ms)" — a positive interval
+    # PDF: "ultrashort doses (10-120 ms)" — a positive interval. The corrupted
+    # negative scalar this pin used to catch no longer reaches any case (the
+    # body-figure blob that produced it is no longer attached), so the pin asserts
+    # the RULE rather than one corpus instance: the interval-repair machinery still
+    # fires on a corrupted record, and any interval-shaped condition that does reach
+    # a case is carried as a range with its provenance.
+    import pilot_ranges as _PRG
+    _fixed = _PRG.repair_condition({"quantity": "cycle_number", "value": "-40",
+                                    "unit": "cycle", "evidence": "10-40 cycles"})
+    ok("jes: a stated interval is carried as an interval, not a negative scalar",
+       _fixed.get("value_kind") == "range" and _fixed.get("value_lower") == 10.0
+       and _fixed.get("value_upper") == 40.0
+       and _fixed.get("superseded_value") == "-40"
+       and _fixed.get("provenance_type") == "directly_stated_range", _fixed)
     rng = [x for c in cases for x in c["case_defining_conditions"]
            if x.get("value_kind") == "range"]
-    ok("jes: a stated interval is carried as an interval, not a negative scalar",
-       any(x.get("superseded_value") is not None for x in rng), len(rng))
+    ok("jes: every case-level interval, if any, carries its bounds",
+       all(x.get("value_lower") is not None and x.get("value_upper") is not None
+           for x in rng), len(rng))
     ok("jes: no negative pulse time or cycle count survives",
        not [x for c in cases for x in c["case_defining_conditions"]
             if isinstance(x.get("value"), (int, float)) and x["value"] < 0

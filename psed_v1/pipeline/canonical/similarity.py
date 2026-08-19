@@ -61,8 +61,25 @@ def config(e):
     num = {}
     for ctrl in e.get("controlled") or []:
         q, v = ctrl.get("quantity"), ctrl.get("value")
-        if q in SLOT and isinstance(v, (int, float)) and v > 0 and SLOT[q] not in num:
-            num[SLOT[q]] = float(v)
+        if q not in SLOT or not isinstance(v, (int, float)) or v <= 0:
+            continue
+        # The ALD step is part of the slot's identity. Without it a 2 s precursor dose and
+        # a 2 s plasma exposure filled one "exposure_time" slot and compared as the same
+        # condition, and the two purges of one cycle overwrote each other -- the first one
+        # seen won, which is not a comparison at all.
+        slot = SLOT[q]
+        step = ctrl.get("step_context")
+        if step:
+            slot = "%s@%s" % (slot, step)
+        # a thermal exposure and a plasma exposure of equal duration are not the same
+        # setting, so they must not share a slot and compare as a perfect match.
+        # Explicit thermal is a stated fact and unstated is not: they must not share a
+        # slot either, or a recorded thermal exposure compares equal to an unrecorded one
+        act = ctrl.get("activation")
+        if act:
+            slot = "%s~%s" % (slot, act)
+        if slot not in num:
+            num[slot] = float(v)
     c["num"] = num
     return c
 

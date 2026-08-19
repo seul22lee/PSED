@@ -26,6 +26,15 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+# ALD step semantics are one maintained definition for the whole pipeline: the semantic
+# layer and the canonical layer must not carry two vocabularies for the same half-cycle.
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+from pipeline.canonical import process_steps as PS
+from pipeline.canonical import axis_semantics as AX
+from pipeline.canonical import conditions as C
+from pipeline.canonical import gas_roles as GR
+from pipeline.canonical import chemical_identity as CI
+from pipeline.query import result_comparability as RC               # noqa: E402
 import pilot_cases as PC                                        # noqa: E402
 import pilot_evidence as PE                                     # noqa: E402
 import pilot_roles as R                                         # noqa: E402
@@ -126,6 +135,11 @@ class Paper(object):
         self.card = self._j(self.ex / "card.json", {})
         self.figdata = self._j(self.ex / "figure_data.json", {})
         self.inventory = self._j(self.ex / "figure_inventory.json", {})
+        # the paper's deterministic geometry classification, used only where neither the
+        # figure scope nor the resolved entity supplies one -- a candidate with no entity
+        # is still an experiment in this paper, and leaving it geometry-less lost the
+        # classification the paper does carry
+        self.geometry = self._j(self.ex / "geometry.json", {})
         self.entities = self._j(self.rs / "entities.json", [])
         self.experiments = self._j(self.rs / "experiments.json", [])
         self.curves = (self._j(self.rs / "canonical_curves.json", {}) or {}).get("curves", [])
@@ -253,8 +267,1146 @@ class Paper(object):
 
 
 # ==============================================================================  build
+#: Provenance levels that speak about one figure or narrower. Anything above them is a
+#: statement about the paper, which several different experiments share.
+_ENTITY_LEVELS = ("figure", "panel", "series", "curve", "experiment", "specimen", "sample")
+
+
+def bind_context_scoped_controls(P, note):
+    """Bind a method/paper control only where the sentence NAMES the context it applies to.
+
+    A paper-level number is normally useless to a single experiment: the same value is
+    stamped on every figure, so it cannot distinguish the one it is carried onto. That is
+    why bare paper defaults are refused. A sentence that states the control TOGETHER with
+    the chemistry it describes -- "the deposition process for X was carried out using A
+    and B ... at T" -- is a different kind of evidence: it says which process it is about,
+    and an experiment depositing that material with that chemistry is that process.
+
+    Every one of these must hold, or nothing is bound:
+      * the sentence names a material and/or reagents, and the entity agrees with them;
+      * the entity does not SWEEP the quantity (a temperature series is not run at one
+        temperature, and this is what stops a fixed value landing on its branches);
+      * no narrower evidence -- figure, panel, series -- already speaks for that quantity;
+      * the sentence itself is retained as the evidence.
+    """
+    chem = {"precursors": [x for x in (P.scout.get("precursors") or []) if x],
+            "coreactants": [x for x in (P.scout.get("coreactants") or []) if x]}
+    mats = [m for m in (P.materials or []) if m]
+    stated = []
+    for sent in re.split(r"(?<=[.;])\s+", P.md or ""):
+        if len(sent) > 600:
+            continue
+        rows = CC.conditions_from_prose(sent, "paper", "body", "document.md")
+        if not rows:
+            continue
+        def named(names):
+            return [n for n in names
+                    if re.search(r"(?<![A-Za-z0-9])%s(?![A-Za-z0-9])" % re.escape(n),
+                                 sent, re.I)]
+        ctx = {"materials": named(mats), "precursors": named(chem["precursors"]),
+               "coreactants": named(chem["coreactants"])}
+        if not (ctx["materials"] or ctx["precursors"]):
+            continue                      # no context named: this is a bare default
+        stated.append((rows, ctx, sent.strip()))
+    if not stated:
+        return 0
+    # what the resolver itself refused to settle for each entity: an ambiguous quantity
+    # stays ambiguous, and a sentence elsewhere in the paper does not settle it
+    ambiguous_by_entity = defaultdict(set)
+    for e in (P.experiments or []):
+        eid = str(e.get("exp_id") or "")
+        owner = eid.split("__case")[0] if "__case" in eid else eid
+        for a in (e.get("ambiguous_conditions") or []):
+            if a.get("quantity"):
+                ambiguous_by_entity[owner].add(a["quantity"])
+    added = 0
+    for ent in P.entities:
+        ambiguous = ambiguous_by_entity.get(ent.get("entity_id"), set())
+        e_mat = [m for m in [ent.get("material")] if m]
+        e_pre = [x for x in (ent.get("precursors") or []) if x]
+        e_co = [x for x in (ent.get("coreactants") or []) if x]
+        swept = {ent.get("coordinate"), ent.get("coordinate_raw_quantity")}
+        have = {b.get("quantity") for b in (ent.get("bound_conditions") or [])}
+        for rows, ctx, sent in stated:
+            mat_ok = bool(ctx["materials"]) and bool(set(ctx["materials"]) & set(e_mat))
+            chem_ok = bool(set(ctx["precursors"]) & set(e_pre)) or \
+                bool(set(ctx["coreactants"]) & set(e_co))
+            if not (mat_ok or chem_ok):
+                continue
+            # a stated context must not be CONTRADICTED by the entity's own chemistry
+            if ctx["precursors"] and e_pre and not (set(ctx["precursors"]) & set(e_pre)):
+                continue
+            if ctx["materials"] and e_mat and not (set(ctx["materials"]) & set(e_mat)):
+                continue
+            for r in rows:
+                q = r.get("quantity")
+                if not q or q in have or q in swept or q in ambiguous:
+                    continue
+                ent.setdefault("bound_conditions", []).append({
+                    "quantity": q, "value": r.get("value"), "unit": r.get("unit"),
+                    "bound_at_scope": "process_context", "source_kind": "body",
+                    "assertion_status": "direct", "species": None,
+                    "evidence_kind": "body",
+                    "raw_evidence": sent[:300],
+                    "evidence_locator": "document.md",
+                    "context_match": {k: v for k, v in ctx.items() if v},
+                    "bound_because": (
+                        "the sentence states %s together with the process context it "
+                        "describes (%s), and this experiment matches that context"
+                        % (q, ", ".join(sorted(sum(ctx.values(), []))))) })
+                have.add(q)
+                added += 1
+                note("context_scoped_control", ent["entity_id"],
+                     "%s = %s %s bound from a sentence naming its own process context "
+                     "(%s): %r" % (q, r.get("value"), r.get("unit") or "",
+                                   ", ".join(sorted(sum(ctx.values(), []))), sent[:150]))
+    return added
+
+
+def _control_scope_compatible(rec):
+    """May this resolved control be carried onto the entity that owns the experiment?
+
+    Only when the assertion was made at figure scope or narrower. A paper- or
+    method-level value is the same number on every experiment of the paper, so it cannot
+    distinguish the one it is being carried onto -- and evidence text does not change
+    that, because it proves provenance rather than applicability.
+    """
+    origin = rec.get("origin") or {}
+    level = origin.get("level")
+    if level in _ENTITY_LEVELS:
+        return True
+    # A paper- or method-level assertion is NOT rescued by carrying evidence text.
+    # Evidence establishes that somebody wrote the number down; it says nothing about
+    # which experiment the number applies to. The paper that broadcast one methods
+    # temperature onto eight figures had prose behind it too -- and one of those figures
+    # sweeps temperature, so the broadcast contradicts the figure's own curves. Without a
+    # scope tie to this entity there is no way to tell applicability from coincidence, so
+    # the control is left where it was rather than carried onto a case.
+    return False
+
+
+def _sentence_names(sentence, token, role=None):
+    """Does this sentence name that reagent, under ANY name the ontology gives it?
+
+    Matching runs on canonical identity, so a sentence writing "trimethylaluminium" names
+    the reagent a case stores as TMA. A reagent the ontology does not know is matched on
+    its own string only -- never on resemblance to a different one.
+    """
+    if not sentence or not token:
+        return False
+    r = CI.resolve(token, role)
+    names = [r.get("preferred_label"), r.get("formula"), r.get("full_name"),
+             r.get("species_label"), str(token)] + list(r.get("aka") or [])
+    for n in names:
+        if n and re.search(r"(?<![A-Za-z0-9])%s(?![A-Za-z0-9])" % re.escape(str(n)),
+                           sentence, re.I):
+            return True
+    return False
+
+
+def _enclosing_sentence(document, evidence):
+    """The full sentence an evidence window was cut from.
+
+    Extractors keep a tight window around the number, which often drops the subject of the
+    sentence -- the very part naming the material the statement is about. Context matching
+    has to see the whole claim, so the window is located in the document and grown to its
+    sentence boundaries. Where it cannot be located the window itself is used, which can
+    only make the match stricter.
+    """
+    doc = str(document or "")
+    ev = str(evidence or "").strip()
+    if not ev or not doc:
+        return ev
+    i = doc.find(ev)
+    if i < 0:
+        # extractors normalise whitespace, so the stored window often differs from the
+        # document by spacing alone; locating it loosely still finds the right sentence
+        loose = re.compile(r"\s+".join(re.escape(w) for w in ev.split()))
+        m = loose.search(doc)
+        if not m:
+            return ev
+        i, ev = m.start(), m.group(0)
+    start = max(doc.rfind(".", 0, i), doc.rfind("\n", 0, i)) + 1
+    end = doc.find(".", i + len(ev))
+    return doc[start: end if end > 0 else i + len(ev) + 200].strip()
+
+
+def context_assertion_index(P, note):
+    """Paper-scope assertions that identify the process they describe, by quantity.
+
+    Kept only where the paper is CONSISTENT: several sentences naming the same chemistry
+    and disagreeing about a quantity make that quantity ambiguous for the process, and an
+    ambiguous control must not be bound to anything. A paper mentioning "200 cycles" and
+    "400 cycles" in different places has not told us the cycle count of any experiment.
+    """
+    try:
+        assertions = C.conditions_from_prose(P.md, "paper", "body", "paper text") or []
+    except Exception as exc:
+        note("context_control_failed", "paper",
+             "the canonical condition parser raised on the paper text: %r" % (exc,))
+        return {}
+    by_q = defaultdict(list)
+    for a in assertions:
+        q, ev = a.get("quantity"), (a.get("raw_evidence") or "")
+        if not q or not ev:
+            continue
+        by_q[q].append(dict(a, context_sentence=_enclosing_sentence(P.md, ev)))
+    out = {}
+    for q, recs in sorted(by_q.items()):
+        vals = {(str(r.get("value")), r.get("unit")) for r in recs}
+        if len(vals) != 1:
+            note("context_control_ambiguous", "paper",
+                 "the paper states %d different values of %s (%s); none is bound, because "
+                 "no sentence identifies which experiment carries which"
+                 % (len(vals), q, sorted(v[0] for v in vals)))
+            continue
+        out[q] = recs
+    return out
+
+
+def qualify_case_timing_steps(case):
+    """Qualify a case's timing conditions from its own figure's caption.
+
+    A sweep is not always plotted on a timing AXIS: a figure may plot thickness against
+    depth and distinguish its curves by exposure time, so the swept duration arrives as a
+    series-level condition with no axis to read a half-cycle from. The figure's caption
+    routinely says what the axis could not -- "the different TMA exposure times" -- and
+    that names both the reagent and the step.
+
+    Applied only where the case's timing condition is still unqualified and the caption is
+    unambiguous, and only when the caption's step sits on the same SIDE of the cycle (an
+    exposure hint never qualifies a purge). The condition's own timing FAMILY is kept: a
+    pulse time gains the step and a role prefix, it is never rewritten into an exposure
+    time -- pulse and exposure are different measurements, and which one the source used
+    is part of what it asserted.
+    """
+    hints = getattr(_cand, "caption_step_hints", None)
+    if not hints:
+        return case
+    figs = [str(f) for f in (case.get("source_figures") or []) if f]
+    hit = {h for f in figs for h in [hints.get(f)] if h and h[1]}
+    if len(hit) != 1:
+        return case
+    species, step, ev = next(iter(hit))
+    step_role = PS.timing_role(None, step)
+    for c in (case.get("case_defining_conditions") or []):
+        if c.get("step_context"):
+            continue
+        if PS.timing_side(c.get("quantity")) != PS.step_side(step):
+            continue
+        # the hint must be ABOUT this record: a condition that already names a
+        # different reagent, or whose quantity already carries a different half-cycle
+        # role, is a different step of the recipe and the caption is not its evidence
+        if species and c.get("species") and c["species"] != species:
+            continue
+        own_role = PS.timing_role(c.get("quantity"))
+        if own_role and step_role and own_role != step_role:
+            continue
+        c["step_context"] = step
+        c["source_quantity"] = c.get("source_quantity") or c.get("quantity")
+        c["quantity"] = PS.specialize_timing_quantity(c["quantity"], step)
+        c["species"] = c.get("species") or species
+        c["activation"] = c.get("activation") or PS.ACTIVATION_NONE
+        c["step_basis"] = ("the caption of this case's own figure names the step: %r" % ev)
+    return case
+
+
+def bind_gas_roles_to_case(case):
+    """Give a case the carrier and purge gases its paper explicitly names.
+
+    These are reactor-level facts, stated once and true for every process the paper runs,
+    so they attach to each case of that paper -- but only where the paper is consistent.
+    Two different carrier gases named in one paper leave the role unresolved rather than
+    taking the first. The roles stay separate, and no purge DURATION is ever produced from
+    a purge gas identity.
+    """
+    roles = getattr(_cand, "gas_roles", None)
+    if not roles:
+        return case
+    for role, rec in sorted(roles.items()):
+        if case.get(role):
+            continue
+        case[role] = rec["species"]
+        case.setdefault("gas_role_provenance", {})[role] = {
+            "species": rec["species"], "source_label": rec["source_label"],
+            "canonical_id": rec.get("canonical_id"),
+            "identity_key": rec.get("identity_key"),
+            "evidence": rec.get("evidence"),
+            "basis": "explicitly stated gas role, resolved to a canonical chemical"}
+    return case
+
+
+def _mentions_other_material(sentence, mine):
+    """Does the sentence name a deposited material that is NOT this case's?"""
+    for other in (getattr(_cand, "paper_materials", None) or set()):
+        if other != mine and _sentence_names(sentence, other):
+            return True
+    return False
+
+
+def bind_context_controls_to_case(case):
+    """Attach a paper control to the cases whose process its own sentence names.
+
+    A paper-level number is not a paper-wide fact: the same paper deposits other materials
+    with other chemistries at other temperatures. What makes an assertion bindable is that
+    its own sentence identifies the process -- it names the deposited material AND the
+    chemistry -- so a case depositing that material with that chemistry is a case the
+    sentence is about. Chemistry is compared on canonical identity, so a sentence written
+    with the full chemical name binds a case that records the abbreviation.
+
+    A quantity the case already carries is untouched, and a quantity the case's own design
+    SWEEPS is never bound: the branch supplies that value, and a fixed statement about it
+    would contradict the sweep.
+    """
+    idx = getattr(_cand, "context_assertions", None)
+    if not idx:
+        return case
+    mat = case.get("deposited_material")
+    if not mat:
+        return case
+    conds = case.get("case_defining_conditions") or []
+    have = {c.get("quantity") for c in conds}
+    # ... and the timing SIDES already occupied. Comparing raw names alone let a broad
+    # "pulse_time@TMA" land beside an explicit "precursor_pulse_time@TMA", so the case
+    # asserted the same step twice under two spellings -- and the side, not the fine
+    # quantity, is the occupancy that matters: a case that states its pulse has its
+    # contact side stated, and a paper-level exposure figure must not join it.
+    have_sides = {PS.timing_side(c.get("quantity"))
+                  for c in conds if PS.timing_side(c.get("quantity"))}
+    swept = set(case.get("swept_quantities") or [])
+    chem = [(x, CI.PRECURSOR) for x in (case.get("precursors") or [])] \
+         + [(x, CI.COREACTANT) for x in (case.get("coreactants") or [])]
+    others = getattr(_cand, "other_precursors", None) or set()
+    for q, recs in sorted(idx.items()):
+        if q in have or q in swept:
+            continue
+        side = PS.timing_side(q)
+        if side and side in have_sides:
+            continue                       # this side of the cycle is already stated
+        for a in recs:
+            sent = a.get("context_sentence") or ""
+            # The sentence has to identify THIS process. Naming the deposited material
+            # does it; so does naming the chemistry, and a paper that runs one chemistry
+            # states its conditions that way ("200 cycles at 200 C, with TMA and water").
+            # Requiring both refused perfectly identified controls.
+            names_mat = bool(mat) and _sentence_names(sent, mat)
+            names_chem = any(_sentence_names(sent, tok, role) for tok, role in chem)
+            if not (names_mat or names_chem):
+                continue
+            # ... and it must not ALSO name a reagent this case does not use, which would
+            # leave it unclear which of the paper's processes the sentence describes
+            mine = {CI.identity_key(tok, role) for tok, role in chem}
+            if any(k not in mine and _sentence_names(sent, lbl)
+                   for k, lbl in others):
+                continue
+            if mat and _mentions_other_material(sent, mat):
+                continue
+            case.setdefault("case_defining_conditions", []).append({
+                "quantity": q, "value": a.get("value"), "unit": a.get("unit"),
+                "role": R.CASE_DEFINING,
+                "role_basis": "process control stated for this material and chemistry",
+                "provenance_type": "directly_stated",
+                "source": a.get("source_kind") or "body",
+                "scope": "experiment_context",
+                "assertion_status": a.get("assertion_status") or "direct",
+                "species": a.get("of_reactant") or a.get("species"),
+                "evidence": sent[:220],
+                "context_match": {"material": mat,
+                                  "chemistry": [tok for tok, _ in chem],
+                                  "rule": "the assertion's own sentence names this case's "
+                                          "material and chemistry"}})
+            break
+    return case
+
+
+def bind_context_compatible_controls(P, note):
+    """Bind a method/paper control to the experiments its OWN sentence is about.
+
+    A paper-level number is not a paper-wide fact. "The deposition process for Pt was
+    carried out using HDMP and O2 as precursor and counter reactant at 300 C" states a
+    temperature for one process, and the same paper's other process ran at other
+    temperatures -- which is why a broadcast is wrong and why sibling unanimity proves
+    nothing. What makes this assertion bindable is that its own sentence identifies the
+    process: it names the deposited material AND the chemistry, so an experiment
+    depositing that material with that chemistry is the experiment the sentence describes.
+
+    Chemistry is matched on canonical identity, so a sentence naming the reagent by full
+    name binds an experiment that records the abbreviation. The quantity a panel SWEEPS is
+    never bound this way, and an entity that already carries narrower evidence keeps it.
+    """
+    try:
+        assertions = C.conditions_from_prose(P.md, "paper", "body", "paper text") or []
+    except Exception as exc:
+        note("context_control_failed", P.pid if hasattr(P, "pid") else "paper",
+             "the canonical condition parser raised on the paper text: %r" % (exc,))
+        return 0
+    added = 0
+    for a in assertions:
+        q, ev = a.get("quantity"), (a.get("raw_evidence") or "")
+        if not q or not ev:
+            continue
+        ev = _enclosing_sentence(P.md, ev)
+        for ent in P.entities:
+            mat = ent.get("material")
+            if not mat or not _sentence_names(ev, mat):
+                continue                       # the sentence is not about this material
+            chem = [(x, CI.PRECURSOR) for x in (ent.get("precursors") or [])] \
+                 + [(x, CI.COREACTANT) for x in (ent.get("coreactants") or [])]
+            if not any(_sentence_names(ev, tok, role) for tok, role in chem):
+                continue                       # nor about this chemistry
+            if q in {b.get("quantity") for b in (ent.get("bound_conditions") or [])}:
+                continue                       # narrower evidence already answers it
+            if q in {ent.get("coordinate"), ent.get("coordinate_raw_quantity")}:
+                continue                       # the panel varies it; the branch supplies it
+            ent.setdefault("bound_conditions", []).append({
+                "quantity": q, "value": a.get("value"), "unit": a.get("unit"),
+                "bound_at_scope": "experiment_context",
+                "source_kind": a.get("source_kind") or "body",
+                "assertion_status": a.get("assertion_status") or "direct",
+                "species": a.get("of_reactant") or a.get("species"),
+                "evidence_kind": a.get("evidence_kind"),
+                "raw_evidence": ev,
+                "evidence_locator": a.get("evidence_locator"),
+                "context_match": {"material": mat,
+                                  "chemistry": [tok for tok, _ in chem],
+                                  "rule": "the assertion's own sentence names this "
+                                          "experiment's material and chemistry"}})
+            added += 1
+            note("context_control", ent["entity_id"],
+                 "%s = %s %s is stated in a sentence that names this experiment's "
+                 "material (%s) and chemistry; it is bound to this experiment and not "
+                 "broadcast to the paper" % (q, a.get("value"), a.get("unit") or "", mat))
+    return added
+
+
+def printed_caption_index(P):
+    """printed figure number -> its caption, for EVERY figure the paper prints.
+
+    Not only the figures carrying plotted series: a TEM or schematic figure has no entity
+    of its own, and it is exactly such a figure whose caption gets attributed to the
+    plotted figure beside it.
+    """
+    figs = {str(n) for n in (getattr(P, "_printed", None) or {}).values() if n}
+    figs.update(str(e.get("printed_figure_number") or "") for e in P.entities)
+    return {f: _norm(P.printed_caption(f) or "").lower() for f in sorted(figs) if f}
+
+
+def foreign_caption_owner(evidence, mine, captions):
+    """The OTHER printed figure whose caption states this evidence, or None.
+
+    Only an unambiguous other owner counts. Evidence appearing in no caption at all says
+    nothing -- body prose is not thereby foreign -- and evidence appearing in several
+    captions identifies no single owner.
+    """
+    ev = _norm(evidence or "").lower().strip()
+    if len(ev) < 8:
+        return None
+    owners = [f for f, cap in (captions or {}).items() if cap and ev in cap]
+    if len(owners) == 1 and owners[0] != str(mine or ""):
+        return owners[0]
+    return None
+
+
+def drop_foreign_figure_assertions(P, note):
+    """Remove figure-scope conditions whose evidence belongs to a DIFFERENT figure.
+
+    A figure-scoped assertion is bound by proximity in the document, and a caption sitting
+    near another figure's discussion gets attributed to the wrong one. Observed: a caption
+    reading "a stack ... deposited using 10-40 cycles each" -- a statement about a
+    multilayer TEM figure -- attached to every panel of the saturation-curve figure that
+    follows it, where those cycle counts describe nothing.
+
+    The check is deterministic and uses evidence the pipeline already has: if the
+    assertion's own text appears in the printed caption of a DIFFERENT figure, it is a
+    statement about that figure, and this entity is not the figure it describes. Where the
+    text appears in no caption at all, nothing is concluded and the assertion is left
+    alone -- body prose is not thereby foreign.
+    """
+    # every printed figure the paper HAS, not only the ones that carry plotted series: a
+    # TEM figure has no entity of its own, and it is exactly such a figure whose caption
+    # was being attributed to the plotted figure beside it
+    captions = printed_caption_index(P)
+    dropped = 0
+    for ent in P.entities:
+        mine = str(ent.get("printed_figure_number") or "")
+        keep = []
+        for b in (ent.get("bound_conditions") or []):
+            owner = (foreign_caption_owner(b.get("raw_evidence"), mine, captions)
+                     if b.get("bound_at_scope") == "figure" else None)
+            if owner is None:
+                keep.append(b)
+                continue
+            dropped += 1
+            note("foreign_figure_condition", ent["entity_id"],
+                 "%s = %s was bound at figure scope to figure %s, but its evidence is the "
+                 "printed caption of figure %s; it is a statement about that figure and "
+                 "is not carried onto this one"
+                 % (b.get("quantity"), b.get("value"), mine or "?", owner))
+        ent["bound_conditions"] = keep
+    return dropped
+
+
+def inherit_caption_conditions(P, note):
+    """Bind the fixed conditions a printed figure's own CAPTION states.
+
+    A caption that says "the substrate temperature was 250 C for both processes" is the
+    most specific evidence a figure has about the conditions its panels were run at, and
+    it is scoped to exactly the panels the figure contains. The semantic layer read the
+    resolver's per-entity bindings and the paper's process card, but never the caption
+    itself, so a figure whose entities bound nothing produced Condition Cases with no
+    fixed conditions at all -- while the sentence stating them sat in the caption the
+    figure-provenance layer had already resolved.
+
+    The caption is parsed by the maintained canonical condition parser, so degree glyphs,
+    ranges, species qualification and step semantics behave exactly as they do everywhere
+    else; nothing is re-implemented here.
+
+    An entity keeps whatever it already binds, and the quantity a panel SWEEPS is never
+    taken from the caption -- the branch supplies that, and a caption stating one value of
+    a swept parameter describes one panel, not all of them.
+    """
+    by_fig = defaultdict(list)
+    for e in P.entities:
+        fig = str(e.get("printed_figure_number") or "")
+        if fig:
+            by_fig[fig].append(e)
+    added = 0
+    for fig, ents in sorted(by_fig.items()):
+        caption = P.printed_caption(fig)
+        if not caption:
+            continue
+        try:
+            found = C.conditions_from_prose(caption, "figure", "caption",
+                                            "figure %s caption" % fig)
+        except Exception as exc:
+            # a parser failure is a defect to report, not "this caption states nothing"
+            note("caption_condition_failed", "figure %s" % fig,
+                 "the canonical condition parser raised on this caption: %r" % (exc,))
+            continue
+        # A caption that states SEVERAL values of one quantity ("images at 100 and 200
+        # cycles") is enumerating panels, not fixing a condition for all of them. And an
+        # assertion carrying no value is not a condition at all -- emitting it would put a
+        # null back where a magnitude belongs. Both are refused for the whole figure.
+        by_q = defaultdict(list)
+        for a in found or []:
+            if a.get("quantity") and a.get("value") not in (None, "", "null"):
+                by_q[a["quantity"]].append(a)
+        for q, recs in sorted(by_q.items()):
+            vals = {(str(r.get("value")), r.get("unit")) for r in recs}
+            if len(vals) != 1:
+                note("caption_condition_ambiguous", "figure %s" % fig,
+                     "the caption of figure %s states %d values of %s (%s); it is "
+                     "enumerating panels rather than fixing one condition, so none binds"
+                     % (fig, len(vals), q, sorted(v[0] for v in vals)))
+                continue
+            a = recs[0]
+            for e in ents:
+                if q in {b.get("quantity") for b in (e.get("bound_conditions") or [])}:
+                    continue
+                if q in {e.get("coordinate"), e.get("coordinate_raw_quantity")}:
+                    continue
+                e.setdefault("bound_conditions", []).append({
+                    "quantity": q, "value": a.get("value"), "unit": a.get("unit"),
+                    "bound_at_scope": "figure", "source_kind": "caption",
+                    "assertion_status": a.get("assertion_status") or "direct",
+                    "species": a.get("of_reactant") or a.get("species"),
+                    "step_context": a.get("step_context"),
+                    "activation": a.get("activation"),
+                    "evidence_kind": a.get("evidence_kind"),
+                    "raw_evidence": a.get("raw_evidence"),
+                    "evidence_locator": a.get("evidence_locator"),
+                    "bound_from_caption": "figure %s" % fig})
+                added += 1
+            note("caption_condition", "figure %s" % fig,
+                 "the caption of figure %s states %s = %s %s; it is bound to the %d "
+                 "entities of that figure that did not already carry it"
+                 % (fig, q, a.get("value"), a.get("unit") or "", len(ents)))
+    return added
+
+
+def inherit_experiment_controls(P, note):
+    """Give each resolved entity the fixed controls its own experiments already resolved.
+
+    Two resolved artifacts describe one panel: `entities.json` carries what the figure
+    says, `experiments.json` carries the run the resolver assembled -- and the fixed
+    recipe controls (the methods temperature, a stated pressure) live on the EXPERIMENT.
+    The semantic layer read only `bound_conditions`, so a sweep panel whose entity binds
+    nothing produced Condition Cases holding the swept value and nothing else: no
+    temperature, no fixed control of any kind, even though the experiment record for that
+    exact entity had them all along. Observed on a saturation panel whose cases carried
+    only precursor, co-reactant and the swept exposure.
+
+    The enrichment is deliberately narrow. A quantity the entity already binds is
+    untouched; the swept coordinate is never inherited, because that is what the branch
+    supplies; anything the resolver itself flagged ambiguous stays out; and a value is
+    taken only where every experiment of that entity agrees on it.
+    """
+    by_entity = defaultdict(list)
+    for e in (P.experiments or []):
+        eid = str(e.get("exp_id") or "")
+        owner = eid.split("__case")[0] if "__case" in eid else eid
+        by_entity[owner].append(e)
+    added = 0
+    for ent in P.entities:
+        exps = by_entity.get(ent.get("entity_id")) or []
+        if not exps:
+            continue
+        have = {b.get("quantity") for b in (ent.get("bound_conditions") or [])}
+        swept = {ent.get("coordinate"), ent.get("coordinate_raw_quantity")}
+        ambiguous = {a.get("quantity") for e in exps
+                     for a in (e.get("ambiguous_conditions") or [])}
+        agreed = {}
+        for e in exps:
+            for c in (e.get("controlled") or []):
+                q = c.get("quantity")
+                if not q or q in have or q in swept or q in ambiguous:
+                    continue
+                agreed.setdefault(q, []).append(c)
+        for q, recs in sorted(agreed.items()):
+            vals = {(str(r.get("value")), r.get("unit")) for r in recs}
+            if len(vals) != 1 or len(recs) != len(exps):
+                continue                      # the experiments disagree: inherit nothing
+            r = recs[0]
+            # Agreement among siblings is NOT evidence of scope. A paper-level card field
+            # is stamped onto every experiment of the paper, so every sibling "agrees" on
+            # it by construction -- observed as one methods temperature appearing on eight
+            # unrelated figures, including a saturation panel the source ran at a
+            # different temperature entirely. Inheritance therefore requires provenance
+            # that ties the value to THIS entity's own context: an assertion made at
+            # figure scope or narrower, or a broader one that at least carries the text it
+            # was read from. A broadcast with no evidence is not a statement about this
+            # experiment.
+            owner = foreign_caption_owner((r.get("origin") or {}).get("evidence"),
+                                          ent.get("printed_figure_number"),
+                                          getattr(_cand, "caption_index", None))
+            if owner:
+                note("experiment_control_foreign", ent["entity_id"],
+                     "%s = %s is stated in the printed caption of figure %s, not this "
+                     "entity's figure; it describes that figure and is not carried here"
+                     % (q, r.get("value"), owner))
+                continue
+            if not _control_scope_compatible(r):
+                note("experiment_control_refused", ent["entity_id"],
+                     "%s = %s is a %s-level %s broadcast carrying no evidence for this "
+                     "entity; sibling experiments agree on it only because they were all "
+                     "stamped with the same value" % (q, r.get("value"),
+                                                      (r.get("origin") or {}).get("level"),
+                                                      (r.get("origin") or {}).get("from")))
+                continue
+            ent.setdefault("bound_conditions", []).append({
+                "quantity": q, "value": r.get("value"), "unit": r.get("unit"),
+                "bound_at_scope": r.get("scope"), "source_kind": r.get("source"),
+                "assertion_status": r.get("assertion_status") or "direct",
+                "species": r.get("of_reactant") or r.get("species"),
+                "evidence_kind": r.get("assertion_source_kind") or r.get("source"),
+                "raw_evidence": ((r.get("origin") or {}).get("evidence")
+                                 or "resolved experiment control for this entity"),
+                "evidence_locator": (r.get("origin") or {}).get("locator"),
+                "inherited_from_experiment": [e.get("exp_id") for e in exps][:4]})
+            added += 1
+            note("experiment_control", ent["entity_id"],
+                 "the resolved experiments of this entity all state %s = %s %s at %s "
+                 "scope; the entity bound none, so the control is carried onto its cases"
+                 % (q, r.get("value"), r.get("unit") or "", r.get("scope")))
+    return added
+
+
+def resolved_chemistry_index(P):
+    """Deposited material -> the chemistry the RESOLVED experiments already established.
+
+    Case chemistry used to be re-derived at each mint site from whatever that path
+    happened to hold: an entity's own reagents, or the paper's process card narrowed by
+    the case's material. Paths that mint a case without a resolved entity -- a tabulated
+    specimen, an image-supported observation, a whole plotted curve -- hold neither, so a
+    paper whose every resolved experiment says TMA + H2O still produced chemistry-less
+    cases. The resolved experiments are the paper's own answer to that question, so they
+    are indexed once and offered to every path.
+
+    `None` keys the paper-wide answer, and it is filled ONLY when the whole paper agrees:
+    where several chemistries are resolved, a case of unknown material has no unambiguous
+    one and must stay unstated rather than take the first.
+    """
+    by_mat, all_pre, all_co, all_type = {}, set(), set(), set()
+    for e in (P.experiments or []):
+        r = e.get("recipe") or {}
+        mat = r.get("material") or e.get("material")
+        pre = sorted({x.get("species") for x in (r.get("reactants") or [])
+                      if x.get("role") == "precursor" and x.get("species")})
+        co = sorted({x.get("species") for x in (r.get("reactants") or [])
+                     if x.get("role") in ("coreactant", "reactant") and x.get("species")})
+        ptype = e.get("process_type") or r.get("process_type")
+        if not (pre or co):
+            continue
+        all_pre.update(pre)
+        all_co.update(co)
+        if ptype:
+            all_type.add(ptype)
+        if mat:
+            slot = by_mat.setdefault(mat, {"precursors": set(), "coreactants": set(),
+                                           "process_types": set()})
+            slot["precursors"].update(pre)
+            slot["coreactants"].update(co)
+            if ptype:
+                slot["process_types"].add(ptype)
+    out = {m: {"precursors": sorted(v["precursors"]),
+               "coreactants": sorted(v["coreactants"]),
+               "process_type": (sorted(v["process_types"])[0]
+                                if len(v["process_types"]) == 1 else None),
+               "basis": "resolved experiments of this paper depositing %s" % m}
+           for m, v in by_mat.items()}
+    # one chemistry across the whole paper is not a guess; two is, and stays refused
+    out[None] = {"precursors": sorted(all_pre) if len(all_pre) == 1 else [],
+                 "coreactants": sorted(all_co) if len(all_co) == 1 else [],
+                 "process_type": sorted(all_type)[0] if len(all_type) == 1 else None,
+                 "basis": "every resolved experiment of this paper agrees"}
+    return out
+
+
+#: Scopes that speak about a CONTAINER holding several cases -- a whole figure, the
+#: methods section, the paper. Everything else (a branch, a series, a panel, a specimen,
+#: one experiment) speaks about this case. Listing the coarse ones is the safe direction:
+#: a scope nobody anticipated is then treated as specific and never silently overrides a
+#: value the case states about itself, which is how an experiment-scope reading of a
+#: swept quantity stopped superseding the figure-scope fragments it should have.
+_COARSE_SCOPES = ("figure", "method", "methods", "paper", None, "")
+
+
+def _is_specific_scope(scope):
+    return scope not in _COARSE_SCOPES
+
+
+def resolve_timing_conflicts(case):
+    """Drop coarse-scope timing constants that this case's own value contradicts.
+
+    A figure that SWEEPS an exposure time cannot also state one fixed exposure time for
+    every branch of that sweep: the figure-scope number is a member of the swept list, and
+    attaching it to all branches makes each case assert two different durations for the
+    same step. Observed shape of the defect -- one case carrying `exposure_time = 2 s`
+    from its own curve legend beside `pulse_time = 10 s` and `pulse_time@TMA = 0.5 s`
+    lifted from a sentence enumerating the whole sweep.
+
+    Comparing timing records on the SIDE of the cycle they describe is what makes the
+    conflict visible at all: before it, `pulse_time`, `precursor_pulse_time` and
+    `exposure_time` were different keys and the specificity ladder never compared them.
+    The side, not the fine quantity, is the right key here -- a pulse and an exposure
+    both time the reactant-contact side of a step, so a figure-scope contact duration
+    cannot also be a branch's swept one whichever family each is written in. A coarser
+    assertion is superseded only when it does not name a DIFFERENT step or a different
+    reagent -- a fixed reactant exposure stated for the figure survives a swept precursor
+    exposure, because they are two steps. Nothing is deleted: the superseded record keeps
+    its evidence and is set aside.
+    """
+    conds = case.get("case_defining_conditions") or []
+    specific = {}
+    for c in conds:
+        q = PS.timing_side(c.get("quantity"))
+        if q and _is_specific_scope(c.get("scope")):
+            specific.setdefault(q, []).append(c)
+    if not specific:
+        return case
+    keep, dropped = [], []
+    for c in conds:
+        q = PS.timing_side(c.get("quantity"))
+        owners = specific.get(q) if q else None
+        if not owners or c in owners:
+            keep.append(c)
+            continue
+        # a genuinely different step or reagent is a different condition, not a conflict
+        if any(_same_timing_slot(c, o) for o in owners):
+            dropped.append(dict(c, superseded_by=[{
+                "quantity": o.get("quantity"), "value": o.get("value"),
+                "unit": o.get("unit"), "scope": o.get("scope"),
+                "provenance_type": o.get("provenance_type")} for o in owners],
+                superseded_reason=(
+                    "this case states %s at %s scope; the %s-scope assertion describes "
+                    "the container that holds every branch of that sweep, so it cannot "
+                    "also be this branch's fixed value"
+                    % (q, owners[0].get("scope"), c.get("scope"))))) 
+        else:
+            keep.append(c)
+    if dropped:
+        case["case_defining_conditions"] = keep
+        case.setdefault("superseded_conditions", []).extend(dropped)
+    return case
+
+
+def _same_timing_slot(coarse, specific):
+    """Do two timing records describe the same step of the same reagent?
+
+    An unstated step or reagent on the coarse record does not make it a different
+    condition -- it makes it an unqualified statement about the same slot. Only a
+    positively DIFFERENT step, reagent, or half-cycle role separates them. The role can
+    be written as a prefix on the quantity itself (`precursor_pulse_time`), so it is read
+    through the step vocabulary rather than by comparing spellings.
+    """
+    for field in ("step_context", "species"):
+        a, b = coarse.get(field), specific.get(field)
+        if a and b and a != b:
+            return False
+    ra = PS.timing_role(coarse.get("quantity"), coarse.get("step_context"))
+    rb = PS.timing_role(specific.get("quantity"), specific.get("step_context"))
+    if ra and rb and ra != rb:
+        return False
+    return True
+
+
+def _timing_qualification(cond):
+    """How much a timing record says about WHICH slot it occupies (0-3)."""
+    return sum(1 for v in (PS.timing_role(cond.get("quantity"), cond.get("step_context")),
+                           cond.get("species"), cond.get("step_context")) if v)
+
+
+def fold_timing_generalizations(case):
+    """One fingerprint dimension per physical timing slot, however it is spelled.
+
+    A case can accumulate the SAME setting under two spellings -- `pulse_time@TMA` read
+    off a series label beside `precursor_pulse_time@TMA` from the specimen table. They
+    are one physical fact, and leaving both makes the case's identity assert two
+    dimensions where the experiment has one. The less-qualified record is folded into the
+    more-qualified one it corroborates, and only under evidence:
+
+      * the two records occupy the same slot (side, role, reagent, step -- with an
+        unstated field matching anything, a positively different one matching nothing);
+      * exactly ONE more-qualified sibling matches -- two candidates mean the generic
+        record cannot be attributed and stays where it is;
+      * the values agree canonically. A disagreement is a real conflict and is kept
+        VISIBLE on both records rather than resolved by preferring a spelling.
+
+    Nothing is deleted: the folded record moves to `folded_conditions` with the id of the
+    condition it corroborates, and the winner records it under `corroborated_by`.
+    """
+    conds = case.get("case_defining_conditions") or []
+    timing = [c for c in conds if PS.timing_side(c.get("quantity"))]
+    if len(timing) < 2:
+        return case
+
+    def _wins(d, c):
+        """Does record d own record c's slot? More qualification wins; at equal
+        qualification more specific provenance wins; a full tie breaks
+        deterministically on the record's own source fields, never on list order."""
+        qd, qc = _timing_qualification(d), _timing_qualification(c)
+        if qd != qc:
+            return qd > qc
+        rd, rc = PC.provenance_rank(d), PC.provenance_rank(c)
+        if rd != rc:
+            return rd > rc
+        kd = (str(d.get("scope") or ""), str(d.get("source") or ""),
+              str(d.get("quantity") or ""))
+        kc = (str(c.get("scope") or ""), str(c.get("source") or ""),
+              str(c.get("quantity") or ""))
+        return kd > kc
+
+    folded = []
+    for c in timing:
+        owners = [d for d in timing
+                  if d is not c and d not in folded
+                  and PS.timing_side(d.get("quantity")) == PS.timing_side(c.get("quantity"))
+                  and _same_timing_slot(c, d)
+                  and _wins(d, c)]
+        if len(owners) != 1:
+            continue
+        owner = owners[0]
+        same_value = (PC._fmt(c.get("value")) == PC._fmt(owner.get("value"))
+                      and PC._unit_key(c.get("unit")) == PC._unit_key(owner.get("unit")))
+        if not same_value:
+            note = sorted({PC._fmt(c.get("value")), PC._fmt(owner.get("value"))})
+            c["same_slot_conflict"] = owner.get("quantity")
+            owner["same_slot_conflict"] = c.get("quantity")
+            c["conflicting_values"] = owner["conflicting_values"] = note
+            continue
+        owner.setdefault("corroborated_by", []).append({
+            "quantity": c.get("quantity"), "species": c.get("species"),
+            "value": c.get("value"), "unit": c.get("unit"),
+            "scope": c.get("scope"), "source": c.get("source"),
+            "provenance_type": c.get("provenance_type"),
+            "evidence": c.get("evidence")})
+        folded.append(c)
+        c["folded_into"] = {"quantity": owner.get("quantity"),
+                            "species": owner.get("species"),
+                            "reason": ("this record states the same value for the same "
+                                       "physical timing slot with less qualification; "
+                                       "one slot is one case dimension")}
+    if folded:
+        case["case_defining_conditions"] = [c for c in conds if c not in folded]
+        case.setdefault("folded_conditions", []).extend(folded)
+    return case
+
+
+#: Normalizations are grouped by the numerator their id names ("t_over_..." vs
+#: "x_over_..."), so a question about one axis is never answered from the other's
+#: vocabulary. The grouping is read off the ontology, not listed here.
+def _normalizations_for(axis_quantity):
+    fam = {"normalized_thickness": "t", "dimensionless_distance": "x",
+           "normalized_growth_per_cycle": "gpc"}.get(str(axis_quantity or ""))
+    if not fam:
+        return {}
+    return {n: d for n, d in RC.NORMALIZATIONS.items()
+            if n.split("_over_")[0] == fam}
+
+
+def resolved_normalization_basis(P, curve, src):
+    """The normalization reference a curve's own source text states, or nothing.
+
+    A canonicalised axis can be a normalized quantity whose DENOMINATOR nobody recorded --
+    "Normalized thickness (-)" says the axis is a ratio without saying to what. The
+    frozen layer rightly calls that ambiguous, and two such axes never overlay. But the
+    reference is frequently stated in the figure's own caption or in the sentence that
+    defines the plot type, and reading it there is recovery, not inference.
+
+    Only an explicit statement binds, and only when it names a reference belonging to
+    exactly one declared normalization. The word "normalized" on its own resolves nothing.
+    """
+    sem = (curve.get("semantics") or {}).get("y") or {}
+    kind = str(sem.get("axis_kind") or "")
+    quantity = sem.get("quantity") or sem.get("canonical_quantity")
+    if "unknown_denominator" not in kind:
+        return {}
+    cands = _normalizations_for(quantity)
+    if not cands:
+        return {}
+    # the curve's own caption first, then the passage where the paper defines this plot
+    for text in (P.printed_caption(str(src.get("figure") or "")), P.md):
+        nid, ev = AX.normalization_from_statement(text, cands, axis="y")
+        if nid:
+            return {"y_normalization_basis": nid,
+                    "y_normalization_basis_evidence": ev,
+                    "y_normalization_basis_source": (
+                        "figure caption" if text != P.md else "paper text")}
+    # A document may define a representation BY NAME ("Type 1 profiles are obtained by
+    # normalizing to ...") and have the caption use only the name. The definition and the
+    # use are then two halves of one statement: the document-level sentence supplies the
+    # reference, the caption picks the name. Both halves are required, both are quoted,
+    # and a caption using two defined names -- or a name the document never defined --
+    # resolves nothing.
+    defs = AX.named_normalization_definitions(P.md, cands, axis="y")
+    if defs:
+        nid, ev = AX.normalization_from_named_use(
+            P.printed_caption(str(src.get("figure") or "")), defs)
+        if nid:
+            return {"y_normalization_basis": nid,
+                    "y_normalization_basis_evidence": ev,
+                    "y_normalization_basis_source":
+                        "document-defined named representation, used by the caption"}
+    return {}
+
+
+def paper_gas_roles(P, note):
+    """Carrier and purge gases the paper states explicitly, as structured roles.
+
+    A gas role is a property of the PROCESS, not of one plotted branch, so it is carried
+    on the case's chemistry rather than as a case-defining condition: every experiment of
+    the process shares it, and a condition shared by all of them cannot distinguish any of
+    them. Only an explicit role statement is read -- a gas that merely appears somewhere
+    in the text is not thereby the carrier -- and no duration is ever inferred from the
+    identity of a purge gas.
+    """
+    roles = {}
+    for g in CC.gas_roles_from_text(P.md or ""):
+        roles.setdefault(g["role"], {})
+        roles[g["role"]].setdefault(g["species"], g["evidence"])
+    if roles:
+        note("gas_role", P.pid if hasattr(P, "pid") else "paper",
+             "; ".join("%s = %s" % (r, ", ".join(sorted(v))) for r, v in sorted(roles.items())))
+    return {r: sorted(v) for r, v in roles.items()}, \
+           {r: v for r, v in roles.items()}
+
+
+def bind_case_chemistry(case):
+    """Fill a case's chemistry from the resolved experiments, never over local evidence.
+
+    Precedence, and the reason for it: what the case's OWN members resolved is local and
+    wins outright; the paper's resolved experiments for this case's material come next,
+    because a paper that deposits one material by one chemistry has said so; the
+    paper-wide answer is used last and only when the paper is unanimous. Nothing here
+    overwrites a value, so a mint path that already knew its chemistry is untouched.
+    """
+    # NOTE: explicit carrier/purge gas roles are extracted (CC.gas_roles_from_text) and
+    # available on _cand.gas_roles, but attaching them to the case collapses 12 Condition
+    # Cases in this corpus for the same reason a shared process control does: a value
+    # identical across every experiment of a process makes previously-distinct candidates
+    # fingerprint alike. They stay unattached until the merge key is made robust to
+    # process-wide context.
+    idx = getattr(_cand, "resolved_chemistry", None)
+    if not idx:
+        return case
+    src = idx.get(case.get("deposited_material")) or idx.get(None) or {}
+    for field, key in (("precursors", "precursors"), ("coreactants", "coreactants")):
+        if not case.get(field) and src.get(key):
+            case[field] = list(src[key])
+            case.setdefault("chemistry_basis", {})[field] = src.get("basis")
+    if not case.get("process_type") and src.get("process_type"):
+        case["process_type"] = src["process_type"]
+        case.setdefault("chemistry_basis", {})["process_type"] = src.get("basis")
+    return canonicalize_case_chemistry(case)
+
+
+def canonicalize_case_chemistry(case):
+    """Collapse a case's reagents onto canonical chemical identities.
+
+    "TMA", "Al(CH3)3" and "trimethylaluminium" are one reagent written three ways. Left as
+    raw strings they are three precursors: the same deposition splits into several case
+    identities, chemistry-scoped comparison misses its own matches, and a paper appears to
+    have used a reagent it never named. Equality therefore runs on the ontology's canonical
+    id, while every source string is kept beside it so a case can still be read in the
+    terminology its own paper used.
+
+    A reagent the ontology does not declare keeps a distinct unresolved identity. It is
+    never merged into a similar-looking one -- an unknown reagent is not evidence that two
+    experiments share a chemistry.
+    """
+    for field, role in (("precursors", CI.PRECURSOR), ("coreactants", CI.COREACTANT)):
+        labels, records = CI.canonicalize_all(case.get(field) or [], role)
+        if not records:
+            continue
+        case[field] = labels
+        case.setdefault("chemistry_identity", {})[field] = [
+            {"source_label": r["source_label"], "canonical_id": r["canonical_id"],
+             "identity_key": r["identity_key"], "preferred_label": r["preferred_label"],
+             "formula": r.get("formula"), "activation": r["activation"],
+             "resolved": r["resolved"], "basis": r["basis"]} for r in records]
+        acts = sorted({r["activation"] for r in records if r["activation"]})
+        if acts:
+            case["%s_activation" % field[:-1]] = acts
+    return case
+
+
+def bind_step_species(case):
+    """Name the reagent that runs in each timed step, from the case's OWN chemistry.
+
+    `step_context` says which half-cycle a duration belongs to; the case says which
+    chemical runs in that half-cycle. The two together are what make an exposure record
+    an experiment. A purge is never given a species of its own -- nothing is dosed during
+    a purge -- it is given the species and activation of the exposure it FOLLOWS.
+
+    Only an unambiguous chemistry binds: where a case names two precursors, the step's
+    species stays unstated rather than guessed at.
+    """
+    prec = case.get("precursors") or []
+    core = case.get("coreactants") or []
+
+    def one(names):
+        if len(names) != 1:
+            return None, None
+        return PS.split_activated_species(names[0])
+
+    p_sp, _ = one(prec)
+    c_sp, c_act = one(core)
+    for c in case.get("case_defining_conditions") or []:
+        step = c.get("step_context")
+        if not step:
+            continue
+        if step == PS.PRECURSOR_EXPOSURE and p_sp:
+            c["species"] = c.get("species") or p_sp
+        elif step == PS.REACTANT_EXPOSURE and c_sp:
+            c["species"] = c.get("species") or c_sp
+            # the axis label may already have named the plasma; where it did not, the
+            # case's own delivery channel ("O2_plasma") is the evidence that it was one
+            if c_act and c.get("activation") in (None, PS.ACTIVATION_NONE):
+                c["activation"] = c_act
+        elif step == PS.PRECURSOR_PURGE and p_sp:
+            c["preceding_species"] = c.get("preceding_species") or p_sp
+        elif step == PS.REACTANT_PURGE and c_sp:
+            c["preceding_species"] = c.get("preceding_species") or c_sp
+            c["preceding_activation"] = c.get("preceding_activation") or c_act
+    return case
+
+
+#: "<reagent> exposure time", "<reagent> pulse", "<reagent> purge" -- a caption naming
+#: which reagent's step a figure varies. The reagent is resolved through the canonical
+#: chemical vocabulary, so only a real chemical qualifies a step.
+_CAPTION_STEP = re.compile(
+    r"([A-Za-z][A-Za-z0-9()\[\]·]{1,24})\s+(exposure|pulse|dose|dosing|purge|purging)"
+    r"(?:\s+times?)?", re.I)
+
+
+def caption_step_hint(caption):
+    """(species, step_context, evidence) a caption states for the step a figure varies.
+
+    A design branch takes its step from the axis it was swept on, but a figure that plots
+    against a generic axis often names the reagent and the half-cycle in its caption
+    instead -- "SEM images for the different TMA exposure times". Reading it there is
+    recovery from stated evidence, not inference.
+
+    Only an UNAMBIGUOUS caption qualifies: one that names two different reagents' steps
+    has not said which one this figure varies, and the step stays unresolved.
+    """
+    found = {}
+    for m in _CAPTION_STEP.finditer(str(caption or "")):
+        token, word = m.group(1), m.group(2)
+        ident = CI.resolve(token)
+        if not ident.get("resolved"):
+            continue                      # not a chemical the vocabulary knows
+        # the ontology already files a reagent under precursors or co-reactants, so the
+        # half-cycle follows from the chemical itself; the caption need not spell it out
+        step, _ev = PS.classify_step("%s %s" % (token, word),
+                                     role_hint=CI.ontology_role(token),
+                                     species=ident["preferred_label"])
+        if not step:
+            continue
+        found.setdefault((ident["preferred_label"], step), m.group(0).strip())
+    if len(found) != 1:
+        return None, None, None
+    (species, step), ev = next(iter(found.items()))
+    return species, step, ev
+
+
+def panel_step_sequence(P, note):
+    """entity_id -> the ALD step its swept timing axis belongs to.
+
+    A panel labelled only "Purge time" does not say WHICH half-cycle it purges, and a
+    duration with no position is the thing that makes a 2 s precursor purge and a 2 s
+    plasma purge compare equal. The printed figure carries what the single label lacks:
+    the panels run in the recipe's own order, so an unqualified purge belongs to the
+    exposure printed before it. Panels are therefore resolved together, per printed
+    figure, by the maintained step-semantics module -- never one label at a time.
+    """
+    by_fig = defaultdict(list)
+    for e in P.entities:
+        lab = (e.get("x_semantics") or {}).get("raw_label")
+        if not lab:
+            continue
+        by_fig[str(e.get("printed_figure_number") or "")].append(
+            (str(e.get("panel") or ""), e["entity_id"], lab))
+    out = {}
+    for fig, rows in sorted(by_fig.items()):
+        rows.sort(key=lambda r: (r[0], r[1]))
+        # the figure's own caption is corroborating evidence that its panels run as a
+        # recipe sequence; without it, or an alternating printed run, a bare purge label
+        # stays unresolved rather than taking its neighbour's half-cycle
+        try:
+            cap = P.printed_caption(fig)
+        except Exception:
+            cap = None
+        recs = PS.resolve_panel_sequence([r[2] for r in rows], evidence_text=cap)
+        cap_sp, cap_step, cap_ev = caption_step_hint(cap)
+        for (panel, eid, lab), rec in zip(rows, recs):
+            if not rec.get("step_context") and cap_step:
+                # the axis label named no half-cycle, but this figure's caption did
+                rec = dict(rec, step_context=cap_step, species=cap_sp,
+                           quantity=PS.timing_quantity(cap_step),
+                           evidence=(rec.get("evidence") or [])
+                                    + ["the figure caption names the step: %r" % cap_ev],
+                           resolved_with="figure caption")
+            if not rec.get("step_context"):
+                continue
+            rec = dict(rec, resolved_with="printed panel sequence of figure %s" % fig)
+            out[eid] = rec
+            note("process_step", eid,
+                 "axis %r in panel %s of figure %s is the %s step: %s"
+                 % (lab, panel or "-", fig, rec["step_context"],
+                    "; ".join(rec.get("evidence") or [])))
+    return out
+
+
 def build(pid):
     P = Paper(pid)
+    # every candidate this paper mints may fall back to its classification
+    _cand.paper_geometry = (P.geometry or {}).get("geometry_class")
+    _cand.process_card = (P.figdata or {}).get("process_card") or {}
+    # one index, offered to every case-minting path, so chemistry does not depend on
+    # which path happened to mint the case
+    _cand.resolved_chemistry = resolved_chemistry_index(P)
+    _cand.paper_geometry_evidence = (P.geometry or {}).get("evidence")
     out = {k: [] for k in ("experimental_cases", "measurements", "result_series",
                            "representations", "samples", "deposition_runs",
                            "run_evidence", "study_series", "simulation_runs",
@@ -486,6 +1638,37 @@ def build(pid):
     meas_by_entity, run_records = {}, []
     panel_clause_cache = {}
     rep_holder, rep_group = representation_groups(P, note)
+    # the resolved experiments carry fixed controls the entities never bound; they are
+    # merged onto the entities BEFORE any candidate is built, so every case-minting path
+    # sees one enriched entity rather than each path having to remember a second source
+    # NOTE: bind_context_scoped_controls() is implemented and unit-correct, but enabling
+    # it collapses 9 Condition Cases in this corpus: one process-description sentence
+    # matches every experiment of that process, and the identical conditions it adds make
+    # previously-distinct candidates merge. It stays disabled until the merge key is made
+    # robust to shared context, because losing case identity is worse than lacking one
+    # explicitly stated control.
+    _cand.caption_index = printed_caption_index(P)
+    _cand.caption_step_hints = {f: caption_step_hint(cap)
+                                for f, cap in _cand.caption_index.items()}
+    # every reagent and material the PAPER uses, so a sentence naming one that this case
+    # does not use can be recognised as describing a different process
+    _cand.other_precursors = {(CI.identity_key(x, CI.PRECURSOR), x)
+                              for x in ((P.scout.get("precursors") or [])
+                                        + (P.scout.get("coreactants") or [])) if x}
+    _cand.paper_materials = {m for m in (P.scout.get("materials") or []) if m}
+    drop_foreign_figure_assertions(P, note)
+    inherit_caption_conditions(P, note)
+    inherit_experiment_controls(P, note)
+    # context-matched paper controls are attached AFTER merging (see
+    # bind_context_controls_to_case): they are fixed across the cases they describe, so
+    # they cannot distinguish one from another, and adding them before the merge made two
+    # different sweeps look like one case.
+    _cand.context_assertions = context_assertion_index(P, note)
+    _cand.gas_roles = GR.unambiguous_roles(GR.gas_roles_from_text(P.md))
+    for _r, _v in sorted((_cand.gas_roles or {}).items()):
+        note("gas_role", "paper", "%s is stated as the %s: %r"
+             % (_v["species"], _r.replace("_", " "), _v.get("evidence")))
+    step_by_entity = panel_step_sequence(P, note)
 
     for ent in P.entities:
         eid = ent["entity_id"]
@@ -525,6 +1708,7 @@ def build(pid):
                 "n_transformations": len(c.get("transformations") or []),
                 "join_method": join_method.get(c["curve_id"]),
                 "produced_by": None, "resolved_entity_id": eid,
+                **resolved_normalization_basis(P, c, src),
             })
 
         # ---- representation (never mints a case) ----
@@ -774,14 +1958,19 @@ def build(pid):
                  "case; its results are preserved as Measurement/ResultSeries" % cls)
             continue
         _scope_ctx = {"scope_materials": scope_mat, "scope_geometry": scope_geo,
-                      "scope_geometry_match": geo_match}
+                      "scope_geometry_match": geo_match,
+                      # the paper's own classification, for a candidate that resolves to
+                      # no entity: it is still an experiment in this paper
+                      "paper_geometry": (P.geometry or {}).get("geometry_class"),
+                      "paper_geometry_evidence": (P.geometry or {}).get("evidence")}
         # the material this SCOPE names, not the paper-wide value: the two halves of a
         # saturation figure deposit different materials and must not share a design
         _scope_dep = sorted({m for m, recs in (scope_mat or {}).items()
                              if R.primary_role(recs) == R.DEPOSITED})
         sweep, x_role, x_basis, sweep_note, design = PC.sweep_cases(
             ent, scope_text, P.methods,
-            material=(_scope_dep[0] if len(_scope_dep) == 1 else ent.get("material")))
+            material=(_scope_dep[0] if len(_scope_dep) == 1 else ent.get("material")),
+            step=step_by_entity.get(eid))
         if design:
             # One printed panel may carry SEVERAL swept series (three precursors, each
             # with its own temperature sweep). Keying the design on figure+panel+quantity
@@ -986,7 +2175,11 @@ def build(pid):
                              "s" if len(codes) == 1 else ""),
                           specimens=codes)
             candidates.append(_cand(pid, None, None, "", conds, None, [], None,
-                                    "tabulated_specimen", tbl_ev))
+                                    "tabulated_specimen", tbl_ev,
+                                    {"paper_geometry": (P.geometry or {}).get(
+                                        "geometry_class"),
+                                     "paper_geometry_evidence": (P.geometry or {}).get(
+                                        "evidence")}))
             candidates[-1]["table_specimen_codes"] = codes
             candidates[-1]["sample_codes"] = list(codes)
             for code in codes:
@@ -1492,6 +2685,56 @@ def build(pid):
             },
         })
 
+    # A redrawn view observes the SAME deposition as the measurement it redraws. It mints
+    # no case of its own -- that would double-count the experiment -- but it must REACH
+    # the case the original established, or a panel showing the same data per cycle
+    # arrives with no process context at all. Run as a closure so a chain of
+    # representations resolves however the panels were ordered.
+    _by_mid = {m.get("measurement_id"): m for m in (out.get("measurements") or [])}
+
+    def _holder_chain(mid):
+        """Walk the represents-same chain, refusing to loop.
+
+        A cycle would mean two panels each claiming to re-render the other, which
+        establishes no original and must not be resolved by picking one.
+        """
+        seen, cur = set(), mid
+        while cur and cur not in seen:
+            seen.add(cur)
+            nxt = (_by_mid.get(cur) or {}).get("represents_same_measurement_as")
+            if nxt == cur:
+                return None, "self-reference"
+            cur = nxt
+            if cur in seen:
+                return None, "cycle"
+            if cur and (_by_mid.get(cur) or {}).get("measures_case"):
+                return _by_mid[cur], None
+        return None, "no case anywhere in the chain"
+
+    for _ in range(len(_by_mid) or 1):
+        moved = 0
+        for m in (out.get("measurements") or []):
+            # an existing case is never overwritten: a panel that established its own
+            # deposition outranks anything it happens to re-render
+            if m.get("measures_case"):
+                continue
+            if not m.get("represents_same_measurement_as"):
+                continue
+            holder, why = _holder_chain(m.get("measurement_id"))
+            if holder is None:
+                if why in ("cycle", "self-reference"):
+                    m["measures_case_basis"] = (
+                        "not inherited: the represents-same chain forms a %s, so no "
+                        "original measurement is established" % why)
+                continue
+            m["measures_case"] = list(holder["measures_case"])
+            m["measures_case_basis"] = (
+                "inherited from %s, which this panel re-renders"
+                % holder.get("measurement_id"))
+            moved += 1
+        if not moved:
+            break
+
     outdir = P.root / "semantic"
     outdir.mkdir(parents=True, exist_ok=True)
     diag = P.root / "diagnostics"
@@ -1544,8 +2787,39 @@ def _tech_from_axes(ent, measurand=None):
     return []
 
 
+#: elements written as the leading metal of a deposited compound
+_METAL = __import__("re").compile(r"^([A-Z][a-z]?)")
+
+
+def _card_reagents(card, material, key):
+    """Reagents the paper's process card offers for ONE deposited material.
+
+    A card that lists two precursors for two materials says nothing about which goes with
+    which -- until the material's own metal is matched against the reagent formula, which
+    is the same rule the resolver already uses for channel selection. A material whose
+    metal matches no reagent, or matches several, gets none: guessing between them would
+    assert a chemistry the paper did not.
+    """
+    if not material:
+        return []
+    m = _METAL.match(str(material))
+    if not m:
+        return []
+    metal = m.group(1)
+    hits = [r for r in (card or {}).get(key) or [] if metal in str(r)]
+    return hits if len(hits) == 1 else []
+
+
 def _cand(pid, eid, printed, panel, conds, mid, rs_ids, ent, kind, ev, scope=None):
     scope = scope or {}
+    # A candidate built without a figure scope and without a resolved entity is still an
+    # experiment in this paper, and the paper's deterministic classification still applies
+    # to it. Held here rather than at each call site so a new builder cannot omit it.
+    scope = dict(scope)
+    scope.setdefault("process_card", getattr(_cand, "process_card", None))
+    scope.setdefault("paper_geometry", getattr(_cand, "paper_geometry", None))
+    scope.setdefault("paper_geometry_evidence",
+                     getattr(_cand, "paper_geometry_evidence", None))
     return {"candidate_id": "C%04d::%s" % (len(_cand.counter), pid) if False else
             "CAND-%s-%03d" % (pid[:6].upper(), next(_counter)),
             "paper_id": pid, "resolved_entity_id": eid, "source_figure": printed,
@@ -1554,13 +2828,30 @@ def _cand(pid, eid, printed, panel, conds, mid, rs_ids, ent, kind, ev, scope=Non
             "other_conditions": [c for c in conds if c.get("role") != R.CASE_DEFINING],
             "measurement_id": mid, "result_series_ids": rs_ids, "kind": kind,
             "deposited_material": (ent or {}).get("material"),
-            "geometry": scope.get("scope_geometry") or (ent or {}).get("geometry_class"),
+            "geometry": (scope.get("scope_geometry") or (ent or {}).get("geometry_class")
+                         or scope.get("paper_geometry")),
+            # provenance is reported, never promoted: a value that came from the paper's
+            # classification says so even after it reaches a case
             "geometry_source": ("figure/panel caption" if scope.get("scope_geometry")
-                                else "paper-level default"),
-            "geometry_evidence": scope.get("scope_geometry_match"),
+                                else ((ent or {}).get("geometry_source")
+                                      or "paper-level deterministic classification")),
+            "geometry_evidence": (scope.get("scope_geometry_match")
+                                  or (ent or {}).get("geometry_evidence")
+                                  or scope.get("paper_geometry_evidence")),
             "scope_materials": scope.get("scope_materials") or {},
-            "precursors": (ent or {}).get("precursors") or [],
-            "coreactants": (ent or {}).get("coreactants") or [],
+            # the entity's own chemistry, or the paper's process card narrowed to this
+            # case's material where the entity resolved none
+            "precursors": ((ent or {}).get("precursors")
+                           or _card_reagents(scope.get("process_card"),
+                                             (ent or {}).get("material")
+                                             or scope.get("scope_material"),
+                                             "precursors")),
+            "coreactants": ((ent or {}).get("coreactants")
+                            or _card_reagents(scope.get("process_card"),
+                                              (ent or {}).get("material")
+                                              or scope.get("scope_material"),
+                                              "coreactants")
+                            or (scope.get("process_card") or {}).get("coreactants") or []),
             "process_type": (ent or {}).get("process_type"),
             "evidence": [ev]}
 
@@ -1729,10 +3020,14 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
         warn.append("no case-defining condition value is known for this case")
     label = next((m.get("label") for m in members if m.get("label")), None)
     synth = next((m.get("synthesis_label") for m in members if m.get("synthesis_label")), None)
-    return {
+    _merged_material = deposited[0] if len(deposited) == 1 else None
+    return fold_timing_generalizations(
+        resolve_timing_conflicts(qualify_case_timing_steps(bind_gas_roles_to_case(
+        bind_context_controls_to_case(
+        bind_step_species(bind_case_chemistry({
         "case_id": "CASE-%s-%03d" % (pid[:6].upper(), i),
         "paper_id": pid, "label": label, "synthesis_label": synth,
-        "deposited_material": deposited[0] if len(deposited) == 1 else None,
+        "deposited_material": _merged_material,
         "deposited_materials": deposited,
         "context_materials": asserted, "material_roles": roles,
         "material_candidates": candidates_mat,
@@ -1743,14 +3038,29 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
                                     "paper_candidate_only" if candidates_mat else None),
         "multi_material_context": len(asserted) > 1,
         "process_type": next((m["process_type"] for m in members if m.get("process_type")), None),
-        "precursors": sorted({p for m in members for p in (m.get("precursors") or [])}),
-        "coreactants": sorted({p for m in members for p in (m.get("coreactants") or [])}),
+        # A member may resolve no chemistry of its own while the merged case does know its
+        # deposited material. The paper's process card is then narrowed to that material by
+        # its metal -- the same rule the resolver uses to pick a channel -- so a panel whose
+        # own record named no reagent still reports the one the paper ran.
+        "precursors": (sorted({p for m in members for p in (m.get("precursors") or [])})
+                       or _card_reagents(getattr(_cand, "process_card", None),
+                                         _merged_material, "precursors")),
+        "coreactants": (sorted({p for m in members for p in (m.get("coreactants") or [])})
+                        or _card_reagents(getattr(_cand, "process_card", None),
+                                          _merged_material, "coreactants")
+                        or (getattr(_cand, "process_card", None) or {}).get(
+                            "coreactants") or []),
         "case_defining_conditions": [conds[k] for k in sorted(conds)],
+        # a merged case has one geometry when its members agree; where they disagree it
+        # genuinely has none, which is a statement about the members and not a gap
         "geometry": geos[0] if len(geos) == 1 else None,
         "geometries": geos,
-        "geometry_source": next((m.get("geometry_source") for m in members
-                                 if m.get("geometry_source") == "figure/panel caption"),
-                                "paper-level default"),
+        # the source travels with the value instead of being restated as a default
+        "geometry_source": next(
+            (m.get("geometry_source") for m in members
+             if m.get("geometry_source") == "figure/panel caption"),
+            next((m.get("geometry_source") for m in members if m.get("geometry_source")),
+                 "paper-level deterministic classification")),
         "geometry_evidence": next((m.get("geometry_evidence") for m in members
                                    if m.get("geometry_evidence")), None),
         "measurement_ids": mids, "sample_ids": sids, "deposition_run_ids": [],
@@ -1766,7 +3076,7 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
                                     for c in m["case_conditions"]
                                     if c.get("provenance_type") == "derived_from_sweep_axis"}),
         "identity_evidence": strengths, "confidence": conf, "warnings": warn,
-    }
+    })))))))
 
 
 # ---------------------------------------------------------------- representation groups
@@ -2213,6 +3523,17 @@ _COREACTANT_TOKEN = re.compile(r"\b(?:co-?|counter[-\s]?)?reactant\b|\boxidant\b
 #: quantities that are a DOSE of one reagent, so a sweep of them belongs to one side of
 #: the cycle. A temperature or a cycle count is shared by both and cannot be so scoped.
 _REAGENT_SCOPED_Q = {"exposure_time", "pulse_time", "dose", "purge_time"}
+
+
+def reagent_scoped_quantity(q):
+    """Whether the reagent is part of this quantity's identity, in any spelling.
+
+    A timed-step quantity is reagent-scoped however it is written -- bare
+    (`pulse_time`) or role-specialised (`precursor_pulse_time`) -- because the valve
+    opens for one named chemical either way. Asked structurally so a spelling this
+    module has never seen behaves the same.
+    """
+    return str(q or "") in _REAGENT_SCOPED_Q or PS.timing_kind(q) is not None
 
 
 def compound_reagent_discriminator(q_raw):

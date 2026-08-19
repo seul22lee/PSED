@@ -241,7 +241,7 @@
    "study_series": 0,
    "simulation_runs": 0,
    "links_merged": 11,
-   "links_blocked": 21,
+   "links_blocked": 14,
    "unresolved_links": 10,
    "points": 624,
    "data_source": {
@@ -539,7 +539,14 @@
       "reason": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen",
       "preserved_context": {
        "material": null,
-       "conditions": []
+       "conditions": [
+        {
+         "quantity": "deposition_temperature",
+         "value": "250",
+         "unit": "°C",
+         "role": "CASE_DEFINING"
+        }
+       ]
       }
      }
     ]
@@ -1019,12 +1026,12 @@
      {
       "case_id": "CASE-10.103-001",
       "geometry": "lateral_channel",
-      "evidence": "LHAR"
+      "evidence": "keyword: lateral HAR"
      },
      {
       "case_id": "CASE-10.103-002",
       "geometry": "lateral_channel",
-      "evidence": "LHAR"
+      "evidence": "keyword: lateral HAR"
      },
      {
       "case_id": "CASE-10.103-003",
@@ -1313,12 +1320,6 @@
          "role": "CASE_DEFINING"
         },
         {
-         "quantity": "working_pressure",
-         "value": "1e-7",
-         "unit": "mbar",
-         "role": "CASE_DEFINING"
-        },
-        {
          "quantity": "precursor",
          "value": "[Y(DPfAMD)3]",
          "unit": null,
@@ -1346,12 +1347,6 @@
          "role": "CASE_DEFINING"
         },
         {
-         "quantity": "working_pressure",
-         "value": "1e-7",
-         "unit": "mbar",
-         "role": "CASE_DEFINING"
-        },
-        {
          "quantity": "precursor",
          "value": "[Y(DPDMG)3]",
          "unit": null,
@@ -1376,12 +1371,6 @@
          "quantity": "pulse_time",
          "value": "30",
          "unit": "s",
-         "role": "CASE_DEFINING"
-        },
-        {
-         "quantity": "working_pressure",
-         "value": "1e-7",
-         "unit": "mbar",
          "role": "CASE_DEFINING"
         },
         {
@@ -1496,7 +1485,14 @@
       "reason": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen",
       "preserved_context": {
        "material": "Pt",
-       "conditions": []
+       "conditions": [
+        {
+         "quantity": "deposition_temperature",
+         "value": "150",
+         "unit": "°C",
+         "role": "CASE_DEFINING"
+        }
+       ]
       }
      },
      {
@@ -1511,6 +1507,12 @@
       "preserved_context": {
        "material": "Pt",
        "conditions": [
+        {
+         "quantity": "deposition_temperature",
+         "value": "150",
+         "unit": "°C",
+         "role": "CASE_DEFINING"
+        },
         {
          "quantity": "precursor",
          "value": "Pt(acac)2",
@@ -1531,7 +1533,20 @@
       "reason": "no statement in the section reporting this figure identifies which synthesis produced the measured specimen",
       "preserved_context": {
        "material": "Pt",
-       "conditions": []
+       "conditions": [
+        {
+         "quantity": "cycle_number",
+         "value": "65",
+         "unit": "cycle",
+         "role": "CASE_DEFINING"
+        },
+        {
+         "quantity": "deposition_temperature",
+         "value": "150",
+         "unit": "°C",
+         "role": "CASE_DEFINING"
+        }
+       ]
       }
      }
     ]
@@ -1824,21 +1839,9 @@
        "material": "SiO2",
        "conditions": [
         {
-         "quantity": "cycle_number",
-         "value": "500",
-         "unit": "cycle",
-         "role": "CASE_DEFINING"
-        },
-        {
          "quantity": "base_pressure",
          "value": "0.3",
          "unit": "mbar",
-         "role": "CASE_DEFINING"
-        },
-        {
-         "quantity": "carrier_gas_partial_pressure",
-         "value": "1",
-         "unit": "bar",
          "role": "CASE_DEFINING"
         },
         {
@@ -1869,21 +1872,9 @@
        "material": "SiO2",
        "conditions": [
         {
-         "quantity": "cycle_number",
-         "value": "500",
-         "unit": "cycle",
-         "role": "CASE_DEFINING"
-        },
-        {
          "quantity": "base_pressure",
          "value": "0.3",
          "unit": "mbar",
-         "role": "CASE_DEFINING"
-        },
-        {
-         "quantity": "carrier_gas_partial_pressure",
-         "value": "1",
-         "unit": "bar",
          "role": "CASE_DEFINING"
         },
         {
@@ -1914,21 +1905,9 @@
        "material": "SiO2",
        "conditions": [
         {
-         "quantity": "cycle_number",
-         "value": "500",
-         "unit": "cycle",
-         "role": "CASE_DEFINING"
-        },
-        {
          "quantity": "base_pressure",
          "value": "0.3",
          "unit": "mbar",
-         "role": "CASE_DEFINING"
-        },
-        {
-         "quantity": "carrier_gas_partial_pressure",
-         "value": "1",
-         "unit": "bar",
          "role": "CASE_DEFINING"
         },
         {

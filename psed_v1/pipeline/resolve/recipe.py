@@ -18,6 +18,8 @@ Channels are 1-indexed (channel 1 = channels[0]).
 import paths as P
 import json as _json
 from pathlib import Path as _Path
+from pipeline.canonical import process_steps as PS
+from pipeline.canonical import conditions as _COND
 from dataclasses import dataclass, field, asdict
 
 # quantity -> recipe_role (control_setting = in the recipe; else structure /
@@ -62,7 +64,8 @@ def _norm(s):
 class Reactant:
     label: str                       # A, B, C, D …
     role: str                        # precursor | coreactant | inhibitor | reactant
-    species: str = None
+    species: str = None              # the CHEMICAL, never the delivery channel
+    activation: str = None           # how it was delivered: None (thermal) | plasma | …
     dose_time: float = None
     purge_time: float = None
     partial_pressure: float = None
@@ -266,7 +269,67 @@ def _first(*pairs):
     return pairs[-1]
 
 
+def sanitize_controlled(exp):
+    """A copy of the experiment whose impossible scalars have been repaired or refused.
+
+    The guard sits here, at the first deterministic stage that reads the persisted
+    conditions, rather than only at the point where a Reactant is filled: every consumer
+    of `controlled` inherits the same repair, and a value that was never physical does not
+    get to travel further just because a different reader picked it up first. Where the
+    condition's own evidence still shows the range the number came from, the record is
+    restored to that range instead of being thrown away.
+    """
+    out, notes = [], []
+    for c in (exp.get("controlled") or []):
+        origin = c.get("origin") or {}
+        ev = next((v for v in (c.get("evidence"), c.get("raw_evidence"), c.get("context"),
+                               c.get("snippet"), origin.get("evidence"),
+                               origin.get("context")) if v), None)
+        v, rng, why = _COND.sanitize_magnitude(c.get("quantity"), c.get("value"), ev)
+        if why is None:
+            out.append(c)
+            continue
+        rec = dict(c, value=v, value_status="refused_non_positive",
+                   sanitized_reason=why)
+        if rng:
+            rec.update(value_range=rng, value_kind="range",
+                       value_status="repaired_from_written_range")
+        out.append(rec)
+        notes.append(why)
+    if not notes:
+        return exp
+    return dict(exp, controlled=out, sanitized_conditions=notes)
+
+
+def _positive_magnitude(field, value, src=None, key=None):
+    """A duration or a pressure that is not positive is a parse artefact, not a datum.
+
+    Observed: "ultrashort doses (10-120 ms)" arriving as -120 ms, because the hyphen of a
+    written range was read as a minus sign. A negative dose time is not a weaker
+    measurement of a real one -- it describes nothing physical, and storing it lets every
+    downstream comparison, plot and completeness score inherit the sign error. It is
+    refused here so the field reads as unresolved, which is true, instead of wrong; the
+    refusal is recorded beside the value's own provenance so the loss is traceable.
+    """
+    if value is None:
+        return None
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return None
+    if v > 0:
+        return value
+    if src is not None and key is not None:
+        src[key] = {"source": "refused", "from": "non_positive_magnitude",
+                    "value": v, "field": field,
+                    "reason": "a %s of %g is not a physical duration or pressure; a "
+                              "written range such as '10-120 ms' read as a negative "
+                              "number is the usual cause" % (field, v)}
+    return None
+
+
 def from_experiment(exp):
+    exp = sanitize_controlled(exp)
     src = {"_exp_id": exp.get("exp_id")}
 
     def take(key, *pairs):
@@ -276,20 +339,51 @@ def from_experiment(exp):
         return v
 
     reactants = []
+    n_reactants = len({r.get("label") for r in (exp.get("reactants") or [])})
     for r in exp.get("reactants") or []:
         lab = r["label"]
         if r.get("species"):
             src[f"species::{lab}"] = {"source": "experiment", "from": "experiment_record",
                                       "value": r.get("species"), "experiment_id": exp.get("exp_id")}
+        # "O2_plasma" fuses a chemical with the way it was delivered. Stored as one token
+        # it makes plasma O2 a different reagent from thermal O2, which is exactly what
+        # the identity of a process must NOT say: same chemical, different activation.
+        sp, act = PS.split_activated_species(r.get("species"))
+        # An UNQUALIFIED timing may only fill a reactant when there is just one reactant
+        # to fill. With two half-cycles, "pulse_time = 10 s" does not say whose pulse it
+        # is, and copying it into both states that the precursor and the co-reactant were
+        # dosed for the same time -- a claim the source never made. Where it cannot be
+        # attributed the slot stays unresolved and the refusal is recorded.
+        def _timing(quantity, key):
+            v, meta = _cond_meta(exp, quantity, lab)
+            if v is not None:
+                return take(key, (v, meta))
+            v2, meta2 = _cond_meta(exp, quantity)
+            if v2 is None:
+                return None
+            if n_reactants == 1:
+                return take(key, (v2, meta2))
+            src[key] = {"source": "refused", "from": "unattributable_generic_timing",
+                        "quantity": quantity, "value": v2, "reactant": lab,
+                        "reason": "an unqualified %s cannot be attributed to one of %d "
+                                  "reactants; only a value qualified by reactant fills a "
+                                  "half-cycle" % (quantity, n_reactants)}
+            return None
+
         reactants.append(Reactant(
-            label=lab, role=r.get("role"), species=r.get("species"),
-            dose_time=take(f"pulse_time::{lab}",
-                           _cond_meta(exp, "pulse_time", lab), _cond_meta(exp, "pulse_time")),
-            purge_time=take(f"purge_time::{lab}",
-                            _cond_meta(exp, "purge_time", lab), _cond_meta(exp, "purge_time")),
-            partial_pressure=take(f"partial_pressure::{lab}",
-                                  _cond_meta(exp, f"reactant_{lab}_partial_pressure"),
-                                  _cond_meta(exp, "partial_pressure", lab))))
+            label=lab, role=r.get("role"), species=sp, activation=act,
+            dose_time=_positive_magnitude(
+                "dose_time", _timing("pulse_time", f"pulse_time::{lab}"),
+                src, f"pulse_time::{lab}"),
+            purge_time=_positive_magnitude(
+                "purge_time", _timing("purge_time", f"purge_time::{lab}"),
+                src, f"purge_time::{lab}"),
+            partial_pressure=_positive_magnitude(
+                "partial_pressure",
+                take(f"partial_pressure::{lab}",
+                     _cond_meta(exp, f"reactant_{lab}_partial_pressure"),
+                     _cond_meta(exp, "partial_pressure", lab)),
+                src, f"partial_pressure::{lab}")))
     H, W = _cond(exp, "feature_height"), _cond(exp, "feature_width")
     meas = (exp.get("measurand") or {}).get("quantity")
     targets = {}

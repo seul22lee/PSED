@@ -31,6 +31,8 @@ from collections import defaultdict
 import pilot_ranges as PRG
 import pilot_roles as R
 
+from pipeline.canonical import process_steps as PS
+
 # ------------------------------------------------------------------- axis semantic role
 CASE_DEFINING_PROCESS_SETTING = "CASE_DEFINING_PROCESS_SETTING"
 PROCESS_PROGRESSION = "PROCESS_PROGRESSION"
@@ -222,7 +224,8 @@ def _fmt(v):
     return ("%g" % f) if f is not None else str(v)
 
 
-def design_from_sweep(entity, scope_text, methods_text, note=None, material=None):
+def design_from_sweep(entity, scope_text, methods_text, note=None, material=None,
+                      step=None):
     """An ExperimentalDesign for one plotted sweep, or None.
 
     One design per (varied quantity, scope). Its branches are the distinct plotted values.
@@ -267,7 +270,32 @@ def design_from_sweep(entity, scope_text, methods_text, note=None, material=None
     }
     # Every branch carries its DESIGN identity. Without it the merge key degenerates to
     # (figure, quantity, value) and fuses independent designs whose numbers coincide.
-    branches = [{"quantity": q, "value": v, "unit": unit,
+    # The ALD step is structure, not a name: a timing branch carries WHICH half-cycle it
+    # belongs to, whether that step was activated, and -- for a purge -- which exposure it
+    # follows. Without it `purge_time = 2 s` is the same record in four different places
+    # of the recipe. `quantity` is SPECIALISED by the resolved step's role -- pulse_time
+    # with precursor-step evidence becomes precursor_pulse_time -- and never rewritten to
+    # a different timing family: a swept pulse stays a pulse, because "pulse" vs
+    # "exposure" is part of what the source asserted. The source's own word is kept as
+    # `source_quantity`.
+    stepf = {}
+    if step and step.get("step_context"):
+        stepf = {"step_context": step["step_context"],
+                 "activation": step.get("activation"),
+                 "plasma_type": step.get("plasma_type"),
+                 "follows": step.get("follows"),
+                 "preceding_species": step.get("preceding_species"),
+                 "preceding_activation": step.get("preceding_activation"),
+                 "step_evidence": step.get("evidence"),
+                 "step_basis": step.get("resolved_with"),
+                 "source_quantity": q}
+        design["step_context"] = step["step_context"]
+    # ... and only a step on the SAME side of the cycle may qualify it: a purge-step
+    # resolution cannot specialise a pulse quantity, that disagreement stays visible
+    bq = (PS.specialize_timing_quantity(q, stepf.get("step_context"))
+          if stepf.get("step_context") and PS.timing_side(q) is not None
+          and PS.timing_side(q) == PS.step_side(stepf["step_context"]) else q)
+    branches = [dict(stepf, **{"quantity": bq, "value": v, "unit": unit,
                  "role": R.CASE_DEFINING,
                  "role_basis": basis,
                  "provenance_type": "derived_from_design_branch",
@@ -278,7 +306,7 @@ def design_from_sweep(entity, scope_text, methods_text, note=None, material=None
                  "design_material": material,
                  "raw_axis_label": raw_label,
                  "evidence": "branch %s of the %s design plotted in this panel"
-                             % (_fmt(v), q)} for v in vals]
+                             % (_fmt(v), q)}) for v in vals]
     return design, branches, role, basis
 
 

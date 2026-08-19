@@ -440,7 +440,7 @@ function render() {
   page = Math.min(page, pages-1);
   caseIds.slice(page*per, page*per+per).forEach(cid => {
     const c = CASES[cid];
-    const d = el("details","case");
+    const d = keepOpen(el("details","case"), "case:"+cid);
     d.dataset.case = cid;
     const hits = caseLocal[cid] || [];
     const mine = new Set(hits.map(s=>SERIES[s].act_id));
@@ -482,7 +482,7 @@ function render() {
     sweeps.sort((a,b)=>SERIES[b].n_cases-SERIES[a].n_cases).forEach(sid => {
       const s = SERIES[sid];
       const mc = matchingCases(s), extra = s.all_case_ids.length - mc.length;
-      const d = el("details","case");
+      const d = keepOpen(el("details","case"), "sweep:"+sid);
       d.dataset.sweep = sid;
       d.innerHTML = `<summary><div>
           <div class="ctitle">Sweep result <code>${esc(s.series_id)}</code></div>
@@ -511,7 +511,7 @@ function render() {
 
   // --- results whose producer carries no case link
   if (nocase.length) {
-    const d = el("details","case");
+    const d = keepOpen(el("details","case"), "nocase");
     const actIds = [...new Set(nocase.map(s=>SERIES[s].act_id))];
     const macts = actIds.filter(a=>ACTS[a] && ACTS[a].kind!=="SIMULATION_RUN");
     const sruns = actIds.filter(a=>ACTS[a] && ACTS[a].kind==="SIMULATION_RUN");
@@ -527,7 +527,28 @@ function render() {
   }
   drawTray(); drawCompare();
 }
+// Which detail panels the user has opened. `render()` rebuilds the results column from
+// scratch, so without this an <details open> collapses whenever anything re-renders --
+// including adding a series to the tray, which is not a request to close what you were
+// reading. The panel closes when the user closes it, and at no other time.
+const OPEN = new Set();
+function keepOpen(d, key) {
+  d.open = OPEN.has(key);
+  d.addEventListener("toggle", () => { d.open ? OPEN.add(key) : OPEN.delete(key); });
+  return d;
+}
 const plural = (n, word) => `${n} ${word}${n===1?"":"s"}`;
+// A condition may be a scalar or a stated RANGE. Rendering only `value` turned
+// "10-40 cycles" into an empty cell, which reads as missing data rather than as the
+// interval the source actually stated.
+function condValueText(x) {
+  if (x.value !== null && x.value !== undefined && x.value !== "")
+    return `${x.value}${x.unit?" "+x.unit:""}`;
+  if (x.value_lower !== null && x.value_lower !== undefined
+      && x.value_upper !== null && x.value_upper !== undefined)
+    return `${x.value_lower}\u2013${x.value_upper}${x.unit?" "+x.unit:""}`;
+  return "";
+}
 function condSummaryLine(cid) {
   const c = CASES[cid]; if (!c) return "";
   return [c.material, (c.chemistry.precursor||[]).join("+"),
@@ -535,13 +556,13 @@ function condSummaryLine(cid) {
     c.geometry].filter(Boolean).join(" · ");
 }
 function condOf(cid,q){ const c=CASES[cid]; if(!c) return null;
-  const x=c.conditions.find(v=>v.quantity===q); return x?`${x.value} ${x.unit||""}`.trim():null; }
+  const x=c.conditions.find(v=>v.quantity===q); return x?(condValueText(x)||null):null; }
 function condTable(cid) {
   const c = CASES[cid]; if (!c.conditions.length) return '<p class="dim">no conditions</p>';
   return `<h3>Nominal conditions <span class="dim" style="font-weight:400">· scope: Condition Case</span></h3>
     <table><tbody>${c.conditions.map(x=>`<tr><td><code>${esc(x.quantity)}</code>${
       x.species?` <span class="tag">@${esc(x.species)}</span>`:""}</td>
-      <td>${esc(x.value)} ${esc(x.unit||"")}</td>
+      <td>${esc(condValueText(x))}</td>
       <td class="dim">${esc(x.provenance_type||"")}</td></tr>`).join("")}</tbody></table>`;
 }
 function realizationBlock(c) {
@@ -626,6 +647,8 @@ function drawTray() {
   const visible = new Set(seriesMatching());
   tray.forEach(sid => {
     const s = SERIES[sid], out = !visible.has(sid);
+    // a tray entry whose series no longer exists is stale state, not a drawable row
+    if (!s) return;
     const r = el("div","trow"+(out?" out":""),
       `${chip(sid)}<span class="grow"><b>${esc(s.paper_id.slice(0,22))}</b> Fig.${esc(s.figure)}${esc(s.panel||"")}
        <span class="dim">${esc(s.y.y_quantity)}</span></span>
@@ -646,24 +669,102 @@ function drawTray() {
 // Every selected pair must be authorised for a shared physical axis. "native" is a
 // per-series label, not a shared target: a film thickness in nm and a refractive index
 // both have one, and intersecting on the label drew them on one axis.
+// Two curves may share an axis on either of two authorities: the frozen comparability
+// verdict, or -- when the pair was never indexed, as scalar series are not -- the fact
+// that both axes resolve to the SAME semantic target. The second is the same evidence
+// the verdict is built from (quantity, normalization, dimension and unit all identical),
+// so it authorises nothing the verdict would refuse: a film thickness still cannot meet a
+// refractive index, and two normalizations with different bases still carry different
+// targets. A missing index entry is absence of evidence, not evidence of incompatibility.
+function sharesSemanticTarget(a, b) {
+  const tids = (sid, axis) => new Set(Object.values(
+      SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {})
+    .filter(r => r.available && r.values && r.overlay_authorized !== false && r.target_id)
+    .map(r => r.target_id));
+  // BOTH axes must be fully resolved on BOTH series. An axis with no resolved target
+  // contributes an empty set, and an empty set shares nothing -- an unresolved axis can
+  // never become overlayable just because nobody indexed the pair.
+  return ["x","y"].every(ax => {
+    const A = tids(a,ax), B = tids(b,ax);
+    if (!A.size || !B.size) return false;
+    return [...A].some(t => B.has(t));
+  });
+}
+// The frozen verdict is the authority wherever one exists, in both directions: a pair the
+// comparator refused stays refused however identical its targets look. The fallback
+// applies only where the comparator never spoke -- scalar series are not in the profile
+// index at all -- and then only on fully resolved, identical targets on both axes.
+function pairOverlayEligible(a, b) {
+  const p = pairOf(a,b);
+  if (p) return shapeOnly ? !!(p.physical_overlay_allowed || p.shape_only_eligible)
+                          : !!p.physical_overlay_allowed;
+  return sharesSemanticTarget(a, b);
+}
 function physicalOverlayAllowed() {
   if (tray.length < 2) return true;
-  for (let i=0;i<tray.length;i++) for (let j=i+1;j<tray.length;j++) {
-    const p = pairOf(tray[i],tray[j]);
-    if (!p) return false;
-    if (shapeOnly ? !(p.physical_overlay_allowed || p.shape_only_eligible)
-                  : !p.physical_overlay_allowed) return false;
-  }
+  for (let i=0;i<tray.length;i++) for (let j=i+1;j<tray.length;j++)
+    if (!pairOverlayEligible(tray[i], tray[j])) return false;
   return true;
+}
+// A verdict that says the comparison is WRONG is absolute and no representation may
+// overturn it. A verdict that says the comparison is UNDERDETERMINED -- a bridge not
+// resolved at verdict time, or a pair never indexed because one series lacked a canonical
+// array -- is a statement about bookkeeping, not about physics. Where both series can in
+// fact materialise the same scientific target on both axes, that materialisation is the
+// evidence, and refusing to plot it reports a limitation of the index as a property of
+// the experiments.
+const ABSOLUTE_REFUSALS = ["REFUSED", "NOT_COMPARABLE", "RELATED_NOT_COMPARABLE"];
+function pairAbsolutelyRefused(a, b) {
+  const p = pairOf(a, b);
+  if (!p) return false;                       // never indexed is not a refusal
+  const st = shapeOnly ? p.shape_only_status : p.status;
+  return ABSOLUTE_REFUSALS.indexOf(st) >= 0;
+}
+function groupAbsolutelyRefused(ids) {
+  for (let i=0;i<ids.length;i++) for (let j=i+1;j<ids.length;j++)
+    if (pairAbsolutelyRefused(ids[i], ids[j])) return true;
+  return false;
+}
+function targetsOf(sid, axis) {
+  const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
+  return new Set(Object.values(reps)
+    .filter(r => r.available && r.values && r.overlay_authorized !== false)
+    .map(r => r.target_id).filter(Boolean));
+}
+// Maximal compatible overlay groups. One incompatible series must not disable the rest:
+// the selection is partitioned into the largest subsets that share a scientific target on
+// both axes, and whatever is left over is drawn on its own panel.
+function overlayGroups(ids) {
+  let rest = (ids || tray).slice();
+  const groups = [];
+  while (rest.length) {
+    let best = null;
+    const seed = rest[0];
+    targetsOf(seed, "x").forEach(xt => targetsOf(seed, "y").forEach(yt => {
+      const members = rest.filter(sid => targetsOf(sid, "x").has(xt)
+                                      && targetsOf(sid, "y").has(yt));
+      // grow the group only while no pair inside it is absolutely refused
+      const kept = [];
+      members.forEach(m => { if (!kept.some(k => pairAbsolutelyRefused(k, m))) kept.push(m); });
+      if (!best || kept.length > best.series.length) best = {series: kept, x: xt, y: yt};
+    }));
+    if (!best || !best.series.length) best = {series: [seed], x: null, y: null};
+    groups.push(best);
+    rest = rest.filter(sid => best.series.indexOf(sid) < 0);
+  }
+  return groups;
 }
 // target_id is the scientific signature: axis | quantity | normalization | dimension |
 // unit. A target is common only when every selected series can materialise THAT
 // signature, and only when the frozen verdict permits a shared axis at all.
-function commonTargets(axis) {
+function commonTargets(axis, ids) {
   const key = axis==="x" ? "x_representations" : "y_representations";
-  if (!physicalOverlayAllowed()) return [];
+  const members = ids || tray;
+  // an ABSOLUTE refusal still vetoes a shared axis; an unresolved or unindexed verdict
+  // does not, because the shared target is itself the evidence
+  if (groupAbsolutelyRefused(members)) return [];
   let common = null;
-  tray.forEach(sid => {
+  members.forEach(sid => {
     const reps = SERIES[sid][key] || {};
     // a display-only source representation has no shared target: two curves whose units
     // never resolved are not thereby in the same units
@@ -673,6 +774,17 @@ function commonTargets(axis) {
     common = common===null ? ok : new Set([...common].filter(t=>ok.has(t)));
   });
   return [...(common||[])].sort();
+}
+// Default axis target: the one the most selected series reach WITHOUT a transform;
+// ties break alphabetically. A derived representation is a real option, but a poor
+// DEFAULT over a target most of the curves already natively carry.
+function preferredTarget(axis, list) {
+  if (!list || !list.length) return null;
+  const score = tid => tray.reduce((n, sid) => {
+    const r = repByTarget(sid, axis, tid);
+    return n + (r && !r.transform ? 1 : 0);
+  }, 0);
+  return list.slice().sort((a,b)=> score(b)-score(a) || a.localeCompare(b))[0];
 }
 function repByTarget(sid, axis, tid) {
   const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
@@ -719,8 +831,8 @@ function drawCompare() {
   } else {
     const xs = commonTargets("x"), ys = commonTargets("y");
     // never keep a target the current selection cannot all reach
-    if (!TX || xs.indexOf(TX)<0) TX = xs[0] || null;
-    if (!TY || ys.indexOf(TY)<0) TY = ys[0] || null;
+    if (!TX || xs.indexOf(TX)<0) TX = preferredTarget("x", xs);
+    if (!TY || ys.indexOf(TY)<0) TY = preferredTarget("y", ys);
     h += `<h2>Representation</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div class="repbox"><b style="font-size:11px">X representation</b>
         ${repOpts("x",xs)}</div>
@@ -754,7 +866,7 @@ function repOpts(axis, common) {
   if (!seen.size) return '<div class="dim">no shared representation'
     + (displayOnly ? ' \u2014 the selected source axes have no resolved unit, so they '
        + 'can be viewed individually but not overlaid' : '') + '</div>';
-  const allowed = physicalOverlayAllowed();
+  const allowed = !groupAbsolutelyRefused(tray);
   const rows = [...seen.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([tid,r])=>{
     const ok = common.indexOf(tid)>=0;
     const why = (ok || !allowed) ? ""     // the forbidding reason is stated once, below
@@ -765,7 +877,7 @@ function repOpts(axis, common) {
   }).join("");
   return rows + (allowed ? "" :
     '<div class="warn" style="font-size:10.5px;margin-top:5px">Every option is disabled: '
-    + 'the frozen pair verdicts do not authorise a shared physical axis for this selection.'
+    + 'a frozen verdict refuses a shared physical axis for this selection.'
     + '</div>');
 }
 function nativeSourceRep(sid, axis) {
@@ -783,7 +895,9 @@ function singleSeriesNative() {
 }
 function repFor(sid, axis) {
   const want = axis==="x"?TX:TY;
-  if (!want || !physicalOverlayAllowed()) return null;
+  // only an ABSOLUTE refusal withholds a representation; an unresolved or unindexed
+  // verdict cannot, because the shared target was materialised from the record itself
+  if (!want || groupAbsolutelyRefused(tray)) return null;
   return repByTarget(sid, axis, want);
 }
 const SERIES_COLORS = ["#26558a","#a8271f","#1c6b3d","#8a6100","#6d4a9c","#127b7b",
@@ -796,8 +910,188 @@ function seriesColor(sid) {
   return i < 0 ? "transparent" : SERIES_COLORS[i % SERIES_COLORS.length];
 }
 const chip = sid => `<span class="sw" style="background:${seriesColor(sid)}"></span>`;
+// ---------------------------------------------------------------- comparison planner
+// The question "can these share axes?" has four answers, not two. Reducing it to
+// overlay/no-overlay meant a selection the user made simply vanished, which is not a
+// scientific statement about anything.
+const PLAN_GROUPS = "grouped_overlay";
+const PLAN_DIRECT = "direct_overlay";
+const PLAN_TRANSFORMED = "transformed_overlay";
+const PLAN_MISSING_BRIDGE = "missing_bridge";
+const PLAN_PANELS = "separate_panels";
+
+// A transform is offered only by the frozen runtime, which has already decided whether
+// its bridge quantities are resolved. Nothing here invents a transformation, and no
+// min-max rescale is ever treated as a quantitative equivalence.
+function transformTargets(sid, axis) {
+  const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
+  return Object.values(reps).filter(r => r.transform && r.available && r.values
+                                         && r.overlay_authorized !== false && r.target_id);
+}
+function unavailableTransforms(sid, axis) {
+  const reps = SERIES[sid][axis==="x"?"x_representations":"y_representations"] || {};
+  return Object.values(reps).filter(r => r.transform && !r.available);
+}
+// which participants needed a declared transform to reach one group's target
+function transformsFor(ids, xt, yt) {
+  const used = [];
+  (ids||[]).forEach(sid => [["x",xt],["y",yt]].forEach(([ax,want]) => {
+    if (!want) return;
+    const r = repByTarget(sid, ax, want);
+    if (r && r.transform) used.push({series: sid, axis: ax,
+      kind: r.transform.kind || r.transform.rule_id,
+      normalization: r.normalization_id || null});
+  }));
+  return used;
+}
+function planComparison() {
+  const sids = tray.slice();
+  const base = {series: sids, x_target: null, y_target: null, transforms: [],
+                missing: [], reason: ""};
+  if (sids.length < 2) {
+    const solo = singleSeriesNative();
+    return Object.assign({}, base, {outcome: PLAN_DIRECT,
+      reason: sids.length ? "one selected series is drawn in its source representation"
+                          : "nothing selected", single: !!solo});
+  }
+  // Maximal compatible groups first. A selection that splits into several scientific
+  // targets is not "incomparable" -- it is several comparisons, and disabling all of them
+  // because one member does not fit is what hid the compatible subset.
+  const groups = overlayGroups(sids);
+  if (groups.length > 1 && groups.some(g => g.series.length > 1 && g.x && g.y)) {
+    return Object.assign({}, base, {
+      outcome: PLAN_GROUPS,
+      groups: groups.map(g => ({series: g.series, x_target: g.x, y_target: g.y,
+                                transforms: transformsFor(g.series, g.x, g.y)})),
+      reason: "the selection contains " + groups.length + " compatible groups; each is "
+            + "overlaid on the target its members share, and nothing is disabled because "
+            + "another group is different"});
+  }
+  const xs = commonTargets("x"), ys = commonTargets("y");
+  if (xs.length && ys.length) {
+    // did any participant need a declared transform to reach the shared target?
+    // the route is a property of the target the user is looking at: a pair may reach a
+    // native target directly AND a normalized one through a declared rule, and which of
+    // those is on screen is what the plan describes
+    const selX = (TX && xs.indexOf(TX) >= 0) ? TX : preferredTarget("x", xs);
+    const selY = (TY && ys.indexOf(TY) >= 0) ? TY : preferredTarget("y", ys);
+    const used = [];
+    sids.forEach(sid => ["x","y"].forEach(ax => {
+      const want = ax === "x" ? selX : selY;
+      const r = repByTarget(sid, ax, want);
+      if (r && r.transform) used.push({series: sid, axis: ax,
+        kind: r.transform.kind || r.transform.rule_id,
+        normalization: r.normalization_id || null});
+    }));
+    return Object.assign({}, base, {
+      outcome: used.length ? PLAN_TRANSFORMED : PLAN_DIRECT,
+      x_target: selX, y_target: selY, transforms: used,
+      reason: used.length
+        ? "a declared transformation materialises every selected series onto one target, "
+          + "and every bridge quantity it needs is resolved"
+        : "every selected series already carries the same semantic target on both axes"});
+  }
+  // no shared target. Is there a transform family that only a missing bridge blocks?
+  const missing = [];
+  sids.forEach(sid => ["x","y"].forEach(ax => unavailableTransforms(sid, ax)
+    .forEach(r => missing.push({series: sid, axis: ax,
+      representation: r.display_label || r.label || r.id,
+      rule: (r.transform || {}).rule_id,
+      bridge: r.missing_bridge || (r.transform || {}).required_bridge,
+      missing: r.unavailable_reason || "required context is not resolved"}))));
+  if (missing.length) {
+    return Object.assign({}, base, {outcome: PLAN_MISSING_BRIDGE, missing,
+      reason: "these representations belong to a transformable family, but the "
+            + "context the transformation needs is not resolved"});
+  }
+  return Object.assign({}, base, {outcome: PLAN_PANELS,
+    reason: "the selected series measure different quantities and no declared "
+          + "transformation relates them, so they are shown side by side on their own axes"});
+}
+// Small multiples: every selection stays visible on its OWN axes. Nothing is rescaled,
+// and no axis is shared, so nothing here asserts comparability.
+function drawPanels(box, plan) {
+  const cells = tray.map(sid => {
+    const x = nativeSourceRep(sid, "x"), y = nativeSourceRep(sid, "y");
+    const s = SERIES[sid];
+    if (!x || !y || x.values.length !== y.values.length)
+      return `<div class="repbox">${chip(sid)} ${esc(s.paper_id)} Fig.${esc(s.figure)}${
+        esc(s.panel||"")}<div class="dim">no drawable source coordinates</div></div>`;
+    return `<div class="repbox">${chip(sid)} <b style="font-size:11px">${esc(s.paper_id)}
+        Fig. ${esc(s.figure)}${esc(s.panel||"")}</b>
+        <div class="dim" style="font-size:10.5px">${esc(s.series_label||"")}</div>
+        ${miniPlot(sid, x, y)}
+        <div class="smeta">${esc(x.display_label||x.label)} →
+          ${esc(y.display_label||y.label)}</div></div>`;
+  }).join("");
+  box.innerHTML = `<div class="note">${esc(plan.reason)} Each panel keeps its own axes;
+      nothing is rescaled and no common axis is implied.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px">
+      ${cells}</div>`;
+}
+function miniPlot(sid, xr, yr) {
+  const W=250,H=150,P=38, xs=xr.values, ys=yr.values;
+  const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const sx=v=>P+(x1===x0?.5:(v-x0)/(x1-x0))*(W-P-10);
+  const sy=v=>H-P-(y1===y0?.5:(v-y0)/(y1-y0))*(H-P-12);
+  const c=seriesColor(sid);
+  let g=`<svg viewBox="0 0 ${W} ${H}" data-panel="${esc(sid)}">`;
+  g+=`<line x1="${P}" y1="${H-P}" x2="${W-10}" y2="${H-P}" stroke="currentColor" opacity=".3"/>`;
+  g+=`<line x1="${P}" y1="10" x2="${P}" y2="${H-P}" stroke="currentColor" opacity=".3"/>`;
+  [0,1].forEach(f=>{ const xv=x0+f*(x1-x0), yv=y0+f*(y1-y0);
+    g+=`<text x="${sx(xv)}" y="${H-P+11}" font-size="8" text-anchor="middle" fill="currentColor" opacity=".65">${xv.toPrecision(3)}</text>`;
+    g+=`<text x="${P-4}" y="${sy(yv)+3}" font-size="8" text-anchor="end" fill="currentColor" opacity=".65">${yv.toPrecision(3)}</text>`;});
+  g+=`<polyline fill="none" stroke="${c}" stroke-width="1.5" points="${
+    xs.map((v,k)=>sx(v)+","+sy(ys[k])).join(" ")}"/>`;
+  xs.forEach((v,k)=>{ g+=`<circle cx="${sx(v)}" cy="${sy(ys[k])}" r="1.8" fill="${c}"/>`;});
+  return g+"</svg>";
+}
+// One overlay per compatible group. Each group is drawn on the target ITS members share,
+// so an incompatible selection costs that selection a panel, not everybody else's overlay.
+function drawGroupPlots(box, groups) {
+  box.innerHTML = "";
+  groups.forEach((g, i) => {
+    const cell = document.createElement("div");
+    cell.className = "repbox";
+    cell.dataset.group = String(i);
+    if (g.series.length > 1 && g.x && g.y) {
+      const data = [];
+      g.series.forEach(sid => {
+        const xr = repByTarget(sid, "x", g.x), yr = repByTarget(sid, "y", g.y);
+        if (xr && yr && xr.values.length === yr.values.length)
+          data.push({sid, x: xr.values, y: yr.values, xr, yr});
+      });
+      if (data.length > 1) {
+        cell.innerHTML = `<div class="dim" style="font-size:10.5px;margin-bottom:3px">
+          Overlay group ${i + 1} — ${data.length} curves on
+          <code>${esc(g.x)}</code> × <code>${esc(g.y)}</code></div>` + plotSvg(data)
+          + `<div class="leg">${data.map(d => `<div>${chip(d.sid)} ${
+              esc(SERIES[d.sid].paper_id)} · Fig. ${esc(SERIES[d.sid].figure)}${
+              esc(SERIES[d.sid].panel || "")}</div>`).join("")}</div>`;
+        box.appendChild(cell);
+        return;
+      }
+    }
+    const sid = g.series[0], s = SERIES[sid] || {};
+    const xr = nativeSourceRep(sid, "x"), yr = nativeSourceRep(sid, "y");
+    cell.innerHTML = `<div class="dim" style="font-size:10.5px;margin-bottom:3px">
+      Not compatible with the other groups — shown on its own axes</div>
+      ${chip(sid)} <b style="font-size:11px">${esc(s.paper_id)} Fig.${esc(s.figure)}${
+      esc(s.panel || "")}</b>`
+      + ((xr && yr && xr.values.length === yr.values.length)
+         ? miniPlot(sid, xr, yr)
+         : '<div class="dim">no drawable source coordinates</div>');
+    box.appendChild(cell);
+  });
+}
 function drawPlot() {
   const box = $("#plot"); if (!box) return;
+  const groups = overlayGroups(tray);
+  if (tray.length > 1 && groups.length > 1
+      && groups.some(g => g.series.length > 1 && g.x && g.y)) {
+    drawGroupPlots(box, groups);
+    return;
+  }
   const data = [];
   const solo = singleSeriesNative();
   tray.forEach(sid => {
@@ -809,10 +1103,23 @@ function drawPlot() {
   });
   const skipped = tray.length - data.length;
   if (!data.length) {
+    const plan = planComparison();
+    if (plan.outcome === "separate_panels") { drawPanels(box, plan); return; }
+    if (plan.outcome === "missing_bridge") {
+      // the reason, and then EVERY selection still drawn on its own axes
+      box.innerHTML = `<div class="note warn"><b>Potentially comparable.</b>
+        ${esc(plan.reason)}<br>${plan.missing.map(m=>
+        `<code>${esc(m.representation)}</code> — missing
+         <b>${esc(m.bridge || "required context")}</b>`).join("<br>")}</div>`;
+      const rest = document.createElement("div");
+      drawPanels(rest, plan);
+      box.appendChild(rest);
+      return;
+    }
     const drawable = tray.filter(sid => nativeSourceRep(sid,"x") && nativeSourceRep(sid,"y"));
     box.innerHTML = (tray.length > 1 && drawable.length)
       ? `<div class="note">Shared overlay unavailable for this selection${
-          physicalOverlayAllowed() ? "" : ": the frozen pair verdicts do not authorise a "
+          !groupAbsolutelyRefused(tray) ? "" : ": the frozen pair verdicts do not authorise a "
           + "shared physical axis"}. ${drawable.length} of ${tray.length} selected source
           curves remain individually inspectable \u2014 select one to view its source
           representation, or use <b>Case data</b> to compare by Condition Case.</div>`
@@ -820,6 +1127,25 @@ function drawPlot() {
     return; }
   // the label may already carry its unit; the axis states it exactly once
   // a source label usually already carries its unit, in its own punctuation
+  const axLab = d => { const l = d.display_label || d.label || d.quantity_id || "";
+    return (d.unit && l.indexOf(d.unit) < 0) ? `${l} [${d.unit}]` : l; };
+  const g = plotSvg(data);
+  const leg = data.map(d=>{ const s=SERIES[d.sid];
+    return `<div>${chip(d.sid)}
+      ${esc(s.paper_id)} · Fig. ${esc(s.figure)}${esc(s.panel||"")}${
+      s.series_label?" · "+esc(s.series_label):""}
+      <span class="dim">(${esc(s.data_source)}, ${s.n_points} pts)</span></div>`;}).join("");
+  box.innerHTML = g + `<div class="leg">${leg}</div>`
+    + (skipped?`<div class="note warn">${skipped} selected series cannot reach this representation and is not drawn.</div>`:"")
+    + `<details class="pv"><summary>Transform provenance</summary>${data.map(d=>{
+        const t=[d.xr.transform,d.yr.transform].filter(Boolean);
+        return `<div class="smeta"><b>${esc(SERIES[d.sid].series_id)}</b><br>`
+          + (t.length? t.map(x=>`${esc(x.kind||x.rule_id)}${
+              x.parameters?" — "+esc(JSON.stringify(x.parameters).slice(0,120)):""}`).join("<br>")
+             : "native representation, no transform")+"</div>";}).join("")}</details>`;
+}
+function plotSvg(data) {
+  // the label may already carry its unit; the axis states it exactly once
   const axLab = d => { const l = d.display_label || d.label || d.quantity_id || "";
     return (d.unit && l.indexOf(d.unit) < 0) ? `${l} [${d.unit}]` : l; };
   const W=560,H=300,P=48;
@@ -845,19 +1171,7 @@ function drawPlot() {
     esc(axLab(data[0].xr))}</text>`;
   g+=`<text x="12" y="${H/2}" font-size="10" text-anchor="middle" fill="currentColor"
     transform="rotate(-90 12 ${H/2})" id="ylab">${esc(axLab(data[0].yr))}</text></svg>`;
-  const leg = data.map(d=>{ const s=SERIES[d.sid];
-    return `<div>${chip(d.sid)}
-      ${esc(s.paper_id)} · Fig. ${esc(s.figure)}${esc(s.panel||"")}${
-      s.series_label?" · "+esc(s.series_label):""}
-      <span class="dim">(${esc(s.data_source)}, ${s.n_points} pts)</span></div>`;}).join("");
-  box.innerHTML = g + `<div class="leg">${leg}</div>`
-    + (skipped?`<div class="note warn">${skipped} selected series cannot reach this representation and is not drawn.</div>`:"")
-    + `<details class="pv"><summary>Transform provenance</summary>${data.map(d=>{
-        const t=[d.xr.transform,d.yr.transform].filter(Boolean);
-        return `<div class="smeta"><b>${esc(SERIES[d.sid].series_id)}</b><br>`
-          + (t.length? t.map(x=>`${esc(x.kind||x.rule_id)}${
-              x.parameters?" — "+esc(JSON.stringify(x.parameters).slice(0,120)):""}`).join("<br>")
-             : "native representation, no transform")+"</div>";}).join("")}</details>`;
+  return g;
 }
 // A sweep traverses several nominal condition cases. Reporting one of their temperatures
 // as though it characterised the whole curve is the same first-case error in another
@@ -867,8 +1181,8 @@ function condAcross(caseIds, q) {
   caseIds.forEach(cid => (CASES[cid]||{conditions:[]}).conditions.forEach(x => {
     if (x.quantity+(x.species?"@"+x.species:"") !== q) return;
     // a recorded row with no value is not a value: "null cycle" reads like a magnitude
-    if (x.value === null || x.value === undefined || x.value === "") return;
-    const t = `${x.value}${x.unit?" "+x.unit:""}`;
+    const t = condValueText(x);
+    if (!t) return;
     if (seen.indexOf(t) < 0) seen.push(t);
   }));
   if (!seen.length) return {kind:"unknown", text:"", values:[]};
@@ -877,6 +1191,31 @@ function condAcross(caseIds, q) {
   return {kind:"varies", values:sorted,
           text: sorted.length<=3 ? sorted.join(", ")
                 : `${sorted[0]} … ${sorted[sorted.length-1]} (${sorted.length} values)`};
+}
+// What is KNOWN about the cases for a quantity that is not a case-defining condition:
+// resolved process chemistry, stated gas roles, material and geometry, from the
+// provenance-scoped facts view the builder computed per case. "Unknown" is reserved for
+// facts that are genuinely absent -- a precursor the resolver identified for this case
+// is knowledge, and rendering it as unknown was a false statement about the record.
+function knownContext(caseIds, q) {
+  const seen = [], bases = [];
+  caseIds.forEach(cid => {
+    const f = ((CASES[cid]||{}).resolved_facts||{})[q] || [];
+    f.forEach(e => {
+      if (e.fact_role !== "KNOWN_CONTEXT") return;
+      const t = String(e.value) + (e.unit ? " " + e.unit : "");
+      if (seen.indexOf(t) < 0) { seen.push(t); }
+      if (e.basis && bases.indexOf(e.basis) < 0) bases.push(e.basis);
+    });
+  });
+  if (!seen.length) return null;
+  // every displayed case must KNOW the fact, or the aggregate would claim more than
+  // the least-informed case does
+  const everywhere = caseIds.every(cid =>
+    (((CASES[cid]||{}).resolved_facts||{})[q]||[]).some(e=>e.fact_role==="KNOWN_CONTEXT"));
+  if (!everywhere) return null;
+  return {kind:"known_context", values:seen.slice().sort(),
+          text: seen.slice().sort().join(", "), basis: bases.join("; ")};
 }
 // Role- or species-qualified variants of a bare quantity, found structurally from the
 // recorded quantity ids -- `<role>_<quantity>` or the same quantity carrying a species.
@@ -943,20 +1282,43 @@ function caseDataRows(sid) {
 // Columns are chosen from what actually distinguishes the displayed cases: a condition
 // that is the same everywhere is stated once above the table instead of repeated down it.
 function splitConditions(caseIds) {
-  const vals = {};
+  const vals = {}, ctx = {};
   caseIds.forEach(cid => ((CASES[cid]||{conditions:[]}).conditions).forEach(x => {
     if (x.value === null || x.value === undefined || x.value === "") return;
     const k = x.quantity + (x.species ? "@" + x.species : "");
     (vals[k] = vals[k] || {})[cid] = `${x.value}${x.unit ? " " + x.unit : ""}`;
   }));
+  // A cell empty of any recorded CONDITION may still be a known fact of that case --
+  // its resolved chemistry, its gas roles. Those fill the cell as labelled context, so
+  // "the record does not define this case by its precursor" stops rendering as "the
+  // precursor is unknown". Context never overrides a recorded condition.
+  Object.keys(vals).forEach(k => caseIds.forEach(cid => {
+    if (vals[k][cid] !== undefined) return;
+    const f = (((CASES[cid]||{}).resolved_facts||{})[k]||[])
+      .filter(e => e.fact_role === "KNOWN_CONTEXT");
+    if (f.length) {
+      const texts = [...new Set(f.map(e => String(e.value)+(e.unit?" "+e.unit:"")))];
+      vals[k][cid] = texts.sort().join(", ");
+      (ctx[k] = ctx[k] || {})[cid] = true;
+    }
+  }));
   const varying = [], common = [];
   Object.keys(vals).sort().forEach(k => {
     const seen = new Set(caseIds.map(c => vals[k][c]));
     if (seen.size === 1 && !seen.has(undefined) && caseIds.length > 1) {
-      common.push({k, v: [...seen][0]});
-    } else if (seen.size > 1) { varying.push({k, by: vals[k]}); }
+      common.push({k, v: [...seen][0], ctx: ctx[k] || {}});
+    } else if (seen.size > 1) { varying.push({k, by: vals[k], ctx: ctx[k] || {}}); }
   });
   return {varying, common};
+}
+// one cell of a varying-conditions table: a recorded value, a known-context fact
+// (labelled as such), or an honest unknown
+function condCell(v, cid) {
+  const t = v.by[cid];
+  if (t === undefined || t === "") return '<span class="dim">unknown</span>';
+  if (v.ctx && v.ctx[cid])
+    return `${esc(t)} <span class="dim" title="known for this case from its resolved context; not the condition that defines it">(known context)</span>`;
+  return esc(t);
 }
 function unresolvedBlock(sid) {
   const s = SERIES[sid], rec = PCL[sid] || {};
@@ -978,7 +1340,7 @@ function unresolvedBlock(sid) {
     <table><thead><tr><th>Condition Case</th>${
       varying.map(v=>`<th><code>${esc(v.k)}</code></th>`).join("")}</tr></thead><tbody>
     ${s.all_case_ids.map(cid=>`<tr><td><code>${esc(CASES[cid]?CASES[cid].case_id:cid)}</code></td>
-      ${varying.map(v=>`<td>${esc(v.by[cid]||"")||'<span class="dim">unknown</span>'}</td>`).join("")}
+      ${varying.map(v=>`<td>${condCell(v, cid)}</td>`).join("")}
       </tr>`).join("")}</tbody></table>
     ${common.length?`<div class="dim" style="font-size:10.5px;margin-top:3px">Common:
       ${common.map(c=>`${esc(c.k)} ${esc(c.v)}`).join(" · ")}</div>`:""}`;
@@ -1090,7 +1452,7 @@ function drawCaseData() {
       shared.sort(caseRowOrder(shared));
       shared.forEach(cid => {
         h += `<tr><td><code>${esc(CASES[cid]?CASES[cid].case_id:cid)}</code></td>
-          ${varying.map(v=>`<td>${esc(v.by[cid]||"")||'<span class="dim">unknown</span>'}</td>`).join("")}
+          ${varying.map(v=>`<td>${condCell(v, cid)}</td>`).join("")}
           ${resolved.map(sid=>{ const r = byCase[cid][sid];
             return `<td>${r ? fmtResult(r) : '<span class="dim">—</span>'}</td>`;}).join("")}
           </tr>`;
@@ -1182,6 +1544,15 @@ function drawCaseData() {
     h += `<h3>${chip(sid)} ${esc(s.paper_id)} · Fig. ${esc(s.figure)}${esc(s.panel||"")}
       ${s.series_label?" · "+esc(s.series_label):""}
       <span class="dim" style="font-weight:400">· ${esc(rec.status||"")}</span></h3>`;
+    // other persisted drawings of the SAME observing act, from the entity model's own
+    // represents_same_measurement_as relation. Navigation aids, never transforms: each
+    // sibling was digitized independently and no point-inversion is claimed.
+    const alt = s.same_measurement_series || [];
+    if (alt.length) h += `<div class="dim" style="font-size:10.5px;margin-bottom:4px">
+      Same measurement, other representations: ${alt.map(m =>
+        `Fig. ${esc(m.figure)}${esc(m.panel||"")} (${esc(m.y_quantity||"?")}${
+         m.y_normalization?", "+esc(m.y_normalization):""})`).join(" · ")}
+      <span title="declared by represents_same_measurement_as in the source model; each series digitized independently — no point-by-point inversion is implied">ⓘ</span></div>`;
     if (!rows.length) { h += unresolvedBlock(sid); return; }
     const cids = rows.map(r=>r.case_id);
     const {varying, common} = splitConditions(cids);
@@ -1207,7 +1578,7 @@ function drawCaseData() {
         <td><code>${esc(CASES[r.case_id]?CASES[r.case_id].case_id:r.case_id)}</code></td>
         <td>${esc(fmtNum(r.x))}</td>
         ${varying.filter(v=>v.k!==xq).map(v=>
-          `<td>${esc(v.by[r.case_id]||"")||'<span class="dim">unknown</span>'}</td>`).join("")}
+          `<td>${condCell(v, r.case_id)}</td>`).join("")}
         <td>${fmtResult(r)}</td></tr>
         <tr class="prov" data-for="${esc(sid)}|${r.point_index}" style="display:none">
         <td colspan="${3+varying.filter(v=>v.k!==xq).length}"><div class="smeta">
@@ -1302,6 +1673,10 @@ function drawConds() {
       if (v.kind === "unknown" && q.indexOf("@") < 0) {
         const sib = qualifiedSiblings(c.cases, q);
         if (sib.length) return {kind:"qualified_only", siblings:sib, text:""};
+        // known context is knowledge, not a case-defining condition; it is shown as
+        // itself, never promoted into one
+        const ctx = knownContext(c.cases, q);
+        if (ctx) return ctx;
       }
       return v;
     });
@@ -1317,6 +1692,7 @@ function drawConds() {
                `<code>${esc(x.key)}</code> ${esc(x.text)}`).join("<br>")}</div>
              <div class="dim" style="font-size:10.5px">A qualified quantity is not a value
              for the unqualified one; it is a different quantity.</div></details>`
+        : v.kind==="known_context" ? `${esc(v.text)} <details class="pv" style="display:inline"><summary class="dim" style="display:inline;cursor:pointer">known context</summary><div class="smeta">${esc(v.basis)}. Known for this case; not the condition that defines it.</div></details>`
         : v.kind==="unknown" ? '<span class="dim">unknown</span>'
         : v.kind==="varies" ? `<span class="warn">varies</span> <span class="dim">${esc(v.text)}</span>`
         : esc(v.text)}</td>`).join("")+"</tr>";
@@ -1325,21 +1701,49 @@ function drawConds() {
     + '<div class="note">Values are nominal Condition Case conditions, shown exactly as '
     + 'recorded: explicit where the record states them, <span class="warn">varies</span> '
     + 'where they differ across a sweep\u2019s cases, and unresolved otherwise. Nothing '
-    + 'here is derived. Where a quantity is recorded only against a reactant role or '
-    + 'species, the unqualified row stays unresolved and the qualified values are offered '
-    + 'beside it. Representation comparability does not assert that these experiments '
-    + 'were equivalent.</div>';
+    + 'here is derived. Where the record does not state a condition but the case\u2019s '
+    + 'own resolved context knows the fact (its chemistry, its gas roles), the fact is '
+    + 'shown labelled <i>known context</i> with its basis \u2014 knowledge about the case, '
+    + 'never the condition that defines it. Where a quantity is recorded only against '
+    + 'a reactant role or species, the unqualified row stays unresolved and the '
+    + 'qualified values are offered beside it. Representation comparability does not '
+    + 'assert that these experiments were equivalent.</div>';
+}
+// how one series reaches a shared target, quoted from the pair record's own route
+function routeText(route) {
+  if (!route) return "";
+  if (!route.transform_kind) return "already in this representation";
+  const bs = route.bridge_source || {};
+  const via = route.bridge
+    ? `${route.bridge}${bs.value!==undefined&&bs.value!==null?` = ${bs.value}${bs.unit?" "+bs.unit:""}`:""}${bs.case_id?` (from ${bs.case_id})`:""}`
+    : (route.rule || route.transform_kind);
+  return `${route.transform_kind==="CANONICAL_PROJECTION"?"canonical projection":"declared transform"} via ${via}`;
 }
 function drawWhy() {
   const box=$("#why"); if(!box) return; let h="";
   for (let i=0;i<tray.length;i++) for (let j=i+1;j<tray.length;j++) {
     const a=SERIES[tray[i]], b=SERIES[tray[j]], p=pairOf(tray[i],tray[j]);
     if (!p) continue;
+    // the same record authorises the overlay and explains it: the routes below are the
+    // ones the plot uses, so this panel can never cite a bridge the plot lacks or call
+    // missing what the plot consumed
+    const ov = p.overlay_targets || {};
+    const sameAct = (a.same_measurement_series||[]).some(m=>m.series_id===tray[j]);
+    let routes = "";
+    ["x","y"].forEach(ax => (ov[ax]||[]).slice(0,1).forEach(t => {
+      routes += `<br>${ax}: shared target <code>${esc(t.target_id)}</code>
+        <br><span class="dim">· this pair reaches it — A: ${esc(routeText(t.a_route))};
+        B: ${esc(routeText(t.b_route))}</span>`;
+    }));
     h+=`<div class="note"><b>${esc(a.paper_id)} Fig.${esc(a.figure)}${esc(a.panel||"")}</b> ↔
       <b>${esc(b.paper_id)} Fig.${esc(b.figure)}${esc(b.panel||"")}</b> →
       <b>${esc(shapeOnly?p.shape_only_status:p.status)}</b>
+      ${sameAct?`<br><span class="dim">These two series are representations of the SAME
+        measurement act (declared by the source model); each was digitized independently.
+        Same measurement is not the same as compatible axes, and neither implies the
+        other.</span>`:""}
       <div class="smeta" style="margin-top:3px">x: ${esc(p.x_status)} — ${esc(p.x_reason)}<br>
-      y: ${esc(p.y_status)} — ${esc(p.y_reason)}
+      y: ${esc(p.y_status)} — ${esc(p.y_reason)}${routes}
       ${(p.missing||[]).length?`<br><span class="bad">missing context: ${esc(p.missing.join(", "))}</span>`:""}</div></div>`;
   }
   box.innerHTML = h || '<p class="dim">select two or more series</p>';

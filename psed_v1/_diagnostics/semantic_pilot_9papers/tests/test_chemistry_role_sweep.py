@@ -203,7 +203,7 @@ def main():
        all(x.get("species_evidence") for x in qual),
        [x for x in qual if not x.get("species_evidence")][:2])
     ok("K: legend attribution qualifies a dose quantity, never a shared one",
-       all(x["quantity"] in PS._REAGENT_SCOPED_Q for x in qual),
+       all(PS.reagent_scoped_quantity(x["quantity"]) for x in qual),
        sorted({x["quantity"] for x in qual}))
     ok("K: it never overwrites a species another producer had already resolved",
        all(x.get("species") for x in qual))

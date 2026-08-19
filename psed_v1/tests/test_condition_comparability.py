@@ -122,7 +122,12 @@ def main():
     h2o = Q.cases_with_condition(cases, "pulse_time", species="H2O")
     ok("E: pulse_time@H2O has matches", h2o, len(h2o))
     ok("E: every match really carries that species",
-       all(x["species"] == "H2O" and x["quantity"] == "pulse_time" for x in h2o))
+       all(x["species"] == "H2O"
+           and Q.timing_quantity_matches(x["quantity"], "pulse_time") for x in h2o))
+    ok("E: a role-specialised spelling answers the bare question without being "
+       "restated as it",
+       all(x["quantity"] in ("pulse_time", "precursor_pulse_time",
+                             "coreactant_pulse_time") for x in h2o))
     # the precision switch: an unattributed condition is not an answer about H2O
     ok("E: unattributed conditions are excluded by default",
        all(x["species_resolved"] for x in h2o))
@@ -147,7 +152,8 @@ def main():
     ok("G: sweeps are detected", sweeps, len(sweeps))
     ok("G: every sweep is species-attributed", all(s["species"] for s in sweeps))
     ok("G: every sweep has at least two values", all(s["n_values"] >= 2 for s in sweeps))
-    prec = [s for s in sweeps if s["species"] == "Y(DPfAMD)3" and s["quantity"] == "pulse_time"]
+    prec = [s for s in sweeps if s["species"] == "Y(DPfAMD)3"
+            and Q.timing_quantity_matches(s["quantity"], "pulse_time")]
     ok("G: the precursor pulse sweep is one sweep, not merged with the coreactant",
        len(prec) == 1 and prec[0]["n_values"] >= 4, prec)
     ok("G: it is not confused with pulse_time@H2O",
@@ -204,8 +210,8 @@ def main():
     d = Q.cases_differing_only_in(cases, "pulse_time", species="Y(DPfAMD)3")
     ok("I: the precursor pulse sweep yields case pairs", d, len(d))
     ok("I: every pair names the requested condition as differing",
-       all(any(k[0] == "pulse_time" and k[1] == "Y(DPfAMD)3" for k in
-               [tuple(x) for x in r["differing"]]) for r in d))
+       all(any(Q.timing_quantity_matches(k[0], "pulse_time") and k[1] == "Y(DPfAMD)3"
+               for k in [tuple(x) for x in r["differing"]]) for r in d))
     ok("I: every pair states a verdict from the vocabulary",
        all(r["verdict"] in (Q.MATCH_ON_SHARED_CONDITIONS, Q.PROVEN_DIFFER_ONLY_IN)
            for r in d))

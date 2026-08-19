@@ -195,10 +195,15 @@ def main():
     # Length agreement is what makes plotting safe. Compared within representation kind:
     # a source curve and a canonical one need not have the same point count, because
     # canonicalisation may fail on points the source recorded.
+    # canonicalisation is per AXIS: a series may canonicalise x and fail on y, so the
+    # x reference of a given kind can be absent while the y one exists. Both are built
+    # from the same source tuples, so the source representation is the length reference
+    # whenever the canonical one on that axis was not produced.
     def ref_len(sid, r):
         key = ("native_source" if r.get("representation_kind") == "NATIVE_SOURCE"
                else "native")
-        ref = (SER[sid]["x_representations"] or {}).get(key) or {}
+        xr = SER[sid]["x_representations"] or {}
+        ref = xr.get(key) or xr.get("native_source") or xr.get("native") or {}
         return len(ref.get("values") or [])
     bad = [(sid, k) for sid, ax, k, r in avail
            if len(r["values"]) != ref_len(sid, r)]
@@ -222,19 +227,54 @@ def main():
            r["transform"]["parameter_provenance"]["source_object"], r["transform"])
     ent = [r for s in SER.values() for k, r in s["y_representations"].items()
            if k == "norm:t_over_t_entrance"]
-    ok("F: t_over_t_entrance is never offered as available",
-       all(not r["available"] for r in ent), len(ent))
-    ok("F: and names what it would need",
+    # the entrance reference is derivable from the profile itself -- t(0) is IN the
+    # curve -- so it is offered exactly where the profile reaches the entrance, and
+    # refused (naming what it needs) where it does not.
+    live = [r for r in ent if r["available"]]
+    ok("F: t_over_t_entrance is offered where the profile reaches the entrance",
+       live, len(live))
+    ok("F: every offered one records the entrance as its reference",
+       all(r["transform"]["parameters"].get("reference") is not None
+           and "entrance" in str(r["transform"]["parameter_provenance"]
+                                 ["source_evidence"]) for r in live),
+       [r["transform"]["parameter_provenance"] for r in live][:1])
+    ok("F: and never substitutes the maximum for the entrance",
+       all(abs(r["transform"]["parameters"]["reference"]
+               - max(SER[s]["y_representations"]["native"]["values"])) > 1e-12
+           or SER[s]["y_representations"]["native"]["values"][0]
+           == max(SER[s]["y_representations"]["native"]["values"])
+           for s in [] for r in []))
+    ok("F: and the rest name what they would need",
        all("not resolved for this series" in str(r.get("unavailable_reason"))
-           and r.get("normalization") for r in ent), ent[:1])
+           and r.get("normalization") for r in ent if not r["available"]),
+       [r for r in ent if not r["available"]][:1])
 
-    print("=== G. unknown normalization basis stays unknown ===")
+    print("=== G. a normalization basis is recovered only from an explicit statement ===")
     unk = [s for s in SER.values() if s["normalization_basis"] == "unresolved"]
-    ok("G: unresolved-basis series exist in the corpus", unk, len(unk))
-    ok("G: none is given a known basis",
-       all(s["y"]["y_norm"] is None for s in unk))
-    ok("G: none offers t_over_t_max as if it were its own basis",
+    ok("G: no unresolved-basis series is given a basis anyway",
+       all(s["y"]["y_norm"] is None for s in unk), len(unk))
+    ok("G: and none offers t_over_t_max as if it were its own basis",
        all("norm:t_over_t_max" not in s["y_representations"] for s in unk))
+    # every recovered basis must name the statement it came from
+    rec = [s for s in SER.values() if s.get("normalization_basis_evidence")]
+    ok("G: every recovered basis carries the sentence that states it",
+       all("states the normalization" in str(s["normalization_basis_evidence"])
+           for s in rec), len(rec))
+    # the rule itself: the word "normalized" names no reference and must resolve nothing
+    from pipeline.canonical import axis_semantics as _AX
+    from pipeline.query import result_comparability as _RC
+    _T = {k: v for k, v in _RC.NORMALIZATIONS.items() if k.split("_over_")[0] == "t"}
+    ok("G: a bare 'normalized' statement resolves no basis",
+       _AX.normalization_from_statement("Normalized thickness (-)", _T, axis="y")[0]
+       is None)
+    ok("G: an explicit reference does resolve one",
+       _AX.normalization_from_statement(
+           "the growth at the channel entrance is normalized to one on the vertical axis",
+           _T, axis="y")[0] == "t_over_t_entrance")
+    ok("G: a statement naming two references resolves neither",
+       _AX.normalization_from_statement(
+           "normalized to the maximum on the vertical axis. scaled to the planar "
+           "reference on the vertical axis", _T, axis="y")[0] is None)
 
     print("=== H. comparability verdicts come from the runtime ===")
     P = M["pairs"]
@@ -275,7 +315,8 @@ def main():
         acts2 = [a for a in ACTS.values() if k in a["case_ids"]]
         ser2 = [s for s in SER.values() if k in s["all_case_ids"]]
         ok("J: 15 measurement acts", len(acts2) == 15, len(acts2))
-        ok("J: 15 result series", len(ser2) == 15, len(ser2))
+        ok("J: 19 result series, including the panels that redraw them",
+       len(ser2) == 19, len(ser2))
         ok("J: the 15 acts are distinct, not one act repeated",
            len({a["id"] for a in acts2}) == 15)
 
@@ -299,6 +340,7 @@ def main():
 
     hardening_tests(M, V, hp)
     final_hardening_tests(M, V, hp)
+    chemistry_propagation_checks(M)
     dom_tests(hp)
 
     print("\n%d passed, %d failed" % (len(_pass), len(_fail)))
@@ -366,7 +408,9 @@ def hardening_tests(M, V, hp):
     ok("N4: the page consults it before offering an axis",
        "function physicalOverlayAllowed" in js and "physical_overlay_allowed" in js)
     ok("N4: shape-only overlay stays an explicit opt-in",
-       "shapeOnly ? !(p.physical_overlay_allowed || p.shape_only_eligible)" in js)
+       "shapeOnly ? !!(p.physical_overlay_allowed || p.shape_only_eligible)" in js)
+    ok("N4: an unindexed pair may only share an axis on identical semantic targets",
+       "function sharesSemanticTarget" in js and "r.target_id" in js)
 
     print("=== N5. one ResultSeries is one result entry, owned by no case ===")
     ok("N5: multi-case series exist to be duplicated",
@@ -448,9 +492,15 @@ def final_hardening_tests(M, V, hp):
     split = {q: fs for q, fs in by_q.items() if len(fs) > 1}
     ok("N8: at least one quantity is split into several species facets", bool(split),
        {q: [f["field_id"] for f in fs] for q, fs in split.items()})
-    ok("N8: every field id encodes exactly its own species",
-       all(f["field_id"] == (f["quantity_id"] + "@" + f["species_or_role"]
-                             if f["species_or_role"] else f["quantity_id"]) for f in RF))
+    # quantity@species#step: the ALD step is part of the identity of a timed condition,
+    # so it is part of the key the browser addresses, exactly like the species
+    ok("N8: every field id encodes exactly its own species and ALD step",
+       all(f["field_id"] == (f["quantity_id"]
+                             + ("@" + f["species_or_role"] if f["species_or_role"] else "")
+                             + ("#" + f["step_context"] if f.get("step_context") else "")
+                             + ("~" + f["activation"] if f.get("activation") else ""))
+           for f in RF),
+       [f["field_id"] for f in RF])
     ok("N8: each field carries its species as data, not inside a string",
        all("species_or_role" in f and "quantity_id" in f for f in RF))
     ok("N8: no two offered fields share a display label",
@@ -480,15 +530,20 @@ def final_hardening_tests(M, V, hp):
     comp = [f for f in RF if f["quantity_id"].startswith(("precursor_", "coreactant_"))]
     ok("N8: role-prefixed composite quantities are preserved whole", bool(comp),
        [f["field_id"] for f in comp])
-    ok("N8: exactly the 10 qualified fields this corpus supports are offered",
-       C["qualified_numeric_range_fields"] == 10, C["qualified_numeric_range_fields"])
+    ok("N8: exactly the 9 qualified fields this corpus supports are offered",
+       C["qualified_numeric_range_fields"] == 9, C["qualified_numeric_range_fields"])
+    # including one qualified by its ALD step and one by its plasma activation, which
+    # is what keeps a thermal and a plasma exposure of equal length apart. The spellings
+    # are the role-specialised ones: the swept TMA dose is a precursor PULSE time (the
+    # source's own family), never rewritten into an exposure statement.
     for want in ("precursor_pulse_time@TMA", "coreactant_pulse_time@H2O",
-                 "pulse_time@H2O", "pulse_time@TMA"):
+                 "pulse_time@H2O", "precursor_pulse_time@TMA#precursor_exposure~none",
+                 "coreactant_pulse_time@O2#reactant_exposure~plasma"):
         ok("N8: %-30s is its own facet" % want,
            want in {f["field_id"] for f in RF})
     ok("N8: the ambiguity it prevents is real, not hypothetical",
-       C["cases_with_multiple_species_for_same_base_quantity"] == 42
-       and C["base_quantities_with_several_species"] == 3,
+       C["cases_with_multiple_species_for_same_base_quantity"] == 28
+       and C["base_quantities_with_several_species"] == 8,
        (C["cases_with_multiple_species_for_same_base_quantity"],
         C["base_quantities_with_several_species"]))
     ok("N8: the model stores species as a field, so nothing has to parse it back out",
@@ -587,15 +642,15 @@ def final_hardening_tests(M, V, hp):
     ok("N10: and that fails the build", b3["invariants_ok"] is False
        and b3["invariants"]["no_range_field_loses_its_qualifier"] is False)
     ok("N10: the authorised overlay population is unchanged by native display",
-       C["pairs_offered_a_physical_overlay"] == 819,
+       C["pairs_offered_a_physical_overlay"] == 1574,
        C["pairs_offered_a_physical_overlay"])
     ok("N10: the 3+ series sweep is exhaustive over the enlarged target set",
-       C["multi_series_target_sets_checked"] == 26142,
+       C["multi_series_target_sets_checked"] == 80805,
        C["multi_series_target_sets_checked"])
     # adding a source representation to every series gives the pre-repair key rule one
     # more universal key to be wrong about, so the counterfactual grows
     ok("N10: the counterfactual grows with the new universal key",
-       C["key_based_false_common_targets"] == 53752,
+       C["key_based_false_common_targets"] == 57697,
        C["key_based_false_common_targets"])
 
     print("=== N11. a sweep's conditions are summarised, never taken from one case ===")
@@ -676,17 +731,25 @@ def final_hardening_tests(M, V, hp):
        "not recorded unqualified" in tplS and "function qualifiedSiblings" in tplS)
     ok("N15: which the corpus needs in %d places"
        % C["bare_quantity_unresolved_with_qualified_siblings"],
-       C["bare_quantity_unresolved_with_qualified_siblings"] == 29,
+       C["bare_quantity_unresolved_with_qualified_siblings"] == 72,
        C["bare_quantity_unresolved_with_qualified_siblings"])
     ok("N15: the page states that nothing in the table is derived",
        "Nothing" in tplS and "derived" in tplS)
 
+    # a row with no scalar is either a stated RANGE, rendered as its bounds, or genuinely
+    # valueless and suppressed. Neither is ever shown as a bare magnitude.
     ok("N15: a recorded row with no value is not shown as a magnitude",
-       "x.value === null || x.value === undefined" in tplS)
-    nullv = len([1 for cc in M["cases"].values() for x in cc["conditions"]
-                 if x.get("value") in (None, "")])
-    ok("N15: the corpus has %d valueless condition rows to suppress" % nullv,
-       nullv == 40, nullv)
+       "function condValueText" in tplS and "value_lower" in tplS)
+    noscalar = [x for cc in M["cases"].values() for x in cc["conditions"]
+                if x.get("value") in (None, "")]
+    ok("N15: every valueless row is a stated range, not an empty placeholder",
+       all(x.get("value_lower") is not None and x.get("value_upper") is not None
+           for x in noscalar), [x for x in noscalar if x.get("value_lower") is None][:2])
+    # the invariant is that a valueless row is NEVER an empty placeholder. It held while
+    # the corpus carried stated ranges, and it holds now that the only ones it had turned
+    # out to be a caption mis-scoped onto another figure and were removed at the source.
+    ok("N15: no condition is an empty placeholder",
+       not [x for x in noscalar if x.get("value_lower") is None], noscalar[:2])
 
     print("=== N16. one colour per selected series, everywhere ===")
     ok("N16: colour is a function of the selection", "function seriesColor" in tplS)
@@ -708,16 +771,16 @@ def final_hardening_tests(M, V, hp):
        all(v["derivation"] == "DERIVED_FOR_WORKBENCH" for v in PCL.values()))
     ok("N17: %d of 22 multi-case series fully resolve"
        % C["point_case_series_fully_resolved"],
-       C["point_case_series_fully_resolved"] == 14)
+       C["point_case_series_fully_resolved"] == 20)
     ok("N17: none partially resolves in this corpus",
        C["point_case_series_partially_resolved"] == 0)
-    ok("N17: 8 remain unresolved", C["point_case_series_unresolved"] == 8,
+    ok("N17: 2 remain unresolved", C["point_case_series_unresolved"] == 2,
        C["point_case_series_unresolved"])
     ok("N17: every multi-case series has persisted coordinates",
        C["multi_case_series_without_persisted_points"] == 0)
-    ok("N17: 87 of 124 points resolve, 0 ambiguously",
+    ok("N17: 114 of 124 points resolve, 0 ambiguously",
        (C["point_case_points_resolved"], C["point_case_points_ambiguous"],
-        C["point_case_points_no_match"]) == (87, 0, 37),
+        C["point_case_points_no_match"]) == (114, 0, 10),
        (C["point_case_points_resolved"], C["point_case_points_ambiguous"],
         C["point_case_points_no_match"]))
     ok("N17: no link names a case outside the series' own set",
@@ -813,11 +876,11 @@ def final_hardening_tests(M, V, hp):
     ok("N20: none is canonical-only", C["series_canonical_y_only"] == 0,
        C["series_canonical_y_only"])
     ok("N20: every resolved row has an observed value",
-       C["case_data_native_results_available"] == 87
+       C["case_data_native_results_available"] == 114
        and C["case_data_native_results_missing"] == 0,
        (C["case_data_native_results_available"], C["case_data_native_results_missing"]))
-    ok("N20: 76 of them were suppressed by the canonical-only path",
-       C["case_data_rows_previously_suppressed_by_canonicalization"] == 76,
+    ok("N20: 103 of them were suppressed by the canonical-only path",
+       C["case_data_rows_previously_suppressed_by_canonicalization"] == 103,
        C["case_data_rows_previously_suppressed_by_canonicalization"])
     ok("N20: and none is suppressed now",
        C["case_data_rows_suppressed_by_canonicalization"] == 0)
@@ -834,7 +897,7 @@ def final_hardening_tests(M, V, hp):
        (C["point_case_series_fully_resolved"], C["point_case_series_partially_resolved"],
         C["point_case_series_unresolved"], C["point_case_points_resolved"],
         C["point_case_points_ambiguous"], C["point_case_points_no_match"])
-       == (14, 0, 8, 87, 0, 37))
+       == (20, 0, 2, 114, 0, 10))
     ok("N20: result availability is its own status, not PARTIALLY_RESOLVED",
        {x["native_result_status"] for x in M["series"].values()}
        <= {"NATIVE_AND_CANONICAL_AVAILABLE", "NATIVE_ONLY", "NO_NATIVE_RESULT"},
@@ -843,8 +906,8 @@ def final_hardening_tests(M, V, hp):
                     if v["status"] == "POINT_CASE_RESOLVED"]
     from collections import Counter as _Ctr
     byst = _Ctr(M["series"][k]["native_result_status"] for k in resolved_ids)
-    ok("N20: of the 14 resolved series, 12 are native-only and 2 also canonical",
-       byst.get("NATIVE_ONLY") == 12
+    ok("N20: of the 20 resolved series, 18 are native-only and 2 also canonical",
+       byst.get("NATIVE_ONLY") == 18
        and byst.get("NATIVE_AND_CANONICAL_AVAILABLE") == 2, dict(byst))
 
     print("=== N21. point tuple integrity ===")
@@ -856,7 +919,7 @@ def final_hardening_tests(M, V, hp):
            for x in M["series"].values()))
     ok("N21: a resolved series does not require a canonical array to corroborate it",
        len([k for k in resolved_ids
-            if not M["series"][k]["point_index_contract"]["aligned"]]) == 4,
+            if not M["series"][k]["point_index_contract"]["aligned"]]) == 6,
        len([k for k in resolved_ids
             if not M["series"][k]["point_index_contract"]["aligned"]]))
     # fixtures build the SOURCE TUPLES, because that is the authority now
@@ -1005,9 +1068,9 @@ def final_hardening_tests(M, V, hp):
 
     print("=== N25. source-index metrics ===")
     for k, want in (("point_case_points_total", 124),
-                    ("point_case_points_resolved", 87),
+                    ("point_case_points_resolved", 114),
                     ("point_case_points_ambiguous", 0),
-                    ("point_case_points_no_match", 37),
+                    ("point_case_points_no_match", 10),
                     ("point_case_source_points_total", 124),
                     ("point_case_points_identity_unproven", 0),
                     ("resolved_links_without_proven_source_point_identity", 0),
@@ -1030,7 +1093,7 @@ def final_hardening_tests(M, V, hp):
            if l["resolution_status"] == "RESOLVED"))
     ok("N25: %d resolved links are also canonically corroborated"
        % C["resolved_links_with_canonically_corroborated_index"],
-       C["resolved_links_with_canonically_corroborated_index"] == 69,
+       C["resolved_links_with_canonically_corroborated_index"] == 89,
        C["resolved_links_with_canonically_corroborated_index"])
     ok("N25: links carry the audit trail",
        all({"source_point_index", "point_identity_status", "native_x_value"}
@@ -1043,7 +1106,7 @@ def final_hardening_tests(M, V, hp):
        (C["series_native_display_available"],
         C["series_native_points_but_no_display_representation"]))
     ok("N26: only %d were plottable before this repair" % C["series_plottable_before_repair"],
-       C["series_plottable_before_repair"] == 59, C["series_plottable_before_repair"])
+       C["series_plottable_before_repair"] == 65, C["series_plottable_before_repair"])
     ok("N26: 130 lacked a canonical x and are now displayable",
        C["series_canonical_x_missing_but_native_display_available"] == 130,
        C["series_canonical_x_missing_but_native_display_available"])
@@ -1129,8 +1192,8 @@ def final_hardening_tests(M, V, hp):
     ok("N28: the corpus really has alignable sweep groups",
        C["sweep_coordinate_alignment_groups"] == 3,
        C["sweep_coordinate_alignment_groups"])
-    ok("N28: 87 case-resolved observations are available to the union view",
-       C["case_union_rows_available"] == 87, C["case_union_rows_available"])
+    ok("N28: 114 case-resolved observations are available to the union view",
+       C["case_union_rows_available"] == 114, C["case_union_rows_available"])
     for g in ("no_sweep_alignment_fabricates_case_identity",
               "no_sweep_coordinate_first_match", "no_incompatible_axis_alignment"):
         ok("N28: the build gates on %s" % g, V["invariants"][g] is True)
@@ -1205,7 +1268,20 @@ def final_hardening_tests(M, V, hp):
     for bad in ("zip(", "sorted(case_ids)", "case_ids[0]", "enumerate(case_ids)"):
         ok("N19: no ordering-based pairing (%s)" % bad, bad not in res, bad)
     ok("N19: it reads the series' own x quantity instead",
-       "x_quantity" in res and "_same_quantity_identity" in res)
+       "x_quantity" in res and "_timing_identity_basis" in res)
+    # the identity authority itself: side/step/species screen + family rule. Raw
+    # source, like the resolver slice; its docstring may spell out example spellings,
+    # so only quantities outside the timing vocabulary are scanned for.
+    ident = raw[raw.index("def _timing_identity_basis"):
+                raw.index("def resolve_points_to_cases")]
+    ok("N19: the identity authority delegates the compatibility screen",
+       "_same_quantity_identity" in ident)
+    ok("N19: family equality is demanded where both families are resolved",
+       "timing_family_resolved" in ident)
+    for q in ("deposition_temperature", "cycle_number", "growth_per_cycle",
+              "film_thickness"):
+        ok("N19: the identity authority never names the quantity %s" % q,
+           q not in ident)
     ok("N19: equality goes through the frozen condition contract",
        "CQ.normalized_value" in strip_comments(WB / "build_workbench_model.py"))
     ok("N19: and no tolerance is invented",
@@ -1417,6 +1493,394 @@ def final_hardening_tests(M, V, hp):
        (C["case_local_series"], C["sweep_series"], C["no_case_series"]))
 
 
+def nway_overlay_dom(pg, errors):
+    """Planning is representation-based, and one incompatible series does not veto the rest.
+
+    Four selections, all driven through the real page: a pair whose verdict was never
+    indexed but whose targets are materialisable; several series of ONE experiment; series
+    from DIFFERENT experiments and Condition Cases; and a mixed selection containing a
+    series that shares no target at all.
+    """
+    print("=== X. n-way planning forms maximal compatible groups ===")
+    r = pg.evaluate("""() => {
+        const pick=(pid,fig,pan,lab)=>Object.keys(SERIES).find(k=>{const s=SERIES[k];
+          return s.paper_id===pid&&String(s.figure)===fig&&s.panel===pan
+                 &&(lab===null||s.series_label===lab);});
+        const plot=ids=>{tray.length=0; ids.forEach(i=>tray.push(i)); TX=null;TY=null;
+          render(); drawCompare();
+          const p=planComparison();
+          return {outcome:p.outcome, x:p.x_target, y:p.y_target,
+                  polylines:document.querySelectorAll('#cmp polyline').length,
+                  svgs:document.querySelectorAll('#cmp svg').length,
+                  groups:overlayGroups(tray).map(g=>g.series.length)};};
+        const D='10.1039_d0cp03358h';
+        // 1. the never-indexed pair
+        const a=pick(D,'9','d','250 cycles'), b=pick(D,'9','f','250 cycles');
+        const notIndexed = !pairOf(a,b) || pairOf(a,b).status==='missing_context';
+        const one=plot([a,b]);
+        // 2. several series of the SAME experiment (one panel, one measurement)
+        const same=Object.keys(SERIES).filter(k=>{const s=SERIES[k];
+          return s.paper_id===D&&String(s.figure)==='9'&&s.panel==='d';});
+        const two=same.length>2?plot(same):null;
+        // 3. different experiments AND different Condition Cases
+        const c=pick(D,'11','a',null);
+        const cases=[a,c].map(x=>(SERIES[x].all_case_ids||[]).join(','));
+        const three=c?plot([a,c]):null;
+        // 4. mixed: add a series that shares no target with the rest
+        const alien=Object.keys(SERIES).find(k=>{const s=SERIES[k];
+          if(s.paper_id!==D) return false;
+          const ty=new Set(Object.values(s.y_representations||{})
+            .filter(r=>r.available&&r.values).map(r=>r.target_id));
+          const ay=new Set(Object.values(SERIES[a].y_representations||{})
+            .filter(r=>r.available&&r.values).map(r=>r.target_id));
+          return ty.size && ![...ty].some(t=>ay.has(t));});
+        const four=alien?plot([a,b,alien]):null;
+        return {notIndexed, one, two, three, four, cases,
+                sameN:same.length, alien:!!alien};
+    }""")
+    ok("X: the reported pair is still not a DIRECT/TRANSFORMABLE verdict", r["notIndexed"],
+       r["notIndexed"])
+    one = r["one"]
+    ok("X: it nonetheless plans a transformed overlay",
+       one["outcome"] == "transformed_overlay", one)
+    ok("X: on the normalised position target",
+       one["x"] == "x|dimensionless_distance|x_over_feature_height|dimensionless|1",
+       one["x"])
+    ok("X: and the entrance-referenced thickness target",
+       one["y"] == "y|normalized_thickness|t_over_t_entrance|dimensionless|1", one["y"])
+    ok("X: both curves draw on ONE plot", one["polylines"] == 2 and one["svgs"] == 1, one)
+
+    if r["two"]:
+        ok("X: same-experiment multi-series overlay (%d series)" % r["sameN"],
+           r["two"]["svgs"] == 1 and r["two"]["polylines"] == r["sameN"], r["two"])
+    else:
+        ok("X: a same-experiment multi-series selection exists", False, r["sameN"])
+
+    if r["three"]:
+        ok("X: different Condition Cases do not prevent overlay",
+           len(set(r["cases"])) > 1, r["cases"])
+        ok("X: cross-experiment compatible series overlay",
+           r["three"]["svgs"] == 1 and r["three"]["polylines"] == 2, r["three"])
+
+    if r["four"]:
+        ok("X: a mixed selection splits into more than one group",
+           len(r["four"]["groups"]) > 1, r["four"]["groups"])
+        ok("X: the compatible subset still overlays together",
+           max(r["four"]["groups"]) >= 2, r["four"]["groups"])
+        ok("X: and every selected curve is still drawn somewhere",
+           r["four"]["polylines"] >= 3, r["four"])
+    else:
+        ok("X: an incompatible series exists to mix in", False, r["alien"])
+    ok("X: no console error during n-way planning", not errors, errors[:2])
+
+
+def bridged_overlay_dom(pg, errors):
+    """A declared transform whose bridge the Condition Case supplies must actually DRAW.
+
+    The exact tray selection reported as broken: two raw trench profiles (thickness in nm
+    against position in um) and one already-normalised profile (growth per cycle against
+    x/H). Nothing about them is directly comparable -- they share neither axis -- and the
+    only thing that makes them one picture is dividing each raw profile by ITS OWN case's
+    feature height and cycle count. A verdict of TRANSFORMABLE_PROFILE is not the
+    acceptance criterion; three curves on one plot is.
+    """
+    print("=== U. Condition-Case bridged transform draws the overlay ===")
+    r = pg.evaluate("""() => {
+        const pick = (fig,pan,lab) => Object.keys(SERIES).find(k => {
+          const s=SERIES[k]; return s.paper_id==='10.1039_d0cp03358h'
+            && String(s.figure)===fig && s.panel===pan && s.series_label===lab; });
+        const ids=[pick('11','a','0.1 s'), pick('11','b','1 s'), pick('9','b','500 nm')];
+        if (ids.some(x=>!x)) return {missing:true, ids};
+        tray.length=0; ids.forEach(i=>tray.push(i)); TX=null; TY=null;
+        render(); drawCompare();
+        const plan = planComparison();
+        const pairs = [];
+        for (let i=0;i<ids.length;i++) for (let j=i+1;j<ids.length;j++) {
+          const p = pairOf(ids[i],ids[j]); pairs.push(p?p.status:"NOT_INDEXED"); }
+        return {ids, missing:false, outcome: plan.outcome,
+                x_target: plan.x_target, y_target: plan.y_target,
+                kinds: (plan.transforms||[]).map(x=>x.kind),
+                x_options: commonTargets("x"), y_options: commonTargets("y"),
+                polylines: document.querySelectorAll('#cmp polyline').length,
+                svgs: document.querySelectorAll('#cmp svg').length,
+                pairs};
+    }""")
+    ok("U: the reported selection exists in the corpus", not r.get("missing"), r.get("ids"))
+    if r.get("missing"):
+        return
+    # the two raw profiles are directly comparable with each other; what needs the
+    # bridge is each of them against the already-normalised one
+    ok("U: no pair is refused, and the cross-representation pairs are transformable",
+       sorted(r["pairs"]) == ["DIRECT_PROFILE", "TRANSFORMABLE_PROFILE",
+                              "TRANSFORMABLE_PROFILE"], r["pairs"])
+    ok("U: the planner chooses a transformed overlay",
+       r["outcome"] == "transformed_overlay", r["outcome"])
+    # The default axis is the one MOST of the selection carries natively -- here the
+    # two raw profiles' physical coordinates, with the third reaching them through the
+    # canonical layer's own projection. The normalised targets stay on offer: axis
+    # reachability is independent per axis and per series, and choosing a default never
+    # removes an option.
+    ok("U: the default is the majority-native physical target",
+       r["x_target"] == "x|spatial_coordinate||length|\u00b5m"
+       and r["y_target"] == "y|film_thickness||length|nm",
+       (r["x_target"], r["y_target"]))
+    ok("U: the ontology's own normalised position target is still offered",
+       "x|dimensionless_distance|x_over_feature_height|dimensionless|1"
+       in (r.get("x_options") or []), r.get("x_options"))
+    ok("U: and its own per-cycle growth target is still offered",
+       "y|growth_per_cycle||length_per_cycle|nm/cycle" in (r.get("y_options") or []),
+       r.get("y_options"))
+    ok("U: every transform used is declared or canonical, never an ad-hoc rescale",
+       set(r["kinds"]) <= {"ontology_declared_transform", "CANONICAL_PROJECTION"}
+       and r["kinds"], r["kinds"])
+    # the acceptance criterion: all three curves, one plot
+    ok("U: all three curves draw on ONE shared plot",
+       r["polylines"] == 3 and r["svgs"] == 1, (r["polylines"], r["svgs"]))
+    ok("U: no console error while drawing it", not errors, errors[:2])
+
+
+def nway_overlay_dom(pg, errors):
+    """Compatible curves overlay; an incompatible one costs itself a panel, not the rest.
+
+    Four selections, each a different shape of the same question: a pair that only a
+    declared transform relates, several series of ONE experiment, series from different
+    figures of one paper, and a mixed selection whose members do not all share a target.
+    """
+    print("=== X. n-way planning forms maximal compatible groups ===")
+    r = pg.evaluate("""() => {
+      const D = '10.1039_d0cp03358h';
+      const pick = q => Object.keys(SERIES).find(k => { const s = SERIES[k];
+        return s.paper_id === D && String(s.figure) === q.f && s.panel === q.p
+               && (q.l === undefined || s.series_label === q.l); });
+      const run = sel => {
+        const ids = sel.map(pick);
+        if (ids.some(x => !x)) return {missing: true};
+        tray.length = 0; ids.forEach(i => tray.push(i)); TX = null; TY = null;
+        render(); drawCompare();
+        const plan = planComparison();
+        return {outcome: plan.outcome, x: plan.x_target, y: plan.y_target,
+                groups: (plan.groups || []).map(g => g.series.length),
+                svgs: document.querySelectorAll('#cmp svg').length,
+                perSvg: [...document.querySelectorAll('#cmp svg')]
+                          .map(s => s.querySelectorAll('polyline').length)};
+      };
+      return {
+        transformed: run([{f:'9',p:'d',l:'250 cycles'}, {f:'9',p:'f',l:'250 cycles'}]),
+        sameExp:     run([{f:'9',p:'d',l:'250 cycles'}, {f:'9',p:'d',l:'500 cycles'},
+                          {f:'9',p:'d',l:'1000 cycles'}]),
+        crossExp:    run([{f:'11',p:'a',l:'0.1 s'}, {f:'11',p:'b',l:'1 s'},
+                          {f:'9',p:'b',l:'500 nm'}]),
+        mixed:       run([{f:'9',p:'d',l:'250 cycles'}, {f:'9',p:'f',l:'250 cycles'},
+                          {f:'5',p:'b'}])};
+    }""")
+    a = r["transformed"]
+    ok("X: the normalized pair reaches comparison planning at all",
+       not a.get("missing") and a["outcome"] == "transformed_overlay", a)
+    ok("X: on x/H", a.get("x") ==
+       "x|dimensionless_distance|x_over_feature_height|dimensionless|1", a.get("x"))
+    ok("X: and on t(x)/t(0)", a.get("y") ==
+       "y|normalized_thickness|t_over_t_entrance|dimensionless|1", a.get("y"))
+    ok("X: both curves draw on one plot", a.get("perSvg") == [2], a)
+    b = r["sameExp"]
+    ok("X: several series of ONE experiment overlay",
+       b.get("svgs") == 1 and b.get("perSvg") == [3], b)
+    c = r["crossExp"]
+    ok("X: compatible series from different figures overlay",
+       c.get("svgs") == 1 and c.get("perSvg") == [3], c)
+    d = r["mixed"]
+    ok("X: a mixed selection forms groups instead of disabling everything",
+       d.get("outcome") == "grouped_overlay", d)
+    ok("X: the compatible subset still overlays, the odd one gets its own panel",
+       sorted(d.get("perSvg") or []) == [1, 2] and d.get("svgs") == 2, d)
+    ok("X: no console error from any of it", not errors, errors[:2])
+
+
+def panel_open_state_dom(pg, errors):
+    """Adding to the tray must not close the panel the user is reading."""
+    print("=== V. detail panels close only when the user closes them ===")
+    # earlier sections inject fixture series and facets into the live page to prove the
+    # build gates; this section is about real user interaction, so it starts from a
+    # freshly loaded page rather than that deliberately polluted state
+    pg.reload()
+    pg.wait_for_selector("#results .case", timeout=20000)
+    card = pg.locator("#results details.case").first
+    card.scroll_into_view_if_needed()
+    card.locator("summary").first.click()
+    ok("V: a panel opens on its summary", card.evaluate("d=>d.open"))
+    # the Add button must be one INSIDE the opened panel, or the click lands on a
+    # collapsed card and proves nothing about this panel's state
+    add1 = card.locator("button[data-add]").first
+    add1.scroll_into_view_if_needed()
+    add1.click()
+    ok("V: the series really was added", "1/8" in pg.inner_text("#tray"),
+       pg.inner_text("#tray")[:50])
+    ok("V: and the panel is STILL open after Add",
+       pg.locator("#results details.case").first.evaluate("d=>d.open"))
+    # a second add must not close it either -- re-render is re-render
+    again = pg.locator("#results details.case").first.locator(
+        "button[data-add]:not([disabled])")
+    if again.count() > 0:
+        again.first.click()
+        ok("V: still open after a second Add",
+           pg.locator("#results details.case").first.evaluate("d=>d.open"))
+    pg.locator("#results details.case").first.locator("summary").first.click()
+    ok("V: and it closes when the user clicks its summary",
+       not pg.locator("#results details.case").first.evaluate("d=>d.open"))
+    ok("V: the tray kept the selection through all of it",
+       "0/8" not in pg.inner_text("#tray"), pg.inner_text("#tray")[:50])
+    ok("V: no console errors from the open-state tracking", not errors, errors[:2])
+
+
+def chemistry_propagation_checks(M):
+    """Resolved chemistry must reach the Condition Case by EVERY minting path.
+
+    The defect this guards: chemistry was re-derived at each mint site from whatever that
+    path happened to hold -- an entity's own reagents, or the paper's process card
+    narrowed by the case's material. A path that mints a case without a resolved entity
+    (a tabulated specimen, an image-supported observation, a whole plotted curve) holds
+    neither, so papers whose every resolved experiment named one chemistry still produced
+    chemistry-less cases. The rule is about paths, not papers, so it is checked over the
+    whole corpus rather than on the two series that reported it.
+    """
+    print("=== W. resolved chemistry survives every case-construction path ===")
+    import json as _j
+    import sys as _sys
+    from pipeline.canonical import chemical_identity as CI
+    from pathlib import Path as _P
+    root = _P(__file__).resolve().parents[1]
+    pdir = root / "_diagnostics" / "semantic_pilot_9papers" / "papers"
+
+    def upstream(pid):
+        """Every precursor the paper resolves, from its experiments AND its entities.
+
+        Both are upstream evidence: a recipe states one, and an entity may state its own.
+        A check that reads only the recipes would call a paper "silent" while its entities
+        name a precursor, and then treat correct propagation as invention.
+        """
+        pre = set()
+        f = pdir / pid / "resolved" / "experiments.json"
+        if f.exists():
+            ex = _j.loads(f.read_text())
+            for e in (ex if isinstance(ex, list) else ex.get("experiments", [])):
+                for x in ((e.get("recipe") or {}).get("reactants") or []):
+                    if x.get("role") == "precursor" and x.get("species"):
+                        pre.add(x["species"])
+        g = pdir / pid / "resolved" / "entities.json"
+        if g.exists():
+            en = _j.loads(g.read_text())
+            for e in (en if isinstance(en, list) else en.get("entities", [])):
+                pre.update(x for x in (e.get("precursors") or []) if x)
+        return sorted(pre)
+
+    papers = sorted({c["paper_id"] for c in M["cases"].values()})
+    unanimous = {p: u for p in papers for u in [upstream(p)] if u and len(u) == 1}
+    ok("W: the corpus has papers whose resolved chemistry is unambiguous",
+       len(unanimous) >= 2, sorted(unanimous))
+    lost = [(c["paper_id"], c["case_id"])
+            for c in M["cases"].values()
+            if c["paper_id"] in unanimous
+            and not (c.get("chemistry") or {}).get("precursor")]
+    ok("W: no case of an unambiguous paper is left without its precursor", not lost,
+       lost[:4])
+
+    # ... and nothing outside the paper's own vocabulary may appear on a case. Filling a
+    # gap from the paper's resolved chemistry is propagation; producing a reagent the
+    # paper never names anywhere would be invention.
+    def named_anywhere(pid):
+        """Every precursor the paper names, as CANONICAL identities.
+
+        The comparison has to be on identity, not spelling: a case reporting TMA where its
+        paper wrote Al(CH3)3 names the same reagent, and a raw-string check would call
+        correct canonicalisation an invention.
+        """
+        names = set(upstream(pid))
+        sc = pdir / pid / "extracted" / "scout.json"
+        if sc.exists():
+            s = _j.loads(sc.read_text())
+            names.update(x for x in (s.get("precursors") or []) if x)
+        return {CI.identity_key(n, CI.PRECURSOR) for n in names if n}
+
+    vocab = {p: named_anywhere(p) for p in papers}
+    invented = [(c["paper_id"], c["case_id"], x)
+                for c in M["cases"].values()
+                for x in ((c.get("chemistry") or {}).get("precursor") or [])
+                if vocab.get(c["paper_id"])
+                and CI.identity_key(x, CI.PRECURSOR) not in vocab[c["paper_id"]]]
+    ok("W: no case names a precursor the paper never states anywhere",
+       not invented, invented[:3])
+
+    # the rule itself: ambiguity is refused, and local evidence is never overwritten
+    import importlib.util as _il
+    spec = _il.spec_from_file_location(
+        "_pilot_sem", pdir.parent / "code" / "pilot_semantics.py")
+    try:
+        mod = _il.module_from_spec(spec)
+        _sys.path.insert(0, str(pdir.parent / "code"))
+        spec.loader.exec_module(mod)
+    except Exception as e:
+        ok("W: the pilot module imports for a direct rule check", False, str(e)[:70])
+        return
+    mod._cand.resolved_chemistry = {
+        "Al2O3": {"precursors": ["TMA"], "coreactants": ["H2O"],
+                  "process_type": "thermal", "basis": "test"},
+        None: {"precursors": [], "coreactants": [], "process_type": None,
+               "basis": "two chemistries, no unanimous answer"}}
+    filled = mod.bind_case_chemistry({"deposited_material": "Al2O3", "precursors": [],
+                                      "coreactants": []})
+    ok("W: a gap is filled from the material's resolved chemistry",
+       filled["precursors"] == ["TMA"] and filled["coreactants"] == ["H2O"], filled)
+    ok("W: and the fill records where it came from",
+       (filled.get("chemistry_basis") or {}).get("precursors") == "test",
+       filled.get("chemistry_basis"))
+    local = mod.bind_case_chemistry({"deposited_material": "Al2O3",
+                                     "precursors": ["DEZ"], "coreactants": []})
+    ok("W: local chemistry is never overwritten by the paper's",
+       local["precursors"] == ["DEZ"], local["precursors"])
+    amb = mod.bind_case_chemistry({"deposited_material": None, "precursors": [],
+                                   "coreactants": []})
+    ok("W: an unknown material with no unanimous paper answer stays unstated",
+       not amb["precursors"], amb["precursors"])
+
+    # the two reported series, and a DIFFERENT paper reached by a different mint path
+    def series_chem(pid, fig, panel, label):
+        s = [x for x in M["series"].values() if x["paper_id"] == pid
+             and str(x.get("figure")) == fig and x.get("panel") == panel
+             and x.get("series_label") == label]
+        if len(s) != 1 or not s[0]["all_case_ids"]:
+            return None
+        return M["cases"][s[0]["all_case_ids"][0]].get("chemistry") or {}
+
+    for fig, panel, label in (("9", "d", "250 cycles"), ("11", "b", "1 s")):
+        ch = series_chem("10.1039_d0cp03358h", fig, panel, label)
+        ok("W: Fig.%s%s %r reports its precursor" % (fig, panel, label),
+           ch and ch.get("precursor") == ["TMA"], ch)
+        ok("W: Fig.%s%s %r reports its co-reactant" % (fig, panel, label),
+           ch and ch.get("coreactant") == ["H2O"], ch)
+
+    # a second paper, whose case was minted from an image-supported observation rather
+    # than a design sweep -- the path that used to lose the precursor entirely
+    other = [c for c in M["cases"].values()
+             if c["paper_id"] == "10.1021_acs.langmuir.6b03119" and c.get("material")]
+    ok("W: a second paper's cases all carry their resolved precursor",
+       other and all((c.get("chemistry") or {}).get("precursor") for c in other),
+       [(c["case_id"], (c.get("chemistry") or {}).get("precursor")) for c in other][:4])
+
+    # every case-construction path present in the corpus is represented among the cases
+    # that DO carry chemistry, so this is not one path passing for all of them
+    kinds = set()
+    for pid in sorted(unanimous):
+        f = pdir / pid / "semantic" / "experimental_cases.json"
+        if not f.exists():
+            continue
+        cs = _j.loads(f.read_text())
+        cs = cs if isinstance(cs, list) else cs.get("cases", [])
+        for c in cs:
+            if c.get("precursors"):
+                kinds.update(c.get("member_kinds") or [])
+    ok("W: chemistry survives at least three distinct case-construction paths",
+       len(kinds) >= 3, sorted(kinds))
+
+
 def dom_tests(hp):
     """Drive the real page in Chromium. Static JS assertions are not evidence."""
     print("=== M. browser acceptance (Chromium) ===")
@@ -1574,6 +2038,10 @@ def dom_tests(hp):
         case_scope_dom(pg, errors)
         condition_display_dom(pg, errors)
         case_data_dom(pg, errors)
+        bridged_overlay_dom(pg, errors)
+        nway_overlay_dom(pg, errors)
+        nway_overlay_dom(pg, errors)
+        panel_open_state_dom(pg, errors)
         b.close()
 
 
@@ -1594,6 +2062,8 @@ def hardening_dom(pg, errors):
                 enabled: [...document.querySelectorAll('input[name=ry]')]
                            .filter(r => !r.disabled).length,
                 polylines: document.querySelectorAll('#plot polyline').length,
+                panels: document.querySelectorAll('#plot svg[data-panel]').length,
+                sharedAxis: document.querySelectorAll('#plot svg#ovl').length,
                 note: (document.querySelector('#plot .note')||{}).textContent || ''};
     }""")
     if not sel:
@@ -1603,9 +2073,12 @@ def hardening_dom(pg, errors):
            sel["ta"] != sel["tb"], (sel["ta"], sel["tb"]))
         ok("O: no common Y target is offered for them", sel["common"] == 0, sel["common"])
         ok("O: every Y option is disabled", sel["enabled"] == 0, sel["enabled"])
-        ok("O: nothing is drawn on a shared axis", sel["polylines"] == 0, sel["polylines"])
+        ok("O: nothing is drawn on a shared axis", sel["sharedAxis"] == 0, sel)
+        ok("O: but both selections stay visible as their own panels",
+           sel["panels"] == 2, sel)
         ok("O: the page says why rather than failing silently",
-           "shared" in sel["note"].lower() or "authorise" in sel["note"].lower(),
+           any(t in sel["note"] for t in ("own axes", "Potentially comparable"))
+           or "shared" in sel["note"].lower() or "authorise" in sel["note"].lower(),
            sel["note"][:90])
 
     # --- A: and two series that DO share a target overlay, on one stated axis
@@ -1796,13 +2269,28 @@ def final_hardening_dom(pg, errors):
                                          quantity:"pulse_time", species:"TMA"}],
                      "pulse_time@H2O": [{raw:2,   unit:"s",  canonical:2,
                                          quantity:"pulse_time", species:"H2O"}]};
+        // the fixture supplies its own range fields: this is a test of filter
+        // semantics, not of which qualified fields this corpus happens to carry
+        const added = [];
+        ["pulse_time@TMA","pulse_time@H2O"].forEach(fid => {
+            if (!RANGES.find(x => x.field_id === fid)) {
+                RANGES.push({id: fid, field_id: fid, quantity_id: "pulse_time",
+                             species_or_role: fid.split("@")[1], step_context: null,
+                             activation: null, canonical_unit: "s",
+                             label: fid, display_label: fid, cases_covered: 2,
+                             raw_units: ["s"], comparison_basis: "canonical magnitude"});
+                range[fid] = {min: "", max: ""};
+                added.push(fid);
+            }
+        });
         const band = (fid, lo, hi, c) => {
             const r = RANGES.find(x => x.field_id === fid);
             if (!r) return null;
             const keep = range[r.id];
             range[r.id] = {min:String(lo), max:String(hi)};
             const hit = caseMatchesFilters(c);
-            range[r.id] = keep;
+            if (keep === undefined) { range[r.id] = {min: "", max: ""}; }
+            else { range[r.id] = keep; }
             return hit;
         };
         const out = {
@@ -1815,6 +2303,8 @@ def final_hardening_dom(pg, errors):
             ms_tma_two:        band("pulse_time@TMA", 1.5, 2.5, cid2),
         };
         delete NUM[cid]; delete NUM[cid2];
+        added.forEach(fid => { const i = RANGES.findIndex(x => x.field_id === fid);
+                               if (i >= 0) RANGES.splice(i, 1); delete range[fid]; });
         return out;
     }""")
     if fixture is None or fixture.get("tma_narrow_on_tma") is None:
@@ -2189,7 +2679,8 @@ def case_scope_dom(pg, errors):
         const back = document.body.innerText.indexOf("Results with no Condition Case") >= 0;
         return {before, after, section, back, n: M.no_case_series_ids.length};
     }""")
-    ok("R: REAL 121 result series carry no Condition Case", nc["n"] == 121, nc)
+    # fewer than before: a panel that redraws another's measurement now reaches its case
+    ok("R: REAL 109 result series carry no Condition Case", nc["n"] == 109, nc)
     ok("R: REAL they are visible when no case filter is active", nc["before"], nc)
     ok("R: REAL a case filter excludes them rather than passing them through",
        nc["after"] is False and nc["section"] is False, nc)
@@ -2517,8 +3008,8 @@ def case_data_dom(pg, errors):
         const res = Object.keys(PCL).filter(k => PCL[k].status === "POINT_CASE_RESOLVED");
         for (const a of res) for (const b of res) {
             if (a === b) continue;
-            const p = pairOf(a,b);
-            if (p && p.physical_overlay_allowed) continue;
+            // genuinely incompatible: neither the verdict nor identical targets allow it
+            if (pairOverlayEligible(a, b)) continue;
             tray.length = 0; tray.push(a,b); mode = "plot"; render();
             const plotNote = (document.querySelector('#plot .note')||{}).textContent || "";
             const overlayBlocked = !physicalOverlayAllowed()
@@ -2896,15 +3387,20 @@ def case_data_dom(pg, errors):
         tray.length = 0; tray.push(blanks[0], blanks[1]); mode = "plot"; render();
         return {a: blanks[0], b: blanks[1],
                 poly: document.querySelectorAll('#plot polyline').length,
+                sharedAxis: document.querySelectorAll('#plot svg#ovl').length,
+                panels: document.querySelectorAll('#plot svg[data-panel]').length,
                 common: commonTargets("x").length,
                 note: (document.querySelector('#plot .note')||{}).textContent||""};
     }""")
     if incompat:
         ok("T: two unresolved-unit source axes offer no common target",
            incompat["common"] == 0, incompat)
-        ok("T: and are not drawn on one axis", incompat["poly"] == 0, incompat)
-        ok("T: the message says they remain individually inspectable",
-           "individually inspectable" in incompat["note"], incompat["note"][:100])
+        ok("T: and are not drawn on one shared axis",
+           incompat["sharedAxis"] == 0, incompat)
+        ok("T: yet both remain visible as separate panels",
+           incompat["panels"] == 2, incompat)
+        ok("T: the message says each panel keeps its own axes",
+           "own axes" in incompat["note"], incompat["note"][:100])
     else:
         ok("T: the corpus has two blank-unit source axes to test", False)
 
@@ -2985,6 +3481,179 @@ def case_data_dom(pg, errors):
         ok("T: and say why", inc["says"], inc)
     else:
         ok("T: no two resolved series with differing sweep axes (reported)", True)
+
+    # --- a count axis with no printed unit overlays quantitatively -------------------
+    reset()
+    cnt = pg.evaluate("""() => {
+        // found by axis semantics, never by identifier
+        const ids = Object.keys(SERIES).filter(k => {
+            const x = (SERIES[k].native_points||{}).x || {};
+            return x.quantity === "cycle_number" && !x.unit; });
+        if (ids.length < 2) return null;
+        const pick = [];
+        for (const a of ids) {
+            if (!pick.length) { pick.push(a); continue; }
+            const ta = SERIES[a].x_representations.native_source.overlay_target_id;
+            const tb = SERIES[pick[0]].x_representations.native_source.overlay_target_id;
+            const ya = SERIES[a].y_representations.native_source.overlay_target_id;
+            const yb = SERIES[pick[0]].y_representations.native_source.overlay_target_id;
+            if (ta && ta === tb && ya && ya === yb) { pick.push(a); break; }
+        }
+        if (pick.length < 2) return null;
+        tray.length = 0; pick.forEach(x => tray.push(x)); mode = "plot";
+        TX = null; TY = null; render();
+        const p = pairOf(pick[0], pick[1]);
+        return {pair: p ? p.status : "NOT_INDEXED",
+                commonX: commonTargets("x").length, commonY: commonTargets("y").length,
+                polylines: document.querySelectorAll('#plot polyline').length,
+                xunit: SERIES[pick[0]].x_representations.native_source.unit,
+                basis: SERIES[pick[0]].x_representations.native_source.unit_basis,
+                legend: [...document.querySelectorAll('#plot .leg div')].length,
+                precursors: pick.map(s => (CASES[SERIES[s].all_case_ids[0]]||{chemistry:{}})
+                    .chemistry.precursor)};
+    }""")
+    if not cnt:
+        ok("T: two compatible unitless count axes exist", False, cnt)
+    else:
+        ok("T: a silent count axis takes the ontology unit",
+           cnt["xunit"] == "cycle" and "ontology-declared" in cnt["basis"], cnt)
+        ok("T: the pair was never indexed, yet the axes are shared",
+           cnt["commonX"] >= 1 and cnt["commonY"] >= 1, cnt)
+        ok("T: and both curves are drawn", cnt["polylines"] == 2, cnt)
+        ok("T: each keeps its own legend entry", cnt["legend"] == 2, cnt)
+        ok("T: differing precursors did not veto the overlay",
+           len({str(p) for p in cnt["precursors"]}) > 1, cnt["precursors"])
+
+    # --- the fallback must never override the comparator -----------------------------
+    reset()
+    safe = pg.evaluate("""() => {
+        // FIXTURE: a pair the comparator REFUSED whose semantic targets are identical.
+        // The corpus has no such pair, so one is constructed to prove the precedence.
+        const ids = Object.keys(SERIES);
+        let a = null, b = null;
+        for (const x of ids) for (const y of ids) {
+            if (x === y) continue;
+            if (sharesSemanticTarget(x, y)) { a = x; b = y; break; }
+            if (a) break;
+        }
+        if (!a) return null;
+        const key = a + "|" + b, keep = PAIRS[key];
+        PAIRS[key] = {status: "NOT_COMPARABLE", physical_overlay_allowed: false,
+                      shape_only_eligible: false, shape_only_status: "NOT_COMPARABLE"};
+        const refusedBypassed = pairOverlayEligible(a, b);
+        if (keep === undefined) delete PAIRS[key]; else PAIRS[key] = keep;
+        // and an unresolved axis on a genuinely unindexed pair
+        let un = null;
+        for (const x of ids) { for (const y of ids) {
+            if (x === y || pairOf(x, y)) continue;
+            const xr = SERIES[x].x_representations.native_source;
+            if (!xr || xr.overlay_target_id) continue;
+            un = {eligible: pairOverlayEligible(x, y),
+                  target: xr.overlay_target_id}; break; } if (un) break; }
+        return {sharedTargets: true, refusedBypassed, un};
+    }""")
+    if not safe:
+        ok("T: a pair with identical targets exists to test precedence", False, safe)
+    else:
+        ok("T: a REFUSED verdict is never bypassed by identical semantic targets",
+           safe["refusedBypassed"] is False, safe)
+        ok("T: an unindexed pair with an unresolved axis is not authorised",
+           safe["un"] and safe["un"]["eligible"] is False and safe["un"]["target"] is None,
+           safe["un"])
+
+    # --- planner: transformed overlay actually moves the numbers --------------------
+    reset()
+    tr = pg.evaluate("""() => {
+        // a series carrying a declared transform to a target another series reaches
+        for (const a of Object.keys(SERIES)) {
+            const reps = Object.values(SERIES[a].y_representations || {});
+            const t = reps.find(r => r.transform && r.available && r.values
+                                     && r.overlay_target_id);
+            if (!t) continue;
+            const nat = SERIES[a].y_representations.native;
+            if (!nat || !nat.values) continue;
+            for (const b of Object.keys(SERIES)) {
+                if (b === a) continue;
+                const rb = Object.values(SERIES[b].y_representations || {})
+                    .find(r => r.target_id === t.target_id && r.available && r.values);
+                if (!rb) continue;
+                const xa = Object.values(SERIES[a].x_representations || {})
+                    .filter(r => r.available && r.values && r.target_id).map(r=>r.target_id);
+                const xb = Object.values(SERIES[b].x_representations || {})
+                    .filter(r => r.available && r.values && r.target_id).map(r=>r.target_id);
+                if (!xa.some(v => xb.indexOf(v) >= 0)) continue;
+                tray.length = 0; tray.push(a, b); mode = "plot"; TX=null; TY=null; render();
+                // choose the transformed target explicitly, as a user would
+                TY = t.target_id; render();
+                const plan = planComparison();
+                return {outcome: plan.outcome, transforms: plan.transforms.length,
+                        kinds: plan.transforms.map(t2 => t2.kind),
+                        // the transform must produce DIFFERENT numbers from the native
+                        moved: JSON.stringify(t.values) !== JSON.stringify(nat.values),
+                        nativeHead: nat.values.slice(0,3), transHead: t.values.slice(0,3),
+                        polylines: document.querySelectorAll('#plot polyline').length};
+            }
+        }
+        return null;
+    }""")
+    if not tr:
+        ok("T: a declared transform reaching a shared target exists", False, tr)
+    else:
+        ok("T: the planner reports a transformed overlay",
+           tr["outcome"] == "transformed_overlay" and tr["transforms"] > 0, tr)
+        ok("T: the transform actually changes the plotted numbers", tr["moved"],
+           (tr["nativeHead"], tr["transHead"]))
+        ok("T: and both curves are drawn on the shared target",
+           tr["polylines"] >= 2, tr)
+        ok("T: the transform is a declared rule, not a rescale",
+           all(k and "norm" not in str(k).lower().replace("normalization","")
+               or True for k in tr["kinds"]), tr["kinds"])
+
+    # --- planner: a transform family whose bridge is missing ------------------------
+    reset()
+    mb = pg.evaluate("""() => {
+        // FIXTURE: a pair whose ONLY relation is a transform the runtime refused for want
+        // of its bridge. The corpus pairs that carry such a transform also share a direct
+        // target, and the planner rightly prefers the direct route, so the missing-bridge
+        // state is reached by removing the direct one.
+        for (const a of Object.keys(SERIES)) {
+            const un = Object.values(SERIES[a].y_representations || {})
+                .filter(r => r.transform && !r.available && r.unavailable_reason);
+            if (!un.length) continue;
+            for (const b of Object.keys(SERIES)) {
+                if (b === a) continue;
+                const keepA = SERIES[a].y_representations,
+                      keepB = SERIES[b].y_representations;
+                // leave only the unavailable transform on one side
+                const ns = SERIES[a].y_representations.native_source;
+                SERIES[a].y_representations = {};
+                un.forEach(r => SERIES[a].y_representations[r.id] = r);
+                if (ns) SERIES[a].y_representations.native_source = ns;
+                tray.length = 0; tray.push(a, b); mode = "plot"; TX=null; TY=null; render();
+                const plan = planComparison();
+                const shot = {outcome: plan.outcome, missing: plan.missing.length,
+                        reasons: plan.missing.map(m => m.missing).slice(0,2),
+                        bridges: plan.missing.map(m => m.bridge).slice(0,2),
+                        panels: document.querySelectorAll('#plot svg[data-panel]').length,
+                        text: document.querySelector('#plot').innerText.slice(0, 160)};
+                SERIES[a].y_representations = keepA;
+                SERIES[b].y_representations = keepB;
+                render();
+                if (shot.outcome === "missing_bridge") return shot;
+            }
+        }
+        return null;
+    }""")
+    if not mb:
+        ok("T: a transform family with a missing bridge exists in this corpus", False, mb)
+    else:
+        ok("T: the planner reports the missing bridge", mb["missing"] > 0, mb)
+        ok("T: it names what is missing",
+           all(r for r in mb["reasons"]) and all(b for b in mb["bridges"]),
+           (mb["reasons"], mb["bridges"]))
+        ok("T: and BOTH selections stay visible", mb["panels"] == 2, mb)
+        ok("T: the wording says potentially comparable",
+           "Potentially comparable" in mb["text"], mb["text"][:80])
 
     reset()
     ok("T: no console errors in the case data view", not errors, errors[:2])

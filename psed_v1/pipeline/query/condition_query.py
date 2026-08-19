@@ -23,7 +23,26 @@ import re
 from pathlib import Path
 
 from ontology import vocab as _vocab
+from pipeline.canonical import process_steps as PS
 from pipeline.canonical import units as U
+
+
+def timing_quantity_matches(recorded, asked):
+    """Does a recorded quantity answer a question asked about `asked`?
+
+    Exact names always match. For timed-step quantities the record may carry a
+    role-specialised spelling (`precursor_pulse_time`) of the bare question
+    (`pulse_time`): the same measurement, more qualified, so a bare question embraces
+    its qualified spellings. The reverse is never widened -- asking for the precursor
+    pulse must not return an unattributed one -- and pulse and exposure remain different
+    kinds, because delivery and contact duration are different measurements.
+    """
+    if recorded == asked:
+        return True
+    ak = PS.timing_kind(asked)
+    if not ak or PS.timing_role(asked) is not None:
+        return False
+    return PS.timing_kind(recorded) == ak
 
 # --- comparison outcomes ----------------------------------------------------------
 EXACT_MATCH = "EXACT_MATCH"
@@ -250,7 +269,7 @@ def cases_with_condition(cases, quantity, species=None, value=None, unit=None,
     hits = []
     for c in cases:
         for cond in conditions_of(c):
-            if cond.get("quantity") != quantity:
+            if not timing_quantity_matches(cond.get("quantity"), quantity):
                 continue
             sp = species_of(cond)
             if species is not None:
@@ -301,7 +320,7 @@ def cases_varying_condition(cases, quantity=None, species=None, min_values=2,
     for c in cases:
         for cond in conditions_of(c):
             k = condition_key(cond)
-            if quantity and k[0] != quantity:
+            if quantity and not timing_quantity_matches(k[0], quantity):
                 continue
             if species is not None and k[1] != species:
                 continue
@@ -345,7 +364,8 @@ def compare_cases(a, b, focus=None):
                   if o in (SPECIES_UNRESOLVED, UNIT_CONVERTIBLE, NOT_COMPARABLE)]
     verdict, blockers = MATCH_ON_SHARED_CONDITIONS, []
     if focus is not None:
-        want = [k for k in differing if (k[0], k[1]) == tuple(focus)]
+        want = [k for k in differing
+                if timing_quantity_matches(k[0], focus[0]) and k[1] == focus[1]]
         # every way the strong claim can fail, named rather than collapsed into "no"
         if any(results[k][0] == SPECIES_UNRESOLVED for k in unresolved):
             blockers.append(UNRESOLVED_REACTANT_QUALIFIER)
@@ -384,7 +404,8 @@ def cases_differing_only_in(cases, quantity, species=None, same_paper=True):
             r = compare_cases(a, b, focus=(quantity, species))
             if not r["differing"]:
                 continue
-            if not any(k[0] == quantity and (species is None or k[1] == species)
+            if not any(timing_quantity_matches(k[0], quantity)
+                       and (species is None or k[1] == species)
                        for k in [tuple(x) for x in r["differing"]]):
                 continue
             out.append(r)

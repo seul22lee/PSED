@@ -23,7 +23,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -39,24 +42,6 @@
     "evidence": "base pressure of 0.3 mbar",
     "locator": "methods section",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -82,14 +67,36 @@
     "evidence": "2000 cycles",
     "locator": "document.md near Fig 1",
     "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig1a__exp01"
   ],
@@ -111,13 +118,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-002"
+   "EV-10.103-132"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=2000|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|cycle_number=2000|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -153,7 +196,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -169,24 +215,6 @@
     "evidence": "base pressure of 0.3 mbar",
     "locator": "methods section",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -212,14 +240,36 @@
     "evidence": "2000 cycles",
     "locator": "document.md near Fig 1",
     "value_kind": "scalar"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig1a__exp02"
   ],
@@ -241,13 +291,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-003"
+   "EV-10.103-133"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=2000|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|cycle_number=2000|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -283,7 +369,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -301,24 +390,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -327,14 +398,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 2 SIMS depth pro fi le of the SiO2 fi lm obtained with a constant fl owof NH3. A thickness of 297 nm is calculated ' names 'NH3', one of the paper's coreactant"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig2a__exp01"
   ],
@@ -356,13 +449,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-004"
+   "EV-10.103-134"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -402,7 +531,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -420,24 +552,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -446,14 +560,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 2 SIMS depth pro fi le of the SiO2 fi lm obtained with a constant fl owof NH3. A thickness of 297 nm is calculated ' names 'NH3', one of the paper's coreactant"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig2a__exp02"
   ],
@@ -475,13 +611,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-005"
+   "EV-10.103-135"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -521,7 +693,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -539,24 +714,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -565,14 +722,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 2 SIMS depth pro fi le of the SiO2 fi lm obtained with a constant fl owof NH3. A thickness of 297 nm is calculated ' names 'NH3', one of the paper's coreactant"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig2a__exp03"
   ],
@@ -594,13 +773,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-006"
+   "EV-10.103-136"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -640,7 +855,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -658,24 +876,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -684,14 +884,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 2 SIMS depth pro fi le of the SiO2 fi lm obtained with a constant fl owof NH3. A thickness of 297 nm is calculated ' names 'NH3', one of the paper's coreactant"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig2a__exp04"
   ],
@@ -713,13 +935,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-007"
+   "EV-10.103-137"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -759,7 +1017,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -777,24 +1038,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -803,14 +1046,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 2 SIMS depth pro fi le of the SiO2 fi lm obtained with a constant fl owof NH3. A thickness of 297 nm is calculated ' names 'NH3', one of the paper's coreactant"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig2a__exp05"
   ],
@@ -832,13 +1097,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-008"
+   "EV-10.103-138"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -878,7 +1179,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -896,24 +1200,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -922,14 +1208,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 2 SIMS depth pro fi le of the SiO2 fi lm obtained with a constant fl owof NH3. A thickness of 297 nm is calculated ' names 'NH3', one of the paper's coreactant"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig2a__exp06"
   ],
@@ -951,13 +1259,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-009"
+   "EV-10.103-139"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -997,7 +1341,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1013,24 +1360,6 @@
     "evidence": "revented by checking the injection with the integrated RGA. Fig. 3 shows the ALD saturation curves at RT for SiCl4 (a), H2O (b) and NH3 (c) precursors. Accordin",
     "locator": "document.md near Fig 3",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -1066,14 +1395,36 @@
     "provenance_type": "directly_stated",
     "source": "series_legend",
     "evidence": "'SiCl4' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig3a"
   ],
@@ -1095,13 +1446,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-010"
+   "EV-10.103-140"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=2|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=5|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=2|coreactant=NH3|cycle_number=5|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1138,7 +1525,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1154,24 +1544,6 @@
     "evidence": "revented by checking the injection with the integrated RGA. Fig. 3 shows the ALD saturation curves at RT for SiCl4 (a), H2O (b) and NH3 (c) precursors. Accordin",
     "locator": "document.md near Fig 3",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -1207,14 +1579,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 3 Saturation curves of SiCl4, H2O and NH3 along the SiO2 thin fi lm growth. The kinetic growth is shown for 5 cycle' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig3b"
   ],
@@ -1236,13 +1630,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-011"
+   "EV-10.103-141"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=2|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=5|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=2|coreactant=NH3|cycle_number=5|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1279,7 +1709,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1295,24 +1728,6 @@
     "evidence": "revented by checking the injection with the integrated RGA. Fig. 3 shows the ALD saturation curves at RT for SiCl4 (a), H2O (b) and NH3 (c) precursors. Accordin",
     "locator": "document.md near Fig 3",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -1348,14 +1763,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 3 Saturation curves of SiCl4, H2O and NH3 along the SiO2 thin fi lm growth. The kinetic growth is shown for 5 cycle' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig3c"
   ],
@@ -1377,13 +1814,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-012"
+   "EV-10.103-142"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=2|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=5|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=2|coreactant=NH3|cycle_number=5|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1420,7 +1893,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1438,24 +1914,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -1466,21 +1924,6 @@
     "evidence": "'SiO2 - pulsed NH3' names 'NH3', one of the paper's coreactant"
    },
    {
-    "quantity": "cycle_number",
-    "value": "5",
-    "unit": "cycle",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "5 cycles",
-    "locator": "document.md near Fig 4",
-    "value_kind": "scalar"
-   },
-   {
     "quantity": "precursor",
     "value": "SiCl4",
     "unit": null,
@@ -1489,14 +1932,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 4 XPS survey spectra of SiO2 thin fi lm obtained with a sequential 90 s exposure of SiCl4, NH3 and H2O precursors. ' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig4a"
   ],
@@ -1518,13 +1983,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-013"
+   "EV-10.103-143"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=5|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1532,9 +2033,14 @@
   ],
   "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
   "indistinguishable_from": [
-   "CASE-10.103-013"
+   "CASE-10.103-013",
+   "CASE-10.103-014",
+   "CASE-10.103-015",
+   "CASE-10.103-016",
+   "CASE-10.103-017",
+   "CASE-10.103-018"
   ],
-  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-013; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-013, CASE-10.103-014, CASE-10.103-015, CASE-10.103-016, CASE-10.103-017, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
  },
  {
   "case_id": "CASE-10.103-013",
@@ -1560,7 +2066,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1578,24 +2087,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -1606,21 +2097,6 @@
     "evidence": "'SiO2 - pulsed NH3 (after) surface cleaning' names 'NH3', one of the paper's coreactant"
    },
    {
-    "quantity": "cycle_number",
-    "value": "5",
-    "unit": "cycle",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "5 cycles",
-    "locator": "document.md near Fig 4",
-    "value_kind": "scalar"
-   },
-   {
     "quantity": "precursor",
     "value": "SiCl4",
     "unit": null,
@@ -1629,14 +2105,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 4 XPS survey spectra of SiO2 thin fi lm obtained with a sequential 90 s exposure of SiCl4, NH3 and H2O precursors. ' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig4b"
   ],
@@ -1658,13 +2156,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-014"
+   "EV-10.103-144"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=5|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1672,9 +2206,14 @@
   ],
   "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
   "indistinguishable_from": [
-   "CASE-10.103-012"
+   "CASE-10.103-012",
+   "CASE-10.103-014",
+   "CASE-10.103-015",
+   "CASE-10.103-016",
+   "CASE-10.103-017",
+   "CASE-10.103-018"
   ],
-  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-014, CASE-10.103-015, CASE-10.103-016, CASE-10.103-017, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
  },
  {
   "case_id": "CASE-10.103-014",
@@ -1700,7 +2239,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1718,24 +2260,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -1746,21 +2270,6 @@
     "evidence": "'Fig. 5 SIMS depth pro fi le of pure ALD SiO2 fi lm obtained with 90 s pulse of SiCl4; NH3 and H2O precursors and extende' names 'NH3', one of the paper's coreactant"
    },
    {
-    "quantity": "cycle_number",
-    "value": "500",
-    "unit": "cycle",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "500 cycles",
-    "locator": "document.md near Fig 5",
-    "value_kind": "scalar"
-   },
-   {
     "quantity": "precursor",
     "value": "SiCl4",
     "unit": null,
@@ -1769,14 +2278,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 5 SIMS depth pro fi le of pure ALD SiO2 fi lm obtained with 90 s pulse of SiCl4; NH3 and H2O precursors and extende' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig5a__exp01"
   ],
@@ -1798,13 +2329,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-015"
+   "EV-10.103-145"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=500|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1812,9 +2379,14 @@
   ],
   "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
   "indistinguishable_from": [
-   "CASE-10.103-015"
+   "CASE-10.103-012",
+   "CASE-10.103-013",
+   "CASE-10.103-015",
+   "CASE-10.103-016",
+   "CASE-10.103-017",
+   "CASE-10.103-018"
   ],
-  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-015; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-013, CASE-10.103-015, CASE-10.103-016, CASE-10.103-017, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
  },
  {
   "case_id": "CASE-10.103-015",
@@ -1840,7 +2412,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1858,24 +2433,6 @@
     "value_kind": "scalar"
    },
    {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
-   },
-   {
     "quantity": "coreactant",
     "value": "NH3",
     "unit": null,
@@ -1886,21 +2443,6 @@
     "evidence": "'Fig. 5 SIMS depth pro fi le of pure ALD SiO2 fi lm obtained with 90 s pulse of SiCl4; NH3 and H2O precursors and extende' names 'NH3', one of the paper's coreactant"
    },
    {
-    "quantity": "cycle_number",
-    "value": "500",
-    "unit": "cycle",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "figure",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "500 cycles",
-    "locator": "document.md near Fig 5",
-    "value_kind": "scalar"
-   },
-   {
     "quantity": "precursor",
     "value": "SiCl4",
     "unit": null,
@@ -1909,14 +2451,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 5 SIMS depth pro fi le of pure ALD SiO2 fi lm obtained with 90 s pulse of SiCl4; NH3 and H2O precursors and extende' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig5b__exp01"
   ],
@@ -1938,13 +2502,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-022"
+   "EV-10.103-152"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=500|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1952,9 +2552,14 @@
   ],
   "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
   "indistinguishable_from": [
-   "CASE-10.103-014"
+   "CASE-10.103-012",
+   "CASE-10.103-013",
+   "CASE-10.103-014",
+   "CASE-10.103-016",
+   "CASE-10.103-017",
+   "CASE-10.103-018"
   ],
-  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-014; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-013, CASE-10.103-014, CASE-10.103-016, CASE-10.103-017, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
  },
  {
   "case_id": "CASE-10.103-016",
@@ -1980,7 +2585,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -1996,24 +2604,6 @@
     "evidence": "base pressure of 0.3 mbar",
     "locator": "methods section",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -2034,14 +2624,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 7 XPS survey spectra of SiO2 thin fi lm obtained with a sequential exposure of SiCl4, NH3 and H2O precursors. SiO2 ' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig7a"
   ],
@@ -2063,13 +2675,49 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-029"
+   "EV-10.103-159"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -2077,10 +2725,14 @@
   ],
   "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
   "indistinguishable_from": [
+   "CASE-10.103-012",
+   "CASE-10.103-013",
+   "CASE-10.103-014",
+   "CASE-10.103-015",
    "CASE-10.103-017",
    "CASE-10.103-018"
   ],
-  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-017, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-013, CASE-10.103-014, CASE-10.103-015, CASE-10.103-017, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
  },
  {
   "case_id": "CASE-10.103-017",
@@ -2106,7 +2758,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -2122,24 +2777,6 @@
     "evidence": "base pressure of 0.3 mbar",
     "locator": "methods section",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -2160,14 +2797,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 7 XPS survey spectra of SiO2 thin fi lm obtained with a sequential exposure of SiCl4, NH3 and H2O precursors. SiO2 ' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig7b"
   ],
@@ -2189,14 +2848,50 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-030",
-   "EV-10.103-031"
+   "EV-10.103-160",
+   "EV-10.103-161"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -2204,10 +2899,14 @@
   ],
   "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
   "indistinguishable_from": [
+   "CASE-10.103-012",
+   "CASE-10.103-013",
+   "CASE-10.103-014",
+   "CASE-10.103-015",
    "CASE-10.103-016",
    "CASE-10.103-018"
   ],
-  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-016, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-013, CASE-10.103-014, CASE-10.103-015, CASE-10.103-016, CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
  },
  {
   "case_id": "CASE-10.103-018",
@@ -2233,7 +2932,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -2249,24 +2951,6 @@
     "evidence": "base pressure of 0.3 mbar",
     "locator": "methods section",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -2287,14 +2971,36 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 7 XPS survey spectra of SiO2 thin fi lm obtained with a sequential exposure of SiCl4, NH3 and H2O precursors. SiO2 ' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "planar",
   "geometries": [
    "planar"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
   "measurement_ids": [
    "M::10.1039_d0ra01602k__Fig7c"
   ],
@@ -2316,14 +3022,50 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-032",
-   "EV-10.103-033"
+   "EV-10.103-162",
+   "EV-10.103-163"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "INDISTINGUISHABLE_NOMINAL_IDENTITY"
   ],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|precursor=SiCl4|material=SiO2|geometry=planar",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=planar",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -2331,10 +3073,14 @@
   ],
   "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
   "indistinguishable_from": [
+   "CASE-10.103-012",
+   "CASE-10.103-013",
+   "CASE-10.103-014",
+   "CASE-10.103-015",
    "CASE-10.103-016",
    "CASE-10.103-017"
   ],
-  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-016, CASE-10.103-017; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-013, CASE-10.103-014, CASE-10.103-015, CASE-10.103-016, CASE-10.103-017; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
  },
  {
   "case_id": "CASE-10.103-019",
@@ -2360,7 +3106,10 @@
   "precursors": [
    "SiCl4"
   ],
-  "coreactants": [],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "base_pressure",
@@ -2376,24 +3125,6 @@
     "evidence": "base pressure of 0.3 mbar",
     "locator": "methods section",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "carrier_gas_partial_pressure",
-    "value": "1",
-    "unit": "bar",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "methods_default",
-    "source": "methods",
-    "scope": "method",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "st, was injected into the reactor under 1 bar pressure. The morphology and thickness of the obtained samples were characterized using a FEI Heliosnanolab 650 Fo",
-    "locator": "methods section",
-    "value_kind": "scalar",
-    "species_removed": "bar",
-    "species_basis": null,
-    "species_evidence": "'bar' is the unit of this condition, not a chemical species"
    },
    {
     "quantity": "coreactant",
@@ -2429,6 +3160,28 @@
     "provenance_type": "directly_stated",
     "source": "figure_caption",
     "evidence": "'Fig. 8 SIMS depth pro fi le of porous SiO2 fi lm obtained with 100 ms pulse of SiCl4, 2s of NH3 and H2O precursors.' names 'SiCl4', one of the paper's precursor"
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "porous_material",
@@ -2458,11 +3211,47 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-034"
+   "EV-10.103-164"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "base_pressure=0.3|carrier_gas_partial_pressure=1|coreactant=NH3|cycle_number=2500|precursor=SiCl4|material=SiO2|geometry=porous_material",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "base_pressure=0.3|coreactant=NH3|cycle_number=2500|flow_rate@N2=300|precursor=SiCl4|material=SiO2|geometry=porous_material",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -2490,9 +3279,14 @@
   "material_status_reason": null,
   "material_evidence_scope": "figure/panel scope",
   "multi_material_context": false,
-  "process_type": null,
-  "precursors": [],
-  "coreactants": [],
+  "process_type": "thermal",
+  "precursors": [
+   "SiCl4"
+  ],
+  "coreactants": [
+   "H2O",
+   "NH3"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "cycle_number",
@@ -2505,6 +3299,28 @@
     "provenance_type": "figure_local_direct",
     "source": "figure_caption",
     "evidence": "M images of ALD grown SiO2 fi lms with various thicknesses (100 -300 cycles) deposited in AAO membranes."
+   },
+   {
+    "quantity": "flow_rate",
+    "value": "300",
+    "unit": "sccm",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": "N2",
+    "evidence": "Then, according to RGA results, the exposure time of NH3 and H2O was  xed to 2 s for both with a purge of only 10 s using 300 sccm of N2",
+    "context_match": {
+     "material": "SiO2",
+     "chemistry": [
+      "SiCl4",
+      "H2O",
+      "NH3"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
    }
   ],
   "geometry": "porous_material",
@@ -2534,11 +3350,50 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-040"
+   "EV-10.103-170"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "cycle_number=300|material=SiO2|geometry=porous_material",
+  "chemistry_basis": {
+   "process_type": "resolved experiments of this paper depositing SiO2"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "SiCl4",
+     "canonical_id": null,
+     "identity_key": "unresolved:sicl4",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    },
+    {
+     "source_label": "NH3",
+     "canonical_id": "NH3",
+     "identity_key": "NH3",
+     "preferred_label": "NH3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "cycle_number=300|flow_rate@N2=300|material=SiO2|geometry=porous_material",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",

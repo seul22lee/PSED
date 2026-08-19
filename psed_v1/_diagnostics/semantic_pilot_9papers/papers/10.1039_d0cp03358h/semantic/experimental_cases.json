@@ -184,7 +184,7 @@
    "lateral_channel"
   ],
   "geometry_source": "figure/panel caption",
-  "geometry_evidence": "LHAR",
+  "geometry_evidence": "keyword: lateral HAR",
   "measurement_ids": [
    "M::10.1039_d0cp03358h__Fig5b__exp01",
    "M::10.1039_d0cp03358h__Fig9d__exp03"
@@ -216,12 +216,38 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-072",
-   "EV-10.103-151",
-   "EV-10.103-230"
+   "EV-10.103-137",
+   "EV-10.103-216",
+   "EV-10.103-295"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
   "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=1000|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
@@ -369,7 +395,23 @@
     "scope": "sample",
     "source": "composite_recipe",
     "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
-    "source_recipe_string": "0.1-4.0-0.1-4.0"
+    "source_recipe_string": "0.1-4.0-0.1-4.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "corroborated_by": [
+     {
+      "quantity": "precursor_pulse_time",
+      "species": "TMA",
+      "value": "0.1",
+      "unit": "s",
+      "scope": "series",
+      "source": "series_label",
+      "provenance_type": "directly_stated",
+      "evidence": "0.1 s"
+     }
+    ]
    },
    {
     "quantity": "precursor_purge_time",
@@ -394,21 +436,6 @@
     "provenance_type": "inherited_from_sample",
     "source": "sample_table",
     "evidence": "specimen '6' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
-   },
-   {
-    "quantity": "pulse_time",
-    "value": "0.1",
-    "unit": "s",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "series_label",
-    "scope": "series",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "0.1 s",
-    "locator": "series label '0.1 s' (axis 'pulse_time')",
-    "value_kind": "scalar"
    },
    {
     "quantity": "purge_time",
@@ -446,7 +473,7 @@
    "lateral_channel"
   ],
   "geometry_source": "figure/panel caption",
-  "geometry_evidence": "LHAR",
+  "geometry_evidence": "keyword: lateral HAR",
   "measurement_ids": [
    "M::10.1039_d0cp03358h__Fig11a__exp01",
    "M::10.1039_d0cp03358h__Fig11b__exp02",
@@ -523,26 +550,78 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-080",
-   "EV-10.103-084",
-   "EV-10.103-088",
-   "EV-10.103-091",
-   "EV-10.103-094",
-   "EV-10.103-097",
-   "EV-10.103-100",
-   "EV-10.103-103",
-   "EV-10.103-106",
-   "EV-10.103-109",
-   "EV-10.103-112",
-   "EV-10.103-118",
-   "EV-10.103-147",
-   "EV-10.103-207",
-   "EV-10.103-215",
-   "EV-10.103-225"
+   "EV-10.103-145",
+   "EV-10.103-149",
+   "EV-10.103-153",
+   "EV-10.103-156",
+   "EV-10.103-159",
+   "EV-10.103-162",
+   "EV-10.103-165",
+   "EV-10.103-168",
+   "EV-10.103-171",
+   "EV-10.103-174",
+   "EV-10.103-177",
+   "EV-10.103-183",
+   "EV-10.103-212",
+   "EV-10.103-272",
+   "EV-10.103-280",
+   "EV-10.103-290"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
-  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor=TMA|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|pulse_time=0.1|purge_time=4|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "folded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "0.1 s",
+    "locator": "series label '0.1 s' (axis 'pulse_time')",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "folded_into": {
+     "quantity": "precursor_pulse_time",
+     "species": "TMA",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   }
+  ],
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor=TMA|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|purge_time=4|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -754,11 +833,37 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-115",
-   "EV-10.103-227"
+   "EV-10.103-180",
+   "EV-10.103-292"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
   "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=100|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
@@ -971,11 +1076,37 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-121",
-   "EV-10.103-228"
+   "EV-10.103-186",
+   "EV-10.103-293"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
   "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=2000|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
@@ -1188,11 +1319,37 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-143",
-   "EV-10.103-229"
+   "EV-10.103-208",
+   "EV-10.103-294"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
   "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=250|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
@@ -1340,7 +1497,23 @@
     "scope": "sample",
     "source": "composite_recipe",
     "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.2",
-    "source_recipe_string": "0.2-4.0-0.1-4.0"
+    "source_recipe_string": "0.2-4.0-0.1-4.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "corroborated_by": [
+     {
+      "quantity": "precursor_pulse_time",
+      "species": "TMA",
+      "value": "0.2",
+      "unit": "s",
+      "scope": "series",
+      "source": "series_label",
+      "provenance_type": "directly_stated",
+      "evidence": "0.2 s"
+     }
+    ]
    },
    {
     "quantity": "precursor_purge_time",
@@ -1367,21 +1540,6 @@
     "evidence": "specimen '13' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.2-4.0-0.1-4.0"
    },
    {
-    "quantity": "pulse_time",
-    "value": "0.2",
-    "unit": "s",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "series_label",
-    "scope": "series",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "0.2 s",
-    "locator": "series label '0.2 s' (axis 'pulse_time')",
-    "value_kind": "scalar"
-   },
-   {
     "quantity": "working_pressure",
     "value": "3",
     "unit": "hPa",
@@ -1401,8 +1559,8 @@
   "geometries": [
    "lateral_channel"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
   "measurement_ids": [
    "M::10.1039_d0cp03358h__Fig11a__exp02"
   ],
@@ -1430,12 +1588,64 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-209",
-   "EV-10.103-231"
+   "EV-10.103-274",
+   "EV-10.103-296"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
-  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor=TMA|precursor_pulse_time@TMA=0.2|precursor_purge_time@TMA=4|pulse_purge_sequence=0.2-4.0-0.1-4.0|pulse_time=0.2|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "folded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.2",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "0.2 s",
+    "locator": "series label '0.2 s' (axis 'pulse_time')",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "folded_into": {
+     "quantity": "precursor_pulse_time",
+     "species": "TMA",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   }
+  ],
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor=TMA|precursor_pulse_time@TMA=0.2|precursor_purge_time@TMA=4|pulse_purge_sequence=0.2-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1582,7 +1792,23 @@
     "scope": "sample",
     "source": "composite_recipe",
     "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.4",
-    "source_recipe_string": "0.4-4.0-0.1-4.0"
+    "source_recipe_string": "0.4-4.0-0.1-4.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "corroborated_by": [
+     {
+      "quantity": "precursor_pulse_time",
+      "species": "TMA",
+      "value": "0.4",
+      "unit": "s",
+      "scope": "series",
+      "source": "series_label",
+      "provenance_type": "directly_stated",
+      "evidence": "0.4 s"
+     }
+    ]
    },
    {
     "quantity": "precursor_purge_time",
@@ -1609,21 +1835,6 @@
     "evidence": "specimen '14' is named for this result; its row of the paper's specimen table gives pulse_purge_sequence = 0.4-4.0-0.1-4.0"
    },
    {
-    "quantity": "pulse_time",
-    "value": "0.4",
-    "unit": "s",
-    "role": "CASE_DEFINING",
-    "role_basis": "ontology recipe_role = control_setting",
-    "provenance_type": "directly_stated",
-    "source": "series_label",
-    "scope": "series",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "0.4 s",
-    "locator": "series label '0.4 s' (axis 'pulse_time')",
-    "value_kind": "scalar"
-   },
-   {
     "quantity": "working_pressure",
     "value": "3",
     "unit": "hPa",
@@ -1643,8 +1854,8 @@
   "geometries": [
    "lateral_channel"
   ],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
   "measurement_ids": [
    "M::10.1039_d0cp03358h__Fig11a__exp03"
   ],
@@ -1672,12 +1883,64 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-211",
-   "EV-10.103-232"
+   "EV-10.103-276",
+   "EV-10.103-297"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
-  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v2a|precursor=TMA|precursor_pulse_time@TMA=0.4|precursor_purge_time@TMA=4|pulse_purge_sequence=0.4-4.0-0.1-4.0|pulse_time=0.4|working_pressure=3|material=Al2O3|geometry=lateral_channel",
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "folded_conditions": [
+   {
+    "quantity": "precursor_pulse_time",
+    "value": "0.4",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "0.4 s",
+    "locator": "series label '0.4 s' (axis 'pulse_time')",
+    "value_kind": "scalar",
+    "step_context": "precursor_exposure",
+    "source_quantity": "pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'",
+    "folded_into": {
+     "quantity": "precursor_pulse_time",
+     "species": "TMA",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   }
+  ],
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v2a|precursor=TMA|precursor_pulse_time@TMA=0.4|precursor_purge_time@TMA=4|pulse_purge_sequence=0.4-4.0-0.1-4.0|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -1814,7 +2077,11 @@
     "scope": "sample",
     "source": "composite_recipe",
     "evidence": "specimen '15' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
-    "source_recipe_string": "0.1-1.0-0.1-1.0"
+    "source_recipe_string": "0.1-1.0-0.1-1.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'"
    },
    {
     "quantity": "precursor_purge_time",
@@ -1904,11 +2171,37 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-213",
-   "EV-10.103-233"
+   "EV-10.103-278",
+   "EV-10.103-298"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
   "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=1|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=1|pulse_purge_sequence=0.1-1.0-0.1-1.0|purge_time=1|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
@@ -2046,7 +2339,11 @@
     "scope": "sample",
     "source": "composite_recipe",
     "evidence": "specimen '16' is named for this result; its row of the paper's specimen table gives precursor_pulse_time = 0.1",
-    "source_recipe_string": "0.1-10.0-0.1-10.0"
+    "source_recipe_string": "0.1-10.0-0.1-10.0",
+    "step_context": "precursor_exposure",
+    "source_quantity": "precursor_pulse_time",
+    "activation": "none",
+    "step_basis": "the caption of this case's own figure names the step: 'tma pulse times'"
    },
    {
     "quantity": "precursor_purge_time",
@@ -2136,11 +2433,37 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-217",
-   "EV-10.103-234"
+   "EV-10.103-282",
+   "EV-10.103-299"
   ],
   "confidence": "SUPPORTED",
   "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
   "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=10|cycle_number=500|deposition_temperature=300|feature_height=500|flow_rate@N2=150|pillar_layout=v1b|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=10|pulse_purge_sequence=0.1-10.0-0.1-10.0|purge_time=10|working_pressure=3|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
@@ -2164,9 +2487,13 @@
   "material_status_reason": "no material evidence at any scope for this result",
   "material_evidence_scope": null,
   "multi_material_context": false,
-  "process_type": null,
-  "precursors": [],
-  "coreactants": [],
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "coreactant_pulse_time",
@@ -2265,10 +2592,12 @@
     "evidence": "row 1 of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
    }
   ],
-  "geometry": null,
-  "geometries": [],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
   "measurement_ids": [],
   "sample_ids": [
    "S::10.1039_d0cp03358h::1"
@@ -2290,15 +2619,46 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-224"
+   "EV-10.103-289"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "material UNRESOLVED: no material evidence at any scope for this result"
   ],
-  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|feature_height=500|pillar_layout=v1a|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|material=?|geometry=?",
+  "chemistry_basis": {
+   "precursors": "every resolved experiment of this paper agrees",
+   "process_type": "every resolved experiment of this paper agrees"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|feature_height=500|pillar_layout=v1a|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|material=?|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
+   "geometry",
    "named specimens"
   ],
   "identity_status": "DISTINGUISHED"
@@ -2317,9 +2677,13 @@
   "material_status_reason": "no material evidence at any scope for this result",
   "material_evidence_scope": null,
   "multi_material_context": false,
-  "process_type": null,
-  "precursors": [],
-  "coreactants": [],
+  "process_type": "thermal",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
   "case_defining_conditions": [
    {
     "quantity": "coreactant_pulse_time",
@@ -2418,10 +2782,12 @@
     "evidence": "row 3 of the paper's specimen table gives pulse_purge_sequence = 0.1-4.0-0.1-4.0"
    }
   ],
-  "geometry": null,
-  "geometries": [],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry": "lateral_channel",
+  "geometries": [
+   "lateral_channel"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: lateral HAR",
   "measurement_ids": [],
   "sample_ids": [
    "S::10.1039_d0cp03358h::3"
@@ -2443,15 +2809,46 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-226"
+   "EV-10.103-291"
   ],
   "confidence": "EXPLICIT",
   "warnings": [
    "material UNRESOLVED: no material evidence at any scope for this result"
   ],
-  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|feature_height=500|pillar_layout=v2a|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|material=?|geometry=?",
+  "chemistry_basis": {
+   "precursors": "every resolved experiment of this paper agrees",
+   "process_type": "every resolved experiment of this paper agrees"
+  },
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_pulse_time@H2O=0.1|coreactant_purge_time@H2O=4|cycle_number=500|feature_height=500|pillar_layout=v2a|precursor_pulse_time@TMA=0.1|precursor_purge_time@TMA=4|pulse_purge_sequence=0.1-4.0-0.1-4.0|material=?|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
+   "geometry",
    "named specimens"
   ],
   "identity_status": "DISTINGUISHED"

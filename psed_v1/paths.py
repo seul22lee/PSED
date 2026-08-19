@@ -34,7 +34,18 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent
 
-PAPERS = REPO / "papers"
+#: The corpus the stages read and write. Overridable so an alternate corpus -- the
+#: semantic pilot snapshot, a scratch corpus in a test -- can be regenerated through the
+#: same maintained commands instead of an inline path hack. Set PSED_CORPUS_ROOT, or call
+#: set_corpus_root() from a stage's --corpus-root flag.
+PAPERS = Path(__import__("os").environ.get("PSED_CORPUS_ROOT") or (REPO / "papers"))
+
+
+def set_corpus_root(root):
+    """Point every path helper at another corpus. Returns the previous root."""
+    global PAPERS
+    prev, PAPERS = PAPERS, Path(root)
+    return prev
 #: outputs that describe the whole corpus, not one paper
 CORPUS_OUT = PAPERS / "_corpus"
 #: fetched-but-not-yet-parsed PDFs: candidates, not corpus papers
