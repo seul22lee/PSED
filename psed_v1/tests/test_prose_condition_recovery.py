@@ -17,8 +17,12 @@ here and in audit output — never in production branching logic.
   F. A species-qualified condition never enters a case of a different chemistry.
   G. Caption-scope geometry: the specific structure word wins; a bare "aspect
      ratio" is a quantity, not a geometry class.
+  H. A species qualifier or chemical value keys by CANONICAL chemical identity
+     (the ontology alias table via chemical_identity); the source spelling is
+     provenance; unresolved chemicals stay distinct.
   W. Corpus witness: the paper's two cases carry the full stated recipe, the
-     model figures stay simulations, and nothing leaks across the chemistries.
+     model figures stay simulations, nothing leaks across the chemistries, and
+     no condition identity is split across aliases of one chemical.
 
 Run:  python3 tests/test_prose_condition_recovery.py
 """
@@ -146,6 +150,28 @@ def main():
     gc, _ = R.geometry_in_scope("determined via ellipsometry on the samples")
     ok("G: the preposition 'via' claims no geometry", gc is None, gc)
 
+    print("=== H. canonical chemical identity on conditions ===")
+    c = BS.canonical_species({"quantity": "pulse_time", "value": "0.1",
+                              "species": "AlMe3"})
+    ok("H: an alias species keys by its canonical id, spelling kept as provenance",
+       c["species"] == "TMA" and c["source_species_label"] == "AlMe3", c)
+    c = BS.canonical_species({"quantity": "pulse_time", "value": "0.1",
+                              "species": "unobtainium-precursor"})
+    ok("H: an unresolved chemical keeps its exact spelling, never merged",
+       c["species"] == "unobtainium-precursor"
+       and not c.get("source_species_label"), c)
+    c = BS.canonical_species({"quantity": "precursor", "value": "Al(CH3)3"})
+    ok("H: a chemically-valued condition keys canonically too",
+       c["value"] == "TMA" and c["source_value_label"] == "Al(CH3)3", c)
+    c = BS.canonical_species({"quantity": "working_pressure", "value": "300",
+                              "species": None})
+    ok("H: numeric values and absent species are untouched",
+       c["value"] == "300" and not c.get("species"), c)
+    c2 = BS.canonical_species(BS.canonical_species(
+        {"quantity": "pulse_time", "species": "AlMe3"}))
+    ok("H: canonicalisation is idempotent",
+       c2["species"] == "TMA" and c2["source_species_label"] == "AlMe3", c2)
+
     print("=== W. corpus witness: 10.1063_1.5028178 ===")
     d = W / "papers" / "10.1063_1.5028178" / "semantic"
     cases = json.loads((d / "experimental_cases.json").read_text())
@@ -158,7 +184,7 @@ def main():
                      if x["quantity"] == q and (x.get("species") or None) == sp), None)
     ok("W: Fig.6 carries the stated recipe (pulse/purge, T, gap, length, AR)",
        c6 is not None
-       and cond(c6, "pulse_time", "AlMe3") and cond(c6, "purge_time", "AlMe3")
+       and cond(c6, "pulse_time", "TMA") and cond(c6, "purge_time", "TMA")
        and cond(c6, "pulse_time", "H2O") and cond(c6, "purge_time", "H2O")
        and float((cond(c6, "deposition_temperature", "TMA") or {}).get("value") or 0) == 300.0
        and cond(c6, "feature_height") and cond(c6, "feature_length")
@@ -172,6 +198,24 @@ def main():
     ok("W: both cases are lateral-channel, not vertical",
        all(c.get("geometry") == "lateral_channel" for c in cases),
        [c.get("geometry") for c in cases])
+    from pipeline.canonical import chemical_identity as CI
+    for c in cases:
+        conds = c["case_defining_conditions"]
+        keys = [(x["quantity"], CI.identity_key(x["species"]))
+                for x in conds if x.get("species")]
+        spell = {}
+        for x in conds:
+            if x.get("species"):
+                spell.setdefault((x["quantity"], CI.identity_key(x["species"])),
+                                 set()).add(x["species"])
+    ok("W: no condition identity is split across aliases of one chemical",
+       all(len(v) == 1 for v in spell.values()), spell)
+    ok("W: the witness fingerprints key species and reagent values canonically",
+       "@TMA" in (by_fig[("6",)].get("nominal_fingerprint") or "")
+       and "precursor=TMA" in (by_fig[("6",)].get("nominal_fingerprint") or ""))
+    ok("W: the source spelling survives as provenance",
+       any(x.get("source_species_label") == "AlMe3"
+           for x in by_fig[("6",)]["case_defining_conditions"]))
     sims = json.loads((d / "simulation_runs.json").read_text())
     ok("W: the model figures stay simulations and none founds a case",
        len(sims) >= 10 and not any(s.get("is_experimental_case") for s in sims),

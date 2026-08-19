@@ -130,13 +130,14 @@
    },
    {
     "quantity": "precursor",
-    "value": "Al(CH3)3",
+    "value": "TMA",
     "unit": null,
     "role": "CASE_DEFINING",
     "role_basis": "process chemistry named by the source scope",
     "provenance_type": "directly_stated",
     "source": "figure_caption",
-    "evidence": "'FIG. 6. The measured (circles) and calculated (line) thickness profiles of a 500cycle deposition process of Al2O3 from A' names 'Al(CH3)3', one of the paper's precursor"
+    "evidence": "'FIG. 6. The measured (circles) and calculated (line) thickness profiles of a 500cycle deposition process of Al2O3 from A' names 'Al(CH3)3', one of the paper's precursor",
+    "source_value_label": "Al(CH3)3"
    },
    {
     "quantity": "pulse_time",
@@ -163,8 +164,8 @@
     "source": "methods",
     "scope": "method",
     "assertion_status": "direct",
-    "species": "AlMe3",
-    "evidence": "AlMe3 pulse and purge times were 0.1 and 4.0 s",
+    "species": "H2O",
+    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
     "locator": "methods section",
     "value_kind": "scalar"
    },
@@ -178,10 +179,11 @@
     "source": "methods",
     "scope": "method",
     "assertion_status": "direct",
-    "species": "H2O",
-    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
+    "species": "TMA",
+    "evidence": "AlMe3 pulse and purge times were 0.1 and 4.0 s",
     "locator": "methods section",
-    "value_kind": "scalar"
+    "value_kind": "scalar",
+    "source_species_label": "AlMe3"
    },
    {
     "quantity": "purge_time",
@@ -208,8 +210,8 @@
     "source": "methods",
     "scope": "method",
     "assertion_status": "direct",
-    "species": "AlMe3",
-    "evidence": "AlMe3 pulse and purge times were 0.1 and 4.0 s",
+    "species": "H2O",
+    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
     "locator": "methods section",
     "value_kind": "scalar"
    },
@@ -223,10 +225,11 @@
     "source": "methods",
     "scope": "method",
     "assertion_status": "direct",
-    "species": "H2O",
-    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
+    "species": "TMA",
+    "evidence": "AlMe3 pulse and purge times were 0.1 and 4.0 s",
     "locator": "methods section",
-    "value_kind": "scalar"
+    "value_kind": "scalar",
+    "source_species_label": "AlMe3"
    },
    {
     "quantity": "working_pressure",
@@ -302,7 +305,7 @@
     }
    ]
   },
-  "nominal_fingerprint": "aspect_ratio=2000|coreactant=H2O|cycle_number=500|deposition_temperature@TMA=300|feature_height=0.5|feature_length=1|flow_rate@N2=150|precursor=Al(CH3)3|pulse_time=0.1|pulse_time@AlMe3=0.1|pulse_time@H2O=0.1|purge_time=4|purge_time@AlMe3=4|purge_time@H2O=4|working_pressure=300|material=Al2O3|geometry=lateral_channel",
+  "nominal_fingerprint": "aspect_ratio=2000|coreactant=H2O|cycle_number=500|deposition_temperature@TMA=300|feature_height=0.5|feature_length=1|flow_rate@N2=150|precursor=TMA|pulse_time=0.1|pulse_time@H2O=0.1|pulse_time@TMA=0.1|purge_time=4|purge_time@H2O=4|purge_time@TMA=4|working_pressure=300|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -551,7 +554,7 @@
   ],
   "confidence": "EXPLICIT",
   "warnings": [
-   "2 species-qualified condition(s) excluded: their reagent belongs to a different chemistry of this paper (AlMe3)"
+   "2 species-qualified condition(s) excluded: their reagent belongs to a different chemistry of this paper (TMA)"
   ],
   "chemistry_identity": {
    "precursors": [
