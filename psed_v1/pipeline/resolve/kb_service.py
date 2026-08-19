@@ -174,12 +174,14 @@ def impute(target, quantity, reactant=None, corpus=None, SC=None,
     return est
 
 
-def kb_params(material, process=None, ready_only=True):
+def kb_params(material, process=None, ready_only=True, corpus=None):
     """Aggregate every numeric controlled condition for a material (optionally a
     process) into {(quantity, reactant): {value(median), sigma, n, min, max, unit,
-    source, refs}}. This is the raw parameter store the bridge maps to a model."""
+    source, refs}}. This is the raw parameter store the bridge maps to a model.
+    `corpus` injects an alternative record set (e.g. the production semantic
+    corpus via twin.semantic_evidence) in place of the legacy resolved load."""
     agg, units, refs = defaultdict(list), {}, defaultdict(set)
-    for e in _load():
+    for e in (corpus if corpus is not None else _load()):
         if material and e.get("material") != material:
             continue
         if process and e.get("process_type") != process:

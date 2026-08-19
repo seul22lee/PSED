@@ -53,10 +53,16 @@ SECTIONS = [
          "recipe completeness + Argonne-JSON emission; M2 migration to the semantic "
          "layer pending", "legacy"),
     ]),
+    ("Twin — production semantic corpus (current)", [
+        ("04_twin_mpc__m2_report.html", "M2 inverse-design certificate",
+         "literature evidence from the production semantic corpus (41-paper "
+         "manifest, canonical chemistry); regenerate with `cli.py m2`", "current"),
+        ("04_twin_mpc__m3_validation.html", "M3 validation brief",
+         "candidates from semantic ResultSeries via Workbench reachability, with "
+         "the full candidate funnel; regenerate with `cli.py m3`", "current"),
+    ]),
     ("Milestone deliverables (twin / MPC / orchestration)", [
         ("04_twin_mpc__m1_report.html", "M1 report", "", "milestone"),
-        ("04_twin_mpc__m2_report.html", "M2 report", "", "milestone"),
-        ("04_twin_mpc__m3_validation.html", "M3 validation", "", "milestone"),
         ("04_twin_mpc__m4_benchmark.html", "M4 benchmark", "", "milestone"),
         ("04_twin_mpc__ylilammi_gallery.html", "Ylilammi gallery", "", "milestone"),
         ("05_orchestration__m5_orchestration.html", "M5 orchestration", "", "milestone"),

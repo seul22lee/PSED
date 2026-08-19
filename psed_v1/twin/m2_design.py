@@ -43,7 +43,6 @@ import numpy as np
 from twin import inverse_solver
 from twin.channel_model import channelModel
 from twin import kb_bridge
-from pipeline.resolve import kb_service
 from twin import m2_chemistry as chem
 from twin import chemistry_params
 
@@ -198,10 +197,14 @@ _EXPERIMENTS_FN = None          # tests inject synthetic records here
 
 
 def _experiments():
+    """M2's literature: the PRODUCTION semantic corpus (declared 41-paper
+    manifest; canonical chemistry; per-condition evidence classes), through
+    twin.semantic_evidence. Tests inject synthetic records via _EXPERIMENTS_FN."""
     if _EXPERIMENTS_FN is not None:
         return _EXPERIMENTS_FN()
     try:
-        return kb_service._load()
+        from twin import semantic_evidence as SE
+        return SE.case_records()
     except Exception:
         return []
 
@@ -335,7 +338,7 @@ def resolve_context(request, warm_start_fn=None, experiments_fn=None):
 
 
 def _model(material):
-    return channelModel.from_kb(material)
+    return channelModel.from_kb(material, corpus=_experiments())
 
 
 def assess_feasibility(ctx, model=None):
@@ -1321,9 +1324,11 @@ def render_report(result, out_path=None):
 <h1>M2 · inverse-design certificate</h1><div class=sub>{html.escape(subtitle)}</div>
 {card(1, "Executive Summary", s1)}
 {card(2, "Problem Definition", s2)}
+{card(3, "Literature evidence source (production semantic corpus)", _corpus_card(ctx))}
 </div>"""
         out = Path(out_path) if out_path else HERE / CANONICAL_REPORT
         out.write_text(body)
+        _publish_report(out)
         return out
 
     det = primary["determined"]
@@ -1532,10 +1537,51 @@ def render_report(result, out_path=None):
 {card(9, "Confidence and dominant uncertainty", s9)}
 {card(10, "Fundamentally undetermined quantities", s10)}
 {card(11, "Technical provenance and ledger appendix", s11)}
+{card(12, "Literature evidence source (production semantic corpus)", _corpus_card(ctx))}
 </div>"""
     out = Path(out_path) if out_path else HERE / CANONICAL_REPORT
     out.write_text(body)
+    _publish_report(out)
     return out
+
+
+def _corpus_card(ctx):
+    """Where the literature evidence came from: the declared production corpus,
+    with the Case/paper provenance behind each chemistry-scoped prior."""
+    try:
+        from twin import semantic_evidence as SE
+        meta = SE.corpus_meta()
+        recs = _experiments()
+    except Exception as exc:                              # synthetic-test injection
+        return f"<div class=note>corpus metadata unavailable: {html.escape(str(exc))}</div>"
+    n_papers = len({r.get("_pid") for r in recs})
+    rows = ""
+    for name, sp in (ctx.chemistry_priors or {}).items():
+        refs = ", ".join(sp.refs) if getattr(sp, "refs", None) else "—"
+        rows += (f"<tr><td>{html.escape(name)}</td><td>{html.escape(str(sp.value))} "
+                 f"{html.escape(sp.unit or '')}</td>"
+                 f"<td>{sp.n_records}</td><td class=m>{html.escape(refs)}</td></tr>")
+    return (
+        f"<div class=note>All literature evidence in this certificate is retrieved from "
+        f"the <b>production semantic corpus</b>: {meta['included_papers']} papers declared "
+        f"by <span class=m>{html.escape(meta['manifest'])}</span> "
+        f"({len(recs)} ExperimentalCases across {n_papers} papers; canonical chemical "
+        f"identities; per-condition evidence classes). Excluded reviews "
+        f"({html.escape(', '.join(meta['excluded_reviews']))}) are never read. "
+        f"Representation identity is the Workbench authority "
+        f"(build {html.escape(str(meta['workbench_head_sha']))} / "
+        f"code {html.escape(str(meta['workbench_code_sha']))}).</div>"
+        f"<table><tr><th>chemistry-scoped prior</th><th>value</th><th>n records</th>"
+        f"<th>supporting papers (Case provenance in the ledger)</th></tr>{rows}</table>")
+
+
+def _publish_report(out):
+    """Copy the freshly generated canonical artifact to the numbered reports/ name."""
+    import shutil
+    dst = HERE.parent / "reports" / "04_twin_mpc__m2_report.html"
+    if Path(out).resolve() == (HERE / CANONICAL_REPORT).resolve():
+        shutil.copyfile(out, dst)
+        print(f"copied -> {dst}")
 
 
 def main():
