@@ -480,6 +480,47 @@ def context_assertion_index(P, note):
     return out
 
 
+
+def drop_foreign_species_conditions(case):
+    """A species-qualified condition binds only within its own chemistry.
+
+    A methods sentence often states one reagent's step beside another chemistry's
+    recipe ("For X growth, the <A> pulse and purge times were ..."), and a
+    method-scoped assertion is paper-wide by scope. Whether it belongs to THIS
+    case is decided by chemical identity, never by wording: when the condition
+    names a species that is one of the paper's DECLARED reagents and that reagent
+    is not part of this case's chemistry, the record describes a different recipe
+    and is excluded from the case (the assertion itself keeps its evidence). A
+    species outside the declared reagent lists -- carrier and purge gases above
+    all -- is not a reagent-competitive claim and always stays; a case whose own
+    chemistry is unresolved filters nothing, because there is no identity to
+    check against.
+    """
+    paper = getattr(_cand, "paper_reagents", None) or {}
+    declared = {CI.identity_key(x) for x in
+                (paper.get("precursor") or []) + (paper.get("coreactant") or [])}
+    mine = {CI.identity_key(x) for x in
+            (case.get("precursors") or []) + (case.get("coreactants") or [])}
+    if not declared or not mine:
+        return case
+    kept, dropped = [], []
+    for c in case.get("case_defining_conditions") or []:
+        sp = c.get("species")
+        k = CI.identity_key(sp) if sp else None
+        if k and k in declared and k not in mine:
+            dropped.append(c)
+            continue
+        kept.append(c)
+    if dropped:
+        case["case_defining_conditions"] = kept
+        case.setdefault("warnings", []).append(
+            "%d species-qualified condition(s) excluded: their reagent belongs to "
+            "a different chemistry of this paper (%s)"
+            % (len(dropped),
+               ", ".join(sorted({str(c.get("species")) for c in dropped}))))
+    return case
+
+
 def qualify_case_timing_steps(case):
     """Qualify a case's timing conditions from its own figure's caption.
 
@@ -1418,6 +1459,9 @@ def build(pid):
     P = Paper(pid)
     # every candidate this paper mints may fall back to its classification
     _cand.paper_geometry = (P.geometry or {}).get("geometry_class")
+    # the paper's declared reagent universe, for chemistry-scoped condition binding
+    _cand.paper_reagents = {"precursor": P.scout.get("precursors") or [],
+                            "coreactant": P.scout.get("coreactants") or []}
     _cand.process_card = (P.figdata or {}).get("process_card") or {}
     # one index, offered to every case-minting path, so chemistry does not depend on
     # which path happened to mint the case
@@ -3150,7 +3194,8 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
     synth = next((m.get("synthesis_label") for m in members if m.get("synthesis_label")), None)
     _merged_material = deposited[0] if len(deposited) == 1 else None
     return fold_timing_generalizations(
-        resolve_timing_conflicts(qualify_case_timing_steps(bind_gas_roles_to_case(
+        resolve_timing_conflicts(qualify_case_timing_steps(
+        drop_foreign_species_conditions(bind_gas_roles_to_case(
         bind_context_controls_to_case(
         bind_step_species(bind_case_chemistry({
         "case_id": "CASE-%s-%03d" % (pid[:6].upper(), i),
@@ -3211,7 +3256,7 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
                                     for c in m["case_conditions"]
                                     if c.get("provenance_type") == "derived_from_sweep_axis"}),
         "identity_evidence": strengths, "confidence": conf, "warnings": warn,
-    })))))))
+    }))))))))
 
 
 # ---------------------------------------------------------------- representation groups

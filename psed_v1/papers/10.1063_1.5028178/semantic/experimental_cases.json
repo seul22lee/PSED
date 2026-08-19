@@ -29,6 +29,21 @@
   ],
   "case_defining_conditions": [
    {
+    "quantity": "aspect_ratio",
+    "value": "2000",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = structure (sample geometry)",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "aspect ratio of 2000",
+    "locator": "figure 6 caption",
+    "value_kind": "scalar"
+   },
+   {
     "quantity": "coreactant",
     "value": "H2O",
     "unit": null,
@@ -51,6 +66,51 @@
     "species": null,
     "evidence": "500cycle",
     "locator": "figure caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "TMA",
+    "evidence": "grown with the same process as in Gao (2015) from trimethylaluminum (TMA) and water (H2O) at 300 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "0.5",
+    "unit": "µm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = structure (sample geometry)",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "channel gap height of 0.5 µm",
+    "locator": "figure 6 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_length",
+    "value": "1",
+    "unit": "mm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = structure (sample geometry)",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "length L of the channel was 1 mm",
+    "locator": "figure 6 caption",
     "value_kind": "scalar"
    },
    {
@@ -79,6 +139,96 @@
     "evidence": "'FIG. 6. The measured (circles) and calculated (line) thickness profiles of a 500cycle deposition process of Al2O3 from A' names 'Al(CH3)3', one of the paper's precursor"
    },
    {
+    "quantity": "pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "reactant pulse and purge times were also 0.1 and 4.0 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "AlMe3",
+    "evidence": "AlMe3 pulse and purge times were 0.1 and 4.0 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "4.0",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "reactant pulse and purge times were also 0.1 and 4.0 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "4.0",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "AlMe3",
+    "evidence": "AlMe3 pulse and purge times were 0.1 and 4.0 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "4.0",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
     "quantity": "working_pressure",
     "value": "300",
     "unit": "Pa",
@@ -92,36 +242,15 @@
     "evidence": "2O3 and TiO2 during the runs were appr. 300 Pa. The LHAR structures were inspected optically after the ALD before and after removing the membrane. The film grow",
     "locator": "methods section",
     "value_kind": "scalar"
-   },
-   {
-    "quantity": "deposition_temperature",
-    "value": "300",
-    "unit": "°C",
-    "role": "CASE_DEFINING",
-    "role_basis": "process control stated for this material and chemistry",
-    "provenance_type": "directly_stated",
-    "source": "body",
-    "scope": "experiment_context",
-    "assertion_status": "direct",
-    "species": null,
-    "evidence": "grown with the same process as in Gao (2015) from trimethylaluminum (TMA) and water (H2O) at 300 °C",
-    "context_match": {
-     "material": "Al2O3",
-     "chemistry": [
-      "TMA",
-      "H2O"
-     ],
-     "rule": "the assertion's own sentence names this case's material and chemistry"
-    }
    }
   ],
   "progression_context_conditions": [],
-  "geometry": "vertical_structure",
+  "geometry": "lateral_channel",
   "geometries": [
-   "vertical_structure"
+   "lateral_channel"
   ],
   "geometry_source": "figure/panel caption",
-  "geometry_evidence": "aspect ratio",
+  "geometry_evidence": "PillarHall",
   "measurement_ids": [
    "M::10.1063_1.5028178__Fig6a__exp02"
   ],
@@ -129,7 +258,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.106-1024"
+   "CAND-10.106-001"
   ],
   "source_figures": [
    "6"
@@ -143,7 +272,7 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.106-019"
+   "EV-10.106-023"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
@@ -173,7 +302,7 @@
     }
    ]
   },
-  "nominal_fingerprint": "coreactant=H2O|cycle_number=500|deposition_temperature=300|flow_rate@N2=150|precursor=Al(CH3)3|working_pressure=300|material=Al2O3|geometry=vertical_structure",
+  "nominal_fingerprint": "aspect_ratio=2000|coreactant=H2O|cycle_number=500|deposition_temperature@TMA=300|feature_height=0.5|feature_length=1|flow_rate@N2=150|precursor=Al(CH3)3|pulse_time=0.1|pulse_time@AlMe3=0.1|pulse_time@H2O=0.1|purge_time=4|purge_time@AlMe3=4|purge_time@H2O=4|working_pressure=300|material=Al2O3|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
@@ -211,6 +340,21 @@
   ],
   "case_defining_conditions": [
    {
+    "quantity": "aspect_ratio",
+    "value": "2000",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = structure (sample geometry)",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "aspect ratio of 2000",
+    "locator": "figure 7 caption",
+    "value_kind": "scalar"
+   },
+   {
     "quantity": "coreactant",
     "value": "H2O",
     "unit": null,
@@ -233,6 +377,51 @@
     "species": null,
     "evidence": "1000cycle",
     "locator": "figure caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "110",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "TiCl4",
+    "evidence": "from titanium tetrachloride (TiCl4) and H2O at 110 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_height",
+    "value": "0.5",
+    "unit": "µm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = structure (sample geometry)",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "channel gap height is 0.5 µm",
+    "locator": "figure 7 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "feature_length",
+    "value": "1",
+    "unit": "mm",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = structure (sample geometry)",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "length L of the channel was 1 mm",
+    "locator": "figure 7 caption",
     "value_kind": "scalar"
    },
    {
@@ -261,6 +450,60 @@
     "evidence": "'FIG. 7. The measured (circles) and calculated (line) thickness profiles of a 1000cycle deposition process of TiO2 from T' names 'TiCl4', one of the paper's precursor"
    },
    {
+    "quantity": "pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
+    "locator": "methods section",
+    "value_kind": "scalar",
+    "corroborated_by": [
+     {
+      "quantity": "pulse_time",
+      "species": null,
+      "value": "0.1",
+      "unit": "s",
+      "scope": "method",
+      "source": "methods",
+      "provenance_type": "methods_default",
+      "evidence": "reactant pulse and purge times were also 0.1 and 4.0 s"
+     }
+    ]
+   },
+   {
+    "quantity": "purge_time",
+    "value": "4.0",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "0.1 and 4.0 s H2O pulse and purge steps",
+    "locator": "methods section",
+    "value_kind": "scalar",
+    "corroborated_by": [
+     {
+      "quantity": "purge_time",
+      "species": null,
+      "value": "4.0",
+      "unit": "s",
+      "scope": "method",
+      "source": "methods",
+      "provenance_type": "methods_default",
+      "evidence": "reactant pulse and purge times were also 0.1 and 4.0 s"
+     }
+    ]
+   },
+   {
     "quantity": "working_pressure",
     "value": "300",
     "unit": "Pa",
@@ -277,12 +520,12 @@
    }
   ],
   "progression_context_conditions": [],
-  "geometry": "vertical_structure",
+  "geometry": "lateral_channel",
   "geometries": [
-   "vertical_structure"
+   "lateral_channel"
   ],
   "geometry_source": "figure/panel caption",
-  "geometry_evidence": "aspect ratio",
+  "geometry_evidence": "channel gap",
   "measurement_ids": [
    "M::10.1063_1.5028178__Fig7a__exp02"
   ],
@@ -290,7 +533,7 @@
   "deposition_run_ids": [],
   "study_series_ids": [],
   "candidate_ids": [
-   "CAND-10.106-1025"
+   "CAND-10.106-002"
   ],
   "source_figures": [
    "7"
@@ -304,10 +547,12 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.106-021"
+   "EV-10.106-025"
   ],
   "confidence": "EXPLICIT",
-  "warnings": [],
+  "warnings": [
+   "2 species-qualified condition(s) excluded: their reagent belongs to a different chemistry of this paper (AlMe3)"
+  ],
   "chemistry_identity": {
    "precursors": [
     {
@@ -334,7 +579,49 @@
     }
    ]
   },
-  "nominal_fingerprint": "coreactant=H2O|cycle_number=1000|flow_rate@N2=150|precursor=TiCl4|working_pressure=300|material=TiO2|geometry=vertical_structure",
+  "folded_conditions": [
+   {
+    "quantity": "pulse_time",
+    "value": "0.1",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "reactant pulse and purge times were also 0.1 and 4.0 s",
+    "locator": "methods section",
+    "value_kind": "scalar",
+    "folded_into": {
+     "quantity": "pulse_time",
+     "species": "H2O",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   },
+   {
+    "quantity": "purge_time",
+    "value": "4.0",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "reactant pulse and purge times were also 0.1 and 4.0 s",
+    "locator": "methods section",
+    "value_kind": "scalar",
+    "folded_into": {
+     "quantity": "purge_time",
+     "species": "H2O",
+     "reason": "this record states the same value for the same physical timing slot with less qualification; one slot is one case dimension"
+    }
+   }
+  ],
+  "nominal_fingerprint": "aspect_ratio=2000|coreactant=H2O|cycle_number=1000|deposition_temperature@TiCl4=110|feature_height=0.5|feature_length=1|flow_rate@N2=150|precursor=TiCl4|pulse_time@H2O=0.1|purge_time@H2O=4|working_pressure=300|material=TiO2|geometry=lateral_channel",
   "identity_distinguished_by": [
    "case-defining conditions",
    "deposited material",
