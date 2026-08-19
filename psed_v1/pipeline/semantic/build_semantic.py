@@ -545,6 +545,10 @@ def qualify_case_timing_steps(case):
     if len(hit) != 1:
         return case
     species, step, ev = next(iter(hit))
+    # the hint's reagent is compared and recorded by CHEMICAL identity, so a
+    # caption alias and a condition alias of one chemical still meet
+    species = (canonical_species({"species": species}).get("species")
+               if species else species)
     step_role = PS.timing_role(None, step)
     for c in (case.get("case_defining_conditions") or []):
         if c.get("step_context"):
@@ -554,7 +558,8 @@ def qualify_case_timing_steps(case):
         # the hint must be ABOUT this record: a condition that already names a
         # different reagent, or whose quantity already carries a different half-cycle
         # role, is a different step of the recipe and the caption is not its evidence
-        if species and c.get("species") and c["species"] != species:
+        if species and c.get("species") and \
+                CI.identity_key(c["species"]) != CI.identity_key(species):
             continue
         own_role = PS.timing_role(c.get("quantity"))
         if own_role and step_role and own_role != step_role:
@@ -2993,6 +2998,48 @@ _ROLE_WORD = (
 )
 
 
+def canonical_species(c):
+    """A species qualifier carries CHEMICAL identity, never a spelling.
+
+    The ontology already declares which reagent spellings are one chemical, and
+    chemical_identity is the ONE authority that reads that declaration. Every
+    species-qualified condition therefore keys its semantic identity by the
+    canonical id (TMA, not one of its spellings), and the source's own wording is
+    kept as `source_species_label` -- provenance, never identity. An unresolved
+    chemical keeps its exact spelling: distinct stays distinct, and nothing is
+    merged by resemblance."""
+    sp = c.get("species")
+    if sp:
+        r = CI.resolve(str(sp))
+        if r.get("resolved"):
+            canon = r.get("preferred_label") or r.get("canonical_id")
+            if canon and str(canon) != str(sp):
+                c = dict(c, species=str(canon),
+                         source_species_label=c.get("source_species_label") or str(sp))
+    # the same rule for a chemically-VALUED condition (precursor = Al(CH3)3):
+    # the value is the identity, so it keys canonically too, source spelling kept
+    v = c.get("value")
+    if isinstance(v, str) and any(ch.isalpha() for ch in v):
+        rv = CI.resolve(v)
+        if rv.get("resolved"):
+            canon = rv.get("preferred_label") or rv.get("canonical_id")
+            if canon and str(canon) != v:
+                c = dict(c, value=str(canon),
+                         source_value_label=c.get("source_value_label") or v)
+    return c
+
+
+def canonicalize_case_species(case):
+    """Every species-qualified condition of a case keys by canonical chemistry.
+
+    Applied late in case assembly so records appended by the context and gas-role
+    binders obey the same rule as the member conditions; idempotent."""
+    for key in ("case_defining_conditions", "progression_context_conditions"):
+        if case.get(key):
+            case[key] = [canonical_species(c) for c in case[key]]
+    return case
+
+
 def species_repair(c, precursors, coreactants, note=None, cid=None):
     """Correct `species` on one condition, and attribute it where evidence allows.
 
@@ -3090,7 +3137,7 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
     progression_ctx = []
     for m in members:
         for c in m["case_conditions"]:
-            c = species_repair(c, _prec, _core)
+            c = canonical_species(species_repair(c, _prec, _core))
             if progression_local(c, m, progression_q):
                 progression_ctx.append(dict(
                     c, scope_note=("local to the stating member; this case's own "
@@ -3195,7 +3242,7 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
     _merged_material = deposited[0] if len(deposited) == 1 else None
     return fold_timing_generalizations(
         resolve_timing_conflicts(qualify_case_timing_steps(
-        drop_foreign_species_conditions(bind_gas_roles_to_case(
+        drop_foreign_species_conditions(canonicalize_case_species(bind_gas_roles_to_case(
         bind_context_controls_to_case(
         bind_step_species(bind_case_chemistry({
         "case_id": "CASE-%s-%03d" % (pid[:6].upper(), i),
@@ -3256,7 +3303,7 @@ def _case(pid, i, members, P, paper_mat_roles, meas_by_entity, sample_by_code, n
                                     for c in m["case_conditions"]
                                     if c.get("provenance_type") == "derived_from_sweep_axis"}),
         "identity_evidence": strengths, "confidence": conf, "warnings": warn,
-    }))))))))
+    })))))))))
 
 
 # ---------------------------------------------------------------- representation groups
