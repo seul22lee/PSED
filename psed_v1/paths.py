@@ -94,6 +94,30 @@ def review_path(doi):
     return paper_dir(doi) / "review.json"
 
 
+def semantic_dir(doi):
+    return paper_dir(doi) / "semantic"
+
+
+def paper_diagnostics_dir(doi):
+    """Per-paper audit caches the semantic stage keeps beside its outputs."""
+    return paper_dir(doi) / "diagnostics"
+
+
+def corpus_manifest_path():
+    """The DECLARED corpus membership. Papers enter the corpus by being listed
+    here — never by directory globbing, never by a runtime classification.
+    Computed from PAPERS (not the module-level CORPUS_OUT) so set_corpus_root
+    redirects it together with everything else."""
+    return PAPERS / "_corpus" / "corpus_manifest.json"
+
+
+def corpus_papers():
+    """Included paper ids from the corpus manifest, in manifest order."""
+    import json
+    m = json.loads(corpus_manifest_path().read_text())
+    return [p["paper_id"] for p in m["included"]]
+
+
 def figures_dir(doi):
     return extracted_dir(doi) / "figures"
 

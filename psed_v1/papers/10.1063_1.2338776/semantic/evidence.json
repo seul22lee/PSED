@@ -1,0 +1,193 @@
+[
+ {
+  "evidence_id": "EV-10.106-001",
+  "kind": "material_role",
+  "subject": "Al2O3",
+  "detail": "roles read from the methods/body: ['DEPOSITED']",
+  "roles": [
+   {
+    "role": "DEPOSITED",
+    "matched": "atomic layer deposition of Al2O3",
+    "span": "image --> <!-- image --> <!-- image --> ## Plasma-assisted atomic layer deposition of Al2O3 moisture permeation barriers on polymers E. Langereis, a )"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "ALD Al2O3",
+    "span": "lative humidity ) to determine the WVTR of the film. The PA-ALD Al2O3 films were characterized on c -Si wafers and the results ar"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "ALD of Al2O3",
+    "span": "creasing substrate temperatures, as reported previously for ALD of Al2O3. 15,16 Rutherford backscattering spectroscopy ( RBS ) showe"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "deposited Al2O3",
+    "span": "ure, yielding an average value of 2.9±0.2 g cm -3 . All the deposited Al2O3 films were oxygen rich and the amount of oxygen in the film"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "Al2O3 films",
+    "span": "ccepted 3 July 2006; published online 25 August 2006 ) Thin Al2O3 films of different thicknesses ( 10-40 nm ) were deposited by pla"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "Al2O3 film",
+    "span": "WVTRPEN=0.5 g m -2 day -1 ) was measured for a 20 nm thick Al2O3 film deposited at room temperature using short purging times. Su"
+   }
+  ]
+ },
+ {
+  "evidence_id": "EV-10.106-002",
+  "kind": "curve_link_rejected",
+  "subject": "10.1063_1.2338776::F1::a::0::f0p0",
+  "detail": "the explicit link to '10.1063_1.2338776__Fig1a__exp02' was not used: the curve is labelled 'undersaturated' but the linked entity is 'saturated', and another entity in the same panel carries 'undersaturated'",
+  "figure": "1",
+  "panel": "a",
+  "series": "undersaturated"
+ },
+ {
+  "evidence_id": "EV-10.106-003",
+  "kind": "experiment_control_refused",
+  "subject": "10.1063_1.2338776__Fig1a__exp02",
+  "detail": "chamber_total_pressure = 0.999915 is a paper-level pressure_extraction broadcast carrying no evidence for this entity; sibling experiments agree on it only because they were all stamped with the same value"
+ },
+ {
+  "evidence_id": "EV-10.106-004",
+  "kind": "experiment_control",
+  "subject": "10.1063_1.2338776__Fig1a__exp02",
+  "detail": "the resolved experiments of this entity all state film_thickness = 20.0 nm at figure scope; the entity bound none, so the control is carried onto its cases"
+ },
+ {
+  "evidence_id": "EV-10.106-005",
+  "kind": "experiment_control_refused",
+  "subject": "10.1063_1.2338776__Fig1a__exp02",
+  "detail": "molecular_mass = 72.09 is a ontology-level species_property broadcast carrying no evidence for this entity; sibling experiments agree on it only because they were all stamped with the same value"
+ },
+ {
+  "evidence_id": "EV-10.106-006",
+  "kind": "experiment_control_refused",
+  "subject": "10.1063_1.2338776__Fig1a__exp02",
+  "detail": "precursor_molecular_diameter = 0.591 is a ontology-level species_property broadcast carrying no evidence for this entity; sibling experiments agree on it only because they were all stamped with the same value"
+ },
+ {
+  "evidence_id": "EV-10.106-007",
+  "kind": "process_step",
+  "subject": "10.1063_1.2338776__Fig1a__exp01",
+  "detail": "axis 'Deposition temperature (°C)' in panel a of figure 1 is the precursor_exposure step: no role evidence in 'Deposition temperature (°C)'; the figure caption names the step: 'TMA dosing'"
+ },
+ {
+  "evidence_id": "EV-10.106-008",
+  "kind": "process_step",
+  "subject": "10.1063_1.2338776__Fig1a__exp02",
+  "detail": "axis 'Deposition temperature (°C)' in panel a of figure 1 is the precursor_exposure step: no role evidence in 'Deposition temperature (°C)'; the figure caption names the step: 'TMA dosing'"
+ },
+ {
+  "evidence_id": "EV-10.106-009",
+  "kind": "process_step",
+  "subject": "10.1063_1.2338776__Fig2a",
+  "detail": "axis 'Thickness Al2O3 (nm)' in panel a of figure 2 is the precursor_exposure step: no role evidence in 'Thickness Al2O3 (nm)'; the figure caption names the step: 'TMA dosing'"
+ },
+ {
+  "evidence_id": "EV-10.106-010",
+  "kind": "experimental_design",
+  "subject": "DES::10.1063_1.2338776::F1a::deposition_temperature::10.1063_1.2338776__Fig1a__exp01",
+  "detail": "the panel plots WVTR against 4 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "25",
+   "50",
+   "75",
+   "100"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.106-011",
+  "kind": "sweep_normalisation",
+  "subject": "10.1063_1.2338776__Fig1a__exp01",
+  "detail": "branch 25 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 25.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.106-012",
+  "kind": "sweep_normalisation",
+  "subject": "10.1063_1.2338776__Fig1a__exp01",
+  "detail": "branch 50 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 50.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.106-013",
+  "kind": "sweep_normalisation",
+  "subject": "10.1063_1.2338776__Fig1a__exp01",
+  "detail": "branch 75 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 75.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.106-014",
+  "kind": "sweep_normalisation",
+  "subject": "10.1063_1.2338776__Fig1a__exp01",
+  "detail": "branch 100 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 100.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.106-015",
+  "kind": "case_scope",
+  "subject": "10.1063_1.2338776__Fig1a__exp02",
+  "detail": "x axis 'deposition_temperature' is CASE_DEFINING_PROCESS_SETTING (ontology recipe_role = control_setting; only 1 distinct value plotted); its points are observations of one specimen | axis role CASE_DEFINING_PROCESS_SETTING: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.106-016",
+  "kind": "no_case",
+  "subject": "10.1063_1.2338776__Fig2a",
+  "detail": "entity_class 'UnresolvedSourceEntity' never carries a current-paper deposition case; its results are preserved as Measurement/ResultSeries"
+ },
+ {
+  "evidence_id": "EV-10.106-017",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.106-001",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-002, CASE-10.106-003, CASE-10.106-004, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.106-018",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.106-002",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-003, CASE-10.106-004, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.106-019",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.106-003",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-002, CASE-10.106-004, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.106-020",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.106-004",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-002, CASE-10.106-003, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.106-021",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.106-005",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-002, CASE-10.106-003, CASE-10.106-004; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.106-022",
+  "kind": "produced_material_placement",
+  "subject": "Al2O3 films -> substrate",
+  "detail": "the ability of PA-ALD in obtaining good Al2O3 moisture permeation barriers films … were deposited in a homebuilt deposition reactor by PA-ALD from sequentially exposing the substrate to TMA vapor and a remote O 2 plas"
+ }
+]

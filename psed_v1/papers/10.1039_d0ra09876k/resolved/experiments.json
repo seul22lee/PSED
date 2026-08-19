@@ -124,7 +124,7 @@
    }
   ],
   "measurand": {
-   "quantity": "total_pressure",
+   "quantity": "partial_pressure",
    "unit": "Pa",
    "raw_unit": "Pa",
    "family": "pressure",
@@ -259,7 +259,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -267,7 +268,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -293,11 +295,12 @@
      "experiment_id": "10.1039_d0ra09876k-E003"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -306,11 +309,12 @@
      "experiment_id": "10.1039_d0ra09876k-E003"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -334,7 +338,7 @@
      "experiment_id": "10.1039_d0ra09876k-E003"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "inverse_temperature",
   "x_semantics": {
@@ -353,11 +357,12 @@
    "raw_quantity": "partial_pressure",
    "raw_unit": "Pa",
    "unit_dimension": "pressure",
-   "canonical_quantity": "total_pressure",
-   "axis_role": "unknown",
+   "canonical_quantity": "partial_pressure",
+   "axis_role": "process_condition",
    "semantic_status": "resolved",
    "evidence": "ontology alias match on 'p (Pa)'",
-   "rejected_lexical_match": null
+   "rejected_lexical_match": null,
+   "displaced_symbol_match": "total_pressure"
   },
   "entity_id": "10.1039_d0ra09876k__Fig2b__exp01",
   "entity_key": "10.1039_d0ra09876k|10|2|b|[Y(DPfAMD)3]|primary",
@@ -372,7 +377,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 6,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -499,7 +506,7 @@
    }
   ],
   "measurand": {
-   "quantity": "total_pressure",
+   "quantity": "partial_pressure",
    "unit": "Pa",
    "raw_unit": "Pa",
    "family": "pressure",
@@ -634,7 +641,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -642,7 +650,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -668,11 +677,12 @@
      "experiment_id": "10.1039_d0ra09876k-E004"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -681,11 +691,12 @@
      "experiment_id": "10.1039_d0ra09876k-E004"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -709,7 +720,7 @@
      "experiment_id": "10.1039_d0ra09876k-E004"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "inverse_temperature",
   "x_semantics": {
@@ -728,11 +739,12 @@
    "raw_quantity": "partial_pressure",
    "raw_unit": "Pa",
    "unit_dimension": "pressure",
-   "canonical_quantity": "total_pressure",
-   "axis_role": "unknown",
+   "canonical_quantity": "partial_pressure",
+   "axis_role": "process_condition",
    "semantic_status": "resolved",
    "evidence": "ontology alias match on 'p (Pa)'",
-   "rejected_lexical_match": null
+   "rejected_lexical_match": null,
+   "displaced_symbol_match": "total_pressure"
   },
   "entity_id": "10.1039_d0ra09876k__Fig2b__exp02",
   "entity_key": "10.1039_d0ra09876k|10|2|b|[Y(DPAMD)3]|primary",
@@ -747,7 +759,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 6,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -874,7 +888,7 @@
    }
   ],
   "measurand": {
-   "quantity": "total_pressure",
+   "quantity": "partial_pressure",
    "unit": "Pa",
    "raw_unit": "Pa",
    "family": "pressure",
@@ -1009,7 +1023,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -1017,7 +1032,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -1043,11 +1059,12 @@
      "experiment_id": "10.1039_d0ra09876k-E005"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -1056,11 +1073,12 @@
      "experiment_id": "10.1039_d0ra09876k-E005"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -1084,7 +1102,7 @@
      "experiment_id": "10.1039_d0ra09876k-E005"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "inverse_temperature",
   "x_semantics": {
@@ -1103,11 +1121,12 @@
    "raw_quantity": "partial_pressure",
    "raw_unit": "Pa",
    "unit_dimension": "pressure",
-   "canonical_quantity": "total_pressure",
-   "axis_role": "unknown",
+   "canonical_quantity": "partial_pressure",
+   "axis_role": "process_condition",
    "semantic_status": "resolved",
    "evidence": "ontology alias match on 'p (Pa)'",
-   "rejected_lexical_match": null
+   "rejected_lexical_match": null,
+   "displaced_symbol_match": "total_pressure"
   },
   "entity_id": "10.1039_d0ra09876k__Fig2b__exp03",
   "entity_key": "10.1039_d0ra09876k|10|2|b|[Y(DPDMG)3]|primary",
@@ -1122,7 +1141,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 6,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -1450,7 +1471,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -1458,7 +1480,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -1486,10 +1509,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C00"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C00"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -1498,10 +1523,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C00"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C00"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -1525,7 +1552,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C00"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -1565,7 +1592,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -1893,7 +1922,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -1901,7 +1931,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -1929,10 +1960,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C01"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C01"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -1941,10 +1974,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C01"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C01"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -1968,7 +2003,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C01"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -2008,7 +2043,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -2336,7 +2373,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -2344,7 +2382,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2372,10 +2411,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C02"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C02"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -2384,10 +2425,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C02"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C02"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -2411,7 +2454,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C02"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -2451,7 +2494,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -2779,7 +2824,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -2787,7 +2833,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -2815,10 +2862,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C03"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C03"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -2827,10 +2876,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C03"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C03"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -2854,7 +2905,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C03"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -2894,7 +2945,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 3
+  "case_index": 3,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -3222,7 +3275,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -3230,7 +3284,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -3258,10 +3313,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C04"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C04"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -3270,10 +3327,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C04"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C04"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -3297,7 +3356,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C04"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -3337,7 +3396,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 4
+  "case_index": 4,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -3665,7 +3726,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -3673,7 +3735,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -3701,10 +3764,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C05"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C05"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -3713,10 +3778,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C05"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C05"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -3740,7 +3807,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C05"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -3780,7 +3847,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 5
+  "case_index": 5,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -4108,7 +4177,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -4116,7 +4186,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -4144,10 +4215,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C06"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C06"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -4156,10 +4229,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C06"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C06"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -4183,7 +4258,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C06"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -4223,7 +4298,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 6
+  "case_index": 6,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -4551,7 +4628,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -4559,7 +4637,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -4587,10 +4666,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C07"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C07"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -4599,10 +4680,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C07"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C07"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -4626,7 +4709,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C07"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -4666,7 +4749,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 7
+  "case_index": 7,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -4994,7 +5079,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -5002,7 +5088,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -5030,10 +5117,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C08"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C08"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -5042,10 +5131,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C08"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C08"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -5069,7 +5160,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C08"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -5109,7 +5200,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 8
+  "case_index": 8,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -5437,7 +5530,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -5445,7 +5539,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -5473,10 +5568,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C09"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C09"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -5485,10 +5582,12 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C09"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E006-C09"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -5512,7 +5611,7 @@
      "experiment_id": "10.1039_d0ra09876k-E006-C09"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -5552,7 +5651,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S003",
-  "case_index": 9
+  "case_index": 9,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -5879,7 +5980,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -5887,7 +5989,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -5915,10 +6018,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C00"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C00"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -5927,10 +6032,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C00"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C00"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -5954,7 +6061,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C00"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -5994,7 +6101,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -6321,7 +6430,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -6329,7 +6439,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -6357,10 +6468,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C01"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C01"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -6369,10 +6482,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C01"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C01"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -6396,7 +6511,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C01"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -6436,7 +6551,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -6763,7 +6880,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -6771,7 +6889,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -6799,10 +6918,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C02"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C02"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -6811,10 +6932,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C02"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C02"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -6838,7 +6961,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C02"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -6878,7 +7001,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -7205,7 +7330,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -7213,7 +7339,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -7241,10 +7368,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C03"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C03"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -7253,10 +7382,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C03"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C03"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -7280,7 +7411,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C03"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -7320,7 +7451,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 3
+  "case_index": 3,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -7647,7 +7780,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -7655,7 +7789,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -7683,10 +7818,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C04"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C04"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -7695,10 +7832,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C04"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C04"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -7722,7 +7861,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C04"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -7762,7 +7901,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 4
+  "case_index": 4,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -8089,7 +8230,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -8097,7 +8239,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -8125,10 +8268,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C05"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C05"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -8137,10 +8282,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C05"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C05"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -8164,7 +8311,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C05"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -8204,7 +8351,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 5
+  "case_index": 5,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -8531,7 +8680,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -8539,7 +8689,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -8567,10 +8718,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C06"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C06"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -8579,10 +8732,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C06"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C06"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -8606,7 +8761,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C06"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -8646,7 +8801,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 6
+  "case_index": 6,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -8973,7 +9130,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -8981,7 +9139,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -9009,10 +9168,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C07"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C07"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -9021,10 +9182,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C07"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C07"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -9048,7 +9211,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C07"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -9088,7 +9251,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 7
+  "case_index": 7,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -9415,7 +9580,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -9423,7 +9589,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -9451,10 +9618,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C08"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C08"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -9463,10 +9632,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C08"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C08"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -9490,7 +9661,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C08"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -9530,7 +9701,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 8
+  "case_index": 8,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -9857,7 +10030,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -9865,7 +10039,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -9893,10 +10068,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C09"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C09"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -9905,10 +10082,12 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C09"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E007-C09"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -9932,7 +10111,7 @@
      "experiment_id": "10.1039_d0ra09876k-E007-C09"
     }
    },
-   "completeness": 0.5
+   "completeness": 0.357
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -9972,7 +10151,9 @@
   "n_observations": 10,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S004",
-  "case_index": 9
+  "case_index": 9,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -10272,7 +10453,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -10280,7 +10462,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -10308,10 +10491,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C00"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C00"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -10320,10 +10505,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C00"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C00"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -10356,7 +10543,7 @@
      "panel": "b"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "cycle_number",
   "x_semantics": {
@@ -10396,7 +10583,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S005",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -10696,7 +10885,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -10704,7 +10894,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -10732,10 +10923,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C01"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C01"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -10744,10 +10937,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C01"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C01"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -10780,7 +10975,7 @@
      "panel": "b"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "cycle_number",
   "x_semantics": {
@@ -10820,7 +11015,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S005",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -11120,7 +11317,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -11128,7 +11326,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -11156,10 +11355,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C02"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C02"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -11168,10 +11369,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C02"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C02"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -11204,7 +11407,7 @@
      "panel": "b"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "cycle_number",
   "x_semantics": {
@@ -11244,7 +11447,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S005",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -11544,7 +11749,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -11552,7 +11758,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -11580,10 +11787,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C03"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C03"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -11592,10 +11801,12 @@
      "experiment_id": "10.1039_d0ra09876k-E008-C03"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E008-C03"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -11628,7 +11839,7 @@
      "panel": "b"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "cycle_number",
   "x_semantics": {
@@ -11668,7 +11879,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S005",
-  "case_index": 3
+  "case_index": 3,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -11992,7 +12205,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -12000,7 +12214,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -12028,10 +12243,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C00"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C00"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -12040,10 +12257,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C00"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C00"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -12076,7 +12295,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -12116,7 +12335,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S006",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -12440,7 +12661,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -12448,7 +12670,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -12476,10 +12699,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C01"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C01"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -12488,10 +12713,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C01"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C01"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -12524,7 +12751,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -12564,7 +12791,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S006",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -12888,7 +13117,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -12896,7 +13126,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -12924,10 +13155,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C02"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C02"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -12936,10 +13169,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C02"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C02"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -12972,7 +13207,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -13012,7 +13247,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S006",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -13336,7 +13573,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -13344,7 +13582,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -13372,10 +13611,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C03"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C03"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -13384,10 +13625,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C03"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C03"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -13420,7 +13663,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -13460,7 +13703,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S006",
-  "case_index": 3
+  "case_index": 3,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -13784,7 +14029,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -13792,7 +14038,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -13820,10 +14067,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C04"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C04"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -13832,10 +14081,12 @@
      "experiment_id": "10.1039_d0ra09876k-E009-C04"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E009-C04"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -13868,7 +14119,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -13908,7 +14159,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S006",
-  "case_index": 4
+  "case_index": 4,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -14232,7 +14485,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -14240,7 +14494,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -14268,10 +14523,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C00"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C00"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -14280,10 +14537,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C00"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C00"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -14316,7 +14575,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -14356,7 +14615,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S007",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -14680,7 +14941,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -14688,7 +14950,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -14716,10 +14979,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C01"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C01"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -14728,10 +14993,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C01"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C01"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -14764,7 +15031,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -14804,7 +15071,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S007",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -15128,7 +15397,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -15136,7 +15406,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -15164,10 +15435,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C02"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C02"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -15176,10 +15449,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C02"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C02"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -15212,7 +15487,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -15252,7 +15527,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S007",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -15576,7 +15853,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -15584,7 +15862,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -15612,10 +15891,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C03"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C03"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -15624,10 +15905,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C03"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C03"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -15660,7 +15943,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -15700,7 +15983,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S007",
-  "case_index": 3
+  "case_index": 3,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -16024,7 +16309,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -16032,7 +16318,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -16060,10 +16347,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C04"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C04"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -16072,10 +16361,12 @@
      "experiment_id": "10.1039_d0ra09876k-E010-C04"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E010-C04"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -16108,7 +16399,7 @@
      "panel": "c"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "pulse_time",
   "x_semantics": {
@@ -16148,7 +16439,9 @@
   "n_observations": 5,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S007",
-  "case_index": 4
+  "case_index": 4,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -16456,7 +16749,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -16464,7 +16758,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -16492,10 +16787,12 @@
      "experiment_id": "10.1039_d0ra09876k-E011-C00"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E011-C00"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -16504,10 +16801,12 @@
      "experiment_id": "10.1039_d0ra09876k-E011-C00"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E011-C00"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -16540,7 +16839,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "purge_time",
   "x_semantics": {
@@ -16580,7 +16879,9 @@
   "n_observations": 3,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S008",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -16888,7 +17189,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -16896,7 +17198,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -16924,10 +17227,12 @@
      "experiment_id": "10.1039_d0ra09876k-E011-C01"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E011-C01"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -16936,10 +17241,12 @@
      "experiment_id": "10.1039_d0ra09876k-E011-C01"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E011-C01"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -16972,7 +17279,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "purge_time",
   "x_semantics": {
@@ -17012,7 +17319,9 @@
   "n_observations": 3,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S008",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -17320,7 +17629,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -17328,7 +17638,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -17356,10 +17667,12 @@
      "experiment_id": "10.1039_d0ra09876k-E011-C02"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E011-C02"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -17368,10 +17681,12 @@
      "experiment_id": "10.1039_d0ra09876k-E011-C02"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E011-C02"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -17404,7 +17719,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "purge_time",
   "x_semantics": {
@@ -17444,7 +17759,9 @@
   "n_observations": 3,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S008",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -17760,7 +18077,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -17768,7 +18086,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -17796,10 +18115,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C00"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C00"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -17808,10 +18129,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C00"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C00"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -17844,7 +18167,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "purge_time",
   "x_semantics": {
@@ -17884,7 +18207,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S009",
-  "case_index": 0
+  "case_index": 0,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -18200,7 +18525,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -18208,7 +18534,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -18236,10 +18563,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C01"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C01"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -18248,10 +18577,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C01"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C01"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -18284,7 +18615,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "purge_time",
   "x_semantics": {
@@ -18324,7 +18655,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S009",
-  "case_index": 1
+  "case_index": 1,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -18640,7 +18973,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -18648,7 +18982,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -18676,10 +19011,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C02"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C02"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -18688,10 +19025,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C02"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C02"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -18724,7 +19063,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "purge_time",
   "x_semantics": {
@@ -18764,7 +19103,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S009",
-  "case_index": 2
+  "case_index": 2,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -19080,7 +19421,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -19088,7 +19430,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 10.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -19116,10 +19459,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C03"
     },
     "pulse_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C03"
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -19128,10 +19473,12 @@
      "experiment_id": "10.1039_d0ra09876k-E012-C03"
     },
     "pulse_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 10.0,
-     "experiment_id": "10.1039_d0ra09876k-E012-C03"
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -19164,7 +19511,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "purge_time",
   "x_semantics": {
@@ -19204,7 +19551,9 @@
   "n_observations": 4,
   "observations_are_experiments": false,
   "in_series": "10.1039_d0ra09876k-S009",
-  "case_index": 3
+  "case_index": 3,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -19849,7 +20198,7 @@
    }
   },
   "varies": [
-   "diffraction_angle"
+   "2\u0398"
   ],
   "series_varies": null,
   "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
@@ -19870,7 +20219,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -19878,7 +20228,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -19904,11 +20255,12 @@
      "experiment_id": "10.1039_d0ra09876k-E013"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -19917,11 +20269,12 @@
      "experiment_id": "10.1039_d0ra09876k-E013"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -19954,12 +20307,12 @@
      "panel": "a"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u0398",
   "x_semantics": {
    "raw_label": "2\u0398 (\u00b0)",
-   "raw_quantity": "diffraction_angle",
+   "raw_quantity": "2\u0398",
    "raw_unit": "\u00b0",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
@@ -19992,7 +20345,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 52,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -20635,7 +20990,7 @@
    }
   },
   "varies": [
-   "diffraction_angle"
+   "2\u0398"
   ],
   "series_varies": null,
   "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
@@ -20656,7 +21011,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -20664,7 +21020,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -20690,11 +21047,12 @@
      "experiment_id": "10.1039_d0ra09876k-E014"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -20703,11 +21061,12 @@
      "experiment_id": "10.1039_d0ra09876k-E014"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -20740,12 +21099,12 @@
      "panel": "a"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u0398",
   "x_semantics": {
    "raw_label": "2\u0398 (\u00b0)",
-   "raw_quantity": "diffraction_angle",
+   "raw_quantity": "2\u0398",
    "raw_unit": "deg",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
@@ -20778,7 +21137,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 54,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -21084,7 +21445,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -21092,7 +21454,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -21118,11 +21481,12 @@
      "experiment_id": "10.1039_d0ra09876k-E019"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -21131,11 +21495,12 @@
      "experiment_id": "10.1039_d0ra09876k-E019"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -21168,7 +21533,7 @@
      "panel": "d"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
@@ -21206,7 +21571,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 7,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -21512,7 +21879,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -21520,7 +21888,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -21546,11 +21915,12 @@
      "experiment_id": "10.1039_d0ra09876k-E023"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -21559,11 +21929,12 @@
      "experiment_id": "10.1039_d0ra09876k-E023"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -21596,7 +21967,7 @@
      "panel": "h"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "binding_energy",
   "x_semantics": {
@@ -21634,7 +22005,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 7,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -22121,7 +22494,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -22129,7 +22503,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -22155,11 +22530,12 @@
      "experiment_id": "10.1039_d0ra09876k-E024"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -22168,11 +22544,12 @@
      "experiment_id": "10.1039_d0ra09876k-E024"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -22205,7 +22582,7 @@
      "panel": "a"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "coordinate_raw_quantity": "wavelength",
   "x_semantics": {
@@ -22243,7 +22620,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 30,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  },
  {
   "material": "Y2O3",
@@ -22406,7 +22785,7 @@
    }
   ],
   "measurand": {
-   "quantity": "feature_height",
+   "quantity": "(\u03b1h\u03bd)\u00b2",
    "unit": "(eV cm\u207b\u00b9)\u00b2",
    "raw_unit": "(eV cm\u207b\u00b9)\u00b2",
    "family": null,
@@ -22417,8 +22796,7 @@
     "reason": "unit '(eV cm\u207b\u00b9)\u00b2' is not a recognised convertible unit",
     "unit_recovered": null,
     "values_rescaled": false
-   },
-   "raw_quantity": "feature_height"
+   }
   },
   "coordinate": "energy",
   "coordinate_family": null,
@@ -22613,7 +22991,7 @@
   "axis_role": null,
   "dependent": [
    {
-    "quantity": "feature_height",
+    "quantity": "(\u03b1h\u03bd)\u00b2",
     "unit": "(eV cm\u207b\u00b9)\u00b2",
     "raw_unit": "(eV cm\u207b\u00b9)\u00b2",
     "family": null
@@ -22627,7 +23005,8 @@
      "label": "A",
      "role": "precursor",
      "species": "Y(DPfAMD)3",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     },
@@ -22635,7 +23014,8 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
-     "dose_time": 30.0,
+     "activation": null,
+     "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
     }
@@ -22661,11 +23041,12 @@
      "experiment_id": "10.1039_d0ra09876k-E025"
     },
     "pulse_time::A": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "A",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -22674,11 +23055,12 @@
      "experiment_id": "10.1039_d0ra09876k-E025"
     },
     "pulse_time::B": {
-     "source": "paper",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "pulse_time",
      "value": 30.0,
-     "paper_id": null,
-     "card_field": null
+     "reactant": "B",
+     "reason": "an unqualified pulse_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -22711,7 +23093,7 @@
      "panel": "b"
     }
    },
-   "completeness": 0.571
+   "completeness": 0.429
   },
   "x_semantics": {
    "raw_label": "Energy / eV",
@@ -22726,14 +23108,15 @@
   },
   "y_semantics": {
    "raw_label": "(\u03b1h\u03bd)\u00b2 / (eV cm\u207b\u00b9)\u00b2",
-   "raw_quantity": "feature_height",
+   "raw_quantity": "(\u03b1h\u03bd)\u00b2",
    "raw_unit": "(eV cm\u207b\u00b9)\u00b2",
    "unit_dimension": null,
-   "canonical_quantity": "feature_height",
-   "axis_role": "process_condition",
-   "semantic_status": "resolved",
-   "evidence": "ontology alias match on '(\u03b1h\u03bd)\u00b2 / (eV cm\u207b\u00b9)\u00b2'",
-   "rejected_lexical_match": null
+   "canonical_quantity": null,
+   "axis_role": "unknown",
+   "semantic_status": "unresolved",
+   "evidence": "neither the label '(\u03b1h\u03bd)\u00b2 / (eV cm\u207b\u00b9)\u00b2' nor the record '(\u03b1h\u03bd)\u00b2' offers more than an ontology symbol for 'feature_height', and the axis unit '(eV cm\u207b\u00b9)\u00b2' does not support it",
+   "rejected_lexical_match": null,
+   "uncorroborated_symbol_match": "feature_height"
   },
   "entity_id": "10.1039_d0ra09876k__Fig7b",
   "entity_key": "10.1039_d0ra09876k|15|7|b|<single>|primary",
@@ -22748,6 +23131,8 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 17,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found"
  }
 ]

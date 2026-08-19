@@ -112,7 +112,38 @@ def _paper_quants(sd):
             qs.add((e.get("measurand") or {}).get("quantity"))
             if e.get("coordinate"):
                 qs.add(e.get("coordinate"))
+    # the numeric geometry/model parameters ALREADY extracted for this paper
+    # (geometry.json `quantities`) are geometry evidence of the first order --
+    # a modeling paper's declared feature_length is how its lateral-channel
+    # scope is known even when no experimental record repeats it
+    g = P.extracted_dir(sd) / "geometry.json"
+    if g.exists():
+        try:
+            for r in json.loads(g.read_text()).get("quantities") or []:
+                qs.add(r.get("quantity"))
+        except Exception:
+            pass
     return qs
+
+
+
+def _write_geometry(sd, updates):
+    """Update geometry.json's classification fields IN PLACE.
+
+    The same file also stores the LLM-extracted numeric geometry/model
+    parameters (`quantities`, written by --quantities). A reclassification must
+    never destroy those: they cost tokens to produce and the resolver reads
+    them as geometry facts. Unknown keys are preserved verbatim."""
+    f = P.extracted_dir(sd) / "geometry.json"
+    g = {}
+    if f.exists():
+        try:
+            g = json.loads(f.read_text())
+        except Exception:
+            g = {}
+    g.update(updates)
+    f.write_text(json.dumps(g, indent=1))
+    return g
 
 
 def classify_deterministic(sd):
@@ -140,7 +171,10 @@ def classify_deterministic(sd):
         return "lateral_channel", "pillarhall_lhar", "keyword: lateral HAR"
     if "channel_filling_fraction" in q or "feature_length" in q:
         return "lateral_channel", "lhar_channel", "quantity signature: feature_length / channel_filling"
-    if kw(r"\btrench|\bvia\b|through[- ]silicon|3d nand|finfet|deep hole|nanolaminate.*trench"):
+    # 'via' only in its interconnect sense: the bare singular is overwhelmingly the
+    # English preposition ("determined via XRR") or an address ("Via C. Olivetti"),
+    # both demonstrated false positives in this corpus
+    if kw(r"\btrench|\bvias\b|\bvia hole|\bvia structure|through[- ]silicon|3d nand|finfet|deep hole|nanolaminate.*trench"):
         return ("vertical_structure", "trench",
                 "keyword: trench/via" + (" + conformality quantities" if conf
                                          else " (named structure, no numeric geometry "
@@ -397,9 +431,8 @@ def main(argv):
             if not (P.extracted_dir(sd) / "document.md").exists():
                 print(f"  [skip] {sd} (no document.md)"); continue
             gc, st, why = classify_deterministic(sd)
-            g = {"geometry_class": gc, "structure": st, "method": "deterministic",
-                 "evidence": why}
-            (P.extracted_dir(sd) / "geometry.json").write_text(json.dumps(g, indent=1))
+            _write_geometry(sd, {"geometry_class": gc, "structure": st,
+                                 "method": "deterministic", "evidence": why})
             print(f"  {sd:28} -> {gc:18} struct={st:16} | {why}")
         tag_experiments(sds)
         refresh_entities(sds)
@@ -428,8 +461,8 @@ def main(argv):
         if not (P.extracted_dir(sd) / "document.md").exists():
             print(f"  [skip] {sd} (no document.md)"); continue
         gc, st, why = classify_deterministic(sd)
-        g = {"geometry_class": gc, "structure": st, "method": "deterministic", "evidence": why}
-        (P.extracted_dir(sd) / "geometry.json").write_text(json.dumps(g, indent=1))
+        _write_geometry(sd, {"geometry_class": gc, "structure": st,
+                             "method": "deterministic", "evidence": why})
         print(f"  {sd:28} -> {gc:18} struct={st:16} | {why}")
     tag_experiments(sds)
 

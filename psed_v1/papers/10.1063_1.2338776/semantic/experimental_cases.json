@@ -1,0 +1,1017 @@
+[
+ {
+  "case_id": "CASE-10.106-001",
+  "paper_id": "10.1063_1.2338776",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "base_pressure",
+    "value": null,
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated_range",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "base pressure of 10 -6 mTorr",
+    "locator": "methods section",
+    "value_kind": "range",
+    "value_lower": 6.0,
+    "value_upper": 10.0,
+    "superseded_value": null,
+    "value_repair": "the source states an interval 10 -6; the upstream parser read its separator as a minus sign"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "100",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "substrate temperature ( from RT to 100 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "7.5",
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "purged by O2 resulting in a pressure of 7.5 mTorr. The PA-ALD cycle, used at all deposition temperatures, consisted of multiple TMA dosing ( 1 s each ) injected",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temp' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "5 s purge",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "RBS and x-ray photoelectron spectroscopy on a relatively thick Al 2 O3 film ( 500 cycles ) deposited by undersaturated TMA dosing at 100 °C showed the same chemical composition on c -Si and PEN substrates, i",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "O2"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1063_1.2338776__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.106-1015"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.106-011"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2_plasma",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": "plasma",
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "coreactant_activation": [
+   "plasma"
+  ],
+  "nominal_fingerprint": "base_pressure=6..10|cycle_number=500|deposition_temperature=100|generic_pressure=7.5|precursor=TMA|purge_time=5|material=Al2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.106-002",
+   "CASE-10.106-003",
+   "CASE-10.106-004",
+   "CASE-10.106-005"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-002, CASE-10.106-003, CASE-10.106-004, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.106-002",
+  "paper_id": "10.1063_1.2338776",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "base_pressure",
+    "value": null,
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated_range",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "base pressure of 10 -6 mTorr",
+    "locator": "methods section",
+    "value_kind": "range",
+    "value_lower": 6.0,
+    "value_upper": 10.0,
+    "superseded_value": null,
+    "value_repair": "the source states an interval 10 -6; the upstream parser read its separator as a minus sign"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "100",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "substrate temperature ( from RT to 100 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "7.5",
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "purged by O2 resulting in a pressure of 7.5 mTorr. The PA-ALD cycle, used at all deposition temperatures, consisted of multiple TMA dosing ( 1 s each ) injected",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temp' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "5 s purge",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "RBS and x-ray photoelectron spectroscopy on a relatively thick Al 2 O3 film ( 500 cycles ) deposited by undersaturated TMA dosing at 100 °C showed the same chemical composition on c -Si and PEN substrates, i",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "O2"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1063_1.2338776__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.106-1016"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.106-012"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2_plasma",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": "plasma",
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "coreactant_activation": [
+   "plasma"
+  ],
+  "nominal_fingerprint": "base_pressure=6..10|cycle_number=500|deposition_temperature=100|generic_pressure=7.5|precursor=TMA|purge_time=5|material=Al2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.106-001",
+   "CASE-10.106-003",
+   "CASE-10.106-004",
+   "CASE-10.106-005"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-003, CASE-10.106-004, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.106-003",
+  "paper_id": "10.1063_1.2338776",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "base_pressure",
+    "value": null,
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated_range",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "base pressure of 10 -6 mTorr",
+    "locator": "methods section",
+    "value_kind": "range",
+    "value_lower": 6.0,
+    "value_upper": 10.0,
+    "superseded_value": null,
+    "value_repair": "the source states an interval 10 -6; the upstream parser read its separator as a minus sign"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "100",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "substrate temperature ( from RT to 100 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "7.5",
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "purged by O2 resulting in a pressure of 7.5 mTorr. The PA-ALD cycle, used at all deposition temperatures, consisted of multiple TMA dosing ( 1 s each ) injected",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temp' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "5 s purge",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "RBS and x-ray photoelectron spectroscopy on a relatively thick Al 2 O3 film ( 500 cycles ) deposited by undersaturated TMA dosing at 100 °C showed the same chemical composition on c -Si and PEN substrates, i",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "O2"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1063_1.2338776__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.106-1017"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.106-013"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2_plasma",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": "plasma",
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "coreactant_activation": [
+   "plasma"
+  ],
+  "nominal_fingerprint": "base_pressure=6..10|cycle_number=500|deposition_temperature=100|generic_pressure=7.5|precursor=TMA|purge_time=5|material=Al2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.106-001",
+   "CASE-10.106-002",
+   "CASE-10.106-004",
+   "CASE-10.106-005"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-002, CASE-10.106-004, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.106-004",
+  "paper_id": "10.1063_1.2338776",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "base_pressure",
+    "value": null,
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated_range",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "base pressure of 10 -6 mTorr",
+    "locator": "methods section",
+    "value_kind": "range",
+    "value_lower": 6.0,
+    "value_upper": 10.0,
+    "superseded_value": null,
+    "value_repair": "the source states an interval 10 -6; the upstream parser read its separator as a minus sign"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "100",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "substrate temperature ( from RT to 100 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "7.5",
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "purged by O2 resulting in a pressure of 7.5 mTorr. The PA-ALD cycle, used at all deposition temperatures, consisted of multiple TMA dosing ( 1 s each ) injected",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temp' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "5 s purge",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "RBS and x-ray photoelectron spectroscopy on a relatively thick Al 2 O3 film ( 500 cycles ) deposited by undersaturated TMA dosing at 100 °C showed the same chemical composition on c -Si and PEN substrates, i",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "O2"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1063_1.2338776__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.106-1018"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.106-014"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2_plasma",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": "plasma",
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "coreactant_activation": [
+   "plasma"
+  ],
+  "nominal_fingerprint": "base_pressure=6..10|cycle_number=500|deposition_temperature=100|generic_pressure=7.5|precursor=TMA|purge_time=5|material=Al2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.106-001",
+   "CASE-10.106-002",
+   "CASE-10.106-003",
+   "CASE-10.106-005"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-002, CASE-10.106-003, CASE-10.106-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.106-005",
+  "paper_id": "10.1063_1.2338776",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Al2O3",
+  "deposited_materials": [
+   "Al2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Al2O3"
+  ],
+  "material_roles": {
+   "Al2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "figure/panel scope",
+  "multi_material_context": false,
+  "process_type": "plasma",
+  "precursors": [
+   "TMA"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "base_pressure",
+    "value": null,
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated_range",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "base pressure of 10 -6 mTorr",
+    "locator": "methods section",
+    "value_kind": "range",
+    "value_lower": 6.0,
+    "value_upper": 10.0,
+    "superseded_value": null,
+    "value_repair": "the source states an interval 10 -6; the upstream parser read its separator as a minus sign"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "100",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "substrate temperature ( from RT to 100 °C",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "7.5",
+    "unit": "mTorr",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "purged by O2 resulting in a pressure of 7.5 mTorr. The PA-ALD cycle, used at all deposition temperatures, consisted of multiple TMA dosing ( 1 s each ) injected",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "TMA",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'FIG. 1. Water vapor transmission rate ( WVTR ) of 20 nm thick PA-ALD Al2O3 films on PEN as a function of deposition temp' names 'TMA', one of the paper's precursor"
+   },
+   {
+    "quantity": "purge_time",
+    "value": "5",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "5 s purge",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "500",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "process control stated for this material and chemistry",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "experiment_context",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "RBS and x-ray photoelectron spectroscopy on a relatively thick Al 2 O3 film ( 500 cycles ) deposited by undersaturated TMA dosing at 100 °C showed the same chemical composition on c -Si and PEN substrates, i",
+    "context_match": {
+     "material": "Al2O3",
+     "chemistry": [
+      "TMA",
+      "O2"
+     ],
+     "rule": "the assertion's own sentence names this case's material and chemistry"
+    }
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1063_1.2338776__Fig1a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.106-1019"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.106-015"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "TMA",
+     "canonical_id": "TMA",
+     "identity_key": "TMA",
+     "preferred_label": "TMA",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2_plasma",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": "plasma",
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "coreactant_activation": [
+   "plasma"
+  ],
+  "nominal_fingerprint": "base_pressure=6..10|cycle_number=500|deposition_temperature=100|generic_pressure=7.5|precursor=TMA|purge_time=5|material=Al2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.106-001",
+   "CASE-10.106-002",
+   "CASE-10.106-003",
+   "CASE-10.106-004"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.106-001, CASE-10.106-002, CASE-10.106-003, CASE-10.106-004; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ }
+]

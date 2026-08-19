@@ -5407,7 +5407,7 @@
    "y_axis_role": "output",
    "x_semantics": {
     "raw_label": "2\u03b8 (\u00b0)",
-    "raw_quantity": "diffraction_angle",
+    "raw_quantity": "2\u03b8",
     "raw_unit": "\u00b0",
     "unit_dimension": "angle",
     "canonical_quantity": "diffraction_angle",
@@ -5641,7 +5641,7 @@
    "y_axis_role": "output",
    "x_semantics": {
     "raw_label": "2\u03b8 (\u00b0)",
-    "raw_quantity": "diffraction_angle",
+    "raw_quantity": "2\u03b8",
     "raw_unit": "\u00b0",
     "unit_dimension": "angle",
     "canonical_quantity": "diffraction_angle",
@@ -5868,7 +5868,7 @@
    "y_axis_role": "output",
    "x_semantics": {
     "raw_label": "2\u03b8 (\u00b0)",
-    "raw_quantity": "diffraction_angle",
+    "raw_quantity": "2\u03b8",
     "raw_unit": "\u00b0",
     "unit_dimension": "angle",
     "canonical_quantity": "diffraction_angle",
@@ -6081,7 +6081,7 @@
    "y_axis_role": "output",
    "x_semantics": {
     "raw_label": "2\u03b8 (\u00b0)",
-    "raw_quantity": "diffraction_angle",
+    "raw_quantity": "2\u03b8",
     "raw_unit": "\u00b0",
     "unit_dimension": "angle",
     "canonical_quantity": "diffraction_angle",
@@ -6301,7 +6301,7 @@
    "y_axis_role": "output",
    "x_semantics": {
     "raw_label": "2\u03b8 (\u00b0)",
-    "raw_quantity": "diffraction_angle",
+    "raw_quantity": "2\u03b8",
     "raw_unit": "\u00b0",
     "unit_dimension": "angle",
     "canonical_quantity": "diffraction_angle",
@@ -6521,7 +6521,7 @@
    "y_axis_role": "output",
    "x_semantics": {
     "raw_label": "2\u03b8 (\u00b0)",
-    "raw_quantity": "diffraction_angle",
+    "raw_quantity": "2\u03b8",
     "raw_unit": "\u00b0",
     "unit_dimension": "angle",
     "canonical_quantity": "diffraction_angle",
@@ -6734,7 +6734,7 @@
    "y_axis_role": "output",
    "x_semantics": {
     "raw_label": "2\u03b8 (\u00b0)",
-    "raw_quantity": "diffraction_angle",
+    "raw_quantity": "2\u03b8",
     "raw_unit": "\u00b0",
     "unit_dimension": "angle",
     "canonical_quantity": "diffraction_angle",
@@ -9041,8 +9041,8 @@
     "extractor": "vision-llm",
     "doi": "10.1039_c6dt03571j"
    },
-   "bound_condition_count": 0,
-   "ambiguous_condition_count": 1
+   "bound_condition_count": 1,
+   "ambiguous_condition_count": 0
   },
   {
    "result_id": "10.1039_c6dt03571j__Fig8a__exp02",
@@ -9331,8 +9331,8 @@
     "extractor": "vision-llm",
     "doi": "10.1039_c6dt03571j"
    },
-   "bound_condition_count": 0,
-   "ambiguous_condition_count": 1
+   "bound_condition_count": 1,
+   "ambiguous_condition_count": 0
   },
   {
    "result_id": "10.1039_c6dt03571j__Fig8__exp01",
@@ -10507,28 +10507,30 @@
    "granularity_evidence": "x is an instrument coordinate; its points are one specimen's scan",
    "granularity_review_reason": null,
    "x_axis_role": "measurement_coordinate",
-   "y_axis_role": "process_condition",
+   "y_axis_role": "unknown",
    "x_semantics": {
     "raw_label": "h\u03bd (eV)",
-    "raw_quantity": "feature_height",
+    "raw_quantity": "h\u03bd",
     "raw_unit": "eV",
     "unit_dimension": "energy",
     "canonical_quantity": null,
     "axis_role": "measurement_coordinate",
-    "semantic_status": "unsupported_preserved",
-    "evidence": "alias match 'feature_height' rejected: the axis is in 'eV' (energy) and 'feature_height' must be length",
-    "rejected_lexical_match": "feature_height"
+    "semantic_status": "role_only",
+    "evidence": "neither the label 'h\u03bd (eV)' nor the record 'h\u03bd' offers more than an ontology symbol for 'feature_height', and the axis unit 'eV' does not support it",
+    "rejected_lexical_match": null,
+    "uncorroborated_symbol_match": "feature_height"
    },
    "y_semantics": {
     "raw_label": "(\u03b1h\u03bd)\u00b2 (cm\u207b\u00b9 eV)\u00b2",
-    "raw_quantity": "feature_height",
+    "raw_quantity": "(\u03b1h\u03bd)\u00b2",
     "raw_unit": "(cm\u207b\u00b9 eV)\u00b2",
     "unit_dimension": null,
-    "canonical_quantity": "feature_height",
-    "axis_role": "process_condition",
-    "semantic_status": "resolved",
-    "evidence": "ontology alias match on '(\u03b1h\u03bd)\u00b2 (cm\u207b\u00b9 eV)\u00b2'",
-    "rejected_lexical_match": null
+    "canonical_quantity": null,
+    "axis_role": "unknown",
+    "semantic_status": "unresolved",
+    "evidence": "neither the label '(\u03b1h\u03bd)\u00b2 (cm\u207b\u00b9 eV)\u00b2' nor the record '(\u03b1h\u03bd)\u00b2' offers more than an ontology symbol for 'feature_height', and the axis unit '(cm\u207b\u00b9 eV)\u00b2' does not support it",
+    "rejected_lexical_match": null,
+    "uncorroborated_symbol_match": "feature_height"
    },
    "physical_case_id": "10.1039_c6dt03571j__Fig9b",
    "measurement_event_id": "10.1039_c6dt03571j__Fig9b",
@@ -10588,9 +10590,9 @@
    },
    "chemistry_consistent": true,
    "chemistry_inconsistency": null,
-   "coordinate": "feature_height",
+   "coordinate": "h\u03bd",
    "coordinate_unit": "eV",
-   "measurand": "feature_height",
+   "measurand": "(\u03b1h\u03bd)\u00b2",
    "measurand_unit": "(cm\u207b\u00b9 eV)\u00b2",
    "caption": "Fig. 9 (a) Optical transmission and (b) the derived Tauc plot of a ZnO /uniFB01 lm deposited at 225 \u00b0C on quartz glass. The /uniFB02 uctuation seen within the Tauc plot corresponds to the changing of ",
    "provenance": {

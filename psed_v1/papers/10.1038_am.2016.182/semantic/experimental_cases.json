@@ -1,0 +1,4218 @@
+[
+ {
+  "case_id": "CASE-10.103-001",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 0.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 0 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp01",
+    "species": "HDMP",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'HDMP(precursor)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'HDMP(precursor)' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-568"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-054"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@HDMP=0|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-002",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 1.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 1 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp01",
+    "species": "HDMP",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'HDMP(precursor)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'HDMP(precursor)' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-569"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-055"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@HDMP=1|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-003",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 2.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 2 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp01",
+    "species": "HDMP",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'HDMP(precursor)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'HDMP(precursor)' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-570"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-056"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@HDMP=2|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-004",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 4.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 4 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp01",
+    "species": "HDMP",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'HDMP(precursor)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'HDMP(precursor)' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-571"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-057"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@HDMP=4|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-005",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 6.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 6 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp01",
+    "species": "HDMP",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'HDMP(precursor)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'HDMP(precursor)' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-572"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-058"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@HDMP=6|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-006",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'O2(reactant)' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 0.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 0 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp02",
+    "species": "O2",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'O2(reactant)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-573"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-060"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@O2=0|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-007",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'O2(reactant)' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 1.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 1 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp02",
+    "species": "O2",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'O2(reactant)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-574"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-061"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@O2=1|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-008",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'O2(reactant)' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 2.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 2 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp02",
+    "species": "O2",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'O2(reactant)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-575"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-062"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@O2=2|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-009",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'O2(reactant)' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 4.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 4 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp02",
+    "species": "O2",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'O2(reactant)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-576"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-063"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@O2=4|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-010",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "coreactant",
+    "value": "O2",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "series_legend",
+    "evidence": "'O2(reactant)' names 'O2', one of the paper's coreactant"
+   },
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "exposure_time",
+    "value": 6.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=exposure_time",
+     "step=?",
+     "unit=s",
+     "material=Pt"
+    ],
+    "process_step": null,
+    "design_material": "Pt",
+    "raw_axis_label": "Exposure time (s)",
+    "evidence": "branch 6 of the exposure_time design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F1a::exposure_time::10.1038_am.2016.182__Fig1a__exp02",
+    "species": "O2",
+    "species_basis": "the reagent whose dose this curve varies",
+    "species_evidence": "this curve is labelled 'O2(reactant)' where the figure distinguishes its curves by 'precursor/reactant', naming both sides of the cycle; the label says which reagent's exposure_time is swept, not which chemical the film was grown with"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'GPCs of Pt fi lms according to the exposure time of the precursor and counter reactants during the ALD process. HDMP and' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-577"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-064"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "coreactant=O2|cycle_number=200|deposition_temperature=300|exposure_time@O2=6|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-011",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "MeCpPtMe3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'MeCpPtMe3' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "panel",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption, panel (b)",
+    "value_kind": "scalar",
+    "scope_note": "local to the stating member; this case's own members traverse 'cycle_number' as a progression coordinate",
+    "stated_by": "CAND-10.103-578"
+   }
+  ],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1b__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-578"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-065"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature=300|precursor=MeCpPtMe3|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-014"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-014; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-012",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'HDMP' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [
+   {
+    "quantity": "cycle_number",
+    "value": "200",
+    "unit": "cycle",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "panel",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "200 cycles",
+    "locator": "figure 1 caption, panel (b)",
+    "value_kind": "scalar",
+    "scope_note": "local to the stating member; this case's own members traverse 'cycle_number' as a progression coordinate",
+    "stated_by": "CAND-10.103-579"
+   }
+  ],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1b__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-579"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-066"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature=300|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-013",
+   "CASE-10.103-021"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-013, CASE-10.103-021; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-013",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'HDMP' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1h__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-580"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1h"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-067"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature=300|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-012",
+   "CASE-10.103-021"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-021; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-014",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "carried out using HDMP and O2 gas as a precursor and counter reactant, respectively, at 300 °C",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "MeCpPtMe3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'MeCpPtMe3' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig1h__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-581"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1h"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-068"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature=300|precursor=MeCpPtMe3|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-011"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-011; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-015",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 80.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 80 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp01"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'HDMP' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp01",
+   "M::10.1038_am.2016.182__Fig2b__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-582",
+   "CAND-10.103-593"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-070",
+   "EV-10.103-083"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=80|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-016",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "100",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "T_s = 100 °C",
+    "locator": "series label 'T_s = 100 °C' (axis 'growth_temperature')",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'X-ray photoelectron spectroscopy spectra of Pt fi lms grown by ALD with the HDMP precursor at the temperatures of 100 an' names 'HDMP', one of the paper's precursor"
+   },
+   {
+    "quantity": "temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "300 °C",
+    "locator": "figure caption",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp01",
+   "M::10.1038_am.2016.182__Fig2b__exp01",
+   "M::10.1038_am.2016.182__Fig2c__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-583",
+   "CAND-10.103-594",
+   "CAND-10.103-603"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b",
+   "2c"
+  ],
+  "n_members": 3,
+  "member_kinds": [
+   "design_branch",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-071",
+   "EV-10.103-084",
+   "EV-10.103-094"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature=100|precursor=HDMP|temperature=300|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-017",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 120.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 120 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp01"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'HDMP' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp01",
+   "M::10.1038_am.2016.182__Fig2b__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-584",
+   "CAND-10.103-595"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-072",
+   "EV-10.103-085"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=120|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-018",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 150.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 150 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp01"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'HDMP' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp01",
+   "M::10.1038_am.2016.182__Fig2b__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-585",
+   "CAND-10.103-596"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-073",
+   "EV-10.103-086"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=150|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-019",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 200.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 200 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp01"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'HDMP' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp01",
+   "M::10.1038_am.2016.182__Fig2b__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-586",
+   "CAND-10.103-597"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-074",
+   "EV-10.103-087"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=200|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-020",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 250.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 250 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp01"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'HDMP' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp01",
+   "M::10.1038_am.2016.182__Fig2b__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-587",
+   "CAND-10.103-598"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-075",
+   "EV-10.103-088"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=250|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-021",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "300",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "series_label",
+    "scope": "series",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "T_s = 300 °C",
+    "locator": "series label 'T_s = 300 °C' (axis 'growth_temperature')",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "HDMP",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "panel_caption_clause",
+    "evidence": "'X-ray photoelectron spectroscopy spectra of Pt fi lms grown by ALD with the HDMP precursor at the temperatures of 100 an' names 'HDMP', one of the paper's precursor"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp01",
+   "M::10.1038_am.2016.182__Fig2b__exp01",
+   "M::10.1038_am.2016.182__Fig2c__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-588",
+   "CAND-10.103-599",
+   "CAND-10.103-604"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b",
+   "2c"
+  ],
+  "n_members": 3,
+  "member_kinds": [
+   "design_branch",
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-076",
+   "EV-10.103-089",
+   "EV-10.103-095"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature=300|precursor=HDMP|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-012",
+   "CASE-10.103-013"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012, CASE-10.103-013; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-022",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 225.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 225 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp02"
+   },
+   {
+    "quantity": "precursor",
+    "value": "MeCpPtMe3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'MeCpPtMe3' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-589"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-078"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=225|precursor=MeCpPtMe3|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-023",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 250.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 250 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp02"
+   },
+   {
+    "quantity": "precursor",
+    "value": "MeCpPtMe3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'MeCpPtMe3' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp02",
+   "M::10.1038_am.2016.182__Fig2b__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-590",
+   "CAND-10.103-600"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-079",
+   "EV-10.103-091"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=250|precursor=MeCpPtMe3|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-024",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 275.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 275 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp02"
+   },
+   {
+    "quantity": "precursor",
+    "value": "MeCpPtMe3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'MeCpPtMe3' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp02",
+   "M::10.1038_am.2016.182__Fig2b__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-591",
+   "CAND-10.103-601"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-080",
+   "EV-10.103-092"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=275|precursor=MeCpPtMe3|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-025",
+  "paper_id": "10.1038_am.2016.182",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Pt",
+  "deposited_materials": [
+   "Pt"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Pt"
+  ],
+  "material_roles": {
+   "Pt": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "MeCpPtMe3"
+  ],
+  "coreactants": [
+   "O2"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 300.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Pt"
+    ],
+    "process_step": "n/a",
+    "design_material": "Pt",
+    "raw_axis_label": "Growth temperature (°C)",
+    "evidence": "branch 300 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1038_am.2016.182::F2a::deposition_temperature::10.1038_am.2016.182__Fig2a__exp02"
+   },
+   {
+    "quantity": "precursor",
+    "value": "MeCpPtMe3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "the process chemistry this curve was grown with",
+    "provenance_type": "figure_local_direct",
+    "source": "between_curve_legend",
+    "scope": "series",
+    "evidence": "this curve is labelled 'MeCpPtMe3' where the figure distinguishes its curves by 'precursor'"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1038_am.2016.182__Fig2a__exp02",
+   "M::10.1038_am.2016.182__Fig2b__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-592",
+   "CAND-10.103-602"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2a",
+   "2b"
+  ],
+  "n_members": 2,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-081",
+   "EV-10.103-093"
+  ],
+  "confidence": "SUPPORTED",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "MeCpPtMe3",
+     "canonical_id": "MeCpPtMe3",
+     "identity_key": "MeCpPtMe3",
+     "preferred_label": "MeCpPtMe3",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "O2",
+     "canonical_id": "O2",
+     "identity_key": "O2",
+     "preferred_label": "O2",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "carrier_gas": "N2",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   },
+   "purge_gas": {
+    "species": "N2",
+    "source_label": "N2",
+    "canonical_id": "N2",
+    "identity_key": "N2",
+    "evidence": "N 2 was used for both the carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "purge_gas": "N2",
+  "nominal_fingerprint": "deposition_temperature/n/a=300|precursor=MeCpPtMe3|material=Pt|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ }
+]

@@ -283,8 +283,8 @@
   },
   "series_name": "substrate: Si",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -326,16 +326,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -360,10 +362,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C00"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C00"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -372,10 +376,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C00"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C00"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -418,7 +424,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -477,6 +483,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -486,6 +493,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -501,6 +515,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -510,6 +525,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -525,6 +547,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -534,6 +557,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -549,6 +579,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -558,6 +589,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -571,7 +609,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -857,8 +897,8 @@
   },
   "series_name": "substrate: Si",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -900,16 +940,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -934,10 +976,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C01"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C01"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -946,10 +990,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C01"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C01"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -992,7 +1038,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -1051,6 +1097,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1060,6 +1107,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1075,6 +1129,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1084,6 +1139,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1099,6 +1161,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1108,6 +1171,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1123,6 +1193,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1132,6 +1203,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1145,7 +1223,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -1431,8 +1511,8 @@
   },
   "series_name": "substrate: Si",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -1474,16 +1554,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -1508,10 +1590,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C02"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C02"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -1520,10 +1604,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C02"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C02"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -1566,7 +1652,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -1625,6 +1711,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1634,6 +1721,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1649,6 +1743,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1658,6 +1753,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1673,6 +1775,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1682,6 +1785,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1697,6 +1807,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -1706,6 +1817,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -1719,7 +1837,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -2005,8 +2125,8 @@
   },
   "series_name": "substrate: Si",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -2048,16 +2168,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -2082,10 +2204,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C03"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C03"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -2094,10 +2218,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C03"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C03"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -2140,7 +2266,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -2199,6 +2325,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2208,6 +2335,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2223,6 +2357,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2232,6 +2367,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2247,6 +2389,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2256,6 +2399,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2271,6 +2421,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2280,6 +2431,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2293,7 +2451,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -2579,8 +2739,8 @@
   },
   "series_name": "substrate: Si",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -2622,16 +2782,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -2656,10 +2818,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C04"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C04"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -2668,10 +2832,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C04"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C04"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -2714,7 +2880,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -2773,6 +2939,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2782,6 +2949,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2797,6 +2971,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2806,6 +2981,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2821,6 +3003,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2830,6 +3013,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2845,6 +3035,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -2854,6 +3045,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -2867,7 +3065,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -3153,8 +3353,8 @@
   },
   "series_name": "substrate: Si",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -3196,16 +3396,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -3230,10 +3432,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C05"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C05"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -3242,10 +3446,12 @@
      "experiment_id": "10.1039_d3dt01824e-E004-C05"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E004-C05"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -3288,7 +3494,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -3347,6 +3553,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -3356,6 +3563,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -3371,6 +3585,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -3380,6 +3595,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -3395,6 +3617,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -3404,6 +3627,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -3419,6 +3649,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -3428,6 +3659,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -3441,7 +3679,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -3727,8 +3967,8 @@
   },
   "series_name": "substrate: SiO2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -3770,16 +4010,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -3804,10 +4046,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C00"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C00"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -3816,10 +4060,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C00"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C00"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -3862,7 +4108,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -3921,6 +4167,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -3930,6 +4177,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -3945,6 +4199,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -3954,6 +4209,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -3969,6 +4231,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -3978,6 +4241,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -3993,6 +4263,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -4002,6 +4273,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -4015,7 +4293,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -4301,8 +4581,8 @@
   },
   "series_name": "substrate: SiO2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -4344,16 +4624,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -4378,10 +4660,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C01"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C01"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -4390,10 +4674,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C01"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C01"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -4436,7 +4722,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -4495,6 +4781,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -4504,6 +4791,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -4519,6 +4813,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -4528,6 +4823,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -4543,6 +4845,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -4552,6 +4855,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -4567,6 +4877,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -4576,6 +4887,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -4589,7 +4907,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -4875,8 +5195,8 @@
   },
   "series_name": "substrate: SiO2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -4918,16 +5238,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -4952,10 +5274,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C02"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C02"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -4964,10 +5288,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C02"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C02"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -5010,7 +5336,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -5069,6 +5395,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5078,6 +5405,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5093,6 +5427,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5102,6 +5437,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5117,6 +5459,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5126,6 +5469,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5141,6 +5491,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5150,6 +5501,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5163,7 +5521,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -5449,8 +5809,8 @@
   },
   "series_name": "substrate: SiO2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -5492,16 +5852,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -5526,10 +5888,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C03"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C03"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -5538,10 +5902,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C03"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C03"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -5584,7 +5950,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -5643,6 +6009,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5652,6 +6019,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5667,6 +6041,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5676,6 +6051,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5691,6 +6073,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5700,6 +6083,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5715,6 +6105,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -5724,6 +6115,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -5737,7 +6135,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -6023,8 +6423,8 @@
   },
   "series_name": "substrate: SiO2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -6066,16 +6466,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -6100,10 +6502,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C04"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C04"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -6112,10 +6516,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C04"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C04"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -6158,7 +6564,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -6217,6 +6623,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6226,6 +6633,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6241,6 +6655,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6250,6 +6665,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6265,6 +6687,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6274,6 +6697,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6289,6 +6719,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6298,6 +6729,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6311,7 +6749,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -6597,8 +7037,8 @@
   },
   "series_name": "substrate: SiO2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -6640,16 +7080,18 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     },
     {
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
-     "purge_time": 8.0,
+     "purge_time": null,
      "partial_pressure": null
     }
    ],
@@ -6674,10 +7116,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C05"
     },
     "purge_time::A": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C05"
+     "reactant": "A",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "species::B": {
      "source": "experiment",
@@ -6686,10 +7130,12 @@
      "experiment_id": "10.1039_d3dt01824e-E005-C05"
     },
     "purge_time::B": {
-     "source": "experiment",
-     "from": "unknown",
+     "source": "refused",
+     "from": "unattributable_generic_timing",
+     "quantity": "purge_time",
      "value": 8.0,
-     "experiment_id": "10.1039_d3dt01824e-E005-C05"
+     "reactant": "B",
+     "reason": "an unqualified purge_time cannot be attributed to one of 2 reactants; only a value qualified by reactant fills a half-cycle"
     },
     "material::": {
      "source": "experiment",
@@ -6732,7 +7178,7 @@
      "card_field": null
     }
    },
-   "completeness": 0.714
+   "completeness": 0.571
   },
   "coordinate_raw_quantity": "deposition_temperature",
   "x_semantics": {
@@ -6791,6 +7237,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.25",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.25 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6800,6 +7247,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6815,6 +7269,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.5",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.5 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6824,6 +7279,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6839,6 +7301,7 @@
       "quantity": "growth_per_cycle",
       "value": "0.51",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "0.51 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6848,6 +7311,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6863,6 +7333,7 @@
       "quantity": "growth_per_cycle",
       "value": "1.1",
       "unit": "\u00c5/cycle",
+      "source_quantity": null,
       "raw_evidence": "1.1 \u00c5 per cycle",
       "evidence_locator": "document.md near Fig 4",
       "assertion_status": "direct",
@@ -6872,6 +7343,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "7",
       "figure_number": "4",
@@ -6885,7 +7363,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -7163,8 +7643,8 @@
   },
   "series_name": "series: Si",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -7208,6 +7688,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -7216,6 +7697,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -7342,6 +7824,7 @@
       "quantity": "cycle_number",
       "value": "200",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "200 cycles",
       "evidence_locator": "document.md near Fig 5",
       "assertion_status": "approximate",
@@ -7351,6 +7834,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "8",
       "figure_number": "5",
@@ -7366,6 +7856,7 @@
       "quantity": "cycle_number",
       "value": "1000",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "1000 cycles",
       "evidence_locator": "document.md near Fig 5",
       "assertion_status": "direct",
@@ -7375,6 +7866,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "8",
       "figure_number": "5",
@@ -7388,7 +7886,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -7786,8 +8286,8 @@
   },
   "series_name": "series: Linear (Si)",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -7831,6 +8331,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -7839,6 +8340,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -7965,6 +8467,7 @@
       "quantity": "cycle_number",
       "value": "200",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "200 cycles",
       "evidence_locator": "document.md near Fig 5",
       "assertion_status": "approximate",
@@ -7974,6 +8477,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "8",
       "figure_number": "5",
@@ -7989,6 +8499,7 @@
       "quantity": "cycle_number",
       "value": "1000",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "1000 cycles",
       "evidence_locator": "document.md near Fig 5",
       "assertion_status": "direct",
@@ -7998,6 +8509,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "8",
       "figure_number": "5",
@@ -8011,7 +8529,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -8516,8 +9036,8 @@
   },
   "series_name": "series: 150 \u00b0C",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -8540,7 +9060,7 @@
    }
   },
   "varies": [
-   "diffraction_angle"
+   "2\u03b8"
   ],
   "series_varies": null,
   "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
@@ -8561,6 +9081,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -8569,6 +9090,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -8647,10 +9169,10 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u03b8",
   "x_semantics": {
    "raw_label": "2\u03b8 (\u00b0)",
-   "raw_quantity": "diffraction_angle",
+   "raw_quantity": "2\u03b8",
    "raw_unit": "\u00b0",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
@@ -8683,7 +9205,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 29,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -9166,8 +9690,8 @@
   },
   "series_name": "series: 200 \u00b0C",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -9190,7 +9714,7 @@
    }
   },
   "varies": [
-   "diffraction_angle"
+   "2\u03b8"
   ],
   "series_varies": null,
   "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
@@ -9211,6 +9735,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -9219,6 +9744,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -9297,10 +9823,10 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u03b8",
   "x_semantics": {
    "raw_label": "2\u03b8 (\u00b0)",
-   "raw_quantity": "diffraction_angle",
+   "raw_quantity": "2\u03b8",
    "raw_unit": "\u00b0",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
@@ -9344,7 +9870,9 @@
     ],
     "reason": "2 distinct temperature values at figure scope (200, 250); not applied to this experiment without narrower evidence"
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -9833,8 +10361,8 @@
   },
   "series_name": "series: 250 \u00b0C",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -9857,7 +10385,7 @@
    }
   },
   "varies": [
-   "diffraction_angle"
+   "2\u03b8"
   ],
   "series_varies": null,
   "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
@@ -9878,6 +10406,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -9886,6 +10415,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -9964,10 +10494,10 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u03b8",
   "x_semantics": {
    "raw_label": "2\u03b8 (\u00b0)",
-   "raw_quantity": "diffraction_angle",
+   "raw_quantity": "2\u03b8",
    "raw_unit": "\u00b0",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
@@ -10000,7 +10530,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 27,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -10533,8 +11065,8 @@
   },
   "series_name": null,
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -10557,7 +11089,7 @@
    }
   },
   "varies": [
-   "diffraction_angle"
+   "2\u03b8"
   ],
   "series_varies": null,
   "granularity_reason": "x axis 'diffraction_angle' is an ontology coordinate",
@@ -10578,6 +11110,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -10586,6 +11119,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -10662,10 +11196,10 @@
    },
    "completeness": 0.571
   },
-  "coordinate_raw_quantity": "diffraction_angle",
+  "coordinate_raw_quantity": "2\u03b8",
   "x_semantics": {
    "raw_label": "2\u03b8 (\u00b0)",
-   "raw_quantity": "diffraction_angle",
+   "raw_quantity": "2\u03b8",
    "raw_unit": "\u00b0",
    "unit_dimension": "angle",
    "canonical_quantity": "diffraction_angle",
@@ -10698,7 +11232,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 37,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -11113,8 +11649,8 @@
   },
   "series_name": "etching time: ET=0 min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -11158,6 +11694,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -11166,6 +11703,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -11282,7 +11820,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 20,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -11697,8 +12237,8 @@
   },
   "series_name": "etching time: ET=2 min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -11742,6 +12282,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -11750,6 +12291,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -11866,7 +12408,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 20,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -12281,8 +12825,8 @@
   },
   "series_name": "etching time: ET=5 min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -12326,6 +12870,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -12334,6 +12879,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -12450,7 +12996,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 20,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -12865,8 +13413,8 @@
   },
   "series_name": "etching time: ET=10 min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -12910,6 +13458,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -12918,6 +13467,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -13034,7 +13584,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 20,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -13449,8 +14001,8 @@
   },
   "series_name": "etching time: ET=15 min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -13494,6 +14046,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -13502,6 +14055,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -13618,7 +14172,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 20,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -13977,8 +14533,8 @@
   },
   "series_name": "etching time: ET=0min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -14022,6 +14578,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -14030,6 +14587,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -14146,7 +14704,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 13,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -14497,8 +15057,8 @@
   },
   "series_name": "etching time: ET=2min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -14542,6 +15102,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -14550,6 +15111,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -14666,7 +15228,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 12,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -15017,8 +15581,8 @@
   },
   "series_name": "etching time: ET=5min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -15062,6 +15626,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -15070,6 +15635,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -15186,7 +15752,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 12,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -15537,8 +16105,8 @@
   },
   "series_name": "etching time: ET=10min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -15582,6 +16150,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -15590,6 +16159,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -15706,7 +16276,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 12,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -16057,8 +16629,8 @@
   },
   "series_name": "etching time: ET=15min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -16102,6 +16674,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -16110,6 +16683,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -16226,7 +16800,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 12,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -16625,8 +17201,8 @@
   },
   "series_name": "etching time: ET=0min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -16670,6 +17246,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -16678,6 +17255,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -16794,7 +17372,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 18,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -17113,8 +17693,8 @@
   },
   "series_name": "etching time: ET=2min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -17158,6 +17738,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -17166,6 +17747,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -17282,7 +17864,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 8,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -17601,8 +18185,8 @@
   },
   "series_name": "etching time: ET=5min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -17646,6 +18230,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -17654,6 +18239,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -17770,7 +18356,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 8,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -18089,8 +18677,8 @@
   },
   "series_name": "etching time: ET=10min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -18134,6 +18722,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -18142,6 +18731,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -18258,7 +18848,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 8,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -18577,8 +19169,8 @@
   },
   "series_name": "etching time: ET=15min",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -18622,6 +19214,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -18630,6 +19223,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -18746,7 +19340,9 @@
   "classification": "multi_output_measurement",
   "classification_confidence": "corroborated",
   "n_observations": 8,
-  "observations_are_experiments": false
+  "observations_are_experiments": false,
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -18872,17 +19468,17 @@
     "value": 200.0,
     "unit": "\u00b0C",
     "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
+    "source": "caption",
+    "assertion_source_kind": "caption",
+    "scope": "figure",
     "context_status": "resolved",
     "assertion_status": "direct",
     "species": null,
     "origin": {
      "level": "figure",
-     "from": "body",
-     "evidence": "substrate temperature of 200 \u00b0C",
-     "locator": "document.md near Fig 9"
+     "from": "caption",
+     "evidence": "grown on a Si (100) substrate at 200 \u00b0C",
+     "locator": "figure 9 caption"
     }
    },
    {
@@ -19160,8 +19756,8 @@
   },
   "series_name": "XPS peak: C 1s",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -19205,6 +19801,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -19213,6 +19810,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -19337,6 +19935,7 @@
       "quantity": "cycle_number",
       "value": "1000",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "1000 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -19346,6 +19945,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -19361,6 +19967,7 @@
       "quantity": "cycle_number",
       "value": "380",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "380 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -19370,6 +19977,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -19383,7 +19997,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -19509,17 +20125,17 @@
     "value": 200.0,
     "unit": "\u00b0C",
     "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
+    "source": "caption",
+    "assertion_source_kind": "caption",
+    "scope": "figure",
     "context_status": "resolved",
     "assertion_status": "direct",
     "species": null,
     "origin": {
      "level": "figure",
-     "from": "body",
-     "evidence": "substrate temperature of 200 \u00b0C",
-     "locator": "document.md near Fig 9"
+     "from": "caption",
+     "evidence": "grown on a Si (100) substrate at 200 \u00b0C",
+     "locator": "figure 9 caption"
     }
    },
    {
@@ -19997,8 +20613,8 @@
   },
   "series_name": "XPS peak: Er 4d5/2",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -20042,6 +20658,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -20050,6 +20667,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -20174,6 +20792,7 @@
       "quantity": "cycle_number",
       "value": "1000",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "1000 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -20183,6 +20802,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -20198,6 +20824,7 @@
       "quantity": "cycle_number",
       "value": "380",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "380 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -20207,6 +20834,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -20220,7 +20854,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -20346,17 +20982,17 @@
     "value": 200.0,
     "unit": "\u00b0C",
     "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
+    "source": "caption",
+    "assertion_source_kind": "caption",
+    "scope": "figure",
     "context_status": "resolved",
     "assertion_status": "direct",
     "species": null,
     "origin": {
      "level": "figure",
-     "from": "body",
-     "evidence": "substrate temperature of 200 \u00b0C",
-     "locator": "document.md near Fig 9"
+     "from": "caption",
+     "evidence": "grown on a Si (100) substrate at 200 \u00b0C",
+     "locator": "figure 9 caption"
     }
    },
    {
@@ -20586,8 +21222,8 @@
   },
   "series_name": "XPS peak: N 1s",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -20631,6 +21267,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -20639,6 +21276,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -20763,6 +21401,7 @@
       "quantity": "cycle_number",
       "value": "1000",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "1000 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -20772,6 +21411,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -20787,6 +21433,7 @@
       "quantity": "cycle_number",
       "value": "380",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "380 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -20796,6 +21443,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -20809,7 +21463,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -20935,17 +21591,17 @@
     "value": 200.0,
     "unit": "\u00b0C",
     "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
+    "source": "caption",
+    "assertion_source_kind": "caption",
+    "scope": "figure",
     "context_status": "resolved",
     "assertion_status": "direct",
     "species": null,
     "origin": {
      "level": "figure",
-     "from": "body",
-     "evidence": "substrate temperature of 200 \u00b0C",
-     "locator": "document.md near Fig 9"
+     "from": "caption",
+     "evidence": "grown on a Si (100) substrate at 200 \u00b0C",
+     "locator": "figure 9 caption"
     }
    },
    {
@@ -21431,8 +22087,8 @@
   },
   "series_name": "XPS peak: O 1s",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -21476,6 +22132,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -21484,6 +22141,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -21608,6 +22266,7 @@
       "quantity": "cycle_number",
       "value": "1000",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "1000 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -21617,6 +22276,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -21632,6 +22298,7 @@
       "quantity": "cycle_number",
       "value": "380",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "380 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -21641,6 +22308,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -21654,7 +22328,9 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  },
  {
   "material": "Er2O3",
@@ -21780,17 +22456,17 @@
     "value": 200.0,
     "unit": "\u00b0C",
     "of_reactant": null,
-    "source": "body",
-    "assertion_source_kind": "body",
-    "scope": "paper",
+    "source": "caption",
+    "assertion_source_kind": "caption",
+    "scope": "figure",
     "context_status": "resolved",
     "assertion_status": "direct",
     "species": null,
     "origin": {
      "level": "figure",
-     "from": "body",
-     "evidence": "substrate temperature of 200 \u00b0C",
-     "locator": "document.md near Fig 9"
+     "from": "caption",
+     "evidence": "grown on a Si (100) substrate at 200 \u00b0C",
+     "locator": "figure 9 caption"
     }
    },
    {
@@ -22028,8 +22704,8 @@
   },
   "series_name": "XPS peak: Si 2s",
   "phase": null,
-  "structure": "planar_wafer",
-  "geometry_class": "planar",
+  "structure": "trench",
+  "geometry_class": "vertical_structure",
   "chemistry_provenance": {
    "resolution_status": "fully_resolved",
    "resolution_method": "single_material_single_species",
@@ -22073,6 +22749,7 @@
      "label": "A",
      "role": "precursor",
      "species": "tris_dmamb_erbium",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -22081,6 +22758,7 @@
      "label": "B",
      "role": "coreactant",
      "species": "H2O",
+     "activation": null,
      "dose_time": null,
      "purge_time": null,
      "partial_pressure": null
@@ -22205,6 +22883,7 @@
       "quantity": "cycle_number",
       "value": "1000",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "1000 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -22214,6 +22893,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -22229,6 +22915,7 @@
       "quantity": "cycle_number",
       "value": "380",
       "unit": "cycle",
+      "source_quantity": null,
       "raw_evidence": "380 cycles",
       "evidence_locator": "document.md near Fig 9",
       "assertion_status": "direct",
@@ -22238,6 +22925,13 @@
       "species_basis": null,
       "reactant_role": null,
       "of_reactant": null,
+      "step_context": null,
+      "activation": null,
+      "plasma_type": null,
+      "follows": null,
+      "preceding_species": null,
+      "preceding_activation": null,
+      "step_evidence": null,
       "paper_id": "10.1039_d3dt01824e",
       "figure_index": "12",
       "figure_number": "9",
@@ -22251,6 +22945,8 @@
      }
     ]
    }
-  ]
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: trench/via + conformality quantities"
  }
 ]

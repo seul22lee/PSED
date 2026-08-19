@@ -1,0 +1,4619 @@
+[
+ {
+  "case_id": "CASE-10.103-001",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "step_context": "precursor_exposure",
+    "activation": "none",
+    "plasma_type": null,
+    "follows": null,
+    "preceding_species": null,
+    "preceding_activation": null,
+    "step_evidence": [
+     "label names the precursor half-cycle",
+     "label names an exposure",
+     "no activation named in 'Precursor Pulse [s]'"
+    ],
+    "step_basis": "printed panel sequence of figure 1",
+    "source_quantity": "pulse_time",
+    "quantity": "precursor_pulse_time",
+    "value": 1.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=precursor_dose",
+     "unit=s",
+     "material=Y2O3"
+    ],
+    "process_step": "precursor_dose",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Precursor Pulse [s]",
+    "evidence": "branch 1 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1a::pulse_time::10.1039_c7ra13417g__Fig1a",
+    "species": "Y(DPDMG)3",
+    "species_basis": "ROLE_LABEL_PAPER_UNIQUE",
+    "species_evidence": "the axis label 'Precursor Pulse [s]' names the precursor role explicitly; the species is resolved paper-wide, this paper's inventory listing exactly one precursor: 'Y(DPDMG)3'"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-818"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-049"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|precursor_pulse_time@Y(DPDMG)3/precursor_dose=1|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-002",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "step_context": "precursor_exposure",
+    "activation": "none",
+    "plasma_type": null,
+    "follows": null,
+    "preceding_species": null,
+    "preceding_activation": null,
+    "step_evidence": [
+     "label names the precursor half-cycle",
+     "label names an exposure",
+     "no activation named in 'Precursor Pulse [s]'"
+    ],
+    "step_basis": "printed panel sequence of figure 1",
+    "source_quantity": "pulse_time",
+    "quantity": "precursor_pulse_time",
+    "value": 3.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=precursor_dose",
+     "unit=s",
+     "material=Y2O3"
+    ],
+    "process_step": "precursor_dose",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Precursor Pulse [s]",
+    "evidence": "branch 3 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1a::pulse_time::10.1039_c7ra13417g__Fig1a",
+    "species": "Y(DPDMG)3",
+    "species_basis": "ROLE_LABEL_PAPER_UNIQUE",
+    "species_evidence": "the axis label 'Precursor Pulse [s]' names the precursor role explicitly; the species is resolved paper-wide, this paper's inventory listing exactly one precursor: 'Y(DPDMG)3'"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-819"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-050"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|precursor_pulse_time@Y(DPDMG)3/precursor_dose=3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-003",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "step_context": "precursor_exposure",
+    "activation": "none",
+    "plasma_type": null,
+    "follows": null,
+    "preceding_species": null,
+    "preceding_activation": null,
+    "step_evidence": [
+     "label names the precursor half-cycle",
+     "label names an exposure",
+     "no activation named in 'Precursor Pulse [s]'"
+    ],
+    "step_basis": "printed panel sequence of figure 1",
+    "source_quantity": "pulse_time",
+    "quantity": "precursor_pulse_time",
+    "value": 4.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=precursor_dose",
+     "unit=s",
+     "material=Y2O3"
+    ],
+    "process_step": "precursor_dose",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Precursor Pulse [s]",
+    "evidence": "branch 4 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1a::pulse_time::10.1039_c7ra13417g__Fig1a",
+    "species": "Y(DPDMG)3",
+    "species_basis": "ROLE_LABEL_PAPER_UNIQUE",
+    "species_evidence": "the axis label 'Precursor Pulse [s]' names the precursor role explicitly; the species is resolved paper-wide, this paper's inventory listing exactly one precursor: 'Y(DPDMG)3'"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-820"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-051"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|precursor_pulse_time@Y(DPDMG)3/precursor_dose=4|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-004",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "step_context": "precursor_exposure",
+    "activation": "none",
+    "plasma_type": null,
+    "follows": null,
+    "preceding_species": null,
+    "preceding_activation": null,
+    "step_evidence": [
+     "label names the precursor half-cycle",
+     "label names an exposure",
+     "no activation named in 'Precursor Pulse [s]'"
+    ],
+    "step_basis": "printed panel sequence of figure 1",
+    "source_quantity": "pulse_time",
+    "quantity": "precursor_pulse_time",
+    "value": 5.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=pulse_time",
+     "step=precursor_dose",
+     "unit=s",
+     "material=Y2O3"
+    ],
+    "process_step": "precursor_dose",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Precursor Pulse [s]",
+    "evidence": "branch 5 of the pulse_time design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1a::pulse_time::10.1039_c7ra13417g__Fig1a",
+    "species": "Y(DPDMG)3",
+    "species_basis": "ROLE_LABEL_PAPER_UNIQUE",
+    "species_evidence": "the axis label 'Precursor Pulse [s]' names the precursor role explicitly; the species is resolved paper-wide, this paper's inventory listing exactly one precursor: 'Y(DPDMG)3'"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-821"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-052"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|precursor_pulse_time@Y(DPDMG)3/precursor_dose=5|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-005",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-822"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-053",
+   "EV-10.103-054"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-006",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "step_context": "reactant_purge",
+    "activation": "none",
+    "plasma_type": null,
+    "follows": "reactant_exposure",
+    "preceding_species": "H2O",
+    "preceding_activation": "none",
+    "step_evidence": [
+     "label names the reactant half-cycle",
+     "label names a purge",
+     "a purge is not an activated exposure",
+     "follows the reactant_exposure step",
+     "printed after the precursor_exposure panel in the same figure"
+    ],
+    "step_basis": "printed panel sequence of figure 1",
+    "source_quantity": "purge_time",
+    "quantity": "coreactant_purge_time",
+    "value": 20.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=purge_time",
+     "step=precursor_purge",
+     "unit=s",
+     "material=Y2O3"
+    ],
+    "process_step": "precursor_purge",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Water Purge [s]",
+    "evidence": "branch 20 of the purge_time design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1c::purge_time::10.1039_c7ra13417g__Fig1c"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1c"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-823"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1c"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-056"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_purge_time/precursor_purge=20|deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-007",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "step_context": "reactant_purge",
+    "activation": "none",
+    "plasma_type": null,
+    "follows": "reactant_exposure",
+    "preceding_species": "H2O",
+    "preceding_activation": "none",
+    "step_evidence": [
+     "label names the reactant half-cycle",
+     "label names a purge",
+     "a purge is not an activated exposure",
+     "follows the reactant_exposure step",
+     "printed after the precursor_exposure panel in the same figure"
+    ],
+    "step_basis": "printed panel sequence of figure 1",
+    "source_quantity": "purge_time",
+    "quantity": "coreactant_purge_time",
+    "value": 30.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=purge_time",
+     "step=precursor_purge",
+     "unit=s",
+     "material=Y2O3"
+    ],
+    "process_step": "precursor_purge",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Water Purge [s]",
+    "evidence": "branch 30 of the purge_time design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1c::purge_time::10.1039_c7ra13417g__Fig1c"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1c"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-824"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1c"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-057"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_purge_time/precursor_purge=30|deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-008",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "step_context": "reactant_purge",
+    "activation": "none",
+    "plasma_type": null,
+    "follows": "reactant_exposure",
+    "preceding_species": "H2O",
+    "preceding_activation": "none",
+    "step_evidence": [
+     "label names the reactant half-cycle",
+     "label names a purge",
+     "a purge is not an activated exposure",
+     "follows the reactant_exposure step",
+     "printed after the precursor_exposure panel in the same figure"
+    ],
+    "step_basis": "printed panel sequence of figure 1",
+    "source_quantity": "purge_time",
+    "quantity": "coreactant_purge_time",
+    "value": 60.0,
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=purge_time",
+     "step=precursor_purge",
+     "unit=s",
+     "material=Y2O3"
+    ],
+    "process_step": "precursor_purge",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Water Purge [s]",
+    "evidence": "branch 60 of the purge_time design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1c::purge_time::10.1039_c7ra13417g__Fig1c"
+   },
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "grown on 2-inch Si(100) wafer at 225 °C",
+    "locator": "figure 1 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1c"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-825"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1c"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-058"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "coreactant_purge_time/precursor_purge=60|deposition_temperature=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-009",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 150.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 150 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp01"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-826"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-060"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=150|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-016"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-016; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-010",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 175.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 175 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp01"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-827"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-061"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=175|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-017"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-017; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-011",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 190.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 190 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp01"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-828"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-062"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=190|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-012",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 200.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 200 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp01"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-829"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-063"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=200|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-018"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-018; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-013",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 225.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 225 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp01"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-830"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-064"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-019"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-019; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-014",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 250.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 250 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp01"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-831"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-065"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=250|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-020"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-020; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-015",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 275.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 275 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp01"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-832"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-066"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=275|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-021"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-021; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-016",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 150.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 150 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp02"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-833"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-068"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=150|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-009"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-009; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-017",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 175.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 175 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp02"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-834"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-069"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=175|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-010"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-010; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-018",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 200.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 200 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp02"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-835"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-070"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=200|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-012"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-012; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-019",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 225.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 225 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp02"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-836"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-071"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=225|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-013"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-013; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-020",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 250.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 250 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp02"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-837"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-072"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=250|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-014"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-014; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-021",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": 275.0,
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "derived_from_design_branch",
+    "scope": "branch",
+    "source": "design_branch",
+    "design_signature": [
+     "q=deposition_temperature",
+     "step=n/a",
+     "unit=°C",
+     "material=Y2O3"
+    ],
+    "process_step": "n/a",
+    "design_material": "Y2O3",
+    "raw_axis_label": "Temperature [°C]",
+    "evidence": "branch 275 of the deposition_temperature design plotted in this panel",
+    "design_id": "DES::10.1039_c7ra13417g::F1d::deposition_temperature::10.1039_c7ra13417g__Fig1d__exp02"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "precursor",
+    "value": "Y(DPDMG)3",
+    "unit": null,
+    "role": "CASE_DEFINING",
+    "role_basis": "process chemistry named by the source scope",
+    "provenance_type": "directly_stated",
+    "source": "figure_caption",
+    "evidence": "'Scheme 1 Molecular structure of [Y(DPDMG)3] 24 (top-left). Highlighted are the six reactive Y -N bonds. (Bottom-left) A ' names 'Y(DPDMG)3', one of the paper's precursor"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "body",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "document.md near Fig 1",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig1d__exp02"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-838"
+  ],
+  "source_figures": [
+   "1"
+  ],
+  "source_panels": [
+   "1d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "design_branch"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-073"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature/n/a=275|generic_pressure=1e-10|precursor=Y(DPDMG)3|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-015"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-015; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-022",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig2b__exp01"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-839"
+  ],
+  "source_figures": [
+   "2"
+  ],
+  "source_panels": [
+   "2b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-074",
+   "EV-10.103-075"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "generic_pressure=1e-10|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "DISTINGUISHED"
+ },
+ {
+  "case_id": "CASE-10.103-023",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited at 225 °C",
+    "locator": "figure 3 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig3a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-840"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-078",
+   "EV-10.103-079"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-024",
+   "CASE-10.103-025",
+   "CASE-10.103-026",
+   "CASE-10.103-027",
+   "CASE-10.103-028"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-024, CASE-10.103-025, CASE-10.103-026, CASE-10.103-027, CASE-10.103-028; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-024",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited at 225 °C",
+    "locator": "figure 3 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig3b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-841"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-081",
+   "EV-10.103-082"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-023",
+   "CASE-10.103-025",
+   "CASE-10.103-026",
+   "CASE-10.103-027",
+   "CASE-10.103-028"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-023, CASE-10.103-025, CASE-10.103-026, CASE-10.103-027, CASE-10.103-028; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-025",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited at 225 °C",
+    "locator": "figure 3 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig3c"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-842"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3c"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-084",
+   "EV-10.103-085"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-023",
+   "CASE-10.103-024",
+   "CASE-10.103-026",
+   "CASE-10.103-027",
+   "CASE-10.103-028"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-023, CASE-10.103-024, CASE-10.103-026, CASE-10.103-027, CASE-10.103-028; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-026",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited at 225 °C",
+    "locator": "figure 3 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig3d"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-843"
+  ],
+  "source_figures": [
+   "3"
+  ],
+  "source_panels": [
+   "3d"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-087",
+   "EV-10.103-088"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-023",
+   "CASE-10.103-024",
+   "CASE-10.103-025",
+   "CASE-10.103-027",
+   "CASE-10.103-028"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-023, CASE-10.103-024, CASE-10.103-025, CASE-10.103-027, CASE-10.103-028; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-027",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited at 225 °C",
+    "locator": "figure 4 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig4a"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-844"
+  ],
+  "source_figures": [
+   "4"
+  ],
+  "source_panels": [
+   "4a"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-089",
+   "EV-10.103-090"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-023",
+   "CASE-10.103-024",
+   "CASE-10.103-025",
+   "CASE-10.103-026",
+   "CASE-10.103-028"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-023, CASE-10.103-024, CASE-10.103-025, CASE-10.103-026, CASE-10.103-028; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "case_id": "CASE-10.103-028",
+  "paper_id": "10.1039_c7ra13417g",
+  "label": null,
+  "synthesis_label": null,
+  "deposited_material": "Y2O3",
+  "deposited_materials": [
+   "Y2O3"
+  ],
+  "specimen_context_materials": [],
+  "context_materials": [
+   "Y2O3"
+  ],
+  "material_roles": {
+   "Y2O3": "DEPOSITED"
+  },
+  "material_candidates": {},
+  "material_status": "ASSERTED",
+  "material_status_reason": null,
+  "material_evidence_scope": "resolver per-record decision",
+  "multi_material_context": false,
+  "process_type": "thermal",
+  "precursors": [
+   "Y(DPDMG)3"
+  ],
+  "coreactants": [
+   "H2O"
+  ],
+  "case_defining_conditions": [
+   {
+    "quantity": "deposition_temperature",
+    "value": "225",
+    "unit": "°C",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "directly_stated",
+    "source": "caption",
+    "scope": "figure",
+    "assertion_status": "direct",
+    "species": null,
+    "evidence": "deposited at 225 °C",
+    "locator": "figure 4 caption",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "generic_pressure",
+    "value": "1e-10",
+    "unit": "mbar",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "approximate",
+    "species": null,
+    "evidence": "<!-- image --> pressure of &lt;5 /C2 1e-10 mbar. Spectra were recorded at a pass energy of 20 eV, leading to a full-width half maximum of the Ag 3d5/2 peak of 0",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   },
+   {
+    "quantity": "pulse_time",
+    "value": "3",
+    "unit": "s",
+    "role": "CASE_DEFINING",
+    "role_basis": "ontology recipe_role = control_setting",
+    "provenance_type": "methods_default",
+    "source": "methods",
+    "scope": "method",
+    "assertion_status": "direct",
+    "species": "H2O",
+    "evidence": "pulse length (3 s",
+    "locator": "methods section",
+    "value_kind": "scalar"
+   }
+  ],
+  "progression_context_conditions": [],
+  "geometry": "planar",
+  "geometries": [
+   "planar"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "no 3D test structure found",
+  "measurement_ids": [
+   "M::10.1039_c7ra13417g__Fig4b"
+  ],
+  "sample_ids": [],
+  "deposition_run_ids": [],
+  "study_series_ids": [],
+  "candidate_ids": [
+   "CAND-10.103-845"
+  ],
+  "source_figures": [
+   "4"
+  ],
+  "source_panels": [
+   "4b"
+  ],
+  "n_members": 1,
+  "member_kinds": [
+   "whole_curve"
+  ],
+  "swept_quantities": [],
+  "identity_evidence": [
+   "EV-10.103-091",
+   "EV-10.103-092"
+  ],
+  "confidence": "EXPLICIT",
+  "warnings": [
+   "INDISTINGUISHABLE_NOMINAL_IDENTITY"
+  ],
+  "chemistry_identity": {
+   "precursors": [
+    {
+     "source_label": "Y(DPDMG)3",
+     "canonical_id": null,
+     "identity_key": "unresolved:ydpdmg3",
+     "preferred_label": null,
+     "formula": null,
+     "activation": null,
+     "resolved": false,
+     "basis": "no ontology individual declares this reagent; it stays a distinct unresolved identity rather than being merged by resemblance"
+    }
+   ],
+   "coreactants": [
+    {
+     "source_label": "H2O",
+     "canonical_id": "H2O",
+     "identity_key": "H2O",
+     "preferred_label": "H2O",
+     "formula": null,
+     "activation": null,
+     "resolved": true,
+     "basis": "ontology alias table (id, formula, full name or aka)"
+    }
+   ]
+  },
+  "nominal_fingerprint": "deposition_temperature=225|generic_pressure=1e-10|pulse_time@H2O=3|material=Y2O3|geometry=planar",
+  "identity_distinguished_by": [
+   "case-defining conditions",
+   "deposited material",
+   "geometry"
+  ],
+  "identity_status": "INDISTINGUISHABLE_FROM_SIBLING",
+  "indistinguishable_from": [
+   "CASE-10.103-023",
+   "CASE-10.103-024",
+   "CASE-10.103-025",
+   "CASE-10.103-026",
+   "CASE-10.103-027"
+  ],
+  "identity_reason": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.103-023, CASE-10.103-024, CASE-10.103-025, CASE-10.103-026, CASE-10.103-027; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ }
+]

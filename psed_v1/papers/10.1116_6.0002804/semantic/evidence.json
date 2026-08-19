@@ -1,0 +1,2165 @@
+[
+ {
+  "evidence_id": "EV-10.111-001",
+  "kind": "material_role",
+  "subject": "Mo",
+  "detail": "roles read from the methods/body: ['DEPOSITED']",
+  "roles": [
+   {
+    "role": "DEPOSITED",
+    "matched": "depositing low-resistivity Mo",
+    "span": "re ALD window of 150 -450 °C, the temperature (T) range for depositing low-resistivity Mo deposition was narrower at T ≥ 250 °C. © 2023 Author(s). Al"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "deposition of pure Mo",
+    "span": "back-end-of-line (BEOL) limits is still missing. Thin film deposition of pure Mo using ALD, 31,39,40 and, in particular, chemical vapor depo"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "ALD of Mo",
+    "span": "tion by silicon, or undesired substrate selectivity. 56 -60 ALD of Mo was performed by utilizing the reduction of Mo-oxychloride"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "ALD Mo",
+    "span": "re range was well beyond the BEOL limits. Recently, thermal ALD Mo was studied with MoCl2O2 as a precursor and H2 as a coreact"
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "Mo films",
+    "span": "6 -38 However, a reliable ALD process for enabling metallic Mo films within the back-end-of-line (BEOL) limits is still missing."
+   },
+   {
+    "role": "DEPOSITED",
+    "matched": "Mo thin films",
+    "span": "plying 8 SCCM of N2 carrier and purge gas (Linde gas, 5.0). Mo thin films were deposited on Si(100), thermally grown SiO2 and Si3N4,"
+   }
+  ]
+ },
+ {
+  "evidence_id": "EV-10.111-002",
+  "kind": "context_control_ambiguous",
+  "subject": "paper",
+  "detail": "the paper states 3 different values of deposition_temperature (['150', '250', '350']); none is bound, because no sentence identifies which experiment carries which"
+ },
+ {
+  "evidence_id": "EV-10.111-003",
+  "kind": "context_control_ambiguous",
+  "subject": "paper",
+  "detail": "the paper states 3 different values of pulse_time (['1', '15', '30']); none is bound, because no sentence identifies which experiment carries which"
+ },
+ {
+  "evidence_id": "EV-10.111-004",
+  "kind": "gas_role",
+  "subject": "paper",
+  "detail": "N2 is stated as the carrier gas: 'N2 carrier and purge gas'"
+ },
+ {
+  "evidence_id": "EV-10.111-005",
+  "kind": "gas_role",
+  "subject": "paper",
+  "detail": "N2 is stated as the purge gas: 'N2 carrier and purge gas'"
+ },
+ {
+  "evidence_id": "EV-10.111-006",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F1a::pulse_time::10.1116_6.0002804__Fig1a",
+  "detail": "the panel plots growth_per_cycle against 6 distinct values of pulse_time; the source varies one recipe parameter while holding the others fixed",
+  "varied": "pulse_time",
+  "branches": [
+   "0",
+   "0.1",
+   "0.2",
+   "0.5",
+   "1",
+   "2"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-007",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1a",
+  "detail": "branch 0 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 0.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-008",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1a",
+  "detail": "branch 0.1 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 0.1,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-009",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1a",
+  "detail": "branch 0.2 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 0.2,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-010",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1a",
+  "detail": "branch 0.5 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 0.5,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-011",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1a",
+  "detail": "branch 1 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 1.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-012",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1a",
+  "detail": "branch 2 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 2.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-013",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F1b::pulse_time::10.1116_6.0002804__Fig1b",
+  "detail": "the panel plots growth_per_cycle against 12 distinct values of pulse_time; the source varies one recipe parameter while holding the others fixed",
+  "varied": "pulse_time",
+  "branches": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "5",
+   "7",
+   "9",
+   "12",
+   "15",
+   "20",
+   "25",
+   "30"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-014",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 0 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 0.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-015",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 1 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 1.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-016",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 2 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 2.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-017",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 3 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 3.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-018",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 5 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 5.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-019",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 7 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 7.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-020",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 9 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 9.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-021",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 12 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 12.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-022",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 15 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 15.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-023",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 20 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 20.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-024",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 25 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 25.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-025",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1b",
+  "detail": "branch 30 of the pulse_time design plotted in this panel",
+  "quantity": "pulse_time",
+  "value": 30.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-026",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F1c::purge_time::10.1116_6.0002804__Fig1c",
+  "detail": "the panel plots growth_per_cycle against 8 distinct values of purge_time; the source varies one recipe parameter while holding the others fixed",
+  "varied": "purge_time",
+  "branches": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "6",
+   "8",
+   "10",
+   "15"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-027",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 1 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 1.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-028",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 2 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 2.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-029",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 3 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 3.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-030",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 4 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 4.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-031",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 6 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 6.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-032",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 8 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 8.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-033",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 10 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 10.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-034",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1c",
+  "detail": "branch 15 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 15.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-035",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F1d::purge_time::10.1116_6.0002804__Fig1d",
+  "detail": "the panel plots growth_per_cycle against 8 distinct values of purge_time; the source varies one recipe parameter while holding the others fixed",
+  "varied": "purge_time",
+  "branches": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "6",
+   "8",
+   "10",
+   "15"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-036",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 1 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 1.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-037",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 2 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 2.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-038",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 3 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 3.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-039",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 4 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 4.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-040",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 6 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 6.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-041",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 8 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 8.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-042",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 10 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 10.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-043",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1d",
+  "detail": "branch 15 of the purge_time design plotted in this panel",
+  "quantity": "purge_time",
+  "value": 15.0,
+  "unit": "s",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-044",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F1e::hot_wire_temperature::10.1116_6.0002804__Fig1e",
+  "detail": "the panel plots growth_per_cycle against 17 distinct values of hot_wire_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "hot_wire_temperature",
+  "branches": [
+   "1630",
+   "1680",
+   "1730",
+   "1770",
+   "1820",
+   "1860",
+   "1890",
+   "1930",
+   "1970",
+   "2050",
+   "2115",
+   "2200",
+   "2270",
+   "2330",
+   "2400",
+   "2460",
+   "2600"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-045",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1630 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1630.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-046",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1680 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1680.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-047",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1730 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1730.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-048",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1770 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1770.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-049",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1820 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1820.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-050",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1860 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1860.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-051",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1890 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1890.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-052",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1930 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1930.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-053",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 1970 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 1970.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-054",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2050 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2050.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-055",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2115 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2115.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-056",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2200 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2200.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-057",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2270 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2270.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-058",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2330 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2330.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-059",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2400 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2400.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-060",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2460 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2460.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-061",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig1e",
+  "detail": "branch 2600 of the hot_wire_temperature design plotted in this panel",
+  "quantity": "hot_wire_temperature",
+  "value": 2600.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-062",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F2a::deposition_temperature::10.1116_6.0002804__Fig2a__exp01",
+  "detail": "the panel plots growth_per_cycle against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-063",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp01",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-064",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp01",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-065",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp01",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-066",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F2a::deposition_temperature::10.1116_6.0002804__Fig2a__exp02",
+  "detail": "the panel plots growth_per_cycle against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-067",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp02",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-068",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp02",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-069",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp02",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-070",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F2a::deposition_temperature::10.1116_6.0002804__Fig2a__exp03",
+  "detail": "the panel plots growth_per_cycle against 7 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "200",
+   "250",
+   "300",
+   "350",
+   "400",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-071",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp03",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-072",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp03",
+  "detail": "branch 200 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 200.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-073",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp03",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-074",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp03",
+  "detail": "branch 300 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 300.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-075",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp03",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-076",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp03",
+  "detail": "branch 400 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 400.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-077",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp03",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-078",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F2a::deposition_temperature::10.1116_6.0002804__Fig2a__exp04",
+  "detail": "the panel plots growth_per_cycle against 4 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-079",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp04",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-080",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp04",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-081",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp04",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-082",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig2a__exp04",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-083",
+  "kind": "representation",
+  "subject": "10.1116_6.0002804__Fig3a",
+  "detail": "panel clause declares 'Inset'",
+  "panel": "a",
+  "clause": ""
+ },
+ {
+  "evidence_id": "EV-10.111-084",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig3a",
+  "detail": "x axis 'time' is MEASUREMENT_COORDINATE (no ontology recipe_role for 'time' and no instrument term); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-085",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig4a",
+  "detail": "x axis 'time' is MEASUREMENT_COORDINATE (no ontology recipe_role for 'time' and no instrument term); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-086",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig4b",
+  "detail": "x axis 'time' is MEASUREMENT_COORDINATE (no ontology recipe_role for 'time' and no instrument term); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-087",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp01",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-088",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp02",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-089",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp03",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-090",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp04",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-091",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp05",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-092",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp06",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-093",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp07",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-094",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig5a__exp08",
+  "detail": "x axis 'spatial_coordinate' is MEASUREMENT_COORDINATE (axis_role = spatial_coordinate); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-095",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "the panel plots impurity_content against 4 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-096",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp01",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-097",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp01",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-098",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp01",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-099",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp01",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-100",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp02",
+  "detail": "the panel plots impurity_content against 4 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-101",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp02",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-102",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp02",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-103",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp02",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-104",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp02",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-105",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp03",
+  "detail": "the panel plots impurity_content against 2 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-106",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp03",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-107",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp03",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-108",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp04",
+  "detail": "the panel plots impurity_content against 4 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-109",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp04",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-110",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp04",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-111",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp04",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-112",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp04",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-113",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp05",
+  "detail": "the panel plots impurity_content against 2 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-114",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp05",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-115",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp05",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-116",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp06",
+  "detail": "the panel plots impurity_content against 4 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-117",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp06",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-118",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp06",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-119",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp06",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-120",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp06",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-121",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp07",
+  "detail": "the panel plots Concentration against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-122",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp07",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-123",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp07",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-124",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp07",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-125",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp08",
+  "detail": "the panel plots Concentration against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-126",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp08",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-127",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp08",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-128",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp08",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-129",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp09",
+  "detail": "the panel plots Concentration against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-130",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp09",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-131",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp09",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-132",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp09",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-133",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp10",
+  "detail": "the panel plots Concentration against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-134",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp10",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-135",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp10",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-136",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp10",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-137",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp11",
+  "detail": "the panel plots Concentration against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-138",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp11",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-139",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp11",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-140",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig5b__exp11",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-141",
+  "kind": "case_scope",
+  "subject": "10.1116_6.0002804__Fig7a",
+  "detail": "x axis 'film_thickness' is MEASUREMENT_COORDINATE (ontology recipe_role = observable); its points are observations of one specimen | axis role MEASUREMENT_COORDINATE: no design branches"
+ },
+ {
+  "evidence_id": "EV-10.111-142",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F7b::deposition_temperature::10.1116_6.0002804__Fig7b__exp01",
+  "detail": "the panel plots resistivity against 4 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "150",
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-143",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig7b__exp01",
+  "detail": "branch 150 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 150.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-144",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig7b__exp01",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-145",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig7b__exp01",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-146",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig7b__exp01",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-147",
+  "kind": "experimental_design",
+  "subject": "DES::10.1116_6.0002804::F7b::deposition_temperature::10.1116_6.0002804__Fig7b__exp02",
+  "detail": "the panel plots resistivity against 3 distinct values of deposition_temperature; the source varies one recipe parameter while holding the others fixed",
+  "varied": "deposition_temperature",
+  "branches": [
+   "250",
+   "350",
+   "450"
+  ],
+  "axis_role": "CASE_DEFINING_PROCESS_SETTING"
+ },
+ {
+  "evidence_id": "EV-10.111-148",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig7b__exp02",
+  "detail": "branch 250 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 250.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-149",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig7b__exp02",
+  "detail": "branch 350 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 350.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-150",
+  "kind": "sweep_normalisation",
+  "subject": "10.1116_6.0002804__Fig7b__exp02",
+  "detail": "branch 450 of the deposition_temperature design plotted in this panel",
+  "quantity": "deposition_temperature",
+  "value": 450.0,
+  "unit": "°C",
+  "role_basis": "ontology recipe_role = control_setting"
+ },
+ {
+  "evidence_id": "EV-10.111-151",
+  "kind": "extraction_gap",
+  "subject": "M::SUP::10.1116_6.0002804::F6a",
+  "detail": "printed figure 6 has 1 crop(s) and they cover panel(s) ['None']; no PictureItem exists for panel (a) | a concentration depth profile of the elements in a Mo ALD film obtained at 350 °C and",
+  "cause": "panel_absent_from_crop",
+  "printed_figure": "6",
+  "panel": "a"
+ },
+ {
+  "evidence_id": "EV-10.111-152",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1137 <-> CAND-10.111-1145",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 1 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-153",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1143 <-> CAND-10.111-1151",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 10 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-154",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1144 <-> CAND-10.111-1152",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 15 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-155",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1138 <-> CAND-10.111-1146",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 2 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-156",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1139 <-> CAND-10.111-1147",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 3 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-157",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1140 <-> CAND-10.111-1148",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 4 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-158",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1141 <-> CAND-10.111-1149",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 6 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-159",
+  "kind": "design_branch_link",
+  "subject": "CAND-10.111-1142 <-> CAND-10.111-1150",
+  "detail": "same design branch (q=purge_time, step=precursor_purge, unit=s, material=Mo) = 8 in figure 1, measured as c and d"
+ },
+ {
+  "evidence_id": "EV-10.111-160",
+  "kind": "case_not_minted",
+  "subject": "CAND-10.111-1233",
+  "detail": "every deposition condition here is inherited from the paper's default process and no specimen, design branch or local synthesis statement identifies which deposition produced it (figure 7); the measurement and its results are preserved and the case link is left unresolved"
+ },
+ {
+  "evidence_id": "EV-10.111-161",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-001",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-002, CASE-10.111-003, CASE-10.111-004, CASE-10.111-005, CASE-10.111-006; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-162",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-002",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-001, CASE-10.111-003, CASE-10.111-004, CASE-10.111-005, CASE-10.111-006; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-163",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-003",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-001, CASE-10.111-002, CASE-10.111-004, CASE-10.111-005, CASE-10.111-006; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-164",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-004",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-001, CASE-10.111-002, CASE-10.111-003, CASE-10.111-005, CASE-10.111-006; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-165",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-005",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-001, CASE-10.111-002, CASE-10.111-003, CASE-10.111-004, CASE-10.111-006; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-166",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-006",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-001, CASE-10.111-002, CASE-10.111-003, CASE-10.111-004, CASE-10.111-005; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-167",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-044",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-168",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-047",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-169",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-052",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-170",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-058",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-171",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-073",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-172",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-077",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-173",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-083",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-174",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-089",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-175",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-092",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-176",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-095",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-177",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-098",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-178",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-101",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-104, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-179",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-104",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-108, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-180",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-108",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-111; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-181",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-111",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-044, CASE-10.111-047, CASE-10.111-052, CASE-10.111-058, CASE-10.111-073, CASE-10.111-077, CASE-10.111-083, CASE-10.111-089, CASE-10.111-092, CASE-10.111-095, CASE-10.111-098, CASE-10.111-101, CASE-10.111-104, CASE-10.111-108; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-182",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-045",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-183",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-048",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-184",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-054",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-185",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-059",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-186",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-074",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-187",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-078",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-188",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-084",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-189",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-086",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-190",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-090",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-191",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-093",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-192",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-096",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-193",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-099",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-194",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-102",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-105, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-195",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-105",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-109, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-196",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-109",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-112; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-197",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-112",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-045, CASE-10.111-048, CASE-10.111-054, CASE-10.111-059, CASE-10.111-074, CASE-10.111-078, CASE-10.111-084, CASE-10.111-086, CASE-10.111-090, CASE-10.111-093, CASE-10.111-096, CASE-10.111-099, CASE-10.111-102, CASE-10.111-105, CASE-10.111-109; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-198",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-046",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-199",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-049",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-200",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-056",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-201",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-060",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-202",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-075",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-203",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-079",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-204",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-081",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-205",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-085",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-206",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-087",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-207",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-091",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-208",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-094",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-209",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-097",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-210",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-100",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-211",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-103",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-106, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-212",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-106",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-110, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-213",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-110",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-113; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-214",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-113",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-046, CASE-10.111-049, CASE-10.111-056, CASE-10.111-060, CASE-10.111-075, CASE-10.111-079, CASE-10.111-081, CASE-10.111-085, CASE-10.111-087, CASE-10.111-091, CASE-10.111-094, CASE-10.111-097, CASE-10.111-100, CASE-10.111-103, CASE-10.111-106, CASE-10.111-110; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-215",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-050",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-057, CASE-10.111-072, CASE-10.111-076, CASE-10.111-080, CASE-10.111-082, CASE-10.111-088, CASE-10.111-107; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-216",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-057",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-050, CASE-10.111-072, CASE-10.111-076, CASE-10.111-080, CASE-10.111-082, CASE-10.111-088, CASE-10.111-107; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-217",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-072",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-050, CASE-10.111-057, CASE-10.111-076, CASE-10.111-080, CASE-10.111-082, CASE-10.111-088, CASE-10.111-107; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-218",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-076",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-050, CASE-10.111-057, CASE-10.111-072, CASE-10.111-080, CASE-10.111-082, CASE-10.111-088, CASE-10.111-107; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-219",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-080",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-050, CASE-10.111-057, CASE-10.111-072, CASE-10.111-076, CASE-10.111-082, CASE-10.111-088, CASE-10.111-107; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-220",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-082",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-050, CASE-10.111-057, CASE-10.111-072, CASE-10.111-076, CASE-10.111-080, CASE-10.111-088, CASE-10.111-107; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-221",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-088",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-050, CASE-10.111-057, CASE-10.111-072, CASE-10.111-076, CASE-10.111-080, CASE-10.111-082, CASE-10.111-107; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-222",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-107",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-050, CASE-10.111-057, CASE-10.111-072, CASE-10.111-076, CASE-10.111-080, CASE-10.111-082, CASE-10.111-088; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-223",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-061",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-062, CASE-10.111-063; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-224",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-062",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-061, CASE-10.111-063; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-225",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-063",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-061, CASE-10.111-062; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-226",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-064",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-065, CASE-10.111-066, CASE-10.111-067, CASE-10.111-068, CASE-10.111-069, CASE-10.111-070, CASE-10.111-071; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-227",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-065",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-064, CASE-10.111-066, CASE-10.111-067, CASE-10.111-068, CASE-10.111-069, CASE-10.111-070, CASE-10.111-071; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-228",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-066",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-064, CASE-10.111-065, CASE-10.111-067, CASE-10.111-068, CASE-10.111-069, CASE-10.111-070, CASE-10.111-071; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-229",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-067",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-064, CASE-10.111-065, CASE-10.111-066, CASE-10.111-068, CASE-10.111-069, CASE-10.111-070, CASE-10.111-071; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-230",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-068",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-064, CASE-10.111-065, CASE-10.111-066, CASE-10.111-067, CASE-10.111-069, CASE-10.111-070, CASE-10.111-071; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-231",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-069",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-064, CASE-10.111-065, CASE-10.111-066, CASE-10.111-067, CASE-10.111-068, CASE-10.111-070, CASE-10.111-071; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-232",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-070",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-064, CASE-10.111-065, CASE-10.111-066, CASE-10.111-067, CASE-10.111-068, CASE-10.111-069, CASE-10.111-071; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-233",
+  "kind": "indistinguishable_case",
+  "subject": "CASE-10.111-071",
+  "detail": "this case shares every case-defining dimension the model represents (case-defining conditions, deposited material, geometry) with CASE-10.111-064, CASE-10.111-065, CASE-10.111-066, CASE-10.111-067, CASE-10.111-068, CASE-10.111-069, CASE-10.111-070; they are separate only because the source draws them as separate results, which is not deposition evidence. The count is PROVISIONAL pending a source-positive identity audit."
+ },
+ {
+  "evidence_id": "EV-10.111-234",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F1c::purge_time::10.1116_6.0002804__Fig1c",
+  "detail": "panels c/d of figure 1 sweep the same design (q=purge_time, step=precursor_purge, unit=s, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-235",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F2a::deposition_temperature::10.1116_6.0002804__Fig2a__exp01",
+  "detail": "panels a of figure 2 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-236",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F2a::deposition_temperature::10.1116_6.0002804__Fig2a__exp01",
+  "detail": "panels a of figure 2 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-237",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F2a::deposition_temperature::10.1116_6.0002804__Fig2a__exp01",
+  "detail": "panels a of figure 2 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-238",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-239",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-240",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-241",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-242",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-243",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-244",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-245",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-246",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-247",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F5b::deposition_temperature::10.1116_6.0002804__Fig5b__exp01",
+  "detail": "panels b of figure 5 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ },
+ {
+  "evidence_id": "EV-10.111-248",
+  "kind": "shared_design",
+  "subject": "DES::10.1116_6.0002804::F7b::deposition_temperature::10.1116_6.0002804__Fig7b__exp01",
+  "detail": "panels b of figure 7 sweep the same design (q=deposition_temperature, step=n/a, unit=°C, material=Mo); every design field is positively known and equal"
+ }
+]

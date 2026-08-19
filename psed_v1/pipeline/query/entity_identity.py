@@ -139,11 +139,14 @@ def _unwrap(d, k):
 
 
 def load_paper(base, pid):
-    """Every semantic collection for one paper, unwrapped."""
+    """Every semantic collection for one paper, unwrapped.
+
+    `base` is the corpus root: the directory that directly contains the paper
+    folders (papers/ in production, a snapshot's papers/ for a fixture corpus)."""
     out = {}
     for name in ("experimental_cases", "samples", "deposition_runs", "measurements",
                  "simulation_runs", "result_series", "representations"):
-        p = Path(base) / "papers" / pid / "semantic" / ("%s.json" % name)
+        p = Path(base) / pid / "semantic" / ("%s.json" % name)
         out[name] = _unwrap(json.loads(p.read_text()), name) if p.exists() else []
     return out
 

@@ -43,16 +43,18 @@
   "measurement_events": 9,
   "result_series": 15,
   "independent_sweep_cases_minted": 0,
-  "independent_process_sweeps": 6,
+  "independent_process_sweeps": 4,
   "continuous_or_longitudinal_runs": 2,
   "spatial_profiles_g": 1,
   "measurement_scans": 3,
   "multi_output_measurements_g": 0,
   "models_and_simulations": 0,
-  "unresolved_granularity": 2,
+  "unresolved_granularity": 4,
   "unresolved_granularity_ids": [
    "10.1039_c4nr05049e__Fig3a__exp01",
-   "10.1039_c4nr05049e__Fig3a__exp03"
+   "10.1039_c4nr05049e__Fig3a__exp03",
+   "10.1039_c4nr05049e__Fig7a__exp01",
+   "10.1039_c4nr05049e__Fig7a__exp02"
   ],
   "granularity_review_queue": [
    [
@@ -61,6 +63,14 @@
    ],
    [
     "10.1039_c4nr05049e__Fig3a__exp03",
+    "unresolved axis role"
+   ],
+   [
+    "10.1039_c4nr05049e__Fig7a__exp01",
+    "unresolved axis role"
+   ],
+   [
+    "10.1039_c4nr05049e__Fig7a__exp02",
     "unresolved axis role"
    ],
    [
@@ -89,7 +99,7 @@
   "material_ambiguities": 0,
   "material_not_applicable_model_curves": 0,
   "chemistry_inconsistencies": 0,
-  "sweeps_with_unresolved_settings": 6
+  "sweeps_with_unresolved_settings": 4
  },
  "results": [
   {
@@ -2635,22 +2645,23 @@
    "source_kind_confidence": null,
    "source_kind_evidence": null,
    "figure_source_flag": null,
-   "result_kind": "independent_process_sweep",
-   "granularity_kind": "independent_process_sweep",
-   "granularity_evidence": "each x value is a separately executed run: 'sample was prepared'",
-   "granularity_review_reason": null,
-   "x_axis_role": "process_condition",
+   "result_kind": "discrete_experimental_sweep",
+   "granularity_kind": "unresolved",
+   "granularity_evidence": "x-axis role could not be resolved ('unknown')",
+   "granularity_review_reason": "unresolved axis role",
+   "x_axis_role": "unknown",
    "y_axis_role": "progression_coordinate",
    "x_semantics": {
     "raw_label": "q_y (nm^-1)",
     "raw_quantity": "q_y",
     "raw_unit": "nm^-1",
     "unit_dimension": null,
-    "canonical_quantity": "site_density",
-    "axis_role": "process_condition",
-    "semantic_status": "resolved",
-    "evidence": "ontology alias match on 'q_y (nm^-1)'",
-    "rejected_lexical_match": null
+    "canonical_quantity": null,
+    "axis_role": "unknown",
+    "semantic_status": "unresolved",
+    "evidence": "neither the label 'q_y (nm^-1)' nor the record 'q_y' offers more than an ontology symbol for 'site_density', and the axis unit 'nm^-1' does not support it",
+    "rejected_lexical_match": null,
+    "uncorroborated_symbol_match": "site_density"
    },
    "y_semantics": {
     "raw_label": "intensity (counts)",
@@ -2670,17 +2681,19 @@
    "entity_class": "ExperimentSeries",
    "classification": "discrete_experimental_sweep",
    "classification_confidence": "corroborated",
-   "classification_method": "granularity(independent_process_sweep)(3 families)",
+   "classification_method": "multi_signal(3 families)",
    "classification_evidence": [
-    "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'process_condition'",
-    "G: each x value is a separately executed run: 'sample was prepared'"
+    "M: dotted lines serve as guide to the eye. <!-- image --> An SE measurement on the ALD modified mesoporous film yielded a refractive index valu",
+    "Me: O exposure at ca. 10 -3 mbar, and 5 s pumping. An x-ray reflectivity measurement after 160 ALD cycles on a planar SiO2 substrate reveal",
+    "Me: pared using a FEI Nova TM NanoLab 200 Dual-Beam SEM/FIB system. The micro-pillar was then mounted on a Fischione on-axis",
+    "X: series axis 'number of ALD cycles' with numeric label '0 cycles'"
    ],
    "is_current_paper_experiment": true,
    "granularity": "no_physical_case",
    "experimental_case_count": 0,
-   "experimental_case_status": "unresolved_settings",
-   "experimental_case_reason": "22 distinct x values exceed the 12 beyond which digitisation density cannot be told from real markers; the paper does not enumerate the settings, so the count stays unresolved (granularity: each x value is a separately executed run: 'sample was prepared')",
-   "experimental_case_lower_bound": 2,
+   "experimental_case_status": "not_an_independent_sweep",
+   "experimental_case_reason": "granularity is 'unresolved': its points are observations of one execution, not separate executions",
+   "experimental_case_lower_bound": 0,
    "samples_are": "observations",
    "measurement_class": "Measurement",
    "fit_of_entity": null,
@@ -2720,7 +2733,7 @@
    },
    "chemistry_consistent": true,
    "chemistry_inconsistency": null,
-   "coordinate": "site_density",
+   "coordinate": "q_y",
    "coordinate_unit": "nm^-1",
    "measurand": "intensity",
    "measurand_unit": "counts",
@@ -2910,22 +2923,23 @@
    "source_kind_confidence": null,
    "source_kind_evidence": null,
    "figure_source_flag": null,
-   "result_kind": "independent_process_sweep",
-   "granularity_kind": "independent_process_sweep",
-   "granularity_evidence": "each x value is a separately executed run: 'sample was prepared'",
-   "granularity_review_reason": null,
-   "x_axis_role": "process_condition",
+   "result_kind": "discrete_experimental_sweep",
+   "granularity_kind": "unresolved",
+   "granularity_evidence": "x-axis role could not be resolved ('unknown')",
+   "granularity_review_reason": "unresolved axis role",
+   "x_axis_role": "unknown",
    "y_axis_role": "progression_coordinate",
    "x_semantics": {
     "raw_label": "q_y (nm^-1)",
     "raw_quantity": "q_y",
     "raw_unit": "nm^-1",
     "unit_dimension": null,
-    "canonical_quantity": "site_density",
-    "axis_role": "process_condition",
-    "semantic_status": "resolved",
-    "evidence": "ontology alias match on 'q_y (nm^-1)'",
-    "rejected_lexical_match": null
+    "canonical_quantity": null,
+    "axis_role": "unknown",
+    "semantic_status": "unresolved",
+    "evidence": "neither the label 'q_y (nm^-1)' nor the record 'q_y' offers more than an ontology symbol for 'site_density', and the axis unit 'nm^-1' does not support it",
+    "rejected_lexical_match": null,
+    "uncorroborated_symbol_match": "site_density"
    },
    "y_semantics": {
     "raw_label": "intensity (counts)",
@@ -2945,17 +2959,19 @@
    "entity_class": "ExperimentSeries",
    "classification": "discrete_experimental_sweep",
    "classification_confidence": "corroborated",
-   "classification_method": "granularity(independent_process_sweep)(3 families)",
+   "classification_method": "multi_signal(3 families)",
    "classification_evidence": [
-    "G: granularity resolved as 'independent_process_sweep' from the x-axis role 'process_condition'",
-    "G: each x value is a separately executed run: 'sample was prepared'"
+    "M: dotted lines serve as guide to the eye. <!-- image --> An SE measurement on the ALD modified mesoporous film yielded a refractive index valu",
+    "Me: O exposure at ca. 10 -3 mbar, and 5 s pumping. An x-ray reflectivity measurement after 160 ALD cycles on a planar SiO2 substrate reveal",
+    "Me: pared using a FEI Nova TM NanoLab 200 Dual-Beam SEM/FIB system. The micro-pillar was then mounted on a Fischione on-axis",
+    "X: series axis 'number of ALD cycles' with numeric label '38 cycles'"
    ],
    "is_current_paper_experiment": true,
    "granularity": "no_physical_case",
    "experimental_case_count": 0,
-   "experimental_case_status": "unresolved_settings",
-   "experimental_case_reason": "22 distinct x values exceed the 12 beyond which digitisation density cannot be told from real markers; the paper does not enumerate the settings, so the count stays unresolved (granularity: each x value is a separately executed run: 'sample was prepared')",
-   "experimental_case_lower_bound": 2,
+   "experimental_case_status": "not_an_independent_sweep",
+   "experimental_case_reason": "granularity is 'unresolved': its points are observations of one execution, not separate executions",
+   "experimental_case_lower_bound": 0,
    "samples_are": "observations",
    "measurement_class": "Measurement",
    "fit_of_entity": null,
@@ -2995,7 +3011,7 @@
    },
    "chemistry_consistent": true,
    "chemistry_inconsistency": null,
-   "coordinate": "site_density",
+   "coordinate": "q_y",
    "coordinate_unit": "nm^-1",
    "measurand": "intensity",
    "measurand_unit": "counts",
