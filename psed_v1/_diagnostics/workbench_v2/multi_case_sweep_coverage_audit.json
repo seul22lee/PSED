@@ -1,13 +1,11 @@
 {
   "by_blocker": {
-    "GENUINE_EVIDENCE_LIMIT": 6,
-    "None": 14,
-    "SEMANTIC_BINDING_DEFECT": 2
+    "GENUINE_EVIDENCE_LIMIT": 2,
+    "None": 20
   },
   "by_coverage_class": {
-    "AXIS_SEMANTIC_BINDING_UNRESOLVED": 2,
-    "CASE_DATA_RESOLVED": 14,
-    "CASE_SET_ONLY_GENUINE": 6
+    "CASE_DATA_RESOLVED": 20,
+    "CASE_SET_ONLY_GENUINE": 2
   },
   "derivation": "DERIVED_FOR_WORKBENCH",
   "multi_case_result_series": 22,
@@ -40,8 +38,7 @@
       "case_condition_quantities": [
         "deposition_temperature",
         "pulse_time",
-        "pulse_time@H2O",
-        "working_pressure"
+        "pulse_time@H2O"
       ],
       "case_condition_quantities_varying": [
         "deposition_temperature"
@@ -97,8 +94,7 @@
       "case_condition_quantities": [
         "deposition_temperature",
         "pulse_time",
-        "pulse_time@H2O",
-        "working_pressure"
+        "pulse_time@H2O"
       ],
       "case_condition_quantities_varying": [
         "deposition_temperature"
@@ -358,13 +354,14 @@
         "source_axis_quantity": "pulse_time"
       },
       "case_condition_quantities": [
-        "exposure_time"
+        "deposition_temperature",
+        "precursor_exposure_time@H2Si[N(C2H5)2]2"
       ],
       "case_condition_quantities_varying": [
-        "exposure_time"
+        "precursor_exposure_time@H2Si[N(C2H5)2]2"
       ],
-      "coverage_blocker": "GENUINE_EVIDENCE_LIMIT",
-      "coverage_class": "CASE_SET_ONLY_GENUINE",
+      "coverage_blocker": null,
+      "coverage_class": "CASE_DATA_RESOLVED",
       "figure": "4",
       "n_canonical_x_values": 6,
       "n_cases": 6,
@@ -374,11 +371,11 @@
       "n_points_recorded": 6,
       "panel": "a",
       "paper_id": "10.1149_2.067203jes",
-      "point_case_status": "CASE_SET_ONLY",
-      "resolved_points": 0,
+      "point_case_status": "POINT_CASE_RESOLVED",
+      "resolved_points": 6,
       "series_id": "RS::10.1149_2.067203jes::F4::a::0::f2p0",
       "series_label": "",
-      "unmatched_points": 6,
+      "unmatched_points": 0,
       "x_semantic_quantity": "pulse_time",
       "x_source_label": "Dose time (ms)",
       "x_source_unit": "ms",
@@ -397,21 +394,22 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'purge_time' itself"
+          "exactly one qualified variant varies: precursor_purge_time"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "purge_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "purge_time"
       },
       "case_condition_quantities": [
-        "purge_time"
+        "deposition_temperature",
+        "precursor_purge_time"
       ],
       "case_condition_quantities_varying": [
-        "purge_time"
+        "precursor_purge_time"
       ],
       "coverage_blocker": null,
       "coverage_class": "CASE_DATA_RESOLVED",
@@ -447,21 +445,22 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'pulse_time' itself"
+          "exactly one qualified variant varies: coreactant_pulse_time@O2"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "pulse_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "pulse_time"
       },
       "case_condition_quantities": [
-        "pulse_time"
+        "coreactant_pulse_time@O2",
+        "deposition_temperature"
       ],
       "case_condition_quantities_varying": [
-        "pulse_time"
+        "coreactant_pulse_time@O2"
       ],
       "coverage_blocker": null,
       "coverage_class": "CASE_DATA_RESOLVED",
@@ -497,21 +496,22 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'pulse_time' itself"
+          "exactly one qualified variant varies: coreactant_pulse_time@O2"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "pulse_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "pulse_time"
       },
       "case_condition_quantities": [
-        "pulse_time"
+        "coreactant_pulse_time@O2",
+        "deposition_temperature"
       ],
       "case_condition_quantities_varying": [
-        "pulse_time"
+        "coreactant_pulse_time@O2"
       ],
       "coverage_blocker": null,
       "coverage_class": "CASE_DATA_RESOLVED",
@@ -558,6 +558,7 @@
       },
       "case_condition_quantities": [
         "coreactant",
+        "cycle_number",
         "exposure_time@HDMP",
         "precursor"
       ],
@@ -609,6 +610,7 @@
       },
       "case_condition_quantities": [
         "coreactant",
+        "cycle_number",
         "exposure_time@O2",
         "precursor"
       ],
@@ -648,28 +650,26 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'pulse_time' itself"
+          "exactly one qualified variant varies: precursor_pulse_time@Y(DPfAMD)3"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "pulse_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "pulse_time"
       },
       "case_condition_quantities": [
         "deposition_temperature",
-        "pulse_time",
-        "pulse_time@H2O",
-        "pulse_time@Y(DPfAMD)3",
-        "working_pressure"
+        "precursor_pulse_time@Y(DPfAMD)3",
+        "pulse_time@H2O"
       ],
       "case_condition_quantities_varying": [
-        "pulse_time@Y(DPfAMD)3"
+        "precursor_pulse_time@Y(DPfAMD)3"
       ],
-      "coverage_blocker": "GENUINE_EVIDENCE_LIMIT",
-      "coverage_class": "CASE_SET_ONLY_GENUINE",
+      "coverage_blocker": null,
+      "coverage_class": "CASE_DATA_RESOLVED",
       "figure": "3",
       "n_canonical_x_values": 5,
       "n_cases": 5,
@@ -679,11 +679,11 @@
       "n_points_recorded": 5,
       "panel": "c",
       "paper_id": "10.1039_d0ra09876k",
-      "point_case_status": "CASE_SET_ONLY",
-      "resolved_points": 0,
+      "point_case_status": "POINT_CASE_RESOLVED",
+      "resolved_points": 5,
       "series_id": "RS::10.1039_d0ra09876k::F3::c::0::f1p2",
       "series_label": "200 °C",
-      "unmatched_points": 5,
+      "unmatched_points": 0,
       "x_semantic_quantity": "pulse_time",
       "x_source_label": "Precursor Pulse (s)",
       "x_source_unit": "s",
@@ -701,28 +701,26 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'pulse_time' itself"
+          "exactly one qualified variant varies: precursor_pulse_time@Y(DPfAMD)3"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "pulse_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "pulse_time"
       },
       "case_condition_quantities": [
         "deposition_temperature",
-        "pulse_time",
-        "pulse_time@H2O",
-        "pulse_time@Y(DPfAMD)3",
-        "working_pressure"
+        "precursor_pulse_time@Y(DPfAMD)3",
+        "pulse_time@H2O"
       ],
       "case_condition_quantities_varying": [
-        "pulse_time@Y(DPfAMD)3"
+        "precursor_pulse_time@Y(DPfAMD)3"
       ],
-      "coverage_blocker": "GENUINE_EVIDENCE_LIMIT",
-      "coverage_class": "CASE_SET_ONLY_GENUINE",
+      "coverage_blocker": null,
+      "coverage_class": "CASE_DATA_RESOLVED",
       "figure": "3",
       "n_canonical_x_values": 5,
       "n_cases": 5,
@@ -732,11 +730,11 @@
       "n_points_recorded": 5,
       "panel": "c",
       "paper_id": "10.1039_d0ra09876k",
-      "point_case_status": "CASE_SET_ONLY",
-      "resolved_points": 0,
+      "point_case_status": "POINT_CASE_RESOLVED",
+      "resolved_points": 5,
       "series_id": "RS::10.1039_d0ra09876k::F3::c::1::f1p2",
       "series_label": "300 °C",
-      "unmatched_points": 5,
+      "unmatched_points": 0,
       "x_semantic_quantity": "pulse_time",
       "x_source_label": "Precursor Pulse (s)",
       "x_source_unit": "s",
@@ -804,7 +802,7 @@
       "axis_binding": {
         "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "exactly one qualified variant varies: purge_time@Y(DPfAMD)3"
+          "exactly one qualified variant varies: precursor_purge_time@Y(DPfAMD)3"
         ],
         "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
@@ -814,16 +812,15 @@
       },
       "case_condition_quantities": [
         "deposition_temperature",
+        "precursor_purge_time@Y(DPfAMD)3",
         "pulse_time",
-        "pulse_time@H2O",
-        "purge_time@Y(DPfAMD)3",
-        "working_pressure"
+        "pulse_time@H2O"
       ],
       "case_condition_quantities_varying": [
-        "purge_time@Y(DPfAMD)3"
+        "precursor_purge_time@Y(DPfAMD)3"
       ],
-      "coverage_blocker": "SEMANTIC_BINDING_DEFECT",
-      "coverage_class": "AXIS_SEMANTIC_BINDING_UNRESOLVED",
+      "coverage_blocker": null,
+      "coverage_class": "CASE_DATA_RESOLVED",
       "figure": "3",
       "n_canonical_x_values": 0,
       "n_cases": 4,
@@ -833,11 +830,11 @@
       "n_points_recorded": 4,
       "panel": "d",
       "paper_id": "10.1039_d0ra09876k",
-      "point_case_status": "CASE_SET_ONLY",
-      "resolved_points": 0,
+      "point_case_status": "POINT_CASE_RESOLVED",
+      "resolved_points": 4,
       "series_id": "RS::10.1039_d0ra09876k::F3::d::1::f1p3",
       "series_label": "300 °C",
-      "unmatched_points": 4,
+      "unmatched_points": 0,
       "x_semantic_quantity": "purge_time",
       "x_source_label": "Precursor Purge (s)",
       "x_source_unit": "s",
@@ -854,21 +851,22 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'purge_time' itself"
+          "exactly one qualified variant varies: coreactant_purge_time"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "purge_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "purge_time"
       },
       "case_condition_quantities": [
-        "purge_time"
+        "coreactant_purge_time",
+        "deposition_temperature"
       ],
       "case_condition_quantities_varying": [
-        "purge_time"
+        "coreactant_purge_time"
       ],
       "coverage_blocker": null,
       "coverage_class": "CASE_DATA_RESOLVED",
@@ -913,13 +911,14 @@
         "source_axis_quantity": "pulse_time"
       },
       "case_condition_quantities": [
-        "exposure_time"
+        "deposition_temperature",
+        "precursor_exposure_time@TMA"
       ],
       "case_condition_quantities_varying": [
-        "exposure_time"
+        "precursor_exposure_time@TMA"
       ],
-      "coverage_blocker": "GENUINE_EVIDENCE_LIMIT",
-      "coverage_class": "CASE_SET_ONLY_GENUINE",
+      "coverage_blocker": null,
+      "coverage_class": "CASE_DATA_RESOLVED",
       "figure": "4",
       "n_canonical_x_values": 4,
       "n_cases": 4,
@@ -929,11 +928,11 @@
       "n_points_recorded": 4,
       "panel": "e",
       "paper_id": "10.1149_2.067203jes",
-      "point_case_status": "CASE_SET_ONLY",
-      "resolved_points": 0,
+      "point_case_status": "POINT_CASE_RESOLVED",
+      "resolved_points": 4,
       "series_id": "RS::10.1149_2.067203jes::F4::e::0::f2p4",
       "series_label": "",
-      "unmatched_points": 4,
+      "unmatched_points": 0,
       "x_semantic_quantity": "pulse_time",
       "x_source_label": "Dose time (ms)",
       "x_source_unit": "ms",
@@ -950,21 +949,22 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'purge_time' itself"
+          "exactly one qualified variant varies: precursor_purge_time"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "purge_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "purge_time"
       },
       "case_condition_quantities": [
-        "purge_time"
+        "deposition_temperature",
+        "precursor_purge_time"
       ],
       "case_condition_quantities_varying": [
-        "purge_time"
+        "precursor_purge_time"
       ],
       "coverage_blocker": null,
       "coverage_class": "CASE_DATA_RESOLVED",
@@ -998,21 +998,22 @@
       ],
       "ambiguous_points": 0,
       "axis_binding": {
-        "axis_binding_status": "IDENTITY_MATCH",
+        "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "the associated cases record 'purge_time' itself"
+          "exactly one qualified variant varies: coreactant_purge_time"
         ],
-        "binding_method": "exact quantity identity",
+        "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
-        "bound_case_quantity": "purge_time",
+        "bound_case_quantity": null,
         "bound_species_or_role": null,
         "source_axis_quantity": "purge_time"
       },
       "case_condition_quantities": [
-        "purge_time"
+        "coreactant_purge_time",
+        "deposition_temperature"
       ],
       "case_condition_quantities_varying": [
-        "purge_time"
+        "coreactant_purge_time"
       ],
       "coverage_blocker": null,
       "coverage_class": "CASE_DATA_RESOLVED",
@@ -1095,7 +1096,7 @@
       "axis_binding": {
         "axis_binding_status": "UNIQUE_QUALIFIED_VARIATION_WITHOUT_SUPPORT",
         "binding_evidence": [
-          "exactly one qualified variant varies: purge_time@Y(DPfAMD)3"
+          "exactly one qualified variant varies: precursor_purge_time@Y(DPfAMD)3"
         ],
         "binding_method": null,
         "binding_source": "case conditions of the associated Condition Cases",
@@ -1105,16 +1106,15 @@
       },
       "case_condition_quantities": [
         "deposition_temperature",
+        "precursor_purge_time@Y(DPfAMD)3",
         "pulse_time",
-        "pulse_time@H2O",
-        "purge_time@Y(DPfAMD)3",
-        "working_pressure"
+        "pulse_time@H2O"
       ],
       "case_condition_quantities_varying": [
-        "purge_time@Y(DPfAMD)3"
+        "precursor_purge_time@Y(DPfAMD)3"
       ],
-      "coverage_blocker": "SEMANTIC_BINDING_DEFECT",
-      "coverage_class": "AXIS_SEMANTIC_BINDING_UNRESOLVED",
+      "coverage_blocker": null,
+      "coverage_class": "CASE_DATA_RESOLVED",
       "figure": "3",
       "n_canonical_x_values": 0,
       "n_cases": 3,
@@ -1124,11 +1124,11 @@
       "n_points_recorded": 3,
       "panel": "d",
       "paper_id": "10.1039_d0ra09876k",
-      "point_case_status": "CASE_SET_ONLY",
-      "resolved_points": 0,
+      "point_case_status": "POINT_CASE_RESOLVED",
+      "resolved_points": 3,
       "series_id": "RS::10.1039_d0ra09876k::F3::d::0::f1p3",
       "series_label": "200 °C",
-      "unmatched_points": 3,
+      "unmatched_points": 0,
       "x_semantic_quantity": "purge_time",
       "x_source_label": "Precursor Purge (s)",
       "x_source_unit": "s",

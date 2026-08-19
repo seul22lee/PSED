@@ -44,10 +44,12 @@
     "evidence": "For the creation of the micron-long mesoporous Pt tubes (Fig. 6), only one precursor pulse was applied during each ALD cycle."
    }
   ],
-  "geometry": null,
-  "geometries": [],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry": "porous_material",
+  "geometries": [
+   "porous_material"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: porous/AAO/membrane",
   "measurement_ids": [
    "M::10.1039_c7ta03257a__Fig8a__exp02",
    "M::SUP::10.1039_c7ta03257a::F8b"
@@ -66,14 +68,26 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-009"
+   "EV-10.103-011"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "cycle_number=250|precursor_exposures_per_cycle=1|material=Pt|geometry=?",
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as a carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "nominal_fingerprint": "cycle_number=250|precursor_exposures_per_cycle=1|material=Pt|geometry=porous_material",
   "identity_distinguished_by": [
    "case-defining conditions",
-   "deposited material"
+   "deposited material",
+   "geometry"
   ],
   "identity_status": "DISTINGUISHED"
  },
@@ -122,10 +136,12 @@
     "evidence": "For the creation of the full replica (Fig. 3), the MeCpPtMe3 precursor exposure was repeated 3 times for one O3 exposure during each ALD cycle."
    }
   ],
-  "geometry": null,
-  "geometries": [],
-  "geometry_source": "paper-level default",
-  "geometry_evidence": null,
+  "geometry": "porous_material",
+  "geometries": [
+   "porous_material"
+  ],
+  "geometry_source": "paper-level deterministic classification",
+  "geometry_evidence": "keyword: porous/AAO/membrane",
   "measurement_ids": [],
   "sample_ids": [],
   "deposition_run_ids": [],
@@ -141,14 +157,26 @@
   ],
   "swept_quantities": [],
   "identity_evidence": [
-   "EV-10.103-010"
+   "EV-10.103-012"
   ],
   "confidence": "EXPLICIT",
   "warnings": [],
-  "nominal_fingerprint": "cycle_number=250|precursor_exposures_per_cycle=3|material=Pt|geometry=?",
+  "carrier_gas": "Ar",
+  "gas_role_provenance": {
+   "carrier_gas": {
+    "species": "Ar",
+    "source_label": "Argon",
+    "canonical_id": "Ar",
+    "identity_key": "Ar",
+    "evidence": "Argon was used as a carrier gas",
+    "basis": "explicitly stated gas role, resolved to a canonical chemical"
+   }
+  },
+  "nominal_fingerprint": "cycle_number=250|precursor_exposures_per_cycle=3|material=Pt|geometry=porous_material",
   "identity_distinguished_by": [
    "case-defining conditions",
-   "deposited material"
+   "deposited material",
+   "geometry"
   ],
   "identity_status": "DISTINGUISHED"
  }

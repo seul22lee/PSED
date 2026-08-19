@@ -27,6 +27,8 @@ sys.path.insert(0, str(W))
 from pipeline.query import condition_query as CQ                       # noqa: E402
 from pipeline.query import entity_identity as EI                       # noqa: E402
 from pipeline.query import result_comparability as RC                  # noqa: E402
+from pipeline.canonical import axis_semantics as AX                    # noqa: E402
+from pipeline.canonical import process_steps as PS                     # noqa: E402
 from pipeline.canonical import units as U                              # noqa: E402
 
 OUT = W / "_diagnostics" / "workbench_v2"
@@ -79,6 +81,32 @@ def _same_encoded_number(av, au, bv, bu):
     if da != db and {da, db} != {"dimensionless", "1"}:
         return False
     return abs(na[1] - nb[1]) <= _ENCODING_REL_TOL * max(abs(na[1]), abs(nb[1]), 1.0)
+
+
+def assert_inputs_settled(pilot_root, papers):
+    """Refuse to build from a semantic layer that is still being written.
+
+    The builder reads the pilot's JSON while `run_pilot` may still be rewriting it, and a
+    build that catches that window silently produces a DIFFERENT corpus -- transient case
+    counts that match no run. Two cheap checks make regeneration deterministic: every
+    expected artifact exists, and each one parses as complete JSON. A half-written file
+    fails the parse rather than contributing half a paper.
+    """
+    missing, unreadable = [], []
+    for pid in papers:
+        for name in ("experimental_cases", "measurements", "result_series"):
+            p = Path(pilot_root) / "papers" / pid / "semantic" / ("%s.json" % name)
+            if not p.exists():
+                missing.append(str(p))
+                continue
+            try:
+                json.loads(p.read_text())
+            except Exception as exc:
+                unreadable.append("%s (%s)" % (p, exc))
+    if missing or unreadable:
+        raise SystemExit(
+            "semantic inputs are not settled; regenerate the pilot before building.\n"
+            "  missing: %s\n  unreadable: %s" % (missing[:3], unreadable[:3]))
 
 
 def canonical_curves(pid):
@@ -187,6 +215,13 @@ def _sig(axis, rep):
         # dimension; otherwise it is display-only and must never intersect with another
         # series' equally unresolved axis
         tid, dim = rep.get("overlay_target_id"), rep.get("dimension")
+    elif (rep.get("quantity") in RC._NORMALIZED_QUANTITIES
+            and not rep.get("normalization")):
+        # a ratio whose basis nobody recorded is displayable but has no SHARED identity:
+        # two normalized axes with unknown denominators would otherwise spell the same
+        # target and overlay as if they were on one scale, which is exactly the claim
+        # neither source made
+        tid = None
     rep.setdefault("representation_kind", REP_CANONICAL if rep.get("transform") is None
                    else REP_TRANSFORMED)
     rep.setdefault("display_available", bool(rep.get("values")))
@@ -243,7 +278,10 @@ def native_source_representations(s):
     out = {}
     for axis, meta, vals in (("x", np_.get("x") or {}, [a for a, _ in pairs]),
                              ("y", np_.get("y") or {}, [b for _, b in pairs])):
-        unit = meta.get("unit") or None
+        # An axis that printed no unit is not thereby unitless: where the quantity
+        # resolved and the ontology declares its unit, that is the unit the numbers are
+        # in. Asked of the canonical layer so the answer is the ontology's, not a guess.
+        unit, unit_basis = AX.ontology_axis_unit(meta.get("quantity"), meta.get("unit"))
         tid, dim = _overlay_target(axis, meta.get("quantity"), None, unit)
         label = meta.get("label") or meta.get("quantity") or axis
         out[axis] = {"native_source": {
@@ -251,7 +289,7 @@ def native_source_representations(s):
             "quantity": meta.get("quantity"), "unit": unit,
             "label": label, "display_label": label,
             "source_label": meta.get("label"), "source_unit": meta.get("unit"),
-            "unit_resolved": bool(tid),
+            "unit_basis": unit_basis, "unit_resolved": bool(tid),
             "values": vals, "transform": None,
             "available": True, "display_available": True,
             "overlay_target_id": tid, "overlay_authorized": bool(tid),
@@ -261,53 +299,179 @@ def native_source_representations(s):
     return out["x"], out["y"]
 
 
+def axis_native_from_source(s, reps, axis, cur):
+    """Rebuild ONE axis' canonical representation from the source coordinates.
+
+    Used where the canonical layer resolved this axis' semantics but produced no paired
+    coordinates because the OTHER axis failed. The source values are converted into the
+    canonical unit through the frozen unit registry, so this restores a representation
+    the canonical layer had already earned rather than inventing a new one. Anything that
+    does not convert cleanly is left alone.
+    """
+    q, unit = cur.get("%s_quantity" % axis), cur.get("%s_unit" % axis)
+    if not q or "native" in reps:
+        return
+    if not unit:
+        # a normalized axis is a pure ratio: once its basis is known the ontology supplies
+        # the unit the canonical layer never assigned, and the source numbers are already
+        # expressed in it. Without a basis the axis stays unresolved -- a ratio to an
+        # unknown reference has no canonical form and must not acquire one here.
+        if not cur.get("%s_norm" % axis):
+            return
+        unit = AX.ontology_axis_unit(q)[0]
+        if not unit:
+            return
+    src = (s.get("native_points") or {}).get(axis) or {}
+    vals, su = src.get("values"), src.get("unit")
+    if not vals:
+        return
+    try:
+        fu, tu = U.parse(su), U.parse(unit)
+        if U.dimension_name(su) != U.dimension_name(unit) or not tu.factor:
+            return
+        conv = [None if v is None else ((v * fu.factor + fu.offset) - tu.offset) / tu.factor
+                for v in vals]
+    except Exception:
+        return
+    # positional placeholders are how the source keeps point i at index i; they are
+    # carried through, not treated as a failure of the axis
+    if len([v for v in conv if v is not None]) < 2:
+        return
+    reps["native"] = {
+        "id": "native", "quantity": q, "unit": unit,
+        "label": "%s [%s]" % (q, unit), "values": conv, "available": True,
+        "normalization": cur.get("%s_norm" % axis), "transform": None,
+        "rebuilt_from_source": (
+            "the canonical layer resolved this axis but emitted no paired coordinates "
+            "because the other axis was unresolved; the source values were converted "
+            "from %s into %s" % (su, unit))}
+
+
+#: The coordinate at which a channel/trench profile enters the feature. A saturation
+#: profile is measured from the opening inward, so the entrance is the origin of the
+#: axial coordinate -- not the first sample, which may sit outside the feature.
+ENTRANCE_COORDINATE = 0.0
+
+
+def entrance_reference(xs, ys):
+    """(value, evidence) for the profile's own value at the feature entrance.
+
+    The entrance reference is the observation at x = 0, and only that. Where the profile
+    samples the entrance exactly, that sample is used; where it brackets the entrance, the
+    value is interpolated between the two adjacent observations, which introduces no
+    assumption the two samples do not already carry. A profile that never reaches the
+    entrance is NOT extrapolated to it, and the maximum, the first point and the largest
+    value are never substituted -- each of those is a different physical statement, and
+    silently using one is how "normalized to the entrance" becomes a claim nobody made.
+    """
+    pairs = sorted(((x, y) for x, y in zip(xs, ys) if x is not None and y is not None),
+                   key=lambda p: p[0])
+    if len(pairs) < 2:
+        return None, None
+    for x, y in pairs:
+        if x == ENTRANCE_COORDINATE:
+            return y, "the profile samples the feature entrance (x = 0) directly"
+    lo = [p for p in pairs if p[0] < ENTRANCE_COORDINATE]
+    hi = [p for p in pairs if p[0] > ENTRANCE_COORDINATE]
+    if not lo or not hi:
+        return None, None                 # entrance not bracketed: no extrapolation
+    (x0, y0), (x1, y1) = lo[-1], hi[0]
+    if x1 == x0:
+        return None, None
+    y = y0 + (y1 - y0) * (ENTRANCE_COORDINATE - x0) / (x1 - x0)
+    return y, ("the entrance is bracketed by observations at x = %g and x = %g; the "
+               "reference is interpolated between them" % (x0, x1))
+
+
 def derived_representations(s, cur):
     """Every representation this series can reach, WITH the coordinates already computed.
 
     The page never transforms anything. If an option is offered, its numbers are already
     here; if the numbers cannot be produced, the option is not offered. That is what makes
     a Y control that does not move the curve structurally impossible.
+
+    Reachability is PER AXIS. What the x axis can become is decided by the x axis'
+    resolution -- its quantity, its normalisation, the projections the canonical layer
+    computed FOR IT -- and never by the state of the y axis, and vice versa. Gating the
+    x options on a complete canonical (x, y) pair array is exactly how a profile whose y
+    basis was unresolved lost its perfectly resolved physical-distance transform.
     """
     pts = cur["points"]
-    if not pts:
-        # No canonical pair does not mean no curve. The source observation is a
-        # representation in its own right, and returning nothing here is what made a
-        # perfectly recorded sweep unplottable.
-        return native_source_representations(s)
-    xs = [p[0] for p in pts]
-    ys = [p[1] for p in pts]
     xr, yr = native_source_representations(s)
+    if pts:
+        xs = [p[0] for p in pts]
+        ys = [p[1] for p in pts]
+        # the x normalisation belongs in the representation exactly as the y one does.
+        # Without it every normalised x axis reached its target_id with an EMPTY basis
+        # slot, so x/H and x/L -- genuinely different statements -- shared one target,
+        # while the same axis canonicalised by two different paths did not.
+        xr["native"] = {"id": "native", "quantity": cur["x_quantity"],
+                        "unit": cur["x_unit"],
+                        "label": "%s [%s]" % (cur["x_quantity"], cur["x_unit"]),
+                        "values": xs, "transform": None, "available": True,
+                        "normalization": cur.get("x_norm")}
+        ylab = "%s [%s]" % (cur["y_quantity"], cur["y_unit"])
+        if cur["y_norm"]:
+            ylab += ", %s" % cur["y_norm"]
+        elif cur["y_quantity"] in RC._NORMALIZED_QUANTITIES:
+            ylab += " (basis unresolved)"
+        yr["native"] = {"id": "native", "quantity": cur["y_quantity"],
+                        "unit": cur["y_unit"],
+                        "label": ylab, "values": ys, "transform": None,
+                        "available": True, "normalization": cur["y_norm"]}
+    else:
+        # No canonical pair does not mean no curve. The source observation is a
+        # representation in its own right, and each axis the canonical layer DID resolve
+        # is rebuilt from the source coordinates that belong to it; the axis that failed
+        # stays absent, which is the honest report. Both axes are rebuilt from the SAME
+        # source tuples, so a rebuild is only sound where the source arrays are already
+        # paired; unequal lengths mean the source coordinates were never aligned and a
+        # rebuilt pair would be fabricated.
+        np_ = s.get("native_points") or {}
+        nx = ((np_.get("x") or {}).get("values")) or []
+        ny = ((np_.get("y") or {}).get("values")) or []
+        if len(nx) == len(ny) and nx:
+            axis_native_from_source(s, xr, "x", cur)
+            axis_native_from_source(s, yr, "y", cur)
+        xs = (xr.get("native") or {}).get("values") or []
+        ys = (yr.get("native") or {}).get("values") or []
 
-    xr["native"] = {"id": "native", "quantity": cur["x_quantity"], "unit": cur["x_unit"],
-                    "label": "%s [%s]" % (cur["x_quantity"], cur["x_unit"]),
-                    "values": xs, "transform": None, "available": True}
-    for i, pj in enumerate((cur["projections"].get("x") or [])):
-        vals = pj.get("values") or []
-        if len(vals) != len(xs):
+    # Projections the canonical layer computed are read back PER AXIS: an x projection
+    # exists because the x axis resolved, and it is attached whenever its coordinates
+    # align with this axis' native array -- whatever happened to the other axis. A
+    # projection whose length does not match is refused rather than realigned, because
+    # index identity is the one thing this model never invents.
+    for axis, reps in (("x", xr), ("y", yr)):
+        base = (reps.get("native") or {}).get("values") or []
+        if not base:
             continue
-        xr["proj:%s" % pj.get("quantity")] = {
-            "id": "proj:%s" % pj.get("quantity"), "quantity": pj.get("quantity"),
-            "unit": pj.get("unit"),
-            "label": "%s [%s]" % (pj.get("quantity"), pj.get("unit")),
-            "values": vals, "available": True,
-            "transform": {"kind": "CANONICAL_PROJECTION",
-                          "from_normalization": pj.get("from_normalization"),
-                          "provenance": "computed by the canonical layer and read back",
-                          "parameters": _proj_params(cur, pj)}}
+        for pj in (cur["projections"].get(axis) or []):
+            vals = pj.get("values") or []
+            if len(vals) != len(base):
+                continue
+            reps["proj:%s" % pj.get("quantity")] = {
+                "id": "proj:%s" % pj.get("quantity"), "quantity": pj.get("quantity"),
+                "unit": pj.get("unit"),
+                "label": "%s [%s]" % (pj.get("quantity"), pj.get("unit")),
+                "values": vals, "available": True,
+                "transform": {"kind": "CANONICAL_PROJECTION",
+                              "from_normalization": pj.get("from_normalization"),
+                              "provenance": "computed by the canonical layer and read back",
+                              "parameters": _proj_params(cur, pj)}}
 
-    ylab = "%s [%s]" % (cur["y_quantity"], cur["y_unit"])
-    if cur["y_norm"]:
-        ylab += ", %s" % cur["y_norm"]
-    elif cur["y_quantity"] in RC._NORMALIZED_QUANTITIES:
-        ylab += " (basis unresolved)"
-    yr["native"] = {"id": "native", "quantity": cur["y_quantity"], "unit": cur["y_unit"],
-                    "label": ylab, "values": ys, "transform": None, "available": True,
-                    "normalization": cur["y_norm"]}
+    if not (yr.get("native") or {}).get("values"):
+        return xr, yr
     # t/t_max is the one normalization whose denominator is derivable from the series
     # itself; t_entrance and t_planar need a reference this corpus does not carry, so
     # they are described as unavailable rather than quietly approximated by the maximum.
+    # The derivations run off the y axis' OWN materialised values; the entrance one also
+    # needs the x coordinate of each y, so it asks for aligned arrays and refuses
+    # anything else.
     if cur["y_quantity"] == "film_thickness":
-        ctx = RC.resolve_context("t_max", series={"points": pts, "y_unit": cur["y_unit"],
+        ypairs = ([[a, b] for a, b in zip(xs, ys)]
+                  if xs and len(xs) == len(ys) else [[None, b] for b in ys])
+        ctx = RC.resolve_context("t_max", series={"points": ypairs,
+                                                  "y_unit": cur["y_unit"],
                                                   "result_series_id": s["series_id"]})
         if ctx.get("found") and ctx.get("value"):
             ref = ctx["value"]
@@ -322,12 +486,43 @@ def derived_representations(s, cur):
                                   "semantic_label"),
                               "parameters": {"reference": ref, "unit": ctx.get("unit")},
                               "parameter_provenance": ctx}}
+        # the entrance reference is derivable from the profile itself, exactly as t_max is
+        ref, ref_ev = (entrance_reference(xs, ys)
+                       if xs and len(xs) == len(ys) else (None, None))
+        if ref:
+            yr["norm:t_over_t_entrance"] = {
+                "id": "norm:t_over_t_entrance", "quantity": "normalized_thickness",
+                "unit": "1", "label": "normalized_thickness [1], t_over_t_entrance",
+                "values": [v / ref for v in ys], "available": True,
+                "normalization": "t_over_t_entrance",
+                "transform": {"kind": "reference_value_normalization",
+                              "rule_id": "t_over_t_entrance",
+                              "definition": RC.NORMALIZATIONS["t_over_t_entrance"].get(
+                                  "semantic_label"),
+                              "parameters": {"reference": ref, "unit": cur["y_unit"]},
+                              "parameter_provenance": {
+                                  "parameter": "t_entrance", "value": ref,
+                                  "unit": cur["y_unit"], "found": True,
+                                  "source_object": "ResultSeries %s" % s["series_id"],
+                                  "source_evidence": ref_ev,
+                                  "provenance_type": "derived_from_series_points",
+                                  "confidence": "self_referential"}}}
         for nid in ("t_over_t_entrance", "t_over_t_planar"):
+            if "norm:%s" % nid in yr:
+                continue
             nd = RC.NORMALIZATIONS[nid]
             yr["norm:%s" % nid] = {
                 "id": "norm:%s" % nid, "quantity": "normalized_thickness", "unit": "1",
                 "label": nd.get("semantic_label"), "values": None, "available": False,
                 "normalization": nid,
+                # A refused transform is still a DECLARED transform: naming the rule and
+                # the bridge it lacks is what lets a comparison say "potentially
+                # comparable, missing the reference" instead of silently offering nothing.
+                "transform": {"kind": "reference_value_normalization", "rule_id": nid,
+                              "definition": nd.get("semantic_label"),
+                              "required_bridge": nd.get("denominator"),
+                              "parameters": None, "resolved": False},
+                "missing_bridge": nd.get("denominator"),
                 "unavailable_reason":
                     "%s needs its own reference (%s, %s), which is not resolved for this "
                     "series" % (nid, nd.get("denominator"),
@@ -346,6 +541,7 @@ def _proj_params(cur, pj):
 
 def build():
     papers = json.loads((PILOT / "pilot_papers.json").read_text())["papers"]
+    assert_inputs_settled(PILOT, papers)
     cases, acts, series, samples, runs, measurements = {}, {}, {}, {}, {}, {}
     excluded = []
 
@@ -364,12 +560,42 @@ def build():
                 "entity": "CONDITION_CASE",
                 "material": c.get("deposited_material"), "geometry": c.get("geometry"),
                 "fingerprint": c.get("nominal_fingerprint"),
-                "conditions": [{"quantity": x.get("quantity"), "value": x.get("value"),
+                # step_context travels with the condition: a 2 s precursor dose and a
+                # 2 s plasma exposure are the same number and different experiments
+                # A range-valued assertion has no scalar, and emitting `value: null`
+                # made a real statement ("10-40 cycles") look like an empty placeholder.
+                # The bounds are the value; they travel with it.
+                "conditions": [{"quantity": x.get("quantity"),
+                                "source_quantity": x.get("source_quantity"),
+                                "same_slot_conflict": x.get("same_slot_conflict"),
+                                "conflicting_values": x.get("conflicting_values"),
+                                "value": x.get("value"),
+                                "value_kind": x.get("value_kind"),
+                                "value_lower": x.get("value_lower"),
+                                "value_upper": x.get("value_upper"),
                                 "unit": x.get("unit"), "species": x.get("species"),
+                                "step_context": x.get("step_context"),
+                                "activation": x.get("activation"),
+                                "plasma_type": x.get("plasma_type"),
+                                "follows": x.get("follows"),
+                                "preceding_species": x.get("preceding_species"),
+                                "preceding_activation": x.get("preceding_activation"),
                                 "scope": EI.CASE_CONTEXT,
+                                "source_scope": x.get("scope"),
+                                "source": x.get("source"),
+                                # without the evidence the page shows a number nobody can
+                                # check; every displayed condition carries its sentence
+                                "evidence": x.get("evidence"),
+                                "locator": x.get("locator"),
                                 "provenance_type": x.get("provenance_type")}
                                for x in (c.get("case_defining_conditions") or [])],
                 "chemistry": _chem(c),
+                # the reactor gases are process facts the recipe chemistry never carries;
+                # the two roles stay separate because one gas often fills both and many
+                # processes fill them with different gases
+                "carrier_gas": c.get("carrier_gas"),
+                "purge_gas": c.get("purge_gas"),
+                "gas_role_provenance": c.get("gas_role_provenance") or {},
                 "realization": {
                     "source_sample_records": real["n_samples_resolved"],
                     "physical_specimen_identity": "unresolved",
@@ -450,6 +676,15 @@ def build():
                                  "reason": "NO_CANONICAL_CURVE_RECORD"})
                 continue
             unresolved_y = not cu.get("y_quantity")
+            # A normalized axis whose denominator the canonical layer could not resolve is
+            # ambiguous, and two such axes must never overlay -- but where the SOURCE
+            # states the reference, the semantic layer has already recovered it from that
+            # statement. Consuming it here turns a permanently ambiguous axis into the
+            # declared normalization the paper actually plotted, with its evidence.
+            if not cu.get("y_norm") and r.get("y_normalization_basis"):
+                cu = dict(cu, y_norm=r["y_normalization_basis"],
+                          y_norm_evidence=r.get("y_normalization_basis_evidence"),
+                          y_norm_source=r.get("y_normalization_basis_source"))
             cs = [K(c) for c in EI.cases_for_result_series(r, pcases)]
             one, status = EI.single_case_for_series(r, pcases)
             src = r.get("source") or {}
@@ -488,6 +723,24 @@ def build():
                                          if cu["y_quantity"] in RC._NORMALIZED_QUANTITIES
                                          else None)),
             }
+            # A timing axis whose recorded quantity CONTRADICTS the family its own
+            # printed label names is a naming defect inherited from extraction --
+            # "Exposure time (s)" recorded as pulse_time. The record is not rewritten
+            # (it is what the extraction asserted); the disagreement is surfaced, and
+            # point-case binding compares cycle SIDES so it does not depend on which
+            # family either layer chose.
+            for ax in ("x", "y"):
+                meta = (cu.get("native") or {}).get(ax) or {}
+                fam = PS.timing_family_from_label(meta.get("label"))
+                rq = PS.timing_kind(meta.get("quantity"))
+                if fam and rq and fam != rq:
+                    rec.setdefault("axis_family_discrepancies", []).append({
+                        "axis": ax, "recorded_quantity": meta.get("quantity"),
+                        "label": meta.get("label"),
+                        "label_family": fam,
+                        "note": ("the printed axis label names the %s family but the "
+                                 "extracted quantity is of the %s family; the printed "
+                                 "label is the primary record" % (fam, rq))})
             # native_points is already on `rec` above, and it is what a source
             # representation is built from
             xr, yr = derived_representations(rec, cu)
@@ -502,12 +755,186 @@ def build():
     return cases, acts, series, samples, runs, measurements, excluded
 
 
+#: The relation between two ResultSeries of one MeasurementAct. It says the two curves
+#: are REPRESENTATIONS OF THE SAME OBSERVING ACT -- a raw, a scaled and a normalized
+#: drawing of one measurement. It does NOT say either can be point-inverted into the
+#: other: each was digitized independently, with its own extraction error.
+SAME_MEASUREMENT_REPRESENTATION = "SAME_MEASUREMENT_REPRESENTATION"
+#: A representation reached by transforming THIS series' own coordinates.
+DERIVED_TRANSFORM = "DERIVED_TRANSFORM"
+
+
+def same_measurement_alternates(series, acts):
+    """Attach each series' sibling representations of the same MeasurementAct.
+
+    The entity model records `represents_same_measurement_as` on Measurement records and
+    the act grouping closes it transitively; this only reads that structure back onto
+    each series, with the act's own grouping evidence as the basis. Nothing here claims
+    comparability, overlay permission, or numerical invertibility -- an alternate is a
+    place to LOOK, carrying the provenance of why it is the same observation.
+    """
+    n = 0
+    for s in series.values():
+        a = acts.get(s["act_id"]) or {}
+        sibs = [x for x in (a.get("series_ids") or []) if x != s["id"]]
+        out = []
+        for sib_id in sorted(sibs):
+            sib = series.get(sib_id)
+            if not sib:
+                continue
+            out.append({
+                "series_id": sib_id,
+                "relation": SAME_MEASUREMENT_REPRESENTATION,
+                "act_id": s["act_id"],
+                "act_kind": a.get("kind"),
+                "figure": sib.get("figure"), "panel": sib.get("panel"),
+                "series_label": sib.get("series_label"),
+                "y_quantity": (sib.get("y") or {}).get("y_quantity"),
+                "y_normalization": (sib.get("y") or {}).get("y_norm"),
+                "x_quantity": (sib.get("x") or {}).get("x_quantity"),
+                "basis": a.get("grouping_evidence") or [],
+                "independently_digitized": True,
+                "caveat": ("this ResultSeries was persisted from its own drawing of the "
+                           "same observing act; it is evidence about the same "
+                           "measurement, not a point-by-point mathematical inverse of "
+                           "this curve"),
+            })
+        s["same_measurement_series"] = out
+        n += len(out)
+    return n
+
+
+#: how a resolved case fact is known
+FACT_CASE_DEFINING = "CASE_DEFINING_CONDITION"
+FACT_KNOWN_CONTEXT = "KNOWN_CONTEXT"
+
+
+def case_facts(c):
+    """Everything KNOWN about a Condition Case, each fact carrying scope and basis.
+
+    "The precursor is unknown" and "the precursor is TMA but is not what distinguishes
+    this case from its siblings" are different statements, and a view built from
+    case-defining conditions alone renders the second as the first. This view combines,
+    per case and with provenance:
+
+      * the case-defining conditions themselves (marked as such);
+      * the case's own resolved process chemistry -- resolved upstream for THIS case's
+        material and process, never copied across a paper's other chemistries;
+      * the reactor gas roles the paper states, with their recorded provenance;
+      * the deposited material and geometry, with the case's own source fields.
+
+    Nothing is invented: every entry quotes where it came from, and a fact absent from
+    all of these stays absent -- that is what unknown now means.
+    """
+    facts = {}
+
+    def add(fid, value, role, scope, basis, provenance=None, evidence=None,
+            species=None, unit=None):
+        if value in (None, "", []):
+            return
+        facts.setdefault(fid, []).append(
+            {"value": value, "unit": unit, "species": species,
+             "fact_role": role, "scope": scope, "basis": basis,
+             "provenance_type": provenance, "evidence": evidence})
+
+    for x in c.get("conditions") or []:
+        fid = x["quantity"] + ("@" + x["species"] if x.get("species") else "")
+        add(fid, _condition_value(x), FACT_CASE_DEFINING,
+            x.get("source_scope") or "case", "case-defining condition",
+            provenance=x.get("provenance_type"), evidence=x.get("evidence"),
+            species=x.get("species"), unit=x.get("unit"))
+    chem = c.get("chemistry") or {}
+    for role in ("precursor", "coreactant"):
+        for sp in chem.get(role) or []:
+            add(role, sp, FACT_KNOWN_CONTEXT, "case",
+                "resolved process chemistry of this case", provenance="resolved_chemistry")
+        for act in chem.get("%s_activation" % role) or []:
+            add("%s_activation" % role, act, FACT_KNOWN_CONTEXT, "case",
+                "resolved process chemistry of this case", provenance="resolved_chemistry")
+    if chem.get("process_type"):
+        add("process_type", chem["process_type"], FACT_KNOWN_CONTEXT, "case",
+            "resolved process chemistry of this case", provenance="resolved_chemistry")
+    gp = c.get("gas_role_provenance") or {}
+    for role in ("carrier_gas", "purge_gas"):
+        v = c.get(role)
+        if v:
+            rec = gp.get(role) or {}
+            add(role, v, FACT_KNOWN_CONTEXT, "paper-stated gas role",
+                rec.get("basis") or "explicitly stated gas role",
+                provenance="gas_role", evidence=rec.get("evidence"))
+    add("material", c.get("material"), FACT_KNOWN_CONTEXT, "case",
+        "deposited material of this case", provenance="case_material")
+    add("geometry", c.get("geometry"), FACT_KNOWN_CONTEXT, "case",
+        "geometry of this case", provenance="case_geometry")
+    return facts
+
+
 def _chem(c):
-    out = {}
+    """Chemistry the case establishes, with delivery activation kept out of the species.
+
+    A channel named "O2_plasma" fuses two facts: the chemical is O2 and it arrived as a
+    plasma. Reported as one token it makes a plasma O2 step look like a different reagent
+    from a thermal O2 step, so the activation is split off and reported beside it.
+    """
+    out, activation = {}, {}
+
+    def _add(kind, token):
+        sp, act = PS.split_activated_species(str(token))
+        if not sp or sp == "None":
+            return
+        out.setdefault(kind, set()).add(sp)
+        if act:
+            activation.setdefault(kind, set()).add(act)
+
+    # a condition row states the chemistry where the source spells it out ...
     for x in (c.get("case_defining_conditions") or []):
         if x.get("quantity") in ("precursor", "coreactant"):
-            out.setdefault(x["quantity"], set()).add(str(x.get("value")))
-    return {k: sorted(v) for k, v in out.items()}
+            _add(x["quantity"], x.get("value"))
+    # ... and the case's own resolved chemistry carries it where no row does. Reading only
+    # the rows left panels whose reagents were resolved upstream looking chemistry-less.
+    for tok in (c.get("precursors") or []):
+        _add("precursor", tok)
+    for tok in (c.get("coreactants") or []):
+        _add("coreactant", tok)
+    # The semantic layer has already resolved these to canonical chemical identities and
+    # split the delivery activation off the species. Reading the activation back from that
+    # record keeps a plasma-delivered reagent reported as plasma even though its stored
+    # label is now the plain chemical.
+    for kind, recs in (c.get("chemistry_identity") or {}).items():
+        role = "precursor" if kind.startswith("precursor") else "coreactant"
+        for r in recs or []:
+            if r.get("activation"):
+                activation.setdefault(role, set()).add(r["activation"])
+    chem = {k: sorted(v) for k, v in out.items()}
+    for k, v in activation.items():
+        chem["%s_activation" % k] = sorted(v)
+    if c.get("process_type"):
+        chem["process_type"] = c["process_type"]
+    # a carrier or purge gas is a role in the process, not a reagent of the cycle. It is
+    # stored as ONE species name, so it is wrapped rather than iterated -- sorting a
+    # string yields its characters, which turned "N2" into ["2", "N"].
+    for role in ("carrier_gas", "purge_gas"):
+        v = c.get(role)
+        if not v:
+            continue
+        chem[role] = sorted(v) if isinstance(v, (list, tuple, set)) else [str(v)]
+    return chem
+
+
+def _condition_value(x):
+    """What a condition's magnitude IS, never a null standing in for one.
+
+    A condition the source stated as an interval has no nominal scalar, and reporting it
+    as `null` reads like a missing measurement rather than the range the paper wrote. The
+    interval is shown as an interval; the bounds stay structured beside it.
+    """
+    v = x.get("value")
+    if v not in (None, "", "null"):
+        return v
+    lo, hi = x.get("value_lower"), x.get("value_upper")
+    if lo is not None and hi is not None:
+        return "%g\u2013%g" % (float(lo), float(hi))
+    return v
 
 
 def _tech(v):
@@ -516,12 +943,241 @@ def _tech(v):
     return str(v) if v not in (None, "") else None
 
 
-def comparability(series):
-    """Frozen-runtime pair verdicts. The browser reads these; it never derives them."""
+def bridge_case(s, cases):
+    """The Condition Case a series may take transform bridge parameters from, or None.
+
+    Only an unambiguous binding qualifies: exactly one case, and within it only
+    conditions stating a single resolved numeric value. A series on several cases, a
+    condition asserted twice and a "varies"/unknown value are precisely the situations
+    where a transform must stay refused rather than adopt a number nobody asserted for
+    this result.
+    """
+    ids = s.get("all_case_ids") or []
+    if len(ids) != 1:
+        return None
+    case = (cases or {}).get(ids[0]) or {}
+    stated = Counter(c.get("quantity") for c in (case.get("conditions") or []))
+    conds = []
+    for c in (case.get("conditions") or []):
+        q = c.get("quantity")
+        if stated[q] != 1:
+            continue
+        try:
+            val = float(str(c.get("value")).strip())
+        except (TypeError, ValueError):
+            continue
+        conds.append({"quantity": q, "value": val, "unit": c.get("unit"),
+                      "evidence": c.get("evidence"),
+                      "provenance_type": c.get("provenance_type")})
+    if not conds:
+        return None
+    return {"case_id": case.get("case_id"), "case_defining_conditions": conds}
+
+
+def _bridged_values(values, unit, bridge_value, bridge_unit, target_unit, op="divide"):
+    """`values (op) bridge`, carried through SI and expressed in the target's own unit.
+
+    The arithmetic happens in SI because the two operands are routinely printed in
+    different units of the same dimension -- a profile in µm divided by a 500 nm feature
+    height is 0.5 µm, not 500. An affine unit (anything with an offset) is refused rather
+    than operated on: a ratio of two temperatures in °C is not a ratio of temperatures.
+    `op` is the operation actually APPLIED here -- "divide" or "multiply" -- so a
+    declared transform can be traversed in either direction by its caller.
+    """
+    if op not in ("divide", "multiply"):
+        return None
+    try:
+        fu, bu, tu = U.parse(unit), U.parse(bridge_unit), U.parse(target_unit)
+    except Exception:
+        return None
+    if fu.offset or bu.offset or tu.offset:
+        return None
+    b = float(bridge_value) * bu.factor
+    if not b or not tu.factor:
+        return None
+    if op == "divide":
+        return [None if v is None else (v * fu.factor) / b / tu.factor for v in values]
+    return [None if v is None else (v * fu.factor) * b / tu.factor for v in values]
+
+
+def bridged_representations(series, cases):
+    """Materialise each declared transform whose bridge the series' own Case supplies.
+
+    A declared transform with no bridge value is a curve that cannot be drawn, and that is
+    what `missing_context` reports. The bridge is often not missing at all -- it is a
+    CONDITION of the experiment, sitting on the Condition Case the series is bound to.
+    Reading it there turns the refusal into a real second representation of the same
+    observation, on the target the ontology names for it.
+
+    Each series is divided by ITS OWN case's value: two trench profiles normalised this
+    way are each divided by their own feature height, never by one another's. Nothing is
+    invented -- an ambiguous case, an unstated condition or a unit that will not resolve
+    all leave the representation unbuilt.
+
+    A declared transform is traversed in BOTH directions. `spatial -> dimensionless,
+    divide by feature_height` also says how a dimensionless axis becomes physical again:
+    multiply by the same bridge. The reverse of a normalisation is only taken when the
+    curve's own declared basis IS the normalisation this bridge denominates -- an x/L
+    axis is never multiplied by a feature height -- and an unstated basis reverses
+    nothing.
+    """
+    made, refused = 0, 0
+    for s in series.values():
+        case = bridge_case(s, cases)
+        if not case:
+            continue
+        for axis in ("x", "y"):
+            reps = s["%s_representations" % axis]
+            native = reps.get("native")
+            if not native or not native.get("values"):
+                continue
+            for tr in RC.TRANSFORMS:
+                if not tr.get("bridge") or tr.get("op") not in ("divide", "multiply"):
+                    continue
+                # the declared normalisation whose denominator this bridge is, if unique
+                nids = [n for n, d in RC.NORMALIZATIONS.items()
+                        if d.get("denominator") == tr["bridge"]]
+                uniq_norm = nids[0] if len(nids) == 1 else None
+                if tr.get("from") == native.get("quantity"):
+                    direction, target, apply_op = "forward", tr["to"], tr["op"]
+                    # applying a normalisation labels the result with it
+                    norm = uniq_norm if tr["op"] == "divide" else None
+                elif tr.get("to") == native.get("quantity"):
+                    # Reversing a divide into a DIMENSIONLESS ratio requires the curve to
+                    # DECLARE the basis the bridge denominates -- an x/L axis is never
+                    # multiplied by a feature height. A dimensioned per-unit quantity
+                    # (nm/cycle) states its own denominator kind and reverses on the
+                    # declared rule alone.
+                    if (tr["op"] == "divide"
+                            and native.get("quantity") in RC._NORMALIZED_QUANTITIES):
+                        if not uniq_norm or native.get("normalization") != uniq_norm:
+                            continue
+                    direction, target = "reverse", tr["from"]
+                    apply_op = "multiply" if tr["op"] == "divide" else "divide"
+                    norm = None
+                else:
+                    continue
+                rid = "bridge:%s" % target
+                if rid in reps:
+                    continue
+                ctx = RC.resolve_context(tr["bridge"], case=case)
+                if not ctx.get("found") or ctx.get("value") is None:
+                    continue
+                unit, unit_basis = AX.ontology_axis_unit(target)
+                vals = _bridged_values(native["values"], native.get("unit"),
+                                       ctx["value"], ctx.get("unit"), unit,
+                                       op=apply_op)
+                if vals is None or not unit:
+                    refused += 1
+                    continue
+                reps[rid] = _sig(axis, {
+                    "id": rid, "quantity": target, "unit": unit,
+                    "label": "%s [%s]" % (target, unit),
+                    "values": vals, "available": True, "normalization": norm,
+                    "transform": {
+                        "kind": "ontology_declared_transform",
+                        "rule": "%s -> %s" % (tr["from"], tr["to"]),
+                        "direction": direction,
+                        "op": tr["op"], "applied_op": apply_op,
+                        "bridge": tr["bridge"],
+                        "validity": tr.get("validity"),
+                        "target_unit_basis": unit_basis,
+                        "parameters": {"bridge_quantity": tr["bridge"],
+                                       "bridge_value": ctx["value"],
+                                       "bridge_unit": ctx.get("unit")},
+                        "parameter_provenance": ctx, "resolved": True},
+                    # the Case that supplied the bridge, named on the representation
+                    # itself, so a curve drawn this way can be traced to its condition
+                    "bridge_source": {"quantity": tr["bridge"], "value": ctx["value"],
+                                      "unit": ctx.get("unit"),
+                                      "case_id": case.get("case_id"),
+                                      "source_object": ctx.get("source_object"),
+                                      "confidence": ctx.get("confidence")}})
+                made += 1
+    return made, refused
+
+
+def _rep_semantics_key(r):
+    """What a representation MEANS, for cross-series target agreement."""
+    return (r.get("quantity_id") or r.get("quantity"), r.get("normalization_id"),
+            r.get("dimension"), r.get("unit"), r.get("axis"))
+
+
+def _overlay_route(r):
+    """How one series reaches a shared target: the provenance the overlay would use."""
+    tr = r.get("transform") or {}
+    return {"representation_id": r.get("id"),
+            "representation_kind": r.get("representation_kind"),
+            "transform_kind": tr.get("kind"),
+            "rule": tr.get("rule") or tr.get("rule_id"),
+            "bridge": (tr.get("bridge")
+                       or (tr.get("parameters") or {}).get("bridge_quantity")
+                       or ((tr.get("parameters") or {}).get("reference") is not None
+                           and tr.get("rule_id")) or None),
+            "bridge_source": r.get("bridge_source"),
+            "parameter_provenance": tr.get("parameter_provenance")}
+
+
+def pair_axis_reachability(sa, sb, axis):
+    """Shared semantic targets this pair can BOTH materialise on one axis, with routes.
+
+    This is the same evidence the overlay draws from -- available values, an authorised
+    target, and semantics that agree -- computed once, here, so the pair verdict and the
+    plot can never cite different facts.
+    """
+    def reach(s):
+        return {r["target_id"]: r for r in s["%s_representations" % axis].values()
+                if r.get("available") and r.get("values")
+                and r.get("overlay_authorized") is not False and r.get("target_id")}
+    ta, tb = reach(sa), reach(sb)
+    out = []
+    for t in sorted(set(ta) & set(tb)):
+        if _rep_semantics_key(ta[t]) != _rep_semantics_key(tb[t]):
+            continue
+        out.append({"target_id": t, "a_route": _overlay_route(ta[t]),
+                    "b_route": _overlay_route(tb[t])})
+    return out
+
+
+def _unmaterialized_bridges(sa, sb, axis):
+    """Bridges of declared-but-unbuilt transforms, per side, for the honest gap report."""
+    out = set()
+    for s in (sa, sb):
+        for r in s["%s_representations" % axis].values():
+            if r.get("transform") and not r.get("available"):
+                br = (r.get("missing_bridge")
+                      or (r.get("transform") or {}).get("required_bridge")
+                      or (r.get("transform") or {}).get("bridge"))
+                if br:
+                    out.add(br)
+    return out
+
+
+def comparability(series, cases=None):
+    """Frozen-runtime pair verdicts, derived from ONE authority.
+
+    The semantic classification (same quantity? declared transform? ambiguous basis?)
+    comes from the frozen comparability layer. Whether the pair can actually SHARE an
+    axis, which context that uses, and what is missing all come from representation
+    reachability -- the same materialised representations the overlay draws. The two can
+    therefore never contradict: a pair cannot claim a bridge is missing while an overlay
+    built from that bridge is on screen, because both read the same routes.
+    """
     # a profile without materialised native coordinates cannot be compared as a profile
     prof = [s for s in series.values()
             if s["is_profile"] and s["n_points"]
             and "native" in s["x_representations"] and "native" in s["y_representations"]]
+
+    def canonical_projections(s, ax):
+        """Projections as the canonical layer computed them, read back from the reps."""
+        out = []
+        for r in s["%s_representations" % ax].values():
+            tr = r.get("transform") or {}
+            if tr.get("kind") == "CANONICAL_PROJECTION" and r.get("available"):
+                out.append({"quantity": r.get("quantity"), "unit": r.get("unit"),
+                            "from_normalization": tr.get("from_normalization")})
+        return out
+
     rt = {s["id"]: {"paper_id": s["paper_id"], "result_series_id": s["id"],
                     "data_source": s["data_source"],
                     "x_quantity": s["x"]["x_quantity"], "x_unit": s["x"]["x_unit"],
@@ -533,32 +1189,134 @@ def comparability(series):
                     "points": [list(t) for t in
                                zip(s["x_representations"]["native"]["values"],
                                    s["y_representations"]["native"]["values"])],
-                    "projections": {}, "transformations": []} for s in prof}
+                    # the canonical layer's own projections travel with the record; a
+                    # comparison that pretends they do not exist reports MISSING for a
+                    # transform whose result is already on disk
+                    "projections": {ax: canonical_projections(s, ax)
+                                    for ax in ("x", "y")},
+                    "transformations": []} for s in prof}
+    bcase = {sid: bridge_case(series[sid], cases) for sid in rt}
     pairs, counts = {}, Counter()
     ids = sorted(rt)
+    OK_LEVEL = ("DIRECT_PROFILE", "TRANSFORMABLE_PROFILE")
     for i, a in enumerate(ids):
         for b in ids[i + 1:]:
             ra, rb = rt[a], rt[b]
+            sa, sb = series[a], series[b]
             if ra["y_comparison_group"] != rb["y_comparison_group"] and not \
                     RC.transform_for(ra["y_quantity"], rb["y_quantity"])[0]:
                 continue
             d = RC.compare_result_series(ra, rb)
             ds = RC.compare_result_series(ra, rb, allow_shape_only=True)
-            counts[d["profile_status"]] += 1
+            # A missing_context verdict says the bridge was not found ON THE RESULT. The
+            # series' own Condition Case is evidence for this result too, so it is asked
+            # before the transform is abandoned -- but only for that conditional verdict.
+            # REFUSED / NOT_COMPARABLE state that the comparison is wrong, not underfed,
+            # and no amount of context may promote them.
+            prov = []
+            ca, cb = bcase.get(a), bcase.get(b)
+            if d["profile_status"] == RC.MISSING_CONTEXT and ca and cb:
+                need = sorted(set(d["x"]["missing_context"] + d["y"]["missing_context"]))
+                # each side must supply the bridge from ITS OWN case: one feature height
+                # does not become the other profile's feature height
+                got = [(q, RC.resolve_context(q, case=ca), RC.resolve_context(q, case=cb))
+                       for q in need]
+                if need and all(x["found"] and y["found"] for _, x, y in got):
+                    d2 = RC.compare_result_series(ra, rb, a_case=ca, b_case=cb)
+                    if d2["profile_status"] != RC.MISSING_CONTEXT:
+                        d = d2
+                        ds = RC.compare_result_series(ra, rb, a_case=ca, b_case=cb,
+                                                      allow_shape_only=True)
+                        prov = [{"quantity": q,
+                                 "sources": [{"result_series_id": sid,
+                                              "case_id": c["case_id"],
+                                              "value": r["value"], "unit": r["unit"],
+                                              "source_object": r["source_object"],
+                                              "confidence": r["confidence"]}
+                                             for sid, c, r in ((a, ca, x), (b, cb, y))]}
+                                for q, x, y in got]
             st = d["profile_status"]
+            x_status, x_reason = d["x"]["status"], d["x"]["reason"]
+            y_status, y_reason = d["y"]["status"], d["y"]["reason"]
+            reach = {ax: pair_axis_reachability(sa, sb, ax) for ax in ("x", "y")}
+            reachable = bool(reach["x"]) and bool(reach["y"])
+            # an axis that reaches a shared materialised target is not missing anything:
+            # only the axes with no route contribute to the gap report
+            missing = sorted(
+                set(q for ax in ("x", "y") if not reach[ax]
+                    for q in d[ax]["missing_context"]))
+
+            if st == RC.MISSING_CONTEXT and reachable:
+                # The bridge the frozen layer could not find HAS been found: each side
+                # materialised a representation on a shared target from its own record
+                # or its own Condition Case, and those routes carry the provenance. The
+                # verdict is promoted by that evidence, never by optimism.
+                st = "TRANSFORMABLE_PROFILE"
+                for ax, ax_st, ax_res in (("x", x_status, d["x"]), ("y", y_status, d["y"])):
+                    if ax_res["status"] == RC.MISSING_CONTEXT:
+                        routes = reach[ax][0]
+                        if ax == "x":
+                            x_status = "TRANSFORMABLE_VIA_REPRESENTATION"
+                            x_reason = ("both series materialise the shared target %r; "
+                                        "the pair verdict and the overlay read the same "
+                                        "routes" % routes["target_id"])
+                        else:
+                            y_status = "TRANSFORMABLE_VIA_REPRESENTATION"
+                            y_reason = ("both series materialise the shared target %r; "
+                                        "the pair verdict and the overlay read the same "
+                                        "routes" % routes["target_id"])
+                        for q in list(ax_res["missing_context"]):
+                            srcs = []
+                            for sid, route in ((a, routes["a_route"]),
+                                               (b, routes["b_route"])):
+                                bs = route.get("bridge_source") or {}
+                                pp = route.get("parameter_provenance") or {}
+                                srcs.append({"result_series_id": sid,
+                                             "case_id": bs.get("case_id"),
+                                             "value": bs.get("value",
+                                                             pp.get("value")),
+                                             "unit": bs.get("unit", pp.get("unit")),
+                                             "source_object":
+                                                 bs.get("source_object")
+                                                 or pp.get("source_object")
+                                                 or "materialised representation %s"
+                                                 % route.get("representation_id"),
+                                             "confidence": bs.get("confidence")
+                                             or pp.get("confidence")})
+                            prov.append({"quantity": q, "sources": srcs})
+                missing = []
+            elif st in OK_LEVEL:
+                # what remains missing is only what NO materialised route supplies
+                still = set()
+                for ax in ("x", "y"):
+                    if not reach[ax]:
+                        still |= _unmaterialized_bridges(sa, sb, ax)
+                missing = sorted(still)
+
+            counts[st] += 1
             pairs["%s|%s" % (a, b)] = {
                 "status": st,
                 "shape_only_status": ds["profile_status"],
-                # what the frozen verdict permits on a shared PHYSICAL axis. ambiguous,
-                # missing_context and not-comparable never overlay by default; shape-only
-                # is a separate, explicitly requested mode.
-                "physical_overlay_allowed": st in ("DIRECT_PROFILE",
-                                                   "TRANSFORMABLE_PROFILE"),
+                # One authority: a shared physical axis needs BOTH the semantic verdict
+                # and a materialised common target on each axis. ambiguous and
+                # not-comparable never overlay; shape-only is a separate, explicitly
+                # requested mode.
+                "physical_overlay_allowed": st in OK_LEVEL and reachable,
                 "shape_only_eligible": ds["profile_status"] == "SHAPE_ONLY_PROFILE",
                 "cross_paper": d["cross_paper"],
-                "x_status": d["x"]["status"], "x_reason": d["x"]["reason"],
-                "y_status": d["y"]["status"], "y_reason": d["y"]["reason"],
-                "missing": sorted(set(d["x"]["missing_context"] + d["y"]["missing_context"])),
+                "x_status": x_status, "x_reason": x_reason,
+                "y_status": y_status, "y_reason": y_reason,
+                "missing": missing,
+                # the shared targets and per-side routes the overlay itself would use
+                "overlay_targets": {
+                    ax: [{"target_id": r["target_id"],
+                          "a_route": r["a_route"], "b_route": r["b_route"]}
+                         for r in reach[ax]] for ax in ("x", "y")},
+                # which Case supplied which bridge, per side
+                "context_provenance": prov,
+                "verdict_authority": ("frozen axis semantics + representation "
+                                      "reachability; overlay and explanation read "
+                                      "this same record"),
             }
     return pairs, counts
 
@@ -635,11 +1393,24 @@ def _num(v):
     return None
 
 
-def condition_field_id(quantity, species):
+def condition_field_id(quantity, species, step_context=None, activation=None):
     """The identity of a numeric condition. A TMA pulse and an H2O pulse are two
     quantities, not one quantity written twice, and the frozen condition layer already
     says so -- this only has to avoid throwing the qualifier away again."""
-    return "%s@%s" % (quantity, species) if species else str(quantity)
+    base = "%s@%s" % (quantity, species) if species else str(quantity)
+    # the half-cycle is part of the identity: without it a precursor purge and a reactant
+    # purge share one field and one range filter answers for both
+    if step_context:
+        base = "%s#%s" % (base, step_context)
+    # so is the activation: a 2 s thermal O2 exposure and a 2 s O2 plasma exposure are the
+    # same number describing two different processes. Only a stated non-default activation
+    # qualifies, so a thermal corpus keeps the field ids it already had.
+    # An explicitly THERMAL step is also distinct from one whose activation nobody
+    # stated: "run without a plasma" and "not said" are different records, and collapsing
+    # them lets an unstated step answer a filter that asked for thermal.
+    if activation:
+        base = "%s~%s" % (base, activation)
+    return base
 
 
 def numeric_conditions(cases):
@@ -664,9 +1435,11 @@ def numeric_conditions(cases):
                     norm = float(n) * fu.factor + fu.offset
             except Exception:
                 norm = None
-            vals.setdefault(condition_field_id(x["quantity"], sp), []).append(
+            step, act = x.get("step_context"), x.get("activation")
+            vals.setdefault(condition_field_id(x["quantity"], sp, step, act), []).append(
                 {"raw": n, "unit": x.get("unit"), "canonical": norm,
-                 "quantity": x["quantity"], "species": sp})
+                 "quantity": x["quantity"], "species": sp, "step_context": step,
+                 "activation": act})
         out[cid] = vals
     return out
 
@@ -677,10 +1450,15 @@ def numeric_conditions(cases):
 _RANGE_MIN_CASES = 10
 
 
-def _label(quantity, species):
+def _label(quantity, species, step_context=None, activation=None):
     """'pulse_time', 'TMA' -> 'TMA pulse time'. The species leads because that is what
-    distinguishes it from its siblings."""
+    distinguishes it from its siblings; the ALD step leads over both, because it is what
+    makes two identical durations different experiments."""
     words = str(quantity).replace("_", " ")
+    if step_context:
+        words = "%s (%s)" % (words, str(step_context).replace("_", " "))
+    if activation and activation != PS.ACTIVATION_NONE:
+        words = "%s, %s" % (words, activation)
     if species:
         return "%s %s" % (species, words)
     return words[:1].upper() + words[1:]
@@ -701,7 +1479,8 @@ def range_fields(numeric):
         for fid, entries in fields.items():
             cov[fid] += 1
             for e in entries:
-                meta.setdefault(fid, (e.get("quantity"), e.get("species")))
+                meta.setdefault(fid, (e.get("quantity"), e.get("species"),
+                                      e.get("step_context"), e.get("activation")))
                 if e.get("unit"):
                     units[fid].add(e["unit"])
                 if e.get("canonical") is not None:
@@ -714,7 +1493,7 @@ def range_fields(numeric):
 
     out, dropped = [], []
     for fid in sorted(scope, key=lambda f: (-cov[f], f)):
-        quantity, species = meta[fid]
+        quantity, species, step, activation = meta[fid]
         bases = set()
         for u in units[fid]:
             try:
@@ -725,9 +1504,10 @@ def range_fields(numeric):
             dropped.append({"field_id": fid, "reason": "no single canonical dimension"})
             continue
         out.append({"id": fid, "field_id": fid, "quantity_id": quantity,
-                    "species_or_role": species,
-                    "label": _label(quantity, species),
-                    "display_label": _label(quantity, species),
+                    "species_or_role": species, "step_context": step,
+                    "activation": activation,
+                    "label": _label(quantity, species, step, activation),
+                    "display_label": _label(quantity, species, step, activation),
                     "canonical_unit": bases.pop(), "cases_covered": cov[fid],
                     "raw_units": sorted(units[fid]),
                     "comparison_basis": "canonical magnitude"})
@@ -927,14 +1707,37 @@ RESOLUTION_METHOD = "X_VALUE_MATCH_TO_CASE_CONDITION"
 DERIVED_STATUS = "DERIVED_FOR_WORKBENCH"
 
 
-def _same_quantity_identity(cond, quantity, species):
+def _same_quantity_identity(cond, quantity, species, axis_step=None):
     """Does a case condition denote the same quantity as the series axis?
 
     Species is part of the identity where it is recorded: a TMA pulse and an H2O pulse
     are different quantities however equal their numbers. MISSING is not SAME, so a bare
     axis does not match a qualified condition and vice versa -- the axis simply does not
     say which reagent it means, and reading one in would be the assertion, not the record.
+
+    A STEP-RESOLVED condition is the exception, and not a weakening of that rule. Its
+    position in the cycle was read from this same printed axis, and its reagent follows
+    from that position rather than from any wording on the axis -- so the species is not
+    an independent qualifier that the axis fails to state. What must agree instead is the
+    step: an axis the source calls a plasma exposure matches the reactant exposure and
+    nothing else. Where the axis names no step, only the timing quantity is compared and
+    a case carrying two candidate steps is left to the ambiguity gate.
     """
+    cstep = cond.get("step_context")
+    if cstep:
+        # SIDE compatibility is the screen here, not the whole identity. A step-resolved
+        # condition is stored under its role-specialised name while the axis prints
+        # whatever its own layer chose, so the raw spellings cannot be compared -- but a
+        # purge can never bind an exposure-side axis, and the step must agree where the
+        # axis states one. The pulse/exposure FAMILY comparison is deliberately not
+        # done here: it needs the axis label and the case's other timing conditions,
+        # and lives in `_timing_identity_basis`, the one place that decides whether a
+        # side-compatible pair is actually the same physical quantity.
+        cq = PS.timing_side(cond.get("quantity"))
+        aq = PS.timing_side(quantity)
+        if not cq or cq != aq:
+            return False
+        return axis_step is None or axis_step == cstep
     if cond.get("quantity") != quantity:
         return False
     return (cond.get("species") or None) == (species or None)
@@ -1058,14 +1861,73 @@ def source_x_points(s, contract):
     return out
 
 
-def resolve_points_to_cases(points, x_unit, x_quantity, x_species, case_ids, cases):
+def axis_timing_family(quantity, label):
+    """The pulse/exposure/purge family the AXIS establishes, or None when unresolved.
+
+    Two records describe one printed axis: the label the source drew and the quantity a
+    layer assigned to it. The printed label is the primary record, so where it names a
+    timing kind, its family decides -- and a dose-worded label decides that the family
+    is UNRESOLVED, because "dose" commits to neither pulse nor exposure. Where label
+    and assigned quantity name two different resolved families, the axis is contested
+    and the family is likewise unresolved (the disagreement is surfaced on the series).
+    Only a label that names no timing kind leaves the assigned quantity to speak alone.
+    """
+    lk = PS.timing_family_from_label(label)
+    qf = PS.timing_family_resolved(quantity)
+    if lk is not None:
+        lf = PS.timing_family_resolved(lk)
+        if lf and qf and lf != qf:
+            return None                       # contested between the axis' own records
+        return lf                             # None for a dose-worded label: unresolved
+    return qf
+
+
+def _timing_identity_basis(cond, x_quantity, axis_family, case_conds, species,
+                           axis_step):
+    """How a case condition is the SAME quantity as the axis, or None to refuse.
+
+    "Same precursor half-cycle" is never sufficient on its own: precursor_pulse_time
+    and precursor_exposure_time coexist on one side as different physical conditions.
+    The rule, in order:
+
+      * side / step / species compatibility must hold (`_same_quantity_identity`);
+      * where the timing FAMILY is resolved on both sides, the families must match;
+      * where a family is genuinely unresolved on either side, the side identification
+        is accepted only when the case offers no COMPETING timing kind for that
+        side/step/species -- two candidate kinds make the attribution ambiguous, and
+        ambiguity refuses rather than picks;
+      * a non-timing or step-less condition keeps the exact-identity rule.
+    """
+    if not _same_quantity_identity(cond, x_quantity, species, axis_step):
+        return None
+    if not cond.get("step_context") or PS.timing_side(cond.get("quantity")) is None:
+        return "exact quantity identity"
+    cf = PS.timing_family_resolved(cond.get("quantity"))
+    if axis_family and cf:
+        return "timing family identity" if axis_family == cf else None
+    kinds = {PS.timing_kind(c.get("quantity"))
+             for c in (case_conds or [])
+             if c.get("step_context")
+             and _same_quantity_identity(c, x_quantity, species, axis_step)}
+    if len(kinds) > 1:
+        return None
+    return ("cycle-side identity: the timing family is unresolved on one side and the "
+            "case states exactly one timing kind for this side of the cycle")
+
+
+def resolve_points_to_cases(points, x_unit, x_quantity, x_species, case_ids, cases,
+                            axis_step=None, x_label=None):
     """One link per SOURCE point, or an explicit refusal.
 
     A point is resolved only when EXACTLY ONE associated Condition Case carries a
     condition of the same quantity identity whose canonical magnitude equals the point's.
     Two candidates is ambiguity, and ambiguity is reported, never broken by ordering.
     A point whose source index is not established is never reported as resolved.
+    Quantity identity for timings follows `_timing_identity_basis`: matched families
+    where both are resolved, an unambiguous side identification where one is not, and
+    refusal everywhere else. The basis used is recorded on every resolved link.
     """
+    axis_family = axis_timing_family(x_quantity, x_label)
     links = []
     for pt in points:
         i = pt["source_point_index"]
@@ -1096,14 +1958,17 @@ def resolve_points_to_cases(points, x_unit, x_quantity, x_species, case_ids, cas
             continue
         cands, saw_condition = [], False
         for cid in case_ids:
-            for cond in (cases.get(cid) or {}).get("conditions") or []:
-                if not _same_quantity_identity(cond, x_quantity, x_species):
+            conds = (cases.get(cid) or {}).get("conditions") or []
+            for cond in conds:
+                basis = _timing_identity_basis(cond, x_quantity, axis_family, conds,
+                                               x_species, axis_step)
+                if basis is None:
                     continue
                 saw_condition = True
                 cm = CQ.normalized_value(cond)
                 if cm is None or cm[0] != pm[0] or cm[1] != pm[1]:
                     continue
-                cands.append((cid, cond, cm))
+                cands.append((cid, cond, cm, basis))
         base = {"point_index": i, "point_x_value": xv, "point_x_unit": unit,
                 "source_point_index": i, "point_identity_status": ident,
                 "matched_quantity": x_quantity, "matched_species_or_role": x_species,
@@ -1111,17 +1976,18 @@ def resolve_points_to_cases(points, x_unit, x_quantity, x_species, case_ids, cas
                 "evidence_source": "series canonical x value vs Condition Case condition, "
                                    "compared through the frozen condition semantics"}
         if len(cands) == 1:
-            cid, cond, cm = cands[0]
+            cid, cond, cm, basis = cands[0]
             converted = str(cond.get("unit") or "") != str(unit or "")
             links.append(dict(base, case_id=cid, resolution_status=POINT_RESOLVED,
                               evidence=EV_CONVERTED if converted else EV_EXACT,
+                              identity_basis=basis,
                               case_condition_value=cond.get("value"),
                               case_condition_unit=cond.get("unit"),
                               canonical_value=cm[1], canonical_dimension=cm[0]))
         elif len(cands) > 1:
             links.append(dict(base, case_id=None,
                               resolution_status=POINT_AMBIGUOUS, evidence=EV_AMBIGUOUS,
-                              candidate_case_ids=sorted({c for c, _, _ in cands})))
+                              candidate_case_ids=sorted({c for c, _, _, _ in cands})))
         else:
             links.append(dict(base, case_id=None, resolution_status=POINT_NO_MATCH,
                               evidence=EV_NO_VALUE if saw_condition else EV_NO_CONDITION))
@@ -1201,8 +2067,13 @@ def point_case_links(series, cases):
         xc = s.get("x_canonical") or {}
         contract = point_index_contract(s)
         pts = source_x_points(s, contract)
+        # the printed axis label is the source's own statement of which half-cycle it
+        # timed, so it is what a step-resolved condition has to agree with
+        axis_step, _ = PS.classify_step(s["x"].get("x_label"))
         links = resolve_points_to_cases(pts, xc.get("unit"), xc.get("quantity"),
-                                        s["x"].get("x_species"), s["all_case_ids"], cases)
+                                        s["x"].get("x_species"), s["all_case_ids"], cases,
+                                        axis_step=axis_step,
+                                        x_label=s["x"].get("x_label"))
         by_i = {p["source_point_index"]: p for p in pts}
         for l in links:
             j = l.get("source_point_index")
@@ -1292,7 +2163,14 @@ def presentation(cases, acts, series):
 
 def main():
     cases, acts, series, samples, runs, measurements, excluded = build()
-    pairs, counts = comparability(series)
+    n_bridged, n_bridge_refused = bridged_representations(series, cases)
+    print("bridged representations   %d built, %d refused on units" % (n_bridged,
+                                                                       n_bridge_refused))
+    n_alt = same_measurement_alternates(series, acts)
+    print("same-measurement alternate links  %d" % n_alt)
+    for c in cases.values():
+        c["resolved_facts"] = case_facts(c)
+    pairs, counts = comparability(series, cases)
     sweeps, nocase = presentation(cases, acts, series)
     seq_audit = sequence_audit(cases)
     pclinks = point_case_links(series, cases)
@@ -1567,7 +2445,8 @@ def validate(m, counts):
     def reps_by_target(sid, axis):
         return {r["target_id"]: r
                 for r in series[sid][axis + "_representations"].values()
-                if r.get("available") and r.get("values")}
+                if r.get("available") and r.get("values") and r.get("target_id")
+                and r.get("overlay_authorized") is not False}
 
     def offered_targets(group, axis):
         """Exactly what commonTargets() offers for this selection."""
@@ -1626,6 +2505,103 @@ def validate(m, counts):
     c["key_based_false_common_targets"] = key_based_false_common
     c["incompatible_plotted_pair_violations"] = incompat
     c["pairs_offered_a_physical_overlay"] = pairs_offered_overlay
+
+    # ---- ONE semantic authority for overlay and comparability -----------------------
+    # A pair record now carries the shared targets and routes the overlay itself uses.
+    # Three things must hold exhaustively: authorisation equals reachability at ok-level
+    # status; a bridge an overlay route uses is never simultaneously reported missing;
+    # and a pair claiming missing context reaches no shared target on the blocked axes.
+    OKL = ("DIRECT_PROFILE", "TRANSFORMABLE_PROFILE")
+    auth_mismatch = missing_used = missing_but_reachable = 0
+    for key, p in pairs.items():
+        a, b = key.split("|")
+        ov = p.get("overlay_targets") or {}
+        reach = bool(ov.get("x")) and bool(ov.get("y"))
+        if p.get("physical_overlay_allowed") != (p["status"] in OKL and reach):
+            auth_mismatch += 1
+        used_bridges = {r for ax in ("x", "y") for t in (ov.get(ax) or [])
+                        for r in [(t.get("a_route") or {}).get("bridge"),
+                                  (t.get("b_route") or {}).get("bridge")] if r}
+        if used_bridges & set(p.get("missing") or []):
+            missing_used += 1
+        if p["status"] == "missing_context" and reach:
+            missing_but_reachable += 1
+    c["overlay_authority_mismatches"] = auth_mismatch
+    c["missing_bridge_used_by_overlay"] = missing_used
+    c["missing_context_pairs_actually_reachable"] = missing_but_reachable
+    inv["overlay_and_comparability_share_one_authority"] = (
+        auth_mismatch == 0 and missing_used == 0 and missing_but_reachable == 0)
+
+    # ---- one fingerprint dimension per physical timing slot --------------------------
+    dup_slots = []
+    for cid, cc in cases.items():
+        seen_slots = defaultdict(list)
+        for x in cc.get("conditions") or []:
+            # a record the fold kept VISIBLE as a value conflict is deliberate: hiding a
+            # contradiction is worse than a duplicated dimension, so it does not fail
+            # the invariant -- it is counted and reported instead
+            if x.get("same_slot_conflict"):
+                continue
+            slot = PS.timing_slot(x.get("quantity"), x.get("step_context"),
+                                  x.get("species"))
+            if slot:
+                seen_slots[slot].append(x.get("quantity"))
+        for slot, qs in seen_slots.items():
+            if len(qs) > 1:
+                dup_slots.append({"case": cid, "slot": list(slot), "quantities": qs})
+    c["cases_with_duplicated_timing_slots"] = len({d["case"] for d in dup_slots})
+    c["visible_timing_slot_conflicts"] = sum(
+        1 for cc in cases.values() for x in cc.get("conditions") or []
+        if x.get("same_slot_conflict"))
+    inv["no_duplicated_timing_slot_dimensions"] = not dup_slots
+
+    # ---- known context never rendered unknown ----------------------------------------
+    chem_gaps = 0
+    for cid, cc in cases.items():
+        facts = cc.get("resolved_facts") or {}
+        for role in ("precursor", "coreactant"):
+            if (cc.get("chemistry") or {}).get(role) and not facts.get(role):
+                chem_gaps += 1
+    c["resolved_chemistry_missing_from_facts"] = chem_gaps
+    inv["known_chemistry_reaches_case_facts"] = chem_gaps == 0
+
+    # surfaced-not-hidden: axes whose extracted timing family contradicts their own
+    # printed label. A count, not an invariant -- the defect is upstream and the record
+    # is kept verbatim with the disagreement visible.
+    c["axis_label_family_discrepancies"] = sum(
+        len(s2.get("axis_family_discrepancies") or []) for s2 in series.values())
+
+    # ---- X reachability is independent of Y, and vice versa --------------------------
+    # A series whose one axis failed to canonicalise must still carry every
+    # representation its OTHER axis earned. Checked structurally: for every series with
+    # an unresolved y measurand but a resolved x native, the x axis must offer at least
+    # as many representation kinds as display-only -- i.e. the x options must not
+    # collapse to the bare native pair when transforms/projections were declared for its
+    # quantity family.
+    starved = 0
+    for s2 in series.values():
+        if s2["y_resolution"] == "FULLY_RESOLVED":
+            continue
+        xn = s2["x_representations"].get("native")
+        if not xn or not xn.get("values"):
+            continue
+        declared = [t for t in RC.TRANSFORMS
+                    if t.get("to") == xn.get("quantity")
+                    and t.get("op") == "divide"
+                    and any(n for n, dd in RC.NORMALIZATIONS.items()
+                            if dd.get("denominator") == t.get("bridge")
+                            and n == xn.get("normalization"))]
+        has_physical = any(r.get("available") and r.get("transform")
+                           for r in s2["x_representations"].values())
+        if declared and not has_physical:
+            # only a genuine bridge gap excuses the absence; an unambiguous single-case
+            # bridge that resolved should have materialised
+            bc = bridge_case(s2, cases)
+            if bc and any(RC.resolve_context(t["bridge"], case=bc).get("found")
+                          for t in declared):
+                starved += 1
+    c["x_transforms_lost_to_unresolved_y"] = starved
+    inv["axis_reachability_is_independent"] = starved == 0
 
     # 3+ series: exhaustive over every trio the model could put on one target, not a
     # single hand-picked example
@@ -1692,7 +2668,8 @@ def validate(m, counts):
     # carry -- i.e. if something stripped it on the way through
     losing = 0
     for f in rfields:
-        want = condition_field_id(f["quantity_id"], f.get("species_or_role"))
+        want = condition_field_id(f["quantity_id"], f.get("species_or_role"),
+                                  f.get("step_context"), f.get("activation"))
         if f["field_id"] != want:
             losing += 1
             continue
