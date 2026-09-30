@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Docling parse: corpus/raw/<paper_id>.pdf -> corpus/docling/<paper_id>/. No LLM.
 
-    ~/miniconda3/envs/psed310/bin/python psed_v2/corpus/docling_parse.py <paper_id> [...]
-    ~/miniconda3/envs/psed310/bin/python psed_v2/corpus/docling_parse.py --all
+    ~/miniconda3/envs/psed310/bin/python psed_v2/corpus/parse_docling.py <paper_id> [...]
+    ~/miniconda3/envs/psed310/bin/python psed_v2/corpus/parse_docling.py --all
 
 Writes, per paper:
 
@@ -28,10 +28,6 @@ HERE = Path(__file__).resolve().parent
 MANIFEST = HERE / "manifest.csv"
 RAW = HERE / "raw"
 OUT = HERE / "docling"
-
-# This file's name equals Docling's own `docling_parse` package; drop this folder from the
-# import path so `import docling` finds the package, not this script.
-sys.path[:] = [p for p in sys.path if Path(p or ".").resolve() != HERE]
 
 
 def _converter(force_ocr=False):
@@ -154,7 +150,7 @@ def main(argv):
     else:
         missing = [a for a in argv if a not in by_id]
         if missing or not argv:
-            sys.exit(f"usage: docling_parse.py <paper_id> [...] | --all  (unknown: {missing})")
+            sys.exit(f"usage: parse_docling.py <paper_id> [...] | --all  (unknown: {missing})")
         todo = [by_id[a] for a in argv]
     for r in todo:
         pid = r["paper_id"]
