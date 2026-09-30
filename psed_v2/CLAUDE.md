@@ -30,6 +30,21 @@ psed_v2/
 - **`PSED_v2_Plan.md` is edited only by the user, outside Claude Code.** Never modify it.
   Read it for context; commit and push it only when the user asks.
 
+### Working rules for Claude Code
+
+These rules go into `CLAUDE.md` so that every session starts from them.
+
+- Simplest solution first.
+- PDFs, full text, and figure crops live outside git.
+- One unit of work has one goal and one commit. The done criterion is written in one line before starting.
+- Tests are the gold score plus about 10 invariants taken from v1 failure cases. No tests that pin counts.
+- Before any LLM call, state the expected number of calls. Results are cached.
+- The corpus is re-run once, at the end of a phase. Generated outputs are committed separately from code.
+- Earlier commits, old reports, and v1 diagnostics are not re-audited.
+- An investigation that reaches no conclusion in 20 minutes ends with two options and a question.
+- A report back is 15 lines or fewer: what changed, how the score moved, what is left.
+- Each unit starts a new session; `CLAUDE.md` supplies the context.
+
 ## Stage 0 workflow
 
 ```
