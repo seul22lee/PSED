@@ -2,22 +2,30 @@
 """Stage 0 of psed_v2: resolve open-access PDFs for the corpus manifest and download them.
 
 Usage
-    python3 fetch_pdfs.py --lookup      # OpenAlex lookup only; fills oa_* / pdf_url columns
+    python3 fetch_pdfs.py --lookup      # OpenAlex lookup only; fills oa_* / pdf_url and title/authors/journal
+    python3 fetch_pdfs.py --metadata    # OpenAlex lookup of title/authors/journal only; leaves OA columns alone
     python3 fetch_pdfs.py --download    # download rows that have a pdf_url and no file in raw/
-    python3 fetch_pdfs.py               # both, in that order
+    python3 fetch_pdfs.py               # lookup + download, in that order
 
 Manifest columns written by this script
+    title, authors, journal
+                OpenAlex title, authorships (display names joined by "; "), primary_location source
     oa_status   OpenAlex open_access.oa_status (gold/green/hybrid/bronze/diamond/closed),
                 or not_found when the DOI is unknown to OpenAlex
     license     best_oa_location.license (may be empty even when a PDF is available)
     oa_version  best_oa_location.version (publishedVersion / acceptedVersion / submittedVersion)
-    pdf_url     best_oa_location.pdf_url
+    pdf_url     best_oa_location.pdf_url (or the alternate location that actually worked)
     pdf_status  ok          raw/<paper_id>.pdf exists and starts with %PDF
                 manual      no pdf_url, or the download did not yield a PDF; fetch by hand
                 missing_doi the manifest row has no DOI
                 (blank)     pdf_url known, download not attempted yet
+    pdf_source  where the file in raw/ came from:
+                openalex      best_oa_location.pdf_url, downloaded by this script
+                openalex_alt  another OpenAlex `locations` entry (one-off pass, 2026-09-30)
+                v1_copy       copied from the pre-purge psed_v1 checkout (one-off pass, 2026-09-30)
+                (blank)       not collected
 
-raw/<paper_id>.pdf is gitignored: paper_id is the DOI with "/" -> "_", lowercased.
+raw/<paper_id>.pdf (next to this script) is gitignored: paper_id is the DOI with "/" -> "_", lowercased.
 Set OPENALEX_MAILTO to join the OpenAlex polite pool (optional).
 """
 from __future__ import annotations
@@ -27,6 +35,7 @@ import csv
 import os
 import sys
 import time
+from collections import Counter
 from pathlib import Path
 
 import requests
@@ -34,7 +43,7 @@ import requests
 HERE = Path(__file__).resolve().parent
 MANIFEST = HERE / "manifest.csv"
 MANUAL_LIST = HERE / "manual_list.csv"
-RAW = HERE.parent / "raw"
+RAW = HERE / "raw"
 
 OPENALEX = "https://api.openalex.org/works"
 BATCH = 50
@@ -43,7 +52,8 @@ RETRIES = 4
 TIMEOUT = 60
 UA = "PSED-research (mailto:seullee2029@u.northwestern.edu)"
 
-NEW_COLS = ["oa_status", "license", "oa_version", "pdf_url", "pdf_status"]
+NEW_COLS = ["oa_status", "license", "oa_version", "pdf_url", "pdf_status",
+            "title", "authors", "journal", "pdf_source"]
 
 
 # ----------------------------------------------------------------------------- manifest io
@@ -96,6 +106,12 @@ def is_pdf(path: Path) -> bool:
 
 # ----------------------------------------------------------------------------- http helpers
 
+def make_session() -> requests.Session:
+    session = requests.Session()
+    session.headers["User-Agent"] = UA
+    return session
+
+
 def get_with_retry(session: requests.Session, url: str, **kw) -> requests.Response | None:
     """GET with backoff on 429 and 5xx. Returns None when every attempt fails."""
     for attempt in range(RETRIES):
@@ -116,7 +132,7 @@ def get_with_retry(session: requests.Session, url: str, **kw) -> requests.Respon
     return None
 
 
-# ----------------------------------------------------------------------------- lookup
+# ----------------------------------------------------------------------------- openalex
 
 def normalise_doi(doi: str) -> str:
     doi = doi.strip().lower()
@@ -126,55 +142,92 @@ def normalise_doi(doi: str) -> str:
     return doi
 
 
-def lookup(rows: list[dict], fields: list[str]) -> None:
-    session = requests.Session()
-    session.headers["User-Agent"] = UA
-    params_base = {"per-page": BATCH, "select": "doi,open_access,best_oa_location"}
+def openalex_works(session: requests.Session, rows: list[dict], select: str) -> dict[str, dict]:
+    """Query OpenAlex for the rows' DOIs in batches of BATCH. Returns {normalised doi: work}."""
+    params_base = {"per-page": BATCH, "select": select}
     mailto = os.environ.get("OPENALEX_MAILTO")
     if mailto:
         params_base["mailto"] = mailto
+    found: dict[str, dict] = {}
+    n_batches = (len(rows) + BATCH - 1) // BATCH
+    for i in range(0, len(rows), BATCH):
+        chunk = rows[i:i + BATCH]
+        params = dict(params_base, filter="doi:" + "|".join(r["doi"] for r in chunk))
+        resp = get_with_retry(session, OPENALEX, params=params)
+        if resp is None or resp.status_code != 200:
+            code = resp.status_code if resp is not None else "no response"
+            print(f"  batch {i // BATCH + 1}: OpenAlex failed ({code}); rows left untouched", file=sys.stderr)
+            continue
+        results = resp.json().get("results", [])
+        for work in results:
+            if work.get("doi"):
+                found[normalise_doi(work["doi"])] = work
+        print(f"  batch {i // BATCH + 1}/{n_batches}: {len(chunk)} queried, {len(results)} returned")
+        time.sleep(0.2)
+    return found
 
+
+def apply_metadata(row: dict, work: dict) -> None:
+    row["title"] = (work.get("title") or "").strip()
+    row["authors"] = "; ".join(
+        (a.get("author") or {}).get("display_name") or "" for a in work.get("authorships") or []
+    ).strip("; ")
+    loc = work.get("primary_location") or {}
+    source = loc.get("source") or {}
+    row["journal"] = source.get("display_name") or loc.get("raw_source_name") or ""
+
+
+def apply_oa(row: dict, work: dict) -> None:
+    oa = work.get("open_access") or {}
+    best = work.get("best_oa_location") or {}
+    row["oa_status"] = oa.get("oa_status") or ""
+    row["license"] = best.get("license") or ""
+    row["oa_version"] = best.get("version") or ""
+    row["pdf_url"] = best.get("pdf_url") or ""
+
+
+def lookup(rows: list[dict], fields: list[str]) -> None:
+    session = make_session()
     with_doi = [r for r in rows if r["doi"]]
     for r in rows:
         if not r["doi"]:
             r["pdf_status"] = "missing_doi"
 
-    found: dict[str, dict] = {}
-    for i in range(0, len(with_doi), BATCH):
-        chunk = with_doi[i:i + BATCH]
-        params = dict(params_base, filter="doi:" + "|".join(r["doi"] for r in chunk))
-        resp = get_with_retry(session, OPENALEX, params=params)
-        if resp is None or resp.status_code != 200:
-            code = resp.status_code if resp is not None else "no response"
-            print(f"  batch {i // BATCH + 1}: OpenAlex failed ({code}); leaving rows untouched", file=sys.stderr)
-            continue
-        for work in resp.json().get("results", []):
-            if work.get("doi"):
-                found[normalise_doi(work["doi"])] = work
-        print(f"  batch {i // BATCH + 1}/{(len(with_doi) + BATCH - 1) // BATCH}: "
-              f"{len(chunk)} queried, {len(resp.json().get('results', []))} returned")
-        time.sleep(0.2)
-
+    found = openalex_works(session, with_doi,
+                           "doi,title,authorships,primary_location,open_access,best_oa_location")
     for r in with_doi:
         work = found.get(normalise_doi(r["doi"]))
+        collected = is_pdf(pdf_path(r))
         if work is None:
             r["oa_status"] = "not_found"
-            r["license"] = r["oa_version"] = r["pdf_url"] = ""
+            if not collected:
+                r["license"] = r["oa_version"] = r["pdf_url"] = ""
         else:
-            oa = work.get("open_access") or {}
-            best = work.get("best_oa_location") or {}
-            r["oa_status"] = oa.get("oa_status") or ""
-            r["license"] = best.get("license") or ""
-            r["oa_version"] = best.get("version") or ""
-            r["pdf_url"] = best.get("pdf_url") or ""
-        # status: keep an existing ok only if the file is really there
-        if is_pdf(pdf_path(r)):
+            apply_metadata(r, work)
+            if not collected:  # keep the url/license that actually produced the file
+                apply_oa(r, work)
+            else:
+                r["oa_status"] = (work.get("open_access") or {}).get("oa_status") or ""
+        if collected:
             r["pdf_status"] = "ok"
         elif not r["pdf_url"]:
             r["pdf_status"] = "manual"
         else:
             r["pdf_status"] = ""  # pending download
+    write_manifest(rows, fields)
 
+
+def metadata(rows: list[dict], fields: list[str]) -> None:
+    session = make_session()
+    with_doi = [r for r in rows if r["doi"]]
+    found = openalex_works(session, with_doi, "doi,title,authorships,primary_location")
+    n = 0
+    for r in with_doi:
+        work = found.get(normalise_doi(r["doi"]))
+        if work is not None:
+            apply_metadata(r, work)
+            n += 1
+    print(f"  metadata filled for {n}/{len(with_doi)} rows with DOI")
     write_manifest(rows, fields)
 
 
@@ -182,8 +235,7 @@ def lookup(rows: list[dict], fields: list[str]) -> None:
 
 def download(rows: list[dict], fields: list[str]) -> None:
     RAW.mkdir(parents=True, exist_ok=True)
-    session = requests.Session()
-    session.headers["User-Agent"] = UA
+    session = make_session()
     session.headers["Accept"] = "application/pdf,*/*;q=0.8"
 
     todo = [r for r in rows if r["doi"] and r["pdf_url"] and r["pdf_status"] != "ok"]
@@ -218,6 +270,8 @@ def download(rows: list[dict], fields: list[str]) -> None:
         elif resp is not None:
             resp.close()
         r["pdf_status"] = "ok" if ok else "manual"
+        if ok:
+            r["pdf_source"] = "openalex"
         code = resp.status_code if resp is not None else "no response"
         print(f"  [{n}/{len(todo)}] {r['paper_id']}: {'ok' if ok else f'manual ({code})'}")
         if n % 25 == 0:
@@ -229,37 +283,39 @@ def download(rows: list[dict], fields: list[str]) -> None:
 # ----------------------------------------------------------------------------- report
 
 def report(rows: list[dict]) -> None:
-    from collections import Counter
-
     def show(title: str, counter: Counter) -> None:
         print(f"\n{title}")
         for k, v in sorted(counter.items(), key=lambda kv: -kv[1]):
             print(f"  {k or '(blank)':<22} {v}")
 
     show("pdf_status", Counter(r["pdf_status"] for r in rows))
+    show("pdf_source", Counter(r["pdf_source"] for r in rows))
     show("oa_status", Counter(r["oa_status"] for r in rows))
     show("license", Counter(r["license"] for r in rows))
     show("oa_version", Counter(r["oa_version"] for r in rows))
     n_manual = write_manual_list(rows)
-    size = sum(p.stat().st_size for p in RAW.glob("*.pdf")) if RAW.exists() else 0
-    n_pdf = len(list(RAW.glob("*.pdf"))) if RAW.exists() else 0
-    print(f"\nraw/: {n_pdf} files, {size / 1e6:.1f} MB")
+    pdfs = list(RAW.glob("*.pdf")) if RAW.exists() else []
+    size = sum(p.stat().st_size for p in pdfs)
+    print(f"\nraw/: {len(pdfs)} files, {size / 1e6:.1f} MB")
     print(f"manual list ({n_manual} rows): {MANUAL_LIST.relative_to(HERE.parent.parent)}")
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--lookup", action="store_true", help="OpenAlex lookup only")
+    ap.add_argument("--lookup", action="store_true", help="OpenAlex lookup only (OA columns + metadata)")
+    ap.add_argument("--metadata", action="store_true", help="OpenAlex title/authors/journal only")
     ap.add_argument("--download", action="store_true", help="download only (needs a prior lookup)")
     args = ap.parse_args()
-    do_lookup = args.lookup or not args.download
-    do_download = args.download or not args.lookup
+    explicit = args.lookup or args.metadata or args.download
 
     rows, fields = read_manifest()
-    if do_lookup:
+    if args.lookup or not explicit:
         print(f"lookup: {len(rows)} rows")
         lookup(rows, fields)
-    if do_download:
+    if args.metadata:
+        print(f"metadata: {len(rows)} rows")
+        metadata(rows, fields)
+    if args.download or not explicit:
         print("download")
         download(rows, fields)
     report(rows)
