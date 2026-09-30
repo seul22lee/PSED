@@ -6,10 +6,13 @@ Usage
     python3 fetch_pdfs.py --metadata    # OpenAlex lookup of title/authors/journal only; leaves OA columns alone
     python3 fetch_pdfs.py --download    # download rows that have a pdf_url and no file in raw/
     python3 fetch_pdfs.py               # lookup + download, in that order
+    add --new to any of the above to act only on rows never looked up (blank oa_status),
+    e.g. rows just appended to the manifest; earlier failed downloads are not retried
 
 Manifest columns written by this script
     title, authors, journal
                 OpenAlex title, authorships (display names joined by "; "), primary_location source
+    year        OpenAlex publication_year, only when the manifest year is blank
     oa_status   OpenAlex open_access.oa_status (gold/green/hybrid/bronze/diamond/closed),
                 or not_found when the DOI is unknown to OpenAlex
     license     best_oa_location.license (may be empty even when a PDF is available)
@@ -83,7 +86,7 @@ def write_manifest(rows: list[dict], fields: list[str]) -> None:
 
 
 def write_manual_list(rows: list[dict]) -> int:
-    keep = ["ref_no", "paper_id", "doi", "year", "citation", "oa_status", "pdf_url", "pdf_status"]
+    keep = ["popov_ref", "cremers_ref", "source", "paper_id", "doi", "year", "citation", "oa_status", "pdf_url", "pdf_status"]
     manual = [r for r in rows if r["pdf_status"] in ("manual", "missing_doi")]
     with MANUAL_LIST.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=keep, extrasaction="ignore")
@@ -175,6 +178,8 @@ def apply_metadata(row: dict, work: dict) -> None:
     loc = work.get("primary_location") or {}
     source = loc.get("source") or {}
     row["journal"] = source.get("display_name") or loc.get("raw_source_name") or ""
+    if not row.get("year") and work.get("publication_year"):
+        row["year"] = str(work["publication_year"])
 
 
 def apply_oa(row: dict, work: dict) -> None:
@@ -186,15 +191,16 @@ def apply_oa(row: dict, work: dict) -> None:
     row["pdf_url"] = best.get("pdf_url") or ""
 
 
-def lookup(rows: list[dict], fields: list[str]) -> None:
+def lookup(rows: list[dict], fields: list[str], scope: list[dict] | None = None) -> None:
     session = make_session()
-    with_doi = [r for r in rows if r["doi"]]
-    for r in rows:
+    scope = rows if scope is None else scope
+    with_doi = [r for r in scope if r["doi"]]
+    for r in scope:
         if not r["doi"]:
             r["pdf_status"] = "missing_doi"
 
     found = openalex_works(session, with_doi,
-                           "doi,title,authorships,primary_location,open_access,best_oa_location")
+                           "doi,title,publication_year,authorships,primary_location,open_access,best_oa_location")
     for r in with_doi:
         work = found.get(normalise_doi(r["doi"]))
         collected = is_pdf(pdf_path(r))
@@ -217,10 +223,10 @@ def lookup(rows: list[dict], fields: list[str]) -> None:
     write_manifest(rows, fields)
 
 
-def metadata(rows: list[dict], fields: list[str]) -> None:
+def metadata(rows: list[dict], fields: list[str], scope: list[dict] | None = None) -> None:
     session = make_session()
-    with_doi = [r for r in rows if r["doi"]]
-    found = openalex_works(session, with_doi, "doi,title,authorships,primary_location")
+    with_doi = [r for r in (rows if scope is None else scope) if r["doi"]]
+    found = openalex_works(session, with_doi, "doi,title,publication_year,authorships,primary_location")
     n = 0
     for r in with_doi:
         work = found.get(normalise_doi(r["doi"]))
@@ -233,12 +239,13 @@ def metadata(rows: list[dict], fields: list[str]) -> None:
 
 # ----------------------------------------------------------------------------- download
 
-def download(rows: list[dict], fields: list[str]) -> None:
+def download(rows: list[dict], fields: list[str], scope: list[dict] | None = None) -> None:
     RAW.mkdir(parents=True, exist_ok=True)
     session = make_session()
     session.headers["Accept"] = "application/pdf,*/*;q=0.8"
 
-    todo = [r for r in rows if r["doi"] and r["pdf_url"] and r["pdf_status"] != "ok"]
+    todo = [r for r in (rows if scope is None else scope)
+            if r["doi"] and r["pdf_url"] and r["pdf_status"] != "ok"]
     print(f"  {len(todo)} rows to download")
     last_request = 0.0
     for n, r in enumerate(todo, 1):
@@ -305,19 +312,23 @@ def main() -> None:
     ap.add_argument("--lookup", action="store_true", help="OpenAlex lookup only (OA columns + metadata)")
     ap.add_argument("--metadata", action="store_true", help="OpenAlex title/authors/journal only")
     ap.add_argument("--download", action="store_true", help="download only (needs a prior lookup)")
+    ap.add_argument("--new", action="store_true", help="only rows never looked up (blank oa_status)")
     args = ap.parse_args()
     explicit = args.lookup or args.metadata or args.download
 
     rows, fields = read_manifest()
+    scope = [r for r in rows if not r["oa_status"]] if args.new else None
+    if scope is not None:
+        print(f"--new: {len(scope)} rows never looked up ({sum(1 for r in scope if r['doi'])} with DOI)")
     if args.lookup or not explicit:
         print(f"lookup: {len(rows)} rows")
-        lookup(rows, fields)
+        lookup(rows, fields, scope)
     if args.metadata:
         print(f"metadata: {len(rows)} rows")
-        metadata(rows, fields)
+        metadata(rows, fields, scope)
     if args.download or not explicit:
         print("download")
-        download(rows, fields)
+        download(rows, fields, scope)
     report(rows)
 
 
