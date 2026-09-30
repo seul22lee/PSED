@@ -162,7 +162,7 @@ OA status is a column, not a filter. All 984 papers are read and extracted. Only
 | --- | --- | --- | --- |
 | Dev | 5 | Full | Pipeline development |
 | Held-out | 3 | Full | Scored only at milestones |
-| Sample | 80, the Table I papers whose PDFs were collected first | None | Generality check; ontology growth |
+| Sample | 106, the corpus papers whose PDFs were collected first | None | Generality check; ontology growth |
 | Full | 984 | None | Final corpus |
 
 Dev and Held-out papers may come from outside the two reviews; such papers are added as `extra`. The Sample is not random: it leans toward open-access papers.
@@ -175,7 +175,7 @@ Dev and Held-out papers may come from outside the two reviews; such papers are a
 
 **Papers without gold are not checked one by one.** They are judged by the corpus report statistics and a skim of 10 randomly chosen series.
 
-**Manifest.** One CSV lists every paper with its source (`popov_ref`, `cremers_ref`), tier, status (candidate, pdf_ok, extracted, included, quarantined), OA status, license, and a one-line reason. A paper that fails is quarantined with its outputs kept, not deleted.
+**Manifest.** One CSV lists every paper with its source (`source`: `popov`, `cremers`, `popov;cremers`, or `extra`; the reference numbers are in `popov_ref` and `cremers_ref`), tier, status (candidate, pdf_ok, extracted, included, quarantined), OA status, license, and a one-line reason. A paper that fails is quarantined with its outputs kept, not deleted.
 
 ## Work order
 
