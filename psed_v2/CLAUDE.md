@@ -10,6 +10,7 @@ of open-access PDFs.
 ```
 psed_v2/
   CLAUDE.md
+  PSED_v2_Plan.md           # tracked: the v2 plan; user-edited only (see Rules)
   corpus/manifest.csv       # tracked: one row per paper, deduped by DOI (Popov 2025 + Cremers 2019)
   corpus/fetch_pdfs.py      # tracked: OpenAlex lookup + PDF download, writes back to manifest.csv
   corpus/make_report.py     # tracked: derives corpus/report.csv from manifest.csv
@@ -26,6 +27,8 @@ psed_v2/
 - `manifest.csv` is the single source of truth for corpus membership. Add or drop papers
   there, never by adding or deleting files in `raw/`.
 - `paper_id` is derived from the DOI and is the file stem in `raw/`; keep them in sync.
+- **`PSED_v2_Plan.md` is edited only by the user, outside Claude Code.** Never modify it.
+  Read it for context; commit and push it only when the user asks.
 
 ## Stage 0 workflow
 
