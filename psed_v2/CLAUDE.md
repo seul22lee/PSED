@@ -17,6 +17,8 @@ psed_v2/
   corpus/report.csv         # tracked: doi, title, authors, journal, year, collected, pdf_source, refs, source
   corpus/manual_list.csv    # tracked: rows that need a hand-fetched PDF (derived from manifest)
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
+  corpus/docling_parse.py   # tracked: Docling parse of raw/ PDFs (conda env psed310), writes the `docling` column
+  corpus/docling/<paper_id>/ # gitignored: document.md, structure.json, figures/ (paper-derived)
 ```
 
 ## Rules
@@ -66,3 +68,6 @@ both reviews' process lists with ` | `; `cremers_context` says where Cremers cit
 downloaded by fetch_pdfs.py), `openalex_alt` (another OpenAlex location, one-off pass on
 2026-09-30), `v1_copy` (copied from psed_v1 PDFs on local disk, one-off passes on
 2026-09-30), or blank when not collected.
+
+`docling` is `ok` (corpus/docling/<paper_id>/ written), `failed`, or blank (not run).
+`docling_parse.py` writes it after each paper and skips rows already `ok`.
