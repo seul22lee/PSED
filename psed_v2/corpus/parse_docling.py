@@ -14,10 +14,16 @@ Caption binding (replaces Docling's), in Docling's reading order:
 - a caption is text starting with Fig./Figure/Scheme/Table + number (not "Figs."), kept only
   if Docling labels it caption or the number is followed by ".", ":" or "|"; for a repeated
   kind+number the Docling-labelled one wins, else the first;
+- pictures whose box lies outside the page area (margin artifacts) are ignored;
+- decoration pictures are ignored: the same image (16x16 grayscale thumbnail, exact match)
+  on 2 or more pages;
 - each picture goes to the first match: (1) the next figure/scheme caption on the same page
-  whose horizontal span overlaps the picture's; (2) else the caption the next page starts
-  with, if it is a figure/scheme caption; (3) else the previous figure/scheme caption on the
-  same page; (4) else it stays unnumbered. Captions nested inside pictures are included;
+  whose horizontal span overlaps the picture's; (2) for a picture after the last text item
+  on its page, the first text item of the next page if that is a figure/scheme caption;
+  (3) the previous figure/scheme caption on the same page, else the next one on that page;
+  (4) else it stays unnumbered. Captions nested inside pictures are included;
+- a caption that is the last text item on its page and does not end with ".", ")" or "]"
+  continues with the first text item of the next page;
 - a table goes to the latest earlier table caption without a table, else stays unnumbered.
 Unnumbered items are listed with number null.
     docling/<paper_id>/figures/fig_N.png
@@ -86,38 +92,94 @@ def _overlap(a, b):
     return a is not None and b is not None and a[0] < b[1] and b[0] < a[1]
 
 
+def _page_areas(pdf):
+    """Per page (1-based): the page area in Docling's bottom-left coordinates, (l, b, r, t).
+
+    Docling shifts coordinates so the PDF MediaBox starts at 0. A MediaBox that starts at a
+    negative coordinate has a strip added outside the original page (download stamps, logos);
+    the page area is the MediaBox part with non-negative PDF coordinates.
+    """
+    areas = {}
+    try:
+        import pypdfium2
+        doc = pypdfium2.PdfDocument(str(pdf))
+        for i in range(len(doc)):
+            l, b, r, t = doc[i].get_mediabox()
+            areas[i + 1] = (max(0.0, -l), max(0.0, -b), r - l, t - b)
+    except Exception:
+        pass
+    return areas
+
+
+def _outside(item, areas):
+    """True if the item's box lies entirely outside its page area."""
+    prov = (getattr(item, "prov", None) or [None])[0]
+    bb = getattr(prov, "bbox", None)
+    area = areas.get(getattr(prov, "page_no", None))
+    if bb is None or area is None:
+        return False
+    lo_x, hi_x = min(bb.l, bb.r), max(bb.l, bb.r)
+    lo_y, hi_y = min(bb.t, bb.b), max(bb.t, bb.b)
+    return hi_x <= area[0] or lo_x >= area[2] or hi_y <= area[1] or lo_y >= area[3]
+
+
 def run(pdf, force_ocr=False, figdir=None):
     res = _converter(force_ocr).convert(pdf)
     doc = res.document
     md = doc.export_to_markdown()
 
-    # 1. reading-order sequence of every body item (captions nested in pictures included)
-    seq = []            # ("pic", idx) | ("tab", idx) | ("cap", cand_idx) | ("other",), each with its page
-    pics, tabs, cands = [], [], []
+    # 1. reading-order sequence. Text nested inside a picture (axis labels, scale bars) is not
+    #    a text item of the page, except captions, which Docling may nest there.
+    areas = _page_areas(pdf)
+    # decoration: the same image (16x16 grayscale thumbnail, exact match) on 2 or more pages
+    images, thumb_pages = {}, {}
     for item, _level in doc.iterate_items(traverse_pictures=True):
+        if type(item).__name__ != "PictureItem":
+            continue
+        try:
+            im = item.get_image(doc)
+        except Exception:
+            im = None
+        key = im.convert("L").resize((16, 16)).tobytes() if im is not None else None
+        images[item.self_ref] = (im, key)
+        if key is not None:
+            thumb_pages.setdefault(key, set()).add(_page(item))
+    decoration = {k for k, pages in thumb_pages.items() if len(pages) >= 2}
+    seq = []            # (type, idx, page, text): type is "pic" | "tab" | "cap" | "text"
+    pics, tabs, cands = [], [], []
+    pic_level = None
+    for item, level in doc.iterate_items(traverse_pictures=True):
         cls = type(item).__name__
         page = _page(item)
+        if pic_level is not None and level <= pic_level:
+            pic_level = None
+        nested = pic_level is not None
         if cls == "PictureItem":
+            if pic_level is None:
+                pic_level = level
+            if _outside(item, areas):       # margin artifact: not bound, not listed
+                continue
+            im, key = images.get(item.self_ref, (None, None))
+            if key in decoration:           # repeated on 2+ pages: not bound, not listed
+                continue
             idx = len(pics)
             imgpath = ""
-            if figdir is not None:
+            if figdir is not None and im is not None:
                 try:
-                    im = item.get_image(doc)
-                    if im is not None:
-                        figdir.mkdir(parents=True, exist_ok=True)
-                        im.save(figdir / f"fig_{idx}.png")
-                        imgpath = f"figures/fig_{idx}.png"
+                    figdir.mkdir(parents=True, exist_ok=True)
+                    im.save(figdir / f"fig_{idx}.png")
+                    imgpath = f"figures/fig_{idx}.png"
                 except Exception:
                     pass
             pics.append({"image": imgpath, "page": page, "span": _span(item)})
-            seq.append(("pic", idx, page))
+            seq.append(("pic", idx, page, ""))
         elif cls == "TableItem":
             try:
                 tmd = item.export_to_markdown(doc)
             except Exception:
                 tmd = ""
             tabs.append({"markdown": tmd, "page": page})
-            seq.append(("tab", len(tabs) - 1, page))
+            seq.append(("tab", len(tabs) - 1, page, ""))
         else:
             text = getattr(item, "text", "") or ""
             m = CAPTION_RE.match(text)
@@ -127,9 +189,9 @@ def run(pdf, force_ocr=False, figdir=None):
                 cands.append({"kind": _caption_kind(m.group(1)), "number": m.group(2),
                               "caption": re.sub(r"\s+", " ", text).strip(), "page": page,
                               "span": _span(item), "labelled": is_cap_label})
-                seq.append(("cap", len(cands) - 1, page))
-            else:
-                seq.append(("other", None, page))
+                seq.append(("cap", len(cands) - 1, page, text))
+            elif not nested and text.strip():
+                seq.append(("text", None, page, text))
 
     # 2. one caption per kind+number: the Docling-labelled one, else the first
     keep = {}
@@ -139,50 +201,62 @@ def run(pdf, force_ocr=False, figdir=None):
             keep[k] = i
     kept = set(keep.values())
 
-    # 3. entries for kept captions, in reading order
+    # text items per page: first and last position in reading order
+    is_text = lambda st: st[0] in ("cap", "text")
+    first_text, last_text = {}, {}
+    for pos, st in enumerate(seq):
+        if is_text(st):
+            first_text.setdefault(st[2], pos)
+            last_text[st[2]] = pos
+
+    # 3. entries for kept captions, in reading order. A caption that is the last text item on
+    #    its page and does not end with . ) ] continues with the next page's first text item.
     entries, entry_of = [], {}
-    for step in seq:
-        if step[0] == "cap" and step[1] in kept:
-            c = cands[step[1]]
-            e = {"kind": c["kind"], "number": c["number"], "caption": c["caption"], "page": c["page"]}
+    for pos, st in enumerate(seq):
+        if st[0] == "cap" and st[1] in kept:
+            c = cands[st[1]]
+            caption = c["caption"]
+            if (c["page"] is not None and last_text.get(c["page"]) == pos
+                    and not caption.endswith((".", ")", "]"))):
+                nxt = first_text.get(c["page"] + 1)
+                if nxt is not None:
+                    caption = caption + " " + re.sub(r"\s+", " ", seq[nxt][3]).strip()
+            e = {"kind": c["kind"], "number": c["number"], "caption": caption, "page": c["page"]}
             if c["kind"] == "table":
                 e["table"] = ""
             else:
                 e["images"] = []
-            entry_of[step[1]] = e
+            entry_of[st[1]] = e
             entries.append(e)
     is_fig_cap = lambda st: st[0] == "cap" and st[1] in kept and cands[st[1]]["kind"] != "table"
 
     # 4. pictures, first match wins:
     #    (1) next figure/scheme caption on the same page whose horizontal span overlaps;
-    #    (2) else the caption the next page starts with, if it is a figure/scheme caption;
-    #    (3) else the previous figure/scheme caption on the same page; (4) else unnumbered.
-    first_on_page = {}
-    for st in seq:
-        first_on_page.setdefault(st[2], st)
+    #    (2) only for a picture after the last text item on its page: the first text item on
+    #        the next page, if it is a figure/scheme caption;
+    #    (3) the previous figure/scheme caption on the same page, else the next one on the page;
+    #    (4) else unnumbered.
     loose_pics = []
     for pos, st in enumerate(seq):
         if st[0] != "pic":
             continue
         pic = pics[st[1]]
+        page = pic["page"]
+        same_after = [x for x in seq[pos + 1:] if x[2] == page and is_fig_cap(x)]
+        same_before = [x for x in seq[:pos] if x[2] == page and is_fig_cap(x)]
         target = None
-        for later in seq[pos + 1:]:
-            if later[2] != pic["page"]:
-                break
-            if is_fig_cap(later) and _overlap(cands[later[1]]["span"], pic["span"]):
+        for later in same_after:
+            if _overlap(cands[later[1]]["span"], pic["span"]):
                 target = later[1]
                 break
-        if target is None and pic["page"] is not None:
-            nxt = first_on_page.get(pic["page"] + 1)
-            if nxt is not None and is_fig_cap(nxt):
-                target = nxt[1]
-        if target is None:
-            for earlier in reversed(seq[:pos]):
-                if earlier[2] != pic["page"]:
-                    break
-                if is_fig_cap(earlier):
-                    target = earlier[1]
-                    break
+        if target is None and page is not None and pos > last_text.get(page, -1):
+            nxt = first_text.get(page + 1)
+            if nxt is not None and is_fig_cap(seq[nxt]):
+                target = seq[nxt][1]
+        if target is None and same_before:
+            target = same_before[-1][1]
+        if target is None and same_after:
+            target = same_after[0][1]
         if target is None:
             loose_pics.append(st[1])
         elif pic["image"]:
