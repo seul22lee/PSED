@@ -163,7 +163,7 @@ OA status is a column, not a filter. All included papers are read and extracted.
 | --- | --- | --- | --- |
 | Dev | 5 | Full | Pipeline development |
 | Held-out | 3 | Full | Scored only at milestones |
-| Sample | 80, the Table I papers whose PDFs were collected first | None | Generality check; ontology growth |
+| Sample | 50, random from included papers with a PDF (all sources) | None | Generality check; ontology growth |
 | Full | about 1,100 | None | Final corpus |
 
 Dev and Held-out papers may come from outside the two reviews; such papers are added as `extra`. The Sample is not random: it leans toward open-access papers.
