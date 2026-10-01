@@ -68,7 +68,8 @@ several. Each source has its evidence column(s):
 - `extra`: `extra_reason`, why the paper was added by hand.
 `processes` merges both reviews' process lists with ` | `.
 
-`status` is `excluded` or blank, with a one-line `reason`. Excluded rows stay in the manifest
+`status` is `excluded`, `included`, or blank (no decision recorded), with a one-line `reason`,
+`decision` (`auto` = rule applied by script, `manual` = judged by the user) and `decided_on` (date). Excluded rows stay in the manifest
 and keep their PDFs, but are left out of `manual_list.csv`. So far: papers found only through
 the Cremers-citing search whose title and abstract mention neither "atomic layer" nor "ALD".
 
