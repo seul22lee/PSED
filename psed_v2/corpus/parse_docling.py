@@ -7,9 +7,17 @@
 Writes, per paper:
 
     docling/<paper_id>/document.md      full markdown
-    docling/<paper_id>/structure.json   {n_pages, sections[headings],
-                                         figures[{index,caption,image,page,bbox}],
-                                         tables[{index,caption,markdown}]}
+    docling/<paper_id>/structure.json   {n_pages, sections[headings], n_pictures, n_tables,
+                                         captions[{kind, number, caption, images|table, page}]}
+
+Caption binding (replaces Docling's), in Docling's reading order:
+- a caption is text starting with Fig./Figure/Scheme/Table + number (not "Figs."), kept only
+  if Docling labels it caption or the number is followed by ".", ":" or "|"; for a repeated
+  kind+number the Docling-labelled one wins, else the first;
+- pictures are held until the next figure/scheme caption, which takes them all; a section
+  heading drops held pictures as unnumbered;
+- a table goes to the latest earlier table caption without a table, else stays unnumbered.
+Unnumbered items are listed with number null.
     docling/<paper_id>/figures/fig_N.png
 
 Progress lives in manifest.csv, column `docling`: ok | failed | blank (not run).
@@ -46,65 +54,114 @@ def _converter(force_ocr=False):
     return DocumentConverter(format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=opts)})
 
 
+CAPTION_RE = re.compile(r"\s*(Fig\.|FIG\.|Figure(?!s)|FIGURE(?!S)|Scheme(?!s)|SCHEME(?!S)|Table(?!s)|TABLE(?!S))"
+                        r"\s*(S?\d+|[IVXL]+)\b(\s*[.:|])?")
+
+
+def _caption_kind(word):
+    w = word.lower()
+    return "table" if w.startswith("table") else "scheme" if w.startswith("scheme") else "figure"
+
+
+def _label(item):
+    lab = getattr(item, "label", None)
+    return getattr(lab, "value", lab)
+
+
+def _page(item):
+    prov = (getattr(item, "prov", None) or [None])[0]
+    return getattr(prov, "page_no", None)
+
+
 def run(pdf, force_ocr=False, figdir=None):
     res = _converter(force_ocr).convert(pdf)
     doc = res.document
     md = doc.export_to_markdown()
-    # captions + saved image crops: docling PictureItem carries caption + .get_image(doc)
-    figures, tables = [], []
+
+    # 1. reading-order sequence: pictures (crops saved in order), tables, headings, captions
+    seq = []            # ("pic", idx) | ("tab", idx) | ("head",) | ("cap", cand_idx)
+    pics, tabs, cands = [], [], []
     for item, _level in doc.iterate_items():
         cls = type(item).__name__
         if cls == "PictureItem":
-            cap = ""
-            try:
-                cap = item.caption_text(doc) or ""
-            except Exception:
-                pass
-            idx = len(figures)
+            idx = len(pics)
             imgpath = ""
             if figdir is not None:
                 try:
                     im = item.get_image(doc)
                     if im is not None:
                         figdir.mkdir(parents=True, exist_ok=True)
-                        p = figdir / f"fig_{idx}.png"
-                        im.save(p)
+                        im.save(figdir / f"fig_{idx}.png")
                         imgpath = f"figures/fig_{idx}.png"
                 except Exception:
                     pass
-            # Docling knows the page and bounding box of every crop; structure.json used
-            # to discard both, which left the figure-provenance stage with nothing but
-            # document order to work from. Captured here so future parses can bind
-            # captions by geometry instead of adjacency alone. Absent on older parses.
-            page, bbox = None, None
-            try:
-                prov = (getattr(item, "prov", None) or [None])[0]
-                if prov is not None:
-                    page = getattr(prov, "page_no", None)
-                    bb = getattr(prov, "bbox", None)
-                    if bb is not None:
-                        bbox = [getattr(bb, k, None) for k in ("l", "t", "r", "b")]
-            except Exception:
-                pass
-            figures.append({"index": idx, "caption": re.sub(r"\s+", " ", cap).strip(),
-                            "image": imgpath, "page": page, "bbox": bbox})
+            pics.append({"image": imgpath, "page": _page(item)})
+            seq.append(("pic", idx))
         elif cls == "TableItem":
-            cap = ""
-            try:
-                cap = item.caption_text(doc) or ""
-            except Exception:
-                pass
             try:
                 tmd = item.export_to_markdown(doc)
             except Exception:
                 tmd = ""
-            tables.append({"index": len(tables), "caption": re.sub(r"\s+", " ", cap).strip(),
-                           "markdown": tmd})
-    # sections: markdown headings
+            tabs.append({"markdown": tmd, "page": _page(item)})
+            seq.append(("tab", len(tabs) - 1))
+        elif _label(item) in ("section_header", "title"):
+            seq.append(("head",))
+        else:
+            text = getattr(item, "text", "") or ""
+            m = CAPTION_RE.match(text)
+            is_cap_label = _label(item) == "caption"
+            # a caption: Docling labels it caption, or the number is followed by . : |
+            if m and (is_cap_label or m.group(3)):
+                cands.append({"kind": _caption_kind(m.group(1)), "number": m.group(2),
+                              "caption": re.sub(r"\s+", " ", text).strip(), "page": _page(item),
+                              "labelled": is_cap_label})
+                seq.append(("cap", len(cands) - 1))
+
+    # 2. one caption per kind+number: the Docling-labelled one, else the first
+    keep = {}
+    for i, c in enumerate(cands):
+        k = (c["kind"], c["number"])
+        if k not in keep or (c["labelled"] and not cands[keep[k]]["labelled"]):
+            keep[k] = i
+    kept = set(keep.values())
+
+    # 3. walk: pictures wait for the next figure/scheme caption; a heading drops them;
+    #    a table goes to the latest earlier table caption that has no table yet
+    entries, by_cand = [], {}
+    held, open_tab_caps, loose_pics, loose_tabs = [], [], [], []
+    for step in seq:
+        if step[0] == "pic":
+            held.append(step[1])
+        elif step[0] == "head":
+            loose_pics += held
+            held = []
+        elif step[0] == "cap" and step[1] in kept:
+            c = cands[step[1]]
+            e = {"kind": c["kind"], "number": c["number"], "caption": c["caption"], "page": c["page"]}
+            if c["kind"] == "table":
+                e["table"] = ""
+                open_tab_caps.append(e)
+            else:
+                e["images"] = [pics[j]["image"] for j in held if pics[j]["image"]]
+                held = []
+            entries.append(e)
+        elif step[0] == "tab":
+            if open_tab_caps:
+                open_tab_caps.pop()["table"] = tabs[step[1]]["markdown"]
+            else:
+                loose_tabs.append(step[1])
+    loose_pics += held
+    for j in loose_pics:
+        entries.append({"kind": "figure", "number": None, "caption": "",
+                        "images": [pics[j]["image"]] if pics[j]["image"] else [], "page": pics[j]["page"]})
+    for j in loose_tabs:
+        entries.append({"kind": "table", "number": None, "caption": "", "table": tabs[j]["markdown"],
+                        "page": tabs[j]["page"]})
+
     sections = [h.strip() for h in re.findall(r"^#{1,4}\s+(.+)$", md, re.M)]
     return md, {"n_pages": getattr(doc, "num_pages", lambda: None)() if callable(getattr(doc, "num_pages", None)) else None,
-                "sections": sections, "n_figures": len(figures), "n_tables": len(tables),
-                "figures": figures, "tables": tables}
+                "sections": sections, "n_pictures": len(pics), "n_tables": len(tabs),
+                "captions": entries}
 
 
 def read_manifest():
@@ -162,7 +219,7 @@ def main(argv):
         try:
             md, struct = parse_one(pid)
             r["docling"] = "ok"
-            print(f"  {len(md)} md chars, {struct['n_figures']} figures, {struct['n_tables']} tables, "
+            print(f"  {len(md)} md chars, {struct['n_pictures']} pictures, {struct['n_tables']} tables, "
                   f"{len(struct['sections'])} headings{' (OCR)' if struct.get('ocr_forced') else ''}, "
                   f"{time.time() - t0:.0f}s -> docling/{pid}/", flush=True)
         except Exception:
