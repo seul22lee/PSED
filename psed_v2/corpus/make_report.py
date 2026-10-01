@@ -2,7 +2,7 @@
 """Write corpus/report.csv, a reader-facing view of manifest.csv.
 
 Columns: doi, title, authors, journal, year, collected (yes/no), pdf_source,
-popov_ref, cremers_ref, source, cremers_context.
+source, popov_ref, cremers_ref, cremers_context, cites_cremers_keywords, extra_reason.
 collected is "yes" when pdf_status is ok, i.e. raw/<paper_id>.pdf exists and is a PDF.
 
     python3 psed_v2/corpus/make_report.py
@@ -15,7 +15,8 @@ HERE = Path(__file__).resolve().parent
 MANIFEST = HERE / "manifest.csv"
 REPORT = HERE / "report.csv"
 COLUMNS = ["doi", "title", "authors", "journal", "year", "collected", "pdf_source",
-           "popov_ref", "cremers_ref", "source", "cremers_context"]
+           "source", "popov_ref", "cremers_ref", "cremers_context",
+           "cites_cremers_keywords", "extra_reason"]
 
 
 def main() -> None:
@@ -36,6 +37,8 @@ def main() -> None:
             "cremers_ref": r.get("cremers_ref", ""),
             "source": r.get("source", ""),
             "cremers_context": r.get("cremers_context", ""),
+            "cites_cremers_keywords": r.get("cites_cremers_keywords", ""),
+            "extra_reason": r.get("extra_reason", ""),
         })
     with REPORT.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS)

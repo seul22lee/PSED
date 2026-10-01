@@ -1,8 +1,8 @@
 # psed_v2
 
 Second-generation PSED corpus, built stage by stage. Stage 0 (`corpus/`) turns the
-reference lists of two reviews, Popov 2025 (Table I) and Cremers 2019, into one manifest
-of open-access PDFs.
+reference lists of two reviews, Popov 2025 (Table I) and Cremers 2019, plus the papers that
+cite Cremers 2019 on conformality topics, into one manifest of open-access PDFs.
 `psed_v1/` is frozen; nothing here reads from or writes to it.
 
 ## Layout
@@ -11,7 +11,7 @@ of open-access PDFs.
 psed_v2/
   CLAUDE.md
   PSED_v2_Plan.md           # tracked: the v2 plan; user-edited only (see Rules)
-  corpus/manifest.csv       # tracked: one row per paper, deduped by DOI (Popov 2025 + Cremers 2019)
+  corpus/manifest.csv       # tracked: one row per paper, deduped by DOI (Popov 2025 + Cremers 2019 + papers citing Cremers)
   corpus/fetch_pdfs.py      # tracked: OpenAlex lookup + PDF download, writes back to manifest.csv
   corpus/make_report.py     # tracked: derives corpus/report.csv from manifest.csv
   corpus/report.csv         # tracked: doi, title, authors, journal, year, collected, pdf_source, refs, source
@@ -57,9 +57,16 @@ python3 psed_v2/corpus/fetch_pdfs.py --new        # lookup + download only for r
 python3 psed_v2/corpus/make_report.py             # regenerate corpus/report.csv
 ```
 
-`popov_ref` / `cremers_ref` are the reference numbers in each review (blank if not cited there).
-`source` is `popov`, `cremers`, `popov;cremers`, or `extra` (added by hand). `processes` merges
-both reviews' process lists with ` | `; `cremers_context` says where Cremers cites the paper.
+`source` is a semicolon list of `popov`, `cremers`, `cremers_citing`, `extra`; a paper can have
+several. Each source has its evidence column(s):
+- `popov`: `popov_ref`, the reference number in Popov 2025 Table I.
+- `cremers`: `cremers_ref`, the reference number in Cremers 2019, and `cremers_context`, where
+  Cremers cites it.
+- `cremers_citing`: `cites_cremers_keywords`, the conformality keywords matched in the title or
+  abstract of a paper that cites Cremers 2019 in OpenAlex (pulled 2026-10-01; preprints that
+  duplicate a published article were dropped).
+- `extra`: `extra_reason`, why the paper was added by hand.
+`processes` merges both reviews' process lists with ` | `.
 
 `pdf_status` is `ok` (file in raw/), `manual` (no OA PDF or download failed; see
 `corpus/manual_list.csv`), or `missing_doi`. Rows already present in `raw/` are skipped.
