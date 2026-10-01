@@ -35,6 +35,7 @@ The column is written after each paper; rows already ok are skipped.
 import csv
 import json
 import re
+import shutil
 import sys
 import time
 import traceback
@@ -311,9 +312,11 @@ def parse_one(paper_id):
     pdf = RAW / f"{paper_id}.pdf"
     d = OUT / paper_id
     d.mkdir(parents=True, exist_ok=True)
+    shutil.rmtree(d / "figures", ignore_errors=True)    # old crops never linger
     md, struct = run(pdf, figdir=d / "figures")
     if len(md) < 500:                               # image-only PDF -> force full-page OCR
         print(f"  only {len(md)} chars; retrying with full-page OCR", flush=True)
+        shutil.rmtree(d / "figures", ignore_errors=True)
         md, struct = run(pdf, force_ocr=True, figdir=d / "figures")
         struct["ocr_forced"] = True
     (d / "document.md").write_text(md)
