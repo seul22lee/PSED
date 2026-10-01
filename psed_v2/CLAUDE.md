@@ -13,11 +13,11 @@ psed_v2/
   PSED_v2_Plan.md           # tracked: the v2 plan; user-edited only (see Rules)
   corpus/manifest.csv       # tracked: one row per paper, deduped by DOI (Popov 2025 + Cremers 2019 + papers citing Cremers)
   corpus/fetch_pdfs.py      # tracked: OpenAlex lookup + PDF download, writes back to manifest.csv
-  corpus/make_report.py     # tracked: derives corpus/report.csv from manifest.csv
-  corpus/report.csv         # tracked: doi, title, authors, journal, year, collected, pdf_source, refs, source
-  corpus/manual_list.csv    # tracked: rows that need a hand-fetched PDF (derived from manifest)
+  corpus/make_report.py     # tracked: sets in_scope in manifest.csv (the scope rule lives here) and derives report.csv
+  corpus/report.csv         # tracked: reader-facing view: metadata, in_scope, collected, origins and evidence, decisions
+  corpus/manual_list.csv    # tracked: in-scope rows that need a hand-fetched PDF (derived from manifest)
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
-  ingest/parse_docling.py   # tracked: Docling parse of corpus/raw/ PDFs (conda env psed310), writes the manifest `docling` column
+  ingest/parse_docling.py   # tracked: Docling parse of in-scope corpus/raw/ PDFs (conda env psed310), writes the manifest `docling` column
   ingest/docling/<paper_id>/ # gitignored: document.md, structure.json, figures/ (paper-derived)
 ```
 
@@ -54,24 +54,35 @@ python3 psed_v2/corpus/fetch_pdfs.py --lookup     # fill oa_status / license / o
 python3 psed_v2/corpus/fetch_pdfs.py --metadata   # refresh title / authors / journal only
 python3 psed_v2/corpus/fetch_pdfs.py --download   # ~1 req/s, retries on 429/5xx, keeps only %PDF files
 python3 psed_v2/corpus/fetch_pdfs.py --new        # lookup + download only for rows never looked up
-python3 psed_v2/corpus/make_report.py             # regenerate corpus/report.csv
+python3 psed_v2/corpus/make_report.py             # recompute in_scope, regenerate corpus/report.csv
 ```
 
-`source` is a semicolon list of `popov`, `cremers`, `cremers_citing`, `extra`; a paper can have
-several. Each source has its evidence column(s):
+Origin columns, each `O` or empty; a paper can have several. Each has its evidence column(s):
 - `popov`: `popov_ref`, the reference number in Popov 2025 Table I.
 - `cremers`: `cremers_ref`, the reference number in Cremers 2019, and `cremers_context`, where
   Cremers cites it.
 - `cremers_citing`: `cites_cremers_keywords`, the conformality keywords matched in the title or
   abstract of a paper that cites Cremers 2019 in OpenAlex (pulled 2026-10-01; preprints that
   duplicate a published article were dropped).
-- `extra`: `extra_reason`, why the paper was added by hand.
+- added by hand: no flag column; `extra_reason` says why.
 `processes` merges both reviews' process lists with ` | `.
 
 `status` is `excluded`, `included`, or blank (no decision recorded), with a one-line `reason`,
-`decision` (`auto` = rule applied by script, `manual` = judged by the user) and `decided_on` (date). Excluded rows stay in the manifest
-and keep their PDFs, but are left out of `manual_list.csv`. So far: papers found only through
+`decision` (`auto` = rule applied by script, `manual` = judged by the user) and `decided_on` (date).
+Excluded rows stay in the manifest and keep their PDFs. So far: papers found only through
 the Cremers-citing search whose title and abstract mention neither "atomic layer" nor "ALD".
+
+### Scope
+
+Current scope is conformality only. `in_scope` (yes/no) is computed by one rule, kept in one
+place: `SCOPE_ORIGINS` / `in_scope()` in `corpus/make_report.py`:
+
+    in_scope = (cremers or cremers_citing or extra) and status != excluded
+
+Popov-only papers are out of scope but are not marked excluded, so the scope can be widened by
+changing that constant and rerunning `make_report.py`. Rerun it after any change to the origin
+columns or to `status`; it rewrites `in_scope` in the manifest. `corpus/raw/` keeps every PDF,
+in scope or not. `manual_list.csv` and `ingest/parse_docling.py` cover in-scope papers only.
 
 `pdf_status` is `ok` (file in raw/), `manual` (no OA PDF or download failed; see
 `corpus/manual_list.csv`), or `missing_doi`. Rows already present in `raw/` are skipped.

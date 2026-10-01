@@ -30,7 +30,8 @@ Unnumbered items are listed with number null.
 
 Progress lives in corpus/manifest.csv, column `docling`: ok | failed | blank (not run).
 The column is written after each paper; rows already ok are skipped.
---all parses every row with pdf_status ok. Needs docling (conda env psed310).
+Only in-scope papers are parsed (manifest column in_scope, set by corpus/make_report.py).
+--all parses every in-scope row with pdf_status ok. Needs docling (conda env psed310).
 """
 import csv
 import json
@@ -329,7 +330,7 @@ def main(argv):
     rows, fields = read_manifest()
     by_id = {r["paper_id"]: r for r in rows if r["paper_id"]}
     if argv == ["--all"]:
-        todo = [r for r in rows if r["pdf_status"] == "ok"]
+        todo = [r for r in rows if r["pdf_status"] == "ok" and r.get("in_scope") == "yes"]
     else:
         missing = [a for a in argv if a not in by_id]
         if missing or not argv:
@@ -337,6 +338,9 @@ def main(argv):
         todo = [by_id[a] for a in argv]
     for r in todo:
         pid = r["paper_id"]
+        if r.get("in_scope") != "yes":
+            print(f"[docling] {pid}: not in scope, skipped")
+            continue
         if r["docling"] == "ok":
             print(f"[docling] {pid}: already ok, skipped")
             continue
