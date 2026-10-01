@@ -13,7 +13,7 @@ v1 (`psed_v1`, tag `v1-final`, commit `a06a714`) works but is too complex: 13 st
 - v1 code: `psed_v1/`, frozen at tag `v1-final` (`a06a714`).
 - v2 code: `psed_v2/` on branch `v2`.
 
-**In scope:** corpus definition and PDF acquisition, gold set, minimal ontology, four-stage pipeline, corpus growth from 5 to 984 ALD papers, one comparison view, connection to the HAR channel twin.
+**In scope:** corpus definition and PDF acquisition, gold set, minimal ontology, four-stage pipeline, corpus growth from 5 to about 1,100 ALD papers, one comparison view, connection to the HAR channel twin.
 
 **Out of scope for now:** control, agentic orchestration, flat-surface and reactor-scale models, automatic intake of newly published papers. These come after Phase 7.
 
@@ -137,16 +137,17 @@ The gold set is built before the pipeline. An LLM drafts it from the PDF and the
 
 ## Corpus management
 
-**Criterion.** A paper is in the corpus if it is cited in one of two reviews:
+**Criterion.** A paper is in the corpus if it comes from one of three sources:
 
 - Popov et al., *J. Vac. Sci. Technol. A* 43, 030801 (2025): a first reference in Table I (new thermal ALD processes published 2010–2023, from the AtomicLimits ALD database).
 - Cremers et al., *Appl. Phys. Rev.* 6, 021302 (2019): any reference (table footnotes excluded).
+- Papers citing Cremers 2019 (OpenAlex, forward citation) whose title or abstract mentions conformality keywords (conformal, conformality, aspect ratio, high-aspect-ratio, step coverage, trench, LHAR, PillarHall, penetration depth, saturation profile) and ALD ("atomic layer" or "ALD"). This covers conformality work published after 2019.
 
 Papers added by hand are marked `extra`.
 
-**Two axes.** The corpus is built on two axes. Popov 2025 covers the process-chemistry axis: which precursors and reactants deposit which material, for thermal ALD. Cremers 2019 adds the geometry axis: conformality in high-aspect-ratio structures (trenches, holes, AAO, LHAR). Plasma ALD papers entered through the geometry axis and are accepted as they are. Plasma coverage is therefore partial (conformality-related only) and is not claimed as general plasma ALD coverage. The ontology must include geometry concepts (structure type, aspect ratio, feature dimensions, penetration depth, thickness profile) and a minimal process-mode set (thermal, ozone, plasma; plasma configuration; radical recombination).
+**Two axes.** The corpus is built on two axes. Popov 2025 covers the process-chemistry axis: which precursors and reactants deposit which material, for thermal ALD. Cremers 2019 and the papers citing it add the geometry axis: conformality in high-aspect-ratio structures (trenches, holes, AAO, LHAR). Plasma ALD papers entered through the geometry axis and are accepted as they are. Plasma coverage is therefore partial (conformality-related only) and is not claimed as general plasma ALD coverage. The ontology must include geometry concepts (structure type, aspect ratio, feature dimensions, penetration depth, thickness profile) and a minimal process-mode set (thermal, ozone, plasma; plasma configuration; radical recombination).
 
-**Size.** 984 papers: 691 Popov only, 284 Cremers only, 8 in both, 1 extra (`source` column). 54 papers have no DOI and are resolved by hand. The list is `psed_v2/corpus/manifest.csv`; `psed_v2/corpus/report.csv` is generated from it.
+**Size.** 1,124 rows, of which 22 are excluded (not ALD), leaving 1,102 papers. By source (a paper can have several): Popov 699, Cremers 292, Cremers-citing 143, extra 1. 54 papers have no DOI and are resolved by hand. The list is `psed_v2/corpus/manifest.csv`; `psed_v2/corpus/report.csv` is generated from it.
 
 **PDF acquisition.**
 
@@ -154,7 +155,7 @@ Papers added by hand are marked `extra`.
 2. Download open PDFs directly.
 3. Get the rest through Northwestern access (publisher TDM API where available, otherwise Zotero "Find Available PDF").
 
-OA status is a column, not a filter. All 984 papers are read and extracted. Only extracted data (conditions, digitized points, provenance) is published; PDFs, full text, and figure crops are redistributed only for CC-licensed papers. PDFs (`psed_v2/corpus/raw/`), `document.md`, and figure crops are never committed to git.
+OA status is a column, not a filter. All included papers are read and extracted. Only extracted data (conditions, digitized points, provenance) is published; PDFs, full text, and figure crops are redistributed only for CC-licensed papers. PDFs (`psed_v2/corpus/raw/`), `document.md`, and figure crops are never committed to git.
 
 **Tiers.**
 
@@ -162,8 +163,8 @@ OA status is a column, not a filter. All 984 papers are read and extracted. Only
 | --- | --- | --- | --- |
 | Dev | 5 | Full | Pipeline development |
 | Held-out | 3 | Full | Scored only at milestones |
-| Sample | 106, the corpus papers whose PDFs were collected first | None | Generality check; ontology growth |
-| Full | 984 | None | Final corpus |
+| Sample | 80, the Table I papers whose PDFs were collected first | None | Generality check; ontology growth |
+| Full | about 1,100 | None | Final corpus |
 
 Dev and Held-out papers may come from outside the two reviews; such papers are added as `extra`. The Sample is not random: it leans toward open-access papers.
 
@@ -175,7 +176,7 @@ Dev and Held-out papers may come from outside the two reviews; such papers are a
 
 **Papers without gold are not checked one by one.** They are judged by the corpus report statistics and a skim of 10 randomly chosen series.
 
-**Manifest.** One CSV lists every paper with its source (`source`: `popov`, `cremers`, `popov;cremers`, or `extra`; the reference numbers are in `popov_ref` and `cremers_ref`), tier, status (candidate, pdf_ok, extracted, included, quarantined), OA status, license, and a one-line reason. A paper that fails is quarantined with its outputs kept, not deleted.
+**Manifest.** One CSV lists every paper with its origin and the evidence for it (`source`; `popov_ref`; `cremers_ref` and `cremers_context`; `cites_cremers_keywords`; `extra_reason`), PDF status and source, OA status, license, and its inclusion decision (`status`, `reason`, `decision` auto or manual, `decided_on`). Excluded papers keep their rows. A paper that fails is quarantined with its outputs kept, not deleted.
 
 ## Work order
 
@@ -183,14 +184,14 @@ Nine phases (0 to 8) run in sequence; each ends when its done criterion is met.
 
 | Phase | Work | Done when |
 | --- | --- | --- |
-| 0 | Tag v1; create the v2 skeleton and `CLAUDE.md`; build the manifest from the two reviews and acquire PDFs | Manifest has 984 rows with PDF status; an empty pipeline runs end to end on one paper |
+| 0 | Tag v1; create the v2 skeleton and `CLAUDE.md`; build the manifest from the three sources and acquire PDFs | Manifest lists every paper with source, decision, and PDF status; an empty pipeline runs end to end on one paper |
 | 1 | Gold set: Ylilammi pilot, then the five Dev papers | Format fixed; all five papers checked by the expert |
 | 2 | Ontology v0 | Every quantity in the gold set is mapped or declared native |
 | 3 | Convert v1 output to the six tables and score it | Baseline score exists; list of reusable v1 extraction results exists |
 | 4 | Build the v2 pipeline on the Dev set | Dev score beats the baseline and reaches the target |
 | 5 | Score Held-out; run the Sample tier; first ontology growth round | Corpus report exists; first external ontology review done |
 | 6 | Comparison view; twin connection (questions 5 to 11) | Cross-paper case studies run on real data |
-| 7 | Run all 984 papers; second ontology growth round; more gold papers | Full corpus processed; second external review done |
+| 7 | Run all included papers; second ontology growth round; more gold papers | Full corpus processed; second external review done |
 | 8 | New-paper intake, control, agentic layer | Decided later |
 
 The Phase 4 target score is set after the Phase 3 baseline is known.
