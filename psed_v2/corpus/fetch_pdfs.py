@@ -87,7 +87,8 @@ def write_manifest(rows: list[dict], fields: list[str]) -> None:
 
 def write_manual_list(rows: list[dict]) -> int:
     keep = ["popov_ref", "cremers_ref", "source", "paper_id", "doi", "year", "citation", "oa_status", "pdf_url", "pdf_status"]
-    manual = [r for r in rows if r["pdf_status"] in ("manual", "missing_doi")]
+    manual = [r for r in rows if r["pdf_status"] in ("manual", "missing_doi")
+              and r.get("status") != "excluded"]
     with MANUAL_LIST.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=keep, extrasaction="ignore")
         w.writeheader()
