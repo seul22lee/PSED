@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Docling parse: corpus/raw/<paper_id>.pdf -> corpus/docling/<paper_id>/. No LLM.
+"""Docling parse: corpus/raw/<paper_id>.pdf -> ingest/docling/<paper_id>/. No LLM.
 
-    ~/miniconda3/envs/psed310/bin/python psed_v2/corpus/parse_docling.py <paper_id> [...]
-    ~/miniconda3/envs/psed310/bin/python psed_v2/corpus/parse_docling.py --all
+    ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py <paper_id> [...]
+    ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --all
 
 Writes, per paper:
 
@@ -28,7 +28,7 @@ Caption binding (replaces Docling's), in Docling's reading order:
 Unnumbered items are listed with number null.
     docling/<paper_id>/figures/fig_N.png
 
-Progress lives in manifest.csv, column `docling`: ok | failed | blank (not run).
+Progress lives in corpus/manifest.csv, column `docling`: ok | failed | blank (not run).
 The column is written after each paper; rows already ok are skipped.
 --all parses every row with pdf_status ok. Needs docling (conda env psed310).
 """
@@ -42,8 +42,9 @@ import traceback
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-MANIFEST = HERE / "manifest.csv"
-RAW = HERE / "raw"
+CORPUS = HERE.parent / "corpus"
+MANIFEST = CORPUS / "manifest.csv"
+RAW = CORPUS / "raw"
 OUT = HERE / "docling"
 
 
