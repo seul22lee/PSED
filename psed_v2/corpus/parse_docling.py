@@ -14,8 +14,10 @@ Caption binding (replaces Docling's), in Docling's reading order:
 - a caption is text starting with Fig./Figure/Scheme/Table + number (not "Figs."), kept only
   if Docling labels it caption or the number is followed by ".", ":" or "|"; for a repeated
   kind+number the Docling-labelled one wins, else the first;
-- pictures are held until the next figure/scheme caption, which takes them all; a section
-  heading drops held pictures as unnumbered;
+- each picture goes to the first match: (1) the next figure/scheme caption on the same page
+  whose horizontal span overlaps the picture's; (2) else the caption the next page starts
+  with, if it is a figure/scheme caption; (3) else the previous figure/scheme caption on the
+  same page; (4) else it stays unnumbered. Captions nested inside pictures are included;
 - a table goes to the latest earlier table caption without a table, else stays unnumbered.
 Unnumbered items are listed with number null.
     docling/<paper_id>/figures/fig_N.png
@@ -55,7 +57,7 @@ def _converter(force_ocr=False):
 
 
 CAPTION_RE = re.compile(r"\s*(Fig\.|FIG\.|Figure(?!s)|FIGURE(?!S)|Scheme(?!s)|SCHEME(?!S)|Table(?!s)|TABLE(?!S))"
-                        r"\s*(S?\d+|[IVXL]+)\b(\s*[.:|])?")
+                        r"\s*(S?\d+|[IVXL]+)(?!\d)(\s*[.:|])?")
 
 
 def _caption_kind(word):
@@ -73,16 +75,28 @@ def _page(item):
     return getattr(prov, "page_no", None)
 
 
+def _span(item):
+    """Horizontal extent (l, r) of an item's first provenance box, or None."""
+    prov = (getattr(item, "prov", None) or [None])[0]
+    bb = getattr(prov, "bbox", None)
+    return (min(bb.l, bb.r), max(bb.l, bb.r)) if bb is not None else None
+
+
+def _overlap(a, b):
+    return a is not None and b is not None and a[0] < b[1] and b[0] < a[1]
+
+
 def run(pdf, force_ocr=False, figdir=None):
     res = _converter(force_ocr).convert(pdf)
     doc = res.document
     md = doc.export_to_markdown()
 
-    # 1. reading-order sequence: pictures (crops saved in order), tables, headings, captions
-    seq = []            # ("pic", idx) | ("tab", idx) | ("head",) | ("cap", cand_idx)
+    # 1. reading-order sequence of every body item (captions nested in pictures included)
+    seq = []            # ("pic", idx) | ("tab", idx) | ("cap", cand_idx) | ("other",), each with its page
     pics, tabs, cands = [], [], []
-    for item, _level in doc.iterate_items():
+    for item, _level in doc.iterate_items(traverse_pictures=True):
         cls = type(item).__name__
+        page = _page(item)
         if cls == "PictureItem":
             idx = len(pics)
             imgpath = ""
@@ -95,17 +109,15 @@ def run(pdf, force_ocr=False, figdir=None):
                         imgpath = f"figures/fig_{idx}.png"
                 except Exception:
                     pass
-            pics.append({"image": imgpath, "page": _page(item)})
-            seq.append(("pic", idx))
+            pics.append({"image": imgpath, "page": page, "span": _span(item)})
+            seq.append(("pic", idx, page))
         elif cls == "TableItem":
             try:
                 tmd = item.export_to_markdown(doc)
             except Exception:
                 tmd = ""
-            tabs.append({"markdown": tmd, "page": _page(item)})
-            seq.append(("tab", len(tabs) - 1))
-        elif _label(item) in ("section_header", "title"):
-            seq.append(("head",))
+            tabs.append({"markdown": tmd, "page": page})
+            seq.append(("tab", len(tabs) - 1, page))
         else:
             text = getattr(item, "text", "") or ""
             m = CAPTION_RE.match(text)
@@ -113,9 +125,11 @@ def run(pdf, force_ocr=False, figdir=None):
             # a caption: Docling labels it caption, or the number is followed by . : |
             if m and (is_cap_label or m.group(3)):
                 cands.append({"kind": _caption_kind(m.group(1)), "number": m.group(2),
-                              "caption": re.sub(r"\s+", " ", text).strip(), "page": _page(item),
-                              "labelled": is_cap_label})
-                seq.append(("cap", len(cands) - 1))
+                              "caption": re.sub(r"\s+", " ", text).strip(), "page": page,
+                              "span": _span(item), "labelled": is_cap_label})
+                seq.append(("cap", len(cands) - 1, page))
+            else:
+                seq.append(("other", None, page))
 
     # 2. one caption per kind+number: the Docling-labelled one, else the first
     keep = {}
@@ -125,32 +139,66 @@ def run(pdf, force_ocr=False, figdir=None):
             keep[k] = i
     kept = set(keep.values())
 
-    # 3. walk: pictures wait for the next figure/scheme caption; a heading drops them;
-    #    a table goes to the latest earlier table caption that has no table yet
-    entries, by_cand = [], {}
-    held, open_tab_caps, loose_pics, loose_tabs = [], [], [], []
+    # 3. entries for kept captions, in reading order
+    entries, entry_of = [], {}
     for step in seq:
-        if step[0] == "pic":
-            held.append(step[1])
-        elif step[0] == "head":
-            loose_pics += held
-            held = []
-        elif step[0] == "cap" and step[1] in kept:
+        if step[0] == "cap" and step[1] in kept:
             c = cands[step[1]]
             e = {"kind": c["kind"], "number": c["number"], "caption": c["caption"], "page": c["page"]}
             if c["kind"] == "table":
                 e["table"] = ""
-                open_tab_caps.append(e)
             else:
-                e["images"] = [pics[j]["image"] for j in held if pics[j]["image"]]
-                held = []
+                e["images"] = []
+            entry_of[step[1]] = e
             entries.append(e)
-        elif step[0] == "tab":
+    is_fig_cap = lambda st: st[0] == "cap" and st[1] in kept and cands[st[1]]["kind"] != "table"
+
+    # 4. pictures, first match wins:
+    #    (1) next figure/scheme caption on the same page whose horizontal span overlaps;
+    #    (2) else the caption the next page starts with, if it is a figure/scheme caption;
+    #    (3) else the previous figure/scheme caption on the same page; (4) else unnumbered.
+    first_on_page = {}
+    for st in seq:
+        first_on_page.setdefault(st[2], st)
+    loose_pics = []
+    for pos, st in enumerate(seq):
+        if st[0] != "pic":
+            continue
+        pic = pics[st[1]]
+        target = None
+        for later in seq[pos + 1:]:
+            if later[2] != pic["page"]:
+                break
+            if is_fig_cap(later) and _overlap(cands[later[1]]["span"], pic["span"]):
+                target = later[1]
+                break
+        if target is None and pic["page"] is not None:
+            nxt = first_on_page.get(pic["page"] + 1)
+            if nxt is not None and is_fig_cap(nxt):
+                target = nxt[1]
+        if target is None:
+            for earlier in reversed(seq[:pos]):
+                if earlier[2] != pic["page"]:
+                    break
+                if is_fig_cap(earlier):
+                    target = earlier[1]
+                    break
+        if target is None:
+            loose_pics.append(st[1])
+        elif pic["image"]:
+            entry_of[target]["images"].append(pic["image"])
+
+    # 5. tables: the latest earlier table caption that has no table yet, else unnumbered
+    open_tab_caps, loose_tabs = [], []
+    for st in seq:
+        if st[0] == "cap" and st[1] in kept and cands[st[1]]["kind"] == "table":
+            open_tab_caps.append(entry_of[st[1]])
+        elif st[0] == "tab":
             if open_tab_caps:
-                open_tab_caps.pop()["table"] = tabs[step[1]]["markdown"]
+                open_tab_caps.pop()["table"] = tabs[st[1]]["markdown"]
             else:
-                loose_tabs.append(step[1])
-    loose_pics += held
+                loose_tabs.append(st[1])
+
     for j in loose_pics:
         entries.append({"kind": "figure", "number": None, "caption": "",
                         "images": [pics[j]["image"]] if pics[j]["image"] else [], "page": pics[j]["page"]})
