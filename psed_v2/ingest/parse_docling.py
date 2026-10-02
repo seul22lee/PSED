@@ -11,7 +11,7 @@ Writes, per paper:
                                          captions[{kind, number, caption, images|table, page}]}
 
 Caption binding (replaces Docling's), in Docling's reading order:
-- a caption is text starting with Fig./Figure/Scheme/Table + number (not "Figs."), kept only
+- a caption is text starting with Fig./Figure/Scheme/Table (or 图/表) + number (not "Figs."), kept only
   if Docling labels it caption or the number is followed by ".", ":" or "|"; for a repeated
   kind+number the Docling-labelled one wins, else the first;
 - pictures whose box lies outside the page area (margin artifacts) are ignored;
@@ -65,13 +65,13 @@ def _converter(force_ocr=False):
     return DocumentConverter(format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=opts)})
 
 
-CAPTION_RE = re.compile(r"\s*(Fig\.|FIG\.|Figure(?!s)|FIGURE(?!S)|Scheme(?!s)|SCHEME(?!S)|Table(?!s)|TABLE(?!S))"
+CAPTION_RE = re.compile(r"\s*(Fig\.|FIG\.|Figure(?!s)|FIGURE(?!S)|Scheme(?!s)|SCHEME(?!S)|Table(?!s)|TABLE(?!S)|图|表)"
                         r"\s*(S?\d+|[IVXL]+)(?!\d)(\s*[.:|])?")
 
 
 def _caption_kind(word):
     w = word.lower()
-    return "table" if w.startswith("table") else "scheme" if w.startswith("scheme") else "figure"
+    return "table" if w.startswith(("table", "表")) else "scheme" if w.startswith("scheme") else "figure"
 
 
 def _label(item):
