@@ -26,6 +26,14 @@ Caption binding (replaces Docling's), in Docling's reading order:
   continues with the first text item of the next page;
 - a table goes to the latest earlier table caption without a table, else stays unnumbered.
 Unnumbered items are listed with number null.
+
+Glyph repairs, applied to document.md and caption text after Docling runs:
+- glyph names that carry a code point, "/uniXXXX" and "/uXXXXX", become that character
+  (ligatures U+FB00..FB06 become plain letters); the one space after it is dropped when a
+  letter follows;
+- a single digit between a number and C or K ("300 1 C") is marked "[?]" ("300 [?] C") only
+  where the PDF shows that digit in a different font from the number (read with pdfplumber).
+  What the symbol is, is not guessed. Other glyph problems are left unchanged.
     docling/<paper_id>/figures/fig_N.png
 
 Progress lives in corpus/manifest.csv, column `docling`: ok | failed | blank (not run).
@@ -95,6 +103,58 @@ def _overlap(a, b):
     return a is not None and b is not None and a[0] < b[1] and b[0] < a[1]
 
 
+# Glyph names that carry a code point: "/uniXXXX" (4 hex) and "/uXXXXX" (5 hex). Docling
+# leaves one space after the name; it is dropped when a letter follows.
+GLYPH_NAME_RE = re.compile(r"/(?:uni([0-9A-Fa-f]{4})|u([0-9A-Fa-f]{5}))(?![0-9A-Fa-f])( (?=[A-Za-z]))?")
+LIGATURES = {0xFB00: "ff", 0xFB01: "fi", 0xFB02: "fl", 0xFB03: "ffi", 0xFB04: "ffl",
+             0xFB05: "st", 0xFB06: "st"}
+# A number, a single digit, then C or K: "300 1 C", "325 8C".
+DEGREE_RE = re.compile(r"(?<![\d.])(\d{1,4}) (\d) ?([CK])\b")
+
+
+def _glyph_names(text):
+    """Replace /uniXXXX and /uXXXXX glyph names with their character (ligatures as letters)."""
+    def sub(m):
+        cp = int(m.group(1) or m.group(2), 16)
+        return LIGATURES.get(cp) or chr(cp)
+    return GLYPH_NAME_RE.sub(sub, text)
+
+
+def _degree_evidence(pdf):
+    """{(number, digit, unit)} seen in the PDF where a single digit sits between a number and
+    C or K and is set in a different font from the number: a symbol whose glyph maps to a digit."""
+    found = set()
+    try:
+        import pdfplumber
+    except ImportError:
+        print("  pdfplumber not installed: digit-like degree signs are not marked", flush=True)
+        return found
+    try:
+        with pdfplumber.open(str(pdf)) as doc:
+            for page in doc.pages:
+                ch = [c for c in page.chars if c["text"].strip()]
+                for i in range(1, len(ch) - 1):
+                    c, prev = ch[i], ch[i - 1]
+                    if not (c["text"].isdigit() and ch[i + 1]["text"] in ("C", "K")
+                            and prev["text"].isdigit() and prev["fontname"] != c["fontname"]):
+                        continue
+                    j = i - 1
+                    while j > 0 and ch[j - 1]["text"].isdigit() and ch[j - 1]["fontname"] == prev["fontname"]:
+                        j -= 1
+                    found.add(("".join(x["text"] for x in ch[j:i]), c["text"], ch[i + 1]["text"]))
+    except Exception as e:
+        print(f"  pdfplumber failed ({e.__class__.__name__}): digit-like degree signs are not marked", flush=True)
+    return found
+
+
+def _mark_degrees(text, evidence):
+    """Mark "300 1 C" as "300 [?] C" where the PDF shows the digit is in another font."""
+    if not evidence:
+        return text
+    return DEGREE_RE.sub(
+        lambda m: f"{m.group(1)} [?] {m.group(3)}" if m.groups() in evidence else m.group(0), text)
+
+
 def _page_areas(pdf):
     """Per page (1-based): the page area in Docling's bottom-left coordinates, (l, b, r, t).
 
@@ -129,7 +189,9 @@ def _outside(item, areas):
 def run(pdf, force_ocr=False, figdir=None):
     res = _converter(force_ocr).convert(pdf)
     doc = res.document
-    md = doc.export_to_markdown()
+    evidence = _degree_evidence(pdf)
+    fix = lambda text: _mark_degrees(_glyph_names(text), evidence)
+    md = fix(doc.export_to_markdown())
 
     # 1. reading-order sequence. Text nested inside a picture (axis labels, scale bars) is not
     #    a text item of the page, except captions, which Docling may nest there.
@@ -224,7 +286,7 @@ def run(pdf, force_ocr=False, figdir=None):
                 nxt = first_text.get(c["page"] + 1)
                 if nxt is not None:
                     caption = caption + " " + re.sub(r"\s+", " ", seq[nxt][3]).strip()
-            e = {"kind": c["kind"], "number": c["number"], "caption": caption, "page": c["page"]}
+            e = {"kind": c["kind"], "number": c["number"], "caption": fix(caption), "page": c["page"]}
             if c["kind"] == "table":
                 e["table"] = ""
             else:
