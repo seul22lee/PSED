@@ -6,7 +6,7 @@
 Run it after any change to the origin columns (popov, cremers, cremers_citing, extra_reason)
 or to status. Every other script reads the in_scope column this one writes.
 
-report.csv columns: doi, title, authors, journal, year, in_scope, collected (yes/no),
+report.csv columns: doi, title, authors, journal, type, year, in_scope, collected (yes/no),
 pdf_source, popov, cremers, cremers_citing, popov_ref, cremers_ref, cremers_context,
 cites_cremers_keywords, extra_reason, status, reason, decision, decided_on.
 collected is "yes" when pdf_status is ok, i.e. raw/<paper_id>.pdf exists and is a PDF.
@@ -25,7 +25,7 @@ REPORT = HERE / "report.csv"
 SCOPE_ORIGINS = ("cremers", "cremers_citing", "extra_reason")
 SCOPE_RULE = "(cremers or cremers_citing or extra) and status != excluded"
 
-COLUMNS = ["doi", "title", "authors", "journal", "year", "in_scope", "collected", "pdf_source",
+COLUMNS = ["doi", "title", "authors", "journal", "type", "year", "in_scope", "collected", "pdf_source",
            "popov", "cremers", "cremers_citing", "popov_ref", "cremers_ref", "cremers_context",
            "cites_cremers_keywords", "extra_reason", "status", "reason", "decision", "decided_on"]
 

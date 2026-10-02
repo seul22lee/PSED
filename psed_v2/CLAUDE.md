@@ -69,8 +69,16 @@ Origin columns, each `O` or empty; a paper can have several. Each has its eviden
 
 `status` is `excluded`, `included`, or blank (no decision recorded), with a one-line `reason`,
 `decision` (`auto` = rule applied by script, `manual` = judged by the user) and `decided_on` (date).
-Excluded rows stay in the manifest and keep their PDFs. So far: papers found only through
-the Cremers-citing search whose title and abstract mention neither "atomic layer" nor "ALD".
+Excluded rows stay in the manifest and keep their PDFs. Exclusion rules applied so far:
+- not ALD: found only through the Cremers-citing search, and neither title nor abstract
+  mentions "atomic layer" or "ALD" (auto), plus two judged by title (manual);
+- `type`: the OpenAlex work type is not `article` or `letter` (auto, reason "type: <type>");
+- review by title/journal (auto): the title has the whole word review, perspective, survey,
+  overview or tutorial, or the journal is Chemical Reviews, Chemical Society Reviews, Applied
+  Physics Reviews, Annual Review of *, Progress in Materials Science, Materials Science and
+  Engineering R, Nature Reviews *, or Coordination Chemistry Reviews;
+- no DOI: Cremers footnotes and notes that are not publications (auto), and books, patents,
+  theses and proceedings (manual). The four Popov rows without a DOI are undecided.
 
 ### Scope
 
@@ -101,7 +109,7 @@ downloaded by fetch_pdfs.py), `openalex_alt` (another OpenAlex location, one-off
 - Captions split across two columns keep only the first part. Captions split across pages are joined.
 - A non-figure image (equation, banner whose copy differs slightly) on a figure's page can attach to that figure as an extra image.
 - Tables: caption binding is not validated. Known issues: shift by one when Docling reads a table before its caption, tables Docling does not detect, captions placed inside the table's first row.
-- Broken glyphs from PDF fonts (e.g. "/C14" for °, "/C0" for −, "¼" for =) are not fixed yet.
+- Broken glyphs from PDF fonts (e.g. "/C14" for °, "/C0" for −, "¼" for =, private-use characters) are not fixed yet. Fixed: "/uniXXXX" and "/uXXXXX" glyph names; a digit standing for a degree sign ("300 1 C") is marked "[?]" where the PDF font shows it.
 - Equations are not decoded.
 - 10.1146_annurev-chembioeng-060816-101547 is a review paper; whether it belongs in the corpus is a corpus question.
 - Docling occasionally reads a caption before its picture although the caption is below it; the picture then goes to the next caption (seen: 10.1002_pssa.201532305 Figure 8 went to Figure 9).
