@@ -78,7 +78,8 @@ Excluded rows stay in the manifest and keep their PDFs. Exclusion rules applied 
   Physics Reviews, Annual Review of *, Progress in Materials Science, Materials Science and
   Engineering R, Nature Reviews *, or Coordination Chemistry Reviews;
 - no DOI: Cremers footnotes and notes that are not publications (auto), and books, patents,
-  theses and proceedings (manual). The four Popov rows without a DOI are undecided.
+  theses and proceedings (manual). The four Popov rows without a DOI are undecided;
+- review by full text (manual): the parsed text carries a review label or calls itself a review.
 
 ### Scope
 
@@ -102,6 +103,12 @@ downloaded by fetch_pdfs.py), `openalex_alt` (another OpenAlex location, one-off
 
 `docling` is `ok` (ingest/docling/<paper_id>/ written), `failed`, or blank (not run).
 `parse_docling.py` writes it after each paper and skips rows already `ok`.
+
+After each Docling run, check the newly parsed papers for review signs in their first pages
+(about the first 3,000 characters of document.md): an article-type label such as Review,
+Review Article, Minireview, Perspective, Feature Article, Highlight, Tutorial or Account, or
+a self-description such as "this review", "in this perspective", "we review". List each hit
+(paper_id, title, matched text) for the user to check; do not exclude on your own.
 
 ## Docling stage: known limits (accepted, do not fix without a new decision)
 - Figure binding was checked by hand on 8 sampled papers: 74 of 75 figures exact.
