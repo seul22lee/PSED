@@ -18,7 +18,7 @@ psed_v2/
   corpus/manual_list.csv    # tracked: in-scope rows that need a hand-fetched PDF (derived from manifest)
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
   ingest/parse_docling.py   # tracked: Docling parse of in-scope corpus/raw/ PDFs (conda env psed310), writes the manifest `docling` column
-  ingest/docling/<paper_id>/ # gitignored: document.md, structure.json, figures/ (paper-derived)
+  ingest/docling/<paper_id>/ # gitignored: docling.json, figures/pic_K.png, document.md, structure.json (paper-derived)
 ```
 
 ## Rules
@@ -103,6 +103,11 @@ downloaded by fetch_pdfs.py), `openalex_alt` (another OpenAlex location, one-off
 
 `docling` is `ok` (ingest/docling/<paper_id>/ written), `failed`, or blank (not run).
 `parse_docling.py` writes it after each paper and skips rows already `ok`.
+
+A full parse saves Docling's own output (`docling.json`, images as placeholders, plus one crop
+per picture in `figures/pic_K.png`). Caption binding and the text repairs then run from those
+files. **When only the binding rules change, use `parse_docling.py --rebind --all`** (seconds
+per paper, no Docling); rerun Docling only when the conversion itself changes.
 
 After each Docling run, check the newly parsed papers for review signs in their first pages
 (about the first 3,000 characters of document.md): an article-type label such as Review,
