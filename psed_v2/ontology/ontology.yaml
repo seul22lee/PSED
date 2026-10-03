@@ -1,0 +1,871 @@
+# PSED v2 ontology v0. Built to the ontology criteria (v0); one file, every entry, relation and deviation.
+# Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
+# Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
+version: 0
+
+base_sources:
+  schema_miner:
+    repo: sciknoworg/schema-miner
+    commit: 13c47dc
+    file: results/Ideal Schema/Atomic-Layer-Deposition/experimental-ideal-schema.json
+    leaf_paths:   # the 30 leaf fields; each must appear once in an entry base.path or in excluded_base
+      - ALDSystem/ALDMethod
+      - ALDSystem/MaterialDeposited
+      - ReactantSelection/Precursor
+      - ReactantSelection/CoReactant
+      - ReactantSelection/CarrierGas
+      - ProcessParameters/Reactor/Name
+      - ProcessParameters/Reactor/Manufacturer
+      - ProcessParameters/DeliveryMethod
+      - ProcessParameters/Temperature
+      - ProcessParameters/Pressure
+      - ProcessParameters/ThicknessControl/GrowthPerCycle
+      - ProcessParameters/ThicknessControl/saturation
+      - ProcessParameters/ThicknessControl/nucleationPeriod
+      - ProcessParameters/ThicknessControl/DosingTime/Precursor
+      - ProcessParameters/ThicknessControl/DosingTime/CoReactant
+      - ProcessParameters/ThicknessControl/PurgeTime/Precursor
+      - ProcessParameters/ThicknessControl/PurgeTime/CoReactant
+      - MaterialProperties/OpticalProperties/RefractiveIndex
+      - MaterialProperties/OpticalProperties/AbsorptionCoefficient
+      - MaterialProperties/ElectricalProperties/Resistivity
+      - MaterialProperties/ElectricalProperties/CarrierDensity
+      - MaterialProperties/ElectricalProperties/Mobility
+      - MaterialProperties/Uniformity/Variation
+      - MaterialProperties/Conformality/AspectRatio
+      - MaterialProperties/ChemicalComposition
+      - MaterialProperties/Crystallinity
+      - MaterialProperties/FilmDensity
+      - OtherAspects/Safety
+      - OtherAspects/FilmStability
+      - OtherAspects/Reproducibility
+  cremers_2019: "Cremers, Puurunen, Dendooven, Appl. Phys. Rev. 6, 021302 (2019)"
+  popov_2025: "Popov, Mattinen, Vihervaara, Leskela, J. Vac. Sci. Technol. A 43, 030801 (2025)"
+
+base_notes:
+  - {type: dropped, what: "QUDT annotations", reason: "not used; the experimental schema file at commit 13c47dc carries none"}
+  - {type: unit_changed, what: "units named in schema-miner descriptions (Torr, seconds, nm per cycle, g/cm3)", reason: "canonical unit per dimension (units table below); raw value and raw unit are kept in the gold tables"}
+
+excluded_base:
+  - {path: ProcessParameters/ThicknessControl/saturation, deviation: dropped, reason: "a judgment, not data"}
+  - {path: OtherAspects/Safety, deviation: dropped, reason: "not data in papers"}
+  - {path: OtherAspects/FilmStability, deviation: dropped, reason: "not data in papers"}
+  - {path: OtherAspects/Reproducibility, deviation: dropped, reason: "not data in papers"}
+
+entries:
+
+  # ---------------------------------------------------------------- categorical conditions (base)
+  - id: process_mode
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV A-C)."
+    dimension: categorical
+    aliases: [ALDMethod]
+    base: {source: schema_miner, path: ALDSystem/ALDMethod}
+    deviation: {type: renamed, reason: "values follow the three process classes of Cremers Sec. IV"}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+
+  - id: material
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "The material being deposited; value is a species id."
+    dimension: categorical
+    aliases: [MaterialDeposited, Material, "Deposited material", "Film (process)"]
+    base: {source: schema_miner, path: ALDSystem/MaterialDeposited}
+    deviation: {type: renamed, reason: "shorter name; Popov Table I column 'Material'"}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Ylilammi2018 Table I", "Werbrouck2021 Sec. II D"]
+
+  - id: reactant_A
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "The first reactant of the ALD cycle, which reacts in a self-terminating way with the surface in step 1 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant A'); value is a species id."
+    dimension: categorical
+    aliases: [Precursor, "Reactant A", "first reactant"]
+    base: {source: schema_miner, path: ReactantSelection/Precursor}
+    deviation: {type: renamed, reason: "Popov Table I and Cremers Sec. I name the reactants A and B"}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+
+  - id: reactant_B
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "The second reactant of the ALD cycle, which reacts in a self-terminating way with the adsorbed species in step 3 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant B'); value is a species id."
+    dimension: categorical
+    aliases: [CoReactant, "Reactant B", "second reactant"]
+    base: {source: schema_miner, path: ReactantSelection/CoReactant}
+    deviation: {type: renamed, reason: "Popov Table I and Cremers Sec. I name the reactants A and B"}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+
+  - id: carrier_gas
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "Type of carrier gas used in the delivery of reactants; value is a species id."
+    dimension: categorical
+    aliases: [CarrierGas, "carrier gas"]
+    base: {source: schema_miner, path: ReactantSelection/CarrierGas}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII"]
+
+  - id: reactor
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "Name and manufacturer of the reactor, as one string."
+    dimension: categorical
+    aliases: [Reactor]
+    base: {source: schema_miner, path: [ProcessParameters/Reactor/Name, ProcessParameters/Reactor/Manufacturer]}
+    deviation: {type: merged, reason: "papers give name and manufacturer as one string (e.g. Picosun R-150)"}
+    evidence: ["Yim2020 Sec. C.B", "Yim2020 Table 2", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II A"]
+
+  - id: delivery_method
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "Method of delivering the precursor and co-reactant to the reaction chamber."
+    dimension: categorical
+    aliases: [DeliveryMethod]
+    base: {source: schema_miner, path: ProcessParameters/DeliveryMethod}
+    evidence: []
+
+  - id: crystallinity
+    type: categorical
+    origin: base
+    role: output
+    definition: "Whether the film is amorphous or crystalline."
+    dimension: categorical
+    aliases: [Crystallinity]
+    base: {source: schema_miner, path: MaterialProperties/Crystallinity}
+    evidence: []
+
+  - id: reactor_type
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "Reactor class by working pressure regime: pump-type, flow-type or atmospheric-pressure (Cremers 2019, Sec. II C, Fig. 3)."
+    dimension: categorical
+    aliases: ["vacuum-type", "pump-type", "flow-type"]
+    base: {source: cremers_2019, section: "Sec. II C"}
+    evidence: ["Werbrouck2021 Sec. II A"]
+
+  - id: plasma_configuration
+    type: categorical
+    origin: base
+    role: condition
+    group: process
+    definition: "Plasma configuration of a PE-ALD process: capacitive, inductive, remote or radical enhanced (Cremers 2019, Table IV)."
+    dimension: categorical
+    aliases: ["plasma configuration"]
+    base: {source: cremers_2019, section: "Table IV"}
+    evidence: ["Werbrouck2021 Sec. II A"]
+
+  - id: structure
+    type: categorical
+    origin: base
+    role: condition
+    group: geometry
+    definition: "The test structure or substrate on which conformality is quantified (Cremers 2019, Sec. III, Table I 'Structure'; Tables II-IV 'Substrate'); value is a structure id."
+    dimension: categorical
+    aliases: [Substrate, Structure, "LHAR type"]
+    base: {source: cremers_2019, section: "Sec. III, Table I"}
+    evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Ylilammi2018 Fig. 6", "Werbrouck2021 Fig. 3"]
+
+  # ---------------------------------------------------------------- base quantities from schema-miner
+  - id: deposition_temperature
+    type: quantity
+    origin: base
+    role: condition
+    group: process
+    definition: "The substrate/reactor temperature during film growth: the deposition temperature T of Cremers 2019 (Eq. 3; Table II column 'T')."
+    symbol: T
+    dimension: temperature
+    unit: "°C"
+    aliases: ["Deposition temperature", "substrate temperature", "Temperature (°C)", "T (°C)", "Temperature (K)"]
+    base: {source: schema_miner, path: ProcessParameters/Temperature}
+    deviation: {type: renamed, reason: "several temperatures exist (source, gas, annealing); only this one carries data"}
+    evidence: ["Yim2020 Sec. C.B", "Yim2020 Table 1", "Yim2020 Table 2", "Yim2020 Fig. 10", "Ylilammi2018 Sec. VII", "Ylilammi2018 Figs. 2-5", "Werbrouck2021 Sec. II D"]
+
+  - id: process_pressure
+    type: quantity
+    origin: base
+    role: condition
+    group: process
+    definition: "The total pressure within the reactor during deposition."
+    dimension: pressure
+    unit: Pa
+    qualifiers: [step]
+    aliases: ["process pressure", "Chamber pressure", "Pressure (mbar)", "total pressure"]
+    base: {source: schema_miner, path: ProcessParameters/Pressure}
+    deviation: {type: split, reason: "split into process_pressure and partial_pressure: the reactant partial pressure, not the total pressure, sets the exposure (Cremers Sec. II D); unit Torr -> Pa"}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Fig. 2", "Werbrouck2021 Fig. 12", "Werbrouck2021 Fig. 14", "Werbrouck2021 Table I", "Werbrouck2021 Fig. 9"]
+
+  - id: growth_per_cycle
+    type: quantity
+    origin: base
+    role: output
+    definition: "The amount of material deposited on the surface after each ALD cycle, here expressed as thickness per cycle (Cremers 2019, Sec. I)."
+    symbol: GPC
+    dimension: length_per_cycle
+    unit: nm/cycle
+    qualifiers: [position]
+    aliases: [GrowthPerCycle, "growth per cycle", GPC, "Thickness/cycles S/N (nm)", "SI/N (GPCI)", "SIIb/N (GPCIIb)", "Film growth per cycle"]
+    base: {source: schema_miner, path: ProcessParameters/ThicknessControl/GrowthPerCycle}
+    deviation: {type: role_changed, reason: "an outcome of the process, not a process parameter"}
+    evidence: ["Yim2020 Table 1", "Yim2020 Fig. 9b", "Yim2020 Fig. 9e", "Yim2020 Fig. 10b", "Yim2020 Fig. 10e", "Werbrouck2021 Sec. II D"]
+
+  - id: nucleation_period
+    type: quantity
+    origin: base
+    role: output
+    definition: "Number of initial ALD cycles before steady growth, measured in cycles."
+    dimension: count
+    unit: cycle
+    aliases: [nucleationPeriod]
+    base: {source: schema_miner, path: ProcessParameters/ThicknessControl/nucleationPeriod}
+    deviation: {type: role_changed, reason: "an outcome of the process, not a process parameter"}
+    evidence: []
+
+  - id: pulse_time
+    type: quantity
+    origin: base
+    role: condition
+    group: process
+    definition: "Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time."
+    dimension: time
+    unit: s
+    qualifiers: [step]
+    aliases: [DosingTime, "pulse time", "Pulse length (s)", "Length of the reactant pulse", "TMA pulse", "plasma pulse length", "pulse length"]
+    base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/DosingTime/Precursor, ProcessParameters/ThicknessControl/DosingTime/CoReactant]}
+    deviation: {type: renamed, reason: "Cremers and all gold papers say pulse time; the two fields become one entry with the step qualifier"}
+    evidence: ["Yim2020 Table 1", "Yim2020 Fig. 11a", "Yim2020 Fig. 10", "Ylilammi2018 Fig. 5", "Ylilammi2018 Fig. 4", "Ylilammi2018 Sec. VII", "Werbrouck2021 Fig. 11", "Werbrouck2021 Sec. II D"]
+
+  - id: purge_time
+    type: quantity
+    origin: base
+    role: condition
+    group: process
+    definition: "Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps 2 and 4 of the ALD cycle, Cremers 2019, Sec. I)."
+    dimension: time
+    unit: s
+    qualifiers: [step]
+    aliases: [PurgeTime, "purge time", Purge, "pump time"]
+    base: {source: schema_miner, path: [ProcessParameters/ThicknessControl/PurgeTime/Precursor, ProcessParameters/ThicknessControl/PurgeTime/CoReactant]}
+    deviation: {type: merged, reason: "the two fields become one entry with the step qualifier"}
+    evidence: ["Yim2020 Table 1", "Yim2020 Fig. 11b", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+
+  - id: refractive_index
+    type: quantity
+    origin: base
+    role: output
+    definition: "Refractive index of the film."
+    dimension: dimensionless
+    unit: "1"
+    aliases: [RefractiveIndex]
+    base: {source: schema_miner, path: MaterialProperties/OpticalProperties/RefractiveIndex}
+    evidence: []
+
+  - id: absorption_coefficient
+    type: quantity
+    origin: base
+    role: output
+    definition: "Optical absorption coefficient of the film: attenuation of light intensity per unit length."
+    dimension: inverse_length
+    unit: 1/m
+    aliases: [AbsorptionCoefficient]
+    base: {source: schema_miner, path: MaterialProperties/OpticalProperties/AbsorptionCoefficient}
+    deviation: {type: redefined, reason: "fixed as a quantity in 1/m; not a transmittance"}
+    evidence: []
+
+  - id: resistivity
+    type: quantity
+    origin: base
+    role: output
+    definition: "Electrical resistivity of the film."
+    dimension: resistivity
+    unit: "Ω·m"
+    aliases: [Resistivity]
+    base: {source: schema_miner, path: MaterialProperties/ElectricalProperties/Resistivity}
+    evidence: []
+
+  - id: carrier_density
+    type: quantity
+    origin: base
+    role: output
+    definition: "Number of charge carriers per unit volume of the film."
+    dimension: number_density
+    unit: 1/m3
+    aliases: [CarrierDensity]
+    base: {source: schema_miner, path: MaterialProperties/ElectricalProperties/CarrierDensity}
+    deviation: {type: redefined, reason: "a number density (1/m3), not a charge density"}
+    evidence: []
+
+  - id: mobility
+    type: quantity
+    origin: base
+    role: output
+    definition: "Carrier mobility in the film."
+    dimension: mobility
+    unit: "m2/(V·s)"
+    aliases: [Mobility]
+    base: {source: schema_miner, path: MaterialProperties/ElectricalProperties/Mobility}
+    evidence: []
+
+  - id: thickness_nonuniformity
+    type: quantity
+    origin: base
+    role: output
+    definition: "Relative variation of film thickness between positions along a planar substrate; a uniform film has equal thickness at each position along a planar substrate (Cremers 2019, Sec. II A)."
+    dimension: dimensionless
+    unit: "1"
+    aliases: [Variation]
+    base: {source: schema_miner, path: MaterialProperties/Uniformity/Variation}
+    deviation: {type: renamed, reason: "a measured variation on a planar substrate (Cremers Sec. II A), not a permissible one"}
+    evidence: []
+
+  - id: aspect_ratio
+    type: quantity
+    origin: base
+    role: condition
+    group: geometry
+    definition: "Aspect ratio of the structure, AR = L/w, with L the depth and w the width of the structure (Cremers 2019, Sec. II G, Eq. 11)."
+    symbol: AR
+    dimension: dimensionless
+    unit: "1"
+    aliases: [AspectRatio, "aspect ratio", AR, "Max. AR", "structural aspect ratio"]
+    base: {source: schema_miner, path: MaterialProperties/Conformality/AspectRatio}
+    deviation: {type: split, reason: "split into aspect_ratio and coated_aspect_ratio: the AR of the structure is not the AR reached by the coating (Cremers Sec. II G-H)"}
+    evidence: ["Yim2020 Table 2", "Yim2020 Fig. 1", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
+
+  - id: coated_aspect_ratio
+    type: quantity
+    origin: base
+    role: output
+    definition: "The (equivalent) aspect ratio reached by the coating: equal to that of the structure for complete coverage, otherwise calculated from PD50% (Cremers 2019, Sec. II H; Tables II-IV)."
+    symbol: coated (E)AR
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [basis]
+    aliases: ["coated EAR", "coated (E)AR", "x̃50%"]
+    base: {source: cremers_2019, section: "Sec. II H; second half of the split of schema_miner MaterialProperties/Conformality/AspectRatio (path recorded on aspect_ratio)"}
+    evidence: ["Yim2020 Table 1"]
+
+  - id: composition
+    type: quantity
+    origin: base
+    role: output
+    definition: "Atomic fraction of an element in the deposited film."
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [element]
+    aliases: [ChemicalComposition]
+    base: {source: schema_miner, path: MaterialProperties/ChemicalComposition}
+    deviation: {type: redefined, reason: "a quantity in at.% per element, not free text"}
+    evidence: []
+
+  - id: film_density
+    type: quantity
+    origin: base
+    role: output
+    definition: "Mass density of the film."
+    dimension: density
+    unit: g/cm3
+    aliases: [FilmDensity, "film density", "Density of the condensed phase"]
+    base: {source: schema_miner, path: MaterialProperties/FilmDensity}
+    evidence: []
+
+  # ---------------------------------------------------------------- base quantities from Cremers / Popov
+  - id: partial_pressure
+    type: quantity
+    origin: base
+    role: condition
+    group: process
+    definition: "Partial pressure of a gas species; the reactant partial pressure multiplied by the pulse time gives the exposure (Cremers 2019, Sec. II D; P_i in Eq. 3)."
+    symbol: P_i
+    dimension: pressure
+    unit: Pa
+    qualifiers: [species]
+    aliases: ["Partial pressure of reactant A", "Input partial pressure of reactant A", "Pressure pA (Pa)", "pA0 (Pa)", "pO (mbar)", "Partial pressure of active species"]
+    base: {source: cremers_2019, section: "Sec. II D; second half of the split of schema_miner ProcessParameters/Pressure (path recorded on process_pressure)"}
+    evidence: ["Ylilammi2018 Fig. 2", "Ylilammi2018 Table I", "Ylilammi2018 Figs. 3-5", "Yim2020 Fig. 10", "Werbrouck2021 Fig. 13", "Werbrouck2021 Fig. 14", "Werbrouck2021 Sec. II D"]
+
+  - id: exposure
+    type: quantity
+    origin: base
+    role: condition
+    group: process
+    definition: "The product of the reactant partial pressure and the pulse time (Cremers 2019, Sec. II D)."
+    dimension: exposure
+    unit: "Pa·s"
+    qualifiers: [species]
+    aliases: ["reactant exposure"]
+    base: {source: cremers_2019, section: "Sec. II D"}
+    evidence: []
+
+  - id: source_temperature
+    type: quantity
+    origin: base
+    role: condition
+    group: process
+    definition: "Temperature at which the precursor source (bubbler, canister) is held (Popov 2025, Sec. IV)."
+    dimension: temperature
+    unit: "°C"
+    qualifiers: [species]
+    aliases: ["source temperature"]
+    base: {source: popov_2025, section: "Sec. IV"}
+    evidence: []
+
+  - id: film_thickness
+    type: quantity
+    origin: base
+    role: output
+    definition: "Thickness of the deposited film at a position; as a function of depth into the structure it is the thickness profile (Cremers 2019, Sec. II H, Fig. 7)."
+    dimension: length
+    unit: nm
+    qualifiers: [position]
+    aliases: ["Film thickness (nm)", "Film thickness S (nm)", "Thickness (nm)", "film thickness", "Thickness outside SI (nm)", "Initial thickness SIIb (nm)"]
+    base: {source: cremers_2019, section: "Sec. II H, Fig. 7"}
+    evidence: ["Yim2020 Fig. 7", "Yim2020 Fig. 8", "Yim2020 Fig. 9a", "Yim2020 Fig. 9d", "Yim2020 Fig. 10a", "Yim2020 Fig. 10d", "Yim2020 Fig. 11", "Yim2020 Table 1", "Ylilammi2018 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Fig. 11", "Werbrouck2021 Fig. 12"]
+
+  - id: penetration_depth
+    type: quantity
+    origin: base
+    role: output
+    definition: "The depth at which the film thickness equals a given fraction of the film thickness at the top: 50% for PD50%, 80% for PD80% (Cremers 2019, Sec. II H, Fig. 7b)."
+    symbol: "PD50%"
+    dimension: length
+    unit: "µm"
+    qualifiers: [level]
+    aliases: ["PD50%", "x50% (PD50%)", "Penetration depth xp (µm)", "Half-thickness penetration depth", "50% thickness penetration depth"]
+    base: {source: cremers_2019, section: "Sec. II H"}
+    evidence: ["Yim2020 Table 1", "Ylilammi2018 Fig. 5"]
+
+  - id: equivalent_aspect_ratio
+    type: quantity
+    origin: base
+    role: condition
+    group: geometry
+    definition: "The aspect ratio of a hypothetical cylindrical hole that would require the same reactant exposure dose as the feature of interest (Cremers 2019, Sec. II G). Recorded as reported, never computed."
+    symbol: EAR
+    dimension: dimensionless
+    unit: "1"
+    aliases: [EAR, "equivalent aspect ratio"]
+    base: {source: cremers_2019, section: "Sec. II G"}
+    evidence: ["Werbrouck2021 Sec. II D"]
+
+  - id: step_coverage
+    type: quantity
+    origin: base
+    role: output
+    definition: "The ratio of the film thickness at the bottom of a feature (or at the side wall) to the film thickness at the top of the feature (Cremers 2019, Sec. II H, Fig. 7a)."
+    symbol: SC
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [position]
+    aliases: ["step coverage", SC]
+    base: {source: cremers_2019, section: "Sec. II H"}
+    evidence: []
+
+  - id: initial_sticking_coefficient
+    type: quantity
+    origin: base
+    role: model_parameter
+    definition: "The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5)."
+    symbol: s0
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [species]
+    aliases: ["initial sticking coefficient", "lumped sticking coefficient", "cTMA", "cH2O", "sticking coefficient"]
+    base: {source: cremers_2019, section: "Sec. II E, Eq. 5"}
+    evidence: ["Ylilammi2018 Table I", "Ylilammi2018 Figs. 2-5", "Yim2020 Table 2", "Yim2020 Fig. 10", "Werbrouck2021 Sec. III D"]
+
+  - id: recombination_probability
+    type: quantity
+    origin: base
+    role: model_parameter
+    definition: "The probability that a species recombines during a collision with the surface (Cremers 2019, Sec. II E; Table VII)."
+    symbol: r
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [species, surface]
+    aliases: ["recombination probability", "recombination coefficient"]
+    base: {source: cremers_2019, section: "Sec. II E, Table VII"}
+    evidence: ["Werbrouck2021 Sec. III D"]
+
+  - id: surface_coverage
+    type: quantity
+    origin: base
+    role: output
+    definition: "The fraction of covered surface sites, θ (Cremers 2019, Sec. II E, Eqs. 5-9)."
+    symbol: "θ"
+    dimension: dimensionless
+    unit: "1"
+    aliases: ["Surface coverage (θ)", "Surface coverage", "fraction of covered sites"]
+    base: {source: cremers_2019, section: "Sec. II E"}
+    evidence: ["Ylilammi2018 Fig. 3"]
+
+  - id: gap
+    type: quantity
+    origin: base
+    role: condition
+    group: geometry
+    definition: "The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole."
+    symbol: w
+    dimension: length
+    unit: "µm"
+    aliases: ["Design channel height H (nm)", "Channel height (nm)", "Height of the channel", "H (nm)", "LHAR H (µm)", "opening height", "channel gap height"]
+    base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
+    evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Yim2020 Fig. 9", "Yim2020 Fig. 10", "Ylilammi2018 Table I", "Ylilammi2018 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
+
+  - id: feature_depth
+    type: quantity
+    origin: base
+    role: condition
+    group: geometry
+    definition: "The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure."
+    symbol: L
+    dimension: length
+    unit: "µm"
+    aliases: ["L (mm)", "Length of the channel", "Lateral length of the channel (mm)", "channel length L"]
+    base: {source: cremers_2019, section: "Sec. II G, Fig. 5"}
+    evidence: ["Yim2020 Fig. 8a", "Yim2020 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Sec. II D"]
+
+  - id: feature_extent
+    type: quantity
+    origin: base
+    role: condition
+    group: geometry
+    definition: "The length z of the feature along the third dimension, perpendicular to w and L (Cremers 2019, Sec. II G, Fig. 6): channel width of a lateral structure, trench length of a vertical trench."
+    symbol: z
+    dimension: length
+    unit: "µm"
+    aliases: ["Width of the channel", "channel width W"]
+    base: {source: cremers_2019, section: "Sec. II G, Fig. 6"}
+    evidence: ["Ylilammi2018 Figs. 2-5", "Werbrouck2021 Sec. II D"]
+
+  # ---------------------------------------------------------------- extension quantities (gold)
+  - id: cycle_number
+    type: quantity
+    origin: extension
+    role: condition
+    group: process
+    definition: "Number of ALD cycles applied in a deposition."
+    dimension: count
+    unit: cycle
+    aliases: ["ALD cycles N", "Number of cycles", Cycles, "number of ALD cycles"]
+    base: {}
+    evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Yim2020 Fig. 9d", "Yim2020 Fig. 10d", "Ylilammi2018 Table I", "Ylilammi2018 Fig. 4", "Werbrouck2021 Sec. II D"]
+
+  - id: plasma_power
+    type: quantity
+    origin: extension
+    role: condition
+    group: process
+    definition: "Power delivered to the plasma source during the plasma step."
+    dimension: power
+    unit: W
+    aliases: ["plasma power", "Power (W)"]
+    base: {}
+    evidence: ["Werbrouck2021 Fig. 2", "Werbrouck2021 Fig. 11", "Werbrouck2021 Fig. 13", "Werbrouck2021 Table I", "Werbrouck2021 Sec. II D"]
+
+  - id: gas_flow_rate
+    type: quantity
+    origin: extension
+    role: condition
+    group: process
+    definition: "Flow rate of a gas into the reactor."
+    dimension: gas_flow
+    unit: sccm
+    qualifiers: [gas]
+    aliases: ["Flow (sccm)", "flow rate", "gas flow"]
+    base: {}
+    evidence: ["Werbrouck2021 Fig. 2", "Werbrouck2021 Table I", "Werbrouck2021 Fig. 6", "Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII"]
+
+  - id: normalized_thickness
+    type: quantity
+    origin: extension
+    role: output
+    definition: "Film thickness divided by a reference thickness: the thickness at the feature entrance, on the planar surface, or an assumed saturated thickness."
+    dimension: dimensionless
+    unit: "1"
+    qualifiers: [reference]
+    aliases: ["Normalized thickness (-)", "Normalized deposition thickness", "Type 1 normalized saturation profile"]
+    base: {}
+    evidence: ["Yim2020 Fig. 9c", "Yim2020 Fig. 9f", "Yim2020 Fig. 10c", "Yim2020 Fig. 10f", "Werbrouck2021 Fig. 11", "Werbrouck2021 Fig. 12"]
+
+  - id: adsorption_equilibrium_constant
+    type: quantity
+    origin: extension
+    role: model_parameter
+    definition: "Equilibrium constant K of reversible Langmuir adsorption, the ratio of the adsorption and desorption rate constants per unit pressure (Ylilammi 2018, Eq. 13)."
+    dimension: inverse_pressure
+    unit: 1/Pa
+    qualifiers: [species]
+    aliases: ["Adsorption equilibrium constant", "K (Pa-1)", "Adsorption equilibrium constant (1/Pa)"]
+    base: {}
+    evidence: ["Ylilammi2018 Table I", "Ylilammi2018 Figs. 2-5", "Yim2020 Fig. 10"]
+
+  - id: saturation_growth_per_cycle
+    type: quantity
+    origin: extension
+    role: model_parameter
+    definition: "The equilibrium thickness of layer growth in one cycle at saturation, i.e. at high reactant exposure (Ylilammi 2018, Eq. 46); a model parameter, distinct from the observed growth_per_cycle."
+    dimension: length_per_cycle
+    unit: nm/cycle
+    aliases: ["Saturation growth in cycle", "gpcsat (pm)", "Saturation growth in cycle (nm)"]
+    base: {}
+    evidence: ["Ylilammi2018 Table I", "Ylilammi2018 Figs. 2-5", "Yim2020 Fig. 10"]
+
+  - id: distance
+    type: quantity
+    origin: extension
+    role: coordinate
+    definition: "Position along the direction of reactant diffusion, measured from the feature entrance, positive inward and negative outside the feature."
+    dimension: length
+    unit: "µm"
+    aliases: ["Distance inside the channel x (µm)", "Distance x (µm)", "Location x (µm)", "Location (µm)", "Depth (m)", "Distance [µm]", "Distance from the beginning of the channel"]
+    base: {}
+    evidence: ["Yim2020 Fig. 5b", "Yim2020 Fig. 7", "Yim2020 Fig. 8", "Yim2020 Fig. 9a", "Yim2020 Fig. 9d", "Yim2020 Fig. 10a", "Yim2020 Fig. 10d", "Yim2020 Fig. 11", "Ylilammi2018 Fig. 2", "Ylilammi2018 Fig. 3", "Ylilammi2018 Fig. 4", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7", "Werbrouck2021 Fig. 11", "Werbrouck2021 Fig. 12"]
+
+  - id: dimensionless_distance
+    type: quantity
+    origin: extension
+    role: coordinate
+    definition: "Distance from the feature entrance divided by the gap, x/w (Yim 2020: x̃ = x/H)."
+    dimension: dimensionless
+    unit: "1"
+    aliases: ["Dimensionless distance x̃", "dimensionless distance"]
+    base: {}
+    evidence: ["Yim2020 Fig. 9b", "Yim2020 Fig. 9c", "Yim2020 Fig. 9e", "Yim2020 Fig. 9f", "Yim2020 Fig. 10b", "Yim2020 Fig. 10c", "Yim2020 Fig. 10e", "Yim2020 Fig. 10f"]
+
+  - id: time
+    type: quantity
+    origin: extension
+    role: coordinate
+    definition: "Time elapsed since the start of a reactant pulse."
+    dimension: time
+    unit: s
+    aliases: ["Time (s)", "time t"]
+    base: {}
+    evidence: ["Ylilammi2018 Fig. 2", "Ylilammi2018 Fig. 3"]
+
+  # ---------------------------------------------------------------- species (gold papers only)
+  - id: tma
+    type: species
+    origin: extension
+    definition: "Trimethylaluminum, the aluminum reactant of the Al2O3 processes in the gold papers."
+    formula: "Al(CH3)3"
+    ligand_class: alkyl
+    aliases: [TMA, trimethylaluminum, "Al(CH3)3", AlMe3]
+    base: {}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+
+  - id: ticl4
+    type: species
+    origin: extension
+    definition: "Titanium tetrachloride, the titanium reactant of the TiO2 process in Ylilammi 2018."
+    formula: TiCl4
+    ligand_class: halide
+    aliases: [TiCl4, "titanium tetrachloride"]
+    base: {}
+    evidence: ["Ylilammi2018 Sec. VII"]
+
+  - id: h2o
+    type: species
+    origin: extension
+    definition: "Water, the second reactant of the thermal processes in the gold papers."
+    formula: H2O
+    aliases: [H2O, water]
+    base: {}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII"]
+
+  - id: o2
+    type: species
+    origin: extension
+    definition: "Molecular oxygen; with process_mode = plasma it is the plasma gas of the TMA/O2 plasma process."
+    formula: O2
+    aliases: [O2, oxygen]
+    base: {}
+    evidence: ["Werbrouck2021 Sec. II D"]
+
+  - id: o_atom
+    type: species
+    origin: extension
+    definition: "Atomic oxygen, the active plasma species to which the fitted partial pressure is attributed."
+    formula: O
+    aliases: ["atomic O", "oxygen radicals", "atomic oxygen"]
+    base: {}
+    evidence: ["Werbrouck2021 Fig. 13", "Werbrouck2021 Fig. 14"]
+
+  - id: n2
+    type: species
+    origin: extension
+    definition: "Nitrogen, used as carrier and purge gas."
+    formula: N2
+    aliases: [N2, nitrogen]
+    base: {}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII"]
+
+  - id: al2o3
+    type: species
+    origin: extension
+    definition: "Aluminum oxide film."
+    formula: Al2O3
+    material_class: oxide
+    n_elements: binary
+    aliases: [Al2O3, alumina, "aluminum oxide"]
+    base: {}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Fig. 6", "Werbrouck2021 Sec. II D"]
+
+  - id: tio2
+    type: species
+    origin: extension
+    definition: "Titanium dioxide film."
+    formula: TiO2
+    material_class: oxide
+    n_elements: binary
+    aliases: [TiO2, "titanium oxide"]
+    base: {}
+    evidence: ["Ylilammi2018 Fig. 7"]
+
+  # ---------------------------------------------------------------- structures (gold papers only)
+  - id: pillarhall_3
+    type: structure
+    origin: extension
+    definition: "Microscopic all-silicon lateral high-aspect-ratio channel under a polysilicon membrane supported by pillars, PillarHall 3rd generation prototype (Yim 2020, Sec. C.A; Ylilammi 2018, Sec. I)."
+    class: lateral
+    aliases: ["PillarHall-3", "PillarHall prototype 3", "Microscopic rectangular PillarHall-3", "PillarHall 3rd generation"]
+    base: {}
+    evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Ylilammi2018 Fig. 6", "Ylilammi2018 Fig. 7"]
+
+  - id: macroscopic_lateral_trench
+    type: structure
+    origin: extension
+    definition: "Macroscopic lateral rectangular hole made by stacking two pieces of Si with a spacer in between (Werbrouck 2021, Fig. 3)."
+    class: lateral
+    aliases: ["macroscopic, lateral trench", "macroscopic test structures"]
+    base: {}
+    evidence: ["Werbrouck2021 Fig. 3", "Werbrouck2021 Sec. II D"]
+
+  - id: planar
+    type: structure
+    origin: extension
+    definition: "Planar substrate without a 3D feature."
+    class: planar
+    aliases: ["planar substrate", "planar"]
+    base: {}
+    evidence: ["Werbrouck2021 Fig. 9"]
+
+  # ---------------------------------------------------------------- models
+  - id: ylilammi_diffusion_reaction
+    type: model
+    origin: base
+    definition: "One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption and an analytical approximate solution of the diffusion equation (Ylilammi 2018, Secs. III-V; analytical model in Cremers 2019, Sec. V A 1)."
+    model_type: analytical
+    parameters: [initial_sticking_coefficient, adsorption_equilibrium_constant, saturation_growth_per_cycle, partial_pressure]
+    reference: "Ylilammi, Ylivaara, Puurunen, J. Appl. Phys. 123, 205301 (2018)"
+    base: {source: cremers_2019, section: "Sec. V A 1"}
+    evidence: ["Ylilammi2018 Figs. 2-7", "Yim2020 Fig. 10"]
+
+  - id: gordon_plug_flow
+    type: model
+    origin: base
+    definition: "Analytical model based on conductance formulae in which the reactant enters as a front and reacts on first collision with an unsaturated wall (Cremers 2019, Sec. V A 1)."
+    model_type: analytical
+    parameters: []
+    reference: "Gordon, Hausmann, Kim, Shepard, Chem. Vap. Deposition 9, 73 (2003)"
+    base: {source: cremers_2019, section: "Sec. V A 1"}
+    evidence: ["Ylilammi2018 Fig. 5"]
+
+  - id: yanguas_gil_markov_chain
+    type: model
+    origin: base
+    definition: "Markov chain model in which the trajectory of a molecule is a series of transitions between positions in the feature, with sticking and recombination probabilities (Cremers 2019, Sec. V B 2)."
+    model_type: computational
+    parameters: [initial_sticking_coefficient, recombination_probability]
+    reference: "Yanguas-Gil and Elam, Theor. Chem. Acc. 133, 1465 (2014)"
+    base: {source: cremers_2019, section: "Sec. V B 2"}
+    evidence: ["Werbrouck2021 Figs. 11-14"]
+
+  - id: arts_slope
+    type: model
+    origin: extension
+    definition: "Closed-form relation between the slope of the normalized thickness profile at half coverage and the sticking coefficient, valid in the Knudsen regime (Yim 2020, Sec. D, citing Arts 2019 Eq. 3)."
+    model_type: analytical
+    parameters: [initial_sticking_coefficient]
+    reference: "Arts, Vandalon, Puurunen, Utriainen, Gao, Kessels, Knoops, J. Vac. Sci. Technol. A 37, 030908 (2019)"
+    base: {}
+    evidence: ["Yim2020 Table 2"]
+
+transforms:
+  - {id: unit_conversion,     inputs: [any],                                        output: same,                           formula: "unit table below"}
+  - {id: thickness_to_gpc,    inputs: [film_thickness, cycle_number],               output: growth_per_cycle,               formula: "d / N"}
+  - {id: x_over_gap,          inputs: [distance, gap],                              output: dimensionless_distance,         formula: "x / w"}
+  - {id: normalize_thickness, inputs: [film_thickness, "film_thickness{position=reference}"], output: normalized_thickness, formula: "d(x) / d_ref"}
+  - {id: aspect_ratio,        inputs: [feature_depth, gap],                         output: aspect_ratio,                   formula: "L / w  (Cremers Eq. 11)"}
+  - {id: coated_ar,           inputs: [penetration_depth, gap],                     output: "coated_aspect_ratio{basis=AR}", formula: "PD / w"}
+  - {id: exposure,            inputs: [partial_pressure, pulse_time],               output: exposure,                       formula: "p * t  (Cremers Sec. II D)"}
+  - {id: step_coverage,       inputs: ["film_thickness{position=bottom}", "film_thickness{position=top}"], output: step_coverage, formula: "d_bottom / d_top"}
+
+qualifiers:   # closed lists; adding a value is allowed and is logged
+  step:      {values: [reactant_A, purge_A, reactant_B, purge_B], source: "Cremers Sec. I four steps; Popov Reactant A/B"}
+  species:   {values: species ids}
+  gas:       {values: species ids}
+  element:   {values: element symbols}
+  position:  {values: [planar, top, sidewall, bottom], source: "Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top"}
+  reference: {values: [top, planar, assumed_saturation]}
+  level:     {values: ["50%", "80%"], source: "Cremers PD50%, PD80%"}
+  basis:     {values: [AR, EAR], source: "Cremers Sec. II G"}
+  surface:   {values: material ids}
+
+units:   # canonical unit per dimension, and the accepted units
+  temperature:      {canonical: "°C",       accepted: ["°C", K]}
+  time:             {canonical: s,          accepted: [ms, s, min]}
+  pressure:         {canonical: Pa,         accepted: [Pa, hPa, mbar, Torr, mTorr]}
+  exposure:         {canonical: "Pa·s",     accepted: ["Pa·s", "Torr·s", L]}
+  length:           {canonical: "nm (film thickness) / µm (position, geometry)", accepted: [pm, "Å", nm, "µm", mm, cm, m]}
+  length_per_cycle: {canonical: nm/cycle,   accepted: [pm/cycle, "Å/cycle", nm/cycle]}
+  power:            {canonical: W,          accepted: [W]}
+  gas_flow:         {canonical: sccm,       accepted: [sccm]}
+  dimensionless:    {canonical: "1",        accepted: ["1", "%", "at.%"]}
+  density:          {canonical: g/cm3,      accepted: [g/cm3, kg/m3]}
+  resistivity:      {canonical: "Ω·m",      accepted: ["Ω·m", "Ω·cm", "µΩ·cm"]}
+  inverse_pressure: {canonical: 1/Pa,       accepted: [1/Pa, 1/mbar]}
+  count:            {canonical: cycle,      accepted: [cycle]}
+  inverse_length:   {canonical: 1/m,        accepted: [1/m, 1/cm]}
+  number_density:   {canonical: 1/m3,       accepted: [1/m3, 1/cm3]}
+  mobility:         {canonical: "m2/(V·s)", accepted: ["m2/(V·s)", "cm2/(V·s)"]}
+
+vocabularies:
+  panel_type:        [plot, image, schematic, table]
+  data_kind:         [measured, simulation, calculated, fit, cited]
+  series_structure:  [curve, per_point, image]
+  experiment_kind:   [sample, in_situ_run, plasma_measurement, cited]
+  condition_source:  [caption, methods, table, body]
+  condition_status:  [stated, approximated, inferred]
+  process_mode:      [thermal, ozone, plasma]
+  plasma_configuration: [capacitive, inductive, remote, radical_enhanced]
+  reactor_type:      [pump_type, flow_type, atmospheric]
+  crystallinity:     [amorphous, crystalline]
+  structure_class:   [lateral, vertical, porous, planar]
+  material_class:    [oxide, chalcogenide, element, pnictogenide, halide, carbon_group, boron_group]
+  n_elements:        [element, binary, ternary, quaternary]
+  measurement_method: [reflectometry, spectroscopic_ellipsometry, xrr, optical_microscopy, sem, sem_eds, afm, oes, eqp]
+  categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
+                           plasma_configuration, reactor_type, reactor, delivery_method]
+  ambiguous_aliases:
+    coverage:             [surface_coverage, normalized_thickness]
+    depth:                [distance, feature_depth]
+    temperature:          [deposition_temperature, native]
+    pressure:             [process_pressure, partial_pressure]
+    power:                [plasma_power, native]
+    sticking probability: [initial_sticking_coefficient, native]
