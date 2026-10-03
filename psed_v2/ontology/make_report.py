@@ -10,7 +10,7 @@ import html
 import json
 import re
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import yaml
@@ -19,6 +19,7 @@ HERE = Path(__file__).resolve().parent
 SCHEMA = HERE / "sources" / "experimental-ideal-schema.json"
 EXTENSION_CAP = 15
 ROLES = ["condition", "coordinate", "output", "model_parameter"]
+SPECIES_KINDS = ("molecule", "material", "atom")
 # Base quantity ids the criteria expect (Sec. 10). Categorical entries are checked separately
 # against vocabularies.categorical_conditions plus crystallinity (an output, Sec. 2).
 EXPECTED_BASE = {
@@ -27,11 +28,17 @@ EXPECTED_BASE = {
     "absorption_coefficient", "resistivity", "carrier_density", "mobility", "thickness_nonuniformity",
     "composition", "film_density", "film_thickness", "penetration_depth", "equivalent_aspect_ratio",
     "initial_sticking_coefficient", "recombination_probability", "partial_pressure", "surface_coverage",
-    "gap", "feature_depth", "feature_extent", "exposure", "step_coverage", "source_temperature"}
+    "feature_width", "feature_depth", "feature_extent", "exposure", "step_coverage", "source_temperature"}
+SUBSCRIPTS = str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")
 
 
 def esc(x) -> str:
     return html.escape("" if x is None else str(x))
+
+
+def norm_value(s) -> str:
+    """Sec. 6 value matching normalization."""
+    return re.sub(r"[ \-®™]", "", str(s).lower().translate(SUBSCRIPTS)).replace("aluminium", "aluminum")
 
 
 def leaf_paths(node: dict, prefix: str = "") -> list[str]:
@@ -104,14 +111,42 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     bad = [e["id"] for e in entries if e["type"] in ("species", "structure") and not e.get("evidence")]
     out.append(("7. no species, structure or process taken from a review table (each has gold evidence)", not bad,
                 f"problems: {bad}" if bad else ""))
+
+    typed = [e for e in entries if e["type"] in ("quantity", "categorical")]
+    listed = Counter(i for members in voc["categories"].values() for i in members)
+    bad = [e["id"] for e in typed if not e.get("category")]
+    bad += [e["id"] for e in typed if e["id"] not in voc["categories"].get(e.get("category"), [])]
+    bad += [i for i, n in listed.items() if n > 1] + [i for i in listed if i not in {e["id"] for e in typed}]
+    out.append(("8. every quantity and categorical has a category; the categories lists match the entries exactly",
+                not bad, f"problems: {sorted(set(bad))}" if bad else f"{len(voc['categories'])} categories"))
+
+    bad = [e["id"] for e in entries if e["type"] == "categorical" and not e.get("values_from")]
+    bad += [e["id"] for e in entries if e["type"] == "species" and e.get("kind") not in SPECIES_KINDS]
+    owners = defaultdict(set)
+    for e in entries:
+        if e["type"] in ("species", "structure"):
+            for a in e.get("aliases", []):
+                owners[norm_value(a)].add(e["id"])
+    for key, values in voc["value_aliases"].items():
+        for value, aliases in values.items():
+            if key == "joint":
+                owners[norm_value(value)].add(f"joint:{value}")
+            else:
+                for a in aliases:
+                    owners[norm_value(a)].add(f"{key}={value}")
+    bad += [f"{a} -> {sorted(o)}" for a, o in owners.items() if len(o) > 1]
+    out.append(("9. every categorical has values_from; every species has kind; no value alias under two values",
+                not bad, f"problems: {bad}" if bad else f"{len(owners)} value aliases"))
     return out
 
 
 def graph_svg(onto: dict) -> str:
     entries = onto["entries"]
-    cols = {r: [e for e in entries if e.get("role") == r] for r in ROLES}
+    cat_order = {c: i for i, c in enumerate(onto["vocabularies"]["categories"])}
+    cols = {r: sorted([e for e in entries if e.get("role") == r], key=lambda e: cat_order.get(e.get("category"), 99))
+            for r in ROLES}
     cols["model"] = [e for e in entries if e["type"] == "model"]
-    w, h, gapx, gapy, top = 215, 18, 40, 5, 30
+    w, h, gapx, gapy, top = 300, 18, 40, 5, 30
     pos, parts = {}, []
     for ci, (name, col) in enumerate(cols.items()):
         x = 10 + ci * (w + gapx)
@@ -140,18 +175,50 @@ def graph_svg(onto: dict) -> str:
             continue
         x, y = pos[e["id"]]
         cls = e["origin"] + ("" if e.get("evidence") else " faded")
+        label = e["id"] + (f'  [{e["category"]}]' if e.get("category") else "")
         parts.append(f'<g class="{cls}"><title>{esc(e["definition"])}</title>'
                      f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="3"/>'
-                     f'<text x="{x + 5}" y="{y + 13}">{esc(e["id"])}</text></g>')
+                     f'<text x="{x + 5}" y="{y + 13}">{esc(label)}</text></g>')
     height = top + max(len(c) for c in cols.values()) * (h + gapy) + 10
     width = 10 + len(cols) * (w + gapx)
     return f'<svg viewBox="0 0 {width} {height}" width="{width}" height="{height}" font-size="11">{"".join(parts)}</svg>'
 
 
-def table(header: list[str], rows: list[list]) -> str:
-    head = "".join(f"<th>{esc(c)}</th>" for c in header)
-    body = "".join("<tr>" + "".join(f"<td>{esc(c)}</td>" for c in r) + "</tr>" for r in rows)
-    return f"<table><tr>{head}</tr>{body}</table>"
+def table(header: list[str], rows: list[list], groups: dict[str, list[list]] | None = None) -> str:
+    """One table; with `groups`, a heading row precedes each group of rows."""
+    head = "<tr>" + "".join(f"<th>{esc(c)}</th>" for c in header) + "</tr>"
+    body = ""
+    for name, grows in (groups or {"": rows}).items():
+        if name:
+            body += f'<tr><th colspan="{len(header)}">{esc(name)}</th></tr>'
+        body += "".join("<tr>" + "".join(f"<td>{esc(c)}</td>" for c in r) + "</tr>" for r in grows)
+    return f"<table>{head}{body}</table>"
+
+
+def values_rows(onto: dict) -> list[list]:
+    entries, voc = onto["entries"], onto["vocabularies"]
+    by_type = defaultdict(list)
+    for e in entries:
+        by_type[e["type"]].append(e)
+    alias_text = lambda items: "; ".join(f'{s["id"]}: {", ".join(s.get("aliases", []))}' for s in items)
+    rows = []
+    for e in by_type["categorical"]:
+        vf = e["values_from"]
+        if vf.startswith("species with kind"):
+            items = [s for s in by_type["species"] if s.get("kind") == vf.split("=")[-1].strip()]
+            rows.append([e["id"], vf, ", ".join(s["id"] for s in items), alias_text(items)])
+        elif vf.startswith("structure"):
+            rows.append([e["id"], vf, ", ".join(s["id"] for s in by_type["structure"]), alias_text(by_type["structure"])])
+        elif vf.startswith("fixed list"):
+            aliases = voc["value_aliases"].get(e["id"], {})
+            rows.append([e["id"], vf, ", ".join(voc.get(e["id"], [])),
+                         "; ".join(f'{v}: {", ".join(a)}' for v, a in aliases.items())])
+        else:
+            rows.append([e["id"], vf, "—", "—"])
+    joint = voc["value_aliases"].get("joint", {})
+    rows.append(["(joint)", "value_aliases.joint: one printed value sets two fields", ", ".join(joint),
+                 "; ".join(f"{k}: {v}" for k, v in joint.items())])
+    return rows
 
 
 def main() -> int:
@@ -159,6 +226,7 @@ def main() -> int:
     with (HERE / "unmapped.csv").open(newline="", encoding="utf-8") as f:
         unmapped = list(csv.DictReader(f))
     entries = onto["entries"]
+    voc = onto["vocabularies"]
     checks = run_checks(onto)
     ok = all(c[1] for c in checks)
 
@@ -172,8 +240,14 @@ def main() -> int:
         d = e.get("deviation")
         return f'{d["type"]}: {d["reason"]}' if d else ""
 
-    entry_rows = [[e["id"], e["type"], e.get("role", ""), e.get("unit", ""), e["origin"],
-                   ", ".join(e.get("qualifiers", [])), "; ".join(e.get("evidence", [])), dev(e)] for e in entries]
+    def entry_row(e):
+        return [e["id"], e["type"], e.get("role", ""), e.get("unit", ""), e["origin"],
+                ", ".join(e.get("qualifiers", [])), "; ".join(e.get("evidence", [])), dev(e)]
+    groups = {c: [entry_row(e) for e in entries if e.get("category") == c] for c in voc["categories"]}
+    for t in ("species", "structure", "model"):
+        groups[t] = [entry_row(e) for e in entries if e["type"] == t]
+    entries_html = table(["id", "type", "role", "unit", "origin", "qualifiers", "evidence", "deviation"], [], groups)
+
     by_path = {p: e for e in entries for p in base_paths(e)}
     excluded = {x["path"]: x for x in onto["excluded_base"]}
     diff_rows = []
@@ -213,10 +287,12 @@ svg path.parameter_of {{ stroke: #b36; stroke-dasharray: 4 3; }}
 <p>Checks: <b>{"all passed" if ok else "FAILED"}</b>.</p>
 <h2>1. Summary</h2>{summary}
 <h2>2. Graph</h2>
-<p>Blue = base, orange = extension, faded = no gold evidence. Green line = derives (transform),
-dashed red line = parameter_of. Hover a node for its definition.</p>
+<p>Blue = base, orange = extension, faded = no gold evidence. Nodes are ordered by category within each role
+column and labelled with their category. Green line = derives (transform), dashed red line = parameter_of.
+Hover a node for its definition.</p>
 <div class="wide">{graph_svg(onto)}</div>
-<h2>3. Entries</h2><div class="wide">{table(["id", "type", "role", "unit", "origin", "qualifiers", "evidence", "deviation"], entry_rows)}</div>
+<h2>3. Entries (grouped by category)</h2><div class="wide">{entries_html}</div>
+<h2>3b. Values</h2>{table(["categorical", "values_from", "current values", "value aliases"], values_rows(onto))}
 <h2>4. schema-miner diff</h2>{table(["schema-miner path", "entry", "deviation", "reason"], diff_rows)}
 <h2>5. Units</h2>{table(["dimension", "canonical", "accepted"], unit_rows)}
 <h2>6. Unmapped</h2>{unmapped_html}

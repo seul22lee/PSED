@@ -49,7 +49,7 @@ Gold PDFs are in `psed_v2/gold/pdf/`.
   type:       quantity | categorical | species | structure | model
   origin:     base | extension
   role:       condition | output | model_parameter | coordinate     # quantities and categoricals
-  group:      process | geometry                                    # conditions only
+  category:   one value from Sec. 12 `categories`                   # quantities and categoricals
   definition: one or two sentences; review wording where a review defines it
   symbol:     as in Cremers, if defined there
   dimension:  e.g. temperature, length, length_per_cycle, dimensionless
@@ -63,9 +63,9 @@ Gold PDFs are in `psed_v2/gold/pdf/`.
 
 `evidence` empty means the entry is defined but not used. It is not an extraction target and is not scored.
 
-Categorical entries (values are text or ids, no unit) are `type: categorical`: process_mode, material, reactant_A, reactant_B, carrier_gas, reactor, delivery_method, structure, plasma_configuration, reactor_type, crystallinity (role output). They are not counted as quantities.
+Categorical entries (values are text or ids, no unit) are `type: categorical`: process_mode, material, reactant_A, reactant_B, carrier_gas, reactor, delivery_method, structure, plasma_configuration, reactor_type, crystallinity (role output). They are not counted as quantities. Each categorical adds `values_from` (Sec. 6, value canonicalization).
 
-Species add `formula, material_class, n_elements, ligand_class` (only when a review states the class). Structures add `class`. Models add `model_type, parameters, reference`. Do not add any other field.
+Species add `kind` (molecule | material | atom), `formula`, and `material_class, n_elements, ligand_class` (only when a review states the class). Structures add `class`. Models add `model_type, parameters, reference`. Do not add any other field.
 
 ## 3. Deviations from the base
 
@@ -191,6 +191,25 @@ For a plasma step, `pulse_time{step: reactant_B}` is the plasma-on time. Gas-onl
 
 **Canonicalization** = mapping a printed label to an entry id. It happens by definition, not by string. An alias match is only a candidate. Words in `ambiguous_aliases` always need the definition from the paper.
 
+**Value canonicalization** = mapping a printed categorical value to a canonical value. Every categorical names where its values come from:
+
+| Categorical | values_from | Current values |
+|---|---|---|
+| material | species with kind = material | al2o3, tio2 |
+| reactant_A, reactant_B, carrier_gas | species with kind = molecule | tma, ticl4, h2o, o2, n2 |
+| structure | structure entries | pillarhall_3, macroscopic_lateral_trench, planar |
+| process_mode, plasma_configuration, reactor_type, crystallinity | fixed list + `value_aliases` (Sec. 12) | see Sec. 12 |
+| reactor | free text, written as "manufacturer model" or "home-built" | Picosun R-150, home-built |
+| delivery_method | free text; no gold evidence yet | — |
+
+Value aliases live with the value, never with the key: species and structure aliases are in their entries; fixed-list aliases are in `value_aliases`. A key's `aliases` holds only names of the key ("Precursor", "CoReactant").
+
+Matching rule, nothing else:
+1. Normalize both strings: lowercase; remove spaces, hyphens, ®, ™; subscript digits → digits; "aluminium" → "aluminum".
+2. Map only on an exact match with an alias. No fuzzy or similarity matching. Formula variants are listed as aliases (AlMe3, Me3Al, (CH3)3Al), never derived by parsing formulas.
+3. No match → keep the raw text and flag it `unmatched_value`. A new species or structure is added only when a gold paper uses it (Sec. 11).
+4. One alias may set two fields when the paper's notation joins them: "O2*", "O2 plasma" → reactant_B = o2 and process_mode = plasma. These are listed in `value_aliases.joint`.
+
 **Normalization** = the transforms in Sec. 9. A transform runs only when every input it needs is stated for the same experiment. Otherwise the value stays as reported.
 
 ## 7. Temperature
@@ -209,7 +228,8 @@ Exactly one temperature entry carries data: `deposition_temperature`. Definition
 ## 8. Species, structures, models
 
 **Species**: only those in the gold papers.
-- Identity is formula plus names.
+- Identity is formula plus names. `kind`: molecule (gas-phase reactants and gases), material (deposited films), atom (plasma species such as O).
+- Aliases cover every spelling in the five papers plus the standard variants of the same name and formula (e.g. tma: TMA, trimethylaluminum, trimethylaluminium, Al(CH3)3, AlMe3, Me3Al, (CH3)3Al; al2o3: Al2O3, alumina, aluminum oxide, aluminium oxide).
 - **Role (reactant_A, reactant_B, carrier_gas, purge_gas) is a categorical condition, not a species property.**
 - O2 plasma = species O2 + `process_mode = plasma`.
 - Plasma species (O) become species only when a gold value is attributed to them.
@@ -247,10 +267,10 @@ Transforms (the variable relations; each names its inputs, so the graph edge is 
 transforms:
   - {id: unit_conversion,     inputs: [any],                       output: same,                   formula: "unit table, Sec. 6"}
   - {id: thickness_to_gpc,    inputs: [film_thickness, cycle_number], output: growth_per_cycle,    formula: "d / N"}
-  - {id: x_over_gap,          inputs: [distance, gap],             output: dimensionless_distance, formula: "x / w"}
+  - {id: x_over_width,        inputs: [distance, feature_width],   output: dimensionless_distance, formula: "x / w"}
   - {id: normalize_thickness, inputs: [film_thickness, film_thickness{position=reference}], output: normalized_thickness, formula: "d(x) / d_ref"}
-  - {id: aspect_ratio,        inputs: [feature_depth, gap],        output: aspect_ratio,           formula: "L / w  (Cremers Eq. 11)"}
-  - {id: coated_ar,           inputs: [penetration_depth, gap],    output: coated_aspect_ratio{basis=AR}, formula: "PD / w"}
+  - {id: aspect_ratio,        inputs: [feature_depth, feature_width], output: aspect_ratio,        formula: "L / w  (Cremers Eq. 11)"}
+  - {id: coated_ar,           inputs: [penetration_depth, feature_width], output: coated_aspect_ratio{basis=AR}, formula: "PD / w"}
   - {id: exposure,            inputs: [partial_pressure, pulse_time], output: exposure,            formula: "p * t  (Cremers Sec. II D)"}
   - {id: step_coverage,       inputs: [film_thickness{position=bottom}, film_thickness{position=top}], output: step_coverage, formula: "d_bottom / d_top"}
 ```
@@ -261,7 +281,7 @@ EAR is never computed. It is recorded as reported (its formula depends on the ge
 
 | id | Cremers | LHAR (Yim, Ylilammi) | Werbrouck trench | vertical trench | hole |
 |---|---|---|---|---|---|
-| gap | w | channel height H | opening height 1 mm | width | diameter |
+| feature_width | w | channel height H | opening height 1 mm | width | diameter |
 | feature_depth | L | channel length L | depth 20 mm | depth | depth |
 | feature_extent | z | channel width W | width 10 mm | trench length | — |
 
@@ -276,7 +296,7 @@ Claude Code confirms each with evidence or reports why not. `ev` = has gold evid
 - Without gold evidence: nucleation_period, refractive_index, absorption_coefficient, resistivity, carrier_density, mobility, thickness_nonuniformity, composition, film_density.
 
 **Base, from Cremers / Popov**
-- With gold evidence: film_thickness, penetration_depth, equivalent_aspect_ratio, initial_sticking_coefficient, recombination_probability, partial_pressure, surface_coverage, gap, feature_depth, feature_extent.
+- With gold evidence: film_thickness, penetration_depth, equivalent_aspect_ratio, initial_sticking_coefficient, recombination_probability, partial_pressure, surface_coverage, feature_width, feature_depth, feature_extent.
 - Without gold evidence: exposure, step_coverage, source_temperature.
 
 **Extension (gold)**: cycle_number, plasma_power, gas_flow_rate, normalized_thickness, adsorption_equilibrium_constant, saturation_growth_per_cycle, distance, dimensionless_distance, time.
@@ -295,7 +315,7 @@ For each label carrying data:
 5. Otherwise → native. Promote to a new extension entry only if it carries data in ≥ 2 papers, a CQ needs it, a definition can be cited, and the expert approves.
 6. A word that now has two definitions → move it to `ambiguous_aliases`.
 
-Ids are never renamed or deleted. A merged entry gets `replaced_by: <id>`.
+Ids are frozen from the start of the Ylilammi gold pilot (the v0 rename gap → feature_width is the last rename). After that, ids are never renamed or deleted; a merged entry gets `replaced_by: <id>`.
 
 ## 12. Fixed vocabularies
 
@@ -314,6 +334,36 @@ reactor_type:      [pump_type, flow_type, atmospheric]                 # Cremers
 measurement_method: [reflectometry, spectroscopic_ellipsometry, xrr, optical_microscopy, sem, sem_eds, afm, oes, eqp]
 categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
                          plasma_configuration, reactor_type, reactor, delivery_method]
+categories:          # the one level above entries; closed list, a new category needs approval
+  chemistry:          [material, reactant_A, reactant_B, carrier_gas]
+  reactor_setup:      [process_mode, plasma_configuration, reactor, reactor_type, delivery_method]
+  timing:             [pulse_time, purge_time, cycle_number]
+  temperature:        [deposition_temperature, source_temperature]
+  reactor_conditions: [process_pressure, partial_pressure, exposure, gas_flow_rate, plasma_power]
+  geometry:           [structure, feature_width, feature_depth, feature_extent, aspect_ratio, equivalent_aspect_ratio]
+  growth:             [film_thickness, growth_per_cycle, nucleation_period, thickness_nonuniformity]
+  conformality:       [normalized_thickness, penetration_depth, coated_aspect_ratio, step_coverage]
+  film_properties:    [refractive_index, absorption_coefficient, resistivity, carrier_density, mobility,
+                       composition, film_density, crystallinity]
+  surface_kinetics:   [initial_sticking_coefficient, recombination_probability, adsorption_equilibrium_constant,
+                       saturation_growth_per_cycle, surface_coverage]
+  coordinates:        [distance, dimensionless_distance, time]
+value_aliases:
+  process_mode:
+    thermal: [thermal ALD, thermal]
+    plasma:  [PEALD, PE-ALD, plasma-enhanced ALD, plasma-assisted ALD, plasma ALD]
+    ozone:   [ozone-based ALD, O3-based]
+  plasma_configuration:
+    inductive: [ICP, inductively coupled, inductively coupled plasma]
+    capacitive: [CCP, capacitively coupled]
+    remote:    [remote plasma, remote]
+  reactor_type:
+    pump_type: [pump-type, vacuum-type]
+    flow_type: [flow-type]
+    atmospheric: [atmospheric pressure, AP-type]
+  joint:
+    "O2*":       {reactant_B: o2, process_mode: plasma}
+    "O2 plasma": {reactant_B: o2, process_mode: plasma}
 ambiguous_aliases:
   coverage:               [surface_coverage, normalized_thickness]   # Ylilammi Fig. 3 vs Werbrouck Figs. 11-12
   depth:                  [distance, feature_depth]                  # Werbrouck axis vs "depth 20 mm"
@@ -347,7 +397,8 @@ One self-contained HTML file (no external scripts, fonts, or network), generated
    - Edges: `derives` (transforms) and `parameter_of`.
    - Fill: base = one color, extension = another. Entries without evidence are drawn faded.
    - Hovering a node shows its definition (SVG `<title>`).
-3. **Entries**: one table with id, role, unit, origin, qualifiers, evidence, deviation.
+3. **Entries**: one table grouped by category, with id, type, role, unit, origin, qualifiers, evidence, deviation. In the graph, nodes inside each role column are ordered by category, and the node label shows the category.
+3b. **Values**: every categorical with its values_from, current values and value aliases.
 4. **schema-miner diff**: all 30 leaf paths → entry and deviation type and reason, plus `excluded_base`.
 5. **Units**: canonical unit per dimension and accepted units.
 6. **Unmapped**: `unmapped.csv` grouped by reason, with counts.
@@ -363,6 +414,8 @@ Keep the script short. No styling beyond basic readable CSS.
 5. Extension ≤ 15. Base = the Sec. 10 list plus the Sec. 12 categorical keys.
 6. Every transform input and output, and every model parameter, is an existing id.
 7. No species, structure, or process taken from a review table.
+8. Every quantity and categorical has a category, and the `categories` lists match the entries exactly.
+9. Every categorical has `values_from`; every species has `kind`; no value alias appears under two values (after the Sec. 6 normalization).
 
 ## 16. Report back (≤ 15 lines)
 
