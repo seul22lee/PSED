@@ -1,4 +1,4 @@
-# PSED v2 ontology v0. Built to the ontology criteria (v0); one file, every entry, relation and deviation.
+# PSED v2 ontology v0. Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
 version: 0
@@ -52,6 +52,60 @@ excluded_base:
   - {path: OtherAspects/FilmStability, deviation: dropped, reason: "not data in papers"}
   - {path: OtherAspects/Reproducibility, deviation: dropped, reason: "not data in papers"}
 
+hierarchy:   # Sec. 17. Edges: child_of (node -> parent), member_of (entry.category -> leaf node). Nodes without parent are top level.
+  - id: ald_process
+    definition: "What is deposited and from what: the film material, its reactants A and B, and the process type (thermal, ozone-based, plasma-enhanced). Popov counts a process as a material plus its reactant combination; Cremers tabulates an experiment under 'Film (process)', e.g. Al2O3 (TMA/H2O)."
+    citation: "Popov 2025 Sec. II A ('1711 unique thermal ALD processes for 539 thin film materials') and Table I columns Material, Reactant A, Reactant B; Cremers 2019 Sec. IV ('We distinguish three types of ALD processes: thermal, ozone-based, and plasma-enhanced') and Tables II-IV column 'Film (process)'"
+    note: "schema-miner splits this across ALDSystem (ALDMethod, MaterialDeposited) and ReactantSelection (Precursor, CoReactant). carrier_gas, which schema-miner lists under ReactantSelection, sits under deposition_run: Cremers Sec. II C treats the carrier gas as a choice of reactor operation, not of chemistry."
+  - id: process_parameters
+    definition: "Settings chosen by the experimenter for a deposition, Cremers' own term: the settings of each step of the ALD cycle and the settings of the whole run."
+    citation: "Cremers 2019 Sec. III B ('The process parameters were identical for both substrates: T = 100 C, P_TMA = 0.28 Pa, and P_H2O = 0.25 Pa. During the process, 1000 ALD cycles were applied with the following pulse/pump times'); Sec. IV ('the process parameters were not always reported')"
+  - id: cycle_step
+    parent: process_parameters
+    definition: "Settings of one step of the ALD cycle: pulse and purge times, the reactant partial pressure, their product the exposure, and the plasma power of a plasma step."
+    citation: "Cremers 2019 Sec. I (the four steps of the ALD cycle), Sec. II D ('the product of the reactant partial pressure and the pulse time'), Sec. IV C ('the gas pressure, the RF power, the plasma exposure time')"
+  - id: deposition_run
+    parent: process_parameters
+    definition: "Settings that hold for the whole deposition run: deposition temperature, reactor pressure, number of cycles, carrier gas and its flow, and precursor source temperature."
+    citation: "Cremers 2019 Sec. III B ('T = 100 C', '1000 ALD cycles were applied', 'in the same ALD run'), Tables II-IV column 'T (C)', Sec. II C (reactants entrained in an inert carrier gas); Popov 2025 Sec. IV ('source temperature')"
+  - id: ald_reactor
+    definition: "Properties of the equipment: the reactor and its manufacturer, its class by working pressure, how reactants are delivered, and the configuration of the plasma source."
+    citation: "Cremers 2019 Sec. II C 'ALD reactor types' (pump-type, flow-type, AP-type; 'can easily be adapted to accommodate plasma sources'), Table IV ('plasma configuration'); schema-miner ProcessParameters/Reactor and DeliveryMethod"
+    note: "Cremers Sec. IV C counts plasma configuration among 'the process parameters, such as deposition temperature, gas pressure, and plasma configuration'; it is placed here because it is a property of the plasma source, not a setting of a run. schema-miner lists Reactor under ProcessParameters; same reason."
+  - id: test_structure
+    definition: "The substrate or test structure on which conformality is quantified, with its geometry: width w, depth L, extent z, aspect ratio and equivalent aspect ratio."
+    citation: "Cremers 2019 Sec. III 'Structures to quantify the conformality of ALD' and Table I; Sec. II G (AR = L/w, Eq. 11; EAR); Tables II-IV columns 'Substrate' and 'EAR'"
+  - id: deposited_film
+    definition: "What is observed on the sample after deposition: the film growth, its conformality inside 3D features, and the properties of the film material."
+    citation: "Cremers 2019 Sec. II A (uniform films along a planar substrate, conformal films inside 3D features); schema-miner MaterialProperties ('Assessment of the properties of the deposited film'); Popov 2025 Sec. I ('properties of the deposited films, such as film thickness, morphology, conformality, and composition')"
+    note: "schema-miner keeps GrowthPerCycle and nucleationPeriod under ProcessParameters/ThicknessControl; they are outcomes (deviation role_changed on the entries) and sit under growth."
+  - id: growth
+    parent: deposited_film
+    definition: "How much film is deposited and how it builds up: thickness, growth per cycle, nucleation period, and thickness variation over a planar substrate."
+    citation: "Cremers 2019 Sec. I ('After each ALD cycle, a certain amount of material (coating) is deposited on the surface, which is called the growth per cycle'), Sec. II A (uniformity); schema-miner ThicknessControl and Uniformity"
+  - id: conformality
+    parent: deposited_film
+    definition: "Measures of how far and how evenly the film reaches into a 3D feature: normalized thickness profile, penetration depth, coated aspect ratio, step coverage."
+    citation: "Cremers 2019 Sec. II H 'Ways to express the level of conformality' (step coverage, PD50%, PD80%, coated (E)AR); Tables II-IV column 'Coated EAR'"
+  - id: film_properties
+    parent: deposited_film
+    definition: "Optical, electrical, compositional and structural properties of the deposited film."
+    citation: "schema-miner MaterialProperties (OpticalProperties, ElectricalProperties, ChemicalComposition, Crystallinity, FilmDensity); Popov 2025 Sec. I ('properties of the deposited films')"
+  - id: modelling
+    definition: "The description of reactant transport and surface reaction used to simulate thickness profiles: the surface-reaction parameters and the models that use them."
+    citation: "Cremers 2019 Sec. V 'Simulation models on conformality of ALD', Sec. V C 4 'Reaction mechanism', Sec. V D 2 'Thickness profile and sticking coefficient'"
+  - id: surface_kinetics
+    parent: modelling
+    definition: "Parameters of the lumped Langmuir description of the surface reaction: sticking and recombination probabilities, adsorption equilibrium constant, saturation growth per cycle, surface coverage."
+    citation: "Cremers 2019 Sec. II E 'Reaction mechanisms and sticking probability' (Eqs. 5-9: s0, theta, k_ads and k_des; recombination probability r); Sec. V C 4"
+  - id: models
+    parent: modelling
+    definition: "Named transport-reaction models, analytical or computational, whose parameters are the surface_kinetics entries."
+    citation: "Cremers 2019 Sec. V A 'Overview' (1. Analytical models, 2. Computational models), Table VIII"
+  - id: coordinates
+    definition: "Axes along which a profile or a trace is recorded: distance into the feature, the same scaled by the feature width, and time."
+    citation: "Cremers 2019 Sec. IV ('film thickness as a function of the depth of the structure'), Fig. 7b; Sec. II G (depth to width ratio); Sec. II E Eq. 9 (d theta / dt)"
+
 entries:
 
   # ---------------------------------------------------------------- categorical conditions (base)
@@ -59,9 +113,9 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: reactor_setup
+    category: ald_process
     values_from: "fixed list + value_aliases"
-    definition: "Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV A-C)."
+    definition: "Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV: three types of ALD processes)."
     dimension: categorical
     aliases: [ALDMethod]
     base: {source: schema_miner, path: ALDSystem/ALDMethod}
@@ -72,7 +126,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: chemistry
+    category: ald_process
     values_from: "species with kind = material"
     definition: "The material being deposited; value is a species id."
     dimension: categorical
@@ -85,7 +139,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: chemistry
+    category: ald_process
     values_from: "species with kind = molecule"
     definition: "The first reactant of the ALD cycle, which reacts in a self-terminating way with the surface in step 1 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant A'); value is a species id."
     dimension: categorical
@@ -98,7 +152,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: chemistry
+    category: ald_process
     values_from: "species with kind = molecule"
     definition: "The second reactant of the ALD cycle, which reacts in a self-terminating way with the adsorbed species in step 3 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant B'); value is a species id."
     dimension: categorical
@@ -111,9 +165,9 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: chemistry
+    category: deposition_run
     values_from: "species with kind = molecule"
-    definition: "Type of carrier gas used in the delivery of reactants; value is a species id."
+    definition: "The inert gas in which the reactants are entrained and which purges the reactor between reactant pulses (Cremers 2019, Sec. II C; Popov 2025, Sec. I); value is a species id."
     dimension: categorical
     aliases: [CarrierGas, "carrier gas"]
     base: {source: schema_miner, path: ReactantSelection/CarrierGas}
@@ -123,7 +177,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: reactor_setup
+    category: ald_reactor
     values_from: 'free text, written as "manufacturer model" or "home-built"'
     definition: "Name and manufacturer of the reactor, as one string."
     dimension: categorical
@@ -136,7 +190,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: reactor_setup
+    category: ald_reactor
     values_from: "free text; no gold evidence yet"
     definition: "Method of delivering the precursor and co-reactant to the reaction chamber."
     dimension: categorical
@@ -160,7 +214,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: reactor_setup
+    category: ald_reactor
     values_from: "fixed list + value_aliases"
     definition: "Reactor class by working pressure regime: pump-type, flow-type or atmospheric-pressure (Cremers 2019, Sec. II C, Fig. 3)."
     dimension: categorical
@@ -172,7 +226,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: reactor_setup
+    category: ald_reactor
     values_from: "fixed list + value_aliases"
     definition: "Plasma configuration of a PE-ALD process: capacitive, inductive, remote or radical enhanced (Cremers 2019, Table IV)."
     dimension: categorical
@@ -184,7 +238,7 @@ entries:
     type: categorical
     origin: base
     role: condition
-    category: geometry
+    category: test_structure
     values_from: "structure entries"
     definition: "The test structure or substrate on which conformality is quantified (Cremers 2019, Sec. III, Table I 'Structure'; Tables II-IV 'Substrate'); value is a structure id."
     dimension: categorical
@@ -197,7 +251,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: temperature
+    category: deposition_run
     definition: "The substrate/reactor temperature during film growth: the deposition temperature T of Cremers 2019 (Eq. 3; Table II column 'T')."
     symbol: T
     dimension: temperature
@@ -211,12 +265,12 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: reactor_conditions
+    category: deposition_run
     definition: "The total pressure within the reactor during deposition."
     dimension: pressure
     unit: Pa
     qualifiers: [step]
-    aliases: ["process pressure", "Chamber pressure", "Pressure (mbar)", "total pressure"]
+    aliases: ["process pressure", "Chamber pressure", "Pressure (mbar)", "total pressure", "gas pressure"]
     base: {source: schema_miner, path: ProcessParameters/Pressure}
     deviation: {type: split, reason: "split into process_pressure and partial_pressure: the reactant partial pressure, not the total pressure, sets the exposure (Cremers Sec. II D); unit Torr -> Pa"}
     evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Fig. 2", "Werbrouck2021 Fig. 12", "Werbrouck2021 Fig. 14", "Werbrouck2021 Table I", "Werbrouck2021 Fig. 9"]
@@ -253,7 +307,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: timing
+    category: cycle_step
     definition: "Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time."
     dimension: time
     unit: s
@@ -267,7 +321,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: timing
+    category: cycle_step
     definition: "Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps 2 and 4 of the ALD cycle, Cremers 2019, Sec. I)."
     dimension: time
     unit: s
@@ -356,7 +410,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: geometry
+    category: test_structure
     definition: "Aspect ratio of the structure, AR = L/w, with L the depth and w the width of the structure (Cremers 2019, Sec. II G, Eq. 11)."
     symbol: AR
     dimension: dimensionless
@@ -411,7 +465,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: reactor_conditions
+    category: cycle_step
     definition: "Partial pressure of a gas species; the reactant partial pressure multiplied by the pulse time gives the exposure (Cremers 2019, Sec. II D; P_i in Eq. 3)."
     symbol: P_i
     dimension: pressure
@@ -425,7 +479,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: reactor_conditions
+    category: cycle_step
     definition: "The product of the reactant partial pressure and the pulse time (Cremers 2019, Sec. II D)."
     dimension: exposure
     unit: "Pa·s"
@@ -438,7 +492,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: temperature
+    category: deposition_run
     definition: "Temperature at which the precursor source (bubbler, canister) is held (Popov 2025, Sec. IV)."
     dimension: temperature
     unit: "°C"
@@ -478,7 +532,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: geometry
+    category: test_structure
     definition: "The aspect ratio of a hypothetical cylindrical hole that would require the same reactant exposure dose as the feature of interest (Cremers 2019, Sec. II G). Recorded as reported, never computed."
     symbol: EAR
     dimension: dimensionless
@@ -546,7 +600,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: geometry
+    category: test_structure
     definition: "The width w of the structure, the smallest dimension of its opening (Cremers 2019, Sec. II G, Fig. 5): channel height of a lateral structure, width of a trench, diameter of a hole."
     symbol: w
     dimension: length
@@ -559,7 +613,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: geometry
+    category: test_structure
     definition: "The depth L of the structure, measured from its entrance along the direction of reactant diffusion (Cremers 2019, Sec. II G, Fig. 5): channel length of a lateral structure."
     symbol: L
     dimension: length
@@ -572,7 +626,7 @@ entries:
     type: quantity
     origin: base
     role: condition
-    category: geometry
+    category: test_structure
     definition: "The length z of the feature along the third dimension, perpendicular to w and L (Cremers 2019, Sec. II G, Fig. 6): channel width of a lateral structure, trench length of a vertical trench."
     symbol: z
     dimension: length
@@ -586,11 +640,11 @@ entries:
     type: quantity
     origin: extension
     role: condition
-    category: timing
+    category: deposition_run
     definition: "Number of ALD cycles applied in a deposition."
     dimension: count
     unit: cycle
-    aliases: ["ALD cycles N", "Number of cycles", Cycles, "number of ALD cycles"]
+    aliases: ["ALD cycles N", "Number of cycles", Cycles, "number of ALD cycles", "ALD cycles"]
     base: {}
     evidence: ["Yim2020 Table 1", "Yim2020 Table 2", "Yim2020 Fig. 9d", "Yim2020 Fig. 10d", "Ylilammi2018 Table I", "Ylilammi2018 Fig. 4", "Werbrouck2021 Sec. II D"]
 
@@ -598,11 +652,11 @@ entries:
     type: quantity
     origin: extension
     role: condition
-    category: reactor_conditions
-    definition: "Power delivered to the plasma source during the plasma step."
+    category: cycle_step
+    definition: "Power delivered to the plasma source during the plasma step (the RF power of Cremers 2019, Sec. IV C)."
     dimension: power
     unit: W
-    aliases: ["plasma power", "Power (W)"]
+    aliases: ["plasma power", "Power (W)", "RF power"]
     base: {}
     evidence: ["Werbrouck2021 Fig. 2", "Werbrouck2021 Fig. 11", "Werbrouck2021 Fig. 13", "Werbrouck2021 Table I", "Werbrouck2021 Sec. II D"]
 
@@ -610,7 +664,7 @@ entries:
     type: quantity
     origin: extension
     role: condition
-    category: reactor_conditions
+    category: deposition_run
     definition: "Flow rate of a gas into the reactor."
     dimension: gas_flow
     unit: sccm
@@ -812,6 +866,7 @@ entries:
   - id: ylilammi_diffusion_reaction
     type: model
     origin: base
+    category: models
     definition: "One-dimensional diffusion-reaction model of ALD growth in a lateral channel with reversible Langmuir adsorption; the reactant pressure uses a closed-form approximation and the surface coverage (Eq. 31) is solved numerically (4th-order Runge-Kutta; ODE23 in Yim 2020) (Ylilammi 2018, Secs. III-V; listed as analytical in Cremers 2019, Sec. V A 1)."
     model_type: analytical
     parameters: [initial_sticking_coefficient, adsorption_equilibrium_constant, saturation_growth_per_cycle, partial_pressure]
@@ -822,6 +877,7 @@ entries:
   - id: gordon_plug_flow
     type: model
     origin: base
+    category: models
     definition: "Analytical model based on conductance formulae in which the reactant enters as a front and reacts on first collision with an unsaturated wall (Cremers 2019, Sec. V A 1)."
     model_type: analytical
     parameters: []
@@ -832,6 +888,7 @@ entries:
   - id: yanguas_gil_markov_chain
     type: model
     origin: base
+    category: models
     definition: "Markov chain model in which the trajectory of a molecule is a series of transitions between positions in the feature, with sticking and recombination probabilities (Cremers 2019, Sec. V B 2)."
     model_type: computational
     parameters: [initial_sticking_coefficient, recombination_probability]
@@ -842,6 +899,7 @@ entries:
   - id: arts_slope
     type: model
     origin: extension
+    category: models
     definition: "Closed-form relation between the slope of the normalized thickness profile at half coverage and the sticking coefficient, valid in the Knudsen regime (Yim 2020, Sec. D, citing Arts 2019 Eq. 3)."
     model_type: analytical
     parameters: [initial_sticking_coefficient]
@@ -904,18 +962,6 @@ vocabularies:
   measurement_method: [reflectometry, spectroscopic_ellipsometry, xrr, optical_microscopy, sem, sem_eds, afm, oes, eqp]
   categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
                            plasma_configuration, reactor_type, reactor, delivery_method]
-  categories:          # the one level above entries; closed list, a new category needs approval
-    chemistry: [material, reactant_A, reactant_B, carrier_gas]
-    reactor_setup: [process_mode, plasma_configuration, reactor, reactor_type, delivery_method]
-    timing: [pulse_time, purge_time, cycle_number]
-    temperature: [deposition_temperature, source_temperature]
-    reactor_conditions: [process_pressure, partial_pressure, exposure, gas_flow_rate, plasma_power]
-    geometry: [structure, feature_width, feature_depth, feature_extent, aspect_ratio, equivalent_aspect_ratio]
-    growth: [film_thickness, growth_per_cycle, nucleation_period, thickness_nonuniformity]
-    conformality: [normalized_thickness, penetration_depth, coated_aspect_ratio, step_coverage]
-    film_properties: [refractive_index, absorption_coefficient, resistivity, carrier_density, mobility, composition, film_density, crystallinity]
-    surface_kinetics: [initial_sticking_coefficient, recombination_probability, adsorption_equilibrium_constant, saturation_growth_per_cycle, surface_coverage]
-    coordinates: [distance, dimensionless_distance, time]
   value_aliases:       # aliases of categorical values (species and structure aliases live in their entries)
     process_mode:
       thermal: [thermal ALD, thermal]
@@ -939,3 +985,20 @@ vocabularies:
     pressure:             [process_pressure, partial_pressure]
     power:                [plasma_power, native]
     sticking probability: [initial_sticking_coefficient, native]
+
+proposals:   # Sec. 17: concepts the reviews show to be missing, duplicated or wrongly split/merged. Reviewed in the chat, not applied.
+  - what: "Add a categorical characterization_method (values: vocabularies.measurement_method) under deposited_film."
+    why: "Cremers records the technique per experiment and every gold paper states it (reflectometry, mapping ellipsometry, optical microscopy, SEM-EDS); without it a profile cannot be tied to the technique that produced it (CQ3)."
+    citation: "Cremers 2019 Table I column 'Characterization method'; Tables II-IV column 'Characterization method'"
+  - what: "Add ald_mode (temporal | spatial) under ald_reactor, or add temporal/spatial as values of reactor_type."
+    why: "Cremers classifies reactors first by operating mode and then by pressure class; reactor_type only covers the pressure classes."
+    citation: "Cremers 2019 Sec. II C ('whether they operate in the temporal or spatial ALD mode')"
+  - what: "Allow a third reactant: a reactant_C categorical, or reactant_C / purge_C values of the step qualifier."
+    why: "Three-reactant processes appear in both reviews; the four-step cycle and the step list cannot hold them."
+    citation: "Popov 2025 Table I column 'Reactant C'; Cremers 2019 Table II 'TiN (TiCl4/Zn/NH3)'"
+  - what: "Add a mass-based growth per cycle (or a basis qualifier on growth_per_cycle) for QCM and gravimetric data."
+    why: "growth_per_cycle is fixed to thickness per cycle; Cremers allows mass gain and areal density, and in-situ QCM studies report mass per cycle."
+    citation: "Cremers 2019 Sec. I ('The GPC can be expressed in various units such as those of the thickness, mass gain, and an increase in the areal density'); Sec. III A (in-situ QCM on TiO2 nanotube layers)"
+  - what: "Add substrate_material (the surface the film grows on; a species id) under test_structure."
+    why: "The surface sets recombination and nucleation; the gold papers state it (native-oxide Si, polysilicon membrane), and the surface qualifier already needs material ids."
+    citation: "Cremers 2019 Table VII column 'Surface'; Sec. IV C ('the type of material on which it collides')"

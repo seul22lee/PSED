@@ -19,6 +19,7 @@ HERE = Path(__file__).resolve().parent
 SCHEMA = HERE / "sources" / "experimental-ideal-schema.json"
 EXTENSION_CAP = 15
 ROLES = ["condition", "coordinate", "output", "model_parameter"]
+CATEGORIZED = ("quantity", "categorical", "model")
 SPECIES_KINDS = ("molecule", "material", "atom")
 # Base quantity ids the criteria expect (Sec. 10). Categorical entries are checked separately
 # against vocabularies.categorical_conditions plus crystallinity (an output, Sec. 2).
@@ -55,6 +56,32 @@ def base_paths(entry: dict) -> list[str]:
 
 def bare(ref: str) -> str:
     return re.sub(r"\{.*\}", "", ref)
+
+
+def tree(onto: dict):
+    """Hierarchy as (node by id, children by parent id, leaf ids in depth-first order)."""
+    nodes = {n["id"]: n for n in onto["hierarchy"]}
+    children = defaultdict(list)
+    for n in onto["hierarchy"]:
+        children[n.get("parent")].append(n["id"])
+    leaves = []
+
+    def walk(pid):
+        for c in children.get(pid, []):
+            walk(c) if children.get(c) else leaves.append(c)
+    walk(None)
+    return nodes, children, leaves
+
+
+def values_from_targets(entry: dict, entries: list[dict]) -> list[str]:
+    """Species or structure ids a categorical's values come from (Sec. 6)."""
+    vf = entry.get("values_from") or ""
+    if vf.startswith("species with kind"):
+        kind = vf.split("=")[-1].strip()
+        return [s["id"] for s in entries if s["type"] == "species" and s.get("kind") == kind]
+    if vf.startswith("structure"):
+        return [s["id"] for s in entries if s["type"] == "structure"]
+    return []
 
 
 def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
@@ -112,13 +139,23 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     out.append(("7. no species, structure or process taken from a review table (each has gold evidence)", not bad,
                 f"problems: {bad}" if bad else ""))
 
-    typed = [e for e in entries if e["type"] in ("quantity", "categorical")]
-    listed = Counter(i for members in voc["categories"].values() for i in members)
-    bad = [e["id"] for e in typed if not e.get("category")]
-    bad += [e["id"] for e in typed if e["id"] not in voc["categories"].get(e.get("category"), [])]
-    bad += [i for i, n in listed.items() if n > 1] + [i for i in listed if i not in {e["id"] for e in typed}]
-    out.append(("8. every quantity and categorical has a category; the categories lists match the entries exactly",
-                not bad, f"problems: {sorted(set(bad))}" if bad else f"{len(voc['categories'])} categories"))
+    nodes, children, leaf_ids = tree(onto)
+    members = Counter(e.get("category") for e in entries if e["type"] in CATEGORIZED)
+    bad = [e["id"] for e in entries if e["type"] in CATEGORIZED and e.get("category") not in leaf_ids]
+    bad += [e["id"] for e in entries if e["type"] not in CATEGORIZED and e.get("category")]
+    bad += [n for n, d in nodes.items() if not (d.get("definition") or "").strip()
+            or not re.search(r"Cremers|Popov", d.get("citation") or "")]
+    bad += [n for n in leaf_ids if not members[n]]                      # empty leaf
+    bad += [n for n, d in nodes.items() if d.get("parent") and d["parent"] not in nodes]
+    bad += [n for n in nodes if n in ids]                               # node id clashes with an entry id
+
+    def depth(n):
+        return 0 if not nodes[n].get("parent") else 1 + depth(nodes[n]["parent"])
+    top = children.get(None, [])
+    size = f"{len(nodes)} nodes, {len(top)} top-level, {len(leaf_ids)} leaves, depth {max(depth(n) for n in nodes) + 1}"
+    bad += [f"size: {size}"] if len(top) > 8 or any(depth(n) > 2 for n in nodes) else []
+    out.append(("8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty",
+                not bad, f"problems: {sorted(set(bad))}" if bad else size))
 
     bad = [e["id"] for e in entries if e["type"] == "categorical" and not e.get("values_from")]
     bad += [e["id"] for e in entries if e["type"] == "species" and e.get("kind") not in SPECIES_KINDS]
@@ -137,13 +174,47 @@ def run_checks(onto: dict) -> list[tuple[str, bool, str]]:
     bad += [f"{a} -> {sorted(o)}" for a, o in owners.items() if len(o) > 1]
     out.append(("9. every categorical has values_from; every species has kind; no value alias under two values",
                 not bad, f"problems: {bad}" if bad else f"{len(owners)} value aliases"))
+
+    deg = Counter()                 # Sec. 9 edges + child_of + member_of + values_from
+    for t in onto["transforms"]:
+        for r in t["inputs"] + [t["output"]]:
+            if r not in ("any", "same"):
+                deg[bare(r)] += 1
+    for e in entries:
+        for p in e.get("parameters", []):
+            deg[p] += 1
+            deg[e["id"]] += 1
+        if e.get("deviation") or e.get("base"):
+            deg[e["id"]] += 1
+        if any(e.get(k) for k in ("material_class", "ligand_class", "class")):
+            deg[e["id"]] += 1
+        if e.get("category"):
+            deg[e["id"]] += 1
+            deg[e["category"]] += 1
+        for s in values_from_targets(e, entries):
+            deg[s] += 1
+            deg[e["id"]] += 1
+    for v in voc["value_aliases"].get("joint", {}).values():
+        for s in v.values():
+            deg[s] += 1
+    for n, d in nodes.items():
+        if d.get("parent"):
+            deg[n] += 1
+            deg[d["parent"]] += 1
+    qualifier_keys = {k for k, q in onto["qualifiers"].items() if "species" in str(q.get("values")) or "material" in str(q.get("values"))}
+    via_qualifier = [e["id"] for e in entries if e["type"] == "species" and not deg[e["id"]]
+                     and any(k in q.get("qualifiers", []) for q in entries for k in qualifier_keys)]
+    bad = [i for i in list(ids) + list(nodes) if not deg[i] and i not in via_qualifier]
+    out.append(("10. no orphan: every entry and hierarchy node has at least one edge", not bad,
+                f"problems: {bad}" if bad else "all connected" + (f"; only as a qualifier value: {via_qualifier}" if via_qualifier else "")))
     return out
 
 
 def graph_svg(onto: dict) -> str:
     entries = onto["entries"]
-    cat_order = {c: i for i, c in enumerate(onto["vocabularies"]["categories"])}
-    cols = {r: sorted([e for e in entries if e.get("role") == r], key=lambda e: cat_order.get(e.get("category"), 99))
+    _, _, leaf_ids = tree(onto)
+    order = {c: i for i, c in enumerate(leaf_ids)}
+    cols = {r: sorted([e for e in entries if e.get("role") == r], key=lambda e: order.get(e.get("category"), 99))
             for r in ROLES}
     cols["model"] = [e for e in entries if e["type"] == "model"]
     w, h, gapx, gapy, top = 300, 18, 40, 5, 30
@@ -184,6 +255,25 @@ def graph_svg(onto: dict) -> str:
     return f'<svg viewBox="0 0 {width} {height}" width="{width}" height="{height}" font-size="11">{"".join(parts)}</svg>'
 
 
+def hierarchy_html(onto: dict) -> str:
+    nodes, children, _ = tree(onto)
+    members = defaultdict(list)
+    for e in onto["entries"]:
+        if e.get("category"):
+            members[e["category"]].append(e["id"])
+
+    def render(pid):
+        items = ""
+        for c in children.get(pid, []):
+            n = nodes[c]
+            items += (f'<li><b>{esc(c)}</b>: {esc(n["definition"])} <i>[{esc(n["citation"])}]</i>'
+                      + (f'<br><span class="note">Note: {esc(n["note"])}</span>' if n.get("note") else "")
+                      + (f'<br>entries: {esc(", ".join(members[c]))}' if members[c] else "")
+                      + render(c) + "</li>")
+        return f"<ul>{items}</ul>" if items else ""
+    return render(None)
+
+
 def table(header: list[str], rows: list[list], groups: dict[str, list[list]] | None = None) -> str:
     """One table; with `groups`, a heading row precedes each group of rows."""
     head = "<tr>" + "".join(f"<th>{esc(c)}</th>" for c in header) + "</tr>"
@@ -197,18 +287,16 @@ def table(header: list[str], rows: list[list], groups: dict[str, list[list]] | N
 
 def values_rows(onto: dict) -> list[list]:
     entries, voc = onto["entries"], onto["vocabularies"]
-    by_type = defaultdict(list)
-    for e in entries:
-        by_type[e["type"]].append(e)
-    alias_text = lambda items: "; ".join(f'{s["id"]}: {", ".join(s.get("aliases", []))}' for s in items)
+    by_id = {e["id"]: e for e in entries}
+    alias_text = lambda ids: "; ".join(f'{i}: {", ".join(by_id[i].get("aliases", []))}' for i in ids)
     rows = []
-    for e in by_type["categorical"]:
+    for e in entries:
+        if e["type"] != "categorical":
+            continue
         vf = e["values_from"]
-        if vf.startswith("species with kind"):
-            items = [s for s in by_type["species"] if s.get("kind") == vf.split("=")[-1].strip()]
-            rows.append([e["id"], vf, ", ".join(s["id"] for s in items), alias_text(items)])
-        elif vf.startswith("structure"):
-            rows.append([e["id"], vf, ", ".join(s["id"] for s in by_type["structure"]), alias_text(by_type["structure"])])
+        targets = values_from_targets(e, entries)
+        if targets:
+            rows.append([e["id"], vf, ", ".join(targets), alias_text(targets)])
         elif vf.startswith("fixed list"):
             aliases = voc["value_aliases"].get(e["id"], {})
             rows.append([e["id"], vf, ", ".join(voc.get(e["id"], [])),
@@ -226,14 +314,15 @@ def main() -> int:
     with (HERE / "unmapped.csv").open(newline="", encoding="utf-8") as f:
         unmapped = list(csv.DictReader(f))
     entries = onto["entries"]
-    voc = onto["vocabularies"]
     checks = run_checks(onto)
     ok = all(c[1] for c in checks)
+    nodes, _, leaf_ids = tree(onto)
 
     counts = Counter((e["type"], e["origin"], "with evidence" if e.get("evidence") else "no evidence") for e in entries)
     n_ext = sum(e["type"] == "quantity" and e["origin"] == "extension" for e in entries)
     summary = table(["type", "origin", "evidence", "entries"], [[*k, n] for k, n in sorted(counts.items())])
-    summary += f"<p>{len(entries)} entries. Extension quantities: {n_ext} of at most {EXTENSION_CAP}.</p>"
+    summary += (f"<p>{len(entries)} entries. Extension quantities: {n_ext} of at most {EXTENSION_CAP}. "
+                f"Hierarchy: {len(nodes)} nodes, {len(leaf_ids)} leaves. Proposals: {len(onto.get('proposals', []))}.</p>")
     summary += table(["check", "result", "detail"], [[c, "pass" if good else "FAIL", d] for c, good, d in checks])
 
     def dev(e):
@@ -243,8 +332,11 @@ def main() -> int:
     def entry_row(e):
         return [e["id"], e["type"], e.get("role", ""), e.get("unit", ""), e["origin"],
                 ", ".join(e.get("qualifiers", [])), "; ".join(e.get("evidence", [])), dev(e)]
-    groups = {c: [entry_row(e) for e in entries if e.get("category") == c] for c in voc["categories"]}
-    for t in ("species", "structure", "model"):
+
+    def path(n):
+        return (path(nodes[n]["parent"]) + " / " if nodes[n].get("parent") else "") + n
+    groups = {path(c): [entry_row(e) for e in entries if e.get("category") == c] for c in leaf_ids}
+    for t in ("species", "structure"):
         groups[t] = [entry_row(e) for e in entries if e["type"] == t]
     entries_html = table(["id", "type", "role", "unit", "origin", "qualifiers", "evidence", "deviation"], [], groups)
 
@@ -261,6 +353,7 @@ def main() -> int:
             diff_rows.append([p, "MISSING", "", ""])
     diff_rows += [["(all fields)", "—", n["type"], f'{n["what"]}: {n["reason"]}'] for n in onto["base_notes"]]
     unit_rows = [[d, u["canonical"], ", ".join(u["accepted"])] for d, u in onto["units"].items()]
+    proposal_rows = [[p["what"], p["why"], p["citation"]] for p in onto.get("proposals", [])]
     reasons = Counter(r["reason"] for r in unmapped)
     unmapped_html = table(["reason", "labels"], reasons.most_common())
     unmapped_html += table(["reason", "paper", "location", "label", "unit"],
@@ -275,6 +368,8 @@ table {{ border-collapse: collapse; margin: 8px 0 16px; }}
 th, td {{ border: 1px solid #bbb; padding: 3px 6px; text-align: left; vertical-align: top; }}
 th {{ background: #eee; }}
 .wide {{ overflow-x: auto; }}
+.note {{ color: #844; }}
+li {{ margin: 4px 0; }}
 svg rect {{ stroke: #444; }}
 svg .base rect {{ fill: #cfe2f3; }}
 svg .extension rect {{ fill: #fde3b4; }}
@@ -287,12 +382,14 @@ svg path.parameter_of {{ stroke: #b36; stroke-dasharray: 4 3; }}
 <p>Checks: <b>{"all passed" if ok else "FAILED"}</b>.</p>
 <h2>1. Summary</h2>{summary}
 <h2>2. Graph</h2>
-<p>Blue = base, orange = extension, faded = no gold evidence. Nodes are ordered by category within each role
-column and labelled with their category. Green line = derives (transform), dashed red line = parameter_of.
+<p>Blue = base, orange = extension, faded = no gold evidence. Nodes are ordered by category (hierarchy leaf)
+within each role column and labelled with it. Green line = derives (transform), dashed red line = parameter_of.
 Hover a node for its definition.</p>
 <div class="wide">{graph_svg(onto)}</div>
+<h2>2b. Hierarchy</h2>{hierarchy_html(onto)}
 <h2>3. Entries (grouped by category)</h2><div class="wide">{entries_html}</div>
 <h2>3b. Values</h2>{table(["categorical", "values_from", "current values", "value aliases"], values_rows(onto))}
+<h2>3c. Proposals</h2>{table(["what", "why", "citation"], proposal_rows)}
 <h2>4. schema-miner diff</h2>{table(["schema-miner path", "entry", "deviation", "reason"], diff_rows)}
 <h2>5. Units</h2>{table(["dimension", "canonical", "accepted"], unit_rows)}
 <h2>6. Unmapped</h2>{unmapped_html}

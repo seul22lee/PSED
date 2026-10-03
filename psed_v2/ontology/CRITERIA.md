@@ -49,7 +49,7 @@ Gold PDFs are in `psed_v2/gold/pdf/`.
   type:       quantity | categorical | species | structure | model
   origin:     base | extension
   role:       condition | output | model_parameter | coordinate     # quantities and categoricals
-  category:   one value from Sec. 12 `categories`                   # quantities and categoricals
+  category:   a leaf node id of the hierarchy (Sec. 17)             # quantities, categoricals, models
   definition: one or two sentences; review wording where a review defines it
   symbol:     as in Cremers, if defined there
   dimension:  e.g. temperature, length, length_per_cycle, dimensionless
@@ -334,20 +334,6 @@ reactor_type:      [pump_type, flow_type, atmospheric]                 # Cremers
 measurement_method: [reflectometry, spectroscopic_ellipsometry, xrr, optical_microscopy, sem, sem_eds, afm, oes, eqp]
 categorical_conditions: [material, reactant_A, reactant_B, carrier_gas, structure, process_mode,
                          plasma_configuration, reactor_type, reactor, delivery_method]
-categories:          # the one level above entries; closed list, a new category needs approval
-  chemistry:          [material, reactant_A, reactant_B, carrier_gas]
-  reactor_setup:      [process_mode, plasma_configuration, reactor, reactor_type, delivery_method]
-  timing:             [pulse_time, purge_time, cycle_number]
-  temperature:        [deposition_temperature, source_temperature]
-  reactor_conditions: [process_pressure, partial_pressure, exposure, gas_flow_rate, plasma_power]
-  geometry:           [structure, feature_width, feature_depth, feature_extent, aspect_ratio, equivalent_aspect_ratio]
-  growth:             [film_thickness, growth_per_cycle, nucleation_period, thickness_nonuniformity]
-  conformality:       [normalized_thickness, penetration_depth, coated_aspect_ratio, step_coverage]
-  film_properties:    [refractive_index, absorption_coefficient, resistivity, carrier_density, mobility,
-                       composition, film_density, crystallinity]
-  surface_kinetics:   [initial_sticking_coefficient, recombination_probability, adsorption_equilibrium_constant,
-                       saturation_growth_per_cycle, surface_coverage]
-  coordinates:        [distance, dimensionless_distance, time]
 value_aliases:
   process_mode:
     thermal: [thermal ALD, thermal]
@@ -397,6 +383,7 @@ One self-contained HTML file (no external scripts, fonts, or network), generated
    - Edges: `derives` (transforms) and `parameter_of`.
    - Fill: base = one color, extension = another. Entries without evidence are drawn faded.
    - Hovering a node shows its definition (SVG `<title>`).
+2b. **Hierarchy**: the tree of Sec. 17 as an indented list; each node shows its definition, its review citation, and its entries.
 3. **Entries**: one table grouped by category, with id, type, role, unit, origin, qualifiers, evidence, deviation. In the graph, nodes inside each role column are ordered by category, and the node label shows the category.
 3b. **Values**: every categorical with its values_from, current values and value aliases.
 4. **schema-miner diff**: all 30 leaf paths → entry and deviation type and reason, plus `excluded_base`.
@@ -414,9 +401,67 @@ Keep the script short. No styling beyond basic readable CSS.
 5. Extension ≤ 15. Base = the Sec. 10 list plus the Sec. 12 categorical keys.
 6. Every transform input and output, and every model parameter, is an existing id.
 7. No species, structure, or process taken from a review table.
-8. Every quantity and categorical has a category, and the `categories` lists match the entries exactly.
+8. Every quantity, categorical and model has exactly one category, and it is a leaf node of the hierarchy. Every hierarchy node has a definition and a review citation, and is not empty.
 9. Every categorical has `values_from`; every species has `kind`; no value alias appears under two values (after the Sec. 6 normalization).
+10. No orphan: every entry and every hierarchy node has at least one edge (Sec. 9 edges plus member_of and child_of).
 
 ## 16. Report back (≤ 15 lines)
 
 Counts; every deviation from Sec. 3 or Sec. 10 that was not expected, with its reason; the initial_sticking_coefficient check result; the unmapped count by reason; the path to report.html.
+
+## 17. Hierarchy (redesign task)
+
+Entries are grouped under a small hierarchy so that every concept sits in one clear place and is linked to its neighbors. Design it yourself from the reviews. The tree below is **an example only**: use it to see the intended level of detail, not as the answer.
+
+### What to read for this task
+
+Read these closely (more than for Sec. 1):
+- Cremers 2019 Sec. I–IV in full: the ALD cycle, every concept in Sec. II, the structure classification in Sec. III, and how Sec. IV and Tables II–IV describe one experiment (their columns).
+- Cremers Sec. V C–D (model assumptions and outputs).
+- Popov 2025 Sec. I–IV (what a "process" is, reactant naming, precursor requirements, source and deposition temperature).
+- The schema-miner experimental schema's grouping (ALDSystem, ReactantSelection, ProcessParameters, MaterialProperties), as a reference to agree or disagree with.
+
+### Rules
+
+1. **Grounded.** Every node cites the review passage that uses that grouping (section, table, or a quoted phrase). Prefer the review's own term as the node name. Example grounding: Cremers lists "T, P_TMA, P_H2O, 1000 ALD cycles, pulse/pump times" together as "the process parameters" (Sec. III B), so these belong under one node.
+2. **Small.** At most 2 levels below the root, at most 8 top-level nodes. Create a sub-node only if it groups at least 2 entries and the reviews distinguish it.
+3. **One place.** Every quantity, categorical and model belongs to exactly one leaf node. Species and structures are values (reached through `values_from`), not categorized.
+4. **Category is not role.** A category says what the value is about; `role` says how it is used in data. Do not encode role in the hierarchy (no "outputs" node that duplicates role = output).
+5. **Placement test.**
+   - Set by the experimenter for a run → recipe side.
+   - A property of the equipment → reactor side.
+   - A property of the test structure → substrate side.
+   - Observed after deposition → result side.
+   - A parameter of a surface-reaction model → kinetics side.
+   - A plot axis → coordinates.
+6. **Disagreement is recorded.** If you place an entry against a review's own grouping, write the reason in the node or entry. Example: Cremers calls plasma configuration a process parameter, but it is equipment.
+7. **Links.** Hierarchy edges are `child_of` (node → parent) and `member_of` (entry → leaf node). Together with the Sec. 9 edges, every entry must be connected (check 10).
+
+### Example (not the answer)
+
+```
+recipe                 Cremers "process parameters" + "ALD process"
+  process              material, reactant_A, reactant_B, process_mode       (Popov Table I; Cremers Sec. IV)
+  cycle                pulse_time, purge_time, partial_pressure, exposure, plasma_power   (Cremers Sec. I, per step)
+  run                  deposition_temperature, process_pressure, cycle_number, carrier_gas, gas_flow_rate, source_temperature
+reactor                reactor, reactor_type, delivery_method, plasma_configuration       (Cremers Sec. II C, Table IV)
+substrate              structure, feature_width, feature_depth, feature_extent, aspect_ratio, equivalent_aspect_ratio
+result
+  growth               film_thickness, growth_per_cycle, nucleation_period, thickness_nonuniformity
+  conformality         normalized_thickness, penetration_depth, coated_aspect_ratio, step_coverage
+  film_properties      refractive_index, ..., crystallinity
+surface_kinetics       initial_sticking_coefficient, recombination_probability, adsorption_equilibrium_constant,
+                       saturation_growth_per_cycle, surface_coverage, and the models
+coordinates            distance, dimensionless_distance, time
+```
+
+### What may change, and what may not
+
+- **May change:** the hierarchy; every entry's `category`; definitions, roles, qualifiers, units, aliases and transforms, where the closer reading of the reviews shows they are wrong or imprecise. Each such change cites the review.
+- **May not change:** entry ids. Do not add or remove entries either. If the reviews show that a concept is missing, duplicated, or wrongly split or merged, write it as a proposal (`proposals` in ontology.yaml: what, why, citation). Proposals are reviewed in the chat, not applied.
+- Keep it simple. A clear tree with exact links is the goal, not more nodes.
+
+### Report additions
+
+- In report.html: the hierarchy tree (Sec. 14, 2b) and a Proposals table.
+- In the report back (up to 25 lines for this task): the top-level nodes with one-line justifications, every place you departed from the example and why, every changed definition / role / qualifier, and the number of proposals.
