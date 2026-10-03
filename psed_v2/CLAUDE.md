@@ -129,3 +129,4 @@ a self-description such as "this review", "in this perspective", "we review". Li
 - A paper that prints the same figure number twice keeps one caption; the other figure can lose its image (seen: 10.1021_acsaelm.3c00245 Figure 10).
 - Manuscripts that list all captions together and put the figures at the end cannot be bound by position (seen: 10.1116_1.5116136).
 - Docling sometimes labels a body sentence as a caption, which then replaces the real one (seen: 10.1021_acs.chemmater.9b05116 Figure 10).
+- A caption nested inside its picture without a caption label keeps only text items of 4 or more words, so short pieces (panel markers like (a), short phrases) can drop out (seen: 10.1186_s11671-015-0872-9 Figure 5).
