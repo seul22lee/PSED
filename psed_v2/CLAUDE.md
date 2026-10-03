@@ -71,7 +71,8 @@ Origin columns, each `O` or empty; a paper can have several. Each has its eviden
 `decision` (`auto` = rule applied by script, `manual` = judged by the user) and `decided_on` (date).
 Excluded rows stay in the manifest and keep their PDFs. Exclusion rules applied so far:
 - not ALD: found only through the Cremers-citing search, and neither title nor abstract
-  mentions "atomic layer" or "ALD" (auto), plus two judged by title (manual);
+  mentions "atomic layer" or "ALD" (auto), plus two judged by title and two judged by the
+  parsed full text (manual);
 - `type`: the OpenAlex work type is not `article` or `letter` (auto, reason "type: <type>");
 - review by title/journal (auto): the title has the whole word review, perspective, survey,
   overview or tutorial, or the journal is Chemical Reviews, Chemical Society Reviews, Applied
@@ -79,7 +80,8 @@ Excluded rows stay in the manifest and keep their PDFs. Exclusion rules applied 
   Engineering R, Nature Reviews *, or Coordination Chemistry Reviews;
 - no DOI: Cremers footnotes and notes that are not publications (auto), and books, patents,
   theses and proceedings (manual). The four Popov rows without a DOI are undecided;
-- review by full text (manual): the parsed text carries a review label or calls itself a review.
+- review by full text (manual): the parsed text carries a review label or calls itself a review,
+  or its figures and captions show it is an overview of other work.
 
 ### Scope
 
