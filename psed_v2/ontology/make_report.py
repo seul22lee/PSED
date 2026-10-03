@@ -353,7 +353,8 @@ def main() -> int:
             diff_rows.append([p, "MISSING", "", ""])
     diff_rows += [["(all fields)", "—", n["type"], f'{n["what"]}: {n["reason"]}'] for n in onto["base_notes"]]
     unit_rows = [[d, u["canonical"], ", ".join(u["accepted"])] for d, u in onto["units"].items()]
-    proposal_rows = [[p["what"], p["why"], p["citation"]] for p in onto.get("proposals", [])]
+    proposal_rows = [[p["what"], p["why"], p["citation"], p.get("decision", "open"), p.get("decision_reason", "")]
+                     for p in onto.get("proposals", [])]
     reasons = Counter(r["reason"] for r in unmapped)
     unmapped_html = table(["reason", "labels"], reasons.most_common())
     unmapped_html += table(["reason", "paper", "location", "label", "unit"],
@@ -389,7 +390,7 @@ Hover a node for its definition.</p>
 <h2>2b. Hierarchy</h2>{hierarchy_html(onto)}
 <h2>3. Entries (grouped by category)</h2><div class="wide">{entries_html}</div>
 <h2>3b. Values</h2>{table(["categorical", "values_from", "current values", "value aliases"], values_rows(onto))}
-<h2>3c. Proposals</h2>{table(["what", "why", "citation"], proposal_rows)}
+<h2>3c. Proposals</h2>{table(["what", "why", "citation", "decision", "decision reason"], proposal_rows)}
 <h2>4. schema-miner diff</h2>{table(["schema-miner path", "entry", "deviation", "reason"], diff_rows)}
 <h2>5. Units</h2>{table(["dimension", "canonical", "accepted"], unit_rows)}
 <h2>6. Unmapped</h2>{unmapped_html}

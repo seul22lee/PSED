@@ -62,8 +62,8 @@ hierarchy:   # Sec. 17. Edges: child_of (node -> parent), member_of (entry.categ
     citation: "Cremers 2019 Sec. III B ('The process parameters were identical for both substrates: T = 100 C, P_TMA = 0.28 Pa, and P_H2O = 0.25 Pa. During the process, 1000 ALD cycles were applied with the following pulse/pump times'); Sec. IV ('the process parameters were not always reported')"
   - id: cycle_step
     parent: process_parameters
-    definition: "Settings of one step of the ALD cycle: pulse and purge times, the reactant partial pressure, their product the exposure, and the plasma power of a plasma step."
-    citation: "Cremers 2019 Sec. I (the four steps of the ALD cycle), Sec. II D ('the product of the reactant partial pressure and the pulse time'), Sec. IV C ('the gas pressure, the RF power, the plasma exposure time')"
+    definition: "Settings of one step of the ALD cycle: pulse and purge times, the reactant partial pressure, their product the exposure, the plasma power of a plasma step, and the time within a reactant pulse along which a trace is recorded."
+    citation: "Cremers 2019 Sec. I (the four steps of the ALD cycle), Sec. II D ('the product of the reactant partial pressure and the pulse time'), Sec. II E Eq. 9 (d theta / dt within a pulse), Sec. IV C ('the gas pressure, the RF power, the plasma exposure time')"
   - id: deposition_run
     parent: process_parameters
     definition: "Settings that hold for the whole deposition run: deposition temperature, reactor pressure, number of cycles, carrier gas and its flow, and precursor source temperature."
@@ -73,8 +73,8 @@ hierarchy:   # Sec. 17. Edges: child_of (node -> parent), member_of (entry.categ
     citation: "Cremers 2019 Sec. II C 'ALD reactor types' (pump-type, flow-type, AP-type; 'can easily be adapted to accommodate plasma sources'), Table IV ('plasma configuration'); schema-miner ProcessParameters/Reactor and DeliveryMethod"
     note: "Cremers Sec. IV C counts plasma configuration among 'the process parameters, such as deposition temperature, gas pressure, and plasma configuration'; it is placed here because it is a property of the plasma source, not a setting of a run. schema-miner lists Reactor under ProcessParameters; same reason."
   - id: test_structure
-    definition: "The substrate or test structure on which conformality is quantified, with its geometry: width w, depth L, extent z, aspect ratio and equivalent aspect ratio."
-    citation: "Cremers 2019 Sec. III 'Structures to quantify the conformality of ALD' and Table I; Sec. II G (AR = L/w, Eq. 11; EAR); Tables II-IV columns 'Substrate' and 'EAR'"
+    definition: "The substrate or test structure on which conformality is quantified, with its geometry (width w, depth L, extent z, aspect ratio, equivalent aspect ratio) and the position inside it along which a profile is recorded (distance, distance over width)."
+    citation: "Cremers 2019 Sec. III 'Structures to quantify the conformality of ALD' and Table I; Sec. II G (AR = L/w, Eq. 11; EAR); Tables II-IV columns 'Substrate' and 'EAR'; Sec. IV ('film thickness as a function of the depth of the structure')"
   - id: deposited_film
     definition: "What is observed on the sample after deposition: the film growth, its conformality inside 3D features, and the properties of the film material."
     citation: "Cremers 2019 Sec. II A (uniform films along a planar substrate, conformal films inside 3D features); schema-miner MaterialProperties ('Assessment of the properties of the deposited film'); Popov 2025 Sec. I ('properties of the deposited films, such as film thickness, morphology, conformality, and composition')"
@@ -102,10 +102,6 @@ hierarchy:   # Sec. 17. Edges: child_of (node -> parent), member_of (entry.categ
     parent: modelling
     definition: "Named transport-reaction models, analytical or computational, whose parameters are the surface_kinetics entries."
     citation: "Cremers 2019 Sec. V A 'Overview' (1. Analytical models, 2. Computational models), Table VIII"
-  - id: coordinates
-    definition: "Axes along which a profile or a trace is recorded: distance into the feature, the same scaled by the feature width, and time."
-    citation: "Cremers 2019 Sec. IV ('film thickness as a function of the depth of the structure'), Fig. 7b; Sec. II G (depth to width ratio); Sec. II E Eq. 9 (d theta / dt)"
-
 entries:
 
   # ---------------------------------------------------------------- categorical conditions (base)
@@ -715,7 +711,7 @@ entries:
     type: quantity
     origin: extension
     role: coordinate
-    category: coordinates
+    category: test_structure
     definition: "Position along the direction of reactant diffusion, measured from the feature entrance, positive inward and negative outside the feature."
     dimension: length
     unit: "µm"
@@ -727,7 +723,7 @@ entries:
     type: quantity
     origin: extension
     role: coordinate
-    category: coordinates
+    category: test_structure
     definition: "Distance from the feature entrance divided by the feature width, x/w (Yim 2020: x̃ = x/H)."
     dimension: dimensionless
     unit: "1"
@@ -739,7 +735,7 @@ entries:
     type: quantity
     origin: extension
     role: coordinate
-    category: coordinates
+    category: cycle_step
     definition: "Time elapsed since the start of a reactant pulse."
     dimension: time
     unit: s
@@ -990,15 +986,25 @@ proposals:   # Sec. 17: concepts the reviews show to be missing, duplicated or w
   - what: "Add a categorical characterization_method (values: vocabularies.measurement_method) under deposited_film."
     why: "Cremers records the technique per experiment and every gold paper states it (reflectometry, mapping ellipsometry, optical microscopy, SEM-EDS); without it a profile cannot be tied to the technique that produced it (CQ3)."
     citation: "Cremers 2019 Table I column 'Characterization method'; Tables II-IV column 'Characterization method'"
+    decision: rejected
+    decision_reason: "Technique differs per series, not per experiment (Yim sample 11: SEM-EDS and reflectometry); recorded as a column of the gold series table using vocabularies.measurement_method."
   - what: "Add ald_mode (temporal | spatial) under ald_reactor, or add temporal/spatial as values of reactor_type."
     why: "Cremers classifies reactors first by operating mode and then by pressure class; reactor_type only covers the pressure classes."
     citation: "Cremers 2019 Sec. II C ('whether they operate in the temporal or spatial ALD mode')"
+    decision: rejected
+    decision_reason: "No gold evidence; add through CRITERIA Sec. 11 when a gold paper needs it."
   - what: "Allow a third reactant: a reactant_C categorical, or reactant_C / purge_C values of the step qualifier."
     why: "Three-reactant processes appear in both reviews; the four-step cycle and the step list cannot hold them."
     citation: "Popov 2025 Table I column 'Reactant C'; Cremers 2019 Table II 'TiN (TiCl4/Zn/NH3)'"
+    decision: rejected
+    decision_reason: "No gold evidence; add through CRITERIA Sec. 11 when a gold paper needs it."
   - what: "Add a mass-based growth per cycle (or a basis qualifier on growth_per_cycle) for QCM and gravimetric data."
     why: "growth_per_cycle is fixed to thickness per cycle; Cremers allows mass gain and areal density, and in-situ QCM studies report mass per cycle."
     citation: "Cremers 2019 Sec. I ('The GPC can be expressed in various units such as those of the thickness, mass gain, and an increase in the areal density'); Sec. III A (in-situ QCM on TiO2 nanotube layers)"
+    decision: rejected
+    decision_reason: "No gold evidence; add through CRITERIA Sec. 11 when a gold paper needs it."
   - what: "Add substrate_material (the surface the film grows on; a species id) under test_structure."
     why: "The surface sets recombination and nucleation; the gold papers state it (native-oxide Si, polysilicon membrane), and the surface qualifier already needs material ids."
     citation: "Cremers 2019 Table VII column 'Surface'; Sec. IV C ('the type of material on which it collides')"
+    decision: rejected
+    decision_reason: "No competency question needs it; the recombination surface is already the surface qualifier."
