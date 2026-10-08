@@ -433,7 +433,7 @@ Read these closely (more than for Sec. 1):
    - A property of the test structure → substrate side.
    - Observed after deposition → result side.
    - A parameter of a surface-reaction model → kinetics side.
-   - A plot axis → coordinates.
+   - A plot axis is not a category (that is role = coordinate). Place it by what it measures: position along a feature → test structure side; time within a pulse → cycle side.
 6. **Disagreement is recorded.** If you place an entry against a review's own grouping, write the reason in the node or entry. Example: Cremers calls plasma configuration a process parameter, but it is equipment.
 7. **Links.** Hierarchy edges are `child_of` (node → parent) and `member_of` (entry → leaf node). Together with the Sec. 9 edges, every entry must be connected (check 10).
 
@@ -442,23 +442,24 @@ Read these closely (more than for Sec. 1):
 ```
 recipe                 Cremers "process parameters" + "ALD process"
   process              material, reactant_A, reactant_B, process_mode       (Popov Table I; Cremers Sec. IV)
-  cycle                pulse_time, purge_time, partial_pressure, exposure, plasma_power   (Cremers Sec. I, per step)
+  cycle                pulse_time, purge_time, partial_pressure, exposure, plasma_power, time   (Cremers Sec. I, per step)
   run                  deposition_temperature, process_pressure, cycle_number, carrier_gas, gas_flow_rate, source_temperature
 reactor                reactor, reactor_type, delivery_method, plasma_configuration       (Cremers Sec. II C, Table IV)
-substrate              structure, feature_width, feature_depth, feature_extent, aspect_ratio, equivalent_aspect_ratio
+substrate              structure, feature_width, feature_depth, feature_extent, aspect_ratio, equivalent_aspect_ratio,
+                       distance, dimensionless_distance
 result
   growth               film_thickness, growth_per_cycle, nucleation_period, thickness_nonuniformity
   conformality         normalized_thickness, penetration_depth, coated_aspect_ratio, step_coverage
   film_properties      refractive_index, ..., crystallinity
 surface_kinetics       initial_sticking_coefficient, recombination_probability, adsorption_equilibrium_constant,
                        saturation_growth_per_cycle, surface_coverage, and the models
-coordinates            distance, dimensionless_distance, time
 ```
+(time, the time within a reactant pulse, goes with the cycle settings.)
 
 ### What may change, and what may not
 
 - **May change:** the hierarchy; every entry's `category`; definitions, roles, qualifiers, units, aliases and transforms, where the closer reading of the reviews shows they are wrong or imprecise. Each such change cites the review.
-- **May not change:** entry ids. Do not add or remove entries either. If the reviews show that a concept is missing, duplicated, or wrongly split or merged, write it as a proposal (`proposals` in ontology.yaml: what, why, citation). Proposals are reviewed in the chat, not applied.
+- **May not change:** entry ids. Do not add or remove entries either. If the reviews show that a concept is missing, duplicated, or wrongly split or merged, write it as a proposal (`proposals` in ontology.yaml: what, why, citation). Proposals are reviewed in the chat, not applied. Each proposal carries `decision: open | accepted | rejected` and `decision_reason`; only the chat changes `decision`.
 - Keep it simple. A clear tree with exact links is the goal, not more nodes.
 
 ### Report additions
