@@ -66,9 +66,10 @@ running text (publisher cover pages are skipped). In order:
    column width; full-width on a two-column page) -> "layout";
 4. else the longest paragraph (40+ words) on page 1 after the author block and before the first
    body heading -> "order"; if nothing, empty and "none".
-The glyph repairs are applied; document.md is unchanged. --check-abstracts prints the word
-overlap with OpenAlex per paper, flags below 80% and every "layout", "order" and "none", and
-writes ingest/review/abstract_check.html (gitignored) for the flagged papers.
+The glyph repairs are applied; document.md is unchanged. --check-abstracts prints, per paper,
+recall (OpenAlex words in ours), precision (our words in OpenAlex) and length ratio (our words /
+OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6, and every paper
+without an OpenAlex abstract; writes ingest/review/abstract_check.html (gitignored) for them.
 
 Glyph repairs, applied to document.md and caption text after Docling runs:
 - glyph names that carry a code point, "/uniXXXX" and "/uXXXXX", become that character
@@ -846,8 +847,10 @@ def fetch_abstracts(rows):
 
 
 def check_abstracts(rows):
-    """Word overlap of structure.json abstracts with OpenAlex; flags below 80% and every layout,
-    order and none. Writes ingest/review/abstract_check.html for the flagged papers."""
+    """structure.json abstracts against OpenAlex: recall (OpenAlex words in ours), precision (our
+    words in OpenAlex) and length ratio (our words / OpenAlex words). Flags recall < 80%,
+    precision < 80%, length ratio > 1.5 or < 0.6, and every paper without an OpenAlex abstract.
+    Writes ingest/review/abstract_check.html for the flagged papers."""
     import base64, html, io, statistics
     oa = _load_oa_abstracts()
     report, flagged = [], []
@@ -859,31 +862,43 @@ def check_abstracts(rows):
         st = json.loads((d / "structure.json").read_text())
         ours, src = st.get("abstract", ""), st.get("abstract_source", "none")
         oa_text = oa.get(pid)
-        ow = _words(oa_text) if oa_text else set()
-        overlap = len(_words(ours) & ow) / len(ow) if ow else None
+        ow, uw = (_words(oa_text) if oa_text else set()), _words(ours)
+        m = None
+        if ow:
+            m = {"recall": len(uw & ow) / len(ow), "precision": len(uw & ow) / len(uw) if uw else 0.0,
+                 "ratio": len(ours.split()) / max(1, len(oa_text.split()))}
         reasons = []
-        if overlap is not None and overlap < 0.8:
-            reasons.append(f"overlap {overlap:.0%}")
-        if src in ("layout", "order", "none"):
-            reasons.append(f"source {src}")
-        report.append((pid, src, len(ours.split()), overlap, "; ".join(reasons)))
+        if m is None:
+            reasons.append("no OpenAlex abstract")
+        else:
+            if m["recall"] < 0.8:
+                reasons.append(f"recall {m['recall']:.0%}")
+            if m["precision"] < 0.8:
+                reasons.append(f"precision {m['precision']:.0%}")
+            if m["ratio"] > 1.5 or m["ratio"] < 0.6:
+                reasons.append(f"length ratio {m['ratio']:.2f}")
+        report.append((pid, src, len(ours.split()), m, "; ".join(reasons)))
         if reasons:
-            flagged.append((pid, src, ours, oa_text, overlap, "; ".join(reasons)))
-    print(f"{'paper_id':34s} {'source':15s} words overlap  flag")
-    for pid, src, n, ov, flag in report:
-        print(f"{pid:34s} {src:15s} {n:5d} {'  n/a' if ov is None else f'{ov:5.0%}'}  {flag}")
+            flagged.append((pid, src, ours, oa_text, m, "; ".join(reasons)))
+    fmt = lambda m, k: "  n/a" if m is None else (f"{m[k]:5.0%}" if k != "ratio" else f"{m[k]:5.2f}")
+    print(f"{'paper_id':34s} {'source':15s} words recall  prec  ratio  flag")
+    for pid, src, n, m, flag in report:
+        print(f"{pid:34s} {src:15s} {n:5d} {fmt(m, 'recall')} {fmt(m, 'precision')} {fmt(m, 'ratio')}  {flag}")
     from collections import Counter
     print("sources:", dict(Counter(x[1] for x in report)))
-    ovs = [x[3] for x in report if x[3] is not None]
-    if ovs:
-        print(f"overlap with OpenAlex ({len(ovs)} papers): min {min(ovs):.0%}, median {statistics.median(ovs):.0%}")
+    ms = [x[3] for x in report if x[3] is not None]
+    if ms:
+        for k in ("recall", "precision", "ratio"):
+            v = [m[k] for m in ms]
+            f = (lambda x: f"{x:.2f}") if k == "ratio" else (lambda x: f"{x:.0%}")
+            print(f"{k} ({len(v)} papers with an OpenAlex abstract): min {f(min(v))}, median {f(statistics.median(v))}, max {f(max(v))}")
     print(f"flagged: {len(flagged)}")
     try:
         import pypdfium2
     except ImportError:
         pypdfium2 = None
     parts = []
-    for pid, src, ours, oa_text, ov, flag in flagged:
+    for pid, src, ours, oa_text, m, flag in flagged:
         imgs = ""
         if pypdfium2 is not None:
             try:
@@ -896,7 +911,7 @@ def check_abstracts(rows):
                 imgs = f"<p>page render failed: {html.escape(str(e))}</p>"
         parts.append(f"""<section><h2>{html.escape(pid)} <small>{html.escape(flag)}</small></h2>
 <div class="cols"><div><h3>Ours ({html.escape(src)}, {len(ours.split())} words)</h3><p>{html.escape(ours) or '<i>empty</i>'}</p></div>
-<div><h3>OpenAlex{'' if ov is None else f' (overlap {ov:.0%})'}</h3><p>{html.escape(oa_text) if oa_text else '<i>none</i>'}</p></div></div>
+<div><h3>OpenAlex{'' if m is None else f" (recall {m['recall']:.0%}, precision {m['precision']:.0%}, length ratio {m['ratio']:.2f})"}</h3><p>{html.escape(oa_text) if oa_text else '<i>none</i>'}</p></div></div>
 <div class="pages">{imgs}</div></section>""")
     out = HERE / "review" / "abstract_check.html"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -905,7 +920,7 @@ def check_abstracts(rows):
 .cols{{display:flex;gap:24px}} .cols>div{{flex:1}} p{{font-size:0.9em}} h2 small{{color:#a00;font-weight:normal;font-size:0.7em}}
 .pages img{{max-width:48%;border:1px solid #ccc;margin:4px}} section{{border-top:1px solid #ccc;margin-top:2em;padding-top:1em}}</style></head>
 <body><h1>Abstract check: {len(flagged)} flagged of {len(report)} papers</h1>
-<p>Flag = word overlap with the OpenAlex abstract below 80%, or source layout / order / none. Pages 1-2 rendered at 90 dpi.</p>
+<p>Flag = recall (OpenAlex words in ours) below 80%, precision (our words in OpenAlex) below 80%, length ratio (our words / OpenAlex words) above 1.5 or below 0.6, or no OpenAlex abstract. Pages 1-2 rendered at 90 dpi.</p>
 {''.join(parts)}</body></html>""")
     print(f"-> {out} ({out.stat().st_size / 1e6:.1f} MB)")
 

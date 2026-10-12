@@ -52,7 +52,7 @@ Checked by hand on 8 sampled papers (74 of 75 exact) and on Dev papers. Figure c
 3. else the longest text item on page 1 wider than the body columns (1.4 × the median column width, i.e. full-width on a two-column page) → `layout`;
 4. else the longest paragraph (40+ words) on page 1 after the author block and before the first body heading → `order`; if nothing, empty and `none`.
 - Glyph repairs apply; `document.md` is unchanged.
-- Check: `parse_docling.py --check-abstracts` prints the word overlap with OpenAlex per paper (share of OpenAlex's words found in ours), flags below 80% and every `layout`, `order` and `none`, and writes `ingest/review/abstract_check.html` (gitignored; ours next to OpenAlex's, pages 1–2 rendered) for the flagged papers.
+- Check: `parse_docling.py --check-abstracts` prints, per paper, recall (OpenAlex words in ours), precision (our words in OpenAlex) and length ratio (our words / OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6, and every paper without an OpenAlex abstract; writes `ingest/review/abstract_check.html` (gitignored; ours next to OpenAlex's, pages 1–2 rendered) for the flagged papers.
 - Result 2026-10-12 (44 parsed papers): 24 `heading`, 20 `openalex_match`, none from `layout`, `order` or `none`; overlap with OpenAlex (41 papers have one) min 63%, median 98%; 1 flagged: 10.1039_c4nr05049e (63%, Docling merged the abstract's two parts into one garbled item; the rest is not in any text item).
 
 ### Body text (planned check)
