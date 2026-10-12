@@ -21,6 +21,17 @@ psed_v2/
   ingest/docling/<paper_id>/ # gitignored: docling.json, figures/pic_K.png, document.md, structure.json (paper-derived)
 ```
 
+## Environments
+
+- `psed310`: Docling (and pdfplumber). `psed_marker`: marker-pdf 2.0.0 only. Kept separate
+  because Docling pins transformers <5 and huggingface_hub <1 while Marker needs newer, and the
+  pillow pins conflict. Use `~/miniconda3/bin/conda` (the `conda` on PATH is broken).
+- Marker runs with the llama.cpp backend: `SURYA_INFERENCE_BACKEND=llamacpp`,
+  `LLAMA_CPP_BINARY=~/opt/llama.cpp/llama-b11574/llama-server`, and both llama.cpp folders
+  (`~/opt/llama.cpp/llama-b11574`, `~/opt/llama.cpp/cudart-llama-b11574-bin-ubuntu-cuda-12.8-x64`)
+  on `LD_LIBRARY_PATH`.
+- Marker output is not fully deterministic across runs: run once per paper and keep the result.
+
 ## Rules
 
 - **`corpus/raw/` never goes into git.** It holds copyrighted publisher PDFs. It is listed
