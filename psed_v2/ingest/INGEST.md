@@ -24,7 +24,7 @@ fixed / limit / open; checked by auto script, Claude or user.
 
 | ID | Item | Problem | Status | Checked by | Evidence (commit, papers) |
 |---|---|---|---|---|---|
-| F1 | Figures | Docling's own caption binding mostly wrong | fixed (own binding rules) | Claude | 647add1, 5918542, 70d98ab, bcf0d98; checked by hand on 8 sampled papers (74 of 75 exact, a120f36) and on Dev papers (count not recorded) |
+| F1 | Figures | Docling's own caption binding mostly wrong | fixed (own binding rules) | Claude (planning chat): 8 sampled papers (review_all.html), and 3 Dev papers, Ylilammi 10.1063_1.5028178, Yim 10.1039_d0cp03358h, pssa 10.1002_pssa.201532305, against review_dev.html and the PDFs: Ylilammi Fig. 1–7 and Yim Fig. 1–11 exact; pssa Fig. 8 went to Fig. 9, and logos attached to pssa Fig. 1 and 4. Done before later rule changes; pssa is now out of scope. | 647add1, 5918542, 70d98ab, bcf0d98; checked by hand on 8 sampled papers (74 of 75 exact, a120f36) and on Dev papers (count not recorded) |
 | F2 | Figures | Docling merges side-by-side figures into one crop | limit | Claude | a120f36; 10.1116_6.0002804 Figures 6 and 8 have no crop of their own (merged into 5 and 7), also 10.1002_admi.202000318, 10.1039_d1dt03543f, 10.1186_s11671-015-0872-9 |
 | F3 | Figures | Caption read before its picture; the picture goes to the next caption | limit | Claude | a120f36; 10.1002_pssa.201532305 Figure 8 went to Figure 9 |
 | F4 | Figures | Nested caption without a label loses short pieces | limit | Claude | 1350a2c; 10.1186_s11671-015-0872-9 Figure 5 |
@@ -36,7 +36,7 @@ fixed / limit / open; checked by auto script, Claude or user.
 | T4 | Tables | /C0, /C2 glyph names in cells | limit (no guessed substitution maps) | Claude | 89f7357 review; 22 tables, 17 of them RSC |
 | T5 | Tables | Exponents and footnote letters split or glued in cells | limit | Claude | 89f7357 review; 21 tables with exponents, about 7 with footnote letters |
 | T6 | Tables | Image-rendered table read by OCR | limit | auto script + Claude | c49f8c8; 10.1116_6.0003182 table 0 (page 4) |
-| A1 | Abstract | Extraction for the 44 papers | fixed: 44 of 44 (24 heading, 19 openalex_match, 1 openalex) | auto script (recall/precision vs OpenAlex) + user (7 review marks) | 6c5cafa, 1ac60a6, b17bf29, 9e87def; marks in manifest abstract_review |
+| A1 | Abstract | Extraction for the 44 papers | fixed: 44 of 44 (24 heading, 19 openalex_match, 1 openalex) | Claude (planning chat), 2026-10-12: c7ta03257a and d4nr03749a against page renders; c5ta00205b, ijpharm.2017.04.031, mee.2018.01.027, mee.2018.01.033 by reading the extracted text only. Marks set on the user's instruction. The user did not check them. | 6c5cafa, 1ac60a6, b17bf29, 9e87def; marks in manifest abstract_review |
 | A2 | Abstract | 10.1039_c4nr05049e drawn as image strips; OCR missed about 60 of 157 words | fixed (OpenAlex fallback, source openalex) | Claude (pdftotext, pdfplumber) + auto | 9e87def |
 | A3 | Abstract | Fallback rules 3 (layout) and 4 (order) never used on the 44 papers | open (untested) | auto script (sources) | b17bf29; 0 of 44 |
 | B1 | Body | Private-use ligature characters break words ("speci c", "a er") | open | auto script | 10 of 44 papers (2026-10-12), most in 10.1039_c5ta00205b, c7ta03257a, c3ra42928h |
