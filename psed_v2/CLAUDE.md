@@ -19,6 +19,8 @@ psed_v2/
   corpus/raw/<paper_id>.pdf # gitignored: paper_id = DOI with "/" -> "_", lowercased
   ingest/parse_docling.py   # tracked: Docling parse of in-scope corpus/raw/ PDFs (conda env psed310), writes the manifest `docling` column
   ingest/docling/<paper_id>/ # gitignored: docling.json, figures/pic_K.png, document.md, structure.json (paper-derived)
+  ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column
+  ingest/marker/<paper_id>/  # gitignored: document.md + images, document_meta.json, blocks.json (paper-derived)
 ```
 
 ## Environments

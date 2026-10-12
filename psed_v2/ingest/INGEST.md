@@ -61,6 +61,14 @@ Rule: update the row in the same commit as any change that affects it.
   Kept separate: Docling pins transformers <5 and huggingface_hub <1, Marker needs newer; pillow pins conflict.
 - Marker output is not fully deterministic across runs: run once per paper and keep the result.
 
+## Marker
+
+`ingest/parse_marker.py` (conda env `psed_marker`, llama.cpp settings from CLAUDE.md, set by the script when absent) runs Marker 2.0.0 once per paper and writes `ingest/marker/<paper_id>/` (gitignored): `document.md` with its figure crops (`_page_P_<Type>_K.jpeg`), `document_meta.json`, and `blocks.json`, the block tree rendered from the same conversion: block_type (Text, SectionHeader, Caption, Figure, Picture, Table, Equation, Footnote, PageHeader, PageFooter, …), page (1-based), bbox [l, t, r, b] in PDF points from the top-left, polygon, html, children. Same CLI shape as `parse_docling.py` (`<paper_id>…` | `--all`; in-scope rows with `pdf_status` ok; rows already ok are skipped and overwritten only with `--redo`). Manifest column `marker`: ok | failed | blank. Marker output is not deterministic across runs.
+
+Settings: `force_ocr` (full-page OCR by the surya-ocr-2 VLM, layout from the OCR pass). Reason, checked on 10.1039_c7ta03257a on 2026-10-12: with the text layer Marker drops the letters of private-use ligatures ("specic", "aer", "soware") and the °, −, µ glyphs; with `force_ocr` the words and symbols come out right ("specific", "after", "°C", "min<sup>-1</sup>", "µg") and the reading order is the print order (title, authors, abstract, then the body). Runtime: 63–174 s per paper on one A6000 (13 papers, 2026-10-12; the llama.cpp server starts once per process).
+
+Status, 13 papers (one per DOI prefix of the 44) compared with Docling against pdftotext body pages, 2026-10-12, by Claude: no body number changed by either tool; Docling splits decimals in one Elsevier paper ("0 . 178 eV", 10.1016_j.sse.2022.108584) and leaves /C glyphs and ligature characters, Marker renders them right; Marker turns the author line and the abstract block beside the TOC graphic into image placeholders in the ACS paper 10.1021_acs.jpcc.9b08176 (both lost) and splits the first Introduction paragraph by the affiliation block in 10.1002_adem.202201901; reading order title → authors → abstract → Introduction holds in Marker for all papers with such headings except the ACS one, in Docling it fails for RSC, Wiley and Beilstein layouts. Not used by the extraction yet; the plan is to use it for equations and to repair Docling's text where both differ (a decision for the user).
+
 ## Rules per item
 
 ### Figures
@@ -127,6 +135,7 @@ Accepted limits of the Docling stage; do not fix without a new decision. Moved f
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
 
+- 2026-10-12 — Marker stage added: `parse_marker.py` (Marker 2.0.0, force_ocr, llama.cpp backend) writes ingest/marker/<paper_id>/ with document.md, images and blocks.json; manifest column `marker`. Effect: 13 papers converted (one per DOI prefix), 63–174 s each; not used by the extraction yet. — this commit.
 - 2026-10-12 — Abstract fallback to the OpenAlex text when the abstract is OCR-only and recall is below 80% (`openalex`). Effect: 10.1039_c4nr05049e gets its full 157-word abstract, mark ok:09ab0660; nothing else changed. — this commit.
 - 2026-10-12 — Abstract extraction reverted to 1ac60a6 (heading, OpenAlex match, layout, order); kept check-side only: hash-bound `abstract_review` marks, empty abstract always flagged, form check without a usable OpenAlex abstract, 50-word rule in the check. Running lines (10 words or fewer, 3+ pages, 4+ letters) dropped from document.md only. Effect: all 7 marks verified (c7ta03257a = 4275c395), abstracts and captions unchanged, running heads/footers gone from 7 papers, 0 flagged. — this commit.
 - 2026-10-12 — Page-1 rule for the abstract (2+ items of 25+ words), `abstract_review` marks bound to the abstract's hash (empty abstract always flagged), running heads/footers/stamps (10 words or fewer, identical on 3+ pages) dropped from document.md and from the abstract's items. Effect: 262 lines dropped in 13 papers, no abstract changed, c7ta03257a still empty (open), 1 flagged. — this commit.
