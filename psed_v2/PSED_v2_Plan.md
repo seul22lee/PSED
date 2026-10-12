@@ -13,7 +13,7 @@ v1 (`psed_v1`, tag `v1-final`, commit `a06a714`) works but is too complex: 13 st
 - v1 code: `psed_v1/`, frozen at tag `v1-final` (`a06a714`).
 - v2 code: `psed_v2/` on branch `v2`.
 
-**In scope:** corpus definition and PDF acquisition, gold set, minimal ontology, four-stage pipeline, corpus growth from 5 to the in-scope corpus (currently 414 conformality papers), one comparison view, connection to the HAR channel twin.
+**In scope:** corpus definition and PDF acquisition, gold set, minimal ontology, four-stage pipeline, corpus growth from 5 to the in-scope corpus (currently 327 conformality papers), one comparison view, connection to the HAR channel twin.
 
 **Out of scope for now:** control, agentic orchestration, flat-surface and reactor-scale models, automatic intake of newly published papers. These come after Phase 7.
 
@@ -109,7 +109,7 @@ The ontology is one flat file, written new for v2.
 
 **External review.** The Parsons group reviews the ontology twice: when v0 is fixed, and after the corpus expansion in Phase 7.
 
-**Naming.** Where the TIB/TU Eindhoven ALD schema or QUDT already has a field name or unit, v2 uses the same one.
+**Naming and base.** The ontology starts from a base: the TIB/TU Eindhoven ALD schema (schema-miner experimental schema), Cremers 2019 and Popov 2025. The base is a starting point, not the truth: v2 uses its names by default, and every place where v2 differs (renamed, split, redefined, dropped) is recorded with a reason. The construction rules are in `psed_v2/ontology/CRITERIA.md`.
 
 ## Gold set
 
@@ -149,7 +149,7 @@ Papers added by hand are marked `extra`.
 
 **Two axes.** The candidates span two axes. Popov 2025 covers the process-chemistry axis: which precursors and reactants deposit which material, for thermal ALD. Cremers 2019 and the papers citing it cover the geometry axis, which is the current scope: conformality in high-aspect-ratio structures (trenches, holes, AAO, LHAR). Plasma ALD papers entered through the geometry axis and are accepted as they are. Plasma coverage is therefore partial (conformality-related only) and is not claimed as general plasma ALD coverage. The ontology must include geometry concepts (structure type, aspect ratio, feature dimensions, penetration depth, thickness profile) and a minimal process-mode set (thermal, ozone, plasma; plasma configuration; radical recombination).
 
-**Size.** 1,124 candidate rows (Popov 699, Cremers 292, Cremers-citing 143, extra 1; a paper can have several). 22 are excluded as not ALD. In scope now: 414 papers, of which 59 have a PDF, 305 need manual or TDM access, and 50 have no DOI. The list is `psed_v2/corpus/manifest.csv`; `psed_v2/corpus/report.csv` and `manual_list.csv` (in scope, no PDF) are generated from it.
+**Size.** 1,124 candidate rows (Popov 699, Cremers 292, Cremers-citing 143, extra 1; a paper can have several). In scope now: 327 papers, of which 44 have a PDF; the rest are to be acquired by hand or through the library TDM API. The list is `psed_v2/corpus/manifest.csv`; `psed_v2/corpus/report.csv` and `manual_list.csv` (in scope, no PDF) are generated from it.
 
 **PDF acquisition.**
 
@@ -166,7 +166,7 @@ OA status is a column, not a filter. All in-scope papers are read and extracted.
 | Dev | 5 | Full | Pipeline development |
 | Held-out | 3 | Full | Scored only at milestones |
 | Sample | 50, random from in-scope papers with a PDF | None | Generality check; ontology growth |
-| Full | All in-scope papers (currently 414) | None | Final corpus |
+| Full | All in-scope papers (currently 327) | None | Final corpus |
 
 Dev and Held-out papers may come from outside the two reviews; such papers are added as `extra`. The Sample is not random: it leans toward open-access papers.
 
