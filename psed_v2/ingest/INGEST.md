@@ -18,6 +18,42 @@ This file holds what ingest extracts, how, the decisions behind it, the known li
 Paths: `ingest/docling/<paper_id>/` (gitignored). Progress: manifest column `docling`.
 `corpus/openalex_abstracts.json` (gitignored): OpenAlex abstracts of the in-scope papers, fetched once with `parse_docling.py --fetch-abstracts` (the only network call in ingest; `--rebind` never calls the network). Fetched 2026-10-12: 273 of 327 in-scope papers have one.
 
+## Status
+
+fixed / limit / open; checked by auto script, Claude or user.
+
+| ID | Item | Problem | Status | Checked by | Evidence (commit, papers) |
+|---|---|---|---|---|---|
+| F1 | Figures | Docling's own caption binding mostly wrong | fixed (own binding rules) | Claude | 647add1, 5918542, 70d98ab, bcf0d98; checked by hand on 8 sampled papers (74 of 75 exact, a120f36) and on Dev papers (count not recorded) |
+| F2 | Figures | Docling merges side-by-side figures into one crop | limit | Claude | a120f36; 10.1116_6.0002804 Figures 6 and 8 have no crop of their own (merged into 5 and 7), also 10.1002_admi.202000318, 10.1039_d1dt03543f, 10.1186_s11671-015-0872-9 |
+| F3 | Figures | Caption read before its picture; the picture goes to the next caption | limit | Claude | a120f36; 10.1002_pssa.201532305 Figure 8 went to Figure 9 |
+| F4 | Figures | Nested caption without a label loses short pieces | limit | Claude | 1350a2c; 10.1186_s11671-015-0872-9 Figure 5 |
+| F5 | Figures | Journal logos and banners attach to a figure | limit | Claude | a120f36; pssa Figures 1 and 4 |
+| F6 | Figures | Figure-check count in INGEST.md (48 of 49) predates the current 44 papers | open | user | Figures section |
+| T1 | Tables | Caption binding shifted by one; 11 of 63 tables right | fixed: 59 of 63 (the other 4 have no caption) | Claude (expected bindings) + auto score | 89f7357; 44 papers, 2026-10-12 |
+| T2 | Tables | Multi-row headers flattened in the markdown | fixed (9 tables) | auto script (54 single-header tables byte-identical) + Claude | 7107b50 |
+| T3 | Tables | Cell structure errors: merged or dropped rows, rotated table transposed | limit; a crop per table is saved for a vision model as last resort | Claude (8 picks against page renders) | 89f7357; Yim 10.1039_d0cp03358h Table 1, jpcc.9b08176, chemmater.1c03164, separations11010024, 2.067203jes |
+| T4 | Tables | /C0, /C2 glyph names in cells | limit (no guessed substitution maps) | Claude | 89f7357 review; 22 tables, 17 of them RSC |
+| T5 | Tables | Exponents and footnote letters split or glued in cells | limit | Claude | 89f7357 review; 21 tables with exponents, about 7 with footnote letters |
+| T6 | Tables | Image-rendered table read by OCR | limit | auto script + Claude | c49f8c8; 10.1116_6.0003182 table 0 (page 4) |
+| A1 | Abstract | Extraction for the 44 papers | fixed: 44 of 44 (24 heading, 19 openalex_match, 1 openalex) | auto script (recall/precision vs OpenAlex) + user (7 review marks) | 6c5cafa, 1ac60a6, b17bf29, 9e87def; marks in manifest abstract_review |
+| A2 | Abstract | 10.1039_c4nr05049e drawn as image strips; OCR missed about 60 of 157 words | fixed (OpenAlex fallback, source openalex) | Claude (pdftotext, pdfplumber) + auto | 9e87def |
+| A3 | Abstract | Fallback rules 3 (layout) and 4 (order) never used on the 44 papers | open (untested) | auto script (sources) | b17bf29; 0 of 44 |
+| B1 | Body | Private-use ligature characters break words ("speci c", "a er") | open | auto script | 10 of 44 papers (2026-10-12), most in 10.1039_c5ta00205b, c7ta03257a, c3ra42928h |
+| B2 | Body | Reading order puts title, authors and abstract inside the introduction; footnotes split sentences | open | Claude | seen in 10.1039_c7ta03257a page 2 (2026-10-12) |
+| B3 | Body | Cover-page text at the top of document.md | open | Claude | AIP papers, e.g. 10.1063_5.0168768, 10.1063_1.5028178 |
+| B4 | Body | Part of the text nested in figures (axis labels, legends, OCR'd labels) is written into document.md | open | auto script | 303 of 759 nested texts of 4+ words appear in document.md (44 papers, 2026-10-12); the OCR'd labels (43 papers, about 9,900 words) are only partly exported |
+| B5 | Body | Running heads and footers | fixed (exact list verified) | auto script | b17bf29; 7 papers |
+| B6 | Body | /C0, /C14, ¼ glyphs | limit (glyph names carry no meaning) | Claude | a120f36, ccce8fd |
+| B7 | Body | Digit drawn for a degree sign ("300 1 C") | fixed as a "[?]" mark from PDF font evidence | auto script | ccce8fd; 170 digits in 4 papers |
+| B8 | Body | Text-coverage check compares with pdftotext, which also breaks ligatures and cannot see OCR'd regions | open | Claude | 01f85c6 check, 2026-10-12 |
+| B9 | Body | Headings drawn as outlines, read by OCR | limit | auto script + Claude | c49f8c8; 10.1021_acs.chemmater.1c03164, 17 headings |
+| E1 | Equations | Not decoded | open (plan: Docling + Marker, a person decides disagreements) | user | Equations section; one-off test on Ylilammi 2018, 2026-10-12 |
+| D1 | Docs | Numbers in INGEST.md lack date, commit, papers and method; some are stale | open | user | this file |
+| D2 | Docs | Some "checked" marks were by Claude, not a person | open (to be labelled) | user | this file |
+
+Rule: update the row in the same commit as any change that affects it.
+
 ## Environments
 
 - `psed310`: Docling, pdfplumber. Runs `ingest/parse_docling.py`.
