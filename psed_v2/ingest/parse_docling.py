@@ -4,6 +4,8 @@
     ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py <paper_id> [...]
     ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --all
     ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --rebind <paper_id> [...] | --rebind --all
+    ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --fetch-abstracts
+    ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --check-abstracts
 
 --rebind reruns caption binding and the text repairs from docling.json and the saved crops,
 without Docling. Use it whenever only the binding rules change.
@@ -16,7 +18,8 @@ Writes, per paper:
     docling/<paper_id>/figures/tab_K.png one crop per Docling table (K = index in doc.tables), cut
                                         from the PDF page with pypdfium2 at the picture scale
     docling/<paper_id>/structure.json   {n_pages, sections[headings], n_pictures, n_tables,
-                                         captions[{kind, number, caption, images|table+image, page}]}
+                                         captions[{kind, number, caption, images|table+image, page}],
+                                         abstract, abstract_source}
 
 Caption binding (replaces Docling's), in Docling's reading order:
 - a caption is text starting with Fig./Figure/Scheme/Table (or 图/表) + number (not "Figs."; the
@@ -50,6 +53,22 @@ Caption binding (replaces Docling's), in Docling's reading order:
   is built from Docling's cell grid: the column-header rows at the top become one header line,
   the texts per column joined with " / " (one header row: Docling's own export, unchanged).
 Unnumbered items are listed with number null.
+
+Abstract (structure.json "abstract", "abstract_source"), from Docling's text items, not reading order
+alone, so an abstract placed inside the introduction is still found. "Page 1" is the first page with
+running text (publisher cover pages are skipped). In order:
+1. the text under a heading "Abstract", or a paragraph starting with "Abstract:" (ACS), with its
+   continuation items -> "heading";
+2. else, if OpenAlex has an abstract (corpus/openalex_abstracts.json, fetched once with
+   --fetch-abstracts; --rebind never calls the network): the text item on pages 1-2 with the
+   highest word overlap with it, joined with adjacent items that also overlap -> "openalex_match";
+3. else the longest text item on page 1 that is wider than the body columns (1.4 x the median
+   column width; full-width on a two-column page) -> "layout";
+4. else the longest paragraph (40+ words) on page 1 after the author block and before the first
+   body heading -> "order"; if nothing, empty and "none".
+The glyph repairs are applied; document.md is unchanged. --check-abstracts prints the word
+overlap with OpenAlex per paper, flags below 80% and every "layout", "order" and "none", and
+writes ingest/review/abstract_check.html (gitignored) for the flagged papers.
 
 Glyph repairs, applied to document.md and caption text after Docling runs:
 - glyph names that carry a code point, "/uniXXXX" and "/uXXXXX", become that character
@@ -244,6 +263,143 @@ def save_docling(doc, d):
 def load_docling(d):
     from docling_core.types.doc import DoclingDocument
     return DoclingDocument.load_from_json(d / "docling.json")
+
+
+OA_ABSTRACTS = CORPUS / "openalex_abstracts.json"
+ABSTRACT_HEAD_RE = re.compile(r"\s*abstract\s*[:.]?\s*$", re.I)
+ABSTRACT_INLINE_RE = re.compile(r"\s*abstract\s*[:.\-–—]\s*", re.I)
+KEYWORDS_RE = re.compile(r"\s*(keywords?|key\s*words|■|graphical abstract|toc graphic)\b", re.I)
+BODY_HEAD_RE = re.compile(r"\b(introduction|background|results|experimental|methods?|materials)\b", re.I)
+WORD_RE = re.compile(r"[a-z0-9]{3,}")
+BODY_LABELS = ("text", "paragraph")
+
+
+def _words(text):
+    return set(WORD_RE.findall((text or "").lower()))
+
+
+def _load_oa_abstracts():
+    """{paper_id: abstract text} from corpus/openalex_abstracts.json (written by --fetch-abstracts)."""
+    try:
+        data = json.loads(OA_ABSTRACTS.read_text())
+    except (OSError, ValueError):
+        return {}
+    return {pid: (v or {}).get("abstract") for pid, v in data.get("papers", {}).items()}
+
+
+def _abstract(doc, oa_text):
+    """(abstract, source) from Docling's text items; see the module docstring."""
+    seq = []
+    for item, _level in doc.iterate_items():
+        text = getattr(item, "text", None)
+        prov = (getattr(item, "prov", None) or [None])[0]
+        if text is None or prov is None:
+            continue
+        seq.append({"label": _label(item), "page": prov.page_no,
+                    "width": abs(prov.bbox.r - prov.bbox.l), "text": text, "n": len(text.split())})
+    is_body = lambda s: s["label"] in BODY_LABELS
+    oa_words = _words(oa_text) if oa_text else set()
+    def precision(s):
+        w = _words(s["text"])
+        return len(w & oa_words) / len(w) if w else 0.0
+
+    def continuation(i, page):
+        """Body items after seq[i] on the same page that continue a block: not a heading, not a
+        keywords line; with OpenAlex they must overlap it, without it they follow while the text
+        has not reached a sentence end (at most two)."""
+        out, taken = [], 0
+        for s in seq[i + 1:]:
+            if s["page"] != page or s["label"] == "section_header" or KEYWORDS_RE.match(s["text"]):
+                break
+            if not is_body(s) or s["n"] < 8:      # pictures, widgets ("Supporting Information")
+                continue
+            if oa_words:
+                if precision(s) < 0.6:
+                    break
+            else:
+                prev = (out[-1] if out else seq[i])["text"].rstrip()
+                if prev.endswith((".", "!", "?")) or taken >= 2:
+                    break
+            out.append(s); taken += 1
+        return out
+
+    # 1. heading "Abstract", or an inline "Abstract:" paragraph
+    for i, s in enumerate(seq):
+        if s["label"] == "section_header" and ABSTRACT_HEAD_RE.match(s["text"]):
+            block, width0, words = [], None, 0
+            for t in seq[i + 1:]:
+                if t["label"] == "section_header" or KEYWORDS_RE.match(t["text"]) or t["page"] > s["page"] + 1:
+                    break
+                if not is_body(t) or t["n"] < 8:
+                    continue
+                # the body starts where the overlap with OpenAlex drops, else where the column
+                # gets narrower (full-width abstract over a two-column body); 400 words at most
+                if oa_words and precision(t) < 0.6:
+                    break
+                if not oa_words and width0 is not None and t["width"] < 0.7 * width0:
+                    break
+                if words >= 400:
+                    break
+                width0 = width0 or t["width"]
+                block.append(t["text"]); words += t["n"]
+            if words >= 20:
+                return " ".join(block), "heading"
+    for i, s in enumerate(seq):
+        if is_body(s) and ABSTRACT_INLINE_RE.match(s["text"]) and s["n"] >= 20:
+            first = ABSTRACT_INLINE_RE.sub("", s["text"], count=1)
+            return " ".join([first] + [t["text"] for t in continuation(i, s["page"])]), "heading"
+
+    # 2. best word overlap with the OpenAlex abstract on pages 1-2, extended to adjacent items
+    if oa_words:
+        cands = [i for i, s in enumerate(seq) if is_body(s) and s["page"] <= 2 and s["n"] >= 15]
+        if cands:
+            recall = lambda i: len(_words(seq[i]["text"]) & oa_words) / len(oa_words)
+            best = max(cands, key=recall)
+            if recall(best) >= 0.2:
+                covered = _words(seq[best]["text"]) & oa_words
+                def grow(step):
+                    """Last index reached walking from best in one direction: past pictures and
+                    short items, over body items that overlap OpenAlex and add to it; stops at a
+                    heading, a page beyond 2, or a body item that does not fit."""
+                    nonlocal covered
+                    j, k = best, best + step
+                    while 0 <= k < len(seq):
+                        s = seq[k]
+                        if s["label"] == "section_header" or s["page"] > 2:
+                            break
+                        if is_body(s) and s["n"] >= 8:
+                            new = (_words(s["text"]) & oa_words) - covered
+                            if precision(s) < 0.6 or len(new) < 3:
+                                break
+                            covered |= new
+                            j = k
+                        k += step
+                    return j
+                lo, hi = grow(-1), grow(1)
+                return " ".join(s["text"] for s in seq[lo:hi + 1] if is_body(s) and s["n"] >= 8), "openalex_match"
+
+    # "page 1": the first page with running text
+    long_pages = [s["page"] for s in seq if is_body(s) and s["n"] >= 25]
+    if not long_pages:
+        return "", "none"
+    page1 = min(long_pages)
+    on_page1 = [i for i, s in enumerate(seq) if is_body(s) and s["page"] == page1 and s["n"] >= 25]
+
+    # 3. the longest item on page 1 wider than the body columns
+    widths = sorted(s["width"] for s in seq if is_body(s) and s["n"] >= 30 and s["page"] <= page1 + 2)
+    if widths:
+        column = widths[len(widths) // 2]
+        wide = [i for i in on_page1 if seq[i]["width"] > 1.4 * column]
+        if wide:
+            return seq[max(wide, key=lambda i: seq[i]["n"])]["text"], "layout"
+
+    # 4. the longest paragraph on page 1 after the author block and before the first body heading
+    first_head = next((i for i, s in enumerate(seq) if s["label"] == "section_header"
+                       and BODY_HEAD_RE.search(s["text"]) and s["page"] >= page1), len(seq))
+    paras = [i for i in on_page1 if i < first_head and seq[i]["n"] >= 40]
+    if paras:
+        return seq[max(paras, key=lambda i: seq[i]["n"])]["text"], "order"
+    return "", "none"
 
 
 def _table_markdown(item, doc):
@@ -547,9 +703,11 @@ def bind(doc, pdf, figdir):
                         "image": tabs[j]["image"], "page": tabs[j]["page"]})
 
     sections = [h.strip() for h in re.findall(r"^#{1,4}\s+(.+)$", md, re.M)]
+    abstract, source = _abstract(doc, _load_oa_abstracts().get(Path(pdf).stem))
+    abstract = re.sub(r"\s+", " ", fix(abstract)).strip()
     return md, {"n_pages": getattr(doc, "num_pages", lambda: None)() if callable(getattr(doc, "num_pages", None)) else None,
                 "sections": sections, "n_pictures": len(pics), "n_tables": len(tabs),
-                "captions": entries}
+                "captions": entries, "abstract": abstract, "abstract_source": source}
 
 
 def read_manifest():
@@ -611,6 +769,10 @@ def main(argv):
     by_id = {r["paper_id"]: r for r in rows if r["paper_id"]}
     if argv[:1] == ["--rebind"]:
         return rebind(rows, by_id, argv[1:])
+    if argv == ["--fetch-abstracts"]:
+        return fetch_abstracts(rows)
+    if argv == ["--check-abstracts"]:
+        return check_abstracts(rows)
     if argv == ["--all"]:
         todo = [r for r in rows if r["pdf_status"] == "ok" and r.get("in_scope") == "yes"]
     else:
@@ -657,6 +819,95 @@ def rebind(rows, by_id, argv):
         md, struct = rebind_one(pid)
         print(f"[rebind] {pid}: {len(md)} md chars, {struct['n_pictures']} pictures, "
               f"{sum(1 for c in struct['captions'] if c['number'] is not None)} captions", flush=True)
+
+
+def fetch_abstracts(rows):
+    """One network call per 50 DOIs: OpenAlex abstracts (abstract_inverted_index) of the in-scope
+    papers -> corpus/openalex_abstracts.json (gitignored). The only step here that uses the network."""
+    import datetime
+    sys.path.insert(0, str(CORPUS))
+    from fetch_pdfs import make_session, openalex_works, normalise_doi
+    todo = [r for r in rows if r.get("in_scope") == "yes" and r.get("doi")]
+    works = openalex_works(make_session(), todo, select="doi,abstract_inverted_index")
+    papers, n_abs = {}, 0
+    for r in todo:
+        work = works.get(normalise_doi(r["doi"]), {})
+        inv = work.get("abstract_inverted_index")
+        text = None
+        if inv:
+            pos = sorted((p, w) for w, ps in inv.items() for p in ps)
+            text = " ".join(w for _, w in pos)
+            n_abs += 1
+        papers[r["paper_id"]] = {"doi": r["doi"], "abstract": text}
+    OA_ABSTRACTS.write_text(json.dumps({"fetched_on": datetime.date.today().isoformat(),
+                                        "source": "OpenAlex works.abstract_inverted_index",
+                                        "papers": papers}, indent=1, ensure_ascii=False))
+    print(f"{len(todo)} in-scope papers queried, {n_abs} with an OpenAlex abstract -> {OA_ABSTRACTS}")
+
+
+def check_abstracts(rows):
+    """Word overlap of structure.json abstracts with OpenAlex; flags below 80% and every layout,
+    order and none. Writes ingest/review/abstract_check.html for the flagged papers."""
+    import base64, html, io, statistics
+    oa = _load_oa_abstracts()
+    report, flagged = [], []
+    for r in rows:
+        pid = r["paper_id"]
+        d = OUT / pid
+        if r.get("in_scope") != "yes" or r.get("docling") != "ok" or not (d / "structure.json").exists():
+            continue
+        st = json.loads((d / "structure.json").read_text())
+        ours, src = st.get("abstract", ""), st.get("abstract_source", "none")
+        oa_text = oa.get(pid)
+        ow = _words(oa_text) if oa_text else set()
+        overlap = len(_words(ours) & ow) / len(ow) if ow else None
+        reasons = []
+        if overlap is not None and overlap < 0.8:
+            reasons.append(f"overlap {overlap:.0%}")
+        if src in ("layout", "order", "none"):
+            reasons.append(f"source {src}")
+        report.append((pid, src, len(ours.split()), overlap, "; ".join(reasons)))
+        if reasons:
+            flagged.append((pid, src, ours, oa_text, overlap, "; ".join(reasons)))
+    print(f"{'paper_id':34s} {'source':15s} words overlap  flag")
+    for pid, src, n, ov, flag in report:
+        print(f"{pid:34s} {src:15s} {n:5d} {'  n/a' if ov is None else f'{ov:5.0%}'}  {flag}")
+    from collections import Counter
+    print("sources:", dict(Counter(x[1] for x in report)))
+    ovs = [x[3] for x in report if x[3] is not None]
+    if ovs:
+        print(f"overlap with OpenAlex ({len(ovs)} papers): min {min(ovs):.0%}, median {statistics.median(ovs):.0%}")
+    print(f"flagged: {len(flagged)}")
+    try:
+        import pypdfium2
+    except ImportError:
+        pypdfium2 = None
+    parts = []
+    for pid, src, ours, oa_text, ov, flag in flagged:
+        imgs = ""
+        if pypdfium2 is not None:
+            try:
+                pdoc = pypdfium2.PdfDocument(str(RAW / f"{pid}.pdf"))
+                for pno in range(min(2, len(pdoc))):
+                    buf = io.BytesIO()
+                    pdoc[pno].render(scale=90 / 72).to_pil().save(buf, format="PNG", optimize=True)
+                    imgs += f'<img src="data:image/png;base64,{base64.b64encode(buf.getvalue()).decode()}" alt="page {pno + 1}">'
+            except Exception as e:
+                imgs = f"<p>page render failed: {html.escape(str(e))}</p>"
+        parts.append(f"""<section><h2>{html.escape(pid)} <small>{html.escape(flag)}</small></h2>
+<div class="cols"><div><h3>Ours ({html.escape(src)}, {len(ours.split())} words)</h3><p>{html.escape(ours) or '<i>empty</i>'}</p></div>
+<div><h3>OpenAlex{'' if ov is None else f' (overlap {ov:.0%})'}</h3><p>{html.escape(oa_text) if oa_text else '<i>none</i>'}</p></div></div>
+<div class="pages">{imgs}</div></section>""")
+    out = HERE / "review" / "abstract_check.html"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Abstract check</title>
+<style>body{{font-family:system-ui,sans-serif;max-width:1400px;margin:0 auto;padding:16px;color:#222;background:#fff}}
+.cols{{display:flex;gap:24px}} .cols>div{{flex:1}} p{{font-size:0.9em}} h2 small{{color:#a00;font-weight:normal;font-size:0.7em}}
+.pages img{{max-width:48%;border:1px solid #ccc;margin:4px}} section{{border-top:1px solid #ccc;margin-top:2em;padding-top:1em}}</style></head>
+<body><h1>Abstract check: {len(flagged)} flagged of {len(report)} papers</h1>
+<p>Flag = word overlap with the OpenAlex abstract below 80%, or source layout / order / none. Pages 1-2 rendered at 90 dpi.</p>
+{''.join(parts)}</body></html>""")
+    print(f"-> {out} ({out.stat().st_size / 1e6:.1f} MB)")
 
 
 if __name__ == "__main__":

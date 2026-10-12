@@ -9,13 +9,14 @@ This file holds what ingest extracts, how, the decisions behind it, the known li
 | Item | Source | Tool | Output |
 | --- | --- | --- | --- |
 | DOI, title, authors, year, journal | `corpus/manifest.csv` (OpenAlex) | none: never extracted from the PDF | manifest columns |
-| Abstract | PDF | Docling + rule | `structure.json` → `abstract` (planned) |
+| Abstract | PDF (+ OpenAlex abstract as a locator) | Docling text items + four rules in order (heading, OpenAlex match, layout, order) | `structure.json` → `abstract`, `abstract_source` |
 | Body text | PDF | Docling | `document.md` |
 | Figures + captions | PDF | Docling for crops; caption binding by our rules (Docling's own binding is not used) | `structure.json` → captions with `images`; crops in `figures/pic_K.png` |
 | Tables + captions | PDF | Docling for cells and position; caption: Docling's table–caption link first, else our same-page rule | `structure.json` → captions with `table` (markdown) and `image` (crop) |
 | Equations | PDF | Docling and Marker, compared | planned: per-equation LaTeX from both, agreement flag |
 
 Paths: `ingest/docling/<paper_id>/` (gitignored). Progress: manifest column `docling`.
+`corpus/openalex_abstracts.json` (gitignored): OpenAlex abstracts of the in-scope papers, fetched once with `parse_docling.py --fetch-abstracts` (the only network call in ingest; `--rebind` never calls the network). Fetched 2026-10-12: 273 of 327 in-scope papers have one.
 
 ## Environments
 
@@ -44,9 +45,15 @@ Checked by hand on 8 sampled papers (74 of 75 exact) and on Dev papers. Figure c
 - Both Docling (`do_formula_enrichment`) and Marker extract LaTeX. Tested on Ylilammi 2018: each got about 37 of 46 right, wrong on different equations.
 - Decision: keep both. Equations where they agree (after notation normalisation) are accepted; where they disagree, a person decides. Not yet built.
 
-### Abstract (planned)
-- Text under an "Abstract" heading; otherwise the longest paragraph between the author block and the first body section.
-- Checked against the OpenAlex abstract (word overlap); papers below 80% are flagged for a person.
+### Abstract
+`structure.json` → `abstract`, `abstract_source`. Picked from Docling's text items, not reading order alone, so an abstract placed inside the introduction is still found. "Page 1" is the first page with running text (publisher cover pages are skipped). In order:
+1. the text under a heading "Abstract", or a paragraph starting with "Abstract:" (ACS), with its continuation items (past pictures and short widgets; the body starts where the OpenAlex overlap drops, else where the column narrows; 400 words at most) → `heading`;
+2. else, if OpenAlex has an abstract: the text item on pages 1–2 with the highest word overlap with it, joined with adjacent items that also overlap → `openalex_match`;
+3. else the longest text item on page 1 wider than the body columns (1.4 × the median column width, i.e. full-width on a two-column page) → `layout`;
+4. else the longest paragraph (40+ words) on page 1 after the author block and before the first body heading → `order`; if nothing, empty and `none`.
+- Glyph repairs apply; `document.md` is unchanged.
+- Check: `parse_docling.py --check-abstracts` prints the word overlap with OpenAlex per paper (share of OpenAlex's words found in ours), flags below 80% and every `layout`, `order` and `none`, and writes `ingest/review/abstract_check.html` (gitignored; ours next to OpenAlex's, pages 1–2 rendered) for the flagged papers.
+- Result 2026-10-12 (44 parsed papers): 24 `heading`, 20 `openalex_match`, none from `layout`, `order` or `none`; overlap with OpenAlex (41 papers have one) min 63%, median 98%; 1 flagged: 10.1039_c4nr05049e (63%, Docling merged the abstract's two parts into one garbled item; the rest is not in any text item).
 
 ### Body text (planned check)
 - Share of pdftotext words found in `document.md` per paper; below 95% is flagged. Repeated running headers/footers are flagged.
@@ -80,6 +87,7 @@ Accepted limits of the Docling stage; do not fix without a new decision. Moved f
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
 
+- 2026-10-12 — Abstract: `abstract` and `abstract_source` in structure.json (heading, OpenAlex match, layout, order rules); `--fetch-abstracts` writes corpus/openalex_abstracts.json once; `--check-abstracts` scores against OpenAlex and writes review/abstract_check.html. Effect: 44 of 44 abstracts found (24 heading, 20 OpenAlex match), overlap median 98%, 1 flagged. — this commit.
 - 2026-10-12 — Tables: markdown built from Docling's cell grid; column-header rows merged into one header line joined with " / ". Effect: 9 tables with 2–3 header rows changed, the 54 single-header tables byte-identical. — this commit.
 - 2026-10-12 — Tables: caption binding uses Docling's table–caption link first, then the nearest unused same-page caption; letter-prefixed numbers (A1, S1) and "Table N Capitalised" items of any label accepted; glyph repairs on table markdown; crop per table (`figures/tab_K.png`, `image` in structure.json). Effect: 11 → 59 of 63 tables numbered as expected, none worse; Figure A1 of separations11010024 gained. Known limits moved here from CLAUDE.md. — this commit.
 - 2026-10-12 — CLAUDE.md records the Marker environment (psed_marker env, llama.cpp backend, `~/opt/llama.cpp/`). Effect: Marker 2.0.0 runs without touching psed310. — 2118b2a
