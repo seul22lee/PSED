@@ -37,7 +37,8 @@ Checked by hand on 8 sampled papers (74 of 75 exact) and on Dev papers. Figure c
 - Each table also has a crop image (`figures/tab_K.png`, K = index in Docling's tables, cut from the PDF page with pypdfium2 at the picture scale; `image` in the structure.json entry), for checking and, as a last resort, reading by a vision model at extract time.
 - Result of the 2026-10-12 change (63 tables in 28 of the 44 parsed papers, scored against Docling's own caption links and a hand check of the rest): 11 → 59 tables numbered as expected, none worse; the 4 others have no caption anywhere (bjnano.5.25 t0/t1, acsami.0c06879 t0, 6.0003182 t0). Before, 15 tables were shifted by one because Docling places the linked caption after the table in reading order although 43 of the 45 are printed above it, 24 were unnumbered, and 4 symbol lists had taken leftover captions. Figure entries unchanged, except Figure A1 of 10.3390_separations11010024, now bound thanks to the letter prefix.
 - Known, not fixed: TableFormer structure errors in 7 of 9 inspected tables (merged or dropped rows, a spurious empty column, table footnotes absorbed as rows, ± dropped in one row, a rotated page read transposed: Yim Table 1); `/Cn` glyphs in 22 tables (mostly RSC); exponents and footnote letters flattened ("1 × 10 - 4", "Kn c 1 c"); multi-row headers appear only as row 0 in the markdown.
-- Not done: substitution maps for `/Cn` glyphs, rewriting exponents, multi-row header merge (next), symbol lists read as tables (left unnumbered).
+- Markdown is built from Docling's cell grid: the column-header rows at the top (Docling's `column_header` flag) become one header line, the texts per column joined with " / " (a cell spanning several columns applies to each; repeated identical parts skipped). Tables with one header row are Docling's own export, byte for byte. 2026-10-12: 9 tables changed, 54 unchanged.
+- Not done: substitution maps for `/Cn` glyphs, rewriting exponents, symbol lists read as tables (left unnumbered).
 
 ### Equations
 - Both Docling (`do_formula_enrichment`) and Marker extract LaTeX. Tested on Ylilammi 2018: each got about 37 of 46 right, wrong on different equations.
@@ -79,6 +80,7 @@ Accepted limits of the Docling stage; do not fix without a new decision. Moved f
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
 
+- 2026-10-12 — Tables: markdown built from Docling's cell grid; column-header rows merged into one header line joined with " / ". Effect: 9 tables with 2–3 header rows changed, the 54 single-header tables byte-identical. — this commit.
 - 2026-10-12 — Tables: caption binding uses Docling's table–caption link first, then the nearest unused same-page caption; letter-prefixed numbers (A1, S1) and "Table N Capitalised" items of any label accepted; glyph repairs on table markdown; crop per table (`figures/tab_K.png`, `image` in structure.json). Effect: 11 → 59 of 63 tables numbered as expected, none worse; Figure A1 of separations11010024 gained. Known limits moved here from CLAUDE.md. — this commit.
 - 2026-10-12 — CLAUDE.md records the Marker environment (psed_marker env, llama.cpp backend, `~/opt/llama.cpp/`). Effect: Marker 2.0.0 runs without touching psed310. — 2118b2a
 - 2026-10-03 — Known limit added: a caption nested in its picture without a label keeps only text items of 4+ words. Effect: documented only. — 1350a2c

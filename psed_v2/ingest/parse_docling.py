@@ -46,7 +46,9 @@ Caption binding (replaces Docling's), in Docling's reading order:
 - a table whose Docling caption link (item.captions) points to a "Table N" caption takes that
   caption; else it goes to the nearest unused table caption on the same page, before or after it
   in reading order (tie: before), never across pages; else it stays unnumbered. Linked tables
-  are bound first. Glyph repairs (below) are applied to the table markdown too.
+  are bound first. Glyph repairs (below) are applied to the table markdown too. The markdown
+  is built from Docling's cell grid: the column-header rows at the top become one header line,
+  the texts per column joined with " / " (one header row: Docling's own export, unchanged).
 Unnumbered items are listed with number null.
 
 Glyph repairs, applied to document.md and caption text after Docling runs:
@@ -244,6 +246,46 @@ def load_docling(d):
     return DoclingDocument.load_from_json(d / "docling.json")
 
 
+def _table_markdown(item, doc):
+    """Markdown of a table from Docling's cell grid. Rows whose cells are column headers (Docling's
+    column_header flag, the contiguous rows at the top) become one header line, the header texts
+    per column joined with " / "; a cell spanning several columns applies to each, repeated
+    identical parts are skipped. With 0 or 1 header rows the result is Docling's own export,
+    byte for byte (Docling's caption text stays in front of the table either way)."""
+    full = item.export_to_markdown(doc)
+    grid = item.data.grid
+    n_hdr = 0
+    while n_hdr < len(grid) and any(getattr(c, "column_header", False) for c in grid[n_hdr]):
+        n_hdr += 1
+    if n_hdr <= 1 or not grid:
+        return full
+    try:
+        from tabulate import tabulate
+        cell = lambda c: c.text.replace("\n", " ").replace("|", "&#124;")
+        rows = [[cell(c) for c in row] for row in grid]
+        if any(not hasattr(c, "text") for row in grid for c in row):
+            return full
+        def table(body, header):
+            try:
+                return tabulate(body, headers=header, tablefmt="github")
+            except ValueError:
+                return tabulate(body, headers=header, tablefmt="github", disable_numparse=True)
+        own = table(rows[1:], rows[0])                    # what Docling's export ends with
+        if not full.endswith(own):
+            return full
+        header = []
+        for j in range(len(rows[0])):
+            parts = []
+            for r in range(n_hdr):
+                t = rows[r][j].strip()
+                if t and t not in parts:
+                    parts.append(t)
+            header.append(" / ".join(parts))
+        return full[:len(full) - len(own)] + table(rows[n_hdr:], header)
+    except Exception:
+        return full
+
+
 def _table_crops(doc, pdf, figdir, scale=3):
     """One crop per Docling table, figures/tab_<k>.png (k = index in doc.tables), cut from the PDF
     page with pypdfium2 at the picture scale (no page images are kept, so --rebind can do this too).
@@ -338,7 +380,7 @@ def bind(doc, pdf, figdir):
             seq.append(("pic", idx, page, ""))
         elif cls == "TableItem":
             try:
-                tmd = fix(item.export_to_markdown(doc))
+                tmd = fix(_table_markdown(item, doc))
             except Exception:
                 tmd = ""
             tabs.append({"markdown": tmd, "page": page, "image": tab_images.get(item.self_ref, ""),
