@@ -56,7 +56,7 @@ Unnumbered items are listed with number null.
 
 Abstract (structure.json "abstract", "abstract_source"), from Docling's text items, not reading order
 alone, so an abstract placed inside the introduction is still found. "Page 1" is the first page with
-running text (publisher cover pages are skipped). In order:
+2 or more text items of 25+ words (publisher cover pages and inside-cover blurbs are skipped). In order:
 1. the text under a heading "Abstract", or a paragraph starting with "Abstract:" (ACS), with its
    continuation items -> "heading";
 2. else, if OpenAlex has an abstract of 50+ words (corpus/openalex_abstracts.json, fetched once
@@ -70,9 +70,14 @@ The glyph repairs are applied; document.md is unchanged. --check-abstracts print
 recall (OpenAlex words in ours), precision (our words in OpenAlex) and length ratio (our words /
 OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6. A paper without a
 usable OpenAlex abstract is flagged only if its abstract fails the form check: 80-400 words,
-ends with ".", and comes right after the title/author block. Papers with manifest column
-abstract_review = ok or limit (set by hand) are skipped. Writes ingest/review/abstract_check.html
-(gitignored) for the flagged papers.
+ends with ".", and comes right after the title/author block. An empty abstract is always flagged.
+Manifest column abstract_review records a review as "ok:<hash>" or "limit:<hash>" (first 8 hex of
+the sha1 of the reviewed abstract); a paper is skipped only while its abstract still has that
+hash. Writes ingest/review/abstract_check.html (gitignored) for the flagged papers.
+
+Running heads, footers and download stamps: a text of 10 words or fewer that appears identically
+on 3 or more pages is dropped from document.md and from the items the abstract is picked from.
+Captions and tables are not touched.
 
 Glyph repairs, applied to document.md and caption text after Docling runs:
 - glyph names that carry a code point, "/uniXXXX" and "/uXXXXX", become that character
@@ -296,13 +301,44 @@ def _load_oa_abstracts():
     return out
 
 
-def _abstract(doc, oa_text):
-    """(abstract, source) from Docling's text items; see the module docstring."""
+def _running_lines(doc, fix):
+    """Texts of 10 words or fewer that appear identically (after the glyph repairs) on 3 or more
+    pages: running heads, footers, download stamps."""
+    pages = {}
+    for item, _level in doc.iterate_items():
+        text = getattr(item, "text", None)
+        prov = (getattr(item, "prov", None) or [None])[0]
+        if text is None or prov is None:
+            continue
+        t = re.sub(r"\s+", " ", fix(text)).strip()
+        if t and len(t.split()) <= 10:
+            pages.setdefault(t, set()).add(prov.page_no)
+    return {t for t, p in pages.items() if len(p) >= 3}
+
+
+def _drop_running(md, running):
+    """document.md without the running lines (markdown markers stripped for the comparison);
+    runs of blank lines are collapsed. Returns (markdown, {line: count dropped})."""
+    out, dropped = [], {}
+    for line in md.split("\n"):
+        core = re.sub(r"\s+", " ", re.sub(r"^(#{1,6}\s+|[-*]\s+|>\s+)", "", line.strip()))
+        if core in running:
+            dropped[core] = dropped.get(core, 0) + 1
+            continue
+        out.append(line)
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(out)), dropped
+
+
+def _abstract(doc, oa_text, running=frozenset(), fix=lambda t: t):
+    """(abstract, source) from Docling's text items; see the module docstring. Items whose text
+    is a running line are not used."""
     seq = []
     for item, _level in doc.iterate_items():
         text = getattr(item, "text", None)
         prov = (getattr(item, "prov", None) or [None])[0]
         if text is None or prov is None:
+            continue
+        if re.sub(r"\s+", " ", fix(text)).strip() in running:
             continue
         seq.append({"label": _label(item), "page": prov.page_no,
                     "width": abs(prov.bbox.r - prov.bbox.l), "text": text, "n": len(text.split())})
@@ -387,11 +423,15 @@ def _abstract(doc, oa_text):
                 lo, hi = grow(-1), grow(1)
                 return " ".join(s["text"] for s in seq[lo:hi + 1] if is_body(s) and s["n"] >= 8), "openalex_match"
 
-    # "page 1": the first page with running text
-    long_pages = [s["page"] for s in seq if is_body(s) and s["n"] >= 25]
-    if not long_pages:
+    # "page 1": the first page with 2 or more text items of 25+ words
+    per_page = {}
+    for s in seq:
+        if is_body(s) and s["n"] >= 25:
+            per_page[s["page"]] = per_page.get(s["page"], 0) + 1
+    pages = [p for p, c in per_page.items() if c >= 2]
+    if not pages:
         return "", "none"
-    page1 = min(long_pages)
+    page1 = min(pages)
     on_page1 = [i for i, s in enumerate(seq) if is_body(s) and s["page"] == page1 and s["n"] >= 25]
 
     # 3. the longest item on page 1 wider than the body columns
@@ -499,7 +539,8 @@ def bind(doc, pdf, figdir):
     from PIL import Image
     evidence = _degree_evidence(pdf)
     fix = lambda text: _mark_degrees(_glyph_names(text), evidence)
-    md = fix(doc.export_to_markdown())
+    running = _running_lines(doc, fix)
+    md, _dropped = _drop_running(fix(doc.export_to_markdown()), running)
     tab_images = _table_crops(doc, pdf, figdir)
 
     # 1. reading-order sequence. Text nested inside a picture (axis labels, scale bars) is not
@@ -712,7 +753,7 @@ def bind(doc, pdf, figdir):
                         "image": tabs[j]["image"], "page": tabs[j]["page"]})
 
     sections = [h.strip() for h in re.findall(r"^#{1,4}\s+(.+)$", md, re.M)]
-    abstract, source = _abstract(doc, _load_oa_abstracts().get(Path(pdf).stem))
+    abstract, source = _abstract(doc, _load_oa_abstracts().get(Path(pdf).stem), running, fix)
     abstract = re.sub(r"\s+", " ", fix(abstract)).strip()
     return md, {"n_pages": getattr(doc, "num_pages", lambda: None)() if callable(getattr(doc, "num_pages", None)) else None,
                 "sections": sections, "n_pictures": len(pics), "n_tables": len(tabs),
@@ -860,6 +901,12 @@ AUTHOR_BLOCK_RE = re.compile(r"universit|department|institute|laborator|faculty|
                              r"received|accepted|corresponding|e-?mail|orcid", re.I)
 
 
+def _abstract_hash(text):
+    """First 8 hex of the sha1 of the abstract, as stored in manifest column abstract_review."""
+    import hashlib
+    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
+
+
 def _abstract_form_problems(pid, ours):
     """Form check for a paper without a usable OpenAlex abstract: 80-400 words, ends with ".", and
     its first text item comes right after the title/author block (no body paragraph of 40+ words
@@ -907,10 +954,11 @@ def check_abstracts(rows):
         d = OUT / pid
         if r.get("in_scope") != "yes" or r.get("docling") != "ok" or not (d / "structure.json").exists():
             continue
-        if r.get("abstract_review") in ("ok", "limit"):
-            continue
         st = json.loads((d / "structure.json").read_text())
         ours, src = st.get("abstract", ""), st.get("abstract_source", "none")
+        mark = (r.get("abstract_review") or "").strip()
+        if ours.strip() and mark.split(":")[0] in ("ok", "limit") and mark.split(":", 1)[-1] == _abstract_hash(ours):
+            continue
         oa_text = oa.get(pid)
         ow, uw = (_words(oa_text) if oa_text else set()), _words(ours)
         m = None
@@ -918,7 +966,9 @@ def check_abstracts(rows):
             m = {"recall": len(uw & ow) / len(ow), "precision": len(uw & ow) / len(uw) if uw else 0.0,
                  "ratio": len(ours.split()) / max(1, len(oa_text.split()))}
         reasons = []
-        if m is None:
+        if not ours.strip():
+            reasons.append("empty abstract")
+        elif m is None:
             reasons += _abstract_form_problems(pid, ours)
         else:
             if m["recall"] < 0.8:
@@ -970,7 +1020,7 @@ def check_abstracts(rows):
 .cols{{display:flex;gap:24px}} .cols>div{{flex:1}} p{{font-size:0.9em}} h2 small{{color:#a00;font-weight:normal;font-size:0.7em}}
 .pages img{{max-width:48%;border:1px solid #ccc;margin:4px}} section{{border-top:1px solid #ccc;margin-top:2em;padding-top:1em}}</style></head>
 <body><h1>Abstract check: {len(flagged)} flagged of {len(report)} papers</h1>
-<p>Flag = recall (OpenAlex words in ours) below 80%, precision (our words in OpenAlex) below 80%, length ratio (our words / OpenAlex words) above 1.5 or below 0.6; without a usable OpenAlex abstract (none, or under 50 words): 80-400 words, final period, right after the title/author block. Papers with abstract_review ok/limit in the manifest are skipped. Pages 1-2 rendered at 90 dpi.</p>
+<p>Flag = recall (OpenAlex words in ours) below 80%, precision (our words in OpenAlex) below 80%, length ratio (our words / OpenAlex words) above 1.5 or below 0.6; without a usable OpenAlex abstract (none, or under 50 words): 80-400 words, final period, right after the title/author block. An empty abstract is always flagged. Papers whose manifest abstract_review mark (ok:hash / limit:hash) matches the current abstract are skipped. Pages 1-2 rendered at 90 dpi.</p>
 {''.join(parts)}</body></html>""")
     print(f"-> {out} ({out.stat().st_size / 1e6:.1f} MB)")
 
