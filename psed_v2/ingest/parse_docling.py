@@ -59,8 +59,8 @@ alone, so an abstract placed inside the introduction is still found. "Page 1" is
 running text (publisher cover pages are skipped). In order:
 1. the text under a heading "Abstract", or a paragraph starting with "Abstract:" (ACS), with its
    continuation items -> "heading";
-2. else, if OpenAlex has an abstract (corpus/openalex_abstracts.json, fetched once with
-   --fetch-abstracts; --rebind never calls the network): the text item on pages 1-2 with the
+2. else, if OpenAlex has an abstract of 50+ words (corpus/openalex_abstracts.json, fetched once
+   with --fetch-abstracts; --rebind never calls the network): the text item on pages 1-2 with the
    highest word overlap with it, joined with adjacent items that also overlap -> "openalex_match";
 3. else the longest text item on page 1 that is wider than the body columns (1.4 x the median
    column width; full-width on a two-column page) -> "layout";
@@ -68,8 +68,11 @@ running text (publisher cover pages are skipped). In order:
    body heading -> "order"; if nothing, empty and "none".
 The glyph repairs are applied; document.md is unchanged. --check-abstracts prints, per paper,
 recall (OpenAlex words in ours), precision (our words in OpenAlex) and length ratio (our words /
-OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6, and every paper
-without an OpenAlex abstract; writes ingest/review/abstract_check.html (gitignored) for them.
+OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6. A paper without a
+usable OpenAlex abstract is flagged only if its abstract fails the form check: 80-400 words,
+ends with ".", and comes right after the title/author block. Papers with manifest column
+abstract_review = ok or limit (set by hand) are skipped. Writes ingest/review/abstract_check.html
+(gitignored) for the flagged papers.
 
 Glyph repairs, applied to document.md and caption text after Docling runs:
 - glyph names that carry a code point, "/uniXXXX" and "/uXXXXX", become that character
@@ -280,12 +283,17 @@ def _words(text):
 
 
 def _load_oa_abstracts():
-    """{paper_id: abstract text} from corpus/openalex_abstracts.json (written by --fetch-abstracts)."""
+    """{paper_id: abstract text} from corpus/openalex_abstracts.json (written by --fetch-abstracts).
+    An abstract shorter than 50 words (a cover blurb) counts as missing, for the extraction and the check."""
     try:
         data = json.loads(OA_ABSTRACTS.read_text())
     except (OSError, ValueError):
         return {}
-    return {pid: (v or {}).get("abstract") for pid, v in data.get("papers", {}).items()}
+    out = {}
+    for pid, v in data.get("papers", {}).items():
+        a = (v or {}).get("abstract")
+        out[pid] = a if a and len(a.split()) >= 50 else None
+    return out
 
 
 def _abstract(doc, oa_text):
@@ -716,10 +724,12 @@ def read_manifest():
         reader = csv.DictReader(f)
         rows = list(reader)
         fields = list(reader.fieldnames or [])
-    if "docling" not in fields:
-        fields.append("docling")
+    for col in ("docling", "abstract_review"):
+        if col not in fields:
+            fields.append(col)
     for r in rows:
         r.setdefault("docling", "")
+        r.setdefault("abstract_review", "")
     return rows, fields
 
 
@@ -846,6 +856,44 @@ def fetch_abstracts(rows):
     print(f"{len(todo)} in-scope papers queried, {n_abs} with an OpenAlex abstract -> {OA_ABSTRACTS}")
 
 
+AUTHOR_BLOCK_RE = re.compile(r"universit|department|institute|laborator|faculty|school|cent(er|re)|@|"
+                             r"received|accepted|corresponding|e-?mail|orcid", re.I)
+
+
+def _abstract_form_problems(pid, ours):
+    """Form check for a paper without a usable OpenAlex abstract: 80-400 words, ends with ".", and
+    its first text item comes right after the title/author block (no body paragraph of 40+ words
+    before it on its page, author and affiliation blocks excepted). Returns the failed points."""
+    problems = []
+    n = len(ours.split())
+    if not 80 <= n <= 400:
+        problems.append(f"length {n} words")
+    if not ours.rstrip().endswith("."):
+        problems.append("no final period")
+    norm = lambda t: re.sub(r"\s+", " ", _glyph_names(t or "")).strip().lower()
+    head = norm(ours)[:40]
+    try:
+        doc = load_docling(OUT / pid)
+    except Exception:
+        return problems + ["docling.json not readable"]
+    items = []
+    for item, _level in doc.iterate_items():
+        text = getattr(item, "text", None)
+        prov = (getattr(item, "prov", None) or [None])[0]
+        if text is not None and prov is not None:
+            items.append((_label(item), prov.page_no, text))
+    start = next((i for i, (lab, pg, tx) in enumerate(items) if head and lab in BODY_LABELS
+                  and norm(tx)[:40] == head), None)
+    if start is None:
+        return problems + ["start item not found"]
+    page = items[start][1]
+    before = [tx for lab, pg, tx in items[:start] if lab in BODY_LABELS and pg == page
+              and len(tx.split()) >= 40 and not AUTHOR_BLOCK_RE.search(tx)]
+    if before:
+        problems.append("body text before it")
+    return problems
+
+
 def check_abstracts(rows):
     """structure.json abstracts against OpenAlex: recall (OpenAlex words in ours), precision (our
     words in OpenAlex) and length ratio (our words / OpenAlex words). Flags recall < 80%,
@@ -859,6 +907,8 @@ def check_abstracts(rows):
         d = OUT / pid
         if r.get("in_scope") != "yes" or r.get("docling") != "ok" or not (d / "structure.json").exists():
             continue
+        if r.get("abstract_review") in ("ok", "limit"):
+            continue
         st = json.loads((d / "structure.json").read_text())
         ours, src = st.get("abstract", ""), st.get("abstract_source", "none")
         oa_text = oa.get(pid)
@@ -869,7 +919,7 @@ def check_abstracts(rows):
                  "ratio": len(ours.split()) / max(1, len(oa_text.split()))}
         reasons = []
         if m is None:
-            reasons.append("no OpenAlex abstract")
+            reasons += _abstract_form_problems(pid, ours)
         else:
             if m["recall"] < 0.8:
                 reasons.append(f"recall {m['recall']:.0%}")
@@ -920,7 +970,7 @@ def check_abstracts(rows):
 .cols{{display:flex;gap:24px}} .cols>div{{flex:1}} p{{font-size:0.9em}} h2 small{{color:#a00;font-weight:normal;font-size:0.7em}}
 .pages img{{max-width:48%;border:1px solid #ccc;margin:4px}} section{{border-top:1px solid #ccc;margin-top:2em;padding-top:1em}}</style></head>
 <body><h1>Abstract check: {len(flagged)} flagged of {len(report)} papers</h1>
-<p>Flag = recall (OpenAlex words in ours) below 80%, precision (our words in OpenAlex) below 80%, length ratio (our words / OpenAlex words) above 1.5 or below 0.6, or no OpenAlex abstract. Pages 1-2 rendered at 90 dpi.</p>
+<p>Flag = recall (OpenAlex words in ours) below 80%, precision (our words in OpenAlex) below 80%, length ratio (our words / OpenAlex words) above 1.5 or below 0.6; without a usable OpenAlex abstract (none, or under 50 words): 80-400 words, final period, right after the title/author block. Papers with abstract_review ok/limit in the manifest are skipped. Pages 1-2 rendered at 90 dpi.</p>
 {''.join(parts)}</body></html>""")
     print(f"-> {out} ({out.stat().st_size / 1e6:.1f} MB)")
 
