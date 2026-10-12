@@ -13,13 +13,17 @@ Writes, per paper:
     docling/<paper_id>/document.md      full markdown
     docling/<paper_id>/docling.json     Docling's document, images as placeholders
     docling/<paper_id>/figures/pic_K.png one crop per Docling picture (K = index in doc.pictures)
+    docling/<paper_id>/figures/tab_K.png one crop per Docling table (K = index in doc.tables), cut
+                                        from the PDF page with pypdfium2 at the picture scale
     docling/<paper_id>/structure.json   {n_pages, sections[headings], n_pictures, n_tables,
-                                         captions[{kind, number, caption, images|table, page}]}
+                                         captions[{kind, number, caption, images|table+image, page}]}
 
 Caption binding (replaces Docling's), in Docling's reading order:
-- a caption is text starting with Fig./Figure/Scheme/Table (or 图/表) + number (not "Figs."), kept only
-  if Docling labels it caption, or the number is followed by ".", ":" or "|", or it is text
-  nested inside a picture that starts with Fig./Figure/Scheme + number. A caption that
+- a caption is text starting with Fig./Figure/Scheme/Table (or 图/表) + number (not "Figs."; the
+  number may carry a letter prefix: S1, A1), kept only if Docling labels it caption, or the number
+  is followed by ".", ":" or "|", or it is text nested inside a picture that starts with
+  Fig./Figure/Scheme + number, or it is a Table caption whose number is followed by a capitalised
+  word ("Table 1 Summary ...", any label). A caption that
   qualifies through that last rule alone (no caption label, no punctuation after the number)
   continues with the text items nested under the same picture after it that have at least 4
   words, up to the next caption or the end of the picture; for a repeated
@@ -39,7 +43,10 @@ Caption binding (replaces Docling's), in Docling's reading order:
   that many pages, those pages are bound to the captions in number order;
 - a caption that is the last text item on its page and does not end with ".", ")" or "]"
   continues with the first text item of the next page;
-- a table goes to the latest earlier table caption without a table, else stays unnumbered.
+- a table whose Docling caption link (item.captions) points to a "Table N" caption takes that
+  caption; else it goes to the nearest unused table caption on the same page, before or after it
+  in reading order (tie: before), never across pages; else it stays unnumbered. Linked tables
+  are bound first. Glyph repairs (below) are applied to the table markdown too.
 Unnumbered items are listed with number null.
 
 Glyph repairs, applied to document.md and caption text after Docling runs:
@@ -88,7 +95,9 @@ def _converter(force_ocr=False):
 
 
 CAPTION_RE = re.compile(r"\s*(Fig\.|FIG\.|Figure(?!s)|FIGURE(?!S)|Scheme(?!s)|SCHEME(?!S)|Table(?!s)|TABLE(?!S)|图|表)"
-                        r"\s*(S?\d+|[IVXL]+)(?!\d)(\s*[.:|])?")
+                        r"\s*([A-Z]?\d+|[IVXL]+)(?!\d)(\s*[.:|])?")
+# a capitalised word after the number: "Table 1 Summary of ..." is a caption, "Table 1 shows" is not
+CAPWORD_RE = re.compile(r"\s+[A-Z][A-Za-z]*(?![A-Za-z])")
 
 
 def _caption_kind(word):
@@ -235,6 +244,48 @@ def load_docling(d):
     return DoclingDocument.load_from_json(d / "docling.json")
 
 
+def _table_crops(doc, pdf, figdir, scale=3):
+    """One crop per Docling table, figures/tab_<k>.png (k = index in doc.tables), cut from the PDF
+    page with pypdfium2 at the picture scale (no page images are kept, so --rebind can do this too).
+    Docling's boxes are bottom-left, shifted so the MediaBox starts at 0. Returns {self_ref: path}."""
+    out = {}
+    try:
+        import pypdfium2
+        pdoc = pypdfium2.PdfDocument(str(pdf))
+    except Exception as e:
+        print(f"  table crops skipped ({e.__class__.__name__}: {e})", flush=True)
+        return out
+    figdir.mkdir(parents=True, exist_ok=True)
+    for old in figdir.glob("tab_*.png"):
+        old.unlink()
+    pages = {}
+    for k, item in enumerate(doc.tables):
+        prov = (getattr(item, "prov", None) or [None])[0]
+        bb = getattr(prov, "bbox", None)
+        if bb is None:
+            continue
+        try:
+            pno = prov.page_no
+            if pno not in pages:
+                page = pdoc[pno - 1]
+                ml, mb, _, _ = page.get_mediabox()
+                cl, _, _, ct = page.get_cropbox()
+                pages[pno] = (page.render(scale=scale).to_pil(), ml, mb, cl, ct)
+            im, ml, mb, cl, ct = pages[pno]
+            x0 = (min(bb.l, bb.r) + ml - cl) * scale
+            x1 = (max(bb.l, bb.r) + ml - cl) * scale
+            y0 = (ct - (max(bb.t, bb.b) + mb)) * scale
+            y1 = (ct - (min(bb.t, bb.b) + mb)) * scale
+            box = (max(0, int(x0)), max(0, int(y0)), min(im.width, int(x1) + 1), min(im.height, int(y1) + 1))
+            if box[2] <= box[0] or box[3] <= box[1]:
+                continue
+            im.crop(box).save(figdir / f"tab_{k}.png")
+            out[item.self_ref] = f"figures/tab_{k}.png"
+        except Exception as e:
+            print(f"  table {k} crop failed ({e.__class__.__name__}: {e})", flush=True)
+    return out
+
+
 def bind(doc, pdf, figdir):
     """Caption binding and text repairs on a Docling document. No Docling run: crops are read
     from figdir (figures/pic_<k>.png), the PDF only for page boxes and font evidence."""
@@ -242,6 +293,7 @@ def bind(doc, pdf, figdir):
     evidence = _degree_evidence(pdf)
     fix = lambda text: _mark_degrees(_glyph_names(text), evidence)
     md = fix(doc.export_to_markdown())
+    tab_images = _table_crops(doc, pdf, figdir)
 
     # 1. reading-order sequence. Text nested inside a picture (axis labels, scale bars) is not
     #    a text item of the page, except captions, which Docling may nest there.
@@ -286,10 +338,11 @@ def bind(doc, pdf, figdir):
             seq.append(("pic", idx, page, ""))
         elif cls == "TableItem":
             try:
-                tmd = item.export_to_markdown(doc)
+                tmd = fix(item.export_to_markdown(doc))
             except Exception:
                 tmd = ""
-            tabs.append({"markdown": tmd, "page": page})
+            tabs.append({"markdown": tmd, "page": page, "image": tab_images.get(item.self_ref, ""),
+                         "cap_refs": [getattr(r, "cref", None) for r in (getattr(item, "captions", None) or [])]})
             seq.append(("tab", len(tabs) - 1, page, ""))
         else:
             text = getattr(item, "text", "") or ""
@@ -298,11 +351,14 @@ def bind(doc, pdf, figdir):
             # a caption: Docling labels it caption, or the number is followed by . : |, or it is
             # text nested inside a picture that starts with Fig./Figure/Scheme + number
             nested_fig = nested and m is not None and m.group(1).lower().startswith(("fig", "scheme"))
-            if m and (is_cap_label or m.group(3) or nested_fig):
+            # a Table caption of any label when a capitalised word follows the number
+            table_cap = (m is not None and _caption_kind(m.group(1)) == "table"
+                         and CAPWORD_RE.match(text, m.end()) is not None)
+            if m and (is_cap_label or m.group(3) or nested_fig or table_cap):
                 cands.append({"kind": _caption_kind(m.group(1)), "number": m.group(2),
                               "caption": re.sub(r"\s+", " ", text).strip(), "page": page,
                               "span": _span(item), "labelled": is_cap_label,
-                              "punct": bool(m.group(3))})
+                              "punct": bool(m.group(3)), "ref": item.self_ref})
                 seq.append(("cap", len(cands) - 1, page, text))
                 # only a caption that qualifies through the nested-text rule alone collects text
                 open_cap = len(cands) - 1 if (nested_fig and not is_cap_label and not m.group(3)) else None
@@ -348,7 +404,7 @@ def bind(doc, pdf, figdir):
                     caption = caption + " " + re.sub(r"\s+", " ", seq[nxt][3]).strip()
             e = {"kind": c["kind"], "number": c["number"], "caption": fix(caption), "page": c["page"]}
             if c["kind"] == "table":
-                e["table"] = ""
+                e["table"], e["image"] = "", ""
             else:
                 e["images"] = []
             entry_of[st[1]] = e
@@ -407,23 +463,46 @@ def bind(doc, pdf, figdir):
                 e["images"] = [pics[j]["image"] for j in late if pics[j]["page"] == pg and pics[j]["image"]]
             loose_pics = [j for j in loose_pics if j not in late]
 
-    # 5. tables: the latest earlier table caption that has no table yet, else unnumbered
-    open_tab_caps, loose_tabs = [], []
-    for st in seq:
-        if st[0] == "cap" and st[1] in kept and cands[st[1]]["kind"] == "table":
-            open_tab_caps.append(entry_of[st[1]])
-        elif st[0] == "tab":
-            if open_tab_caps:
-                open_tab_caps.pop()["table"] = tabs[st[1]]["markdown"]
-            else:
-                loose_tabs.append(st[1])
+    # 5. tables: (1) a table whose Docling caption link points to a "Table N" caption takes that
+    #    caption (the kept one for that number) and marks it used; (2) else the nearest unused
+    #    table caption on the same page, before or after the table in reading order (tie: before),
+    #    never across pages; (3) else unnumbered. Linked tables are bound first.
+    cand_of_ref = {c["ref"]: i for i, c in enumerate(cands)}
+    tab_pos = {st[1]: pos for pos, st in enumerate(seq) if st[0] == "tab"}
+    cap_pos = {st[1]: pos for pos, st in enumerate(seq)
+               if st[0] == "cap" and st[1] in kept and cands[st[1]]["kind"] == "table"}
+    used, bound_tab = set(), {}
+    for j, tab in enumerate(tabs):
+        for ref in tab["cap_refs"]:
+            ci = cand_of_ref.get(ref)
+            if ci is None or cands[ci]["kind"] != "table":
+                continue
+            ki = kept_of[ci]
+            if ki not in used:
+                bound_tab[j], _ = ki, used.add(ki)
+                break
+    for j, tab in enumerate(tabs):
+        if j in bound_tab or tab["page"] is None:
+            continue
+        free = [(abs(pos - tab_pos[j]), pos > tab_pos[j], ki) for ki, pos in cap_pos.items()
+                if ki not in used and cands[ki]["page"] == tab["page"]]
+        if free:
+            ki = min(free)[2]
+            bound_tab[j], _ = ki, used.add(ki)
+    loose_tabs = []
+    for j, tab in enumerate(tabs):
+        if j in bound_tab:
+            e = entry_of[bound_tab[j]]
+            e["table"], e["image"] = tab["markdown"], tab["image"]
+        else:
+            loose_tabs.append(j)
 
     for j in loose_pics:
         entries.append({"kind": "figure", "number": None, "caption": "",
                         "images": [pics[j]["image"]] if pics[j]["image"] else [], "page": pics[j]["page"]})
     for j in loose_tabs:
         entries.append({"kind": "table", "number": None, "caption": "", "table": tabs[j]["markdown"],
-                        "page": tabs[j]["page"]})
+                        "image": tabs[j]["image"], "page": tabs[j]["page"]})
 
     sections = [h.strip() for h in re.findall(r"^#{1,4}\s+(.+)$", md, re.M)]
     return md, {"n_pages": getattr(doc, "num_pages", lambda: None)() if callable(getattr(doc, "num_pages", None)) else None,

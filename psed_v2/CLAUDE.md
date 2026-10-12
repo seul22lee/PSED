@@ -128,18 +128,4 @@ Review Article, Minireview, Perspective, Feature Article, Highlight, Tutorial or
 a self-description such as "this review", "in this perspective", "we review". List each hit
 (paper_id, title, matched text) for the user to check; do not exclude on your own.
 
-## Docling stage: known limits (accepted, do not fix without a new decision)
-- Figure binding was checked by hand on 8 sampled papers: 74 of 75 figures exact.
-- Docling-side misses: a few captions are absent from Docling output (image-only PDF, caption drawn as image) or two side-by-side figures are merged into one crop. Seen in 10.1002_admi.202000318, 10.1039_d1dt03543f, 10.1186_s11671-015-0872-9, 10.1116_6.0002804.
-- Captions split across two columns keep only the first part. Captions split across pages are joined.
-- A non-figure image (equation, banner whose copy differs slightly) on a figure's page can attach to that figure as an extra image.
-- Tables: caption binding is not validated. Known issues: shift by one when Docling reads a table before its caption, tables Docling does not detect, captions placed inside the table's first row.
-- Broken glyphs from PDF fonts (e.g. "/C14" for °, "/C0" for −, "¼" for =, private-use characters) are not fixed yet. Fixed: "/uniXXXX" and "/uXXXXX" glyph names; a digit standing for a degree sign ("300 1 C") is marked "[?]" where the PDF font shows it.
-- Equations are not decoded.
-- 10.1146_annurev-chembioeng-060816-101547 is a review paper; whether it belongs in the corpus is a corpus question.
-- Docling occasionally reads a caption before its picture although the caption is below it; the picture then goes to the next caption (seen: 10.1002_pssa.201532305 Figure 8 went to Figure 9).
-- Repeated journal logos whose copies differ slightly are not caught as decoration and can attach to a figure (seen: pssa Figures 1 and 4).
-- A paper that prints the same figure number twice keeps one caption; the other figure can lose its image (seen: 10.1021_acsaelm.3c00245 Figure 10).
-- Manuscripts that list all captions together and put the figures at the end cannot be bound by position (seen: 10.1116_1.5116136).
-- Docling sometimes labels a body sentence as a caption, which then replaces the real one (seen: 10.1021_acs.chemmater.9b05116 Figure 10).
-- A caption nested inside its picture without a caption label keeps only text items of 4 or more words, so short pieces (panel markers like (a), short phrases) can drop out (seen: 10.1186_s11671-015-0872-9 Figure 5).
+Ingest (Docling, Marker, what is extracted, known limits, change log): see ingest/INGEST.md.
