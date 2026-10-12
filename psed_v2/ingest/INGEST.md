@@ -86,6 +86,7 @@ Checked by hand on 8 sampled papers (74 of 75 exact) and on Dev papers. Figure c
 - Not done: substitution maps for `/Cn` glyphs, rewriting exponents, symbol lists read as tables (left unnumbered).
 
 ### Equations
+- `parse_docling.py --formulas <paper_id>…` writes `docling/<paper_id>/equations.json`: one entry per Docling formula item with page, bbox (bottom-left origin), LaTeX and the printed equation number (from the LaTeX or the PDF text right of the formula). Run on the 13 Marker papers on 2026-10-12.
 - Both Docling (`do_formula_enrichment`) and Marker extract LaTeX. Tested on Ylilammi 2018: each got about 37 of 46 right, wrong on different equations.
 - Decision: keep both. Equations where they agree (after notation normalisation) are accepted; where they disagree, a person decides. Not yet built.
 
@@ -135,6 +136,7 @@ Accepted limits of the Docling stage; do not fix without a new decision. Moved f
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
 
+- 2026-10-12 — `parse_docling.py --formulas`: Docling with formula enrichment (CodeFormula) writes docling/<paper_id>/equations.json only (page, bbox, LaTeX, printed number from the LaTeX or from the PDF text right of the formula); no other Docling file touched. Effect on the 13 Marker papers: 103 formula items with LaTeX (Ylilammi 46 of 46 numbered right); 6 to 221 s per paper. — this commit.
 - 2026-10-12 — `structure_marker.py`: structure.json from Marker's blocks in Docling's schema (captions bound by Marker's groups, else parse_docling.py's position rules; tables as markdown; equations as LaTeX with page and bbox; abstract by the copied rules; document.md without running lines, Marker's own markdown kept as marker.md). Effect: 13 papers; compared with Docling item by item (review HTML in scratch, not committed). — this commit.
 - 2026-10-12 — Marker stage added: `parse_marker.py` (Marker 2.0.0, force_ocr, llama.cpp backend) writes ingest/marker/<paper_id>/ with document.md, images and blocks.json; manifest column `marker`. Effect: 13 papers converted (one per DOI prefix), 63–174 s each; not used by the extraction yet. — this commit.
 - 2026-10-12 — Abstract fallback to the OpenAlex text when the abstract is OCR-only and recall is below 80% (`openalex`). Effect: 10.1039_c4nr05049e gets its full 157-word abstract, mark ok:09ab0660; nothing else changed. — this commit.

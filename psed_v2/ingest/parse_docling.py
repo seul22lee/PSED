@@ -5,6 +5,7 @@
     ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --all
     ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --rebind <paper_id> [...] | --rebind --all
     ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --fetch-abstracts
+    ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --formulas <paper_id> [...]
     ~/miniconda3/envs/psed310/bin/python psed_v2/ingest/parse_docling.py --check-abstracts
 
 --rebind reruns caption binding and the text repairs from docling.json and the saved crops,
@@ -79,6 +80,12 @@ column abstract_review records a review as "ok:<hash>" or "limit:<hash>" (first 
 sha1 of the reviewed abstract); a paper is skipped only while its abstract still has that hash.
 Writes ingest/review/abstract_check.html (gitignored) for the flagged papers.
 
+--formulas runs Docling again with formula enrichment (do_formula_enrichment, CodeFormula model; the
+other options as in a full parse) and writes only docling/<paper_id>/equations.json: one entry per
+formula item with page, bbox (Docling's, bottom-left origin), the LaTeX, and the printed equation
+number, read from the LaTeX ("(N)" or \tag) or from the PDF text to the right of the formula box
+(pdfplumber). No other file and no manifest column is touched.
+
 Running heads, footers and download stamps: a text of 10 words or fewer that appears identically
 (after the glyph repairs) on 3 or more pages and contains 4 or more letters (A-Z, a-z) is dropped
 from document.md. The abstract items, captions and tables are not touched.
@@ -112,13 +119,15 @@ RAW = CORPUS / "raw"
 OUT = HERE / "docling"
 
 
-def _converter(force_ocr=False):
+def _converter(force_ocr=False, formulas=False):
     from docling.document_converter import DocumentConverter, PdfFormatOption
     from docling.datamodel.base_models import InputFormat
     from docling.datamodel.pipeline_options import PdfPipelineOptions
     opts = PdfPipelineOptions()
     opts.generate_picture_images = True      # keep figure crops so a vision LLM can read them
     opts.images_scale = 3
+    if formulas:
+        opts.do_formula_enrichment = True    # --formulas: LaTeX for formula items (CodeFormula)
     if force_ocr:
         opts.do_ocr = True
         try:
@@ -852,6 +861,8 @@ def main(argv):
         return rebind(rows, by_id, argv[1:])
     if argv == ["--fetch-abstracts"]:
         return fetch_abstracts(rows)
+    if argv[:1] == ["--formulas"]:
+        return formulas(by_id, argv[1:])
     if argv == ["--check-abstracts"]:
         return check_abstracts(rows)
     if argv == ["--all"]:
@@ -900,6 +911,74 @@ def rebind(rows, by_id, argv):
         md, struct = rebind_one(pid)
         print(f"[rebind] {pid}: {len(md)} md chars, {struct['n_pictures']} pictures, "
               f"{sum(1 for c in struct['captions'] if c['number'] is not None)} captions", flush=True)
+
+
+EQ_NUMBER_RE = re.compile(r"\\tag\s*\{\s*([A-Za-z]?\d+[a-z]?)\s*\}\s*(?:\\\\)?\s*$"
+                          r"|\(\s*((?:[A-Za-z]\s*)?\d(?:\s*\d){0,2}(?:\s*[a-z])?)\s*\)\s*(?:\\\\)?\s*$")
+PRINTED_NUMBER_RE = re.compile(r"^\(?([A-Za-z]?\d{1,3}[a-z]?)\)$")
+
+
+def _printed_number(latex, page, bbox):
+    """The equation number: from the LaTeX ("(N)", "\\tag{N}", digits may be spaced) or, with a
+    pdfplumber page, the "(N)" word in the formula's vertical band at its right."""
+    m = EQ_NUMBER_RE.search(latex or "")
+    if m:
+        return re.sub(r"\s+", "", m.group(1) or m.group(2))
+    if page is None or bbox is None:
+        return None
+    H, x0 = page.height, page.bbox[0]
+    top, bottom = H - max(bbox.t, bbox.b), H - min(bbox.t, bbox.b)
+    left, right = min(bbox.l, bbox.r) + x0, max(bbox.l, bbox.r) + x0
+    right_part, limit = left + 0.5 * (right - left), right + 60      # the number sits at the right
+    best = None                                                        # edge of the formula's column
+    try:
+        for w in page.extract_words():
+            if w["top"] >= top - 3 and w["bottom"] <= bottom + 3 and right_part <= w["x0"] <= limit:
+                pm = PRINTED_NUMBER_RE.match(w["text"])
+                if pm and (best is None or w["x0"] > best[0]):
+                    best = (w["x0"], pm.group(1))
+    except Exception:
+        return None
+    return best[1] if best else None
+
+
+def formulas(by_id, argv):
+    """Docling with formula enrichment only; writes docling/<paper_id>/equations.json and nothing else."""
+    missing = [a for a in argv if a not in by_id]
+    if missing or not argv:
+        sys.exit(f"usage: parse_docling.py --formulas <paper_id> [...]  (unknown: {missing})")
+    conv = _converter(formulas=True)
+    try:
+        import pdfplumber
+    except ImportError:
+        pdfplumber = None
+    for pid in argv:
+        pdf = RAW / f"{pid}.pdf"
+        if not pdf.exists():
+            print(f"[formulas] {pid}: no PDF, skipped")
+            continue
+        t0 = time.time()
+        doc = conv.convert(pdf).document
+        pl = pdfplumber.open(str(pdf)) if pdfplumber else None
+        eqs = []
+        for item, _level in doc.iterate_items():
+            if _label(item) != "formula":
+                continue
+            prov = (getattr(item, "prov", None) or [None])[0]
+            bb = getattr(prov, "bbox", None)
+            page_no = getattr(prov, "page_no", None)
+            latex = (getattr(item, "text", "") or "").strip()
+            page = pl.pages[page_no - 1] if (pl is not None and page_no) else None
+            eqs.append({"page": page_no, "bbox": [bb.l, bb.t, bb.r, bb.b] if bb else None,
+                        "coord_origin": "BOTTOMLEFT", "latex": latex,
+                        "number": _printed_number(latex, page, bb)})
+        if pl is not None:
+            pl.close()
+        d = OUT / pid
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "equations.json").write_text(json.dumps(eqs, indent=1, ensure_ascii=False))
+        print(f"[formulas] {pid}: {len(eqs)} formula items, {sum(1 for e in eqs if e['latex'])} with LaTeX, "
+              f"{sum(1 for e in eqs if e['number'])} numbered, {time.time() - t0:.0f}s -> docling/{pid}/equations.json", flush=True)
 
 
 def fetch_abstracts(rows):
