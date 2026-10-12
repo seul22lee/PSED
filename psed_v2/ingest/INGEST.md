@@ -54,6 +54,7 @@ Checked by hand on 8 sampled papers (74 of 75 exact) and on Dev papers. Figure c
 - Glyph repairs apply; `document.md` is unchanged.
 - Check: `parse_docling.py --check-abstracts` prints, per paper, recall (OpenAlex words in ours), precision (our words in OpenAlex) and length ratio (our words / OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6, and every paper without an OpenAlex abstract; writes `ingest/review/abstract_check.html` (gitignored; ours next to OpenAlex's, pages 1–2 rendered) for the flagged papers.
 - Result 2026-10-12 (44 parsed papers): 24 `heading`, 20 `openalex_match`, none from `layout`, `order` or `none`; overlap with OpenAlex (41 papers have one) min 63%, median 98%; 1 flagged: 10.1039_c4nr05049e (63%, Docling merged the abstract's two parts into one garbled item; the rest is not in any text item).
+- Checked 2026-10-12 on 44 papers: 43 correct, 1 known limit. Some RSC papers have only a short blurb as their OpenAlex abstract, so they are flagged by precision and length ratio although the extraction is right (c7ta03257a, c5ta00205b, d4nr03749a); papers without an OpenAlex abstract are checked by eye (3, all correct).
 
 ### Body text (planned check)
 - Share of pdftotext words found in `document.md` per paper; below 95% is flagged. Repeated running headers/footers are flagged.
@@ -83,10 +84,12 @@ Accepted limits of the Docling stage; do not fix without a new decision. Moved f
 - Manuscripts that list all captions together and put the figures at the end cannot be bound by position (seen: 10.1116_1.5116136).
 - Docling sometimes labels a body sentence as a caption, which then replaces the real one (seen: 10.1021_acs.chemmater.9b05116 Figure 10).
 - A caption nested inside its picture without a caption label keeps only text items of 4 or more words, so short pieces (panel markers like (a), short phrases) can drop out (seen: 10.1186_s11671-015-0872-9 Figure 5).
+- Abstract: when Docling garbles or drops part of the abstract, the extracted abstract stays incomplete; it is not replaced by the OpenAlex abstract (seen: 10.1039_c4nr05049e, recall 63%).
 
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
 
+- 2026-10-12 — Abstract check closed: 43 of 44 correct, 1 known limit (c4nr05049e); RSC blurb abstracts and the 3 papers without an OpenAlex abstract checked by eye. Effect: documented only. — this commit.
 - 2026-10-12 — Abstract: `abstract` and `abstract_source` in structure.json (heading, OpenAlex match, layout, order rules); `--fetch-abstracts` writes corpus/openalex_abstracts.json once; `--check-abstracts` scores against OpenAlex and writes review/abstract_check.html. Effect: 44 of 44 abstracts found (24 heading, 20 OpenAlex match), overlap median 98%, 1 flagged. — this commit.
 - 2026-10-12 — Tables: markdown built from Docling's cell grid; column-header rows merged into one header line joined with " / ". Effect: 9 tables with 2–3 header rows changed, the 54 single-header tables byte-identical. — this commit.
 - 2026-10-12 — Tables: caption binding uses Docling's table–caption link first, then the nearest unused same-page caption; letter-prefixed numbers (A1, S1) and "Table N Capitalised" items of any label accepted; glyph repairs on table markdown; crop per table (`figures/tab_K.png`, `image` in structure.json). Effect: 11 → 59 of 63 tables numbered as expected, none worse; Figure A1 of separations11010024 gained. Known limits moved here from CLAUDE.md. — this commit.
