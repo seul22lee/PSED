@@ -66,6 +66,9 @@ running text (publisher cover pages are skipped). In order:
    column width; full-width on a two-column page) -> "layout";
 4. else the longest paragraph (40+ words) on page 1 after the author block and before the first
    body heading -> "order"; if nothing, empty and "none".
+Fallback: if the abstract's Docling items have no PDF text layer under them (OCR; pdfplumber finds
+no characters in their boxes) and the recall against the OpenAlex abstract is below 80%, the
+OpenAlex abstract is used instead -> "openalex".
 The glyph repairs are applied; document.md is unchanged. --check-abstracts prints, per paper,
 recall (OpenAlex words in ours), precision (our words in OpenAlex) and length ratio (our words /
 OpenAlex words); flags recall < 80%, precision < 80%, ratio > 1.5 or < 0.6. In the check only, an
@@ -440,6 +443,39 @@ def _abstract(doc, oa_text):
     return "", "none"
 
 
+def _abstract_is_ocr(doc, pdf, abstract):
+    """True if every Docling text item that makes up the abstract (8+ words, text found in it)
+    has no PDF text layer under its box: pdfplumber finds no characters there."""
+    try:
+        import pdfplumber
+    except ImportError:
+        return False
+    norm = lambda t: re.sub(r"\s+", " ", t).strip()
+    target = norm(abstract)
+    boxes = []
+    for item, _level in doc.iterate_items():
+        text = getattr(item, "text", None)
+        prov = (getattr(item, "prov", None) or [None])[0]
+        if text is None or prov is None or _label(item) not in BODY_LABELS or len(text.split()) < 8:
+            continue
+        if norm(text)[:60] in target:
+            boxes.append((prov.page_no, prov.bbox))
+    if not boxes:
+        return False
+    try:
+        with pdfplumber.open(str(pdf)) as pl:
+            for page_no, bb in boxes:
+                page = pl.pages[page_no - 1]
+                H, x0 = page.height, page.bbox[0]
+                top, bottom = H - max(bb.t, bb.b), H - min(bb.t, bb.b)
+                l, r = min(bb.l, bb.r) + x0, max(bb.l, bb.r) + x0
+                if any(l - 2 <= c["x0"] <= r + 2 and top - 2 <= c["top"] <= bottom + 2 for c in page.chars):
+                    return False
+    except Exception:
+        return False
+    return True
+
+
 def _table_markdown(item, doc):
     """Markdown of a table from Docling's cell grid. Rows whose cells are column headers (Docling's
     column_header flag, the contiguous rows at the top) become one header line, the header texts
@@ -741,8 +777,13 @@ def bind(doc, pdf, figdir):
                         "image": tabs[j]["image"], "page": tabs[j]["page"]})
 
     sections = [h.strip() for h in re.findall(r"^#{1,4}\s+(.+)$", md, re.M)]
-    abstract, source = _abstract(doc, _load_oa_abstracts().get(Path(pdf).stem))
+    oa_text = _load_oa_abstracts().get(Path(pdf).stem)
+    abstract, source = _abstract(doc, oa_text)
     abstract = re.sub(r"\s+", " ", fix(abstract)).strip()
+    if abstract and oa_text and _abstract_is_ocr(doc, pdf, abstract):
+        ow = _words(oa_text)
+        if ow and len(_words(abstract) & ow) / len(ow) < 0.8:
+            abstract, source = re.sub(r"\s+", " ", oa_text).strip(), "openalex"
     return md, {"n_pages": getattr(doc, "num_pages", lambda: None)() if callable(getattr(doc, "num_pages", None)) else None,
                 "sections": sections, "n_pictures": len(pics), "n_tables": len(tabs),
                 "captions": entries, "abstract": abstract, "abstract_source": source}
