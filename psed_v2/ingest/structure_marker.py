@@ -15,15 +15,28 @@ Marker run, no Docling file. Writes, per paper:
     marker/<paper_id>/marker.md        the markdown as Marker wrote it (renamed on the first run and
                                         read from then on, so the script can be rerun)
 
-Caption binding: Marker's FigureGroup / PictureGroup / TableGroup blocks bind a caption to its
-figure or table (a group that holds only captions binds nothing; Marker sometimes leaves the Table
-block as a sibling). Pictures and captions outside a group follow parse_docling.py's position rules:
+Captions, as in parse_docling.py: a block whose text starts with Fig./Figure/Scheme/Table + number
+(letter prefix allowed) is a caption if Marker labels it Caption, or the number is followed by ".",
+":" or "|", or it is a Table caption whose number is followed by a capitalised word; Text blocks
+count too (Marker labels some captions Text). A caption continues with the Text block directly
+below it in the same column (horizontal overlap, gap of at most 4 pt), stopping at a blank gap,
+the next caption, a heading, a figure or a table. Binding: Marker's FigureGroup / PictureGroup
+blocks bind a caption to its figure (a group that holds only captions binds nothing); tables ignore
+Marker's TableGroup (it pairs neighbouring captions and tables wrongly) and use parse_docling.py's
+table rule only. Pictures and captions outside a group follow parse_docling.py's position rules:
 a picture goes to the next figure/scheme caption on its page whose horizontal span overlaps it,
 else the previous figure caption on the page, else the next one, else it stays unnumbered; a table
 goes to the nearest unused table caption on the same page; one caption per kind+number (a caption in a
-group with content wins, then one with punctuation after the number, then the first). Tables are the Table block's HTML as a github-style markdown table (tabulate, as Docling).
-Equations are the Equation blocks' <math> content (LaTeX), with the number Marker kept in it.
-Images: the Figure/Picture/Diagram crops Marker saved, _page_<P-1>_<Type>_<K>.jpeg.
+group with content wins, then one with punctuation after the number, then the first). Tables are the Table block's HTML as a github-style markdown table (tabulate, as Docling); the <th>
+rows at the top are merged into one header line per column, joined with " / " (parse_docling.py's
+multi-row header rule).
+Equations are the Equation blocks' <math> content (LaTeX), with the number Marker kept in it, plus
+short standalone blocks (ChemicalBlock, Text, TextInlineMath of 25 words or fewer) that hold a
+reaction arrow (→ or \\rightarrow); such a ChemicalBlock is not counted as a picture.
+Images: the Figure/Picture/Diagram crops Marker saved, _page_<P-1>_<Type>_<K>.jpeg; a Figure,
+Picture, Diagram or ChemicalBlock without a file (Marker saves none for some types) is cropped from
+the PDF page by its bbox with pypdfium2 at the picture scale (3), as parse_docling.py crops tables:
+crop_page_<P-1>_<Type>_<K>.png.
 
 The caption regex and the abstract rules are copied from parse_docling.py (2026-10-12 version), not
 imported, so the two stages do not drift together by accident. Abstract: heading / inline
@@ -246,43 +259,100 @@ def _flatten(tree):
     return items
 
 
-def _image_file(d, item):
-    name = f"_page_{item['page'] - 1}_{item['type']}_{item['id'].rsplit('/', 1)[1]}.jpeg"
-    return name if (d / name).exists() else ""
+_PAGE_CACHE = {}
+
+
+def _image_file(d, item, pdf=None):
+    """Marker's crop for the block, else a crop from the PDF page by the block's bbox (scale 3)."""
+    k = item['id'].rsplit('/', 1)[1]
+    name = f"_page_{item['page'] - 1}_{item['type']}_{k}.jpeg"
+    if (d / name).exists():
+        return name
+    crop = f"crop_page_{item['page'] - 1}_{item['type']}_{k}.png"
+    if (d / crop).exists():
+        return crop
+    if pdf is None or not item.get("bbox"):
+        return ""
+    try:
+        import pypdfium2
+        key = (str(pdf), item["page"])
+        if key not in _PAGE_CACHE:
+            _PAGE_CACHE[key] = pypdfium2.PdfDocument(str(pdf))[item["page"] - 1].render(scale=3).to_pil()
+        im = _PAGE_CACHE[key]
+        l, t, r, b = item["bbox"]
+        box = (max(0, int(l * 3)), max(0, int(t * 3)), min(im.width, int(r * 3) + 1), min(im.height, int(b * 3) + 1))
+        if box[2] <= box[0] or box[3] <= box[1]:
+            return ""
+        im.crop(box).save(d / crop)
+        return crop
+    except Exception as e:
+        print(f"  crop failed for {item['id']} ({e.__class__.__name__}: {e})", flush=True)
+        return ""
 
 
 def _table_markdown(html):
     """Marker's <table> html as a github-style markdown table (first row as header, as Docling)."""
     from html.parser import HTMLParser
     from tabulate import tabulate
-    rows, row, cell, span = [], None, None, 1
+    rows, row, cell, span, rspan, th_rows, row_th = [], None, None, 1, 1, [], False
+    pending = {}                       # column -> (rows left, text) for cells spanning several rows
+    def place(r, text, cspan, rsp):
+        """Put a cell into row r at the first free column (columns held by a rowspan are filled)."""
+        j = len(r)
+        while j in pending:
+            n, t = pending[j]; r.append(t); pending[j] = (n - 1, t) if n > 1 else None
+            if pending[j] is None: del pending[j]
+            j += 1
+        for k in range(cspan):
+            r.append(text)
+            if rsp > 1: pending[j + k] = (rsp - 1, text)
     class P(HTMLParser):
         def handle_starttag(self, tag, attrs):
-            nonlocal row, cell, span
+            nonlocal row, cell, span, rspan, row_th
             if tag == "tr":
-                row = []
+                row = []; row_th = False
             elif tag in ("td", "th"):
-                cell = []; span = int(dict(attrs).get("colspan") or 1)
+                a = dict(attrs); cell = []; span = int(a.get("colspan") or 1); rspan = int(a.get("rowspan") or 1); row_th = row_th or tag == "th"
         def handle_endtag(self, tag):
             nonlocal row, cell
             if tag in ("td", "th") and cell is not None and row is not None:
                 t = re.sub(r"\s+", " ", html_mod.unescape("".join(cell))).strip().replace("|", "&#124;")
-                row.extend([t] * span); cell = None
+                place(row, t, span, rspan); cell = None
             elif tag == "tr" and row is not None:
-                rows.append(row); row = None
+                j = len(row)
+                while j in pending:                          # trailing columns held by a rowspan
+                    n, t = pending[j]; row.append(t); pending[j] = (n - 1, t) if n > 1 else None
+                    if pending[j] is None: del pending[j]
+                    j += 1
+                rows.append(row); th_rows.append(row_th); row = None
         def handle_data(self, data):
             if cell is not None:
                 cell.append(data)
-    P().feed(INLINE_TAG_RE.sub("", html or ""))
+    P().feed(INLINE_TAG_RE.sub("", re.sub(r"<sup>", "^", html or "")))   # superscripts kept as ^, e.g. 10^14
+    th_rows = [t for r, t in zip(rows, th_rows) if r]
     rows = [r for r in rows if r]
     if not rows:
         return ""
     width = max(len(r) for r in rows)
     rows = [r + [""] * (width - len(r)) for r in rows]
+    # header rows (the <th> rows at the top) merged into one line per column, joined with " / ",
+    # repeated identical parts skipped (parse_docling.py's multi-row header rule)
+    n_hdr = 0
+    while n_hdr < len(th_rows) and th_rows[n_hdr]:
+        n_hdr += 1
+    n_hdr = max(1, min(n_hdr, len(rows) - 1))
+    header = []
+    for j in range(width):
+        parts = []
+        for r in range(n_hdr):
+            t = rows[r][j].strip()
+            if t and t not in parts:
+                parts.append(t)
+        header.append(" / ".join(parts))
     try:
-        return tabulate(rows[1:], headers=rows[0], tablefmt="github")
+        return tabulate(rows[n_hdr:], headers=header, tablefmt="github")
     except ValueError:
-        return tabulate(rows[1:], headers=rows[0], tablefmt="github", disable_numparse=True)
+        return tabulate(rows[n_hdr:], headers=header, tablefmt="github", disable_numparse=True)
 
 
 def _equation(item):
@@ -325,16 +395,46 @@ def structure(paper_id):
     d = MARKER / paper_id
     tree = json.loads((d / "blocks.json").read_text())
     items = _flatten(tree)
+    pdf = RAW / f"{paper_id}.pdf"
     pos = {it["id"]: k for k, it in enumerate(items)}
 
     # captions: candidates with kind and number; one kept per kind+number (the first)
     cands = []
     for it in items:
-        if it["type"] != "Caption":
+        if it["type"] in IMAGE_TYPES or it["type"] == "Table":
             continue
         m = CAPTION_RE.match(it["text"])
-        kind = _caption_kind(m.group(1)) if m else None
-        cands.append({"item": it, "kind": kind, "number": m.group(2) if m else None})
+        labelled = it["type"] == "Caption"
+        if m is None:
+            if labelled:
+                cands.append({"item": it, "kind": None, "number": None, "labelled": True, "punct": False})
+            continue
+        kind = _caption_kind(m.group(1))
+        table_cap = kind == "table" and CAPWORD_RE.match(it["text"], m.end()) is not None
+        if labelled or m.group(3) or table_cap:
+            cands.append({"item": it, "kind": kind, "number": m.group(2), "labelled": labelled, "punct": bool(m.group(3))})
+    # caption continuation: the Text block directly below, same column, gap <= 14 pt; stops at a
+    # blank gap, the next caption, a heading, a figure or a table
+    cand_ids = {c["item"]["id"] for c in cands}
+    for c in cands:
+        it = c["item"]
+        if not it.get("bbox"):
+            continue
+        k = pos[it["id"]]; last = it
+        while k + 1 < len(items):
+            nxt = items[k + 1]
+            if (nxt["type"] != "Text" or nxt["id"] in cand_ids or nxt["page"] != it["page"] or not nxt.get("bbox")
+                    or CAPTION_RE.match(nxt["text"]) or nxt["label"] == "section_header"):
+                break
+            l1, t1, r1, b1 = last["bbox"]; l2, t2, r2, b2 = nxt["bbox"]
+            overlap = min(r1, r2) - max(l1, l2)
+            if overlap < 0.5 * min(r1 - l1, r2 - l2) or t2 - b1 > 4:
+                break
+            c["text"] = (c.get("text") or it["text"]) + " " + nxt["text"]
+            last = nxt; k += 1
+    for c in cands:
+        c["text"] = c.get("text") or c["item"]["text"]
+
     # groups: the caption(s) and the picture/table children of each Figure/Picture/Table group
     groups = {}
     for it in items:
@@ -343,10 +443,9 @@ def structure(paper_id):
     has_content = {gid: any(m["type"] in IMAGE_TYPES or m["type"] == "Table" for m in members)
                    for gid, members in groups.items()}
     # one caption per kind+number: in a group with a picture or table first, then the number
-    # followed by ".", ":" or "|" (as parse_docling.py), then the first in document order
+    # followed by ".", ":" or "|", then Marker's Caption label (as parse_docling.py), then the first
     keep = {}
-    rank = lambda c: (bool(c["item"]["group"] and has_content.get(c["item"]["group"])),
-                      bool(CAPTION_RE.match(c["item"]["text"]).group(3)))
+    rank = lambda c: (bool(c["item"]["group"] and has_content.get(c["item"]["group"])), c["punct"], c["labelled"])
     for i, c in enumerate(cands):
         if c["number"] is None:
             continue
@@ -356,7 +455,7 @@ def structure(paper_id):
     kept = set(keep.values())
     entries, used_caps, used_items = [], set(), set()
     def entry_for(c, kind):
-        e = {"kind": kind, "number": c["number"], "caption": c["item"]["text"], "page": c["item"]["page"]}
+        e = {"kind": kind, "number": c["number"], "caption": c["text"], "page": c["item"]["page"]}
         if kind == "table":
             e["table"], e["bbox"] = "", None
         else:
@@ -368,7 +467,7 @@ def structure(paper_id):
         tabs = [m for m in members if m["type"] == "Table"]
         kind = "table" if tabs and not pics else None
         cap = next((i for i in caps if i in kept), caps[0] if caps else None)
-        if cap is None or (not pics and not tabs):      # a group of captions only: position rules
+        if cap is None or (not pics and not tabs) or tabs:   # captions-only or table groups: position rules
             continue
         c = cands[cap]
         if c["number"] is None:
@@ -380,12 +479,12 @@ def structure(paper_id):
             e["table"], e["bbox"] = _table_markdown(tabs[0]["html"]), tabs[0]["bbox"]
             used_items.update(m["id"] for m in tabs)
         for p in pics:
-            img = _image_file(d, p)
+            img = _image_file(d, p, pdf)
             if img and kind != "table":
                 e["images"].append(img)
             used_items.add(p["id"])
         if kind == "table" and pics and not tabs:          # a table drawn as an image
-            e["images"] = [_image_file(d, p) for p in pics if _image_file(d, p)]
+            e["images"] = [_image_file(d, p, pdf) for p in pics if _image_file(d, p, pdf)]
         if c["number"] is not None and cap not in kept:     # a repeated number: the first one holds it
             e["number"] = None
         entries.append(e); used_caps.update(caps)
@@ -407,7 +506,7 @@ def structure(paper_id):
             target = before[-1]
         if target is None and after:
             target = after[0]
-        img = _image_file(d, it)
+        img = _image_file(d, it, pdf)
         if target is not None:
             if img:
                 cap_entries[target]["images"].append(img)
@@ -427,7 +526,11 @@ def structure(paper_id):
             entries.append({"kind": "table", "number": None, "caption": "", "table": _table_markdown(it["html"]),
                             "bbox": it["bbox"], "page": it["page"]})
 
-    equations = [_equation(it) for it in items if it["type"] == "Equation"]
+    def is_arrow_eq(it):
+        return (it["type"] in ("ChemicalBlock", "Text", "TextInlineMath") and it["n"] <= 25
+                and ("→" in it["text"] or "\\rightarrow" in (it["html"] or "")))
+    equations = [_equation(it) for it in items if it["type"] == "Equation" or is_arrow_eq(it)]
+    arrow_ids = {it["id"] for it in items if is_arrow_eq(it)}
 
     # abstract
     seq = [{"label": s["label"], "page": s["page"], "width": s["width"], "text": s["text"], "n": s["n"], "bbox": s["bbox"]}
@@ -449,7 +552,7 @@ def structure(paper_id):
 
     struct = {"n_pages": len(tree.get("children") or []),
               "sections": [h.strip() for h in re.findall(r"^#{1,4}\s+(.+)$", md, re.M)],
-              "n_pictures": sum(1 for it in items if it["type"] in IMAGE_TYPES),
+              "n_pictures": sum(1 for it in items if it["type"] in IMAGE_TYPES and it["id"] not in arrow_ids),
               "n_tables": sum(1 for it in items if it["type"] == "Table"),
               "captions": entries, "equations": equations,
               "abstract": abstract, "abstract_source": source}
