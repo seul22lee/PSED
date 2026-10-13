@@ -168,5 +168,10 @@ scored on `ingest/answers/` before use) receives:
   reason, the crop and (output side) the numbers left unchecked;
 - the paragraph index, so the raw document.md paragraph can be shown unmasked.
 
+Two rules for the review: the model must understand the content and judge from context, with a stated reason; it must
+not copy what it sees. The flags of one error are grouped and judged together: one error can raise flags in both
+directions and on several lines (a number missing from the output and the same error's token absent from the layer,
+several tokens of one citation list, a paragraph crop shared by several flags).
+
 What the review must know about the inputs is in `ERRORS.md` (lookalike letters, symbols not compared, source
 typos, the representative line in the flag text, the MDPI duplicate layer).

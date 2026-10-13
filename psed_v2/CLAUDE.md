@@ -64,7 +64,12 @@ psed_v2/
 
 These rules go into `CLAUDE.md` so that every session starts from them.
 
-- Simplest solution first.
+- Simple is the best; simplest solution first.
+- No decision without the user's approval.
+- No special cases or exceptions to pass a check; a check must not alter its own reference.
+- Do not treat the VLM review as a fix for everything.
+- Delete only exact paths, listed and approved first.
+- Touch nothing outside `psed_v2/` (and nothing outside the repository).
 - PDFs, full text, and figure crops live outside git.
 - One unit of work has one goal and one commit. The done criterion is written in one line before starting.
 - Tests are the gold score plus about 10 invariants taken from v1 failure cases. No tests that pin counts.
