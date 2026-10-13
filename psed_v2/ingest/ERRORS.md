@@ -43,18 +43,20 @@ blocked before.
 | An abstract block rendered as an image whose band OCR returns no text | 10.1021_acs.langmuir.6b03119 p 1 | 1 | 31 | `bands.json` (applied: false) | the abstract field falls back to OpenAlex; the paragraph stays missing from the body |
 | Author lines and "Check for updates" badges rendered as images, then OCR'd into the text | 25 band repairs in 20 papers: 2 captions, 4 abstracts, 1 table, 11 author lines, 7 badges | author lines and badges | both | recorded in `bands.json` | known limit (text added, nothing lost) |
 
-`body_flags` in the final output (2026-10-13, 44 papers): 230 flags (12 "line not found", 110 text-layer numbers
-missing from the output paragraph, 104 output numbers absent from the text layer, 4 "letters of the text layer differ from
-the output"), 12 papers without a flag; 77 of the 219 judged flags are real (precision 35 %), 142 are not errors, 11
-flags are new after the lookup of short units and garbled lines and the subscript rule (not yet judged, listed with their
-crops in review_body.html): lines of one paragraph or caption in other units or inside a
+`body_flags` in the final output (2026-10-13, 44 papers): 238 flags (12 "line not found", 120 text-layer numbers
+missing from the output paragraph, 102 output numbers absent from the text layer, 4 "letters of the text layer differ from
+the output"), 12 papers without a flag; 77 of the 234 judged flags are real (precision 33 %), 157 are not errors, the 4
+letter flags are new after the lookup of garbled lines by similarity (not yet judged, listed with their crops in
+review_body.html); a subscript attachment rule tried on 2026-10-13 was reverted (it moved superscript dashes and minus signs
+to the wrong line, 7 false flags), so 15 flags of subscripts read as superscripts of the next line stay (all judged not
+errors): lines of one paragraph or caption in other units or inside a
 figure box (35), equations and formulas kept in the paragraph by Marker while their boxes are excluded (17 + 5 in pass 2),
 undecoded or garbled glyphs (16), the MDPI duplicate layer (14), layer tokenisation of subscripts, stacked indices, gaps
 and line breaks (15 + 5), furniture (7), table footnotes (4), count mismatches (2 + 2), other (12 + 2). Pass 2 (the glyph
 table extended, 1,073 more lines checked) raised 28 new flags: 9 real, 19 not errors, 4 of which vanished after the
 AdvPi1 "+" glyph was decoded as ± (on the crop). Besides these, 268 flags of kind "not checkable" name what the check
 cannot compare, with the reason and a crop, so that the flag review sees them like a not-checkable table; together they
-cover every unchecked layer line (156 of 23,931) and every output unit whose numbers are not compared (checked per paper).
+cover every unchecked layer line (156 of 23,935) and every output unit whose numbers are not compared (checked per paper).
 Layer side: 67 lines of units under 4 words that the lookup near the previous match did not find in the output (headings
 Marker dropped, labels, fragments: SectionHeader 24, Text 5, outside the blocks 38, Caption 0; 7 carry a digit; 380 before
 the lookup, 303 found and checked), 83 garbled lines of the overlapping duplicate layer (82 in 10.3390_separations11010024
@@ -91,9 +93,9 @@ checkable by cause):
 | 10.1021_acs.chemmater.6c00816 | 1198 | 1197 | 100 % | 0 | 2520 | 2 | 5 | 2 | 0 |
 | 10.1021_acs.chemmater.9b05116 | 754 | 751 | 100 % | 0 | 297 | 7 | 41 | 7 | 2 |
 | 10.1021_acs.jpcc.5c06502 | 676 | 674 | 100 % | 0 | 1536 | 2 | 10 | 2 | 2 |
-| 10.1021_acs.jpcc.9b08176 | 367 | 364 | 99 % | 0 | 822 | 4 | 8 | 4 | 0 |
+| 10.1021_acs.jpcc.9b08176 | 367 | 364 | 99 % | 0 | 822 | 4 | 9 | 4 | 0 |
 | 10.1021_acs.jpclett.4c03545 | 269 | 269 | 100 % | 0 | 147 | 0 | 0 | 0 | 0 |
-| 10.1021_acs.langmuir.6b03119 | 502 | 499 | 99 % | 0 | 1136 | 3 | 0 | 3 | 0 |
+| 10.1021_acs.langmuir.6b03119 | 502 | 499 | 99 % | 0 | 1136 | 3 | 4 | 3 | 0 |
 | 10.1021_acsami.0c06879 | 481 | 481 | 100 % | 0 | 201 | 0 | 0 | 0 | 0 |
 | 10.1021_acsami.0c22121 | 301 | 301 | 100 % | 0 | 0 | 2 | 7 | 2 | 0 |
 | 10.1021_acsnano.5b03429 | 473 | 473 | 100 % | 0 | 980 | 1 | 3 | 1 | 0 |
@@ -115,14 +117,14 @@ checkable by cause):
 | 10.1093_nsr_nwaf247 | 849 | 849 | 100 % | 0 | 1730 | 0 | 0 | 9 | 0 |
 | 10.1116_1.4892385 | 493 | 493 | 100 % | 0 | 184 | 2 | 1 | 2 | 0 |
 | 10.1116_1.5116136 | 202 | 202 | 100 % | 0 | 3213 | 1 | 5 | 1 | 0 |
-| 10.1116_6.0001094 | 894 | 892 | 100 % | 2 (AdvP4C4E46 4) | 0 | 1 | 7 | 22 | 0 |
+| 10.1116_6.0001094 | 898 | 896 | 100 % | 2 (AdvP4C4E46 4) | 0 | 1 | 9 | 22 | 0 |
 | 10.1116_6.0001679 | 236 | 235 | 100 % | 0 | 0 | 4 | 1 | 4 | 0 |
-| 10.1116_6.0002804 | 423 | 416 | 98 % | 0 | 189 | 7 | 3 | 7 | 0 |
+| 10.1116_6.0002804 | 423 | 416 | 98 % | 0 | 189 | 7 | 0 | 7 | 0 |
 | 10.1116_6.0002993 | 382 | 382 | 100 % | 0 | 168 | 0 | 2 | 0 | 0 |
 | 10.1116_6.0003182 | 719 | 719 | 100 % | 0 | 252 | 1 | 3 | 1 | 0 |
-| 10.1149_2.067203jes | 721 | 720 | 100 % | 0 | 116 | 5 | 7 | 9 | 0 |
+| 10.1149_2.067203jes | 721 | 720 | 100 % | 0 | 116 | 5 | 14 | 9 | 0 |
 | 10.1186_s11671-015-0872-9 | 271 | 271 | 100 % | 0 | 0 | 0 | 6 | 0 | 2 |
-| 10.3390_separations11010024 | 646 | 529 | 82 % | 0 | 0 | 123 | 19 | 123 | 0 |
+| 10.3390_separations11010024 | 646 | 529 | 82 % | 0 | 0 | 123 | 16 | 123 | 0 |
 | 10.3762_bjnano.5.25 | 495 | 495 | 100 % | 0 | 0 | 1 | 0 | 1 | 0 |
 
 The text layer of 10.1116_1.5116136 (page box from −92) and the cover-page "Reference" heading of the same paper, and the

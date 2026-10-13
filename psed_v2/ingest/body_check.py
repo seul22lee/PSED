@@ -7,10 +7,8 @@ decoding is not checkable and is counted with its reason. Characters outside the
 drawn twice at a slightly different size on one baseline is read once, a line printed twice on a page is read once
 (the MDPI duplicate layer). Characters are read block by block inside Marker's text blocks (Text, SectionHeader,
 Caption, ListItem, TextInlineMath, Footnote), lines by the baseline of the normal-size characters; small characters
-(citation and affiliation numbers, exponents) join the line whose baseline and size span they overlap, a subscript
-that sits just below a line's baseline (its bottom within half the font size below it, its top above it) and in a gap
-of that line (over none of its characters) that line,
-superscripts marked '^'; a few same-size characters without a word on their own baseline (LaTeX sub- and superscripts) join the
+(citation and affiliation numbers, exponents) join the line whose baseline and size span they overlap, superscripts
+marked '^'; a few same-size characters without a word on their own baseline (LaTeX sub- and superscripts) join the
 nearest line; stacked sub- and superscripts are read subscript first (O_2^+); a word space is a gap above 13 % of
 the line's font size. The lines of an Equation box join the text unit before it as weak lines. Characters outside
 every block are read as segments split at gaps of 20 pt or more. Excluded, with counts: PageHeader / PageFooter /
@@ -240,16 +238,6 @@ def _lines_of(chars):
     else:
         for c in chars:
             if c["size"] < 0.85 * size0:
-                w = c["x1"] - c["x0"]
-                def free(i):                        # a line of normal-size text, and the glyph sits in a gap of it
-                    big = [x for x in lines[i][1] if x["size"] >= 0.85 * size0]
-                    return bool(big) and not any(x["x0"] < c["x1"] - 0.2 * w and x["x1"] > c["x0"] + 0.2 * w for x in big)
-                subs = [i for i in range(len(lines)) if -1 <= c["bottom"] - lines[i][0] <= 0.5 * size0   # a subscript ends just
-                        and c["top"] - lines[i][0] <= 0.1 * size0 and free(i)]                          # below a baseline, starts
-                if subs and "subscript_attach" not in DISABLED:                                        # above it and sits in a
-                    lines[min(subs, key=lambda i: c["bottom"] - lines[i][0])][1].append(c)              # gap of that line (a
-                    continue                                                                            # superscript of the next
-                                                                                                        # line overlaps its text)
                 cands_ = [i for i in range(len(lines)) if c["top"] < lines[i][0] + 0.35 * size0 and c["bottom"] > lines[i][0] - 1.3 * size0]
                 k = min(cands_ or range(len(lines)), key=lambda i: abs(lines[i][0] - c["bottom"] - 2))
                 if cands_ and abs(lines[k][0] - c["bottom"]) <= 7:
