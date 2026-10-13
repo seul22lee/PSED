@@ -20,17 +20,21 @@ psed_v2/
   ingest/parse_docling.py   # tracked: Docling for equations only (--formulas: CodeFormula on R1/R2 crops -> equations.json; conda env psed310) and the OpenAlex abstract fetch
   ingest/docling/<paper_id>/ # gitignored: equations.json (paper-derived)
   ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images
-  ingest/marker/<paper_id>/  # gitignored: document.md + images, blocks.json, bands.json, structure.json, table crops (paper-derived)
+  ingest/marker/<paper_id>/  # gitignored: marker.md (Marker's markdown) and document.md, images, blocks.json, bands.json with band crops, structure.json, table crops (paper-derived)
   ingest/structure_marker.py # tracked: structure.json from Marker's blocks (captions, tables with rule check, equations, abstract)
   ingest/merge.py           # tracked: one output per paper from both tools -> ingest/final/<paper_id>/ (runs line_numbers.py, body_check.py, body_repair.py)
   ingest/line_numbers.py    # tracked: margin line numbers of a line-numbered manuscript removed from document.md
   ingest/body_check.py      # tracked: body-number check, decoded text layer vs document.md per paragraph -> body_flags
   ingest/body_repair.py     # tracked: countermeasures on document.md (a number replaced from the text layer, a dropped line restored) -> body_repairs
-  ingest/answers/           # tracked: answer set, Claude Code's page judgements (tables.json, equations.json, body_flags.json): ids and verdicts only, no paper text
+  ingest/answers/           # tracked: answer set, Claude Code's page judgements (tables.json, equations.json, body_flags.json): ids and verdicts only, no paper text; flag_keys_baseline.json = flag keys of the last accepted run (regression.py)
   ingest/glyph_codes.json   # tracked: per-font decoding tables for the PDF text layer, with evidence
   ingest/final/<paper_id>/   # gitignored: document.md, structure.json (Marker body/abstract/figures/tables + paired equations), figures/
-  ingest/reports/           # gitignored: review HTML reports (papers.html, review_body.html, review_44.html) and glyph_evidence/ (crops behind glyph_codes.json)
-  ingest/INGEST.md, ERRORS.md # tracked: what ingest extracts and how; the remaining errors per item
+  ingest/report_papers.py   # tracked: writes reports/papers.html (the output paper by paper, for review by eye)
+  ingest/report_body.py     # tracked: writes reports/review_body.html (every body flag with crop and verdict, repairs, recovered units)
+  ingest/numbers_md.py      # tracked: writes NUMBERS.md (every number with its source file, per-paper table); named so because numbers.py would shadow the stdlib module
+  ingest/regression.py      # tracked: the output against answers/ (known real errors kept, no known not-error newly flagged, repairs intact)
+  ingest/reports/           # gitignored: papers.html, review_body.html and glyph_evidence/ (crops behind glyph_codes.json)
+  ingest/INGEST.md, ERRORS.md, NUMBERS.md, CHANGELOG.md # tracked: the pipeline per item; the errors and known limits; the numbers; the history pointer
 ```
 
 ## Environments
@@ -137,4 +141,4 @@ Minireview, Perspective, Feature Article, Highlight, Tutorial or Account, or a s
 "this review", "in this perspective", "we review". List each hit (paper_id, title, matched text) for the
 user to check; do not exclude on your own.
 
-Ingest (Marker, Docling equations, what is extracted, change log): see ingest/INGEST.md; the remaining errors: ingest/ERRORS.md.
+Ingest (Marker, Docling equations, what is extracted, the hand-off to extraction): see ingest/INGEST.md; the errors and known limits: ingest/ERRORS.md; the numbers: ingest/NUMBERS.md; the history: ingest/CHANGELOG.md and git log.

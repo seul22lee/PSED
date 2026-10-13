@@ -1,5 +1,5 @@
 {
- "about": "Reference judgements of the body flags (ingest/final/<paper_id>/structure.json body_flags) of the 44 papers, every flag of the 2026-10-13 passes judged on its line crop. flag_key = paper_id|page|kind prefix|number token. Verdict real error (error_type, cause a layout / c recognition / d our post-processing; set 13 or 31 = the paper group) or not an error (measurement_cause, fixable yes/no/maybe at judgement time). Used to score the flag review step before it is used. Pass 2 (2026-10-13, glyph table extended): 27 new flags judged on their crops (9 real, 18 not errors; 4 of the not-errors vanished after a further glyph entry).",
+ "about": "Reference judgements of the body flags (ingest/final/<paper_id>/structure.json body_flags) of the 44 papers, every flag of the 2026-10-13 passes judged on its line crop. flag_key = paper_id|page|kind prefix|number token. Verdict real error (error_type, cause a layout / c recognition / d our post-processing; set 13 or 31 = the paper group) or not an error (measurement_cause, fixable yes/no/maybe at judgement time). Used to score the flag review step before it is used. Pass 2 (2026-10-13, glyph table extended): 27 new flags judged on their crops (9 real, 18 not errors; 4 of the not-errors vanished after a further glyph entry). The 4 letter flags of 2026-10-13 judged on their crops (1 real, 3 not errors).",
  "items": [
   {
    "paper_id": "10.1002_adem.202201901",
@@ -5094,6 +5094,52 @@
    "judged_on": "line crop",
    "date": "2026-10-13",
    "measurement_cause": "the en dashes of '~7–9' and '43–45' are not in the text layer; the output is right (math placeholder splits the range)"
+  },
+  {
+   "paper_id": "10.1039_d0cp03358h",
+   "page": 9,
+   "flag_key": "10.1039_d0cp03358h|9|letter|pb",
+   "kind": "letters of the text layer differ from the output",
+   "verdict": "real error",
+   "judged_by": "Claude Code",
+   "judged_on": "line crop",
+   "date": "2026-10-13",
+   "error_type": "lookalike letter: Latin p written Greek ρ (p_B → ρ_B, Fig. caption parameter list)",
+   "cause": "c Marker",
+   "set": "31"
+  },
+  {
+   "paper_id": "10.1021_acs.chemmater.9b05116",
+   "page": 6,
+   "flag_key": "10.1021_acs.chemmater.9b05116|6|letter|boxylicacid",
+   "kind": "letters of the text layer differ from the output",
+   "verdict": "not an error",
+   "judged_by": "Claude Code",
+   "judged_on": "line crop",
+   "date": "2026-10-13",
+   "measurement_cause": "the page prints 'pyridinedicar-boxylicacid' (a line-break hyphen left in the source, no space); Marker wrote 'pyridinedicarboxylic acid': a source typo corrected by the OCR"
+  },
+  {
+   "paper_id": "10.1021_acs.chemmater.9b05116",
+   "page": 8,
+   "flag_key": "10.1021_acs.chemmater.9b05116|8|letter|postitions",
+   "kind": "letters of the text layer differ from the output",
+   "verdict": "not an error",
+   "judged_by": "Claude Code",
+   "judged_on": "line crop",
+   "date": "2026-10-13",
+   "measurement_cause": "the page prints 'postitions'; Marker wrote 'positions': a source typo corrected by the OCR"
+  },
+  {
+   "paper_id": "10.1116_6.0001094",
+   "page": 8,
+   "flag_key": "10.1116_6.0001094|8|letter|electrohn",
+   "kind": "letters of the text layer differ from the output",
+   "verdict": "not an error",
+   "judged_by": "Claude Code",
+   "judged_on": "line crop",
+   "date": "2026-10-13",
+   "measurement_cause": "the page prints 'electron densities'; the PDF text layer reads 'electrohn denisities' (a text-layer defect, not a printed typo); Marker is right"
   }
  ]
 }

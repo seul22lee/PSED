@@ -90,9 +90,11 @@ A corpus stage plus four processing stages replace the 13 in v1.
 
 The comparison view and the twin read the tables that `normalize` writes. They add no new data layer.
 
-**Ingest output.** One folder per paper (`ingest/final/<paper_id>/`): body text, abstract, figures with captions and crops, tables with a rule check (`ok`, `flag` with reasons, or `not checkable`) and a crop, and equations from both tools marked `agree`, `differ`, or found by one tool only. On the 44 papers with a PDF (Oct 13, 2026): 69 tables, 28 of them wrong when judged on the page, all 28 flagged; 321 equations, 197 agree; body text numbers checked against the decoded PDF text on 99 % of body lines, every unchecked line and every output unit left uncompared carrying a not-checkable flag; 44 real errors found (8 corrected by rule, 1 partly), 238 body flags of which 77 are real and 4 not yet judged.
+**Ingest output.** One folder per paper (`ingest/final/<paper_id>/`): body text, abstract, figures with captions and crops, tables with a rule check (`ok`, `flag` with reasons, or `not checkable`) and a crop, and equations from both tools marked `agree`, `differ`, or found by one tool only. On the 44 papers with a PDF (Oct 13, 2026): 69 tables, 28 of them wrong when judged on the page, 27 flagged and 1 not checkable; 321 equations, 197 agree; body text numbers checked against the decoded PDF text on 99 % of body lines, every unchecked line and every output unit left uncompared carrying a not-checkable flag; 44 real errors found (8 corrected by rule, 1 partly), 238 body flags of which 77 are real and 4 not yet judged. The numbers and their source files are in `ingest/NUMBERS.md`.
 
-**Flag review (start of extract).** A flagged table, an equation that is not `agree`, and a body-text number flag are resolved by an external vision model before extraction. The model is constrained: for an equation it chooses between the two candidates or writes the formula when both are wrong; for a table it corrects only what the check flagged, with the decoded PDF text of the table area as reference; for a body flag it decides between the output sentence and the decoded PDF text line, given the line crop. The original output is kept beside the correction. Before use, the step is scored on the ingest answer set (`ingest/answers/`): the 69 page-judged tables, the 103 page-judged equation pairs, and the page-judged body flags of the 44 papers. These judgements are kept as the answer set only; the pipeline does not use them as output. A sample of the model's corrections is checked by the expert.
+**Flag review (start of extract).** A flagged table, an equation that is not `agree`, and a body-text number flag are resolved by an external vision model before extraction. The model is constrained: for an equation it chooses between the two candidates or writes the formula when both are wrong; for a table it corrects only what the check flagged, with the decoded PDF text of the table area as reference; for a body flag it decides between the output sentence and the decoded PDF text line, given the line crop. The original output is kept beside the correction. Before use, the step is scored on the ingest answer set (`ingest/answers/`): the 69 page-judged tables, the 103 page-judged equation pairs, and the 419 page-judged body flag keys of the 44 papers. These judgements are kept as the answer set only; the pipeline does not use them as output. A sample of the model's corrections is checked by the expert.
+
+**VLM review guide (written in the schema stage).** The model must understand the content and judge from context with a stated reason, not copy what it sees. It gets the crop, the text-layer text of the whole paragraph, and the raw output paragraph (not the masked one). For a lookalike-letter flag (v/ν, p/ρ) it gets the text-layer letter as evidence. The flags of one error are grouped and reviewed together. Citation punctuation and typos printed in the source (10.1116_6.0001679 reads "1.2" where "1,2" is meant) are not errors of the output; the guide lists these cases from `ingest/ERRORS.final.md`.
 
 Two lessons from v1 are fixed in the design. Image panels are extracted as panels in their own right, so a figure that mixes a plot and a TEM image no longer loses the image. Points interpolated along a drawn line are never turned into separate experiments.
 
@@ -105,7 +107,7 @@ The ontology is one flat file, written new for v2.
 - **Transforms:** unit conversion, depth to x/H, thickness to normalized thickness. Each names the context it needs (for example feature height H).
 - **Fixed vocabularies:** panel type, data kind, series structure, condition source, condition status.
 
-**v0 source.** v0 contains the quantities that the competency questions need and that appear in the five gold papers. The expected size is 20 to 30 quantities.
+**v0 source.** Open decision (see below): with the ontology before the gold set, v0 cannot be defined as "the quantities that appear in the five gold papers". The candidates are the competency questions alone, or the competency questions plus the five Dev papers read directly. The expected size is 20 to 30 quantities.
 
 **Growth rule.** Every corpus run lists unknown labels ranked by how many papers use them. A label is added when it appears in two or more papers or a competency question needs it. An alias is added directly. A new quantity or a new transform needs expert approval.
 
@@ -117,7 +119,7 @@ The ontology is one flat file, written new for v2.
 
 ## Gold set
 
-The gold set is built before the pipeline. An LLM drafts it from the PDF and the domain expert checks every row against the paper.
+The gold set is built in the schema stage, after the ontology v0 and before the pipeline. An LLM drafts it from the PDF and the domain expert checks every row against the paper.
 
 **Procedure**
 
@@ -190,9 +192,9 @@ Nine phases (0 to 8) run in sequence; each ends when its done criterion is met.
 
 | Phase | Work | Done when |
 | --- | --- | --- |
-| 0 | Tag v1; create `CLAUDE.md`; build the manifest from the three sources and acquire PDFs; ingest the PDFs | Manifest lists every candidate with source marks, scope, decision, and PDF status. Done; PDF acquisition continues in parallel. Ingest done for the 44 in-scope papers with a PDF (Oct 13, 2026); new PDFs are ingested as they arrive |
-| 1 | Gold set: Ylilammi pilot, then the five Dev papers | Format fixed; all five papers checked by the expert |
-| 2 | Ontology v0 | Every quantity in the gold set is mapped or declared native |
+| 0 | Tag v1; create `CLAUDE.md`; build the manifest from the three sources and acquire PDFs; ingest the PDFs | Manifest lists every candidate with source marks, scope, decision, and PDF status. Done; PDF acquisition continues in parallel. Ingest done and closed for the 44 in-scope papers with a PDF (Oct 13, 2026; `ingest/NUMBERS.md`); new PDFs are ingested as they arrive |
+| 1 | Ontology v0 | The quantities, species, transforms and vocabularies the competency questions need are defined (source: open decision); every quantity named in the competency questions is mapped |
+| 2 | Schema: the six-table format fixed on the Ylilammi pilot; the gold sample (the five Dev papers); the VLM review guide for the ingest flags | Format fixed; all five papers checked by the expert; the review guide written and scored on the ingest answer set |
 | 3 | Convert v1 output to the six tables and score it | Baseline score exists; list of reusable v1 extraction results exists |
 | 4 | Build the v2 pipeline on the Dev set | Dev score beats the baseline and reaches the target |
 | 5 | Score Held-out; run the Sample tier; first ontology growth round | Corpus report exists; first external ontology review done |
@@ -202,7 +204,7 @@ Nine phases (0 to 8) run in sequence; each ends when its done criterion is met.
 
 The Phase 4 target score is set after the Phase 3 baseline is known.
 
-The pipeline skeleton is built in Phase 4, after the Phase 1 pilot fixes the table format.
+The pipeline skeleton is built in Phase 4, after the Phase 2 pilot fixes the table format. The order of the first stages is ingest → ontology → schema.
 
 ## HTML reports
 
@@ -210,8 +212,8 @@ Six reports cover the whole project. Each is a single self-contained HTML file g
 
 | Report | First built in | Contents |
 | --- | --- | --- |
-| Paper card | Phase 1 | Original panel crops beside the extracted series drawn over them; experiment list with conditions and evidence sentences; unknown labels. Used for the expert's gold check and for debugging |
-| Ontology page | Phase 2 | Quantity table, usage counts, example figures, change log. Used for expert and external review |
+| Paper card | Phase 2 | Original panel crops beside the extracted series drawn over them; experiment list with conditions and evidence sentences; unknown labels. Used for the expert's gold check and for debugging |
+| Ontology page | Phase 1 | Quantity table, usage counts, example figures, change log. Used for expert and external review |
 | Score report | Phase 3 | Experiment count match, series structure accuracy, condition precision and recall, point error. Each wrong item links to its paper card. Shows the change from the previous run |
 | Corpus report | Phase 5 | Per-paper status and counts, data coverage per competency question, unknown labels ranked by paper count, quarantine reasons |
 | Comparison view | Phase 6 | Pick a quantity pair to overlay curves across papers; filters for material, precursor, temperature; clicking a curve opens its paper card. This one screen is the dashboard |
@@ -255,6 +257,7 @@ v1 is frozen with a tag and kept for reference. v2 starts in a new directory.
 
 ## Open decisions
 
+- [ ] Define the source of ontology v0 now that it precedes the gold set: the competency questions alone, or the competency questions plus the five Dev papers read directly (the old definition was tied to the gold set).
 - [ ] Confirm the five Dev papers.
 - [ ] Choose the three Held-out papers.
 - [ ] Choose the LLM for gold drafts and the LLM for the pipeline (they must differ).
