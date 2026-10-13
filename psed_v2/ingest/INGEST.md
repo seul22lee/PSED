@@ -294,7 +294,7 @@ Newest first. One line per change: date, what changed, effect, commit.
   superscript dashes and minus signs and the subscript of TiCl_4 to the wrong line and gave 7 false flags; a check must
   not alter its own reference (M26). Effect: the 7 flags gone, the 15 flags the rule had removed back (all judged not
   errors, for the VLM review); 238 flags (77 real, 157 not, 4 unjudged letter flags), lines checked 23,779 of 23,935,
-  not checkable 156 with a flag each, identities hold; reports rebuilt. — (hash: next line)
+  not checkable 156 with a flag each, identities hold; reports rebuilt. — f94e9f0 (this line's hash: the next commit)
 
 - 2026-10-13 — `body_check.py`: short units and garbled lines looked up near the previous match (normalised, with and
   without spaces, by similarity with a letter comparison) and checked when found (324 units); output-side "not checkable"
