@@ -22,8 +22,10 @@ psed_v2/
   ingest/parse_marker.py    # tracked: Marker 2.0 parse (force_ocr) of the same PDFs (conda env psed_marker), writes the manifest `marker` column; --bands repairs captions/abstracts drawn as images
   ingest/marker/<paper_id>/  # gitignored: document.md + images, blocks.json, bands.json, structure.json, table crops (paper-derived)
   ingest/structure_marker.py # tracked: structure.json from Marker's blocks (captions, tables with rule check, equations, abstract)
-  ingest/merge.py           # tracked: one output per paper from both tools -> ingest/final/<paper_id>/ (runs body_check.py)
+  ingest/merge.py           # tracked: one output per paper from both tools -> ingest/final/<paper_id>/ (runs line_numbers.py, body_check.py, body_repair.py)
+  ingest/line_numbers.py    # tracked: margin line numbers of a line-numbered manuscript removed from document.md
   ingest/body_check.py      # tracked: body-number check, decoded text layer vs document.md per paragraph -> body_flags
+  ingest/body_repair.py     # tracked: countermeasures on document.md (a number replaced from the text layer, a dropped line restored) -> body_repairs
   ingest/glyph_codes.json   # tracked: per-font decoding tables for the PDF text layer, with evidence
   ingest/final/<paper_id>/   # gitignored: document.md, structure.json (Marker body/abstract/figures/tables + paired equations), figures/
   ingest/reports/           # gitignored: review HTML reports (e.g. the Docling-vs-Marker disagreement report)

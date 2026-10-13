@@ -21,13 +21,15 @@ are not reproducible bit for bit by rerunning `parse_marker.py`.
 psed_marker env:  parse_marker.py --all                 Marker 2.0 (force_ocr) + band-crop OCR -> ingest/marker/<id>/
 psed310 env:      structure_marker.py --all             structure.json (captions, tables + check, equations, abstract)
 psed310 env, GPU: parse_docling.py --formulas <ids>     Docling layout + CodeFormula on R1/R2 crops -> docling/<id>/equations.json
-psed310 env:      merge.py --all                        ingest/final/<id>/ (Marker items + paired equations + body_flags from body_check.py)
+psed310 env:      merge.py --all                        ingest/final/<id>/ (Marker items + paired equations; line_numbers.py removes
+                                                        margin line numbers, body_check.py writes body_flags, body_repair.py repairs
+                                                        document.md and the check runs again)
 ```
 
 | Item | Tool | How | Output in `final/<id>/structure.json` | Numbers (13 or 44 papers, as each cell says) |
 | --- | --- | --- | --- | --- |
 | DOI, title, authors, year, journal | `corpus/manifest.csv` (OpenAlex) | never extracted from the PDF | — | — |
-| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters); band-OCR'd blocks (abstracts, author lines, an image-only table) written into it; body-number check by `body_check.py` (decoded text layer vs document.md per paragraph) | `document.md`; `body_flags` (one entry per mismatch: page, text-layer line, output sentence, numbers on each side, crop) and `body_check` (counts, not-checkable reasons) | 44 papers. 13 papers: numbers and 25-word blocks checked by script on 2026-10-12, flags viewed on the page; 31 papers: the same script check on 2026-10-13, flags viewed on the page (review_31). body_flags on 2026-10-13 (script): 1,154 flags in 34 papers (10 papers none), 761 of them in the line-numbered manuscript 10.1021_acs.chemmater.9b05116 whose margin numbers Marker merged into the text; of the known page verdicts it catches 3 of 3 real errors (a-MoS3,0; SP4-4004STRS; the dropped sentence p 33) and "<001>" written "< 0.01 >", and flags 0 of the 41 items judged not errors. Not checkable (reported, never skipped): 2,726 lines with an undecoded symbol-font glyph, 72 garbled lines of the MDPI duplicate layer, 192 output sentences the layer does not cover, 37 paragraphs shared with a not-checkable unit; 22,022 rotated characters. See ERRORS.md |
+| Body text | Marker | `document.md` without running lines (10 words or fewer, identical on 3+ pages, 4+ letters); band-OCR'd blocks written into it; margin line numbers of a line-numbered manuscript removed (`line_numbers.py`); body-number check (`body_check.py`: decoded text layer vs document.md per paragraph, both directions); two countermeasures on born-digital pages (`body_repair.py`: a number replaced from the text layer, a dropped line restored) | `document.md`; `body_flags` (one entry per mismatch: page, kind, number, text-layer line, output sentence, numbers on each side, line box and crop), `body_check` (counts, not-checkable reasons, line-number counts), `body_repairs` | 44 papers, 2026-10-13. 23,939 body lines read, 22,386 checked (median 97 % per paper, min 68 %); 1,075 lines not checkable (undecoded glyph), 160 (other), 22,022 rotated characters. Every body flag of the 44 papers judged by Claude Code on the line crop (388 flag keys over the passes: 119 real, 269 not errors), see ERRORS.md: 41 distinct real errors of Marker's body text in the 44 papers (10 in the 13 papers, 31 in the 31), 1.8 per 1,000 checked lines, found through numbers only. Final output: 224 flags (12 lines not found, 108 text-layer numbers missing, 104 output numbers absent), 13 papers without a flag; of the 222 judged flags 70 are real, 152 not (precision 32 %). Countermeasures: 1,044 margin numbers removed from 10.1021_acs.chemmater.9b05116 (no other paper changes); 12 repairs (5 numbers replaced, 7 dropped lines restored), tested on the judged flags: 12 fixed, 0 broken. All 41 real errors stay detected (flagged, repaired or removed) |
 | Abstract | Marker | the rules copied from the Docling stage (heading / "Abstract:" paragraph, OpenAlex match on pages 1–2, layout, order) on Marker's blocks; the OpenAlex text when it has 50+ words and the extracted abstract is empty or has recall < 80 % against it | `abstract`, `abstract_source` | 44 of 44 right: 23 heading, 20 openalex_match, 1 openalex (10.1021_acs.langmuir.6b03119, whose abstract block is an image the band OCR could not read). How checked: the 13 papers on the page; of the 31, the 26 with a usable OpenAlex abstract (50+ words) by word recall against it (all 26 ≥ 90 %, script), the 5 without one (10.1016_j.ijpharm.2017.04.031, 10.1016_j.mee.2018.01.027, 10.1016_j.mee.2018.01.033, 10.1039_c5ta00205b, 10.1039_d4nr03749a) on the page on 2026-10-13 |
 | Figures + captions | Marker | Marker's FigureGroup/PictureGroup binding, else the position rules; Text blocks that start with a caption label count; T1 band OCR for captions drawn inside the picture; captions do not continue into a body paragraph; figures placed after all captions bound by page order | `captions` with `images` | 44 papers: every numbered caption has its image and text. How checked: the 13 papers on the page; the 31 by script (caption numbers, images, text against the text layer), the flagged items viewed on the page; 2 figures split into panel blocks keep one panel unbound (ERRORS.md) |
 | Tables + captions | Marker | Table html → github markdown (`<th>` rows merged with " / ", rowspans/colspans honoured, superscripts as `^`, trailing zeros kept); caption = nearest unused table caption on the page (position, not Marker's TableGroup); rule check against the decoded text layer (`glyph_codes.json`) + crop | `captions` with `table`, `bbox`, `check`, `check_reasons`, `check_detail`, `crop` | 69 tables in 28 papers (page): 41 right, 28 wrong; the check flags 27 of the 28, misses 0, flags 7 right tables, 1 wrong table not checkable (rotated) |
@@ -79,8 +81,12 @@ fixed / limit / open; checked by script, Claude Code or user.
 | M12 | Figures | A manuscript with all figures after the captions: captions without an image | fixed: bound by page order when the counts match | Claude Code, page | 10.1116_1.5116136 Figures 1–5 |
 | M13 | Abstract | OpenAlex fallback only for OCR-only blocks | fixed: fallback whenever a usable OpenAlex abstract exists and recall < 80 % or the abstract is empty | script | 10.1021_acs.langmuir.6b03119 |
 | M14 | Body | OCR'd abstract text not written into document.md; table blocks drawn as an image not repaired | fixed: the band repair anchors the text in the markdown; T2 also for image-only Table blocks | script | 4 ACS papers, 10.1021_acsnano.5b03429 |
-| M15 | Body | Numbers of the body changed, dropped or added by Marker (a decimal comma, a digit read as a letter, a dropped sentence, a hallucinated subscript, a lost minus sign, margin line numbers merged into the text) | limit, flagged: `body_flags` per paper by `body_check.py` (decoded text layer vs document.md, both directions; "not checkable" with a reason where it cannot read) | script; the known items judged by Claude Code on the page (2026-10-12/13), 1 new flag on the crop | 44 papers, 2026-10-13: 1,154 flags; 3 of 3 known errors caught, 0 of 41 known not-errors flagged; ERRORS.md |
-| M16 | Body | Symbol-font glyphs of the text layer without a decoding (AdvOT private-use characters, AdvP4C4E74 cids, AdvPSMP10 letters) in body lines; rotated text; the MDPI duplicate layer | limit: those lines are "not checkable" with the reason and count in `body_check` | script | 2,726 undecoded lines, 72 garbled lines, 22,022 rotated characters in the 44 papers |
+| M15 | Body | Numbers of the body changed, dropped or added by Marker: sentences, paragraphs and captions dropped (10 of 41 errors), citation numbers changed, dropped or fused (7), digits changed (4), letter/digit confusions t→4, I→1, 1→I, S→2, 5→S, 0→o (4), lookalike letters v→ν, p→ρ (5), subscript digits dropped (3), text added (3), a decimal point inserted or replaced by a comma (2), an exponent sign dropped (1), a caption label merged into a paragraph (1), margin line numbers merged (1 paper) | limit, flagged: `body_flags` by `body_check.py`; 12 repaired by `body_repair.py` (ERRORS.md lists each error, its cause and whether a countermeasure fixes it) | Claude Code on the line crops: every flag of the 44 papers (388 flag keys over the passes) | 41 distinct real errors, 2026-10-13; the 3 known errors of 2026-10-12/13 among them |
+| M16 | Body | Symbol-font glyphs of the text layer without a decoding in body lines (AdvP4C4E74 cids of further subsets, AdvEls-ent4 "o", AdvEls-ent5 "Z"); rotated text; the MDPI duplicate layer | limit: those lines are "not checkable" with the reason and count in `body_check`; 27 glyph entries added on 2026-10-13 from body crops (ligatures fi/fl/ft, °, −, ×, ≈, Δ, μ, ∂, →, ′, a vector accent) | Claude Code, glyph crops | 1,075 undecoded lines (2,726 before the additions), 98 garbled lines, 22,022 rotated characters in the 44 papers; coverage per paper in ERRORS.md |
+| M17 | Body | Margin line numbers of a line-numbered manuscript merged into the text by Marker (every line; 761 numbers flagged on 2026-10-13) | fixed: `line_numbers.py` finds the margin column in the text layer and removes the numbers at line breaks, alone on a line, or in runs; fires on 10.1021_acs.chemmater.9b05116 only (48 pages, 1,044 removed, 5 real numbers kept), no other document.md changes | script + Claude Code on crops (leftovers judged) | 10.1021_acs.chemmater.9b05116; 5 leftovers at breaks where the same bare number stands in the adjacent line |
+| M18 | Body | Countermeasures for Marker's body errors | fixed where a rule applies: `body_repair.py` replaces a number from the text layer when one missing and one absent number pair up in a paragraph (same letters, at most two characters apart) and restores a dropped line of a Text/Caption block (8+ words, vocabulary 70 %, no undecoded glyph); born-digital pages only; recorded in `body_repairs` | Claude Code on the judged flags: 12 fixed, 0 broken; three stricter variants rejected on the way (sentence-level pairing broke 1, letter differences broke 1, ambiguous pairs broke 1) | 12 repairs in 8 papers; errors without a rule (letters, lookalikes, hallucinated subscripts, dropped paragraphs matched elsewhere) stay flagged |
+| M19 | Body | A page box that does not start at (0, 0) (10.1116_1.5116136, media box from −92): Marker's boxes are 0-based, pdfplumber keeps the PDF origin | fixed: boxes shifted by the page box origin | script | 10.1116_1.5116136 (196 lines checked instead of 2) |
+| M20 | Body | A cover page whose "Reference" heading, or a unit matching a paragraph after the References heading, stopped the check on page 1 | fixed: both stops apply in the second half of a paper only | script | 10.1116_1.5116136, 10.1116_6.0002804, 10.1039_d1cp04758b (866 lines regained) |
 | E1 | Equations | Docling's enrichment crop (box + 18 %, 120 dpi) takes in neighbouring text; Beilstein boxes hold only the number | fixed: R1 tight crop at 216 dpi (18 fixed, 1 broken), R2 band box (12 of 19 fixed) | Claude Code, crops | 103 pairs, cf. ERRORS.md |
 | E2 | Equations | Both tools misread some formulas | limit: `differ` pairs for review | Claude Code, crops (13 papers only) | 29 of 103 pairs differ on the 13 papers; the 31 papers' 80 differ pairs not judged |
 | E3 | Equations | Marker re-recognition of its own equations on a 216-dpi crop | rejected: fixed 2, broke 13 | script + crops | not applied |
@@ -148,43 +154,80 @@ lines and 7 "Check for updates" badges added as text, nothing lost; one abstract
   text replaces it when OpenAlex has 50 words or more and the extracted abstract is empty or has recall < 80 %.
 - `document.md`: Marker's markdown without running lines; the original kept as `marker.md`.
 
+### Line numbers (`line_numbers.py`, run by `merge.py`)
+A page carries margin line numbers when at least 8 bare integers stand at one x outside the text column (the 10th–90th
+percentile x-span of the first and last letters of the text lines, by 3 pt or more), increase down the page (70 % of
+the steps +1) and are at least as many as 70 % of the page's text lines; a paper is line-numbered when 3+ pages are.
+Then a bare integer of the sequence is removed from document.md where the two words before it end a text line and the
+two words after it start the next one (a line break; a word hyphenated across it is joined), unless the same bare
+number occurs in those lines; numbers alone on a markdown line and runs of 3+ consecutive integers are removed too.
+44 papers: fires on 10.1021_acs.chemmater.9b05116 only (48 pages, 1,044 removed, 5 kept); the 43 other document.md
+files are byte-identical with and without the rule (checked 2026-10-13).
+
 ### Body numbers (`body_check.py`, run by `merge.py`)
-- Text layer: pdfplumber characters decoded per embedded font with `glyph_codes.json` (the table check's tables; the
-  degree sign of AdvEls-ent5 and the prime of AdvP4C4E74 were added on 2026-10-13 from body crops). Characters outside
-  the page area are dropped and a character drawn twice at a slightly different size on one baseline is read once
-  (the MDPI hidden layer: 6,649 and 1,183 characters). Lines are read inside Marker's text blocks (Text, SectionHeader,
-  Caption, ListItem, TextInlineMath, Footnote) by the baseline of the normal-size characters; citation and
-  affiliation numbers, exponents and same-size LaTeX sub/superscripts join the nearest line, superscripts marked `^`;
-  characters outside every block are read as segments split at 20-pt gaps.
+- Text layer: pdfplumber characters decoded per embedded font with `glyph_codes.json` (86 entries: 15 families, 22
+  subsets; 27 added from body crops on 2026-10-13). Dropped or read once: characters outside the page box, a
+  character drawn twice at a slightly different size on one baseline, a line printed twice on a page (the MDPI hidden
+  layer). Lines are read inside Marker's text blocks (Text, SectionHeader, Caption, ListItem, TextInlineMath,
+  Footnote; boxes shifted by the page box origin) by the baseline of the normal-size characters; small characters join
+  the line whose baseline and size span they overlap (superscripts marked `^`), same-size LaTeX sub/superscripts join
+  the nearest line, stacked indices are read subscript first (O_2^+), a word space is a gap above 13 % of the line's
+  font size; an Equation box's lines join the text unit before it for the extra direction; characters outside every
+  block are segments split at 20-pt gaps.
 - Excluded, with counts in `body_check.counts`: PageHeader/PageFooter/Figure/Picture/Diagram/Table/Form/Handwriting/
-  Reference/Code/Equation boxes; everything from a References, Acknowledgements, Funding, Author contributions,
-  Conflicts, Associated content, Supporting information or Data availability heading on (layer side, or a unit that
-  matches an output paragraph after the first such heading in the second half of document.md); author/affiliation
-  blocks, author lines (names with affiliation markers on pages 1–2) and furniture ("Published by", "Cite as", doi,
-  licence: the line is cut there); running lines; units of fewer than 4 words; segments that hold only a number (page
-  and margin line numbers). A line without a word of 4+ letters (a formula) is kept for the extra direction only.
-- Not checkable, with reason and count: rotated characters, undecoded glyphs (the font and code are listed in
-  `not_checkable_reasons`), units of fewer than 3 words, garbled lines (two lines drawn over each other: fewer than
-  30 % of their words occur in the output), output sentences the layer lines do not cover (70 % of their words of 4+
-  letters) and output paragraphs that a not-checkable unit also matches.
+  Reference/Code boxes; everything from a References, Acknowledgements, Funding, Author contributions, Conflicts,
+  Associated content, Supporting information or Data availability heading on (layer side, or a unit matching an output
+  paragraph after the first such heading in the second half of document.md; both in the second half of the paper
+  only); author/affiliation blocks (keywords, addresses, dates), author lines (names with affiliation markers, pages
+  1–2), furniture ("Published by", "Cite as", doi, URL, ORCID, licence, article id); running lines (page headers
+  counted); units under 4 words; segments holding only a number; the page abstract when the abstract comes from
+  OpenAlex. On the output side URLs, DOIs, received/accepted/published dates, ORCID ids, "Citation:" lines and
+  markdown table rows are removed first. A line without a word of 4+ letters (a formula) counts for the extra
+  direction only.
+- Not checkable, with reason and count: rotated characters, undecoded glyphs (font and code in
+  `not_checkable_reasons`), units under 3 words, garbled lines (two lines drawn over each other), output sentences the
+  layer lines do not cover (70 % of their words of 4+ letters), paragraphs a not-checkable unit also matches or whose
+  equation lines hold an undecoded glyph.
 - Numbers: both sides normalised as the table check does; a subscript joins its base (H2O), a superscript stands alone
-  (10^12 → 10, 12), a number with a unit glued to it counts as the number (514nm). Pure numbers are compared as
-  multisets, both ways; a run that mixes letters and digits (H2S, MoS3.0, 40045TRS) by occurrence in the other side's
-  text with spaces and markers removed. A unit goes to the document.md paragraph sharing the most word 3-grams (2, or 1
-  for a unit under 6 tokens) together with the contiguous run of candidate paragraphs around it; an unmatched unit with
-  a number is "line not found in the output".
-- Flags: `body_flags[{page, kind, number, layer_line, output_sentence, layer_numbers, output_numbers, crop}]`, kinds
-  "line not found in the output" / "number of the text layer missing from the output paragraph" / "number of the output
-  paragraph absent from the text layer". 44 papers on 2026-10-13: 22,037 lines read, 18,891 checked, 1,154 flags (13 /
-  163 / 978 by kind; 761 in 10.1021_acs.chemmater.9b05116, 393 in the other 43 papers, 10 papers without a flag).
-  Against the page verdicts of 2026-10-12/13: 3 of 3 real body-number errors caught, "<001>" (written "< 0.01 >")
-  flagged too, 0 of the 41 items judged not errors flagged. False flags fixed on the way were decoding or normalisation
-  gaps only (the ° and ′ glyphs, `< 10^11` eaten as an html tag, "H_2 S" spacing, a space after a sign, a unit glued to
-  a number, Greek letters in runs, the hidden MDPI layer). False flags that remain, seen in samples and left as they
-  are: stacked sub- and superscripts written in another order (O₂⁺, E₂¹g), inline equations that Marker keeps in the
-  paragraph while their Equation box is excluded on the layer side, a paragraph straddling a column break, enumeration
-  numbers "(1)" of a split paragraph, and the residue of the MDPI duplicate layer (74 flags in that paper). Flags are
-  not reviewed here; the extraction stage reads the crop.
+  (10^12 → 10, 12), a number with a unit or a lowercase word glued to it counts as the number (514nm, 30μm, 4seconds),
+  a comma run is a list in the plain variant and a thousands number in the other, the letter x between digits and 10
+  is ×, Greek letters are letters of a run. Pure numbers (signed after a space or bracket, not after ° or %) are
+  compared as multisets in both variants; mixed runs (H2S, MoS3.0, 40045TRS) by occurrence in the other side's text
+  with spaces and markers removed. Display math and equation-like inline math are the equation check's domain (not
+  required in the layer).
+- Matching: a unit goes to the paragraph sharing the most word 3-grams (markers removed; at least a fifth of the
+  unit's 3-grams, 2 at least; ties to the first paragraph after the last match), with the contiguous run of candidate
+  paragraphs around it; overlapping runs form one group. Missing numbers: one flag each, unless the group gathers
+  several units or repeated text and the number occurs in the paragraphs and within 3 paragraphs (a count mismatch),
+  or the group's layer text is repeated (presence only). Absent numbers: one flag each, for covered output sentences
+  only, with the neighbouring units' lines counting for the layer. An unmatched unit with a number is "line not found
+  in the output".
+- Measurement fixes of 2026-10-13, measured on the 44 papers with `BODY_CHECK_DISABLE` (ablation switch): 1,154 flags
+  → 458 after the line-number rule → 431 with the stacked sub/superscript order → 430 with the Equation boxes joined →
+  415 with the neighbouring units → 415 with duplicate lines read once → 423 with the 27 glyphs (more lines checked) →
+  306 with markdown table rows, near-duplicate lines, running heads, address lines and equation glyphs handled → 268
+  with the comma-list, author-line, date and DOI rules → 216 with the stricter matching, repeated-text presence rule
+  and tokeniser fixes → 246 after the two stops were limited to the second half (three papers regained) → 224 final,
+  after the page-box shift, × typed as x, and the 12 repairs.
+- Judgement (Claude Code, every flag on its line crop, 2026-10-13): 388 flag keys over the passes, 119 real (41
+  distinct errors), 269 not errors; of the 224 final flags 70 are real, 152 not, 2 unjudged (precision 32 %).
+  Remaining not-error causes: lines of one paragraph or caption in other units or in a figure box (35), equations
+  and formulas kept in the paragraph by Marker (17), undecoded or garbled glyphs (16), the MDPI duplicate layer (14),
+  layer tokenisation of subscripts, stacked indices and gaps (15), furniture (7), table footnotes (4), count
+  mismatches (2), other (12). Real errors by cause: c recognition 31, a layout 9, d our post-processing 1 (the
+  margin numbers, now removed).
+
+### Countermeasures (`body_repair.py`, run by `merge.py`)
+On born-digital pages (embedded fonts, no OCR font, no full-page image): R1 a number of the output is replaced by the
+text layer's when, in one paragraph, a missing layer number and an absent output number pair up unambiguously (same
+letters, at most two characters and one in length apart, the layer token not glued to a minus sign); R2 a text-layer
+line of a Text, Caption or TextInlineMath block that no output paragraph contains is inserted after the paragraph the
+previous unit matched, marked "[restored from the text layer]" (8+ words, 70 % of its words in the document's
+vocabulary, no undecoded glyph, no reaction arrow). The check runs again on the repaired text. 44 papers: 12 repairs
+(5 R1: 0.01 → 001, 3d_3/2 → 3d_5/2, g/cm^3 → g/cm^-3 twice, ^43 → ^4; 7 R2: 5 dropped sentences, a Table 2 caption,
+a Figure 1 caption), each judged on the crop: 12 fixed, 0 broken. Variants rejected during the test: pairing per
+sentence (replaced a correct 55 by 155), pairs that differ in letters (turned E_1g into E2), ambiguous pairs (turned
+^12 into ^1 where ^1,2 was right). Errors without a rule stay flagged (ERRORS.md).
 
 ### Equations (`parse_docling.py --formulas`, `merge.py`)
 - Docling's layout gives the formula items; CodeFormula reads our crops: R1, the formula box without expansion at
@@ -209,6 +252,15 @@ change log are historical.
 
 ## Change log
 Newest first. One line per change: date, what changed, effect, commit.
+
+- 2026-10-13 — Body text verification: `line_numbers.py` (margin line numbers removed, 1 paper), `body_check.py` measurement
+  fixes (stacked indices, equation boxes, neighbouring units, duplicate lines, table rows, furniture both sides, author lines,
+  comma lists, stricter matching with a reading-order tie-break, repeated-text presence, page-box origin, stops in the second
+  half only), 27 glyphs added, `body_repair.py` (a number replaced from the text layer, a dropped line restored; 12 repairs,
+  0 broken); every body flag of the 44 papers judged on its crop (41 distinct real errors), `reports/review_body.html`.
+  Effect: body flags 1,154 → 224, precision 32 %, coverage median 97 % of body lines; tables unchanged (27 of 28 wrong
+  flagged, 7 false, 1 not checkable); all page verdicts hold (the 3 known errors flagged or repaired, 0 of 41 known
+  not-errors flagged, 41 of 41 judged errors still detected). — (hash: next line)
 
 - 2026-10-13 — Body-number flags: `body_check.py` (decoded text layer vs document.md per paragraph, both directions,
   "not checkable" with reasons) run by `merge.py` into `body_flags` / `body_check` of final structure.json; glyph table:

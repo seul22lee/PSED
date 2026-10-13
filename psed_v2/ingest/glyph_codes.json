@@ -1,12 +1,13 @@
 {
- "about": "Decoding of the PDF text layer inside table boxes for the table check in structure_marker.py. 'families': characters of symbol-encoded fonts (the font's own character codes, the same in every subset of the font); letters of these fonts that are not listed have no decoding and make a table 'not checkable'. 'instances': (cid:N) codes of embedded font subsets; a cid is a glyph index of the subset, so it is decoded only through the table of that embedded instance (subset prefix + family). Every entry was checked on a crop of the glyph by Claude Code on 2026-10-12 (scratch sheets tables2/glyphs/inst*.png); 'evidence' names the paper, page and table of one occurrence. Other characters are taken as they are.",
+ "about": "Decoding of the PDF text layer for the table check (structure_marker.py) and the body check (body_check.py). 'families': characters of symbol-encoded fonts (the font's own character codes, the same in every subset of the font); letters of these fonts that are not listed have no decoding and make a table 'not checkable'. 'instances': (cid:N) codes of embedded font subsets; a cid is a glyph index of the subset, so it is decoded only through the table of that embedded instance (subset prefix + family). Every entry was checked on a crop of the glyph by Claude Code on 2026-10-12 (scratch sheets tables2/glyphs/inst*.png); 'evidence' names the paper, page and table of one occurrence. Other characters are taken as they are.",
  "families": {
   "AdvP4C4E74": {
    "¼": "=",
    "þ": "+",
    "ð": "(",
    "Þ": ")",
-   "0": "′"
+   "0": "′",
+   "!": "→"
   },
   "AdvP4C4E51": {
    "=": "/",
@@ -19,7 +20,8 @@
    "6": "±"
   },
   "AdvPi1": {
-   "m": "μ"
+   "m": "μ",
+   "q": "∂"
   },
   "AdvPi2": {
    "O": "Ω",
@@ -41,7 +43,8 @@
    "h": "θ",
    "q": "ρ",
    "r": "σ",
-   "s": "τ"
+   "s": "τ",
+   "l": "μ"
   },
   "AdvPSMP13": {
    "D": "Δ"
@@ -66,6 +69,13 @@
   "AdvEls-ent7": {
    "B": "∼",
    "E": "≈"
+  },
+  "AdvOT999035f4+e1": {
+   "": "fi",
+   "": "fl"
+  },
+  "AdvOT999035f4+e0": {
+   "": "ft"
   }
  },
  "symbol_families": [
@@ -87,7 +97,8 @@
    "cid:3": "×"
   },
   "MEPBAO+AdvP4C4E74": {
-   "cid:2": "−"
+   "cid:2": "−",
+   "cid:3": "×"
   },
   "GENDPM+AdvP4C4E74": {
    "cid:2": "−"
@@ -105,7 +116,8 @@
   },
   "FGIIBN+AdvP4C4E74": {
    "cid:1": "×",
-   "cid:3": "−"
+   "cid:3": "−",
+   "cid:5": "°"
   },
   "CBPCMD+AdvP4C4E74": {
    "cid:2": "°",
@@ -132,6 +144,37 @@
   "MACDEI+MathematicalPi-Three": {
    "cid:1": "(",
    "cid:2": ")"
+  },
+  "HIJGPK+AdvP4C4E74": {
+   "cid:1": "−",
+   "cid:4": "×"
+  },
+  "PGKKFB+AdvP4C4E74": {
+   "cid:1": "−"
+  },
+  "DNGEMD+AdvP4C4E74": {
+   "cid:1": "°",
+   "cid:3": "−"
+  },
+  "GLBOJN+AdvP4C4E74": {
+   "cid:2": "≈",
+   "cid:3": "−"
+  },
+  "EPMNFK+AdvP4C4E74": {
+   "cid:3": "°"
+  },
+  "MALNLA+AdvP4C4E74": {
+   "cid:4": "°",
+   "cid:5": "−"
+  },
+  "EGAVBT+CMMI12": {
+   "cid:126": ""
+  },
+  "PGKLEM+Advsymbol": {
+   "cid:1": "°"
+  },
+  "HMBFNB+LucidaSansUnicode22": {
+   "cid:2": "Δ"
   }
  },
  "evidence": {
@@ -149,6 +192,8 @@
   "instances": "each cid judged on the glyph crop in the named paper: MBAJJO d0cp03358h p4 (− ×), MEPBAO d1cp04758b p8 (−), GENDPM d3cp01829f p5 (−), EAGHDP d3cp05639b p4 (− ×), MNGCOP d4cp00131a p4 (− ×), XAOQNP 1.5028178 p8 (−), FGIIBN 5.0168768 p5 (× −), CBPCMD 1.4892385 p5 (° − · ×), CBPCNE 1.4892385 p5 (ϵ), MNGEJG d4cp00131a p17 (macron accent), MEPGPE d1cp04758b p10 and MNGEGD d4cp00131a p13 (| ( ) delimiters), MACDEI 1.2338776 p3 (parentheses)",
   "AdvEls-ent5 c 1": "c: ≫ in Kn ≫ 1, 10.1039_d1cp04758b p10 T2, d4cp00131a p13 T2 (the digit 1 there is in the text font). 1: the degree sign, 300 °C in the body of 10.1039_d0cp03358h p2 and T (°C) in d1cp04758b p8 T1 (crops viewed 2026-10-13; the earlier reading of '1' as the digit one was wrong)",
   "AdvEls-ent7 B E": "∼100:1, Kn ≈ 1; 10.1039_d0cp03358h p11 T2, d1cp04758b p10 T2, d4cp00131a p13 T2",
-  "AdvP4C4E74 0": "prime: 8″ (8 inch) drawn as two '0' glyphs of this font, 10.1002_adem.202201901 p10 body (crop viewed 2026-10-13)"
+  "AdvP4C4E74 0": "prime: 8″ (8 inch) drawn as two '0' glyphs of this font, 10.1002_adem.202201901 p10 body (crop viewed 2026-10-13)",
+  "body glyphs 2026-10-13": "24 most frequent undecoded glyphs of the body text, one context crop each viewed (scratch body/glyph_sheet_0/1.png): AdvOT999035f4+e1 U+E103 fi (10.1039_c5ta00205b p1 'artificial', c7ta03257a p2 'specific', c3ra42928h p1 'films'), U+E104 fl (c5ta00205b p1 'flurry', c3ra42928h p2 'flowed'); AdvOT999035f4+e0 U+E09D ft (c7ta03257a p2 'soft', c3ra42928h p1 'after'); AdvPSMP10 l = μ (10.1063_1.5028178 p3 '1 μm'); AdvPi1 q = ∂ (10.1039_d3cp05639b p3 '∂n_p/∂t'); HIJGPK cid:1 − (10.1116_6.0001094 p2 '10^−4'), cid:4 × (p4 '50.0 × 50.0'); PGKKFB cid:1 − (10.1021_acsnano.5b03429 p1 title 'Metal−Organic'); DNGEMD cid:1 ° (10.1039_c5ta00205b p2 '2 °C'), cid:3 − (p2 'μg^−1'); GLBOJN cid:2 ≈ (10.1002_adem.202201901 p3 '≈1.56'), cid:3 − (p4 'cycle^−1'); EPMNFK cid:3 ° (10.1039_c3ra42928h p2 '550 °C'); MALNLA cid:4 ° (10.1039_c7ta03257a p3 '95 °C'), cid:5 − (p3 'min^−1'); MEPBAO cid:3 × (10.1039_d1cp04758b p4 '5.91 × 10^−10'); EGAVBT+CMMI12 cid:126 = vector arrow accent over r, decoded as nothing (10.1016_j.sse.2022.108584 p5); PGKLEM+Advsymbol cid:1 ° (acsnano.5b03429 p2 '>400 °C'); HMBFNB+LucidaSansUnicode22 cid:2 Δ (10.1093_nsr_nwaf247 p3 'Δp'); FGIIBN cid:5 ° (10.1063_5.0168768 p3 '100 °C')",
+  "AdvP4C4E74 !": "reaction arrow → in the body of 10.1116_1.4892385 p3 (crop glyph_arrow.png viewed 2026-10-13)"
  }
 }

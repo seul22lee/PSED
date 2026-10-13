@@ -153,11 +153,25 @@ def merge_one(paper_id):
         return heights[p]
     equations = pair_equations(docling_eqs, st.get("equations", []), page_height)
     import body_check
+    import line_numbers
+    md_text, ln = line_numbers.process(RAW / f"{paper_id}.pdf", (out / "document.md").read_text())
+    if ln["pages"]:
+        (out / "document.md").write_text(md_text)
     tree = json.loads((md_dir / "blocks.json").read_text())
-    body = body_check.check_body(RAW / f"{paper_id}.pdf", (out / "document.md").read_text(), tree, out / "figures")
+    import body_repair
+    oa = st.get("abstract") if st.get("abstract_source") == "openalex" else None
+    body = body_check.check_body(RAW / f"{paper_id}.pdf", (out / "document.md").read_text(), tree, out / "figures", openalex_abstract=oa)
+    md_text, repairs = body_repair.repair((out / "document.md").read_text(), body, RAW / f"{paper_id}.pdf")
+    if repairs:                                   # countermeasures applied: write the text and check it again
+        (out / "document.md").write_text(md_text)
+        for f in out.glob("figures/body_p*.png"):
+            f.unlink()
+        body = body_check.check_body(RAW / f"{paper_id}.pdf", md_text, tree, out / "figures", openalex_abstract=oa)
+    body["body_check"]["line_numbers"] = ln
+    body["body_check"]["repairs"] = len(repairs)
     for f in body["body_flags"]:
         f["crop"] = f"figures/{f['crop']}"
-    final = {"paper_id": paper_id, "body_flags": body["body_flags"], "body_check": body["body_check"],
+    final = {"paper_id": paper_id, "body_flags": body["body_flags"], "body_check": body["body_check"], "body_repairs": repairs,
              "abstract": st.get("abstract", ""), "abstract_source": st.get("abstract_source"),
              "sections": st.get("sections", []), "n_pictures": st.get("n_pictures"), "n_tables": st.get("n_tables"),
              "captions": captions, "equations": equations,
