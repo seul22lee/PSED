@@ -16,7 +16,7 @@ page judgements) and are marked as such; two recorded numbers name their origin.
 | Equations `agree` | 197 | structure.json `equations[].status` |
 | Equations `differ` | 109 | structure.json `equations[].status` |
 | Equations single tool | 15 (12 docling only, 3 marker only) | structure.json `equations[].status` |
-| Equation pairs judged (13 papers) | 103: 74 agree accepted, 29 differ judged (Marker right 14, Docling right 7, both wrong 3, equivalent 5) | `answers/equations.json` |
+| Equation pairs judged (answer set, 44 papers) | 198 items: 74 agree accepted (not judged); 109 differ pairs judged on the crop: Marker right 44, Docling right 33, both wrong 16, equivalent 16; 15 single-tool items judged: Docling right 9, Docling wrong 3, Marker right 3, Marker wrong 0 | `answers/equations.json` |
 | **Body** lines read | 23,935 | structure.json `body_check.counts.lines` |
 | Body lines checked | 23,779 (99.3 %; median 100 % per paper, min 82 %) | structure.json `body_check.counts.checked` |
 | Body lines not checkable, total | 156 (every one covered by a layer-side "not checkable" flag) | structure.json `body_check.counts`, `body_flags` |

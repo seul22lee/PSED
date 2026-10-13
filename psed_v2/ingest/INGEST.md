@@ -143,14 +143,15 @@ body_flags, body_check (counts, not_checkable_reasons, recovered, line_numbers, 
 body_repairs_undone, sources; `final/<id>/figures/` (figure crops, table crops, flag crops). Intermediates kept for a
 rerun without the vision models: `marker/<id>/` (blocks.json, marker.md and document.md, images, bands.json with its
 band crops, structure.json, table crops) and `docling/<id>/equations.json`. Tracked: the seven pipeline scripts, the four report and check scripts, `glyph_codes.json`, `answers/` (Claude Code's
-page judgements with ids and verdicts only: `tables.json` 69 tables, `equations.json` 103 pairs of the 13 papers judged on
-2026-10-12, `body_flags.json` 419 flag keys; `flag_keys_baseline.json`, the flag keys of the last accepted run), this file,
+page judgements with ids and verdicts only: `tables.json` 69 tables, `equations.json` 198 items of the 44 papers (every differ pair and single-tool item judged
+on the crop, the agree pairs accepted), `body_flags.json` 419 flag keys; `flag_keys_baseline.json`, the flag keys of the last accepted run), this file,
 `ERRORS.md`, `NUMBERS.md`, `CHANGELOG.md`.
 
 ## Numbers
 
 See `ingest/NUMBERS.md` (one table, each number with the file it comes from). In short, on the 44 papers: 69 tables
-(34 ok, 34 flagged, 1 not checkable), 321 equation pairs (197 agree, 109 differ, 15 one tool), 23,935 body lines of
+(34 ok, 34 flagged, 1 not checkable), 321 equation pairs (197 agree, 109 differ, 15 one tool; every differ pair judged on the crop: Marker right 44,
+Docling right 33, both wrong 16, equivalent 16; the single-tool items: 12 right, 3 wrong), 23,935 body lines of
 which 23,779 checked (99.3 %) and 156 not checkable with a flag each, 238 number or letter flags (all judged: 78 real, 160 not errors), 268 not-checkable
 flags, 12 repairs (0 undone); 44 distinct real body errors in the answer set, 8 corrected by the repairs, 1 partly.
 

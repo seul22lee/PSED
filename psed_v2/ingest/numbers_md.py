@@ -136,9 +136,12 @@ def main():
     L.append(f"| Equations `agree` | {E['agree']} | {sj} `equations[].status` |")
     L.append(f"| Equations `differ` | {E['differ']} | {sj} `equations[].status` |")
     L.append(f"| Equations single tool | {E['docling only'] + E['marker only']} ({E['docling only']} docling only, {E['marker only']} marker only) | {sj} `equations[].status` |")
-    L.append(f"| Equation pairs judged (13 papers) | {len(ans_e)}: {ev.get('agree (accepted by the pipeline, not judged on the crop)', 0)} agree accepted, "
-             f"{len(ans_e) - ev.get('agree (accepted by the pipeline, not judged on the crop)', 0)} differ judged (Marker right {ev.get('Marker right', 0)}, Docling right {ev.get('Docling right', 0)}, "
-             f"both wrong {ev.get('both wrong', 0)}, equivalent {ev.get('not an error', 0)}) | `answers/equations.json` |")
+    ed = Counter(a["verdict"] for a in ans_e if a["status"] == "differ")
+    es = Counter(a["verdict"] for a in ans_e if a["status"] not in ("differ", "agree"))
+    n_ag = sum(1 for a in ans_e if a["status"] == "agree")
+    L.append(f"| Equation pairs judged (answer set, 44 papers) | {len(ans_e)} items: {n_ag} agree accepted (not judged); {sum(ed.values())} differ pairs judged on the crop: "
+             f"Marker right {ed.get('Marker right', 0)}, Docling right {ed.get('Docling right', 0)}, both wrong {ed.get('both wrong', 0)}, equivalent {ed.get('not an error', 0)}; "
+             f"{sum(es.values())} single-tool items judged: Docling right {es.get('Docling right', 0)}, Docling wrong {es.get('Docling wrong', 0)}, Marker right {es.get('Marker right', 0)}, Marker wrong {es.get('Marker wrong', 0)} | `answers/equations.json` |")
     L.append(f"| **Body** lines read | {B['lines']:,} | {sj} `body_check.counts.lines` |")
     L.append(f"| Body lines checked | {B['checked']:,} ({100 * B['checked'] / B['lines']:.1f} %; median {statistics.median(cov):.0f} % per paper, min {min(cov):.0f} %) | {sj} `body_check.counts.checked` |")
     L.append(f"| Body lines not checkable, total | {B['lines'] - B['checked']} (every one covered by a layer-side \"not checkable\" flag) | {sj} `body_check.counts`, `body_flags` |")

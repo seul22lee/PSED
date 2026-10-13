@@ -59,8 +59,14 @@ with every token present (not seen on the 44 papers).
 
 ## Equations: 321 pairs, 197 agree (accepted), 109 differ (review), 15 single tool (review)
 
-On the 13 papers judged on the crop (29 differ pairs of 103): Marker right 14, Docling right 7, both wrong 3,
-equivalent forms 5. The 31 other papers' equations were not judged on the page.
+Every differ pair and single-tool item of the 44 papers is judged on the formula crop (`answers/equations.json`, 198
+items with the 74 accepted agree pairs). The 109 differ pairs: Marker right 44, Docling right 33, both wrong 16,
+equivalent forms 16 (the 13 papers of 2026-10-12: 14 / 7 / 3 / 5; the 31 others: 30 / 26 / 13 / 11). The 15 single-tool
+items: the one tool right in 12 (Docling 9, Marker 3), Docling wrong in 3 (reaction equations of
+10.1021_acs.chemmater.9b05116 p 16: a hat on O, C_2H_4 garbled). Recurring errors: Marker writes θ for Θ (10 pairs of
+10.1021_acs.chemmater.1c03164), K_n for Kn (5), drops s̄ (4) and a second line of a two-line equation (2); Docling reads
+O as 0 (7 pairs of 10.1116_1.4892385), drops the ∂t of a left side (4), garbles text labels in equations and appends
+text, and writes bold or stray characters. A "both wrong" pair needs the formula written anew by the review.
 
 ## Known limits (nothing flags them unless stated)
 
