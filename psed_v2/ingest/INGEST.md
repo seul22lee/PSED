@@ -291,7 +291,7 @@ Newest first. One line per change: date, what changed, effect, commit.
   lines of units under 4 words are not checkable with a flag each (380), so every unchecked line carries a flag; docs
   corrected (distinct errors corrected: 8, partly 1; the "Text out of order" row is flagged). Effect: both g/cm^-3 right,
   4 flags gone (244 number flags, 77 real), 503 not-checkable flags, lines checked 23,452 of 23,936; 0 repairs undone;
-  reports rebuilt (papers.html 51 MB, review_body.html with the under-4-word section). — (hash: next line)
+  reports rebuilt (papers.html 51 MB, review_body.html with the under-4-word section). — e5cb97c (this line's hash: the next commit)
 
 - 2026-10-13 — Glyph table pass 2: every undecoded body glyph of the 44 papers viewed on crops (150 keys; 111 entries
   added, 22 delimiter pieces listed undecoded with the reason, AdvPi1 + = ±); `body_check.py` writes flags of kind
