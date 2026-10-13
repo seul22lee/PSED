@@ -95,7 +95,7 @@ text, and writes bold or stray characters. A "both wrong" pair needs the formula
   (10.1116_6.0002804 p 2, 10.1021_acs.jpcc.9b08176 p 2, 10.3390_separations11010024 p 7). A check must not alter
   its own reference, so the line assembly of e5cb97c stands; the 15 subscript flags it had removed (all judged not
   errors) go to the review.
-- **Output paragraphs with numbers that no layer unit matches.** 1,574 (recount 1,573): 1,046 at or after the
+- **Output paragraphs with numbers that no layer unit matches.** 1,573: 1,046 at or after the
   References heading (reference entries) and 527 before it: 294 display equations written as LaTeX paragraphs,
   127 author, affiliation, licence and furniture lines, 91 headings, labels and fragments, 9 captions, 4 author
   lists, 2 reaction table rows. Their numbers are not compared; they are counted, not flagged (their layer side is

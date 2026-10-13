@@ -45,7 +45,7 @@ page judgements) and are marked as such; two recorded numbers name their origin.
 | Margin line numbers removed | 1,044 in 1 paper, 5 real numbers kept | structure.json `body_check.line_numbers` |
 | Band repairs (parse_marker.py --bands) | 25 applied of 32 records | `marker/<id>/bands.json` |
 | Abstracts | 44: 23 heading, 20 openalex_match, 1 openalex | structure.json `abstract_source` |
-| Figure captions | 447 (344 numbered, 103 unnumbered pictures) | structure.json `captions[kind=figure]` |
+| Figure captions | 445 (342 numbered, 103 unnumbered pictures); other kinds: 2 scheme | structure.json `captions[kind=figure]` and the other non-table kinds |
 | Glyph table | 198 entries (19 families, 43 subsets), 6 groups left undecoded with the reason | `glyph_codes.json` |
 
 ## Per paper (body check)

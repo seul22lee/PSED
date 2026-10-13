@@ -38,8 +38,10 @@ def main():
             if c["kind"] == "table":
                 T["total"] += 1
                 T[c["check"]] += 1
-            else:
+            elif c["kind"] == "figure":
                 figs["numbered" if c.get("number") else "unnumbered"] += 1
+            else:
+                figs[c["kind"]] += 1
         for e in st["equations"]:
             E["pairs"] += 1
             E[e["status"]] += 1
@@ -169,7 +171,8 @@ def main():
     L.append(f"| Band repairs (parse_marker.py --bands) | {bands['applied']} applied of {bands['records']} records | `marker/<id>/bands.json` |")
     src = Counter(json.load(open(FINAL / pid / "structure.json")).get("abstract_source") for pid in pids)
     L.append(f"| Abstracts | {len(pids)}: {', '.join(f'{v} {k}' for k, v in sorted(src.items(), key=lambda x: -x[1]))} | {sj} `abstract_source` |")
-    L.append(f"| Figure captions | {figs['numbered'] + figs['unnumbered']} ({figs['numbered']} numbered, {figs['unnumbered']} unnumbered pictures) | {sj} `captions[kind=figure]` |")
+    other = ", ".join(f"{v} {k}" for k, v in sorted(figs.items()) if k not in ("numbered", "unnumbered"))
+    L.append(f"| Figure captions | {figs['numbered'] + figs['unnumbered']} ({figs['numbered']} numbered, {figs['unnumbered']} unnumbered pictures){'; other kinds: ' + other if other else ''} | {sj} `captions[kind=figure]`{' and the other non-table kinds' if other else ''} |")
     L.append(f"| Glyph table | {n_entries} entries ({len(g['families'])} families, {len(g['instances'])} subsets), {len(g.get('undecoded', {}))} groups left undecoded with the reason | `glyph_codes.json` |")
     L.append("\n## Per paper (body check)\n")
     L.append("| paper | body lines read | checked | share | not checkable: undecoded glyph (lines) | rotated (characters) | other not checkable (lines/sentences) | number or letter flags | not-checkable flags | repairs |\n|---|---|---|---|---|---|---|---|---|---|")
