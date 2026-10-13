@@ -161,17 +161,27 @@ def merge_one(paper_id):
     import body_repair
     oa = st.get("abstract") if st.get("abstract_source") == "openalex" else None
     body = body_check.check_body(RAW / f"{paper_id}.pdf", (out / "document.md").read_text(), tree, out / "figures", openalex_abstract=oa)
-    md_text, repairs = body_repair.repair((out / "document.md").read_text(), body, RAW / f"{paper_id}.pdf")
-    if repairs:                                   # countermeasures applied: write the text and check it again
+    md0 = (out / "document.md").read_text()
+    md_text, repairs = body_repair.repair(md0, body, RAW / f"{paper_id}.pdf")
+    undone = []
+    if repairs:                                   # countermeasures applied: check the repaired text again
+        body2 = body_check.check_body(RAW / f"{paper_id}.pdf", md_text, tree, None, openalex_abstract=oa)
+        failed = body_repair.recheck(repairs, body2["body_flags"])
+        if failed:                                # a repair whose sentence still carries a flag is undone, its flag stays
+            undone = [dict(r, remaining_flag=fl) for r, fl in failed]
+            md_text, repairs = body_repair.repair(md0, body, RAW / f"{paper_id}.pdf", skip={body_repair._sig(r) for r, _ in failed})
+    if repairs or undone:
         (out / "document.md").write_text(md_text)
         for f in out.glob("figures/body_p*.png"):
             f.unlink()
         body = body_check.check_body(RAW / f"{paper_id}.pdf", md_text, tree, out / "figures", openalex_abstract=oa)
     body["body_check"]["line_numbers"] = ln
     body["body_check"]["repairs"] = len(repairs)
+    body["body_check"]["repairs_undone"] = len(undone)
     for f in body["body_flags"]:
         f["crop"] = f"figures/{f['crop']}"
     final = {"paper_id": paper_id, "body_flags": body["body_flags"], "body_check": body["body_check"], "body_repairs": repairs,
+             "body_repairs_undone": undone,
              "abstract": st.get("abstract", ""), "abstract_source": st.get("abstract_source"),
              "sections": st.get("sections", []), "n_pictures": st.get("n_pictures"), "n_tables": st.get("n_tables"),
              "captions": captions, "equations": equations,
@@ -199,7 +209,7 @@ def main(argv):
         eq = f["equations"]
         n_flag = sum(1 for c in f["captions"] if c["kind"] == "table" and c.get("check") == "flag")
         bc = f["body_check"]["counts"]
-        print(f"[merge] {pid}: body {bc.get('checked', 0)} lines checked, {bc.get('flags', 0)} flags, {bc.get('not checkable: undecoded glyph', 0)} lines not checkable ({bc.get('not-checkable flags', 0)} not-checkable flags); "
+        print(f"[merge] {pid}: body {bc.get('checked', 0)} lines checked, {bc.get('flags', 0)} flags, {bc.get('not checkable: undecoded glyph', 0)} lines not checkable ({bc.get('not-checkable flags', 0)} not-checkable flags, {bc.get('repairs', 0)} repairs, {bc.get('repairs_undone', 0)} undone); "
               f"{sum(1 for c in f['captions'] if c['kind'] != 'table')} figure captions, "
               f"{sum(1 for c in f['captions'] if c['kind'] == 'table')} tables ({n_flag} flagged), "
               f"{len(eq)} equations ({sum(1 for e in eq if e['status'] == 'agree')} agree, "

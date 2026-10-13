@@ -33,29 +33,34 @@ blocked before.
 | A letter read as a digit or a digit as a letter (t→4, I→1, 1→I, 5→S, a→2) | 10.1021_acs.chemmater.2c01154 "Mo(N^tBu)2" → "Mo(N^4Bu)2" (p 2, 8); 10.1039_d0cp03358h "GPC_I" → "GPC_1" (p 11); 10.1038_s41467-022-35428-6 "CN1 Co." → "CNI Co." (p 7); 10.1021_acs.jpcc.5c06502 "Figure 5f" → "Figure Sf" (p 6); 10.1039_d4cp00131a "Table 1 … simulations^a" → "simulations^2" (p 4), "p_I" → "p_1" (p 13, both found in pass 2) | 6 | 13: 1, 31: 5 | yes | flag → review (no rule: the pair differs in letters) |
 | A lookalike letter: Latin v or p written Greek ν or ρ (the PDF text layer has the Latin letter in the italic text font) | 10.1002_adem.202201901 "P1, v1, h1" → "ν_1" (p 8); 10.1039_d0cp03358h, d1cp04758b, d4cp00131a "p_A0" (pressure) → "ρ_A0" (p 9; p 8, 11; p 6) | 5 | 13: 1, 31: 4 | yes (mixed token) | flag → review |
 | A decimal point inserted or replaced | 10.1002_adem.202201901 "<001>" → "< 0.01 >" (p 10); 10.1021_acs.chemmater.2c01154 "a-MoS3.0" → "a-MoS3,0" (p 4) | 2 | 13: 1, 31: 1 | yes | 1 repaired by R1 (0.01 → 001); MoS3,0 flag → review |
-| An exponent sign dropped | 10.1021_acs.jpcc.5c06502 "g/cm^-3" → "g/cm^3" twice (p 5) | 1 | 31 | yes | repaired by R1 |
+| An exponent sign dropped | 10.1021_acs.jpcc.5c06502 "g/cm^-3" → "g/cm^3" twice (p 5) | 1 | 31 | yes | corrected by R1 at both occurrences (checked on the crop 2026-10-13; the first run had applied both records to one token, writing g/cm^--3 and leaving the other) |
 | A subscript digit dropped or fused | 10.1021_acs.chemmater.1c03164 "n_0" → "n" (p 1); 10.1021_acs.chemmater.2c01154 "E₂¹g" → "E_1g" (p 3); 10.1021_acs.chemmater.9b05116 "Mg(MeCp)_2" → "Mg(MeCp)_" (p 15) | 3 | 31 | yes | flag → review |
 | Text added | 10.1021_acs.chemmater.2c01154 "MoS2, TiS2, and WS2" → "MoS_2.2, TiS_2.2, WS_2.2" (p 9, crop viewed); 10.1186_s11671-015-0872-9 "Figure 4c-1,c-2,c-3" → "4c-1, 4c-2, 4c-3" (p 4); 10.1039_d3cp05639b "A_O" → "A_{O_0}" (p 10) | 3 | 13: 1, 31: 2 | yes | flag → review |
-| Text out of order: a caption label merged into the preceding paragraph | 10.1021_acs.chemmater.2c01154 "… 5.06 g/cm^3.^66 Figure 6." (p 5) | 1 | 31 | no longer (the neighbouring caption now counts for the layer) | known limit |
+| Text out of order: a caption label merged into the preceding paragraph | 10.1021_acs.chemmater.2c01154 "… 5.06 g/cm^3.^66 Figure 6." (p 5) | 1 | 31 | yes (key `…|5|number|6`, judged real) | flag → review |
 | Margin line numbers of a line-numbered manuscript merged into the text (every line) | 10.1021_acs.chemmater.9b05116 | 1 paper (761 numbers flagged before the rule) | 31 | yes before the rule | fixed: `line_numbers.py` removed 1,044; 5 leftovers at breaks where the same bare number stands in the adjacent line ("could 3 be achieved at 2 Å/cycle to 3 Å/cycle") |
 | Angle brackets rendered as math ("<001>" written "< 0.01 >"), see the decimal-point row | 10.1002_adem.202201901 p 10 | — | 13 | yes | repaired |
 | Two-column page read right column first for one block | 10.1186_s11671-015-0872-9 p 4 | 1 page | 13 | no | known limit |
 | An abstract block rendered as an image whose band OCR returns no text | 10.1021_acs.langmuir.6b03119 p 1 | 1 | 31 | `bands.json` (applied: false) | the abstract field falls back to OpenAlex; the paragraph stays missing from the body |
 | Author lines and "Check for updates" badges rendered as images, then OCR'd into the text | 25 band repairs in 20 papers: 2 captions, 4 abstracts, 1 table, 11 author lines, 7 badges | author lines and badges | both | recorded in `bands.json` | known limit (text added, nothing lost) |
 
-`body_flags` in the final output (2026-10-13 pass 2, 44 papers): 248 flags (12 "line not found", 122 text-layer numbers
-missing from the output paragraph, 114 output numbers absent from the text layer), 12 papers without a flag; 81 of the 248
-judged flags are real (precision 33 %), 167 are not errors: lines of one paragraph or caption in other units or inside a
+`body_flags` in the final output (2026-10-13, 44 papers): 244 flags (12 "line not found", 120 text-layer numbers
+missing from the output paragraph, 112 output numbers absent from the text layer), 12 papers without a flag; 77 of the 244
+judged flags are real (precision 32 %), 167 are not errors: lines of one paragraph or caption in other units or inside a
 figure box (35), equations and formulas kept in the paragraph by Marker while their boxes are excluded (17 + 5 in pass 2),
 undecoded or garbled glyphs (16), the MDPI duplicate layer (14), layer tokenisation of subscripts, stacked indices, gaps
 and line breaks (15 + 5), furniture (7), table footnotes (4), count mismatches (2 + 2), other (12 + 2). Pass 2 (the glyph
 table extended, 1,073 more lines checked) raised 28 new flags: 9 real, 19 not errors, 4 of which vanished after the
-AdvPi1 "+" glyph was decoded as ± (on the crop). Besides these, 123 flags of kind "not checkable" name the lines the check
-cannot compare, with the reason and the line crop, so that the flag review sees them like a not-checkable table: 98 garbled
-lines of the overlapping duplicate layer (74 in 10.3390_separations11010024, 16 in 10.1016_j.mee.2018.01.027, 8 in 7
-papers), 20 equation or weak lines holding undecoded delimiter pieces (they block the extra direction of 38 paragraphs), 4
-units too short to locate, 1 unit of 2 lines with undecoded pieces. Countermeasures (`body_repair.py`): 12 repairs, 12
-fixed, 0 broken on the judged flags. Regression against every page verdict after pass 2: the 3 known errors of review_31
+AdvPi1 "+" glyph was decoded as ± (on the crop). Besides these, 503 flags of kind "not checkable" name the lines the check
+cannot compare, with the reason and the line crop, so that the flag review sees them like a not-checkable table; together
+they cover every unchecked line (484 of 23,936; checked per paper): 380 lines of units under 4 words (headings, labels and
+fragments: SectionHeader 256, Text 69, outside the blocks 52, Caption 3; 82 carry a digit, 298 none; listed by block type
+in review_body.html), 98 garbled lines of the overlapping duplicate layer (74 in 10.3390_separations11010024, 16 in
+10.1016_j.mee.2018.01.027, 8 in 7 papers), 20 equation or weak lines holding undecoded delimiter pieces (they block the
+extra direction of 38 paragraphs), 4 units too short to locate, 1 unit of 2 lines with undecoded pieces. Countermeasures
+(`body_repair.py`, 2026-10-13): 12 repair records in 8 papers, 0 undone by the recheck, each viewed on its crop: 8 distinct
+errors corrected (<001>, 3d_5/2, g/cm^-3 at both occurrences, ^4,35,36, four dropped lines or captions), 1 partly (the
+Figure 1 caption of 10.1186_s11671-015-0872-9: 2 of 3 lines restored, the middle line stays flagged); the other 35 errors
+stay flagged only. Regression against every page verdict after pass 2: the 3 known errors of review_31
 are flagged or repaired, 0 of the 41 known not-errors is flagged (the regression script's substring matcher reports "480"
 of 10.1039_d1cp04758b against the output numbers of the judged p_A0 → ρ_A0 flags, not a flag of its own), 126 of 128
 judged real flag keys are still detected (flagged, repaired or removed by the rule; the two token flags of the dropped
@@ -67,50 +72,50 @@ checkable by cause):
 
 | paper | body lines read | checked | share | not checkable: undecoded glyph (lines; fonts) | rotated (characters) | other (lines/sentences) | flags | not-checkable flags | repairs |
 |---|---|---|---|---|---|---|---|---|---|
-| 10.1002_adem.202201901 | 749 | 738 | 99 % | 0 | 3759 | 2 | 5 | 4 | 1 |
-| 10.1007_s12274-010-0066-9 | 352 | 348 | 99 % | 0 | 0 | 0 | 0 | 0 | 0 |
-| 10.1016_j.ijpharm.2017.04.031 | 635 | 627 | 99 % | 0 | 0 | 1 | 4 | 0 | 0 |
-| 10.1016_j.mee.2018.01.027 | 269 | 250 | 93 % | 0 | 0 | 21 | 3 | 16 | 0 |
-| 10.1016_j.mee.2018.01.033 | 217 | 211 | 97 % | 0 | 0 | 0 | 0 | 0 | 0 |
-| 10.1016_j.sse.2022.108584 | 363 | 357 | 98 % | 0 | 44 | 0 | 0 | 0 | 0 |
-| 10.1021_acs.chemmater.1c03164 | 944 | 933 | 99 % | 0 | 0 | 0 | 1 | 0 | 1 |
-| 10.1021_acs.chemmater.2c01154 | 926 | 917 | 99 % | 0 | 1625 | 4 | 15 | 0 | 1 |
-| 10.1021_acs.chemmater.6c00816 | 1198 | 1190 | 99 % | 0 | 2520 | 1 | 5 | 0 | 0 |
-| 10.1021_acs.chemmater.9b05116 | 754 | 743 | 99 % | 0 | 297 | 6 | 43 | 2 | 2 |
-| 10.1021_acs.jpcc.5c06502 | 676 | 667 | 99 % | 0 | 1536 | 0 | 14 | 0 | 2 |
-| 10.1021_acs.jpcc.9b08176 | 367 | 362 | 99 % | 0 | 822 | 1 | 9 | 0 | 0 |
-| 10.1021_acs.jpclett.4c03545 | 269 | 262 | 97 % | 0 | 147 | 0 | 0 | 0 | 0 |
-| 10.1021_acs.langmuir.6b03119 | 503 | 497 | 99 % | 0 | 1136 | 1 | 4 | 1 | 0 |
-| 10.1021_acsami.0c06879 | 481 | 476 | 99 % | 0 | 201 | 0 | 0 | 0 | 0 |
-| 10.1021_acsami.0c22121 | 301 | 293 | 97 % | 0 | 0 | 2 | 7 | 0 | 0 |
-| 10.1021_acsnano.5b03429 | 473 | 470 | 99 % | 0 | 980 | 1 | 3 | 0 | 0 |
-| 10.1038_s41467-022-35428-6 | 540 | 532 | 99 % | 0 | 30 | 2 | 5 | 2 | 1 |
-| 10.1038_srep18401 | 226 | 222 | 98 % | 0 | 0 | 3 | 0 | 0 | 0 |
-| 10.1039_c3ra42928h | 318 | 311 | 98 % | 0 | 0 | 0 | 0 | 0 | 0 |
-| 10.1039_c4nr05049e | 374 | 369 | 99 % | 0 | 0 | 0 | 0 | 0 | 0 |
-| 10.1039_c5ta00205b | 542 | 535 | 99 % | 0 | 0 | 0 | 2 | 0 | 0 |
-| 10.1039_c7ta03257a | 602 | 591 | 98 % | 0 | 0 | 0 | 0 | 0 | 0 |
-| 10.1039_d0cp03358h | 739 | 731 | 99 % | 0 | 2684 | 1 | 18 | 1 | 0 |
-| 10.1039_d1cp04758b | 796 | 792 | 99 % | 0 | 0 | 5 | 23 | 0 | 0 |
-| 10.1039_d3cp01829f | 690 | 681 | 99 % | 0 | 0 | 0 | 6 | 0 | 0 |
-| 10.1039_d3cp05639b | 631 | 626 | 99 % | 0 | 0 | 3 | 12 | 3 | 0 |
-| 10.1039_d4cp00131a | 997 | 989 | 99 % | 0 | 0 | 2 | 5 | 1 | 2 |
-| 10.1039_d4nr03749a | 674 | 664 | 99 % | 0 | 0 | 0 | 2 | 0 | 0 |
+| 10.1002_adem.202201901 | 749 | 738 | 99 % | 0 | 3759 | 13 | 5 | 15 | 1 |
+| 10.1007_s12274-010-0066-9 | 352 | 348 | 99 % | 0 | 0 | 4 | 0 | 4 | 0 |
+| 10.1016_j.ijpharm.2017.04.031 | 635 | 627 | 99 % | 0 | 0 | 9 | 4 | 8 | 0 |
+| 10.1016_j.mee.2018.01.027 | 269 | 250 | 93 % | 0 | 0 | 24 | 3 | 19 | 0 |
+| 10.1016_j.mee.2018.01.033 | 217 | 211 | 97 % | 0 | 0 | 6 | 0 | 6 | 0 |
+| 10.1016_j.sse.2022.108584 | 363 | 357 | 98 % | 0 | 44 | 6 | 0 | 6 | 0 |
+| 10.1021_acs.chemmater.1c03164 | 944 | 933 | 99 % | 0 | 0 | 11 | 1 | 11 | 1 |
+| 10.1021_acs.chemmater.2c01154 | 926 | 917 | 99 % | 0 | 1625 | 13 | 15 | 9 | 1 |
+| 10.1021_acs.chemmater.6c00816 | 1198 | 1190 | 99 % | 0 | 2520 | 9 | 5 | 8 | 0 |
+| 10.1021_acs.chemmater.9b05116 | 754 | 743 | 99 % | 0 | 297 | 15 | 43 | 11 | 2 |
+| 10.1021_acs.jpcc.5c06502 | 676 | 667 | 99 % | 0 | 1536 | 9 | 10 | 9 | 2 |
+| 10.1021_acs.jpcc.9b08176 | 367 | 362 | 99 % | 0 | 822 | 6 | 9 | 5 | 0 |
+| 10.1021_acs.jpclett.4c03545 | 269 | 262 | 97 % | 0 | 147 | 7 | 0 | 7 | 0 |
+| 10.1021_acs.langmuir.6b03119 | 503 | 497 | 99 % | 0 | 1136 | 6 | 4 | 6 | 0 |
+| 10.1021_acsami.0c06879 | 481 | 476 | 99 % | 0 | 201 | 5 | 0 | 5 | 0 |
+| 10.1021_acsami.0c22121 | 301 | 293 | 97 % | 0 | 0 | 10 | 7 | 8 | 0 |
+| 10.1021_acsnano.5b03429 | 473 | 470 | 99 % | 0 | 980 | 4 | 3 | 3 | 0 |
+| 10.1038_s41467-022-35428-6 | 540 | 532 | 99 % | 0 | 30 | 9 | 5 | 9 | 1 |
+| 10.1038_srep18401 | 226 | 222 | 98 % | 0 | 0 | 7 | 0 | 4 | 0 |
+| 10.1039_c3ra42928h | 318 | 311 | 98 % | 0 | 0 | 7 | 0 | 7 | 0 |
+| 10.1039_c4nr05049e | 374 | 369 | 99 % | 0 | 0 | 5 | 0 | 5 | 0 |
+| 10.1039_c5ta00205b | 542 | 535 | 99 % | 0 | 0 | 7 | 2 | 7 | 0 |
+| 10.1039_c7ta03257a | 602 | 591 | 98 % | 0 | 0 | 11 | 0 | 11 | 0 |
+| 10.1039_d0cp03358h | 739 | 731 | 99 % | 0 | 2684 | 8 | 18 | 8 | 0 |
+| 10.1039_d1cp04758b | 796 | 792 | 99 % | 0 | 0 | 9 | 23 | 4 | 0 |
+| 10.1039_d3cp01829f | 690 | 681 | 99 % | 0 | 0 | 9 | 6 | 9 | 0 |
+| 10.1039_d3cp05639b | 631 | 623 | 99 % | 0 | 0 | 8 | 12 | 8 | 0 |
+| 10.1039_d4cp00131a | 997 | 988 | 99 % | 0 | 0 | 10 | 5 | 9 | 2 |
+| 10.1039_d4nr03749a | 674 | 664 | 99 % | 0 | 0 | 10 | 2 | 10 | 0 |
 | 10.1063_1.2338776 | 277 | 277 | 100 % | 0 | 92 | 0 | 3 | 0 | 0 |
-| 10.1063_1.5028178 | 410 | 403 | 98 % | 0 | 171 | 1 | 1 | 0 | 0 |
-| 10.1063_5.0168768 | 308 | 303 | 98 % | 0 | 126 | 5 | 2 | 3 | 0 |
-| 10.1093_nsr_nwaf247 | 849 | 840 | 99 % | 0 | 1730 | 1 | 0 | 6 | 0 |
-| 10.1116_1.4892385 | 493 | 483 | 98 % | 0 | 184 | 2 | 1 | 0 | 0 |
-| 10.1116_1.5116136 | 202 | 196 | 97 % | 0 | 3213 | 0 | 5 | 0 | 0 |
-| 10.1116_6.0001094 | 898 | 879 | 98 % | 2 (AdvP4C4E46 4) | 0 | 2 | 8 | 9 | 0 |
-| 10.1116_6.0001679 | 236 | 230 | 97 % | 0 | 0 | 3 | 1 | 0 | 0 |
-| 10.1116_6.0002804 | 423 | 413 | 98 % | 0 | 189 | 0 | 0 | 0 | 0 |
-| 10.1116_6.0002993 | 382 | 372 | 97 % | 0 | 168 | 0 | 2 | 0 | 0 |
-| 10.1116_6.0003182 | 719 | 712 | 99 % | 0 | 252 | 1 | 3 | 0 | 0 |
-| 10.1149_2.067203jes | 721 | 707 | 98 % | 0 | 116 | 4 | 14 | 1 | 0 |
-| 10.1186_s11671-015-0872-9 | 271 | 262 | 97 % | 0 | 0 | 0 | 6 | 0 | 2 |
-| 10.3390_separations11010024 | 646 | 512 | 79 % | 0 | 0 | 79 | 16 | 74 | 0 |
-| 10.3762_bjnano.5.25 | 495 | 483 | 98 % | 0 | 0 | 1 | 0 | 0 | 0 |
+| 10.1063_1.5028178 | 410 | 403 | 98 % | 0 | 171 | 8 | 1 | 7 | 0 |
+| 10.1063_5.0168768 | 308 | 303 | 98 % | 0 | 126 | 9 | 2 | 7 | 0 |
+| 10.1093_nsr_nwaf247 | 849 | 840 | 99 % | 0 | 1730 | 9 | 0 | 14 | 0 |
+| 10.1116_1.4892385 | 493 | 483 | 98 % | 0 | 184 | 12 | 1 | 10 | 0 |
+| 10.1116_1.5116136 | 202 | 196 | 97 % | 0 | 3213 | 6 | 5 | 6 | 0 |
+| 10.1116_6.0001094 | 898 | 879 | 98 % | 2 (AdvP4C4E46 4) | 0 | 18 | 8 | 25 | 0 |
+| 10.1116_6.0001679 | 236 | 230 | 97 % | 0 | 0 | 9 | 1 | 6 | 0 |
+| 10.1116_6.0002804 | 423 | 413 | 98 % | 0 | 189 | 10 | 0 | 10 | 0 |
+| 10.1116_6.0002993 | 382 | 372 | 97 % | 0 | 168 | 10 | 2 | 10 | 0 |
+| 10.1116_6.0003182 | 719 | 712 | 99 % | 0 | 252 | 8 | 3 | 7 | 0 |
+| 10.1149_2.067203jes | 721 | 707 | 98 % | 0 | 116 | 18 | 14 | 15 | 0 |
+| 10.1186_s11671-015-0872-9 | 271 | 262 | 97 % | 0 | 0 | 9 | 6 | 9 | 2 |
+| 10.3390_separations11010024 | 646 | 512 | 79 % | 0 | 0 | 139 | 16 | 134 | 0 |
+| 10.3762_bjnano.5.25 | 495 | 483 | 98 % | 0 | 0 | 13 | 0 | 12 | 0 |
 
 The text layer of 10.1116_1.5116136 (page box from −92) and the cover-page "Reference" heading of the same paper, and the
 units of 10.1116_6.0002804 and 10.1039_d1cp04758b matching paragraphs after the References heading, had stopped the

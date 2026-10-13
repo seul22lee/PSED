@@ -8,13 +8,20 @@ R1  number replaced from the text layer: in one output paragraph the numbers of 
     differs by at most two characters and at most one in length: a-MoS3,0 / a-MoS3.0; 3d_3/2 / 3d5/2; ^33 / ^53;
     g/cm^3 / g/cm^-3); a layer token glued to a minus sign is left alone (an exponent next to a citation, Å^-1 55
     read as 155); the output token is replaced by the layer token inside the markdown (markup between its
-    characters kept).
+    characters kept). Each repair takes one distinct position: a pair that occurs n times is applied to the first
+    n occurrences of the output token, and a span already repaired is never matched again (the first run wrote
+    g/cm^--3 by re-matching the 3 inside the new -3).
 R2  dropped line restored: a text-layer line of a Text, Caption or TextInlineMath block that no output paragraph contains (body flag "line not
     found in the output"), with at least 8 words, no undecoded glyph, at least 70 % of its words of 4+ letters in
     the document's vocabulary and no reaction arrow, is inserted as a paragraph after the paragraph the previous
     unit matched, marked "[restored from the text layer]".
 A page is born-digital when its text layer comes from embedded fonts (no OCR font such as GlyphLessFont) and no
 image covers the whole page (a scanned page carries an OCR text layer, which is not trusted).
+Recheck (merge.py): after the repairs the check runs again on the repaired text; a repair whose sentence still carries
+a number flag (R1) or whose restored line is flagged again (R2: not found, or a number of the line flagged on its
+sentence) did not make the output match the text layer and is undone (recheck() names
+it, repair() is run again with it in `skip`); the undone repairs are recorded under body_repairs_undone with the
+remaining flag, and their flags stay.
 """
 import re
 from collections import defaultdict
@@ -64,8 +71,51 @@ def _born_digital(pl, pno):
     return not any((im["x1"] - im["x0"]) * (im["bottom"] - im["top"]) >= 0.95 * area for im in page.images)
 
 
-def repair(md_text, body, pdf_path):
+def _sig(r):
+    """Identity of a repair across runs: kind, page, paragraph (R1) or line (R2), token, occurrence."""
+    if r["kind"].startswith("number replaced"):
+        return ("R1", r["page"], r["paragraph"], r["from"], r["to"], r["occurrence"])
+    return ("R2", r["page"], r["to"])
+
+
+def _words4(s):
+    return {w.lower() for w in WORD4_RE.findall(s or "")}
+
+
+def recheck(repairs, flags_after):
+    """Repairs whose sentence or restored line still carries a flag after the repair (-> to undo), with the flag."""
+    failed = []
+    for r in repairs:
+        hit = None
+        if r["kind"].startswith("number replaced"):
+            sw = _words4(r["sentence"])
+            for f in flags_after:
+                if f["page"] != r["page"] or not f["kind"].startswith("number of"):
+                    continue
+                fw = _words4(f.get("output_sentence", ""))
+                if len(sw) >= 3 and len(sw & fw) >= 0.8 * len(sw):
+                    hit = f
+                    break
+        else:                                                 # R2: the restored line itself still flagged (not found
+            from body_check import _nums                      # again, or one of its number tokens flagged on its
+            lw = _words4(r["to"])                             # sentence)
+            line_nums = set(_nums(r["to"]))
+            for f in flags_after:
+                if f["page"] != r["page"] or f["kind"] == "not checkable":
+                    continue
+                on_line = f.get("layer_line") == r["to"] or (f.get("number") in line_nums and len(lw) >= 3
+                                                            and len(lw & _words4(f.get("output_sentence", ""))) >= 0.8 * len(lw))
+                if on_line:
+                    hit = f
+                    break
+        if hit is not None:
+            failed.append((r, {"kind": hit["kind"], "number": hit.get("number"), "layer_line": hit.get("layer_line", "")[:200]}))
+    return failed
+
+
+def repair(md_text, body, pdf_path, skip=()):
     import pdfplumber
+    skip = set(skip)
     pl = pdfplumber.open(str(pdf_path))
     vocab = {w.lower() for w in WORD4_RE.findall(md_text)}
     repairs = []
@@ -110,15 +160,25 @@ def repair(md_text, body, pdf_path):
             born[pno] = _born_digital(pl, pno)
         if not born[pno]:
             continue
+        used = defaultdict(list)                              # paragraph -> spans already repaired (never matched again)
+        occ = defaultdict(int)                                # (paragraph, a, b) -> applications so far
         for a, b in pairs:
             pat = re.compile(r"(?<![\w.])" + _tolerant(b) + r"(?![\w.])")
             where = [(j, list(pat.finditer(texts[j]))) for j in g["miss"][0].get("paragraphs", [hit]) if j < len(texts)]
+            where = [(j, [mm for mm in ms if not any(s < mm.end() and mm.start() < e for s, e in used[j])]) for j, ms in where]
             where = [(j, ms) for j, ms in where if ms]
             if len(where) != 1:                               # the token must sit in exactly one paragraph of the run
                 continue
             hit, ms = where[0]
-            m = ms[0]                                         # the first occurrence not yet replaced
+            m = ms[0]                                         # the first occurrence outside the spans already repaired
             raw = m.group(0)
+            k_occ = occ[(hit, a, b)]
+            occ[(hit, a, b)] += 1
+            fm = next((x for x in g["miss"] if x["number"] == a), g["miss"][0])
+            rec = {"page": pno, "kind": "number replaced from the text layer", "from": raw, "to": None, "sentence": g["miss"][0]["output_sentence"][:200],
+                   "paragraph": hit, "occurrence": k_occ, "layer_line": fm.get("layer_line", "")[:200], "bbox": fm.get("bbox")}
+            if _sig(dict(rec, to=a)) in skip or any(_sig(dict(rec, to=x)) in skip for x in (a,)):
+                pass
             pieces = re.split(r"(" + MARKUP[:-1] + "+)", raw)    # characters of the token and the markup between them
             plain = "".join(x for x in pieces if not re.fullmatch(MARKUP, x) or x == "")
             plain = re.sub(MARKUP, "", raw)
@@ -133,8 +193,14 @@ def repair(md_text, body, pdf_path):
                 new = "".join(out)
             else:
                 new = a
+            rec["to"] = new
+            if _sig(rec) in skip:                             # undone after the recheck: not applied this time
+                used[hit].append((m.start(), m.end()))        # but its position is taken all the same
+                continue
             texts[hit] = texts[hit][:m.start()] + new + texts[hit][m.end():]
-            repairs.append({"page": pno, "kind": "number replaced from the text layer", "from": raw, "to": new, "sentence": g["miss"][0]["output_sentence"][:200]})
+            delta = len(new) - len(raw)
+            used[hit] = [(s + delta, e + delta) if s >= m.end() else (s, e) for s, e in used[hit]] + [(m.start(), m.start() + len(new))]
+            repairs.append(rec)
     # R2: dropped lines restored
     inserts = defaultdict(list)
     for f in body["body_flags"]:
@@ -149,12 +215,14 @@ def repair(md_text, body, pdf_path):
             born[pno] = _born_digital(pl, pno)
         if not born[pno]:
             continue
-        inserts[f.get("after_paragraph", 0)].append((pno, line))
+        if ("R2", pno, line) in skip:                         # undone after the recheck
+            continue
+        inserts[f.get("after_paragraph", 0)].append((pno, line, f.get("bbox")))
     for idx in sorted(inserts, reverse=True):
-        block = " ".join(l for _, l in inserts[idx])
+        block = " ".join(l for _, l, _ in inserts[idx])
         texts[idx] = texts[idx].rstrip() + "\n\n" + block + " [restored from the text layer]"
-        for pno, l in inserts[idx]:
-            repairs.append({"page": pno, "kind": "dropped line restored from the text layer", "from": "", "to": l, "sentence": ""})
+        for pno, l, bb in inserts[idx]:
+            repairs.append({"page": pno, "kind": "dropped line restored from the text layer", "from": "", "to": l, "sentence": "", "after_paragraph": idx, "bbox": bb})
     pl.close()
     chunks[0::2] = texts
     return "".join(chunks), repairs

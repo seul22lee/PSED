@@ -18,19 +18,20 @@ availability heading on (on the layer side, or when a unit matches an output par
 in the second half of document.md); author/affiliation blocks (keywords, addresses, dates), author lines (names with
 affiliation markers, pages 1-2); furniture ("Published by", "Cite as", doi, URL, ORCID, licence, copyright, article
 id: the line is cut there or dropped); running lines (10 words or fewer, identical on 3+ pages, page headers
-counted); units of fewer than 4 words; segments outside the blocks that hold only a number; the page abstract when
-the abstract comes from OpenAlex (its unmatched lines on pages 1-2). On the output side, URLs, DOIs, received /
+counted); segments outside the blocks that hold only a number; the page abstract when the abstract comes from
+OpenAlex (its unmatched lines on pages 1-2). On the output side, URLs, DOIs, received /
 accepted / published dates, ORCID ids, "Citation:" lines and markdown table rows are removed before the comparison.
 Not checkable, with counts: rotated characters, undecoded glyphs (font and code listed in not_checkable_reasons),
-units of fewer than 3 words, garbled lines (two lines drawn over each other: fewer than 30 % of their words occur in
+units under 4 words (headings, labels, fragments), units of fewer than 3 words, garbled lines (two lines drawn over each other: fewer than 30 % of their words occur in
 the output, or two long unknown words), output sentences the layer does not cover (70 % of their words of 4+
 letters), output paragraphs a not-checkable unit also matches, paragraphs whose equation lines hold an undecoded
 glyph. A weak line (no word of 4+ letters, or a reaction line) is kept for the extra direction only.
 What stays not checkable at the line level is also written as a flag of kind "not checkable" (reason, the line's text,
 numbers, box and crop; for a unit with an undecoded glyph one flag with the glyph line and the unit's line count), so
 that the flag review sees these lines as it sees a not-checkable table: one flag per unit with an undecoded glyph, per
-garbled line, per unit too short to locate, and per equation or weak line with an undecoded glyph (it blocks the extra
-direction of its paragraph). These flags are counted apart ("not-checkable flags"), not among "flags".
+line of a unit under 4 words, per garbled line, per unit too short to locate, and per equation or weak line with an
+undecoded glyph (it blocks the extra direction of its paragraph). Every line counted in "lines" is either checked or
+covered by such a flag. These flags are counted apart ("not-checkable flags"), not among "flags".
 
 Tokens: both sides are normalised as the table check does (structure_marker._norm_cell_text); a subscript joins its
 base (H2O), a superscript stands alone (10^12 -> 10, 12), a number with a unit or a lowercase word glued to it
@@ -432,8 +433,10 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
             counts["excluded: after the references/acknowledgements heading"] += len(lines)
             continue
         counts["lines"] += len(lines)
-        if len(text.split()) < 4:
-            counts["excluded: fewer than 4 words"] += len(lines)
+        if len(text.split()) < 4:                     # a heading, label or fragment: nothing to locate in the output
+            counts["not checkable: unit under 4 words"] += len(lines)
+            for l in lines:
+                nc_flag(pno, l, f"unit under 4 words ({len(lines)} line(s))", bt, 1)
             continue
         garbled = [l for l in lines if (len(WORD4_RE.findall(l[0])) >= 3
                    and sum(1 for w in WORD4_RE.findall(l[0]) if w.lower() in vocab) < 0.3 * len(WORD4_RE.findall(l[0])))
@@ -468,11 +471,11 @@ def check_body(pdf_path, md_text, tree, crop_dir, crop_prefix="body", openalex_a
                 blocked.add(best)                 # its output paragraph is not checked in the extra direction either
             nc_flag(pno, next(l for l in lines if l[5]), f"undecoded glyph {glyphs}: the unit's {len(lines)} line(s) not checked", bt, len(lines))
             continue
-        counts["checked"] += len(lines)
         if len(toks) < 3:
             counts["not checkable: unit too short to locate in the output (fewer than 3 words)"] += len(lines)
             nc_flag(pno, lines[0], f"unit too short to locate in the output (fewer than 3 words; {len(lines)} line(s))", bt, len(lines))
             continue
+        counts["checked"] += len(lines)
         if (best is None or n < need) and openalex_abstract and pno <= 2:
             w4 = {w.lower() for w in WORD4_RE.findall(text)}
             if w4 and len(w4 & oa_words) >= 0.6 * len(w4):        # the page abstract, replaced by the OpenAlex text
